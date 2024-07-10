@@ -1,0 +1,97 @@
+.hotel_container {
+    background-color: #00b7eb;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hotel_img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .hotel_description {
+    font-size: 20px;
+    line-height: 1.5;
+    margin-left: 20px;
+  }
+  
+  .content-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+  }
+  
+  .image-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+  }
+  
+  .hotel_booking {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+  
+  .hotel_booking .guest-options {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 1;
+    width: 100%;
+  }
+  
+  .hotel_booking .guest-type {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .hotel_booking .guest-type span {
+    margin: 0 10px;
+  }
+  
+  .hotel_booking .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .hotel_booking .form-label {
+    display: block;
+    margin-bottom: .5rem;
+  }
+  
+  .hotel_booking .form-field {
+    margin-bottom: 1rem;
+  }
+  
+  .hotel_booking .btn-block {
+    width: 100%;
+  }
+  
+  .offer_container {
+    margin-top: 20px;
+  }
+  
+  .offer_img{
+   width: 500px;
+   height: auto;
+  }
+  
+  @media (min-width: 768px) {
+    .hotel_container .row {
+      display: flex;
+      align-items: center;
+    }
+  }
+  
