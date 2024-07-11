@@ -97,7 +97,7 @@ const BusGurantee = () => {
                 <h5>BOOK TICKET FASTER.</h5>
                 <h5> DOWNLOAD OUR MOBILE APPS TODAY</h5>
                 <p>The application will help you find attractions, tours or adventures in a new city</p>
-                <a href="/"><i className="ri-google-play-fill">Android App</i><span>Google Play</span></a>
+                <a href="/"><small>Android App On</small><span><i style={{fontWeight:"lighter"}} className="ri-google-play-line"></i>Google Play</span></a>
              </div>
          </div>
     </div>

@@ -116,24 +116,61 @@
  .BusPage .Download-app {
   position: relative;
   width: 100%;
-  padding: 10vmax;
+  padding: 5vmax;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   background-image: url('https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+
 }
-
-.BusPage .Download-app::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity here (0.5 is 50% black) */
+.BusPage .Download-app::before {
+       content: '';
+       position: absolute;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background-color: rgba(0, 0, 0, 0.39); 
+       z-index: 1;
+     }
+     .BusPage .Download-app .bus-text {
+       position: relative; 
+       width: 90%;
+       display: flex;
+       align-items: flex-start;
+       justify-content: space-evenly;
+       flex-direction: column;
+       z-index: 2; 
+       padding: 1.5vmax;
+     }
+.BusPage .Download-app .bus-text h5{
+      font-size: 2.5vmax;
+      font-weight: 700;
+      color: #fff;
 }
-
-
+.BusPage .Download-app .bus-text p{
+       font-size: 1.2vmax;
+       color: #fff;
+ }
+ .BusPage .Download-app .bus-text a{
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: space-evenly;
+      background: #303030c0;
+      padding-left:1vmax ;
+      padding-right:1vmax ;
+      padding-top:0.4vmax ;
+      padding-bottom:0.4vmax ;
+      border-radius: 10px;
+      color: #fff;
+ }
+ .BusPage .Download-app .bus-text span{
+     font-size: 1.2vmax;
+     font-weight: 500;
+  }
+  
 
 
 
