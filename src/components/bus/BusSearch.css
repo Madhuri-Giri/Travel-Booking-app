@@ -45,6 +45,7 @@
            background: #fff;
            border-radius: 10px;
            padding:1.5vmax;
+           position: relative;
 }
 .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one{
           width: 20%;
@@ -84,9 +85,9 @@
           font-weight: 600;
            font-size: 1.2vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt .input-content .date-input::-webkit-calendar-picker-indicator {
-          display: none; 
-        }
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt .input-content input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
 .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn{
           width: 20%;
           display: flex;
@@ -107,6 +108,25 @@
           font-weight: 600;
           background-color: #00b7eb;
           color: #fff;
+}
+
+
+.suggestions-list{
+  width: 19%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  position: absolute;
+  top: 7vmax;
+  background: #fff;
+  box-shadow: 2px 2px 5px 2px rgb(149, 149, 149);
+}
+.suggestions-list li{
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 0.2vmax;
+  list-style: none;
 }
 
 
