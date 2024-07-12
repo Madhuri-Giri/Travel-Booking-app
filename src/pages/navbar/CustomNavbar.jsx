@@ -1,4 +1,3 @@
-import React from 'react'
 import "./CustomNavbar.css"
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { FaPhoneAlt } from "react-icons/fa";
@@ -21,14 +20,14 @@ const CustomNavbar = () => {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mx-auto navmenuss">
-                            <Nav.Link className="homnavbbookingicon  homvanlinkss align-items-center">
+                            <Nav.Link href="/" className="homnavbbookingicon  homvanlinkss align-items-center">
                                 <GiCommercialAirplane className="mx-1" size={20} />
                                 FLIGHTS
                             </Nav.Link>
-                            <Nav.Link className="homnavbbookingicon homvanlinkss align-items-center ">
+                            <Nav.Link href="/bus-search" className="homnavbbookingicon homvanlinkss align-items-center ">
                                 <TbBus className="mx-2 " size={22} /> BUS
                             </Nav.Link>
-                            <Nav.Link className="homnavbbookingicon homvanlinkss align-items-center ">
+                            <Nav.Link href="/hotel-search" className="homnavbbookingicon homvanlinkss align-items-center ">
                                 <RiHotelFill className="mx-2 " size={22} /> HOTEL
                             </Nav.Link>
                             <Nav.Link className="homnavbbookingicon homvanlinkss align-items-center ">

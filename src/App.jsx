@@ -6,6 +6,7 @@ import FlightSearch from './components/flight/FlightSearch'
 import Footer from './pages/footer/Footer';
 import CustomNavbar from './pages/navbar/CustomNavbar';
 import BusLists from './components/bus/BusList';
+import BusLayout from './components/bus/BusLayout';
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
           <Route path='/' element={<FlightSearch />} />
           <Route path='/bus-search' element={<BusSearch />} />
           <Route path='/bus-list' element={<BusLists />} />
+          <Route path='/bus-layout' element={<BusLayout />} />
 
 
           <Route path='/hotel-search' element={<HotelSearch />} />
