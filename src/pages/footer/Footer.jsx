@@ -12,31 +12,18 @@ function Footer() {
             <section className='footer-sec'>
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-5">
+                        <div className="col-lg-3 footerabout">
                             <img height={40} src={FooterLogo} className='img-fluid logoimg' alt="logo"></img>
-
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet ad nisi repudiandae nobis minima odio explicabo, reiciendis earum quas? Velit facilis recusandae labore asperiores at ex tempore aut, nostrum error?</p>
-
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet ad nisi repudiandae nobis minima</p>
                             <div className='footer-icons'>
                                 <Link to='/'> <FaFacebookF /> </Link>
                                 <Link to='/'> <FaTwitter />   </Link>
                                 <Link to='/'> <FaLinkedinIn /> </Link>
-                                
                                 <Link to='/'> <FaInstagram /> </Link>
                             </div>
                         </div>
 
-                        <div className="col-lg-2 col-md-4 col-sm-4 footer-links">
-                            <h5>Quick Links</h5>
-                            <IoMdArrowDropright /> <Link to='/'>Home</Link> <br></br>
-                            <IoMdArrowDropright /> <Link to='/buslist'>Bookings</Link> <br></br>
-                            <IoMdArrowDropright /> <Link to='/flightPage'>Flights</Link> <br></br>
-                            <IoMdArrowDropright /> <Link to='/'>Bus</Link> <br></br>
-                            <IoMdArrowDropright /> <Link to='/hotelPage'>Hotel</Link> <br></br>
-
-                        </div>
-
-                        <div className="col-lg-2 col-md-4 col-sm-4 footer-links">
+                        <div className="col-lg-2 col-md-4 col-sm-6 footer-links">
                             <h5>Supports</h5>
                             <IoMdArrowDropright /> <Link to='/Faq'>Faq</Link> <br></br>
                             <IoMdArrowDropright /> <Link to='/help'>Help</Link> <br></br>
@@ -44,11 +31,23 @@ function Footer() {
                             <IoMdArrowDropright /> <Link to='/setting'>Settings</Link> <br></br>
                         </div>
 
-                        <div className="col-lg-3 col-md-4 col-sm-4 footer-links">
+                        <div className="col-lg-2 col-md-4 col-sm-6 footer-links">
+                            <h5>Quick Links</h5>
+                            <IoMdArrowDropright /> <Link to='/flightPage'>Flights</Link> <br></br>
+                            <IoMdArrowDropright /> <Link to='/'>Bus</Link> <br></br>
+                            <IoMdArrowDropright /> <Link to='/hotelPage'>Hotel</Link> <br></br>
+                        </div>
+
+                        <div className="col-lg-3 col-md-4 col-sm-6 footer-links">
                             <h5>Get in Touch</h5>
                             <div> <span>Email : </span> example@gmail.com </div>
                             <div> <span>Phone : </span> +1234567899 </div>
                             <div> <span>Fax : </span> +1 (987)  793805</div>                            
+                        </div>
+
+                        <div className="col-lg-2 col-sm-6 footer-links">
+                            <h5>Payment Mode</h5>
+                            <img src='/src/assets/images/300px.png' className='img-fluid' alt="logo" />
                         </div>
                         
                     </div>

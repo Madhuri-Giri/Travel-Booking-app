@@ -1,22 +1,47 @@
-.navbarlogo img{
+.navbarlogo img {
     height: 65px;
 }
-.mainNavbar{
+
+.mainNavbar {
     margin: -10px 0px;
 }
-.numNavbar span{
+
+.numNavbar span {
     color: #00b7eb;
     font-weight: bold;
     font-size: 20px;
 }
-.userDropdown svg{
+
+.userDropdown svg {
     font-size: 40px;
     color: #00b7eb;
+    /* font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; */
 }
-.navmenuss a{
+
+.navmenuss a {
     font-weight: bold;
     color: rgba(29, 27, 27, 0.849);
+    padding: 10px 25px !important;
 }
-.dropdown-menu svg{
+
+.dropdown-menu svg {
     color: black;
+}
+
+.navmenuss .homnavbbookingicon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+}
+
+.navmenuss .homnavbbookingicon.active {
+    background-color: #e8eef8;
+    font-weight: bold;
+    border-bottom: 2px solid #007bff;
+}
+
+.homnavbbookingicon .textNav {
+    margin-top: 5px;
 }

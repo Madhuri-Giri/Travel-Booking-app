@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Carousel, Dropdown, Modal, Button } from 'react-bootstrap';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { FaCalendarAlt, FaUser, FaAngleDown } from 'react-icons/fa';
+import { BiLogoPlayStore } from "react-icons/bi";
 import { MdDateRange } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { GiCommercialAirplane } from "react-icons/gi";
@@ -194,7 +195,7 @@ const FlightSearch = () => {
         <div className="container-fluid ">
           <div className="findFlightss"><button>Find Flights</button></div>
           <div className="row">
-            <div className="col-5 flightmainBooking">
+            <div className="col-lg-5 flightmainBooking">
               <div className="ps-3">
                 <button className="onewaybutton">
                   <input
@@ -572,61 +573,7 @@ const FlightSearch = () => {
               </div>
             </div>
 
-
-            {/* <div className="col-5 flightmainBooking">
-              <div>
-                <button className="onewaybutton">
-                  <input
-                    type="radio"
-                    id="oneWay"
-                    name="oneWay"
-                    value="oneWay"
-                    checked={selectedTab === 'oneWay'}
-                    onChange={handleTabChange}
-                  />
-                  <label htmlFor="oneWay">One Way</label></button>
-
-                <button className="twowaybutton">
-                  <input
-                    type="radio"
-                    id="twoWay"
-                    name="twoWay"
-                    value="twoWay"
-                    checked={selectedTab === 'twoWay'}
-                    onChange={handleTabChange}
-                  />
-                  <label htmlFor="twoWay">Round Trip</label>
-                </button>
-              </div>
-
-              <div className="tabContent">
-                {selectedTab === 'oneWay' &&
-                  <div className="row">
-                    <div className="col-12">
-                      <div className="form-group  position-relative">
-                        <label htmlFor="text" >From</label>
-                        <input type="text" className="form-control" id="flightSatrtingPoint" placeholder='Starting Point' value={from} onChange={handleFromChange} />
-                        {fromSuggestions.length > 0 && (
-                          <ul className="suggestions-list">
-                            {fromSuggestions.map((suggestion, index) => (
-                              <li className='text-red' key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
-                                {suggestion.
-                                  busodma_destination_name
-                                }              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                }
-                {selectedTab === 'twoWay' && <div>two way</div>}
-              </div>
-            </div> */}
-
-
-
-            <div className="col-7 bannerSlider">
+            <div className="col-lg-7 bannerSlider">
               <Carousel>
                 <Carousel.Item>
                   <img
@@ -678,21 +625,21 @@ const FlightSearch = () => {
         <h5>Reasons to book with us?</h5>
         <div className="container-fluid">
           <div className="row">
-            <div className="col-4 flightbooksec3Col">
+            <div className="col-md-4 flightbooksec3Col">
               <div> <img src="https://www.vimaansafar.com/img/fastT.png" className="img-fluid"></img>  </div>
               <div>
                 <h6>FAST BOOKING</h6>
                 <p>We offer fast booking, fantastic products, competitive pricing & amazing experience.</p>
               </div>
             </div>
-            <div className="col-4 flightbooksec3Col">
+            <div className="col-md-4 flightbooksec3Col">
               <div> <img src="https://www.vimaansafar.com/img/eDeal.png" className="img-fluid"></img>  </div>
               <div>
                 <h6>FAST BOOKING</h6>
                 <p>We offer fast booking, fantastic products, competitive pricing & amazing experience.</p>
               </div>
             </div>
-            <div className="col-4 flightbooksec3Col">
+            <div className="col-md-4 flightbooksec3Col">
               <div> <img src="https://www.vimaansafar.com/img/24Support.png" className="img-fluid"></img>  </div>
               <div>
                 <h6>FAST BOOKING</h6>
@@ -726,7 +673,7 @@ const FlightSearch = () => {
         <div className="container-fluid mb-5">
           <div className="row mb-4">
             <h2>Exclusive Deals</h2>
-            <div className="col-4">
+            <div className="col-lg-4 col-md-6 exclusivecol">
               <div className="position-relative">
                 <img src="https://www.vimaansafar.com/img/city/delhi.jpg" className="img-fluid" alt="Bangkok" />
                 <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
@@ -735,7 +682,7 @@ const FlightSearch = () => {
                 </div>
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-lg-4 col-md-6 exclusivecol">
               <div className="position-relative">
                 <img src="https://www.vimaansafar.com/img/city/amritsar.jpg" className="img-fluid" alt="Bangkok" />
                 <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
@@ -744,7 +691,7 @@ const FlightSearch = () => {
                 </div>
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-lg-4 col-md-6 exclusivecol">
               <div className="position-relative">
                 <img src="https://www.vimaansafar.com/img/city/srinagar.jpg" className="img-fluid" alt="Bangkok" />
                 <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
@@ -753,10 +700,10 @@ const FlightSearch = () => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-4">
-              <div className="position-relative">
+          {/* </div> */}
+          {/* <div className="row"> */}
+          <div className="col-lg-4 col-md-6 exclusivecol">
+          <div className="position-relative">
                 <img src="https://www.vimaansafar.com/img/city/bangkok.jpg" className="img-fluid" alt="Bangkok" />
                 <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
                   <h3>Bangkok</h3>
@@ -764,7 +711,7 @@ const FlightSearch = () => {
                 </div>
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-lg-4 col-md-6 exclusivecol">
               <div className="position-relative">
                 <img src="https://www.vimaansafar.com/img/city/dubai.jpg" className="img-fluid" alt="Bangkok" />
                 <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
@@ -773,13 +720,32 @@ const FlightSearch = () => {
                 </div>
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-lg-4 col-md-6 exclusivecol">
               <div className="position-relative">
                 <img src="https://www.vimaansafar.com/img/city/hongkong.jpg" className="img-fluid" alt="Bangkok" />
                 <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
                   <h3>Hong Kong</h3>
                   <p>Rs 13000</p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="flightsec6">
+        <div className="container">
+          <div className="row">
+            <div className="col-12 flightsec6col">
+              <div className="flightsec6coldiv">
+                <h1>BOOK TICKET FASTER.</h1>
+                <h1>DOWNLOAD OUR MOBILE APPS TODAY</h1>
+                <p>The application will help you find attractions, tours or adventures in a new city</p>
+                <button className="googleplaybtn">
+                {/* <Link to='' className=""> */}
+                <BiLogoPlayStore /><h6>Google Play</h6>
+                {/* </Link> */}
+                </button>
               </div>
             </div>
           </div>
