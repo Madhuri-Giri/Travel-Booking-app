@@ -4,6 +4,7 @@ import BusSearch from './components/bus/BusSearch'
 import HotelSearch from './components/hotel/HotelSearch'
 import BusLists from './components/bus/BusList';
 
+
 const App = () => {
   return (
     <div>
@@ -14,6 +15,7 @@ const App = () => {
 
 
           <Route path='/hotel-search' element={<HotelSearch />} />
+          
         </Routes>
       </Router>
     </div>

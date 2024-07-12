@@ -1,0 +1,79 @@
+/* HotelList.css */
+
+.sidebar_container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar_box {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .sidebar_block {
+    margin-bottom: 20px;
+  }
+  
+  .sidebar_wrapper {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .sidebar_con {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .sidebar_con label,
+  .sidebar_con span {
+    flex: 1;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  .sidebar_con input {
+    flex: 2;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  .sidebar_con button {
+    flex: 0 0 auto;
+    background-color: #00b7eb;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .sidebar_con button:disabled {
+    background-color: #ccc;
+  }
+
+  
+  
+  .check_form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  .check_form label {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
