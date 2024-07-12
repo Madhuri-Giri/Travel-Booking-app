@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Carousel, Dropdown, Modal, Button } from 'react-bootstrap';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { FaCalendarAlt, FaUser, FaAngleDown } from 'react-icons/fa';
+import { MdDateRange } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { GiCommercialAirplane } from "react-icons/gi";
 import { TbBus } from "react-icons/tb";
@@ -187,8 +188,6 @@ const FlightSearch = () => {
   };
 
 
-
-
   return (
     <>
       <section className='flightPageBanner'>
@@ -272,24 +271,24 @@ const FlightSearch = () => {
                                 id="PreferredDepartureTime"
                                 placeholderText="Select a date"
                               />
-                              <FaCalendarAlt className="date-picker-icon" />
+                              <MdDateRange  className="date-picker-icon" />
                             </div>
                           </div>
                         </div>
-                        <div className="col-6 onewayreturnhidebtn">
-                          <div className="onewayreturnhidebtn">
-                          {/* <FaCalendarAlt className="date-picker-icon" /> */}
+                        <div className="col-6">
+                          <div className="form-group onewayreturnhidebtn">
                             <Link>Add Return date</Link>
+                            <MdDateRange  className="mt-1 ms-2" />
                           </div>
                         </div>
 
-                        <div className="col-8 form-group flightTravellerclss ms-2 mt-3" onClick={handleShow}>
+                        <div className="col-8 form-group flightTravellerclss mt-3" onClick={handleShow}>
                           <FaCircleUser />
                           <p>Adult <span>{formData.AdultCount}</span> |</p>
                           <p>Child <span>{formData.ChildCount}</span> |</p>
                           <p>Infant <span>{formData.InfantCount}</span> |</p>
                           <p>{formData.JourneyType}</p>
-                          <FaAngleDown className="downarrrow" />
+                          <FaAngleDown className="downarrrow"/>
                         </div>
 
                         <div className="col-3 home-flight-search mt-3">
@@ -441,11 +440,11 @@ const FlightSearch = () => {
                                 id="PreferredDepartureTime"
                                 placeholderText="Select a date"
                               />
-                              <FaCalendarAlt className="date-picker-icon" />
+                              <MdDateRange className="date-picker-icon" />
                             </div>
                           </div>
                         </div>
-                        <div className="col-6 onewayreturnhidebtn mt-2">
+                        <div className="col-6 mt-2">
                           <div className="form-group">
                             <label htmlFor="PreferredArrivalTime">Return Date</label>
                             <div className="date-picker-wrapper">
@@ -457,7 +456,7 @@ const FlightSearch = () => {
                                 id="PreferredArrivalTime"
                                 placeholderText="Select a date"
                               />
-                              <FaCalendarAlt className="date-picker-icon" />
+                              <MdDateRange className="date-picker-icon" />
                             </div>
                           </div>
                         </div>

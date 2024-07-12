@@ -1,0 +1,259 @@
+.Login {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+}
+
+.Login .login {
+          width: 40%;
+          display: flex;
+          padding: 1vmax;
+          margin-top: 2vmax;
+          box-shadow: 2px 2px 5px 2px rgba(253, 237, 237, 0.879);
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+}
+
+.Login .login .logo {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+}
+
+.Login .login .logo img {
+          width: 30%;
+}
+
+.Login .login h5 {
+          width: 100%;
+          font-weight: 700;
+          display: flex;
+          color: rgba(27, 27, 27, 0.806);
+          font-size: 2vmax;
+          align-items: center;
+          justify-content: center;
+}
+
+.Login .login h5 span {
+          color: rgb(74, 74, 255);
+}
+
+.Login .login form {
+          width: 90%;
+          margin-top: 1vmax;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+          flex-direction: column;
+}
+
+.Login .login .one {
+          width: 100%;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+          flex-direction: column;
+          margin-top: 1vmax;
+}
+
+.Login .login .one label {
+          color: rgba(27, 27, 27, 0.669);
+          font-weight: 600;
+          font-size: 1.1vmax;
+}
+
+.Login .login .one input {
+          width: 100%;
+          margin-top: 0.6vmax;
+          border: none;
+          background-color: none;
+          border: 0.2px solid #0000003d;
+          padding: 0.7vmax 1vmax;
+          border-radius: 5px;
+          outline: none;
+}
+
+/* Added styles for password input container and icon */
+.Login .login .one .password-container {
+          width: 100%;
+          position: relative;
+}
+
+.Login .login .one .password-container input {
+          width: 100%;
+}
+
+.Login .login .one .password-container .password-toggle-icon {
+          position: absolute;
+          right: 12px;
+          top: 52%;
+          font-size: 1.2vmax;
+          transform: translateY(-50%);
+          cursor: pointer;
+}
+
+.Login .login .forgot {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 1vmax;
+}
+
+.Login .login .lgin {
+          width: 100%;
+          margin-top: 1vmax;
+}
+
+.Login .login .lgin button {
+          width: 100%;
+          border: none;
+          background-color: #00b7eb;
+          border-radius: 5px;
+          color: #fff;
+          padding: 0.7vmax 0vmax;
+          transition: 0.5s;
+}
+
+.Login .login .lgin button:hover {
+          transform: translateY(-0.5vmax);
+}
+
+.Login .login p {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 1vmax;
+          font-weight: 600;
+}
+
+.Login .login .regbtn {
+          width: 100%;
+          margin-top: 0.5vmax;
+}
+
+.Login .login .regbtn button {
+          width: 100%;
+          border: none;
+          background-color: #00b7eb;
+          border-radius: 5px;
+          color: #fff;
+          padding: 0.7vmax 0vmax;
+          transition: 0.5s;
+}
+
+.Login .login .regbtn button:hover {
+          transform: translateY(-0.5vmax);
+}
+
+
+@media (max-width:600px) {
+          .Login .login {
+                    width: 95%;
+                    padding: 0.5vmax;
+          }
+          .Login .login .logo img {
+                    width: 50%;
+                    margin-top: 1vmax;
+          }
+          .Login .login h5 {        
+                    font-size: 3.5vmax;
+          }
+          .Login .login form {
+                    width: 100%;
+          }
+          .Login .login .one{
+                    margin-top: 3vmax;
+          }
+          .Login .login .one label {
+                    font-weight: 600;
+                    font-size: 2.2vmax;
+          }
+          .Login .login .one input {
+                    margin-top: 1vmax;
+                    padding: 1.7vmax 1vmax;
+          }
+          .Login .login .one .password-container .password-toggle-icon {
+                    font-size: 2.5vmax;
+          }
+
+          .Login .login .forgot {
+                    margin-top: 3vmax;
+          }
+
+          .Login .login .lgin {
+                    margin-top: 3vmax;
+          }
+
+          .Login .login .lgin button {
+                    padding: 1.8vmax 0vmax;
+                    font-weight: 600;
+                    font-size: 2.5vmax;
+          }
+          .Login .login p {
+                    margin-top: 1.5vmax;
+          }
+          .Login .login .regbtn button {
+                    padding: 1.8vmax 0vmax;
+                    font-weight: 600;
+                    font-size: 2.5vmax;
+          }
+}
+
+
+@media (min-width:600px) and (max-width:1250px) {
+          .Login .login {
+                    width: 95%;
+                    padding: 0.5vmax;
+          }
+          .Login .login .logo img {
+                    width: 50%;
+                    margin-top: 1vmax;
+          }
+          .Login .login h5 {        
+                    font-size: 3.5vmax;
+          }
+          .Login .login form {
+                    width: 100%;
+          }
+          .Login .login .one{
+                    margin-top: 3vmax;
+          }
+          .Login .login .one label {
+                    font-weight: 600;
+                    font-size: 2.2vmax;
+          }
+          .Login .login .one input {
+                    margin-top: 1vmax;
+                    padding: 1.7vmax 1vmax;
+          }
+          .Login .login .one .password-container .password-toggle-icon {
+                    font-size: 2.5vmax;
+          }
+
+          .Login .login .forgot {
+                    margin-top: 3vmax;
+          }
+
+          .Login .login .lgin {
+                    margin-top: 3vmax;
+          }
+
+          .Login .login .lgin button {
+                    padding: 1.8vmax 0vmax;
+                    font-weight: 600;
+                    font-size: 2.5vmax;
+          }
+          .Login .login p {
+                    margin-top: 1.5vmax;
+          }
+          .Login .login .regbtn button {
+                    padding: 1.8vmax 0vmax;
+                    font-weight: 600;
+                    font-size: 2.5vmax;
+          }       
+}
