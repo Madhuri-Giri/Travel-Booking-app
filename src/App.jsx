@@ -5,6 +5,7 @@ import HotelSearch from './components/hotel/HotelSearch'
 import FlightSearch from './components/flight/FlightSearch'
 import Footer from './pages/footer/Footer';
 import CustomNavbar from './pages/navbar/CustomNavbar';
+import BusLists from './components/bus/BusList';
 
 const App = () => {
   return (
@@ -14,6 +15,9 @@ const App = () => {
         <Routes>
           <Route path='/' element={<FlightSearch />} />
           <Route path='/bus-search' element={<BusSearch />} />
+          <Route path='/bus-list' element={<BusLists />} />
+
+
           <Route path='/hotel-search' element={<HotelSearch />} />
         </Routes>
         <Footer/>        
