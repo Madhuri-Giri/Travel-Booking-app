@@ -5,6 +5,7 @@ import FlightSearch from './components/flight/FlightSearch'
 import Footer from './pages/footer/Footer';
 import CustomNavbar from './pages/navbar/CustomNavbar';
 import BusLists from './components/bus/BusList';
+import HotelList from './components/hotelList/HotelList';
 import BusLayout from './components/bus/BusLayout';
 import BoardAndDrop from './components/bus/BoardAndDrop';
 import Faq from './pages/Faq/Faq';
@@ -15,6 +16,7 @@ import LoginOtp from './pages/login-otp/LoginOtp';
 import ForgotPassword from './pages/forgotpassword/ForgotPassword';
 
 
+
 const App = () => {
   return (
     <div>
@@ -22,7 +24,6 @@ const App = () => {
         <CustomNavbar/>       
         <Routes>
           <Route path='/' element={<FlightSearch />} />
-
           <Route path='/bus-search' element={<BusSearch />} />
           <Route path='/bus-list' element={<BusLists />} />
           <Route path='/bus-layout' element={<BusLayout />} />
@@ -33,19 +34,9 @@ const App = () => {
           <Route path='/login' element={<LogIn/>} />
           <Route path='/login-otp' element={<LoginOtp/>} />
           <Route path='/forgotpassword' element={<ForgotPassword/>} />
-
-
-
-
-
-
-
-
-
-
-
           <Route path='/hotel-search' element={<HotelSearch />} />
-          
+          <Route path='/hotel-list' element={<HotelList />} />
+         
         </Routes>
         <Footer/>        
       </Router>
