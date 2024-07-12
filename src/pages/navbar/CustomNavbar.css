@@ -1,0 +1,22 @@
+.navbarlogo img{
+    height: 65px;
+}
+.mainNavbar{
+    margin: -10px 0px;
+}
+.numNavbar span{
+    color: #00b7eb;
+    font-weight: bold;
+    font-size: 20px;
+}
+.userDropdown svg{
+    font-size: 40px;
+    color: #00b7eb;
+}
+.navmenuss a{
+    font-weight: bold;
+    color: rgba(29, 27, 27, 0.849);
+}
+.dropdown-menu svg{
+    color: black;
+}
