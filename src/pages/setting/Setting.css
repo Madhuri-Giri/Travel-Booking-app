@@ -1,0 +1,219 @@
+.Settings{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 1vmax;
+          margin-bottom: 1vmax;
+}
+.Settings .setting{
+          width: 90%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          padding: 2vmax;
+          box-shadow: 2px 2px 5px 2px rgba(252, 227, 227, 0.893);
+}
+
+.Settings .setting .s-tp{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+}
+
+.Settings .setting .s-tp .s-track{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: row;
+          border: 1px solid #00b7eb;
+          border-radius: 5px;
+}
+.Settings .setting .s-tp .s-track .s-one{
+          /* width: 50%; */
+          display: flex;
+          align-items: flex-start;
+          padding: 1vmax;
+          justify-content: center;
+          flex-direction: column;
+}
+.Settings .setting .s-tp .s-track .s-one h6{
+        font-weight: 600;
+}
+.Settings .setting .s-tp .s-track .s-two{
+          /* width: 50%; */
+          display: flex;
+          padding: 1vmax;
+          align-items: flex-end;
+          justify-content: center;
+          flex-direction: column;
+}
+
+.Settings .setting .s-location{
+          width: 100%;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;  
+          flex-direction: column;
+          margin-top: 0.6vmax;
+}
+.Settings .setting .s-location h5{
+        font-weight: 700;
+        margin-top: 1vmax;
+}
+
+
+
+.Settings .setting .s-location .s-track{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: row;
+          border: 1px solid #00b7eb;
+          border-radius: 5px;
+          margin-bottom: 1vmax;
+}
+.Settings .setting .s-location .s-track .s-one{
+          /* width: 50%; */
+          display: flex;
+          align-items: flex-start;
+          padding: 1vmax;
+          justify-content: center;
+          flex-direction: column;
+}
+.Settings .setting .s-location .s-track .s-one h6{
+        font-weight: 600;
+}
+.Settings .setting .s-location .s-track .s-two{
+          /* width: 50%; */
+          display: flex;
+          padding: 1vmax;
+          align-items: flex-end;
+          justify-content: center;
+          flex-direction: column;
+}
+.Settings .setting .s-location .s-track .s-two i{ 
+          font-size: 2vmax;
+          color: #00b7eb;
+}
+
+
+.Settings .setting .s-location  .language{
+          width: 100%;
+           display: flex;
+           flex-direction: row;
+           align-items: center;
+           justify-content: center;
+  }
+  .Settings .setting .s-location  .language   .lng{
+          width: 100%;
+          border: 1px solid #00b7eb;
+          padding: 0.3vmax 1vmax;
+          border-radius: 5px;
+          font-weight: 600;
+          color: #00b7eb;
+          margin-top: 0.6vmax;
+          background-color: #fff;
+
+  }
+  .language-dropdown {
+          position: absolute;
+          background-color: white;
+          border: 1px solid #ccc;
+          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+          z-index: 1000;
+          width: 20%;
+          left: 6vmax;
+          top: 22vmax;
+          font-weight: 600;
+          padding: 1vmax;
+      }
+      
+      .language-dropdown .close-btn {
+          background: none;
+          border: none;
+          font-size: 1.5vmax;
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          cursor: pointer;
+      }
+      
+      .language-dropdown div {
+          display: flex;
+          align-items: center;
+          padding: 8px 12px;
+          cursor: pointer;
+      }
+      
+      .language-dropdown div input[type="radio"] {
+          margin-right: 8px;
+      }
+      
+
+@media (max-width:600px) {
+      .Settings .setting{
+                width: 95%;
+      }
+      .Settings .setting .s-tp .s-track{
+                width: 100%;
+      }
+      .Settings .setting .s-location .s-track .s-one{
+                padding: 2vmax;
+      }
+      .Settings .setting .s-location .s-track .s-one h6{
+              font-size: 1.8vmax;
+      }
+      .Settings .setting .s-location .s-track .s-two i{ 
+                font-size: 4vmax;
+      }
+        .Settings .setting .s-location  .language   .lng{
+                padding: 1vmax 1vmax;
+        }
+        .language-dropdown {
+                width: 70%;
+                left: 4vmax;
+                top: 32vmax;
+            }
+            
+            .language-dropdown .close-btn {    
+                font-size: 2vmax;
+            }
+}
+
+
+
+@media (min-width:600px) and (max-width:1250px) {
+        .Settings .setting{
+                width: 95%;
+      }
+      .Settings .setting .s-tp .s-track{
+                width: 100%;
+      }
+      .Settings .setting .s-location .s-track .s-one{
+                padding: 2vmax;
+      }
+      .Settings .setting .s-location .s-track .s-one h6{
+              font-size: 1.8vmax;
+      }
+      .Settings .setting .s-location .s-track .s-two i{ 
+                font-size: 4vmax;
+      }
+        .Settings .setting .s-location  .language   .lng{
+                padding: 1vmax 1vmax;
+        }
+        .language-dropdown {
+                width: 70%;
+                left: 4vmax;
+                top: 32vmax;
+            }
+            
+            .language-dropdown .close-btn {    
+                font-size: 2vmax;
+            }
+}
+
