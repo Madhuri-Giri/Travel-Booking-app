@@ -1,0 +1,330 @@
+.flightPageBanner {
+    background-color: #00b7eb;
+    padding: 30px 30px;
+}
+
+.findFlightss button {
+    background-color: #808080a8;
+    color: white;
+    border: navajowhite;
+    margin-bottom: 20px;
+    padding: 8px 25px;
+    border-radius: 5px;
+    cursor: none;
+}
+
+.bannerSlider img {
+    border-radius: 10px;
+}
+
+.bannerSlider {
+    padding-top: 20px;
+}
+
+.flightmainBooking {
+    background-color: white;
+    border-radius: 15px;
+    /* height: 350px; */
+    padding: 14px 10px;
+}
+
+.flightmainBooking .onewaybutton {
+    margin-right: 20px;
+}
+
+.onewaybutton input,
+.twowaybutton input {
+    margin-right: 10px;
+}
+
+.flightmainBooking .onewaybutton,
+.flightmainBooking .twowaybutton {
+    border: 1px solid gray;
+    border-radius: 19px;
+    background: no-repeat;
+    background-color: transparent;
+    padding: 6px 15px;
+    font-size: 13px;
+}
+
+.flightmainBooking .onewaybutton:hover,
+.flightmainBooking .twowaybutton:hover {
+    background-color: gray;
+    color: white;
+}
+
+.flightformRow input {
+    border-radius: 18px;
+    border: 1px solid gray;
+    padding: 9px 20px;
+}
+
+.home-flight-search {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.home-flight-search button {
+    background-color: #00b7eb;
+    color: white;
+    border-radius: 12px;
+    padding: 8px 25px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+
+.date-picker-wrapper {
+    position: relative;
+}
+
+.date-picker-wrapper .form-control {
+    padding-right: 30px;
+    /* Add space for the icon */
+    padding-right: 30px;
+    border: 1px solid gray;
+    border-radius: 12px;
+    padding: 11px 20px;
+}
+
+.date-picker-icon {
+    position: absolute;
+    /* left: 10px; */
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: rgb(48, 45, 45);
+    margin-right: 14px;
+    font-size: 24px;
+}
+
+.onewayreturnhidebtn {
+    margin-top: 30px;
+    text-align: end;
+}
+
+.flightTravellerclss {
+    margin-top: 30px;
+    border: 1px solid gray;
+    /* margin-top: 30px; */
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0px 0px;
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+.flightTravellerclss svg {
+    font-size: 30px;
+    color: rgb(48, 45, 45);
+    margin-top: -14px;
+    margin-left: -12px;
+}
+
+.flightTravellerclss .downarrrow {
+    font-size: 22px;
+    color: gray;
+    margin-right: -18px;
+    margin-left: 0px;
+}
+
+.flightTravellerclss p {
+    font-weight: 500;
+    /* border-right: 1px solid gray; */
+}
+
+.home-flight-search {
+    margin-top: 2px;
+    display: flex;
+    justify-content: end;
+}
+
+.flightbooksec2 {
+    padding: 40px 250px;
+}
+
+.flightbooksec3 {
+    padding: 20px 40px;
+    background-color: #f8f9fa;
+}
+
+.flightbooksec3Col {
+    display: flex;
+    justify-content: space-around;
+}
+
+.flightbooksec3Col h6 {
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.flightbooksec3Col p {
+    font-size: 12px;
+    margin-left: 20px;
+}
+
+.flightbooksec3Col img {
+    height: 60px;
+    width: 70px;
+}
+
+.flightbooksec3 h5 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.exictingOffers {
+    padding: 2px 30px;
+}
+
+.exictingOffers h5 {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.exclusive-dealsSec img {
+    height: 400px;
+}
+
+.overlay-text {
+    width: 100%;
+    color: white;
+}
+
+.exclusive-dealsSec {
+    padding: 4px 30px;
+}
+
+.exclusive-dealsSec h3 {
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.exclusive-dealsSec h2 {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.travellerdropdown {
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 450px;
+    padding-bottom: 20px;
+    border-radius: 4px;
+}
+
+.travellerdropdown .dropdown-header {
+    display: flex;
+    justify-content: end;
+    font-size: 30px;
+}
+
+.travellerdropdown .dropdown-header svg {
+    cursor: pointer;
+}
+
+.travellerdropdown ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.travellerdropdown ul li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.travellerdropdown ul li:hover {
+    background-color: #f0f0f0;
+}
+
+.travellerdropdowncol1 {
+    border-right: 1px solid gray;
+}
+.travellerdropdown h6{
+    color: rgba(87, 82, 82, 0.418);
+    /* color: #00b7eb; */
+    font-weight: 400px;
+    margin-bottom: 15px;
+}
+.travellerdropdowncol2 p{
+    color: #222 !important;
+}
+.flightpageagebox {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.infantsMinusicon {
+    color: red;
+    font-size: 25px;
+    margin: 0px 7px;
+
+}
+
+.adultPlusicon {
+    color: green;
+    font-size: 25px;
+    margin: 0px 7px;
+}
+
+.adultMinusicon {
+    color: red;
+    font-size: 25px;
+    margin: 0px 7px;
+
+}
+
+.childPlusicon {
+    color: green;
+    font-size: 25px;
+    margin: 0px 7px;
+}
+
+.childMinusicon {
+    color: red;
+    font-size: 25px;
+    margin: 0px 7px;
+
+}
+
+.infantsPlusicon {
+    color: green;
+    font-size: 25px;
+    margin: 0px 7px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.ss img {
+    border-radius: 10px;
+}
