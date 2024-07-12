@@ -4,10 +4,11 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
 import { MdLogin } from "react-icons/md";
 import { LuUserPlus } from "react-icons/lu";
-import { RiBookmark3Fill } from "react-icons/ri";
-import { GiCommercialAirplane } from "react-icons/gi";
+import { RiBookmark3Fill , RiHotelBedFill } from "react-icons/ri";
+import { GiCommercialAirplane } from 'react-icons/gi'; 
 import { TbBus } from "react-icons/tb";
-import { RiHotelFill } from "react-icons/ri";
+import { PiSuitcaseSimpleDuotone } from "react-icons/pi";
+import { BsBookmarkStarFill } from "react-icons/bs";
 
 const CustomNavbar = () => {
     return (
@@ -20,23 +21,40 @@ const CustomNavbar = () => {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mx-auto navmenuss">
-                            <Nav.Link href="/" className="homnavbbookingicon  homvanlinkss align-items-center">
-                                <GiCommercialAirplane className="mx-1" size={20} />
-                                FLIGHTS
+                            <Nav.Link
+                                href="/"
+                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/' ? 'active' : ''}`}
+                            >
+                                <GiCommercialAirplane className="icon" size={20} />
+                                <span className="textNav">FLIGHTS</span>
                             </Nav.Link>
-                            <Nav.Link href="/bus-search" className="homnavbbookingicon homvanlinkss align-items-center ">
-                                <TbBus className="mx-2 " size={22} /> BUS
+                            <Nav.Link
+                                href="/bus-search"
+                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/bus-search' ? 'active' : ''}`}
+                            >
+                                <TbBus className="icon" size={22} />
+                                <span className="textNav">BUSES</span>
                             </Nav.Link>
-                            <Nav.Link href="/hotel-search" className="homnavbbookingicon homvanlinkss align-items-center ">
-                                <RiHotelFill className="mx-2 " size={22} /> HOTEL
+                            <Nav.Link
+                                href="/hotel-search"
+                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/hotel-search' ? 'active' : ''}`}
+                            >
+                                <RiHotelBedFill className="icon" size={22} />
+                                <span className="textNav">HOTELS</span>
                             </Nav.Link>
-                            <Nav.Link className="homnavbbookingicon homvanlinkss align-items-center ">
-                                {/* <RiHotelFill className="mx-2 " size={22} />  */}
-                                PACKAGE
+                            <Nav.Link
+                                href="/package"
+                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/package' ? 'active' : ''}`}
+                            >
+                                <PiSuitcaseSimpleDuotone className="icon" size={20} />
+                                <span className="textNav">PACKAGE</span>
                             </Nav.Link>
-                            <Nav.Link className="homnavbbookingicon homvanlinkss align-items-center ">
-                                {/* <RiHotelFill className="mx-2 " size={22} /> */}
-                                 MY TRIPS
+                            <Nav.Link
+                                href="/my-trips"
+                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/my-trips' ? 'active' : ''}`}
+                            >
+                                <BsBookmarkStarFill className="icon" size={20} />
+                                <span className="textNav">MY TRIPS</span>
                             </Nav.Link>
                         </Nav>
                         <Nav>
@@ -45,9 +63,9 @@ const CustomNavbar = () => {
                                 className='userDropdown'
                                 title={<> <FaCircleUser /> </>}
                                 id="basic-nav-dropdown">
-                                <NavDropdown.Item href=""> <MdLogin size={20}/> Login</NavDropdown.Item>
-                                <NavDropdown.Item href=""> <LuUserPlus size={20}/> Signup</NavDropdown.Item>
-                                <NavDropdown.Item href=""> <RiBookmark3Fill size={20}/> Find Booking</NavDropdown.Item>
+                                <NavDropdown.Item href=""> <MdLogin size={20} /> Login</NavDropdown.Item>
+                                <NavDropdown.Item href=""> <LuUserPlus size={20} /> Signup</NavDropdown.Item>
+                                <NavDropdown.Item href=""> <RiBookmark3Fill size={20} /> Find Booking</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>

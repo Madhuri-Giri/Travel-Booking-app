@@ -27,11 +27,13 @@
     /* height: 350px; */
     padding: 14px 10px;
 }
-.flightmainBooking label{
+
+.flightmainBooking label {
     font-weight: bold;
     font-size: 14px;
     margin-left: 10px;
 }
+
 .flightmainBooking .onewaybutton {
     margin-right: 20px;
 }
@@ -40,6 +42,7 @@
 .twowaybutton input {
     margin-top: -1px;
 }
+
 .onewaybutton label,
 .twowaybutton label {
     color: black;
@@ -55,7 +58,7 @@
     background-color: transparent;
     padding: 6px 15px;
     font-size: 13px;
-    background-color:#f8f9fa;
+    background-color: #f8f9fa;
 }
 
 .flightmainBooking .onewaybutton:hover,
@@ -85,7 +88,8 @@
     font-weight: bold;
     font-size: 18px;
 }
-.home-flight-search button:hover{
+
+.home-flight-search button:hover {
     background-color: transparent;
     border: 1px solid #00b7eb;
     color: #00b7eb;
@@ -120,7 +124,8 @@
     display: flex;
     justify-content: center;
 }
-.onewayreturnhidebtn svg{
+
+.onewayreturnhidebtn svg {
     color: gray;
 }
 
@@ -137,7 +142,8 @@
     cursor: pointer;
     margin-left: 9px;
 }
-.flightTravellerclss span{
+
+.flightTravellerclss span {
     color: #00b7eb;
     font-size: 15px;
 }
@@ -277,15 +283,18 @@
 .travellerdropdowncol1 {
     border-right: 1px solid gray;
 }
-.travellerdropdown h6{
+
+.travellerdropdown h6 {
     color: rgba(87, 82, 82, 0.418);
     /* color: #00b7eb; */
     font-weight: 400px;
     margin-bottom: 15px;
 }
-.travellerdropdowncol2 p{
+
+.travellerdropdowncol2 p {
     color: #222 !important;
 }
+
 .flightpageagebox {
     display: flex;
     justify-content: space-around;
@@ -331,11 +340,47 @@
     margin: 0px 7px;
 }
 
+.flightsec6 {
+    background-image: url('/src/assets/images/6346166.jpg');
+    /* background-image: url('/src/assets/images/flightbookingappbanner.png'); */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 600px;
+    padding-top: 40px;
+    /* padding: 100px 300px; */
+}
 
+.googleplaybtn {
+    display: flex;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: #1d2124;
+    margin-top: 35px;
+}
 
+.googleplaybtn svg {
+    font-size: 25px;
+    /* margin-top: 1px; */
+    margin-right: 5px;
+}
 
+.flightsec6col {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px !important;
+}
 
+.flightsec6coldiv h1 {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
 
+.exclusivecol{
+    margin-bottom: 20px;
+}
 
 
 
@@ -351,4 +396,9 @@
 
 .ss img {
     border-radius: 10px;
+}
+
+/* responsive */
+.flightbooksec3Col{
+    margin-top: 30px;
 }
