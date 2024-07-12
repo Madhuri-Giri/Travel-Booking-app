@@ -1,9 +1,9 @@
-import React from 'react'
 import "./Footer.css"
 import { Link } from 'react-router-dom';
 import { FaFacebookF , FaInstagram , FaTwitter } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa6";
 import { IoMdArrowDropright } from "react-icons/io";
+import FooterLogo from "../../assets/images/main logo.png"
 
 function Footer() {
     return (
@@ -13,7 +13,7 @@ function Footer() {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-5">
-                            <img src='https://api.asm.skype.com/v1/objects/0-ea-d8-297b523ad9bbedcc79a993a5a77aed12/views/imgpsh_fullsize_anim' className='img-fluid logoimg' alt="logo"></img>
+                            <img height={40} src={FooterLogo} className='img-fluid logoimg' alt="logo"></img>
 
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet ad nisi repudiandae nobis minima odio explicabo, reiciendis earum quas? Velit facilis recusandae labore asperiores at ex tempore aut, nostrum error?</p>
 
