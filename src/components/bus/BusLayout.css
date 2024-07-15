@@ -13,7 +13,7 @@
         }
         
         .BusLayout .Seat-layout .seats {
-          width: 70%;
+          width: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -204,8 +204,12 @@
          padding: 0.7vmax 1vmax;
          color: #ffff;
          font-weight: 600;
+         transition: 0.5s;
          background-color:#00b7eb ;
-}     
+}   
+.BusLayout .Seat-layout .seats .right  .right-btm .proceed button:hover {
+  background-color: #48c1fecc; 
+}  
 
 @media (max-width:600px) {
                   .BusLayout .Seat-layout .seats {

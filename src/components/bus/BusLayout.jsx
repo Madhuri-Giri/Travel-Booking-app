@@ -1,7 +1,7 @@
 import "./BusLayout.css"
 import BusSeatImg from "../../assets/images/bussit.png"
 
-const BusLayout = () => {
+const BusLayout = ({ bus }) => {
   const seats = Array.from({ length: 29 }, (_, i) => i + 1); 
 
   const handleProceed = () => {
@@ -63,7 +63,7 @@ const BusLayout = () => {
                         <p><i className="ri-armchair-fill"></i>Available Seat</p>
                         <p><i style={{ color: 'green' }} className="ri-armchair-fill"></i>Selected Seat</p>
                         <p><i style={{ color: 'purple' }} className="ri-armchair-fill"></i>Occupied Seat</p>
-                        <p><i style={{ color: 'gray' }} className="ri-armchair-fill"></i>Booked Seat</p>
+                        <p><i style={{ color: 'pink' }} className="ri-armchair-fill"></i>Booked Seat</p>
                         <p><i style={{ color: 'gray' }} className="ri-armchair-fill"></i>Blocked Seat</p>                  
           </div>
 

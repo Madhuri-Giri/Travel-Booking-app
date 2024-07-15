@@ -1,13 +1,17 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './BusList.css';
 import busImg from "../../assets/images/bus.png2.png";
 import { searchBuses } from '../../redux-toolkit/slices/busSlice';
+import BusLayout from './BusLayout';
 
 const BusLists = () => {
   const dispatch = useDispatch();
   const dateMidRef = useRef(null);
   const { from, to, selectedBusDate, searchResults, status, error } = useSelector((state) => state.bus);
+
+  // State to manage the visibility of layout data for each bus
+  const [visibleLayout, setVisibleLayout] = useState({});
 
   useEffect(() => {
     // Dispatch the searchBuses action when component mounts
@@ -59,6 +63,13 @@ const BusLists = () => {
       hour12: true,
     }).format(utcDate);
     return istTime;
+  };
+
+  const toggleLayoutVisibility = (index) => {
+    setVisibleLayout((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
   };
 
   return (
@@ -179,15 +190,22 @@ const BusLists = () => {
                         <div className="rating">
                           <p>{bus.Ratings} Ratings</p>
                         </div>
-                        <button>Select Seat</button>
+                        <button onClick={() => toggleLayoutVisibility(index)}>
+                          {visibleLayout[index] ? 'Hide Seat' : 'Select Seat'}
+                        </button>
                       </div>
+                      {visibleLayout[index] && (
+                        <div className="kuch-bhi">
+                            <BusLayout bus={bus} />
+                        </div>
+                      )}
                     </div>
                   ))}
                 </>
               )}
             </div>
           </div>
-          {/* ------------------------btm-lists-end------------------- */}
+          {/* ------------------------btm-lists-end-------------------------------- */}
         </div>
       </div>
     </div>
