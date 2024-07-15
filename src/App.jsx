@@ -22,7 +22,6 @@ const App = () => {
         <CustomNavbar/>       
         <Routes>
           <Route path='/' element={<FlightSearch />} />
-
           <Route path='/bus-search' element={<BusSearch />} />
           <Route path='/bus-list' element={<BusLists />} />
           <Route path='/bus-layout' element={<BusLayout />} />
@@ -33,17 +32,6 @@ const App = () => {
           <Route path='/login' element={<LogIn/>} />
           <Route path='/login-otp' element={<LoginOtp/>} />
           <Route path='/forgotpassword' element={<ForgotPassword/>} />
-
-
-
-
-
-
-
-
-
-
-
           <Route path='/hotel-search' element={<HotelSearch />} />
           
         </Routes>

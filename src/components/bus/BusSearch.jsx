@@ -155,7 +155,8 @@ const BusSearch = () => {
                   <label>Search Bus</label>
                   <button onClick={handleSearch}>Search Buses</button>
                 </div>
-
+            
+                
 
               </div>
             </div>
