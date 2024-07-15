@@ -3,6 +3,7 @@ import './HotelTest.css';
 
 const HotelTest = () => {
   return (
+    <>
     <div className="content_wrapper">
       <div className="content_box">
         <h1>Left Side Content</h1>
@@ -14,6 +15,10 @@ const HotelTest = () => {
         <img src="https://cf.bstatic.com/xdata/images/hotel/max200/485546587.jpg?k=932ec3cf4220d05e7a6e4b5b2bc397d5b71e415d9c7f659ef7f4b991e572a7eb&o=&hp=1" alt="Image 3" className="img_box image3" />
       </div>
     </div>
+    <div className='blank_div'>
+
+    </div>
+    </>
   );
 };
 

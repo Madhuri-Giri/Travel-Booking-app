@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button, Container} from 'react-bootstrap';
+import { Button, Row,Col, Container} from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './HotelSearch.css';
@@ -126,21 +126,42 @@ const HotelSearch = () => {
   return (
     <>
     
-      <div className='hotel_container'>
-        <div className='content-row'>
-          <div className='image-col'>
-            <img
-              src={hotel_img}
-              alt='hotelimage'
-              className='hotel_img'
-            />
-          </div>
-          <div className='content-col'>
-            <p className='hotel_description'>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores dignissimos vel tempore dolore voluptas dolorem velit. Velit, eveniet dolorem? Esse facilis minus qui, corporis odit ipsam quasi necessitatibus repellendus reprehenderit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, sed exercitationem at explicabo reiciendis sunt consequatur dolore voluptatibus totam a.
-            </p>
-            </div>
-            </div>
+    <div className="hotel_container">
+        <div className="content_wrapper">
+          <Row>
+            <Col xl={4} md={4} className="order-md-1 order-2">
+              <div className="content_box">
+                <h1>Discover Your Perfect Getaway</h1>
+                <p>
+                  Experience luxury and comfort at Hotel. Located in the heart of City, our hotel offers top-notch
+                  amenities and services. Explore our curated list of top-rated hotels tailored just for you. Choose from a
+                  variety of room types to suit your needs and preferences. Enter your destination, dates, and preferences
+                  to find the perfect stay.
+                </p>
+              </div>
+            </Col>
+            <Col xl={8} md={8} className="order-md-2 order-1">
+              <div className="images_container">
+                <img
+                  src="https://cf.bstatic.com/xdata/images/hotel/270x200/31211348.jpg?k=45c6e30d9c7802e893d6046b03428c5c28318b4724f941f19e2b5631e5a47ad3&o="
+                  alt="Image 1"
+                  className="img_box image1"
+                />
+                <img
+                  src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/9e/89/c2/achat-comfort-city-frankfurt.jpg?w=300&h=-1&s=1"
+                  alt="Image 2"
+                  className="img_box image2"
+                />
+                <img
+                  src="https://cf.bstatic.com/xdata/images/hotel/max200/485546587.jpg?k=932ec3cf4220d05e7a6e4b5b2bc397d5b71e415d9c7f659ef7f4b991e572a7eb&o=&hp=1"
+                  alt="Image 3"
+                  className="img_box image3"
+                />
+              </div>
+            </Col>
+          </Row>
+        </div>
+    
 <section>
       <div className='hotel_booking'>
         <form onSubmit={handleSubmit}>
