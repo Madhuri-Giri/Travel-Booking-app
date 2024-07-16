@@ -7,6 +7,9 @@
   /* background-color: #f8f5f5; */
   background-color: #00b7eb;
 }
+.content_box p {
+  font-size: 1.2vmax;
+}
 
 .content-row {
   display: flex;
@@ -37,11 +40,19 @@
 
 .hotel_booking {
   margin-top: 90px;
-  padding: 20px;
+  padding: 2.3vmax;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  
 }
+/* section{
+  width: 100%;
+  display: flex;
+align-items: center;
+justify-content: center;
+} */
 
 .form-row {
   display: flex;
@@ -52,27 +63,30 @@
 
 .form-field {
   flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
   margin-right: 10px;
   min-width: 150px;
 }
 
 .form_lable {
   margin-right: 5px;
+  font-weight: 600;
 }
 
-.checkIn-field input,
-.checkOut-field input,
-.guest-field input {
+.checkIn-field .form_in,
+.checkOut-field .form_in,
+.guest-field .form_in {
   width: 100%;
   padding: 10px;
   font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  outline: none;
+
 }
 
 .form_in {
   cursor: pointer;
-  background-color: #fff;
+  outline: none;
 }
 
 .guest-options {
@@ -106,6 +120,8 @@
 .btn-sub {
   width: 100%;
   background-color: #00b7eb;
+  border: none;
+  padding: 0.3vmax 1.6vmax;
 }
 
 .offer_container {
@@ -243,6 +259,7 @@
   .form-row {
     flex-direction: column;
   }
+ 
 
   .form-field {
     margin-right: 0;
@@ -287,14 +304,15 @@
     padding: 10px;
   }
 
-  .form-field label {
+  .form-field .form_lable {
     margin-right: 0;
   }
 
-  .form-field input,
-  .guest-field input {
+  .form-field .form_in,
+  .guest-field .form_in {
     padding: 8px;
     font-size: 12px;
+    width: 100%;
   }
 
   .guest-options {
