@@ -14,6 +14,9 @@ import SignUp from './pages/signup/SignUp';
 import LogIn from './pages/login/LogIn';
 import LoginOtp from './pages/login-otp/LoginOtp';
 import ForgotPassword from './pages/forgotpassword/ForgotPassword';
+import PassangerInfo from './components/bus/PassangerInfo';
+import PassengerList from './components/bus/PassengerList';
+import ReviewBooking from './components/bus/ReviewBooking';
 
 
 
@@ -34,6 +37,9 @@ const App = () => {
           <Route path='/login' element={<LogIn/>} />
           <Route path='/login-otp' element={<LoginOtp/>} />
           <Route path='/forgotpassword' element={<ForgotPassword/>} />
+          <Route path='/passenger-info' element={<PassangerInfo/>} />
+          <Route path='/passenger-list' element={<PassengerList/>} />
+          <Route path='/review-booking' element={<ReviewBooking/>} />
           <Route path='/hotel-search' element={<HotelSearch />} />
           <Route path='/hotel-list' element={<HotelList />} />
          
