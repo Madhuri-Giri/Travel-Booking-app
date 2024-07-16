@@ -16,7 +16,7 @@ const CustomNavbar = () => {
         <>
             <Navbar expand="lg" className="mainNavbar">
                 <Container>
-                    <Navbar.Brand href="/home" className='navbarlogo'>
+                    <Navbar.Brand href="/flight-search" className='navbarlogo'>
                         <img src='/src/assets/images/download-removebg-preview.png' className='img-fluid logoimg' alt="logo" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -64,8 +64,8 @@ const CustomNavbar = () => {
                                 className='userDropdown'
                                 title={<> <FaCircleUser /> </>}
                                 id="basic-nav-dropdown">
-                                <NavDropdown.Item href=""> <MdLogin size={20} /> Login</NavDropdown.Item>
-                                <NavDropdown.Item href=""> <LuUserPlus size={20} /> Signup</NavDropdown.Item>
+                                <NavDropdown.Item href="/login"> <MdLogin size={20} /> Login</NavDropdown.Item>
+                                <NavDropdown.Item href="/signup"> <LuUserPlus size={20} /> Signup</NavDropdown.Item>
                                 <NavDropdown.Item href=""> <RiBookmark3Fill size={20} /> Find Booking</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
