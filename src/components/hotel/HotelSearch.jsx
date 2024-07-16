@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button, Row,Col, Container} from 'react-bootstrap';
+import { Button, Row, Col, Container } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './HotelSearch.css';
@@ -11,11 +11,14 @@ import play_store_img from '../../../src/assets/images/play_store_img.png';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { useNavigate } from 'react-router-dom';
 
 const HotelSearch = () => {
   const slideRef = useRef(null);
   const intervalRef = useRef(null);
   const scrollWidthRef = useRef(0);
+
+  const navigate =  useNavigate()
 
   const startAutoScroll = () => {
     intervalRef.current = setInterval(() => {
@@ -54,7 +57,7 @@ const HotelSearch = () => {
     checkIn: new Date(),
     checkOut: new Date(),
     adults: 1,
-    children: 0
+    children: 0,
   });
 
   const [showGuestOptions, setShowGuestOptions] = useState(false);
@@ -62,23 +65,25 @@ const HotelSearch = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setInputs(values => ({ ...values, [name]: value }));
+    setInputs((values) => ({ ...values, [name]: value }));
   };
 
   const handleDateChange = (date, name) => {
-    setInputs(values => ({ ...values, [name]: date }));
+    setInputs((values) => ({ ...values, [name]: date }));
   };
 
   const handleGuestChange = (name, operation) => {
-    setInputs(values => ({
+    setInputs((values) => ({
       ...values,
-      [name]: operation === 'increment' ? values[name] + 1 : values[name] > 0 ? values[name] - 1 : 0
+      [name]: operation === 'increment' ? values[name] + 1 : values[name] > 0 ? values[name] - 1 : 0,
     }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(inputs);
+
+    navigate('/hotel-list')
   };
 
   const handleClickOutside = (event) => {
@@ -109,38 +114,41 @@ const HotelSearch = () => {
           slidesToShow: 2,
           slidesToScroll: 1,
           infinite: true,
-          dots: true
-        }
+          dots: true,
+        },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          initialSlide: 1
-        }
-      }
-    ]
+          initialSlide: 1,
+        },
+      },
+    ],
   };
+
+  const navigateHandler = () => {
+    navigate('/hotel-list')
+  }
 
   return (
     <>
-    
-    <div className="hotel_container">
+      <div className="hotel_container">
         <div className="content_wrapper">
           <Row>
-            <Col xl={4} md={4} className="order-md-1 order-2">
+            <Col xl={4} md={12} className="order-md-1 order-2">
               <div className="content_box">
                 <h1>Discover Your Perfect Getaway</h1>
                 <p>
                   Experience luxury and comfort at Hotel. Located in the heart of City, our hotel offers top-notch
-                  amenities and services. Explore our curated list of top-rated hotels tailored just for you. Choose from a
-                  variety of room types to suit your needs and preferences. Enter your destination, dates, and preferences
+                  amenities and services.Explore our curated list of top-rated hotels tailored just for you.Choose from a
+                  variety of room types to suit your needs and preferences.Enter your destination, dates, and preferences
                   to find the perfect stay.
                 </p>
               </div>
             </Col>
-            <Col xl={8} md={8} className="order-md-2 order-1">
+            <Col xl={8} md={12} className="order-md-2 order-1">
               <div className="images_container">
                 <img
                   src="https://cf.bstatic.com/xdata/images/hotel/270x200/31211348.jpg?k=45c6e30d9c7802e893d6046b03428c5c28318b4724f941f19e2b5631e5a47ad3&o="
@@ -161,108 +169,95 @@ const HotelSearch = () => {
             </Col>
           </Row>
         </div>
-    
-<section>
-      <div className='hotel_booking'>
-        <form onSubmit={handleSubmit}>
-          <div className='form-row'>
-            <div className='form-field'>
-              <label htmlFor='cityOrHotel'>City or Hotel Name: </label>
-              <input
-                type='text'
-                id='cityOrHotel'
-                name='cityOrHotel'
-                placeholder='Enter city or hotel name'
-                value={inputs.cityOrHotel}
-                onChange={handleChange}
-              />
-            </div>
-            <div className='form-field'>
-              <label htmlFor='checkIn'>Check-In: </label>
-              <DatePicker
-                id='checkIn'
-                selected={inputs.checkIn}
-                onChange={date => handleDateChange(date, 'checkIn')}
-              />
-            </div>
-            <div className='form-field'>
-              <label htmlFor='checkOut'>Check-Out: </label>
-              <DatePicker
-                id='checkOut'
-                selected={inputs.checkOut}
-                onChange={date => handleDateChange(date, 'checkOut')}
-              />
-            </div>
-            <div className='form-field'>
-              <label htmlFor='guests'>Guests: </label>
-              <input
-                type='text'
-                id='guests'
-                name='guests'
-                value={`${inputs.adults} Adults, ${inputs.children} Children`}
-                onFocus={() => setShowGuestOptions(true)}
-                readOnly
-              />
-              {showGuestOptions && (
-                <div className='guest-options' ref={guestRef}>
-                  <div className='guest-type'>
-                    <span>Adults</span>
-                    <Button  onClick={() => handleGuestChange('adults', 'decrement')}>-</Button>
-                    <span>{inputs.adults}</span>
-                    <Button  onClick={() => handleGuestChange('adults', 'increment')}>+</Button>
-                  </div>
-                  <div className='guest-type'>
-                    <span>Children</span>
-                    <Button  onClick={() => handleGuestChange('children', 'decrement')}>-</Button>
-                    <span>{inputs.children}</span>
-                    <Button onClick={() => handleGuestChange('children', 'increment')}>+</Button>
-                  </div>
-                  <Button className='btn_sub' onClick={() => setShowGuestOptions(false)}>Done</Button>
+
+        <section>
+          <div className="hotel_booking">
+            <form onSubmit={handleSubmit}>
+              <div className="form-row">
+                <div className="form-field">
+                  <label className='form_lable' htmlFor="cityOrHotel">City or Hotel Name: </label>
+                  <input className='form_in'
+                    type="text"
+                    id="cityOrHotel"
+                    name="cityOrHotel"
+                    placeholder="Enter city or hotel name"
+                    value={inputs.cityOrHotel}
+                    onChange={handleChange}
+                  />
                 </div>
-              )}
-            </div>
-            <div>
-              <Button type='submit' className='btn-sub'>
-                Submit
-              </Button>
-            </div>
+                <div className="form-field">
+                  <label className='form_lable' htmlFor="checkIn">Check-In: </label>
+                  <DatePicker id="checkIn" selected={inputs.checkIn} onChange={(date) => handleDateChange(date, 'checkIn')} />
+                </div>
+                <div className="form-field">
+                  <label className='form_lable' htmlFor="checkOut">Check-Out: </label>
+                  <DatePicker id="checkOut" selected={inputs.checkOut} onChange={(date) => handleDateChange(date, 'checkOut')} />
+                </div>
+                <div className="form-field">
+                  <label className='form_lable' htmlFor="guests">Guests: </label>
+                  <input className='form_in'
+                    type="text"
+                    id="guests"
+                    name="guests"
+                    value={`${inputs.adults} Adults, ${inputs.children} Children`}
+                    onFocus={() => setShowGuestOptions(true)}
+                    readOnly
+                  />
+                  {showGuestOptions && (
+                    <div className="guest-options" ref={guestRef}>
+                      <div className="guest-type">
+                        <span>Adults</span>
+                        <Button onClick={() => handleGuestChange('adults', 'decrement')}>-</Button>
+                        <span className='form_span'>{inputs.adults}</span>
+                        <Button onClick={() => handleGuestChange('adults', 'increment')}>+</Button>
+                      </div>
+                      <div className="guest-type">
+                        <span>Children</span>
+                        <Button onClick={() => handleGuestChange('children', 'decrement')}>-</Button>
+                        <span className='form_span'>{inputs.children}</span>
+                        <Button onClick={() => handleGuestChange('children', 'increment')}>+</Button>
+                      </div>
+                      <Button className="btn_sub_guest" onClick={() => setShowGuestOptions(false)}>
+                        Done
+                      </Button>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <Button type="submit" className="btn-sub">
+                    Submit
+                  </Button>
+                </div>
+              </div>
+            </form>
           </div>
-        </form>
+        </section>
       </div>
-      </section>
-</div>
 
-<section>
-<Container>
-<div className="Exclusive-offer">
-        <h5>Exclusive <span style={{color:"#00b7eb"}}>Offers</span></h5>
-        </div><div className='offer_container'>
-      <div className='offer_box' onMouseEnter={stopAutoScroll} onMouseLeave={startAutoScroll}>
-        <Slider ref={slideRef} {...settings}>
-          <div>
-            <img src={offer_img1} alt='offerimage' className='offer_img' />
+      <section>
+        <Container>
+          <div className="Exclusive-offer">
+            <h5>
+              Exclusive <span style={{ color: '#00b7eb' }}>Offers</span>
+            </h5>
           </div>
-          <div>
-            <img src={offer_img2} alt='offerimage' className='offer_img' />
+          <div className="offer_container">
+            <div className="offer_box" onMouseEnter={stopAutoScroll} onMouseLeave={startAutoScroll}>
+              <Slider ref={slideRef} {...settings}>
+                <div>
+                  <img src={offer_img1} alt="Offer Image 1" className="offer_img" />
+                </div>
+                <div>
+                  <img src={offer_img2} alt="Offer Image 2" className="offer_img" />
+                </div>
+                <div>
+                  <img src={offer_img3} alt="Offer Image 3" className="offer_img" />
+                </div>
+              </Slider>
+            </div>
           </div>
-          <div>
-            <img src={offer_img3} alt='offerimage' className='offer_img' />
-          </div>
-          <div>
-            <img src={offer_img1} alt='offerimage' className='offer_img' />
-          </div>
-          <div>
-            <img src={offer_img2} alt='offerimage' className='offer_img' />
-          </div>
-          <div>
-            <img src={offer_img3} alt='offerimage' className='offer_img' />
-          </div>
-        </Slider>
-      </div>
-      </div>
-      </Container>
+        </Container>
       </section>
-
       <section>
       <div className='booking_head'>
       <h5>Hotel Booking <span style={{color:"#00b7eb"}}>Now</span></h5>
@@ -278,8 +273,8 @@ const HotelSearch = () => {
              </div>
          </div>
          </section>
-      </>
+    </>
   );
-}
+};
 
 export default HotelSearch;

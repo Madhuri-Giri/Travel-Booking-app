@@ -14,9 +14,6 @@ import SignUp from './pages/signup/SignUp';
 import LogIn from './pages/login/LogIn';
 import LoginOtp from './pages/login-otp/LoginOtp';
 import ForgotPassword from './pages/forgotpassword/ForgotPassword';
-import HotelTest from './components/hotelTest/HotelTest'
-
-
 const App = () => {
   return (
     <div>
@@ -36,7 +33,7 @@ const App = () => {
           <Route path='/forgotpassword' element={<ForgotPassword/>} />
           <Route path='/hotel-search' element={<HotelSearch />} />
           <Route path='/hotel-list' element={<HotelList />} />
-          <Route path='/hotel-test' element={<HotelTest/>} />
+          
         </Routes>
         <Footer/>        
       </Router>
