@@ -292,7 +292,7 @@ const FlightSearch = () => {
                           </div>
                         </div>
 
-                        <div className="col-8 form-group flightTravellerclss mt-3" onClick={handleShow}>
+                        <div className="col-sm-8 form-group flightTravellerclss mt-3" onClick={handleShow}>
                           <FaCircleUser />
                           <p>Adult <span>{formData.AdultCount}</span> |</p>
                           <p>Child <span>{formData.ChildCount}</span> |</p>

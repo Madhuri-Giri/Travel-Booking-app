@@ -442,4 +442,23 @@
     .flightbooksec2{
         display: none;
     }
+
+    .pricebtns button {
+        padding: 5px 15px;
+        border-radius: 17px;
+        font-size: 13px;
+        /* margin-left: 20px; */
+    }
+    .flistname {
+        font-size: 12px;
+    }
+    .flistname p {
+        font-size: 13px;
+    }
+    .flistnamep3 {
+        padding: 0px 20px;
+    }
+    .flight-content .row {
+        padding: 10px 0px;
+    }
 }

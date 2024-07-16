@@ -377,6 +377,10 @@ export default function FlightLists() {
                             <div className="flight-content">
                                 {flightsData.map((flight, index) => (
                                     <div className="row">
+                                         <div className="pricebtnsmobil">
+                                            <p>{flight.price}</p>
+                                            <button>SELECT</button> 
+                                        </div>
                                         <p className='regulrdeal'><span>Regular Deal</span></p>
                                         <div className="col-3">
                                             <div className="d-flex">
