@@ -10,6 +10,8 @@ import { GiCommercialAirplane } from 'react-icons/gi';
 import { TbBus } from "react-icons/tb";
 import { PiSuitcaseSimpleDuotone } from "react-icons/pi";
 import { BsBookmarkStarFill } from "react-icons/bs";
+import MainLogo from "../../assets/images/main logo.png"
+
 
 const CustomNavbar = () => {
     return (
@@ -17,7 +19,7 @@ const CustomNavbar = () => {
             <Navbar expand="lg" className="mainNavbar">
                 <Container>
                     <Navbar.Brand href="/flight-search" className='navbarlogo'>
-                        <img src='/src/assets/images/download-removebg-preview.png' className='img-fluid logoimg' alt="logo" />
+                        <img  width={150}  src={MainLogo} className='img-fluid logoimg' alt="logo" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

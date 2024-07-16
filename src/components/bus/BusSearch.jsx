@@ -22,7 +22,7 @@ const BusSearch = () => {
 
   const fetchSuggestions = async (query, setSuggestions) => {
     try {
-      const response = await fetch(`https://srninfotech.com/projects/travel-app/api/bus_list?query=${query}`);
+      const response = await fetch(`https://sajyatra.sajpe.in/admin/api/bus_list?query=${query}`);
       const data = await response.json();
       const filteredSuggestions = data.data.filter(suggestion =>
         suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
@@ -58,12 +58,12 @@ const BusSearch = () => {
   };
 
   const handleFromSelect = (suggestion) => {
-    handleSuggestionClick(suggestion, setFrom);
+    dispatch(setFrom(suggestion.busodma_destination_name));
     dispatch(setFromSuggestions([]));
   };
 
   const handleToSelect = (suggestion) => {
-    handleSuggestionClick(suggestion, setTo);
+    dispatch(setTo(suggestion.busodma_destination_name));
     dispatch(setToSuggestions([]));
   };
 
