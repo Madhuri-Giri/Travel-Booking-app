@@ -45,3 +45,48 @@
 .homnavbbookingicon .textNav {
     margin-top: 5px;
 }
+
+
+
+.mobilehedrbookings{
+    background-color: beige;
+    padding: 5px 0px;
+}
+.mobilehedrbookings .row{
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+.mobilehedrbookings .row .col-3{
+    box-shadow: 2px 1px 6px 4px #4ab6bb96;  
+}
+.mobilehedrbookings .row .col-3 a{
+    color: #00b7eb;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 22px;  
+}
+
+.mobilehedrbookings{
+    display: none;
+}
+
+/* / responsive css / */
+@media screen and (max-width: 992px) {
+    .mobilehedrbookings{
+        display: block;
+    }
+    .navmenuss .homnavbbookingicon {
+        display: flex;
+        flex-direction:row;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+    }
+    .navmenuss .homnavbbookingicon svg{
+        margin-right: 10px;
+    }
+    .navcornerr a{
+        margin-left: 20px;
+    }
+}

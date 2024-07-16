@@ -16,6 +16,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 
 const FlightSearch = () => {
+
+  const fList = () =>{
+    navigate("/flight-list");
+  }
+
+
+
   // State to keep track of the selected tab
   const [selectedTab, setSelectedTab] = useState('tab1');
   // Handler to change the selected tab
@@ -132,7 +139,7 @@ const FlightSearch = () => {
 
       const data = await response.json();
       console.log("data", data);
-      navigate("/flightList", { state: data });
+      navigate("/flight-list", { state: data });
     }
     catch (error) {
       console.error('Error fetching suggestions:', error);
@@ -191,6 +198,8 @@ const FlightSearch = () => {
 
   return (
     <>
+      
+
       <section className='flightPageBanner'>
         <div className="container-fluid ">
           <div className="findFlightss"><button>Find Flights</button></div>
@@ -272,14 +281,14 @@ const FlightSearch = () => {
                                 id="PreferredDepartureTime"
                                 placeholderText="Select a date"
                               />
-                              <MdDateRange  className="date-picker-icon" />
+                              <MdDateRange className="date-picker-icon" />
                             </div>
                           </div>
                         </div>
                         <div className="col-6">
                           <div className="form-group onewayreturnhidebtn">
                             <Link>Add Return date</Link>
-                            <MdDateRange  className="mt-1 ms-2" />
+                            <MdDateRange className="mt-1 ms-2" />
                           </div>
                         </div>
 
@@ -289,12 +298,12 @@ const FlightSearch = () => {
                           <p>Child <span>{formData.ChildCount}</span> |</p>
                           <p>Infant <span>{formData.InfantCount}</span> |</p>
                           <p>{formData.JourneyType}</p>
-                          <FaAngleDown className="downarrrow"/>
+                          <FaAngleDown className="downarrrow" />
                         </div>
 
                         <div className="col-3 home-flight-search mt-3">
                           <div>
-                            <button onClick={getFlightList} type="button" className="btn">Search</button>
+                            <button onClick={fList} type="button" className="btn">Search</button>
                           </div>
                         </div>
                         <div>
@@ -669,7 +678,7 @@ const FlightSearch = () => {
         </div>
       </section>
 
-      <section className="exclusive-dealsSec">
+      {/* <section className="exclusive-dealsSec">
         <div className="container-fluid mb-5">
           <div className="row mb-4">
             <h2>Exclusive Deals</h2>
@@ -700,10 +709,8 @@ const FlightSearch = () => {
                 </div>
               </div>
             </div>
-          {/* </div> */}
-          {/* <div className="row"> */}
-          <div className="col-lg-4 col-md-6 exclusivecol">
-          <div className="position-relative">
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
                 <img src="https://www.vimaansafar.com/img/city/bangkok.jpg" className="img-fluid" alt="Bangkok" />
                 <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
                   <h3>Bangkok</h3>
@@ -731,6 +738,43 @@ const FlightSearch = () => {
             </div>
           </div>
         </div>
+      </section> */}
+
+      <section className="flightsec7 bg-light">
+        <div className="container">
+          <div className="row flightsec7row">
+            <div className="col-lg-5 flightsec7col">
+              <h3>Newsletter</h3>
+              <p>Subscribe to our newsletter and stay updated with our travel offers.</p>
+              <div className="form-group flightsec7form">
+                <label htmlFor="text" >Enter your email address to subscribe</label>
+                <input type="text" className="form-control" id="flightSatrtingPoint" placeholder='Email' />
+                <p>Provide your email address to subscribe. For e.g abc@xyz.com</p>
+                <div className="flightsubscr">
+                  <button>SUBSCRIBE</button>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <Carousel>
+                <Carousel.Item>
+                  <img
+                    className="d-block w-100 img-fluid"
+                    src='/src/assets/images/home-yotube.jpg'
+                    alt="First slide"
+                  />
+                </Carousel.Item>
+                <Carousel.Item>
+                  <img
+                    className="d-block w-100 img-fluid"
+                    src='/src/assets/images/home-insta.jpg'
+                    alt="First slide"
+                  />
+                </Carousel.Item>
+              </Carousel>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="flightsec6">
@@ -742,9 +786,7 @@ const FlightSearch = () => {
                 <h1>DOWNLOAD OUR MOBILE APPS TODAY</h1>
                 <p>The application will help you find attractions, tours or adventures in a new city</p>
                 <button className="googleplaybtn">
-                {/* <Link to='' className=""> */}
-                <BiLogoPlayStore /><h6>Google Play</h6>
-                {/* </Link> */}
+                  <BiLogoPlayStore /><h6>Google Play</h6>
                 </button>
               </div>
             </div>
