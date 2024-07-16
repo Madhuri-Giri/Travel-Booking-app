@@ -2,7 +2,8 @@
     /* background: linear-gradient(to bottom, #b2f3de 0%, #ffffff 100%); */
     /* background-color: #00b7eb; */
     background-color:gainsboro;
-    padding: 25px 10px;
+    padding-top: 30px;
+    padding-bottom: 1px;
 }
 
 .footerabout img{
@@ -26,12 +27,22 @@
 }
 .footer-links h5{
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 .footer-links a{
     text-decoration: none;
     color: black;
+    line-height: 30px;
 }
 .footer-links a:hover{
     color: #00b7eb;
+}
+.footrcopyright p{
+    text-align: center;
+    margin-top: 30px;
+    /* color: rgba(0, 0, 0, 0.712); */
+    font-size: 14px;
+    padding-top: 5px;
+    margin-bottom: 0px;
+    border-top: 1px solid #00b8eb54;
 }
