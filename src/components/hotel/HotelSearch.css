@@ -4,6 +4,7 @@
   margin: 20px;
   padding: 20px;
   border-radius: 10px;
+  /* background-color: #f8f5f5; */
   background-color: #00b7eb;
 }
 
@@ -13,18 +14,18 @@
 }
 
 .hotel-img-container {
-  flex: 1; 
-  padding-right: 20px; 
+  flex: 1;
+  padding-right: 20px;
 }
 
 .hotel_img {
-  width: 80%; 
+  width: 80%;
   max-width: 80%;
   /* border-radius: 10px; */
 }
 
 .content-col {
-  flex: 2; 
+  flex: 2;
 }
 
 .hotel_description {
@@ -35,7 +36,7 @@
 }
 
 .hotel_booking {
-  margin-top: 20px;
+  margin-top: 90px;
   padding: 20px;
   background-color: #fff;
   border-radius: 10px;
@@ -55,10 +56,9 @@
   min-width: 150px;
 }
 
-.form-field label{
+.form_lable {
   margin-right: 5px;
 }
-
 
 .checkIn-field input,
 .checkOut-field input,
@@ -70,8 +70,7 @@
   border-radius: 5px;
 }
 
-
-.guest-field input {
+.form_in {
   cursor: pointer;
   background-color: #fff;
 }
@@ -84,6 +83,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 10px;
   z-index: 1000;
+  width: 20%;
 }
 
 .guest-type {
@@ -93,13 +93,13 @@
   margin-bottom: 10px;
 }
 
-.guest-type span {
+.form_span {
   flex: 1;
   text-align: center;
   font-size: 14px;
 }
 
-.guest-type button {
+.btn_sub_guest {
   flex: 0 0 auto;
 }
 
@@ -112,6 +112,7 @@
   margin-top: 20px;
   background-color: #f5f5f5;
 }
+
 .offer_img {
   width: 80%;
   border-radius: 10px;
@@ -132,22 +133,202 @@
 }
 
 .booking_box {
-  max-width: 600px; 
+  max-width: 600px;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.9); 
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
 }
 
-.play_store{
+.play_store {
   width: 100px;
   height: auto;
 }
-.apple_play_store{
+
+.apple_play_store {
   width: 200px;
   height: auto;
 }
 
-.booking_head{
+.booking_head {
   margin-top: 40px;
   text-align: center;
+}
+
+.content_wrapper {
+  display: flex;
+  margin-top: 50px;
+  
+}
+
+.content_box {
+  flex: 1;
+  padding: 20px;
+}
+
+.images_container {
+  margin-top: 100px;
+  position: relative;
+  width: 300px;
+  margin-left: 600px;
+}
+
+.img_box {
+  position: absolute;
+  width: 300px;
+  border: 3px solid black;
+  border-radius: 20px;
+}
+
+.image1 {
+  bottom: -100px;
+  left: -100px;
+  border: 3px solid black;
+  border-radius: 20px;
+  width: 350px;
+}
+
+.image2 {
+  bottom: -280px;
+  right: 250px;
+  border: 3px solid black;
+  border-radius: 20px;
+}
+
+.image3 {
+  bottom: -80px;
+  right: 420px;
+  border: 3px solid black;
+  border-radius: 20px;
+  width: 80%;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1200px) {
+  .hotel_container {
+   margin-top: 0;
+  }
+  .hotel_booking {
+    margin-top: 0;
+  }
+  .content_wrapper {
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .images_container {
+    margin-top: 0;
+    width: 100%;
+    margin-left: 0px;
+  }
+
+  .img_box {
+    position: relative;
+    width: 100%;
+   
+  }
+
+  .image1,
+  .image2,
+  .image3 {
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+  }
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-field {
+    margin-right: 0;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  .btn-sub {
+    width: 100%;
+  }
+
+  .images_container {
+    margin-top: 20px;
+    width: 100%;
+   
+  }
+
+  .img_box {
+    position: relative;
+    width: 100%;
+   
+  }
+
+  .image1,
+  .image2,
+  .image3 {
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+  }
+}
+
+@media (max-width: 576px) {
+  .hotel_container {
+    padding: 10px;
+  }
+
+  .hotel_booking {
+    padding: 10px;
+  }
+
+  .form-field label {
+    margin-right: 0;
+  }
+
+  .form-field input,
+  .guest-field input {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .guest-options {
+    margin-top: 10px;
+    width: 70%;
+  }
+
+  .guest-type span {
+    font-size: 12px;
+  }
+
+  .btn-sub {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .images_container {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .img_box {
+    position: relative;
+    width: 100%;
+  }
+
+  .image1,
+  .image2,
+  .image3 {
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: none;
+  }
 }

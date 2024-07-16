@@ -3,11 +3,17 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 
 import ratingStar from '../../../src/assets/images/star_img.png'
 const HotelList = () => {
   const location = useLocation();
 
+  const navigate = useNavigate();
+const detailHandler = () => {
+  navigate('/hotel-description')
+}
+  
   
   const defaultState = {
     destination: '',
@@ -111,7 +117,7 @@ const HotelList = () => {
         <div className="listResult">
         <div className="searchItem">
       <img
-        src="https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
+        src="https://www.siteminder.com/wp-content/uploads/2023/08/vala-hero.jpg"
         alt=""
         className="hotelImg"
       />
@@ -136,16 +142,16 @@ const HotelList = () => {
           <img className="rating_star" src={ratingStar} alt="rating" />
         </div>
         <div className="DetailTexts">
-          <span className="hotelPrice"> ₹112</span>
+          <span className="hotelPrice"> ₹1658.17</span>
           <span className="hotelTax">Includes taxes and fees</span>
-          <button className="CheckButton">See Details</button>
+          <button  onClick={detailHandler} className="CheckButton">See Details</button>
         </div>
       </div>
     </div>
 
     <div className="searchItem">
       <img
-        src="https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
+        src="https://www.siteminder.com/wp-content/uploads/2023/08/vala-hero.jpg"
         alt=""
         className="hotelImg"
       />
@@ -170,16 +176,16 @@ const HotelList = () => {
           <img className="rating_star" src={ratingStar} alt="rating" />
         </div>
         <div className="DetailTexts">
-          <span className="hotelPrice"> ₹112</span>
+          <span className="hotelPrice"> ₹1658.17</span>
           <span className="hotelTax">Includes taxes and fees</span>
-          <button className="CheckButton">See Details</button>
+          <button  onClick={detailHandler} className="CheckButton">See Details</button>
         </div>
       </div>
     </div>
 
     <div className="searchItem">
       <img
-        src="https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
+        src="https://www.siteminder.com/wp-content/uploads/2023/08/vala-hero.jpg"
         alt=""
         className="hotelImg"
       />
@@ -204,9 +210,9 @@ const HotelList = () => {
           <img className="rating_star" src={ratingStar} alt="rating" />
         </div>
         <div className="DetailTexts">
-          <span className="hotelPrice"> ₹112</span>
+          <span className="hotelPrice"> ₹1658.17</span>
           <span className="hotelTax">Includes taxes and fees</span>
-          <button className="CheckButton">See Details</button>
+          <button onClick={detailHandler} className="CheckButton">See Details</button>
         </div>
       </div>
     </div>

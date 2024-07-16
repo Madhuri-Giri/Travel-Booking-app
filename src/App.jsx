@@ -22,7 +22,6 @@ import PassengerList from './components/bus/PassengerList';
 import ReviewBooking from './components/bus/ReviewBooking';
 
 
-
 const App = () => {
   return (
     <div>
@@ -47,7 +46,7 @@ const App = () => {
           <Route path='/review-booking' element={<ReviewBooking/>} />
           <Route path='/hotel-search' element={<HotelSearch />} />
           <Route path='/hotel-list' element={<HotelList />} />
-         
+          
         </Routes>
         <Footer/>        
       </Router>
