@@ -1,13 +1,17 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './BusList.css';
 import busImg from "../../assets/images/bus.png2.png";
+import BusLayout from './BusLayout';
 import { searchBuses } from '../../redux-toolkit/slices/busSlice';
 
 const BusLists = () => {
   const dispatch = useDispatch();
   const dateMidRef = useRef(null);
   const { from, to, selectedBusDate, searchResults, status, error } = useSelector((state) => state.bus);
+
+  // State to manage the visibility of layout data for each bus
+  const [visibleLayout, setVisibleLayout] = useState({});
 
   useEffect(() => {
     // Dispatch the searchBuses action when component mounts
@@ -61,46 +65,99 @@ const BusLists = () => {
     return istTime;
   };
 
+  const toggleLayoutVisibility = (index) => {
+    setVisibleLayout((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
+ 
+
+  const addSeatLayout = async () => {
+    try {
+      // Retrieve TraceId and ResultIndex from localStorage
+      const traceId = localStorage.getItem('traceId');
+      const resultIndex = localStorage.getItem('resultIndex');
+  
+      // Example values if they are not found in localStorage
+      // Replace with appropriate handling logic as per your application's flow
+      if (!traceId || !resultIndex) {
+        throw new Error('TraceId or ResultIndex not found in localStorage');
+      }
+  
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/AddseatLayout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any other headers as needed
+        },
+        body: JSON.stringify({
+          ResultIndex: resultIndex,
+          TraceId: traceId,
+          // Add other parameters as required by your API
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add seat layout');
+      }
+  
+      const data = await response.json(); // Parse response JSON
+  
+      console.log('Layout Response:', data); // Log parsed response data
+  
+    } catch (error) {
+      console.error('Error adding seat layout:', error.message);
+      // Optionally handle error state or show error to user
+    }
+  };
+  
+
+
+
   return (
     <div className='BusLists'>
       <div className="busList">
-        {/* ----------------------------------------------------------------------------------------------- */}
+        {/* Top section */}
         <div className="B-lists-Top">
           <div className="text">
-            <h5><i style={{color:"#00b7eb"}} className="ri-map-pin-line"></i> 
-            <div className="destination">
-              <p><small style={{color:"#00b7eb"}}>From</small>{from}</p>
-              <i style={{fontSize:"1.5vmax", color:"#00b7eb"}} className="ri-arrow-left-right-line"></i>
-              <p><small style={{color:"#00b7eb"}}>To</small>{to}</p>
-            </div></h5>
+            <h5>
+              <i style={{ color: "#00b7eb" }} className="ri-map-pin-line"></i>
+              <div className="destination">
+                <p><small style={{ color: "#00b7eb" }}>From</small>{from}</p>
+                <i style={{ fontSize: "1.5vmax", color: "#00b7eb" }} className="ri-arrow-left-right-line"></i>
+                <p><small style={{ color: "#00b7eb" }}>To</small>{to}</p>
+              </div>
+            </h5>
             <span>
-  <i style={{color:"#00b7eb"}} className="ri-calendar-line"></i> 
-  Depart Date: {selectedBusDate && (
-    <>
-      {selectedBusDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })}{' '}
-      {selectedBusDate.toLocaleString('default', { month: 'short' })}
-    </>
-  )}
-</span>
+              <i style={{ color: "#00b7eb" }} className="ri-calendar-line"></i>
+              Depart Date: {selectedBusDate && (
+                <>
+                  {selectedBusDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })}{' '}
+                  {selectedBusDate.toLocaleString('default', { month: 'short' })}
+                </>
+              )}
+            </span>
           </div>
         </div>
-        {/* ----------------------------------------------------------------------------------------------- */}
 
+        {/* Bottom section */}
         <div className="B-lists-Btm">
-          {/* -----------------sidebar-start--------------- */} 
+          {/* Sidebar */}
           <div className="bus-sidebar">
             <div className="busSide">
               <h5>Filters</h5>
               <div className="seat-type">
-                <h6>Seat Type</h6>  
+                <h6>Seat Type</h6>
                 <div className="filter-seat">
                   {seatTypes.map((seat, index) => (
-                    <p key={index} style={{cursor:'pointer'}}>{seat}</p>
+                    <p key={index} style={{ cursor: 'pointer' }}>{seat}</p>
                   ))}
-                </div> 
+                </div>
               </div>
               <div className="Travel-operator">
-                <h6>Travel Operators</h6>  
+                <h6>Travel Operators</h6>
                 <div className="travel-list">
                   {travelOperators.map((operator, index) => (
                     <p key={index}>{operator}</p>
@@ -108,7 +165,7 @@ const BusLists = () => {
                 </div>
               </div>
               <div className="pick-up">
-                <h6><span>Pick Up Points </span> <span>Pick Up Time: <small style={{color:"#000000b9"}}>12 AM</small></span></h6>  
+                <h6><span>Pick Up Points </span> <span>Pick Up Time: <small style={{ color: "#000000b9" }}>12 AM</small></span></h6>
                 <div className="pick-list">
                   {pickUpPoints.map((point, index) => (
                     <p key={index}>{point}</p>
@@ -116,7 +173,7 @@ const BusLists = () => {
                 </div>
               </div>
               <div className="drop-up">
-                <h6><span>Drop Points</span> <span>Drop Time: <small style={{color:"#000000b9"}}>12 AM</small></span></h6>  
+                <h6><span>Drop Points</span> <span>Drop Time: <small style={{ color: "#000000b9" }}>12 AM</small></span></h6>
                 <div className="drop-list">
                   {dropPoints.map((point, index) => (
                     <p key={index}>{point}</p>
@@ -125,11 +182,9 @@ const BusLists = () => {
               </div>
             </div>
           </div>
-          {/* -----------------sidebar-end--------------- */}
 
-          {/* --------------------btm-lists-start--------------- */}
+          {/* Bus lists */}
           <div className="btm-lists">
-            {/* ---------------date slider start---------------------------- */}
             <div className="date-slider">
               <div className="d-slide">
                 <div className="date-left" onClick={scrollLeft}>
@@ -147,7 +202,7 @@ const BusLists = () => {
                 </div>
               </div>
             </div>
-            {/* ---------------date slider end------------------------------- */}
+
             <div className="bus-divs">
               {status === 'loading' && <p>Loading...</p>}
               {status === 'failed' && <p>{error}</p>}
@@ -162,32 +217,45 @@ const BusLists = () => {
                           <h5>{bus.TravelName}</h5>
                         </div>
                         <div className="drop-time">
-                          <h6><small>Arrival Time: </small><span style={{color:"#000000b9", fontSize:"1.3vmax"}}>
+                          <h6><small>Arrival Time: </small><span style={{ color: "#000000b9", fontSize: "1.3vmax" }}>
                             {convertUTCToIST(bus.ArrivalTime)}
                           </span></h6>
-                          <h6><small>Drop Time: </small><span style={{color:"#000000b9", fontSize:"1.3vmax"}}>
+                          <h6><small>Drop Time: </small><span style={{ color: "#000000b9", fontSize: "1.3vmax" }}>
                             {convertUTCToIST(bus.DepartureTime)}
                           </span></h6>
                         </div>
                         <div className="price">
                           <h4>${bus.Price.BasePrice}</h4>
-                          <h6 style={{textDecorationLine:'line-through', color:"#000000b9"}}>$1000{bus.Price.OriginalPrice}</h6>
-                          <p><i className="ri-wheelchair-line"></i>{bus.AvailableSeats} seats left</p>
+                          <h6 style={{ textDecorationLine: 'line-through', color: "#000000b9" }}>$1000</h6>
                         </div>
                       </div>
+
                       <div className="one-btm">
                         <div className="rating">
                           <p>{bus.Ratings} Ratings</p>
                         </div>
-                        <button>Select Seat</button>
+                        <button onClick={() => {
+                          toggleLayoutVisibility(index);  
+                          addSeatLayout();
+                        }}>
+                          {visibleLayout[index] ? 'Hide Seat' : 'Select Seat'}
+                        </button>
                       </div>
+                      {/* --------------------------------------------------------------------------------------------------------------- */}
+
+                      {visibleLayout[index] && (
+                        <BusLayout bus={bus} />
+                      )}
+
+
+                      {/* ------------------------------------------------------------------------------------------------------------------------- */}
+
                     </div>
                   ))}
                 </>
               )}
             </div>
           </div>
-          {/* ------------------------btm-lists-end------------------- */}
         </div>
       </div>
     </div>

@@ -286,3 +286,89 @@
         margin-top: 10px;
     }
 }
+
+
+@media (max-width:600px) {
+    .FlightList{
+              width: 100%;
+    }
+    .FlightList .flights .f-top{
+              width: 95%;
+              padding: 1vmax;
+    }
+    .FlightList .flights .f-top h5{
+            font-size: 2vmax;
+    }
+     .FlightList .flights .flight-date-slider{
+              height: 10vmax;
+     }
+     .FlightList .flights .flight-date-slider .d-slide{
+              width: 95%;
+     }
+     .FlightList .flights .flight-date-slider .d-slide .date-left{
+              width: 10%;
+              height: 10vmax;
+     }
+     .FlightList .flights .flight-date-slider .d-slide .date-left i{
+             font-size: 2.5vmax;
+     }
+     .FlightList .flights .flight-date-slider .d-slide .date-right{
+              width: 10%;
+              height: 10vmax;
+     }
+     .FlightList .flights .flight-date-slider .d-slide .date-right i{
+             font-size: 2.5vmax;
+     }
+     .FlightList .flights .flight-date-slider .d-slide .date-mid .d-one{
+              width: 20%; 
+              height: 10vmax;
+              padding: 2vmax; 
+     }
+     .FlightList .flights .flight-date-slider .d-slide .date-mid .d-one p{
+              font-size: 1.5vmax; 
+     }
+    
+            
+}
+
+
+@media (min-width:600px) and (max-width:1250px) {
+    .FlightList{
+              width: 100%;
+    }
+    .FlightList .flights .f-top{
+              width: 95%;
+              padding: 1vmax;
+    }
+    .FlightList .flights .f-top h5{
+            font-size: 2vmax;
+    }
+     .FlightList .flights .flight-date-slider{
+              height: 10vmax;
+     }
+     .FlightList .flights .flight-date-slider .d-slide{
+              width: 95%;
+     }
+     .FlightList .flights .flight-date-slider .d-slide .date-left{
+              width: 10%;
+              height: 10vmax;
+     }
+     .FlightList .flights .flight-date-slider .d-slide .date-left i{
+             font-size: 2.5vmax;
+     }
+     .FlightList .flights .flight-date-slider .d-slide .date-right{
+              width: 10%;
+              height: 10vmax;
+     }
+     .FlightList .flights .flight-date-slider .d-slide .date-right i{
+             font-size: 2.5vmax;
+     }
+     .FlightList .flights .flight-date-slider .d-slide .date-mid .d-one{
+              width: 20%; 
+              height: 10vmax;
+              padding: 2vmax; 
+     }
+     .FlightList .flights .flight-date-slider .d-slide .date-mid .d-one p{
+              font-size: 1.5vmax; 
+     }
+}

@@ -1,0 +1,66 @@
+.review_container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    margin: 20px 0;
+    width: 80%; 
+}
+
+.review_card {
+    text-align: center;
+    width: 100%; 
+    max-width: 600px;
+    padding: 20px;
+}
+
+.review_image {
+    width: 100%;
+    height: auto; 
+    max-height: 300px; 
+}
+
+.review_info {
+    padding: 15px;
+}
+
+.review_info h3 {
+    font-size: 24px; 
+    color: #00b7eb;
+}
+
+.review_rating {
+    width: 150px; 
+}
+
+.review_info p {
+    font-size: 16px; 
+    color: #666;
+}
+
+
+.form-group-data textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: none;
+    font-size: 14px; 
+}
+
+.submit_button {
+    text-align: center;
+}
+
+.submit_button button {
+    background-color: #00b7eb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px; 
+}
+
+.submit_button button:hover {
+    background-color: #009bcc;
+}
