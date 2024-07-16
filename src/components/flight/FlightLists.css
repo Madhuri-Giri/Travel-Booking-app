@@ -226,6 +226,23 @@
     font-weight: bold;
 }
 
+.pricebtnsmobil{
+    display: none;
+}
+.pricebtnsmobil p{
+    font-weight: bold;
+    font-size: 22px;
+    color: #00e100;
+}
+.pricebtnsmobil button{
+    background-color: #00b7eb;
+    border: none;
+    color: white;
+    padding: 7px 20px;
+    border-radius: 17px;
+    font-weight: bold;
+}
+
 
 /* responsive css */
 @media screen and (max-width: 992px) {
@@ -242,10 +259,30 @@
     .flistnamep5{
         display: none;
     }
-    .pricebtns p {
+    .pricebtnsmobil p {
         font-size: 15px;
     }
     .flistname p {
         margin: 0px 5px;
+    }
+    .pricebtnsmobil{
+        display: flex;
+        justify-content: space-between;
+    }
+    .pricebtns{
+        display: none;
+    }
+    .pricebtnsmobil button {
+        padding: 0px 12px;
+        font-size: 12px;
+    }
+    .flight-content .row {
+        padding: 8px 0px;
+    }
+    .f-lists img {
+        height: 20px;
+        border-radius: 5px;
+        margin-right: 15px;
+        margin-top: 10px;
     }
 }
