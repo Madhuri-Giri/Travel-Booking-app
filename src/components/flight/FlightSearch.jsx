@@ -273,6 +273,7 @@ const FlightSearch = () => {
                           <div className="form-group">
                             <label htmlFor="PreferredDepartureTime">Departure Date</label>
                             <div className="date-picker-wrapper">
+                              
                               <DatePicker
                                 name="PreferredDepartureTime"
                                 selected={preferredDepartureTime}
@@ -281,7 +282,7 @@ const FlightSearch = () => {
                                 id="PreferredDepartureTime"
                                 placeholderText="Select a date"
                               />
-                              <MdDateRange className="date-picker-icon" />
+                              {/* <MdDateRange className="date-picker-icon" /> */}
                             </div>
                           </div>
                         </div>
@@ -301,10 +302,10 @@ const FlightSearch = () => {
                           <FaAngleDown className="downarrrow" />
                         </div>
 
-                        <div className="col-3 home-flight-search mt-3">
-                          <div>
+                        <div className="col-sm-3 home-flight-search mt-3">
+                          {/* <div> */}
                             <button onClick={fList} type="button" className="btn">Search</button>
-                          </div>
+                          {/* </div> */}
                         </div>
                         <div>
                           {showDropdown && (
@@ -312,7 +313,7 @@ const FlightSearch = () => {
                               <div className="dropdown-header">
                                 <RxCross2 onClick={handleClose} className="close-icon" />
                               </div>
-                              <div className="col-6 travellerdropdowncol1">
+                              <div className="col-sm-6 travellerdropdowncol1">
                                 <h6>SELECT PASSENGERS</h6>
                                 <div className='flightpageagebox'>
                                   <h6 style={{ color: '#222' }}>Adults</h6>
@@ -355,7 +356,7 @@ const FlightSearch = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-5 travellerdropdowncol2">
+                              <div className="col-sm-5 travellerdropdowncol2">
                                 <h6>SELECT TRAVEL</h6>
                                 <p>Choose Travel Class</p>
                                 <div>
