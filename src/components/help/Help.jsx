@@ -52,6 +52,7 @@ const Help = () => {
                 <div className="form-group form-group-data">
                     <label htmlFor="email">Email:</label>
                     <input
+                       style={{outline:'none'}}
                         type="email"
                         name="user_email"
                         id="email"
@@ -62,6 +63,7 @@ const Help = () => {
                 <div className="form-group form-group-data">
                     <label htmlFor="message">Message:</label>
                     <textarea
+                     style={{outline:'none'}}
                         id="message"
                         rows={8}
                         name="message"
