@@ -33,9 +33,9 @@ function Footer() {
 
                         <div className="col-lg-2 col-md-4 col-sm-6 footer-links">
                             <h5>Quick Links</h5>
-                            <IoMdArrowDropright /> <Link to='/flightPage'>Flights</Link> <br></br>
-                            <IoMdArrowDropright /> <Link to='/'>Bus</Link> <br></br>
-                            <IoMdArrowDropright /> <Link to='/hotelPage'>Hotel</Link> <br></br>
+                            <IoMdArrowDropright /> <Link to='/flight-search'>Flights</Link> <br></br>
+                            <IoMdArrowDropright /> <Link to='/bus-search'>Bus</Link> <br></br>
+                            <IoMdArrowDropright /> <Link to='/hotel-search'>Hotel</Link> <br></br>
                         </div>
 
                         <div className="col-lg-3 col-md-4 col-sm-6 footer-links">
