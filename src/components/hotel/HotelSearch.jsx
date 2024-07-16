@@ -170,7 +170,7 @@ const HotelSearch = () => {
           </Row>
         </div>
 
-        <section>
+        <section className='w-100 d-flex align-items-center justify-content-center'>
           <div className="hotel_booking">
             <form onSubmit={handleSubmit}>
               <div className="form-row">
@@ -187,11 +187,11 @@ const HotelSearch = () => {
                 </div>
                 <div className="form-field">
                   <label className='form_lable' htmlFor="checkIn">Check-In: </label>
-                  <DatePicker id="checkIn" selected={inputs.checkIn} onChange={(date) => handleDateChange(date, 'checkIn')} />
+                  <DatePicker className='form_in' id="checkIn" selected={inputs.checkIn} onChange={(date) => handleDateChange(date, 'checkIn')} />
                 </div>
                 <div className="form-field">
                   <label className='form_lable' htmlFor="checkOut">Check-Out: </label>
-                  <DatePicker id="checkOut" selected={inputs.checkOut} onChange={(date) => handleDateChange(date, 'checkOut')} />
+                  <DatePicker className='form_in'  id="checkOut" selected={inputs.checkOut} onChange={(date) => handleDateChange(date, 'checkOut')} />
                 </div>
                 <div className="form-field">
                   <label className='form_lable' htmlFor="guests">Guests: </label>
@@ -224,9 +224,11 @@ const HotelSearch = () => {
                   )}
                 </div>
                 <div>
-                  <Button type="submit" className="btn-sub">
+                  <label style={{visibility:"hidden"}} className='vbnm' htmlFor="guests">Guests: </label>
+                   
+                  <button  type="submit" className="btn-sub ">
                     Submit
-                  </Button>
+                  </button>
                 </div>
               </div>
             </form>
