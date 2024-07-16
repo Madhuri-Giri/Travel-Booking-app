@@ -1,0 +1,244 @@
+.PassangerInfo{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+}
+.PassangerInfo h5{
+          width: 100%; 
+          font-weight: 600;   
+          font-size: 1.4vmax; 
+          padding: 1vmax;   
+          color: #fff;
+          background: #0a223d;
+}
+.PassangerInfo h5 i{
+          margin-right: 1vmax;
+          font-weight: lighter;
+}
+.PassangerInfo .passanger{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+background-color: rgba(230, 248, 255, 0.452);
+          flex-direction: column;
+}
+.PassangerInfo .passanger h6{
+          width: 90%;
+          font-weight: 600;
+          display: flex;font-size: 1.2vmax;
+          align-items: flex-start;
+          justify-content: flex-start;
+}
+
+.PassangerInfo .passanger p{
+          width: 90%;
+}
+.PassangerInfo .passanger span{
+        margin-left: 1vmax;
+}
+.PassangerInfo .passanger .p-detail{
+          width: 90%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: row;
+}
+.PassangerInfo .passanger .p-detail h6{
+          width: 50%; 
+          display: flex;  
+          align-items: flex-start;   
+          justify-content: flex-start;
+          font-weight: 600;
+}
+.PassangerInfo .passanger .p-detail p{
+          width: 50%; 
+          display: flex;  
+          align-items: flex-end;   
+          justify-content: flex-end;
+          color: red;
+}
+ .pessanger-main{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          padding: 1vmax;
+          background: #fff;
+          box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.183);
+ }
+ .pessanger-main form{
+          width: 40%;
+           display: flex;
+           align-items: center;
+           justify-content: space-evenly;
+           flex-direction: column;
+           margin-bottom: 2vmax;
+ }
+ .pessanger-main form .p-top{
+          width: 100%;
+           display: flex;
+           align-items: center;
+           justify-content: space-evenly;
+           flex-direction: column;
+           padding: 1vmax;
+ }
+ .pessanger-main form .p-top h6{
+     font-weight: 700;
+     width: 100%;
+     display: flex;
+     align-items: center;
+     text-align: center;
+}
+ .pessanger-main form .p-top .pas{
+          width: 100%;
+           display: flex;
+           justify-content: space-between;
+           flex-direction: row;
+           padding: 1vmax;
+ }
+ .pessanger-main form .p-top .pas .ipt{
+          width: 30%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+ }
+
+ .pessanger-main form .p-btm{
+          width: 100%;
+           display: flex;
+           align-items: center;
+           justify-content: space-evenly;
+           flex-direction: column;
+ }
+ .pessanger-main form .p-btm .p-form{
+          width: 90%;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+          flex-direction: column;   
+          margin-bottom: 1vmax;  
+ }
+ .pessanger-main form .p-btm .p-form label{
+          font-weight: 600;
+          margin-bottom: 0.5vmax;
+ }
+ .pessanger-main form .p-btm .p-form input{
+          width: 100%;
+          padding: 0.4vmax;
+          outline: none;
+ }
+ .pessanger-main form .p-btm .p-btn{
+          width: 90%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 1vmax;
+ }
+ .pessanger-main form .p-btm .p-btn button{
+          width: 100%;
+          border: none;
+          padding: 0.6vmax;
+          font-weight: 600;
+          color: #fff;
+          background: #0f7000;
+ }
+ 
+ 
+  @media (max-width:600px) {
+        .PassangerInfo{
+                width: 100%;
+      }
+      .PassangerInfo h5{
+                width: 95%; 
+                font-size: 3vmax; 
+                padding: 2vmax;   
+      }
+      .PassangerInfo .passanger h6{
+                width: 95%;
+            font-size: 2vmax;
+      }
+      
+      .PassangerInfo .passanger p{
+                width: 95%;
+      }
+      .PassangerInfo .passanger .p-detail{
+                width: 95%;
+      }
+       .pessanger-main{
+                padding: 2vmax;
+       }
+       .pessanger-main form{
+                width: 100%;
+       }
+       .pessanger-main form .p-top .pas .ipt{
+                width: 40%;
+       }
+       .pessanger-main form .p-btm .p-form{
+                width: 90%;
+                gap: 0.3vmax;
+                margin-bottom: 2vmax;
+       }
+       .pessanger-main form .p-btm .p-form input{
+      padding: 1vmax;
+}
+       .pessanger-main form .p-btm .p-btn button{
+                padding: 1.5vmax;
+                margin-top: 1vmax;
+       }
+      
+        
+  }
+
+
+@media (min-width:600px) and (max-width:1250px) {
+        .PassangerInfo{
+                width: 100%;
+      }
+      .PassangerInfo h5{
+                width: 95%; 
+                font-size: 3vmax; 
+                padding: 2vmax;   
+      }
+      .PassangerInfo .passanger h6{
+                width: 95%;
+            font-size: 2vmax;
+      }
+      
+      .PassangerInfo .passanger p{
+                width: 95%;
+      }
+      .PassangerInfo .passanger .p-detail{
+                width: 95%;
+      }
+       .pessanger-main{
+                padding: 2vmax;
+       }
+       .pessanger-main form{
+                width: 100%;
+       }
+       .pessanger-main form .p-top .pas .ipt{
+                width: 40%;
+       }
+       .pessanger-main form .p-btm .p-form{
+                width: 90%;
+                gap: 0.3vmax;
+                margin-bottom: 2vmax;
+       }
+       .pessanger-main form .p-btm .p-form input{
+      padding: 1vmax;
+}
+       .pessanger-main form .p-btm .p-btn button{
+                padding: 1.5vmax;
+                margin-top: 1vmax;
+       }
+       
+        
+        
+  }
+
+
+

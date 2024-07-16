@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-export const searchBuses = createAsyncThunk('bus/searchBuses',async ({ from, to, departDate }) => {
+export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to, departDate }) => {
     const response = await fetch('https://sajyatra.sajpe.in/admin/api/searchBus', {
       method: 'POST',
       headers: {
@@ -9,6 +9,7 @@ export const searchBuses = createAsyncThunk('bus/searchBuses',async ({ from, to,
       body: JSON.stringify({ source_city: from, destination_city: to, depart_date: departDate }),
     });
     const data = await response.json();
+    
     return data;
   }
 );
@@ -56,8 +57,11 @@ const busSlice = createSlice({
           state.traceId = data.TraceId;
           state.resultIndex = data.Result[0].ResultIndex;
           state.searchResults = data.Result;
-
-          console.log('API Response:', data);
+      
+          // Save specific values to local storage
+          localStorage.setItem('traceId', data.TraceId);
+          localStorage.setItem('resultIndex', data.Result[0].ResultIndex);
+          console.log('API Response :', data);
         }
       })
       .addCase(searchBuses.rejected, (state, action) => {
