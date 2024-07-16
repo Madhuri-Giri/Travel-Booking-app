@@ -6,8 +6,12 @@ import  hotelSearchReducer from "../slices/hotelSlice"
 const store = configureStore ({
           reducer:{
                     bus: busReducer,
+
                     profile: profileReducer,   
                     hotelSearch: hotelSearchReducer,
+
+                    profile: profileReducer, 
+
           }
 })
 export default store;

@@ -1,11 +1,12 @@
 import "./CustomNavbar.css"
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
 import { MdLogin } from "react-icons/md";
 import { LuUserPlus } from "react-icons/lu";
-import { RiBookmark3Fill , RiHotelBedFill } from "react-icons/ri";
-import { GiCommercialAirplane } from 'react-icons/gi'; 
+import { RiBookmark3Fill, RiHotelBedFill } from "react-icons/ri";
+import { GiCommercialAirplane } from 'react-icons/gi';
 import { TbBus } from "react-icons/tb";
 import { PiSuitcaseSimpleDuotone } from "react-icons/pi";
 import { BsBookmarkStarFill } from "react-icons/bs";
@@ -22,8 +23,8 @@ const CustomNavbar = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mx-auto navmenuss">
                             <Nav.Link
-                                href="/"
-                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/' ? 'active' : ''}`}
+                                href="/flight-search"
+                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/flight-search' ? 'active' : ''}`}
                             >
                                 <GiCommercialAirplane className="icon" size={20} />
                                 <span className="textNav">FLIGHTS</span>
@@ -57,7 +58,7 @@ const CustomNavbar = () => {
                                 <span className="textNav">MY TRIPS</span>
                             </Nav.Link>
                         </Nav>
-                        <Nav>
+                        <Nav className="navcornerr">
                             <Nav.Link href="" className='numNavbar'> <FaPhoneAlt /> <span>+91 9876543210</span> </Nav.Link>
                             <NavDropdown
                                 className='userDropdown'
@@ -72,6 +73,21 @@ const CustomNavbar = () => {
 
                 </Container>
             </Navbar>
+
+            {/* mobile header for bookings */}
+            <div className="container-fluid mobilehedrbookings">
+                <div className="row">
+                    <div className="col-3">
+                        <Link to='/flight-search'>Flight</Link>
+                    </div>
+                    <div className="col-3">
+                        <Link to='/bus-search'>Bus</Link>
+                    </div>
+                    <div className="col-3">
+                        <Link to='/hotel-search'>Hotel</Link>
+                    </div>
+                </div>
+            </div>
 
         </>
     )

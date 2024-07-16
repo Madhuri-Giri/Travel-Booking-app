@@ -428,10 +428,18 @@
 .flightsubscr button{
     text-align: end;
     border: none;
-    background: #00b7eb;
+    background: skyblue;
     color: white;
     padding: 9px 23px;
     font-size: 16px;
     border-radius: 4px;
     font-weight: bold;
+}
+
+
+/* responsive css */
+@media screen and (max-width: 768px) {
+    .flightbooksec2{
+        display: none;
+    }
 }
