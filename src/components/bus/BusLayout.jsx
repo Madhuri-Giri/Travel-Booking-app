@@ -1,28 +1,201 @@
-import "./BusLayout.css"
+import React from 'react';
+import "./BusLayout.css";
+import BusSeatImg from "../../assets/images/bussit.png";
+import { useNavigate } from 'react-router-dom';
 
-const BusLayout = () => {
+const BusLayout = ({ bus }) => {
+  const navigate = useNavigate()
+  // Static seats array for display purposes
+  const seats = Array.from({ length: 29 }, (_, i) => i + 1); 
+
+  const handleProceed = () => {
+    navigate('/bord-drop')
+  };
+
   return (
     <div className='BusLayout'>
-    <div className="bus-layout">
+      <div className="Seat-layout">
+        <div className="seats">
+          {/* --------------------------- */}
+          <div className="left">
+            <div className="left-top">
+              <h6>Select Seats</h6>
+            </div>
+            <div className="left-btm">
+              <div className="lower">
+                <h6>Lower Seats</h6>
+                <div className="sit">
+                  {seats.map((seat, index) => {
+                    const isLastRow = index >= seats.length - 5;
+                    return (
+                      <div
+                        className={`sit-img ${isLastRow ? 'last-row' : index % 4 === 2 ? 'aisle' : ''}`}
+                        key={seat}
+                      >
+                        <span>{seat}</span>
+                        <img width={30} src={BusSeatImg} alt="seat" />
+                        <p>$399</p>
+                      </div>
 
-       <div className="Seat-layout">
-
-
-          <div className="b-top"></div>
-          {/* --------------------- */}
-          <div className="b-mid">
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="upper">
+                <h6>Upper Seats</h6>
+                <div className="sit">
+                  {seats.map((seat, index) => {
+                    const isLastRow = index >= seats.length - 5;
+                    return (
+                      <div
+                        className={`sit-img ${isLastRow ? 'last-row' : index % 4 === 2 ? 'aisle' : ''}`}
+                        key={seat + 40}
+                      >
+                        <span>{seat + 40}</span>
+                        <img width={30} src={BusSeatImg} alt="seat" />
+                        <p>$399</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              {/* --- */}
+            </div>
+          </div>
+          {/* -------------------------- */}
+          <div className="right">
                      
-          </div> 
-          {/* -----mid end------------   */}
-             <div className="b-btm"></div>   
-          {/* -------------------------  */}
+          <div className="right-top">
+              <h6>Selected</h6>
+            </div>
+            <small>Know your seat</small>
+
+            <div className="two-last">
+                        <p><i className="ri-armchair-fill"></i>Available Seat</p>
+                        <p><i style={{ color: 'green' }} className="ri-armchair-fill"></i>Selected Seat</p>
+                        <p><i style={{ color: 'purple' }} className="ri-armchair-fill"></i>Occupied Seat</p>
+                        <p><i style={{ color: 'pink' }} className="ri-armchair-fill"></i>Booked Seat</p>
+                        <p><i style={{ color: 'gray' }} className="ri-armchair-fill"></i>Blocked Seat</p>                  
+          </div>
+
+                   
+             <div className="right-btm">
+                      <div className="tax">
+                              <p>Selected Seats:</p>
+                              <p>$300 Tax</p>
+                      </div>
+                     <div className="proceed">
+                     <button onClick={handleProceed} >Proceed</button>
+                     </div>
+             </div>
+                   
+          </div>
 
 
+{/* --------------------------------------------------- */}
 </div>
-
 </div>
-</div>
-  )
+    </div>
+  );
 }
 
-export default BusLayout
+export default BusLayout;
+
+
+
+
+
+
+
+
+
+
+// import React from 'react';
+// import "./BusLayout.css";
+// import BusSeatImg from "../../assets/images/bussit.png";
+
+// const BusLayout = ({ bus }) => {
+//   // Function to render seats based on seat data array
+//   const renderSeats = (seatData) => {
+//     return seatData.map((seat, index) => {
+//       const isLastRow = index >= seatData.length - 5;
+//       return (
+//         <div
+//           className={`sit-img ${isLastRow ? 'last-row' : index % 4 === 2 ? 'aisle' : ''}`}
+//           key={seat.SeatIndex} 
+//         >
+//           <span>{seat.SeatName}</span>
+//           <img width={30} src={BusSeatImg} alt="seat" />
+//           <p>${seat.Price.BasePrice          }</p> 
+//         </div>
+//       );
+//     });
+//   };
+
+//   const handleProceed = () => {
+//     // Handle proceed logic here
+//   };
+
+  
+
+//   return (
+//     <div className='BusLayout'>
+//       <div className="Seat-layout">
+//         <div className="seats">
+//           <div className="left">
+//             <div className="left-top">
+//               <h6>Select Seats</h6>
+//             </div>
+//             <div className="left-btm">
+//               <div className="lower">
+//                 <h6>Lower Seats</h6>
+//                 <div className="sit">
+//                   {bus.Result ? (
+//                     renderSeats(bus.Result)
+//                   ) : (
+//                     <p>No lower seats available</p>
+//                   )}
+//                 </div>
+//               </div>
+//               <div className="upper">
+//                 <h6>Upper Seats</h6>
+//                 <div className="sit">
+//                   {bus.ResultUpperSeat ? (
+//                     renderSeats(bus.ResultUpperSeat)
+//                   ) : (
+//                     <p>No upper seats available</p>
+//                   )}
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+
+//           <div className="right">
+//             <div className="right-top">
+//               <h6>Selected</h6>
+//             </div>
+//             <small>Know your seat</small>
+//             <div className="two-last">
+//               <p><i className="ri-armchair-fill"></i>Available Seat</p>
+//               <p><i style={{ color: 'green' }} className="ri-armchair-fill"></i>Selected Seat</p>
+//               <p><i style={{ color: 'purple' }} className="ri-armchair-fill"></i>Occupied Seat</p>
+//               <p><i style={{ color: 'pink' }} className="ri-armchair-fill"></i>Booked Seat</p>
+//               <p><i style={{ color: 'gray' }} className="ri-armchair-fill"></i>Blocked Seat</p>
+//             </div>
+//             <div className="right-btm">
+//               <div className="tax">
+//                 <p>Selected Seats:</p>
+//                 <p>$300 Tax</p>
+//               </div>
+//               <div className="proceed">
+//                 <button onClick={handleProceed}>Proceed</button>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default BusLayout;

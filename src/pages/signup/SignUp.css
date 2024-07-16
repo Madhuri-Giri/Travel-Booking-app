@@ -1,0 +1,406 @@
+.Joinnow{
+          width: 100%;
+          height: auto;
+          padding-top: 2vmax;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+         margin-bottom: 3vmax;
+}
+.Joinnow .Join{
+        width: 80%;
+        padding: 1vmax;
+        height: auto;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-direction: row;
+        box-shadow: 2px 2px 5px 2px rgba(251, 224, 224, 0.884);
+}
+.Joinnow .Join .JoinLeft{
+          width: 50%;
+          height: auto;
+          /* background: #000; */
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content:center;
+  }
+ 
+  .Joinnow .Join .JoinLeft  .language{
+          width: 50%;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: center;
+  }
+  .Joinnow .Join .JoinLeft  .language   .lng{
+          width: 100%;
+          border: 1px solid #00b7eb;
+          padding: 0.3vmax 1vmax;
+          border-radius: 5px;
+          font-weight: 600;
+          color: #00b7eb;
+          margin-top: 0.6vmax;
+          background-color: #fff;
+
+  }
+  .language-dropdown {
+          position: absolute;
+          background-color: white;
+          border: 1px solid #ccc;
+          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+          z-index: 1000;
+          width: 20%;
+          top: 24vmax;
+          font-weight: 600;
+          padding: 1vmax;
+      }
+      
+      .language-dropdown .close-btn {
+          background: none;
+          border: none;
+          font-size: 1.5vmax;
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          cursor: pointer;
+      }
+      
+      .language-dropdown div {
+          display: flex;
+          align-items: center;
+          padding: 8px 12px;
+          cursor: pointer;
+      }
+      
+      .language-dropdown div input[type="radio"] {
+          margin-right: 8px;
+      }
+      
+  .Joinnow .Join .JoinLeft  .language .cnf{ 
+          width: 100%;
+          margin-bottom: 1vmax; 
+          background-color: #00b7eb;
+          padding: 0.3vmax 1vmax;
+          margin-top: 0.4vmax;
+          border: none;
+          font-weight: 600;
+          border-radius: 5px;
+          color: #fff;
+
+  }
+  .Joinnow .Join .JoinRight{
+          width: 50%;
+          height: auto;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: column;
+
+}
+.Joinnow .Join .JoinRight .Top{
+          width: 85%;
+          height: auto;
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          flex-direction: column;
+}
+.Joinnow .Join .JoinRight .Top h3{
+          font-size: 2vmax;
+          color: rgba(27, 27, 27, 0.806);
+          font-weight: bolder;
+}
+.Joinnow .Join .JoinRight .Top h3 span{
+color: rgb(74, 74, 255);
+}
+.Joinnow .Join .JoinRight .Top p{
+          color: rgba(27, 27, 27, 0.68);
+}
+.Joinnow .Join .JoinRight .Medium{
+          width: 95%;
+          height: auto;
+          display: flex;
+          align-items: center;
+          /* background: #000; */
+          justify-content: space-between;
+          flex-direction: column;
+}
+.Joinnow .Join .JoinRight .Medium form{
+         width: 90%;
+}
+.Joinnow .Join .JoinRight .one{
+          width: 100%;
+          height: auto;
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          flex-direction: column;
+          margin-top: 1.3vmax;
+}
+
+.Joinnow .Join .JoinRight .one label{
+          color: rgba(27, 27, 27, 0.669);
+          font-weight: 600;
+          font-size: 1.1vmax;
+}
+.Joinnow .Join .JoinRight .one .int{
+         display: flex;
+         width: 100%;
+         justify-content: space-evenly;
+         align-items: center;
+         flex-direction: row;
+         position: relative;
+}
+.Joinnow .Join .JoinRight .one .int input{
+          width: 100%;
+          margin-top: 0.8vmax;
+          border: none;
+          background-color:none;
+          border: 0.2px solid #0000003d;
+          padding: 0.7vmax 1vmax;
+          border-radius: 5px;
+          outline: none;
+}
+ .password-container {
+        width: 100%;
+        position: relative;
+}
+
+.password-container input {
+        width: 100%;
+}
+
+ .password-container .password-toggle-icon {
+        position: absolute;
+        right: 12px;
+        top: 52%;
+        font-size: 1.2vmax;
+        transform: translateY(-50%);
+        cursor: pointer;
+}
+
+
+.Joinnow .Join .JoinRight .one button{
+          width: 100%;
+          margin-top: 0.8vmax;
+          border: none;
+          background-color: #00b7eb;
+          border-radius: 5px;
+          color: #fff;
+          padding: 0.7vmax 0vmax;
+          transition: 0.5s;
+
+}
+.Joinnow .Join .JoinRight .one button:hover{
+          transform: translateY(-0.5vmax);
+}
+.Joinnow .Join .JoinRight .line{
+          margin-top: 1vmax;
+          text-align: center;
+}
+.Joinnow .Join .JoinRight p{
+          margin-top: 1vmax;
+ }
+.Joinnow .Join .JoinRight p input{
+         margin-right: 0.3vmax;
+}
+@media (max-width:600px) {
+          .Joinnow{
+                    width: 100%;
+                     flex-direction: column;                  
+          }
+          .Joinnow .Join{
+                  width: 100%;
+                  align-items: center;
+                  justify-content: center;
+                  flex-direction: column;
+          }
+          .Joinnow .Join .JoinLeft{
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    overflow: hidden;
+                    margin-bottom: 1vmax;
+            }
+            .Joinnow .Join .JoinLeft img{
+                    width: 50%;
+            }
+            .Joinnow .Join .JoinLeft  .language{
+                    width: 100%;
+            }
+            .Joinnow .Join .JoinLeft  .language   .lng{
+                    width: 100%;
+                    padding: 1.4vmax 1vmax;
+          
+          
+            }
+            .language-dropdown {
+                    position: absolute;
+                    z-index: 1000;
+                    width: 80%;
+                    top: 47vmax;
+                }
+                
+                .language-dropdown .close-btn {
+                    font-size: 2vmax;
+                }
+                
+            /* .Joinnow .Join .JoinLeft  .language .cnf{ 
+                    width: 100%;
+                    margin-bottom: 1vmax; 
+                    padding: 0.3vmax 1vmax;
+                    margin-top: 0.4vmax;
+          
+            } */
+            .Joinnow .Join .JoinRight{
+                    width: 100%;
+                    margin-top: 2vmax;
+          }
+          .Joinnow .Join .JoinRight .Top {
+           margin-top: 4vmax;
+           align-items: center;
+          }
+          .Joinnow .Join .JoinRight .Top h3{
+                    font-size: 4vmax;
+          }
+          .Joinnow .Join .JoinRight .Top p{
+                    font-size: 1.8vmax;
+          }    
+          .Joinnow .Join .JoinRight .Medium form{
+                   width: 100%;
+          }
+          .Joinnow .Join .JoinRight .one{
+                    margin-top: 3vmax;
+          }   
+          .Joinnow .Join .JoinRight .one label{
+                    font-size: 2.5vmax;
+          }
+          
+          .Joinnow .Join .JoinRight .one .int input{
+                    padding: 2vmax 2vmax;
+          }
+          .Joinnow .Join .JoinRight .one button{
+                    padding: 2vmax 0vmax;
+          
+          }
+          .Joinnow .Join .JoinRight p{
+                    margin-top: 1vmax;
+                    width: 100%;
+           }
+         
+         
+          .Joinnow .Join .JoinRight .Bottom{
+                    align-items:center;
+          }
+          .Joinnow .Join .JoinRight .Bottom button{
+                    margin-top: 0.8vmax;
+                    border: none;
+                    background-color: #3c52fdef;
+                    border-radius: 5px;
+                    color: #fff;
+                    padding: 1.5vmax 1vmax;
+          }
+         
+            
+}
+
+
+@media (min-width:600px) and (max-width:1250px) {
+          .Joinnow{
+                    width: 100%;
+                     flex-direction: column;                  
+          }
+          .Joinnow .Join{
+                  width: 100%;
+                  align-items: center;
+                  justify-content: center;
+                  flex-direction: column;
+          }
+          .Joinnow .Join .JoinLeft{
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    overflow: hidden;
+                    margin-bottom: 1vmax;
+            }
+            .Joinnow .Join .JoinLeft img{
+                    width: 50%;
+            }
+            .Joinnow .Join .JoinLeft  .language{
+                    width: 100%;
+            }
+            .Joinnow .Join .JoinLeft  .language   .lng{
+                    width: 100%;
+                    padding: 1.4vmax 1vmax;
+          
+          
+            }
+            .language-dropdown {
+                    position: absolute;
+                    z-index: 1000;
+                    width: 80%;
+                    top: 47vmax;
+                }
+                
+                .language-dropdown .close-btn {
+                    font-size: 2vmax;
+                }
+                
+            /* .Joinnow .Join .JoinLeft  .language .cnf{ 
+                    width: 100%;
+                    margin-bottom: 1vmax; 
+                    padding: 0.3vmax 1vmax;
+                    margin-top: 0.4vmax;
+          
+            } */
+            .Joinnow .Join .JoinRight{
+                    width: 100%;
+                    margin-top: 2vmax;
+          }
+          .Joinnow .Join .JoinRight .Top {
+           margin-top: 4vmax;
+          }
+          .Joinnow .Join .JoinRight .Top h3{
+                    font-size: 4vmax;
+          }
+          .Joinnow .Join .JoinRight .Top p{
+                    font-size: 1.8vmax;
+          }    
+          .Joinnow .Join .JoinRight .Medium form{
+                   width: 100%;
+          }
+          .Joinnow .Join .JoinRight .one{
+                    margin-top: 3vmax;
+          }   
+          .Joinnow .Join .JoinRight .one label{
+                    font-size: 2.5vmax;
+          }
+          
+          .Joinnow .Join .JoinRight .one .int input{
+                    padding: 2vmax 2vmax;
+          }
+          .Joinnow .Join .JoinRight .one button{
+                    padding: 2vmax 0vmax;
+          
+          }
+          .Joinnow .Join .JoinRight p{
+                    margin-top: 1vmax;
+                    width: 100%;
+           }
+         
+         
+          .Joinnow .Join .JoinRight .Bottom{
+                    align-items:center;
+          }
+          .Joinnow .Join .JoinRight .Bottom button{
+                    margin-top: 0.8vmax;
+                    border: none;
+                    background-color: #3c52fdef;
+                    border-radius: 5px;
+                    color: #fff;
+                    padding: 1.5vmax 1vmax;
+          }
+                 
+}

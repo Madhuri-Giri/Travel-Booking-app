@@ -1,0 +1,173 @@
+.Faq {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .Faq .faqq {
+          width: 90%;
+          display: flex;
+          margin-top: 1vmax;
+          margin-bottom: 2vmax;
+
+          align-items: center;
+          padding: 2vmax;
+          justify-content: center;
+          flex-direction: column;
+          box-shadow: 2px 2px 5px 2px rgba(255, 224, 224, 0.555);
+        }
+        
+        .Faq .faqq h5 {
+          width: 100%;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+          font-weight: 700;
+          color: #00b7eb;
+        }
+        
+        .Faq .faqq .f-top {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 1vmax;
+          border-radius: 5px;
+          flex-direction: row;
+          border: 0.2px solid #00b7eb;
+
+        }
+        .Faq .faqq .f-top i{
+           width:2%;
+           display: flex;
+           align-items: flex-end;
+           font-size: 1.2vmax;
+           justify-content: flex-end;
+           color: #00b7eb;
+        }
+        .Faq .faqq .f-top input {
+          width: 98%;
+          border: none;
+          background-color: none;
+          color: #00b7eb;
+          outline: none;
+          padding: 0.7vmax 1vmax;
+          border-radius: 5px;
+        }
+        .Faq .faqq .f-top input::placeholder{
+          color: #00b7eb;
+        }
+      
+        
+        .Faq .faqq .f-btm {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+        }
+        
+        .Faq .faqq .f-btm .line {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: column;
+          margin-top: 2vmax;
+          border-bottom: 1px solid #0000003b;
+        }
+        
+        .Faq .faqq .f-btm .line .one {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: row;
+          cursor: pointer;
+        }
+        
+        .Faq .faqq .f-btm .line .one p {
+          font-weight: 600;
+        }
+        
+        .Faq .faqq .f-btm .line .one i {
+          font-size: 1.7vmax;
+          cursor: pointer;
+        }
+        
+        .Faq .faqq .f-btm .line .two {
+          width: 100%;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+          color: #00b7eb;
+          overflow: hidden;
+          max-height: 0;
+          transition: max-height 0.5s ease;
+          padding: 0;
+        }
+        
+        .Faq .faqq .f-btm .line .two.show {
+          max-height: 500px; 
+          padding: 1vmax 0;
+        }
+        
+        @media (max-width: 600px) {
+          .Faq .faqq {
+            width: 95%;
+          }
+          .Faq .faqq h5 {
+            font-size: 3.6vmax;
+          }
+          .Faq .faqq .f-top {
+                    margin-top: 4vmax;
+                  }
+                  .Faq .faqq .f-top i{
+                     width: 8%;
+                     font-size: 3vmax;
+                  }
+                  .Faq .faqq .f-top input {
+                    width: 92%;
+                    padding: 2vmax 1vmax;
+                  }
+          .Faq .faqq .f-btm {
+            margin-top: 1.3vmax;
+          }
+          .Faq .faqq .f-btm .line {
+            margin-top: 3vmax;
+          }
+          .Faq .faqq .f-btm .line .one i {
+            font-size: 2.6vmax;
+          }
+        }
+        
+        @media (min-width: 600px) and (max-width: 1250px) {
+          .Faq .faqq {
+                    width: 95%;
+                  }
+                  .Faq .faqq h5 {
+                    font-size: 3.6vmax;
+                  }
+                  .Faq .faqq .f-top {
+                            margin-top: 4vmax;
+                          }
+                          .Faq .faqq .f-top i{
+                             width: 8%;
+                             font-size: 3vmax;
+                          }
+                          .Faq .faqq .f-top input {
+                            width: 92%;
+                            padding: 2vmax 1vmax;
+                          }
+                  .Faq .faqq .f-btm {
+                    margin-top: 1.3vmax;
+                  }
+                  .Faq .faqq .f-btm .line {
+                    margin-top: 3vmax;
+                  }
+                  .Faq .faqq .f-btm .line .one i {
+                    font-size: 2.6vmax;
+                  }
+        }
+        

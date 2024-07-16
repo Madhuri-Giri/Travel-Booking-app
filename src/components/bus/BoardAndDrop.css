@@ -1,0 +1,106 @@
+.BordingDroping {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .BordingDroping .bord-drop {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+        }
+        
+        .BordingDroping .bord-drop h5 {
+          width: 100%;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+          padding: 1vmax;
+          font-weight: 600;
+          font-size: 1vmax;
+          color: #fff;
+          background: #0a223d;
+
+        }
+        .BordingDroping .bord-drop h5 i{
+         margin-right: 1vmax;
+        }
+        
+        .BordingDroping .bord-drop .DB-top {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: row;
+          margin-bottom: 2vmax;
+        }
+        
+        .BordingDroping .bord-drop .DB-top .tab {
+          padding: 1vmax;
+          font-size: 1.2vmax;
+          cursor: pointer;
+        }
+        
+        .BordingDroping .bord-drop .DB-top .tab.active {
+          color: blue;
+        }
+        
+        .BordingDroping .bord-drop .all-Bording-point,
+        .BordingDroping .bord-drop .all-Droping-point {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+        }
+        
+        .BordingDroping .bord-drop .all-Bording-point p,
+        .BordingDroping .bord-drop .all-Droping-point p {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.2vmax;
+          font-weight: 600;
+        }
+        
+        .BordingDroping .bord-drop .all-Bording-point .boring-last,
+        .BordingDroping .bord-drop .all-Droping-point .boring-last {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+        }
+        
+        .BordingDroping .bord-drop .all-Bording-point .boring-last .bord-last,
+        .BordingDroping .bord-drop .all-Droping-point .boring-last .bord-last {
+          width: 90%;
+          display: flex;
+          align-items: center;
+          justify-content: space-evenly;
+          flex-direction: row;
+          padding: 1vmax;
+        }
+        
+        .BordingDroping .bord-drop .all-Bording-point .boring-last .bord-last .bd-one,
+        .BordingDroping .bord-drop .all-Droping-point .boring-last .bord-last .bd-one {
+          width: 30%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .BordingDroping .bord-drop .all-Bording-point .boring-last .bord-last .bd-two,
+        .BordingDroping .bord-drop .all-Droping-point .boring-last .bord-last .bd-two {
+          width: 30%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        
