@@ -435,16 +435,6 @@
     border-radius: 4px;
     font-weight: bold;
 }
-.input-content{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid gray;
-    padding-left: 0.3vmax;
-    border-radius: 19px;
-}
 
 
 /* responsive css */
@@ -473,6 +463,11 @@
 }
 /* responsive css */
 @media screen and (max-width: 576px) {
+
+    .home-flight-search button {
+        width: 100% !important;
+    }
+
     .flightTravellerclss {
         padding: 0px 0px;
         padding-top: 7px;
@@ -496,7 +491,8 @@
         border-radius: 4px;
     }
     .flightTravellerclss {
-        margin-left: unset !important;
+        margin-left: 7px !important;
+        width: 90% !important;
     }
     .flightmainBooking label {
         font-size: 12px !important;
@@ -527,6 +523,10 @@
         padding: 3px 5px !important;
         font-size: 13px;
         background-color: #f8f9fa;
+    }
+    .flightformRow input {
+        padding: 6px 16px !important;
+        font-size: 13px !important;
     }
         font-size: 13px;
     }
