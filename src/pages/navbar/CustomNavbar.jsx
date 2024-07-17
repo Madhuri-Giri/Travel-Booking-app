@@ -18,6 +18,7 @@ const CustomNavbar = () => {
         <>
             <Navbar expand="lg" className="mainNavbar">
                 <Container>
+                   
                     <Navbar.Brand href="/flight-search" className='navbarlogo'>
                         <img  width={150}  src={MainLogo} className='img-fluid logoimg' alt="logo" />
                     </Navbar.Brand>
