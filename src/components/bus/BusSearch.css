@@ -53,7 +53,7 @@
           align-items: flex-start;
           justify-content: center;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt{
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus{
           width: 100%;
           display: flex;
           align-items: flex-start;
@@ -61,7 +61,7 @@
           flex-direction: column;
           gap: 0.3vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt .input-content{
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .input-content{
           width: 100%;
           display: flex;
           flex-direction: row;
@@ -70,23 +70,24 @@
           border: 1px solid #0000003f;
           padding-left: 0.3vmax;
  }
- .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt .input-content i{
+ .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .input-content i{
           font-size: 1.4vmax;
           color: #0000009a;
           cursor: pointer;
  }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt .input-content input{
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .input-content input{
           width: 100%;
           outline: none;
           border: none;
           padding: 0.5vmax 1vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt  label{
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus  label{
           font-weight: 600;
            font-size: 1.2vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt .input-content input[type="date"]::-webkit-calendar-picker-indicator {
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .input-content input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
+  
 }
 .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn{
           width: 20%;
@@ -144,21 +145,21 @@
 .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one{
     width: 100%;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt{
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus{
     width: 100%;
     margin-top: 2vmax;
 }
 
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt .input-content i{
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .input-content i{
     font-size: 3vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt .input-content input{
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .input-content input{
     padding: 1.6vmax 1vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt  label{
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus  label{
      font-size: 2.5vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt .input-content .date-input::-webkit-calendar-picker-indicator {
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .input-content .date-input::-webkit-calendar-picker-indicator {
     display: none; 
   }
 .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn{
@@ -184,21 +185,21 @@
 .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one{
     width: 100%;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt{
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus{
     width: 100%;
     margin-top: 2vmax;
 }
 
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt .input-content i{
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .input-content i{
     font-size: 3vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt .input-content input{
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .input-content input{
     padding: 1.6vmax 1vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt  label{
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus  label{
      font-size: 2.5vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt .input-content .date-input::-webkit-calendar-picker-indicator {
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .input-content .date-input::-webkit-calendar-picker-indicator {
     display: none; 
   }
 .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn{
