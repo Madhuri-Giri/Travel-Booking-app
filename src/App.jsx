@@ -21,6 +21,12 @@ import PassangerInfo from './components/bus/PassangerInfo';
 import PassengerList from './components/bus/PassengerList';
 import ReviewBooking from './components/bus/ReviewBooking';
 
+import HotelRoom from './components/hotelroom/HotelRoom'
+import GuestDetails from './components/guestDetails/GuestDetails';
+import HotelDescription from './components/hotelDescription/HotelDescription'
+import Help from './components/help/Help';
+import Reviews from './components/reviews/Review'
+
 
 const App = () => {
   return (
@@ -46,6 +52,15 @@ const App = () => {
           <Route path='/review-booking' element={<ReviewBooking/>} />
           <Route path='/hotel-search' element={<HotelSearch />} />
           <Route path='/hotel-list' element={<HotelList />} />
+
+<Route path='/hotel-room' element={<HotelRoom />} />
+          <Route path='/hotel-guest' element={<GuestDetails />} />
+          <Route path='/hotel-description' element={<HotelDescription />} />
+          <Route path='/help' element={<Help />} />
+          <Route path='/review' element={<Reviews />} />
+
+
+
           
         </Routes>
         <Footer/>        
