@@ -61,7 +61,7 @@ const busSlice = createSlice({
           // Save specific values to local storage
           localStorage.setItem('traceId', data.TraceId);
           localStorage.setItem('resultIndex', data.Result[0].ResultIndex);
-          console.log('API Response :', data);
+          console.log('Search API Response :', data);
         }
       })
       .addCase(searchBuses.rejected, (state, action) => {
