@@ -104,3 +104,30 @@
         margin-left: 20px;
     }
 }
+
+
+@media screen and (max-width: 576px) {
+    .navbarlogo img {
+        height: 50px !important;
+    }
+    .flightPageBanner {
+        background-color: #00b7eb;
+        padding: 10px 10px !important;
+    }
+    .flightbooksec3 h5 {
+        font-size: 18px !important;
+    }
+    .flightbooksec3 {
+        padding: 10px 10px !important;
+    }
+    .exclusive-dealsSec {
+        padding: 5px 1px !important;
+    }
+    .flightsec7 {
+        padding: 0px 5px !important;
+    }
+    .flightsec6coldiv h1 {
+        font-size: 15px !important;
+    }    
+   
+}

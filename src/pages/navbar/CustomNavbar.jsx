@@ -16,7 +16,7 @@ const CustomNavbar = () => {
         <>
             <Navbar expand="lg" className="mainNavbar">
                 <Container>
-                    <Navbar.Brand href="/home" className='navbarlogo'>
+                    <Navbar.Brand href="/" className='navbarlogo'>
                         <img src='/src/assets/images/download-removebg-preview.png' className='img-fluid logoimg' alt="logo" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
