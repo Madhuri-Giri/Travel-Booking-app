@@ -8,6 +8,7 @@ import { searchBuses } from '../../redux-toolkit/slices/busSlice';
 const BusLists = () => {
   const dispatch = useDispatch();
   const dateMidRef = useRef(null);
+  const [layoutResponse, setLayoutResponse] = useState(null);
   const { from, to, selectedBusDate, searchResults, status, error } = useSelector((state) => state.bus);
 
   // State to manage the visibility of layout data for each bus
@@ -105,7 +106,9 @@ const BusLists = () => {
   
       const data = await response.json(); // Parse response JSON
   
-      console.log('Layout Response:', data); // Log parsed response data
+      console.log('SeatLayout API Response:', data); // Log parsed response data
+      setLayoutResponse(data);
+      
   
     } catch (error) {
       console.error('Error adding seat layout:', error.message);
@@ -244,7 +247,7 @@ const BusLists = () => {
                       {/* --------------------------------------------------------------------------------------------------------------- */}
 
                       {visibleLayout[index] && (
-                        <BusLayout bus={bus} />
+                       <BusLayout layoutResponse={layoutResponse} />
                       )}
 
 

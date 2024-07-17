@@ -15,7 +15,7 @@
 .BusLayout .Seat-layout .seats {
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   flex-direction: row;
   box-shadow: 2px 2px 5px 2px rgb(211, 211, 211);
@@ -27,7 +27,6 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border-right: 1px solid #00000069;
 }
 
 .BusLayout .Seat-layout .seats .left-top {
@@ -199,7 +198,7 @@
 }
 
 .BusLayout .Seat-layout .seats .right .right-btm .tax {
-  width: 90%;
+  width: 95%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -209,7 +208,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 90%;
+  width: 95%;
+  margin-bottom: 1vmax;
 }
 
 .BusLayout .Seat-layout .seats .right .right-btm .proceed button {
