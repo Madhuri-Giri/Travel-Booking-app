@@ -90,7 +90,7 @@ const BusSearch = () => {
                 <div className="one">
                   <div className="ipt-bus">
                     <label>From</label>
-                    <div className="input-content">
+                    <div className="ipt-handle">
                       <i className="ri-map-pin-line"></i>
                       <input
                         type="text"
@@ -113,7 +113,7 @@ const BusSearch = () => {
                 <div className="one">
                   <div className="ipt-bus">
                     <label>To</label>
-                    <div className="input-content">
+                    <div className="ipt-handle">
                       <i className="ri-map-pin-line"></i>
                       <input
                         type="text"
@@ -136,7 +136,7 @@ const BusSearch = () => {
                 <div className="one">
                   <div className="ipt-bus">
                     <label>Departure Date</label>
-                    <div className="input-content">
+                    <div className="ipt-handle">
                       <i className="ri-calendar-2-line" onClick={handleIconClick}></i>
                       <input
                         type="date"
