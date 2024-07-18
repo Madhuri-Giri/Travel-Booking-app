@@ -48,7 +48,6 @@ const BoardAndDrop = () => {
         }
 
         const data = await response.json();
-        console.log('Add boarding response:', data);
 
         setBoardingPoints(data.BoardingPoints || []);
         setDroppingPoints(data.DroppingPoints || []);
@@ -70,17 +69,16 @@ const BoardAndDrop = () => {
 
   const handleSelectDropping = (index) => {
     setSelectedDropping(index);
-   // navigate('/passanger-info');
- 
+    navigate('/passenger-info');
 
   //  --------------------
-  const passengersAlreadyAdded = localStorage.getItem('passengersAlreadyAdded');
-    if (passengersAlreadyAdded) {
-      navigate('/passenger-list');
-    } else {
-      localStorage.setItem('passengersAlreadyAdded', true);
-      navigate('/passanger-info');
-    }
+  // const passengersAlreadyAdded = localStorage.getItem('passengersAlreadyAdded');
+  //   if (passengersAlreadyAdded) {
+  //     navigate('/passenger-list');
+  //   } else {
+  //     localStorage.setItem('passengersAlreadyAdded', true);
+  //     navigate('/passenger-info');
+  //   }
   // ---------------------
 
 
@@ -90,7 +88,7 @@ const BoardAndDrop = () => {
 
 
   const backHandlerList = () => {
-    navigate('/buslist')
+    navigate('/bus-list')
   }
 
 
