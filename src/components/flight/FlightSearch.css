@@ -100,12 +100,12 @@
 }
 
 .date-picker-wrapper .form-control {
-    padding-right: 30px;
-    /* Add space for the icon */
+    /* padding-right: 30px;
     padding-right: 30px;
     border: 1px solid gray;
     border-radius: 19px;
-    padding: 11px 20px;
+    padding: 11px 20px; */
+    border: none;
 }
 
 .date-picker-icon {
@@ -437,7 +437,6 @@
 }
 
 
-
 /* responsive css */
 @media screen and (max-width: 400px) {
     .date-picker-wrapper .form-control {
@@ -464,6 +463,11 @@
 }
 /* responsive css */
 @media screen and (max-width: 576px) {
+
+    .home-flight-search button {
+        width: 100% !important;
+    }
+
     .flightTravellerclss {
         padding: 0px 0px;
         padding-top: 7px;
@@ -471,7 +475,55 @@
         margin: 0px 0px;
     }
     .onewayreturnhidebtn{
+        font-size: 10px;
+    }
+    .date-picker-wrapper .form-control {
         font-size: 13px;
     }
+
+    .travellerdropdown {
+        position: absolute;
+        background-color: #fff;
+        box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        width: 264px !important;
+        padding-bottom: 20px;
+        border-radius: 4px;
+    }
+    .flightTravellerclss {
+        margin-left: 7px !important;
+        width: 90% !important;
+    }
+    .flightmainBooking label {
+        font-size: 12px !important;
+    }
+
+    .date-picker-wrapper .form-control {
+        padding: 5px 10px !important;
+    
+    }
+    .home-flight-search button {
+        background-color: #00b7eb;
+        border: 1px solid #00b7eb;
+        color: white;
+        border-radius: 12px;
+        padding: 8px 81px !important;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .flightTravellerclss p {
+        font-weight: 500;
+        font-size: 11px !important;
+    }
+    .flightmainBooking .onewaybutton, .flightmainBooking .twowaybutton {
+        border: 1px solid gray;
+        border-radius: 19px;
+        background: no-repeat;
+        background-color: transparent;
+        padding: 3px 5px !important;
+        font-size: 13px;
+        background-color: #f8f9fa;
+    }
+
 
 }

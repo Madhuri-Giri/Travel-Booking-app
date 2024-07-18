@@ -10,14 +10,17 @@ import { GiCommercialAirplane } from 'react-icons/gi';
 import { TbBus } from "react-icons/tb";
 import { PiSuitcaseSimpleDuotone } from "react-icons/pi";
 import { BsBookmarkStarFill } from "react-icons/bs";
+import MainLogo from "../../assets/images/main logo.png"
+
 
 const CustomNavbar = () => {
     return (
         <>
             <Navbar expand="lg" className="mainNavbar">
                 <Container>
+                   
                     <Navbar.Brand href="/flight-search" className='navbarlogo'>
-                        <img src='/src/assets/images/download-removebg-preview.png' className='img-fluid logoimg' alt="logo" />
+                        <img   src={MainLogo} className='img-fluid logoimg' alt="logo" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -78,13 +81,21 @@ const CustomNavbar = () => {
             <div className="container-fluid mobilehedrbookings">
                 <div className="row">
                     <div className="col-3">
-                        <Link to='/flight-search'>Flight</Link>
+                        <Link to='/flight-search'>
+                         <GiCommercialAirplane className="icon" size={20} />
+                         Flight
+                        </Link>
                     </div>
                     <div className="col-3">
-                        <Link to='/bus-search'>Bus</Link>
+                        <Link to='/bus-search'>
+                        <TbBus className="icon" size={22} />Bus
+                        </Link>
                     </div>
                     <div className="col-3">
-                        <Link to='/hotel-search'>Hotel</Link>
+                        <Link to='/hotel-search'>   
+                        <RiHotelBedFill className="icon" size={22} />
+                         Hotel
+                        </Link>
                     </div>
                 </div>
             </div>
