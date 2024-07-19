@@ -1,5 +1,4 @@
 import  { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import { format } from 'date-fns';
 import './HotelRoom.css';
 import { Container } from 'react-bootstrap';
@@ -18,14 +17,9 @@ const HotelRoom = () => {
     }
   }, []);
 
-  const navigate = useNavigate();
-  const reserveHandler = () => {
-    navigate('/hotel-guest')
-  }
-
   return (
     <>
-      
+
       <Container>
         <div className="hotel_room_container">
           <h3>Select Room</h3>
@@ -45,8 +39,8 @@ const HotelRoom = () => {
                       <p key={policyIndex}>{policy.FromDate} - {policy.ToDate}: INR {policy.Charge}</p>
                     ))}
                   </div>
-                  <button onClick={reserveHandler} className="reserve_button">Reserve</button>
-                 
+                  <button className="reserve_button">Reserve</button>
+                  <button className="continue_button">Continue</button>
 
                 </div>
               ))}
