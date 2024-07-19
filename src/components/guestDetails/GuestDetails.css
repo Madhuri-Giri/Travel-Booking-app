@@ -1,9 +1,9 @@
-.guest_details_container {
+  .guest_details_container {
   background-color: #f8f9fa;
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 .section_title {
@@ -29,18 +29,18 @@
 
 .info_section {
   margin-bottom: 10px;
-}
-
-.guest_details_form {
+  }
+  
+  .guest_details_form {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+  
 .form_title {
   font-size: 1.5em;
-  margin-bottom: 20px;
+    margin-bottom: 20px;
   color: #343a40;
   text-align: center;
 }
@@ -49,37 +49,37 @@
   margin-bottom: 10px;
   color: #333;
 }
-.guest_detail {
-  margin-bottom: 15px;
-}
-
-.guest_detail label {
-  display: block;
-  margin-bottom: 5px;
+  .guest_detail {
+    margin-bottom: 15px;
+  }
+  
+  .guest_detail label {
+    display: block;
+    margin-bottom: 5px;
   color: #343a40;
-}
-
-.guest input {
-  width: 100%;
+  }
+  
+  .guest input {
+    width: 100%;
   padding: 10px;
   border: 1px solid #ced4da;
   border-radius: 5px;
-}
-
+  }
+  
 .submit_btn {
   display: inline-block;
-  padding: 10px 20px;
-  font-size: 16px;
+    padding: 10px 20px;
+    font-size: 16px;
   color: #fff;
   background-color:  #007bff;
-  border: none;
+    border: none;
   border-radius: 5px;
-  cursor: pointer;
+    cursor: pointer;
   margin-top: 20px;
   margin-left: 20px;
-  transition: background-color 0.3s ease;
-}
-
-.submit_btn:hover {
-  background-color: #0056b3;
-}
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit_btn:hover {
+    background-color: #0056b3;
+  }

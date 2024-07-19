@@ -12,13 +12,14 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 
 const HotelSearch = () => {
   const slideRef = useRef(null);
   const intervalRef = useRef(null);
   const scrollWidthRef = useRef(0);
 
-  const navigate =  useNavigate()
+  const navigate = useNavigate();
 
   const startAutoScroll = () => {
     intervalRef.current = setInterval(() => {
@@ -54,8 +55,8 @@ const HotelSearch = () => {
 
   const [inputs, setInputs] = useState({
     cityOrHotel: '',
-    checkIn: new Date(),
-    checkOut: new Date(),
+    checkIn: new Date('2020-04-30'),
+    checkOut: new Date('2020-05-01'),
     adults: 1,
     children: 0,
   });
@@ -79,11 +80,64 @@ const HotelSearch = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(inputs);
+    const requestData = {
+      BookingMode: "5",
+      CheckInDate: format(inputs.checkIn, 'dd/MM/yyyy'),
+      NoOfNights: "1",
+      CountryCode: "IN",
+      CityId: "130443",
+      ResultCount: null,
+      PreferredCurrency: "INR",
+      GuestNationality: "IN",
+      NoOfRooms: "1",
+      RoomGuests: [
+        {
+          NoOfAdults: inputs.adults,
+          NoOfChild: inputs.children.toString(),
+          ChildAge: []
+        }
+      ],
+      PreferredHotel: "",
+      MaxRating: "5",
+      MinRating: "0",
+      ReviewScore: null,
+      IsNearBySearchAllowed: false
+    };
 
-    navigate('/hotel-list')
+    console.log('Request Data:', requestData);
+
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/search-hotel', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('API Response:', data);
+
+      if (data) {
+        localStorage.setItem('traceId', '1');
+        localStorage.setItem('resultIndex', '1');
+        localStorage.setItem('srdvType', 'SingleTB');
+        localStorage.setItem('srdvIndex', 'SrdvTB');
+        
+        navigate('/hotel-list', { state: { searchResults: data.Results } });
+      } else {
+        console.error('No search results found or error in response:', data);
+      }
+    } catch (error) {
+      console.error('Error searching hotel:', error);
+    }
   };
 
   const handleClickOutside = (event) => {
@@ -128,10 +182,6 @@ const HotelSearch = () => {
     ],
   };
 
-  const navigateHandler = () => {
-    navigate('/hotel-list')
-  }
-
   return (
     <>
       <div className="hotel_container">
@@ -142,8 +192,8 @@ const HotelSearch = () => {
                 <h1>Discover Your Perfect Getaway</h1>
                 <p>
                   Experience luxury and comfort at Hotel. Located in the heart of City, our hotel offers top-notch
-                  amenities and services.Explore our curated list of top-rated hotels tailored just for you.Choose from a
-                  variety of room types to suit your needs and preferences.Enter your destination, dates, and preferences
+                  amenities and services. Explore our curated list of top-rated hotels tailored just for you. Choose from a
+                  variety of room types to suit your needs and preferences. Enter your destination, dates, and preferences
                   to find the perfect stay.
                 </p>
               </div>
@@ -186,57 +236,80 @@ const HotelSearch = () => {
                   />
                 </div>
                 <div className="form-field">
-                  <label className='form_lable' htmlFor="checkIn">Check-In: </label>
-                  <DatePicker className='form_in' id="checkIn" selected={inputs.checkIn} onChange={(date) => handleDateChange(date, 'checkIn')} />
+                  <label className='form_lable' htmlFor="checkIn">Check-In Date:</label>
+                  <DatePicker
+                    className='form_in'
+                    selected={inputs.checkIn} // Use selected prop
+                    onChange={(date) => handleDateChange(date, 'checkIn')}
+                    dateFormat="dd/MM/yyyy"
+                    placeholderText="Select check-in date"
+                  />
                 </div>
                 <div className="form-field">
-                  <label className='form_lable' htmlFor="checkOut">Check-Out: </label>
-                  <DatePicker className='form_in'  id="checkOut" selected={inputs.checkOut} onChange={(date) => handleDateChange(date, 'checkOut')} />
+                  <label className='form_lable' htmlFor="checkOut">Check-Out Date:</label>
+                  <DatePicker
+                    className='form_in'
+                    selected={inputs.checkOut} // Use selected prop
+                    onChange={(date) => handleDateChange(date, 'checkOut')}
+                    dateFormat="dd/MM/yyyy"
+                    placeholderText="Select check-out date"
+                  />
                 </div>
-                <div className="form-field">
-                  <label className='form_lable' htmlFor="guests">Guests: </label>
+                <div className="form-field guest_field">
+                  <label className='form_lable' htmlFor="guestField">Guests:</label>
                   <input className='form_in'
                     type="text"
-                    id="guests"
-                    name="guests"
+                    id="guestField"
+                    name="guestField"
+                    placeholder="Guests"
+                    onClick={() => setShowGuestOptions(!showGuestOptions)}
                     value={`${inputs.adults} Adults, ${inputs.children} Children`}
-                    onFocus={() => setShowGuestOptions(true)}
                     readOnly
                   />
                   {showGuestOptions && (
-                    <div className="guest-options" ref={guestRef}>
-                      <div className="guest-type">
-                        <span>Adults</span>
-                        <Button onClick={() => handleGuestChange('adults', 'decrement')}>-</Button>
-                        <span className='form_span'>{inputs.adults}</span>
-                        <Button onClick={() => handleGuestChange('adults', 'increment')}>+</Button>
+                    <div ref={guestRef} className="guest_options">
+                      <div className="guest_option">
+                        <label htmlFor="adults">Adults:</label>
+                        <button
+                          type="button"
+                          onClick={() => handleGuestChange('adults', 'decrement')}
+                        >
+                          -
+                        </button>
+                        <span>{inputs.adults}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleGuestChange('adults', 'increment')}
+                        >
+                          +
+                        </button>
                       </div>
-                      <div className="guest-type">
-                        <span>Children</span>
-                        <Button onClick={() => handleGuestChange('children', 'decrement')}>-</Button>
-                        <span className='form_span'>{inputs.children}</span>
-                        <Button onClick={() => handleGuestChange('children', 'increment')}>+</Button>
+                      <div className="guest_option">
+                        <label htmlFor="children">Children:</label>
+                        <button
+                          type="button"
+                          onClick={() => handleGuestChange('children', 'decrement')}
+                        >
+                          -
+                        </button>
+                        <span>{inputs.children}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleGuestChange('children', 'increment')}
+                        >
+                          +
+                        </button>
                       </div>
-                      <Button className="btn_sub_guest" onClick={() => setShowGuestOptions(false)}>
-                        Done
-                      </Button>
                     </div>
                   )}
                 </div>
-                <div>
-                  <label style={{visibility:"hidden"}} className='vbnm' htmlFor="guests">Guests: </label>
-                   
-                  <button  type="submit" className="btn-sub ">
-                    Submit
-                  </button>
-                </div>
               </div>
+              <button className='btn_serch' type="submit">Search</button>
             </form>
           </div>
         </section>
-      </div>
-
-      <section>
+</div>
+        <section>
         <Container>
           <div className="Exclusive-offer">
             <h5>
@@ -279,4 +352,4 @@ const HotelSearch = () => {
   );
 };
 
-export default HotelSearch;
+export default HotelSearch;    

@@ -1,70 +1,110 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
-import Carousel from 'react-bootstrap/Carousel';
-import ratingStar from '../../../src/assets/images/star_img.png';
+import { format } from 'date-fns';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import './HotelDescription.css';
-import { useNavigate } from "react-router-dom";
+import parse from 'html-react-parser';
+import { useNavigate } from 'react-router-dom';
 
+const renderStar = (rating) => {
+  let stars = [];
+  for (let i = 0; i < rating; i++) {
+    stars.push(
+      <FontAwesomeIcon key={i} icon={faStar} size="lg" color="#FFD700" />
+    );
+  }
+  return stars;
+};
+
+const trimText = (text, maxLength) => {
+  const cleanText = text.replace(/<[^>]+>/g, '').replace(/(?:\r\n|\r|\n)/g, ' ');
+  return cleanText.length > maxLength ? cleanText.substring(0, maxLength) + "..." : cleanText;
+};
 
 const HotelDescription = () => {
+  const [hotelRooms, setHotelRooms] = useState([]);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const roomHandler = () => {
-    navigate('/hotel-room')
+  const hotel = JSON.parse(localStorage.getItem('selectedHotel'));
+
+  const fetchData = async () => {
+    const traceId = localStorage.getItem('traceId');
+    const srdvType = localStorage.getItem('srdvType');
+    const srdvIndex = localStorage.getItem('srdvIndex');
+    const resultIndex = "9";
+
+    try {
+      const requestData = {
+        NoOfRooms: 1,
+        CheckInDate: format(new Date('2020-04-30'), 'dd/MM/yyyy'),
+        MaxRating: 5,
+        NoOfNights: 1,
+        CityId: '130443',
+        TraceId: traceId,
+        SrdvType: srdvType,
+        SrdvIndex: srdvIndex,
+        ResultIndex: resultIndex,
+        HotelCode: "92G|DEL"
+      };
+
+      console.log('Request Data:', requestData);
+
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-room', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch hotel rooms. Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Response Data:', data);
+
+      if (data && data.GetHotelRoomResult && data.GetHotelRoomResult.HotelRoomsDetails && data.GetHotelRoomResult.HotelRoomsDetails.length > 0) {
+        setHotelRooms(data.GetHotelRoomResult.HotelRoomsDetails);
+        localStorage.setItem('hotelRooms', JSON.stringify(data.GetHotelRoomResult.HotelRoomsDetails));
+        setError(null);
+      } else {
+        setError(data.message || 'No hotel rooms found.');
+      }
+    } catch (error) {
+      console.error('Error fetching hotel rooms:', error);
+      setError('Failed to fetch hotel rooms. Please try again later.');
+    }
+  };
+
+  useEffect(() => {
+    if (hotel) {
+      fetchData();
+    } else {
+      navigate('/hotel-list');
+    }
+  }, [hotel, navigate]);
+
+  const handleAddRoomClick = () => {
+    navigate('/hotel-room');
+  };
+
+  if (!hotel) {
+    return null;
   }
-  const images = [
-    "https://www.siteminder.com/wp-content/uploads/2023/08/vala-hero.jpg",
-    "https://www.siteminder.com/wp-content/uploads/2023/08/vala-hero.jpg",
-    "https://www.siteminder.com/wp-content/uploads/2023/08/vala-hero.jpg",
-    "https://www.siteminder.com/wp-content/uploads/2023/08/vala-hero.jpg",
-    
-  ];
 
   return (
-
-
-    <Container>
-     <div className="search_Item">
-    <Carousel className="hotelCarousel">
-          {images.map((img, index) => (
-            <Carousel.Item key={index}>
-              <img
-                src={img}
-                alt={`Slide ${index}`}
-                className="hotel_Img"
-              />
-            </Carousel.Item>
-          ))}
-        </Carousel>
-     
-        <div className="Description_hotel">
-          <h1 className="Title_hotel">Tower Street Apartments</h1>
-          <span className="Distance_hotel">500m from center</span>
-          <span className="Taxi_hotel">Free airport taxi</span>
-          <span className="Subtitle_hotel">
-            Studio Apartment with Air conditioning
-          </span>
-          <span className="Features_hotel">
-            Entire studio • 1 bathroom • 21m² 1 full bed
-          </span>
-          <span className="Cancel_hotel">Free cancellation </span>
-          <span className="Cancel_Subtitle">
-            You can cancel later, so lock in this great price today!
-          </span>
-          <div className="Details_hotel">
-            <div className="Rating_hotel">
-              <span>Excellent</span>
-              <img className="rating_star_hotel" src={ratingStar} alt="rating" />
-            </div>
-            <div className="DetailTexts_hotel">
-              <span className="Price_hotel"> ₹112</span>
-              <span className="Tax_hotel">Includes taxes and fees</span>
-              <button onClick={roomHandler} className="hotel_Button">Add Room </button>
-            </div>
-          </div>
+    <>
+      <Container>
+        <div className='hotel_description_container'>
+          <h2>{hotel.HotelName}</h2>
+          <div>{renderStar(hotel.StarRating)}</div>
+          <p>{parse(trimText(hotel.Description, 200))}</p>
+          <button className='add_room_btn' onClick={handleAddRoomClick}>Add Room</button>
         </div>
-        
-      </div>
-    </Container>
+      </Container>
+    </>
   );
 };
 
