@@ -5,6 +5,7 @@ import busImg from "../../assets/images/bus.png2.png";
 import BusLayout from './BusLayout';
 import { searchBuses } from '../../redux-toolkit/slices/busSlice';
 
+
 const BusLists = () => {
   const dispatch = useDispatch();
   const dateMidRef = useRef(null);
@@ -13,6 +14,9 @@ const BusLists = () => {
 
   // State to manage the visibility of layout data for each bus
   const [visibleLayout, setVisibleLayout] = useState({});
+
+  const [isTravelListVisible, setIsTravelListVisible] = useState(false);
+
 
   useEffect(() => {
     // Dispatch the searchBuses action when component mounts
@@ -48,11 +52,6 @@ const BusLists = () => {
 
   const dates = generateDates(30);
 
-  // Sample data for sidebar
-  const seatTypes = ['Sleeper', 'Seater'];
-  const travelOperators = ['Operator 1', 'Operator 2', 'Operator 3'];
-  const pickUpPoints = ['Point A', 'Point B'];
-  const dropPoints = ['Point C', 'Point D'];
 
   // Function to convert UTC time to IST
   const convertUTCToIST = (utcTimeString) => {
@@ -73,6 +72,11 @@ const BusLists = () => {
     }));
   };
 
+  const toggleTravelList = () => {
+    setIsTravelListVisible((prev) => !prev);
+  };
+
+  
  
 
   const addSeatLayout = async () => {
@@ -154,35 +158,67 @@ const BusLists = () => {
               <div className="seat-type">
                 <h6>Seat Type</h6>
                 <div className="filter-seat">
-                  {seatTypes.map((seat, index) => (
-                    <p key={index} style={{ cursor: 'pointer' }}>{seat}</p>
-                  ))}
+                      <div className="sleeper">
+                          <p>Sleeper</p>
+                      </div>
+                      <div className="seater">
+                      <p>Seater</p>
+                      </div>
                 </div>
               </div>
-              <div className="Travel-operator">
-                <h6>Travel Operators</h6>
-                <div className="travel-list">
-                  {travelOperators.map((operator, index) => (
-                    <p key={index}>{operator}</p>
-                  ))}
-                </div>
+              <div className="Travel-operator"> 
+                <h6 onClick={toggleTravelList}>
+                <span> Travel Operators</span> <i  className={`ri-arrow-${isTravelListVisible ? 'up' : 'down'}-s-line down-aro`}></i>
+                </h6>
+                {isTravelListVisible && (
+                  <div className="travel-list">
+                    {searchResults.map((bus, index) => (
+                      <p key={index}>{bus.TravelName}</p>
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="pick-up">
-                <h6><span>Pick Up Points </span> <span>Pick Up Time: <small style={{ color: "#000000b9" }}>12 AM</small></span></h6>
-                <div className="pick-list">
-                  {pickUpPoints.map((point, index) => (
-                    <p key={index}>{point}</p>
-                  ))}
-                </div>
+              <h6>
+                <span>{from} </span>
+              <i  className={`ri-arrow-${isTravelListVisible ? 'up' : 'down'}-s-line down-aro`}></i>
+              </h6>
+                {searchResults.map((bus, index) => (
+                     <div key={index}>
+                     <div className="pick-list">
+                      <p>
+                      <span style={{fontWeight:"600"}}>Pick-Up Point & Time:</span>
+                      <small style={{fontSize:'0.8vmax'}}>{bus.BoardingPoints.map((point, i) => (
+                        <div key={i}>
+                           {point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})
+                        </div>
+                      ))}</small> 
+                      </p>
+                     </div>
+                     </div>
+                ))}
               </div>
               <div className="drop-up">
-                <h6><span>Drop Points</span> <span>Drop Time: <small style={{ color: "#000000b9" }}>12 AM</small></span></h6>
-                <div className="drop-list">
-                  {dropPoints.map((point, index) => (
-                    <p key={index}>{point}</p>
-                  ))}
-                </div>
+              <h6>
+                <span>{to} </span>
+              <i  className={`ri-arrow-${isTravelListVisible ? 'up' : 'down'}-s-line down-aro`}></i>
+              </h6>
+                 {searchResults.map((bus, index) => (       
+                     <div key={index}>
+                     <div className="drop-list">
+                      <p>
+                      <span style={{fontWeight:"500"}}>Drop Points & Time:</span>
+                      <small style={{fontSize:'0.8vmax'}}>{bus.DroppingPoints.map((point, i) => (
+                        <div key={i}>
+                           {point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})
+                        </div>
+                      ))}</small> 
+                      </p>
+                     </div>
+                     </div>
+                ))}
               </div>
+             
             </div>
           </div>
 
