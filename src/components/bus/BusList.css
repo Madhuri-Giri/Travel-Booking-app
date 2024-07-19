@@ -5,6 +5,7 @@
           justify-content: center;
 }
 
+
 .BusLists .busList{
           width: 100%;
           margin-bottom: 1vmax;
@@ -133,68 +134,159 @@
           flex-direction: row;
           justify-content: space-between;
           color: #000000b9;
+          margin-top: 1vmax;
  }
+ .bus-sidebar .busSide .seat-type .filter-seat .sleeper{
+        width: 45%;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        cursor: pointer;
+        border: 0.4px solid #00000022;
+}
+.bus-sidebar .busSide .seat-type .filter-seat .sleeper:hover{  
+      color: rgba(0, 0, 255, 0.628);
+      border-color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar .busSide .seat-type .filter-seat .sleeper p{  
+        margin-top: 0.8vmax;
+}
+
+.bus-sidebar .busSide .seat-type .filter-seat .seater{
+        width: 45%;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        cursor: pointer;
+        border: 0.4px solid #00000022;
+}
+.bus-sidebar .busSide .seat-type .filter-seat .seater:hover{  
+        color: rgba(0, 0, 255, 0.628);
+        border-color: rgba(0, 0, 255, 0.628);
+  }
+.bus-sidebar .busSide .seat-type .filter-seat .seater p{   
+        margin-top: 0.8vmax;
+}
  .bus-sidebar .busSide .Travel-operator{
           width: 100%;
            padding: 1vmax;
            border-bottom: 1px solid #00000022;
+ }
+ .bus-sidebar .busSide .Travel-operator h6{
+        width: 100%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+ }
+ .bus-sidebar .busSide .Travel-operator h6:hover{
+        width: 100%;
+        cursor: pointer;
+        color: rgba(0, 0, 255, 0.628);
+ }
+ .bus-sidebar .busSide .Travel-operator h6 .down-aro{
+        font-size: 1.5vmax;
  }
  .bus-sidebar .busSide .Travel-operator .travel-list{
           width: 100%;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          color: #000000b9;   
+          color: #000000b9; 
+          margin-top: 1vmax;
  }
  .bus-sidebar .busSide .Travel-operator .travel-list p{
         cursor: pointer;
+        border: 1px solid #00000022;
+        border-radius: 5px;
+        padding: 0.4vmax;
+        font-size: 0.9vmax;
  }
+ .bus-sidebar .busSide .Travel-operator .travel-list p:hover{
+        color: rgba(0, 0, 255, 0.628);
+        border-color: rgba(0, 0, 255, 0.628);
+ }
+ .bus-sidebar .busSide .pick-up{
+        width: 100%;
+         padding: 1vmax;
+         border-bottom: 1px solid #00000022;
+}
+.bus-sidebar .busSide .pick-up h6{
+      font-size: 1.2vmax;
+      width: 100%;
+      margin-bottom: 1vmax;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      cursor: pointer;
+}
+.bus-sidebar .busSide .pick-up h6 i{
+        font-size: 1.5vmax;
+  }
+.bus-sidebar .busSide .pick-up h6:hover{
+        color: rgba(0, 0, 255, 0.628);
+  }
+.bus-sidebar .busSide .pick-up .pick-list{
+        width: 100%;
+       display: flex;
+       flex-direction: row;
+       justify-content: space-between;
+       align-items: center;
+}
+.bus-sidebar .busSide .pick-up .pick-list p{
+        width: 100%;
+       display: flex;
+       flex-direction: column;
+       justify-content: space-between;
+       align-items: flex-start;
+       padding-bottom: 0.5vmax;
+       border-radius: 5px;
+       border: 0.4px solid #00000022;
+       padding: 1vmax;
+}
 
-.bus-sidebar .busSide .pick-up{
-          width: 100%;
-           padding: 1vmax;
-           border-bottom: 1px solid #00000022;
- }
- .bus-sidebar .busSide .pick-up h6{
-          width: 100%;
-         display: flex;
-         flex-direction: row;
-         justify-content: space-between;
-         align-items: center;
- }
- .bus-sidebar .busSide .pick-up .pick-list{
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          color: #000000b9;   
- }
- .bus-sidebar .busSide .pick-up .pick-list p{
+.bus-sidebar .busSide .drop-up{
+        width: 100%;
+         padding: 1vmax;
+         border-bottom: 1px solid #00000022;
+}
+.bus-sidebar .busSide .drop-up h6{
+        font-size: 1.2vmax;
+        width: 100%;
+        margin-bottom: 1vmax;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
         cursor: pointer;
- }
- .bus-sidebar .busSide .drop-up{
-          width: 100%;
-           padding: 1vmax;
-           border-bottom: 1px solid #00000022;
- }
- .bus-sidebar .busSide .drop-up h6{
-          width: 100%;
-         display: flex;
-         flex-direction: row;
-         justify-content: space-between;
-         align-items: center;
- }
- .bus-sidebar .busSide .drop-up .drop-list{
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          color: #000000b9;   
- }
- .bus-sidebar .busSide .drop-up .drop-list p{
-        cursor: pointer;
- }
-
+  }
+  .bus-sidebar .busSide .drop-up h6:hover{
+        color: rgba(0, 0, 255, 0.628);
+  }
+  .bus-sidebar .busSide .drop-up h6 i{
+          font-size: 1.5vmax;
+    }
+.bus-sidebar .busSide .drop-up .drop-list{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+}
+.bus-sidebar .busSide .drop-up .drop-list p{
+        width: 100%;
+       display: flex;
+       flex-direction: column;
+       justify-content: space-between;
+       align-items: flex-start;
+       border-radius: 5px;
+       border: 0.4px solid #00000022;
+       padding: 1vmax;
+       padding-bottom: 0.5vmax;
+}
 
 
 
