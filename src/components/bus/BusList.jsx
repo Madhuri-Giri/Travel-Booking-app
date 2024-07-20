@@ -16,7 +16,7 @@ const BusLists = () => {
   const [visibleLayout, setVisibleLayout] = useState({});
 
   const [isTravelListVisible, setIsTravelListVisible] = useState(false);
-
+  
 
   useEffect(() => {
     // Dispatch the searchBuses action when component mounts
