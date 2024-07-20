@@ -1,118 +1,134 @@
-.BusSearch{
-          width: 100%;
+.BusSearch {
+  width: 100%;
 }
-.BusSearch .bus-search{
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
+
+.BusSearch .bus-search {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
-.BusSearch .bus-search .B-main{
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          padding: 2vmax;
-          background-color: #00b7eb;
+
+.BusSearch .bus-search .B-main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 2vmax;
+  background-color: #00b7eb;
 }
-.BusSearch .bus-search .B-main .B-main-top{
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2vmax;     
+
+.BusSearch .bus-search .B-main .B-main-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2vmax;
 }
-.BusSearch .bus-search .B-main .B-main-top img{
+
+.BusSearch .bus-search .B-main .B-main-top img {
   width: 40%;
 
 }
-.BusSearch .bus-search .B-main .B-main-btm{
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+
+.BusSearch .bus-search .B-main .B-main-btm {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab{
-          width: 90%;
-          display: flex;
-          align-items: center;
-          justify-content: space-evenly;
-           box-shadow: 2px 2px 5px 2px gray;
-           flex-direction: row;
-           margin-top: 2vmax;
-           background: #fff;
-           border-radius: 10px;
-           padding:1.5vmax;
-           position: relative;
+
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  box-shadow: 2px 2px 5px 2px gray;
+  flex-direction: row;
+  margin-top: 2vmax;
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5vmax;
+  position: relative;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one{
-          width: 20%;
-          display: flex;
-          align-items: flex-start;
-          justify-content: center;
+
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one {
+  width: 20%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus{
-          width: 100%;
-          display: flex;
-          align-items: flex-start;
-          justify-content: center;
-          flex-direction: column;
-          gap: 0.3vmax;
+
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.3vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle{
-          width: 100%;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid #0000003f;
-          padding-left: 0.3vmax;
- }
- .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle i{
-          font-size: 1.4vmax;
-          color: #0000009a;
-          cursor: pointer;
- }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle input{
-          width: 100%;
-          outline: none;
-          border: none;
-          padding: 0.5vmax 1vmax;
+
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #0000003f;
+  padding-left: 0.3vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus  label{
-          font-weight: 600;
-           font-size: 1.2vmax;
+
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle i {
+  font-size: 1.4vmax;
+  color: #0000009a;
+  cursor: pointer;
 }
+
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle input {
+  width: 100%;
+  outline: none;
+  border: none;
+  padding: 0.5vmax 1vmax;
+}
+
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus label {
+  font-weight: 600;
+  font-size: 1.2vmax;
+}
+
 .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
-  
+
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn{
-          width: 20%;
-          display: flex;
-          align-items: flex-start;
-          justify-content: center;
-          flex-direction: column;
-          gap: 0.3vmax;
+
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn {
+  width: 20%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.3vmax;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn  label{
-          font-weight: 600;
-           font-size: 1.1vmax;
-           visibility: hidden;
+
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn label {
+  font-weight: 600;
+  font-size: 1.1vmax;
+  visibility: hidden;
 }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn button{
-          width: 100%;
-          padding: 0.6vmax 1vmax;
-          border: none;
-          font-weight: 600;
-          background-color: #00b7eb;
-          color: #fff;
+
+.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn button {
+  width: 100%;
+  padding: 0.6vmax 1vmax;
+  border: none;
+  font-weight: 600;
+  background-color: #00b7eb;
+  color: #fff;
 }
 
 
-.suggestions-list{
+.suggestions-list {
   width: 19%;
   display: flex;
   align-items: flex-start;
@@ -123,7 +139,8 @@
   background: #fff;
   box-shadow: 2px 2px 5px 2px rgb(149, 149, 149);
 }
-.suggestions-list li{
+
+.suggestions-list li {
   cursor: pointer;
   width: 100%;
   margin-bottom: 0.2vmax;
@@ -134,79 +151,95 @@
 
 @media (max-width:600px) {
 
-  .BusSearch .bus-search .B-main .B-main-top img{
+  .BusSearch .bus-search .B-main .B-main-top img {
     width: 100%;
   }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab{
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab {
     width: 100%;
     align-items: flex-start;
-     flex-direction: column;
-}
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one{
+    flex-direction: column;
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one {
     width: 100%;
-}
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus{
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus {
     width: 100%;
     margin-top: 2vmax;
-}
-
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle i{
-    font-size: 3vmax;
-}
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle input{
-    padding: 1.6vmax 1vmax;
-}
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus  label{
-     font-size: 2.5vmax;
-}
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle .date-input::-webkit-calendar-picker-indicator {
-    display: none; 
   }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn{
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle i {
+    font-size: 3vmax;
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle input {
+    padding: 1.6vmax 1vmax;
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus label {
+    font-size: 2.5vmax;
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle .date-input::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn {
     width: 100%;
     margin-top: 1vmax;
-}
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn button{
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn button {
     padding: 1.7vmax 1vmax;
-}
+  }
 
 }
- 
+
 @media (min-width:600px) and (max-width:1150px) {
-  
-  .BusSearch .bus-search .B-main .B-main-top img{
+
+  .BusSearch .bus-search .B-main .B-main-top img {
     width: 100%;
   }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab{
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab {
     width: 100%;
     align-items: flex-start;
-     flex-direction: column;
-}
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one{
+    flex-direction: column;
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one {
     width: 100%;
-}
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus{
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus {
     width: 100%;
     margin-top: 2vmax;
-}
-
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle i{
-    font-size: 3vmax;
-}
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle input{
-    padding: 1.6vmax 1vmax;
-}
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus  label{
-     font-size: 2.5vmax;
-}
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle .date-input::-webkit-calendar-picker-indicator {
-    display: none; 
   }
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn{
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle i {
+    font-size: 3vmax;
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle input {
+    padding: 1.6vmax 1vmax;
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus label {
+    font-size: 2.5vmax;
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle .date-input::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn {
     width: 100%;
     margin-top: 1vmax;
-}
-.BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn button{
+  }
+
+  .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn button {
     padding: 1.7vmax 1vmax;
-}
+  }
 }
