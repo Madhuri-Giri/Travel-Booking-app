@@ -1,5 +1,5 @@
 // src/components/BusSearch/BusSearch.js
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setFrom, setTo, setFromSuggestions, setToSuggestions, setSelectedBusDate, searchBuses } from '../../redux-toolkit/slices/busSlice';
@@ -155,9 +155,6 @@ const BusSearch = () => {
                   <label>Search Bus</label>
                   <button onClick={handleSearch}>Search Buses</button>
                 </div>
-            
-                
-
               </div>
             </div>
           </div>
