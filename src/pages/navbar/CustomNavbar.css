@@ -3,7 +3,7 @@
 }
 
 .mainNavbar {
-    margin: -13px 0px;
+    margin: -19px 0px;
 }
 
 .numNavbar span {
@@ -15,7 +15,6 @@
 .userDropdown svg {
     font-size: 40px;
     color: #00b7eb;
-    /* font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; */
 }
 
 .navmenuss a {
@@ -78,19 +77,25 @@
 }
 
 /* / responsive css / */
+@media screen and (max-width: 1200px) {
+    .numNavbar span {
+        font-size: 15px !important;
+    }
+    .homnavbbookingicon .textNav {
+        font-size: 14px !important;
+    }
+    .userDropdown svg {
+        font-size: 25px !important;
+    }    
+    
+}
 @media screen and (max-width: 992px) {
     .findFlightss button {
-        background-color: #808080a8;
-        color: white;
-        border: navajowhite;
         margin-bottom: 20px;
         padding: 3px 14px;
         border-radius: 5px;
-        cursor: none;
         font-size: 13px;
     }
-}
-@media screen and (max-width: 992px) {
     .mobilehedrbookings{
         display: block;
     }
@@ -114,24 +119,5 @@
     .navbarlogo img {
         height: 60px !important;
     }
-    .flightPageBanner {
-        background-color: #00b7eb;
-        padding: 10px 10px !important;
-    }
-    .flightbooksec3 h5 {
-        font-size: 18px !important;
-    }
-    .flightbooksec3 {
-        padding: 10px 10px !important;
-    }
-    .exclusive-dealsSec {
-        padding: 5px 1px !important;
-    }
-    .flightsec7 {
-        padding: 0px 5px !important;
-    }
-    .flightsec6coldiv h1 {
-        font-size: 15px !important;
-    }    
    
 }

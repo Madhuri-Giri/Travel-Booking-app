@@ -38,7 +38,7 @@ export default function FlightLists() {
             setFlightListData(location.state);
         }
     }, [location.state])
-    // console.log("location", location)
+    console.log("location", location)
 
     const dateMidRef = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
