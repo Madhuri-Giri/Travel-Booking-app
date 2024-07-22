@@ -69,16 +69,15 @@ const BoardAndDrop = () => {
 
   const handleSelectDropping = (index) => {
     setSelectedDropping(index);
-    navigate('/passenger-info');
 
   //  --------------------
-  // const passengersAlreadyAdded = localStorage.getItem('passengersAlreadyAdded');
-  //   if (passengersAlreadyAdded) {
-  //     navigate('/passenger-list');
-  //   } else {
-  //     localStorage.setItem('passengersAlreadyAdded', true);
-  //     navigate('/passenger-info');
-  //   }
+  const passengersAlreadyAdded = localStorage.getItem('passengersAlreadyAdded');
+    if (passengersAlreadyAdded) {
+      navigate('/passenger-list');
+    } else {
+      localStorage.setItem('passengersAlreadyAdded', true);
+      navigate('/passenger-info');
+    }
   // ---------------------
 
 

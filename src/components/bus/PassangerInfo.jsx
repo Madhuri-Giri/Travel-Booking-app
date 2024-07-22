@@ -117,7 +117,7 @@ const PassangerInfo = () => {
 
       const passengers = data.result.data.Result.Passenger;
       const passengersJSON = JSON.stringify(passengers);
-      localStorage.setItem('passengerData', passengersJSON); // Store in 'passengerData' key, not 'passengers'
+      localStorage.setItem('passengerData', passengersJSON); 
       
       navigate('/passenger-list');
     } catch (error) {

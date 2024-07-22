@@ -75,6 +75,7 @@ const BusLayout = ({ layoutResponse }) => {
 
       // Store selected seats in localStorage
       localStorage.setItem('selectedSeats', JSON.stringify(selectedSeats));
+      localStorage.setItem('totalPrice', totalPrice);
 
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/addboarding', {
         method: 'POST',

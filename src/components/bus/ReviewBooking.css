@@ -96,6 +96,8 @@ background-color: rgba(230, 248, 255, 0.452);
        align-items: flex-start;
        justify-content: space-between;
        flex-direction: column;
+background-color: rgba(230, 248, 255, 0.452);
+
 }
 .ReviewBooking .review-book  .p-contact-detail h6{
        font-weight: 600;
