@@ -67,10 +67,10 @@
     color: white;
 }
 
-.flightformRow input {
-    border-radius: 18px;
+.flightformRow .form-control {
+    border-radius: 7px;
     border: 1px solid gray;
-    padding: 9px 20px;
+    padding: 9px 5px;
 }
 
 .home-flight-search {
@@ -84,9 +84,11 @@
     border: 1px solid #00b7eb;
     color: white;
     border-radius: 12px;
-    padding: 8px 25px;
+    padding: 10px 25px;
     font-weight: bold;
     font-size: 18px;
+    width: 100%;
+    margin-top: 35px;
 }
 
 .home-flight-search button:hover {
@@ -98,9 +100,10 @@
 .date-picker-wrapper {
     position: relative;
 }
-
-.date-picker-wrapper .form-control {
+.date-picker-wrapper input{
     border: none;
+    /* padding: 0px; */
+    width: 100%;
 }
 
 .date-picker-icon {
@@ -132,6 +135,8 @@
     justify-content: space-evenly;
     align-items: center;
     padding-top: 10px;
+    padding-left: 14px;
+    padding-right: 14px;
     cursor: pointer;
 }
 
@@ -278,7 +283,6 @@
 
 .travellerdropdown h6 {
     color: rgba(87, 82, 82, 0.418);
-    /* color: #00b7eb; */
     font-weight: 400px;
     margin-bottom: 15px;
 }
@@ -334,13 +338,11 @@
 
 .flightsec6 {
     background-image: url('/src/assets/images/6346166.jpg');
-    /* background-image: url('/src/assets/images/flightbookingappbanner.png'); */
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     height: 600px;
     padding-top: 40px;
-    /* padding: 100px 300px; */
 }
 
 .googleplaybtn {
@@ -378,7 +380,6 @@
     border-radius: 10px;
 }
 
-/* responsive */
 .flightbooksec3Col {
     margin-top: 30px;
 }
@@ -440,39 +441,39 @@
 
 
 /* responsive css */
-@media screen and (max-width: 400px) {
-    .date-picker-wrapper .form-control {
-        padding-right: 30px;
-        padding-right: 30px;
-        border: 1px solid gray;
-        border-radius:7px;
-        padding: 7px 17px;
+@media screen and (max-width: 768px) {
+    .flightbooksec2{
+        display: none;
+    }
+
+    .pricebtns button {
+        padding: 5px 15px;
+        border-radius: 17px;
         font-size: 13px;
     }
-
-    .flightmainBooking .ps-3 {
-        padding-left: 0rem !important;
+    .flistname {
+        font-size: 12px;
     }
-
-    .flightmainBooking .onewaybutton,
-    .flightmainBooking .twowaybutton {
-        border: 1px solid gray;
-        border-radius: 7px;
-        background: no-repeat;
-        background-color: transparent;
-        padding: 3px 7px;
-        font-size: 7px;
-        background-color: #f8f9fa;
+    .flistname p {
+        font-size: 13px;
     }
-
+    .flistnamep3 {
+        padding: 0px 20px;
+    }
+    .flight-content .row {
+        padding: 10px 0px;
+    }
 }
 
 /* responsive css */
 @media screen and (max-width: 576px) {
-    .flightformRow input {
+    .flightformRow .form-control {
         border-radius: 7px !important;
-        padding: 5px 10px !important;
-        font-size: 13px !important;
+        padding: 10px 10px;
+        font-size: 13px;
+    }
+    .flightTravellerclssFormControl{
+        padding: 1px 2px !important;
     }
 
     .flightPageBanner {
@@ -493,20 +494,15 @@
     .flightsec6coldiv h1 {
         font-size: 15px !important;
     }    
-
-    .home-flight-search button {
-        width: 100% !important;
-    }
-
     .flightTravellerclss {
         padding: 0px 0px;
-        padding-top: 7px;
+        padding-top: 6px;
         cursor: pointer;
         margin: 0px 0px;
     }
 
     .onewayreturnhidebtn {
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .date-picker-wrapper .form-control {
@@ -540,6 +536,7 @@
         padding: 8px 81px !important;
         font-weight: bold;
         font-size: 18px;
+        margin-top: 10px;
     }
 
     .flightTravellerclss p {
@@ -557,87 +554,34 @@
         font-size: 13px;
         background-color: #f8f9fa;
     }
-
-
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.ipt-handle {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #0000003f;
-    padding-left: 0.3vmax;
-}
-
-.ipt-handle i {
-    font-size: 1.4vmax;
-    color: #0000009a;
-    cursor: pointer;
-}
-
-.ipt-handle input {
-    width: 100%;
-    outline: none;
-    border: none;
-    padding: 0.5vmax 1vmax;
-}
-
-.ipt-handle input[type="date"]::-webkit-calendar-picker-indicator {
-    display: none;
-
-}
-
-.ipt-handle #PreferredDepartureTime{
-    border: none;
-}
-
-@media (max-width:600px) {
-
-    .ipt-handle i {
-        font-size: 3vmax;
+/* responsive css */
+@media screen and (max-width: 400px) {
+    .date-picker-wrapper .form-control {
+        padding-right: 30px;
+        padding-right: 30px;
+        border: 1px solid gray;
+        border-radius:7px;
+        padding: 7px 17px;
+        font-size: 13px;
     }
 
-    .ipt-handle input {
-        padding: 1.6vmax 1vmax;
+    .flightmainBooking .ps-3 {
+        padding-left: 0rem !important;
     }
 
-    .ipt-handle .date-input::-webkit-calendar-picker-indicator {
-        display: none;
+    .flightmainBooking .onewaybutton,
+    .flightmainBooking .twowaybutton {
+        border: 1px solid gray;
+        border-radius: 7px;
+        background: no-repeat;
+        background-color: transparent;
+        padding: 3px 7px;
+        font-size: 7px;
+        background-color: #f8f9fa;
     }
 
 }
 
-@media (min-width:600px) and (max-width:1150px) {
 
-
-
-    .ipt-handle i {
-        font-size: 3vmax;
-    }
-
-    .ipt-handle input {
-        padding: 1.6vmax 1vmax;
-    }
-
-
-    .ipt-handle .date-input::-webkit-calendar-picker-indicator {
-        display: none;
-    }
-
-}

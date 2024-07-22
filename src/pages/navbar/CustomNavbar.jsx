@@ -19,7 +19,7 @@ const CustomNavbar = () => {
             <Navbar expand="lg" className="mainNavbar">
                 <Container>
                    
-                    <Navbar.Brand href="/flight-search" className='navbarlogo'>
+                    <Navbar.Brand href="/" className='navbarlogo'>
                         <img   src={MainLogo} className='img-fluid logoimg' alt="logo" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -27,21 +27,21 @@ const CustomNavbar = () => {
                         <Nav className="mx-auto navmenuss">
                             <Nav.Link
                                 href="/flight-search"
-                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/flight-search' ? 'active' : ''}`}
+                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/flight-search' ? 'active' : ''} , ${location.pathname === '/flight-list' ? 'active' : ''} , ${location.pathname === '/flight-details' ? "active" : ''} `}
                             >
                                 <GiCommercialAirplane className="icon" size={20} />
                                 <span className="textNav">FLIGHTS</span>
                             </Nav.Link>
                             <Nav.Link
                                 href="/bus-search"
-                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/bus-search' ? 'active' : ''}`}
+                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/bus-search' ? 'active' : ''} , ${location.pathname === '/bus-list' ? 'active' : ''} `}
                             >
                                 <TbBus className="icon" size={22} />
                                 <span className="textNav">BUSES</span>
                             </Nav.Link>
                             <Nav.Link
                                 href="/hotel-search"
-                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/hotel-search' ? 'active' : ''}`}
+                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/hotel-search' ? 'active' : ''} , ${location.pathname === '/hotel-list' ? 'active' : ''}`}
                             >
                                 <RiHotelBedFill className="icon" size={22} />
                                 <span className="textNav">HOTELS</span>

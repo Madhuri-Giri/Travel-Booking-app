@@ -1,4 +1,4 @@
-import "./Home.css"
+// import "./Home.css"
 import '../flight/FlightSearch.css';
 import React, { useState, useEffect } from 'react';
 import { Carousel, Dropdown, Modal, Button } from 'react-bootstrap';
@@ -18,743 +18,575 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const Home = () => {
 
-    const fList = () => {
-        navigate("/flight-list");
+  const fList = () => {
+    navigate("/flight-list");
+  }
+  // State to keep track of the selected tab
+  const [selectedTab, setSelectedTab] = useState('tab1');
+  // Handler to change the selected tab
+
+  // function for adult , child , infact dropdown list
+  const [showDropdown, setShowDropdown] = useState(false);
+  const handleShow = () => {
+    setShowDropdown(!showDropdown);
+  };
+  const handleClose = () => {
+    setShowDropdown(false);
+  };
+
+
+  const navigate = useNavigate();
+  // ---------------------api-data-start-----------------------------
+
+  const [from, setFrom] = useState('LKO');
+  const [to, setTo] = useState('KWI');
+  const [fromSuggestions, setFromSuggestions] = useState([]);
+  const [toSuggestions, setToSuggestions] = useState([]);
+  const [preferredDepartureTime, setPreferredDepartureTime] = useState(new Date());
+  const [preferredArrivalTime, setPreferredArrivalTime] = useState(new Date());
+
+
+
+  const fetchSuggestions = async (query, setSuggestions) => {
+    console.log('test');
+    try {
+      const response = await fetch(`https://srninfotech.com/projects/travel-app/api/bus_list?query=${query}`);
+      const data = await response.json();
+      console.log('API Response:', data);
+      const filteredSuggestions = data.data.filter(suggestion =>
+        suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
+      );
+      setSuggestions(filteredSuggestions);
+    }
+    catch (error) {
+      console.error('Error fetching suggestions:', error);
+    }
+  };
+
+
+  const handleFromChange = (event) => {
+    const value = event.target.value;
+    setFrom(value);
+    if (value.length > 2) {
+      fetchSuggestions(value, setFromSuggestions);
+    } else {
+      setFromSuggestions([]);
+    }
+  };
+
+  const handleToChange = (event) => {
+    const value = event.target.value;
+    setTo(value);
+    if (value.length > 2) {
+      fetchSuggestions(value, setToSuggestions);
+    } else {
+      setToSuggestions([]);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion, fieldSetter) => {
+    fieldSetter(suggestion.busodma_destination_name);
+
+  };
+
+
+  const handleFromSelect = (suggestion) => {
+    handleSuggestionClick(suggestion, setFrom);
+    setFromSuggestions([]);
+  };
+
+  // --------------------------end-----------------
+
+
+  // State selected flight class
+  const [selectedflightClass, setSelectedflightClass] = useState('Economy');
+
+  const handleToSelect = (suggestion) => {
+    console.log("suggestion", suggestion);
+    handleSuggestionClick(suggestion, setTo);
+    setToSuggestions([]);
+  };
+
+  // --------------------------end-----------------
+
+
+
+
+  // api for search button for send the formdata
+
+  const [formData, setFormData] = useState({
+    AdultCount: 1,
+    ChildCount: 0,
+    InfantCount: 0,
+    JourneyType: 1,
+    FareType: 1,
+    Segments: [{ "Origin": "LKO", "Destination": "KWI", "FlightCabinClass": "1", "PreferredDepartureTime": "2024-07-10T00:00:00", "PreferredArrivalTime": "2024-07-10T00:00:00" }]
+  });
+
+  // api integration for search flights
+  const getFlightList = async () => {
+    try {
+      const response = await fetch('https://srninfotech.com/projects/travel-app/api/flight-search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+
+      const data = await response.json();
+      console.log("data", data);
+      navigate("/flightList", { state: data });
+    }
+    catch (error) {
+      console.error('Error fetching suggestions:', error);
+    }
+  }
+
+
+  // function for select date send to formData
+  const handleChange = (date, key) => {
+    setPreferredDepartureTime(date);
+    setPreferredDepartureTime(date);
+    console.log("date", date);
+
+    // Format the date to 'YYYY-MM-DDTHH:mm:ss'
+    const formattedDate = new Date(date).toISOString().split('.')[0];
+
+    let updatedSegments = formData.Segments;
+    updatedSegments[0][key] = formattedDate;
+    setFormData((prev) => ({ ...prev, Segments: updatedSegments }));
+  };
+
+
+  // function for adult, child, infants increment decrement select these values and send to formData 
+  const handleCount = (key, name) => {
+    console.log("called", key, name)
+    if (key == "increment") {
+      console.log("called2");
+      setFormData((prev) => ({ ...prev, [name]: formData[name] + 1 }));
+    } else if (key == "decrement") {
+      if (formData[name] > 0) {
+        setFormData((prev) => ({ ...prev, [name]: formData[name] - 1 }));
       }
-    // State to keep track of the selected tab
-    const [selectedTab, setSelectedTab] = useState('tab1');
-    // Handler to change the selected tab
-
-    // function for adult , child , infact dropdown list
-    const [showDropdown, setShowDropdown] = useState(false);
-    const handleShow = () => {
-        setShowDropdown(!showDropdown);
-    };
-    const handleClose = () => {
-        setShowDropdown(false);
-    };
-
-
-    const navigate = useNavigate();
-    // ---------------------api-data-start-----------------------------
-
-    const [from, setFrom] = useState('LKO');
-    const [to, setTo] = useState('KWI');
-    const [fromSuggestions, setFromSuggestions] = useState([]);
-    const [toSuggestions, setToSuggestions] = useState([]);
-    const [preferredDepartureTime, setPreferredDepartureTime] = useState(new Date());
-    const [preferredArrivalTime, setPreferredArrivalTime] = useState(new Date());
-
-
-
-    const fetchSuggestions = async (query, setSuggestions) => {
-        console.log('test');
-        try {
-            const response = await fetch(`https://srninfotech.com/projects/travel-app/api/bus_list?query=${query}`);
-            const data = await response.json();
-            console.log('API Response:', data);
-            const filteredSuggestions = data.data.filter(suggestion =>
-                suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
-            );
-            setSuggestions(filteredSuggestions);
-        }
-        catch (error) {
-            console.error('Error fetching suggestions:', error);
-        }
-    };
-
-
-    const handleFromChange = (event) => {
-        const value = event.target.value;
-        setFrom(value);
-        if (value.length > 2) {
-            fetchSuggestions(value, setFromSuggestions);
-        } else {
-            setFromSuggestions([]);
-        }
-    };
-
-    const handleToChange = (event) => {
-        const value = event.target.value;
-        setTo(value);
-        if (value.length > 2) {
-            fetchSuggestions(value, setToSuggestions);
-        } else {
-            setToSuggestions([]);
-        }
-    };
-
-    const handleSuggestionClick = (suggestion, fieldSetter) => {
-        fieldSetter(suggestion.busodma_destination_name);
-
-    };
-
-
-    const handleFromSelect = (suggestion) => {
-        handleSuggestionClick(suggestion, setFrom);
-        setFromSuggestions([]);
-    };
-
-    // --------------------------end-----------------
-
-
-    // State selected flight class
-    const [selectedflightClass, setSelectedflightClass] = useState('Economy');
-
-    const handleToSelect = (suggestion) => {
-        console.log("suggestion", suggestion);
-        handleSuggestionClick(suggestion, setTo);
-        setToSuggestions([]);
-    };
-
-    // --------------------------end-----------------
-
-
-
-
-    // api for search button for send the formdata
-
-    const [formData, setFormData] = useState({
-        AdultCount: 1,
-        ChildCount: 0,
-        InfantCount: 0,
-        JourneyType: 1,
-        FareType: 1,
-        Segments: [{ "Origin": "LKO", "Destination": "KWI", "FlightCabinClass": "1", "PreferredDepartureTime": "2024-07-10T00:00:00", "PreferredArrivalTime": "2024-07-10T00:00:00" }]
-    });
-
-    // api integration for search flights
-    const getFlightList = async () => {
-        try {
-            const response = await fetch('https://srninfotech.com/projects/travel-app/api/flight-search', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-
-
-            const data = await response.json();
-            console.log("data", data);
-            navigate("/flightList", { state: data });
-        }
-        catch (error) {
-            console.error('Error fetching suggestions:', error);
-        }
     }
+  }
 
 
-    // function for select date send to formData
-    const handleChange = (date, key) => {
-        setPreferredDepartureTime(date);
-        setPreferredDepartureTime(date);
-        console.log("date", date);
+  console.log("formData", formData);
 
-        // Format the date to 'YYYY-MM-DDTHH:mm:ss'
-        const formattedDate = new Date(date).toISOString().split('.')[0];
+  // function for select flight class value and send to fromdata 
+  // State selected flight class
+  // const [selectedflightClass, setSelectedflightClass] = useState('Economy');
 
-        let updatedSegments = formData.Segments;
-        updatedSegments[0][key] = formattedDate;
-        setFormData((prev) => ({ ...prev, Segments: updatedSegments }));
-    };
+  const handleflightClassChange = (event) => {
+    setSelectedflightClass(event.target.value);
+    setFormData((prev) => ({ ...prev, JourneyType: event.target.value }))
+  };
 
 
-    // function for adult, child, infants increment decrement select these values and send to formData 
-    const handleCount = (key, name) => {
-        console.log("called", key, name)
-        if (key == "increment") {
-            console.log("called2");
-            setFormData((prev) => ({ ...prev, [name]: formData[name] + 1 }));
-        } else if (key == "decrement") {
-            if (formData[name] > 0) {
-                setFormData((prev) => ({ ...prev, [name]: formData[name] - 1 }));
-            }
-        }
-    }
+  // function for tab oneway
+  const [activeTab, setActiveTab] = useState('oneway');
+
+  const handleTabChange = (event) => {
+    setActiveTab(event.target.value);
+  };
 
 
-    console.log("formData", formData);
-
-    // function for select flight class value and send to fromdata 
-    // State selected flight class
-    // const [selectedflightClass, setSelectedflightClass] = useState('Economy');
-
-    const handleflightClassChange = (event) => {
-        setSelectedflightClass(event.target.value);
-        setFormData((prev) => ({ ...prev, JourneyType: event.target.value }))
-    };
-
-
-    // function for tab oneway
-    const [activeTab, setActiveTab] = useState('oneway');
-
-    const handleTabChange = (event) => {
-        setActiveTab(event.target.value);
-    };
-
-
-    return (
-        <>
-            <section className='flightPageBanner'>
+  return (
+    <>
+      <section className='flightPageBanner'>
         <div className="container-fluid ">
           <div className="findFlightss"><button>Find Flights</button></div>
           <div className="row">
-            <div className="col-lg-5 flightmainBooking">
-              <div className="ps-3">
-                <button className="onewaybutton">
-                  <input
-                    type="radio"
-                    id="oneway"
-                    name="tripType"
-                    value="oneway"
-                    checked={activeTab === 'oneway'}
-                    onChange={handleTabChange}
-                  />
-                  <label htmlFor="oneway" className="ml-2"> One Way </label>
-                </button>
+            <div className="col-lg-5 ">
+              <div className="flightmainBooking">
+                <div className="ps-3">
+                  <button className="onewaybutton">
+                    <input
+                      type="radio"
+                      id="oneway"
+                      name="tripType"
+                      value="oneway"
+                      checked={activeTab === 'oneway'}
+                      onChange={handleTabChange}
+                    />
+                    <label htmlFor="oneway" className="ml-2"> One Way </label>
+                  </button>
 
-                <button className="twowaybutton">
-                  <input
-                    type="radio"
-                    id="twoway"
-                    name="tripType"
-                    value="twoway"
-                    checked={activeTab === 'twoway'}
-                    onChange={handleTabChange}
-                  />
-                  <label htmlFor="twoway">Round Trip</label>
-                </button>
-              </div>
-              <hr></hr>
-              <div>
-                {activeTab === 'oneway' && (
-                  <div className="ps-2 pe-2">
-                    <form action="" >
-                      <div className="row flightformRow">
-                        <div className="col-12">
-                          <div className="form-group  position-relative">
-                            <label htmlFor="text" >From</label>
-                            <input type="text" className="form-control" id="flightSatrtingPoint" placeholder='Starting Point' value={from} onChange={handleFromChange} />
-                            {fromSuggestions.length > 0 && (
-                              <ul className="suggestions-list">
-                                {fromSuggestions.map((suggestion, index) => (
-                                  <li className='text-red' key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
-                                    {suggestion.
-                                      busodma_destination_name
-                                    }              </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                        </div>
-                        <div className="col-12 mt-2">
-                          <div className="form-group">
-                            <label htmlFor="text">To</label>
-                            <input type="text" className="form-control" id="flightDestinationPoint" placeholder='Destination' value={to} onChange={handleToChange} />
-                            {toSuggestions.length > 0 && (
-                              <ul className="suggestions-list">
-                                {toSuggestions.map((suggestion, index) => (
-                                  <li key={index} onClick={() => handleToSelect(suggestion, setTo)}>
-                                    {suggestion.busodma_destination_name
-                                    }
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="col-6 mt-2">
-                          <div className="form-group">
-                            <label htmlFor="PreferredDepartureTime">Departure Date</label>
-                            <div className="date-picker-wrapper">
-
-                              <DatePicker
-                                name="PreferredDepartureTime"
-                                selected={preferredDepartureTime}
-                                onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                className="form-control"
-                                id="PreferredDepartureTime"
-                                placeholderText="Select a date"
-                              />
-                              {/* <MdDateRange className="date-picker-icon" /> */}
+                  <button className="twowaybutton">
+                    <input
+                      type="radio"
+                      id="twoway"
+                      name="tripType"
+                      value="twoway"
+                      checked={activeTab === 'twoway'}
+                      onChange={handleTabChange}
+                    />
+                    <label htmlFor="twoway">Round Trip</label>
+                  </button>
+                </div>
+                <hr></hr>
+                <div>
+                  {activeTab === 'oneway' && (
+                    <div className="ps-2 pe-2">
+                      <form action="" >
+                        <div className="row flightformRow">
+                          <div className="col-12">
+                            <div className="form-group  position-relative">
+                              <label htmlFor="text" >From</label>
+                              <input type="text" className="form-control" id="flightSatrtingPoint" placeholder='Starting Point' value={from} onChange={handleFromChange} />
+                              {fromSuggestions.length > 0 && (
+                                <ul className="suggestions-list">
+                                  {fromSuggestions.map((suggestion, index) => (
+                                    <li className='text-red' key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
+                                      {suggestion.
+                                        busodma_destination_name
+                                      }              </li>
+                                  ))}
+                                </ul>
+                              )}
                             </div>
                           </div>
-                        </div>
-                        <div className="col-6">
-                          <div className="form-group onewayreturnhidebtn">
-                            <Link>Add Return date</Link>
-                            <MdDateRange className="mt-1 ms-2" />
+                          <div className="col-12 mt-2">
+                            <div className="form-group">
+                              <label htmlFor="text">To</label>
+                              <input type="text" className="form-control" id="flightDestinationPoint" placeholder='Destination' value={to} onChange={handleToChange} />
+                              {toSuggestions.length > 0 && (
+                                <ul className="suggestions-list">
+                                  {toSuggestions.map((suggestion, index) => (
+                                    <li key={index} onClick={() => handleToSelect(suggestion, setTo)}>
+                                      {suggestion.busodma_destination_name
+                                      }
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="col-sm-8 form-group flightTravellerclss mt-3" onClick={handleShow}>
-                          <FaCircleUser />
-                          <p>Adult <span>{formData.AdultCount}</span> |</p>
-                          <p>Child <span>{formData.ChildCount}</span> |</p>
-                          <p>Infant <span>{formData.InfantCount}</span> |</p>
-                          <p>{formData.JourneyType}</p>
-                          <FaAngleDown className="downarrrow" />
-                        </div>
-
-                        <div className="col-sm-3 home-flight-search mt-3">
-                          {/* <div> */}
-                          <button onClick={fList} type="button" className="btn">Search</button>
-                          {/* </div> */}
-                        </div>
-                        <div>
-                          {showDropdown && (
-                            <div className="row travellerdropdown">
-                              <div className="dropdown-header">
-                                <RxCross2 onClick={handleClose} className="close-icon" />
-                              </div>
-                              <div className="col-sm-6 travellerdropdowncol1">
-                                <h6>SELECT PASSENGERS</h6>
-                                <div className='flightpageagebox'>
-                                  <h6 style={{ color: '#222' }}>Adults</h6>
-                                  <div className='adultIcons'>
-                                    <FiMinusCircle
-                                      className='adultMinusicon'
-                                      onClick={() => handleCount("decrement", "AdultCount")}
-                                    />
-                                    <span>{formData.AdultCount}</span>
-                                    <FiPlusCircle
-                                      className='adultPlusicon'
-                                      onClick={() => handleCount("increment", "AdultCount")}
-                                    />
-                                  </div>
-                                </div>
-                                <div className='flightpageagebox'>
-                                  <h6 style={{ color: '#222' }}>Children</h6>
-                                  <div className='childIcons'>
-                                    <FiMinusCircle
-                                      className='childMinusicon'
-                                      onClick={() => handleCount("decrement", "ChildCount")}
-                                    />
-                                    <span>{formData.ChildCount}</span>
-                                    <FiPlusCircle
-                                      className='childPlusicon'
-                                      onClick={() => handleCount("increment", "ChildCount")}
-                                    />
-                                  </div>
-                                </div>
-                                <div className='flightpageagebox'>
-                                  <h6 style={{ color: '#222' }}>Infants</h6>
-                                  <div className='infantIcons'>
-                                    <FiMinusCircle
-                                      className='infantsMinusicon'
-                                      onClick={() => handleCount("decrement", "InfantCount")} />
-                                    <span>{formData.InfantCount}</span>
-                                    <FiPlusCircle
-                                      className='infantsPlusicon'
-                                      onClick={() => handleCount("increment", "InfantCount")} />
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-sm-5 travellerdropdowncol2">
-                                <h6>SELECT TRAVEL</h6>
-                                <p>Choose Travel Class</p>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="economy"
-                                    name="flightClass"
-                                    value="Economy"
-                                    checked={selectedflightClass === 'Economy'}
-                                    onChange={handleflightClassChange}
-                                  />
-                                  <label htmlFor="economy">Economy</label>
-                                </div>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="premiumEconomy"
-                                    name="flightClass"
-                                    value="Premium Economy"
-                                    checked={selectedflightClass === 'Premium Economy'}
-                                    onChange={handleflightClassChange}
-                                  />
-                                  <label htmlFor="premiumEconomy">Premium Economy</label>
-                                </div>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="business"
-                                    name="flightClass"
-                                    value="Business"
-                                    checked={selectedflightClass === 'Business'}
-                                    onChange={handleflightClassChange}
-                                  />
-                                  <label htmlFor="business">Business</label>
-                                </div>
+                          <div className="col-6 mt-2">
+                            <div className="form-group">
+                              <label htmlFor="PreferredDepartureTime">Departure Date</label>
+                              <div className="date-picker-wrapper form-control">
+                                <DatePicker
+                                  name="PreferredDepartureTime"
+                                  selected={preferredDepartureTime}
+                                  onChange={(date) => handleChange(date, "PreferredDepartureTime")}
+                                  className=""
+                                  id="PreferredDepartureTime"
+                                  placeholderText="Select a date"
+                                />
+                                <MdDateRange className="date-picker-icon" />
                               </div>
                             </div>
-                          )}
-                        </div>
-                      </div>
-
-                    </form>
-                  </div>
-                )}
-                {activeTab === 'twoway' && (
-
-                  <div className="ps-2 pe-2">
-
-                    <form action="" >
-                      <div className="row flightformRow">
-                        <div className="col-12">
-                          <div className="form-group  position-relative">
-                            <label htmlFor="text" >From</label>
-                            <input type="text" className="form-control" id="flightSatrtingPoint" placeholder='Starting Point' value={from} onChange={handleFromChange} />
-                            {fromSuggestions.length > 0 && (
-                              <ul className="suggestions-list">
-                                {fromSuggestions.map((suggestion, index) => (
-                                  <li className='text-red' key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
-                                    {suggestion.
-                                      busodma_destination_name
-                                    }              </li>
-                                ))}
-                              </ul>
-                            )}
                           </div>
-                        </div>
-                        <div className="col-12 mt-2">
-                          <div className="form-group">
-                            <label htmlFor="text">To</label>
-                            <input type="text" className="form-control" id="flightDestinationPoint" placeholder='Destination' value={to} onChange={handleToChange} />
-                            {toSuggestions.length > 0 && (
-                              <ul className="suggestions-list">
-                                {toSuggestions.map((suggestion, index) => (
-                                  <li key={index} onClick={() => handleToSelect(suggestion, setTo)}>
-                                    {suggestion.busodma_destination_name
-                                    }
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="col-6 mt-2">
-                          <div className="form-group">
-                            <label htmlFor="PreferredDepartureTime">Departure Date</label>
-                            <div className="date-picker-wrapper">
-
-                              <DatePicker
-                                name="PreferredDepartureTime"
-                                selected={preferredDepartureTime}
-                                onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                className="form-control"
-                                id="PreferredDepartureTime"
-                                placeholderText="Select a date"
-                              />
-                              {/* <MdDateRange className="date-picker-icon" /> */}
+                          <div className="col-6">
+                            <div className="form-group onewayreturnhidebtn">
+                              <Link>Add Return date</Link>
+                              <MdDateRange className="mt-1 ms-2" />
                             </div>
                           </div>
-                        </div>
-                        <div className="col-6 mt-2">
-                          <div className="form-group">
-                            <label htmlFor="PreferredArrivalTime">Return Date</label>
-                            <div className="date-picker-wrapper">
-                              <DatePicker
-                                name="PreferredArrivalTime"
-                                selected={preferredArrivalTime}
-                                onChange={(date) => handleChange(date, "PreferredArrivalTime")}
-                                className="form-control"
-                                id="PreferredArrivalTime"
-                                placeholderText="Select a date"
-                              />
-                              {/* <MdDateRange className="date-picker-icon" /> */}
-                            </div>
-                          </div>
-                        </div>
 
-                        <div className="col-sm-8 form-group flightTravellerclss mt-3" onClick={handleShow}>
-                          <FaCircleUser />
-                          <p>Adult <span>{formData.AdultCount}</span> |</p>
-                          <p>Child <span>{formData.ChildCount}</span> |</p>
-                          <p>Infant <span>{formData.InfantCount}</span> |</p>
-                          <p>{formData.JourneyType}</p>
-                          <FaAngleDown className="downarrrow" />
-                        </div>
-
-                        <div className="col-sm-3 home-flight-search mt-3">
-                          {/* <div> */}
-                          <button onClick={fList} type="button" className="btn">Search</button>
-                          {/* </div> */}
-                        </div>
-                        <div>
-                          {showDropdown && (
-                            <div className="row travellerdropdown">
-                              <div className="dropdown-header">
-                                <RxCross2 onClick={handleClose} className="close-icon" />
-                              </div>
-                              <div className="col-sm-6 travellerdropdowncol1">
-                                <h6>SELECT PASSENGERS</h6>
-                                <div className='flightpageagebox'>
-                                  <h6 style={{ color: '#222' }}>Adults</h6>
-                                  <div className='adultIcons'>
-                                    <FiMinusCircle
-                                      className='adultMinusicon'
-                                      onClick={() => handleCount("decrement", "AdultCount")}
-                                    />
-                                    <span>{formData.AdultCount}</span>
-                                    <FiPlusCircle
-                                      className='adultPlusicon'
-                                      onClick={() => handleCount("increment", "AdultCount")}
-                                    />
-                                  </div>
-                                </div>
-                                <div className='flightpageagebox'>
-                                  <h6 style={{ color: '#222' }}>Children</h6>
-                                  <div className='childIcons'>
-                                    <FiMinusCircle
-                                      className='childMinusicon'
-                                      onClick={() => handleCount("decrement", "ChildCount")}
-                                    />
-                                    <span>{formData.ChildCount}</span>
-                                    <FiPlusCircle
-                                      className='childPlusicon'
-                                      onClick={() => handleCount("increment", "ChildCount")}
-                                    />
-                                  </div>
-                                </div>
-                                <div className='flightpageagebox'>
-                                  <h6 style={{ color: '#222' }}>Infants</h6>
-                                  <div className='infantIcons'>
-                                    <FiMinusCircle
-                                      className='infantsMinusicon'
-                                      onClick={() => handleCount("decrement", "InfantCount")} />
-                                    <span>{formData.InfantCount}</span>
-                                    <FiPlusCircle
-                                      className='infantsPlusicon'
-                                      onClick={() => handleCount("increment", "InfantCount")} />
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-sm-5 travellerdropdowncol2">
-                                <h6>SELECT TRAVEL</h6>
-                                <p>Choose Travel Class</p>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="economy"
-                                    name="flightClass"
-                                    value="Economy"
-                                    checked={selectedflightClass === 'Economy'}
-                                    onChange={handleflightClassChange}
-                                  />
-                                  <label htmlFor="economy">Economy</label>
-                                </div>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="premiumEconomy"
-                                    name="flightClass"
-                                    value="Premium Economy"
-                                    checked={selectedflightClass === 'Premium Economy'}
-                                    onChange={handleflightClassChange}
-                                  />
-                                  <label htmlFor="premiumEconomy">Premium Economy</label>
-                                </div>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="business"
-                                    name="flightClass"
-                                    value="Business"
-                                    checked={selectedflightClass === 'Business'}
-                                    onChange={handleflightClassChange}
-                                  />
-                                  <label htmlFor="business">Business</label>
-                                </div>
+                          <div className="col-sm-8 form-group  mt-3" onClick={handleShow}>
+                            <label htmlFor="text">Travellers $ Cabin</label>
+                            <div className="form-control flightTravellerclssFormControl">
+                              <div className="flightTravellerclss">
+                                <FaCircleUser />
+                                <p> Traveller - <span>{formData.AdultCount}</span> , </p>
+                                <p> Class - <span>{formData.JourneyType}</span>  </p>
+                                <FaAngleDown className="downarrrow" />
                               </div>
                             </div>
-                          )}
-                        </div>
-                      </div>
-
-                    </form>
-
-
-                    {/* <form action="" >
-                      <div className="row flightformRow">
-                        <div className="col-12">
-                          <div className="form-group  position-relative">
-                            <label htmlFor="text" >From</label>
-                            <input type="text" className="form-control" id="flightSatrtingPoint" placeholder='Starting Point' value={from} onChange={handleFromChange} />
-                            {fromSuggestions.length > 0 && (
-                              <ul className="suggestions-list">
-                                {fromSuggestions.map((suggestion, index) => (
-                                  <li className='text-red' key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
-                                    {suggestion.
-                                      busodma_destination_name
-                                    }              </li>
-                                ))}
-                              </ul>
-                            )}
                           </div>
-                        </div>
-                        <div className="col-12 mt-2">
-                          <div className="form-group">
-                            <label htmlFor="text">To</label>
-                            <input type="text" className="form-control" id="flightDestinationPoint" placeholder='Destination' value={to} onChange={handleToChange} />
-                            {toSuggestions.length > 0 && (
-                              <ul className="suggestions-list">
-                                {toSuggestions.map((suggestion, index) => (
-                                  <li key={index} onClick={() => handleToSelect(suggestion, setTo)}>
-                                    {suggestion.busodma_destination_name
-                                    }
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                        </div>
 
-                        <div className="col-6 mt-2">
-                          <div className="form-group">
-                            <label htmlFor="PreferredDepartureTime">Departure Date</label>
-                            <div className="date-picker-wrapper">
-                              <DatePicker
-                                name="PreferredDepartureTime"
-                                selected={preferredDepartureTime}
-                                onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                className="form-control"
-                                id="PreferredDepartureTime"
-                                placeholderText="Select a date"
-                              />
-                              <MdDateRange className="date-picker-icon" />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-6 mt-2">
-                          <div className="form-group">
-                            <label htmlFor="PreferredArrivalTime">Return Date</label>
-                            <div className="date-picker-wrapper">
-                              <DatePicker
-                                name="PreferredArrivalTime"
-                                selected={preferredArrivalTime}
-                                onChange={(date) => handleChange(date, "PreferredArrivalTime")}
-                                className="form-control"
-                                id="PreferredArrivalTime"
-                                placeholderText="Select a date"
-                              />
-                              <MdDateRange className="date-picker-icon" />
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="col-8 form-group flightTravellerclss ms-2 mt-3" onClick={handleShow}>
-                          <FaCircleUser />
-                          <p>Adult <span>{formData.AdultCount}</span> |</p>
-                          <p>Child <span>{formData.ChildCount}</span> |</p>
-                          <p>Infant <span>{formData.InfantCount}</span> |</p>
-                          <p>{formData.JourneyType}</p>
-                          <FaAngleDown className="downarrrow" />
-                        </div>
-
-                        <div className="col-3 home-flight-search mt-3">
-                          <div>
+                          <div className="col-sm-4 form-group home-flight-search">
                             <button onClick={getFlightList} type="button" className="btn">Search</button>
                           </div>
+
+                          <div>
+                            {showDropdown && (
+                              <div className="row travellerdropdown">
+                                <div className="dropdown-header">
+                                  <RxCross2 onClick={handleClose} className="close-icon" />
+                                </div>
+                                <div className="col-sm-6 travellerdropdowncol1">
+                                  <h6>SELECT PASSENGERS</h6>
+                                  <div className='flightpageagebox'>
+                                    <h6 style={{ color: '#222' }}>Adults</h6>
+                                    <div className='adultIcons'>
+                                      <FiMinusCircle
+                                        className='adultMinusicon'
+                                        values=""
+                                        onClick={() => handleCount("decrement", "AdultCount")}
+                                      />
+                                      <span>{formData.AdultCount}</span>
+                                      <FiPlusCircle
+                                        className='adultPlusicon'
+                                        onClick={() => handleCount("increment", "AdultCount")}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className='flightpageagebox'>
+                                    <h6 style={{ color: '#222' }}>Children</h6>
+                                    <div className='childIcons'>
+                                      <FiMinusCircle
+                                        className='childMinusicon'
+                                        onClick={() => handleCount("decrement", "ChildCount")}
+                                      />
+                                      <span>{formData.ChildCount}</span>
+                                      <FiPlusCircle
+                                        className='childPlusicon'
+                                        onClick={() => handleCount("increment", "ChildCount")}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className='flightpageagebox'>
+                                    <h6 style={{ color: '#222' }}>Infants</h6>
+                                    <div className='infantIcons'>
+                                      <FiMinusCircle
+                                        className='infantsMinusicon'
+                                        onClick={() => handleCount("decrement", "InfantCount")} />
+                                      <span>{formData.InfantCount}</span>
+                                      <FiPlusCircle
+                                        className='infantsPlusicon'
+                                        onClick={() => handleCount("increment", "InfantCount")} />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-sm-5 travellerdropdowncol2">
+                                  <h6>SELECT TRAVEL</h6>
+                                  <p>Choose Travel Class</p>
+                                  <div>
+                                    <input
+                                      type="radio"
+                                      id="economy"
+                                      name="flightClass"
+                                      value="Economy"
+                                      checked={selectedflightClass === 'Economy'}
+                                      onChange={handleflightClassChange}
+                                    />
+                                    <label htmlFor="economy">Economy</label>
+                                  </div>
+                                  <div>
+                                    <input
+                                      type="radio"
+                                      id="premiumEconomy"
+                                      name="flightClass"
+                                      value="Premium Economy"
+                                      checked={selectedflightClass === 'Premium Economy'}
+                                      onChange={handleflightClassChange}
+                                    />
+                                    <label htmlFor="premiumEconomy">Premium Economy</label>
+                                  </div>
+                                  <div>
+                                    <input
+                                      type="radio"
+                                      id="business"
+                                      name="flightClass"
+                                      value="Business"
+                                      checked={selectedflightClass === 'Business'}
+                                      onChange={handleflightClassChange}
+                                    />
+                                    <label htmlFor="business">Business</label>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        <div>
-                          {showDropdown && (
-                            <div className="row travellerdropdown">
-                              <div className="dropdown-header">
-                                <RxCross2 onClick={handleClose} className="close-icon" />
-                              </div>
-                              <div className="col-6 travellerdropdowncol1">
-                                <h6>SELECT PASSENGERS</h6>
-                                <div className='flightpageagebox'>
-                                  <h6 style={{ color: '#222' }}>Adults</h6>
-                                  <div className='adultIcons'>
-                                    <FiMinusCircle
-                                      className='adultMinusicon'
-                                      onClick={() => handleCount("decrement", "AdultCount")}
-                                    />
-                                    <span>{formData.AdultCount}</span>
-                                    <FiPlusCircle
-                                      className='adultPlusicon'
-                                      onClick={() => handleCount("increment", "AdultCount")}
-                                    />
-                                  </div>
-                                </div>
-                                <div className='flightpageagebox'>
-                                  <h6 style={{ color: '#222' }}>Children</h6>
-                                  <div className='childIcons'>
-                                    <FiMinusCircle
-                                      className='childMinusicon'
-                                      onClick={() => handleCount("decrement", "ChildCount")}
-                                    />
-                                    <span>{formData.ChildCount}</span>
-                                    <FiPlusCircle
-                                      className='childPlusicon'
-                                      onClick={() => handleCount("increment", "ChildCount")}
-                                    />
-                                  </div>
-                                </div>
-                                <div className='flightpageagebox'>
-                                  <h6 style={{ color: '#222' }}>Infants</h6>
-                                  <div className='infantIcons'>
-                                    <FiMinusCircle
-                                      className='infantsMinusicon'
-                                      onClick={() => handleCount("decrement", "InfantCount")} />
-                                    <span>{formData.InfantCount}</span>
-                                    <FiPlusCircle
-                                      className='infantsPlusicon'
-                                      onClick={() => handleCount("increment", "InfantCount")} />
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-5 travellerdropdowncol2">
-                                <h6>SELECT TRAVEL</h6>
-                                <p>Choose Travel Class</p>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="economy"
-                                    name="flightClass"
-                                    value="Economy"
-                                    checked={selectedflightClass === 'Economy'}
-                                    onChange={handleflightClassChange}
-                                  />
-                                  <label htmlFor="economy">Economy</label>
-                                </div>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="premiumEconomy"
-                                    name="flightClass"
-                                    value="Premium Economy"
-                                    checked={selectedflightClass === 'Premium Economy'}
-                                    onChange={handleflightClassChange}
-                                  />
-                                  <label htmlFor="premiumEconomy">Premium Economy</label>
-                                </div>
-                                <div>
-                                  <input
-                                    type="radio"
-                                    id="business"
-                                    name="flightClass"
-                                    value="Business"
-                                    checked={selectedflightClass === 'Business'}
-                                    onChange={handleflightClassChange}
-                                  />
-                                  <label htmlFor="business">Business</label>
-                                </div>
+
+                      </form>
+                    </div>
+                  )}
+                  {activeTab === 'twoway' && (
+
+                    <div className="ps-2 pe-2">
+
+                      <form action="" >
+                        <div className="row flightformRow">
+                          <div className="col-12">
+                            <div className="form-group  position-relative">
+                              <label htmlFor="text" >From</label>
+                              <input type="text" className="form-control" id="flightSatrtingPoint" placeholder='Starting Point' value={from} onChange={handleFromChange} />
+                              {fromSuggestions.length > 0 && (
+                                <ul className="suggestions-list">
+                                  {fromSuggestions.map((suggestion, index) => (
+                                    <li className='text-red' key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
+                                      {suggestion.
+                                        busodma_destination_name
+                                      }              </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                          </div>
+                          <div className="col-12 mt-2">
+                            <div className="form-group">
+                              <label htmlFor="text">To</label>
+                              <input type="text" className="form-control" id="flightDestinationPoint" placeholder='Destination' value={to} onChange={handleToChange} />
+                              {toSuggestions.length > 0 && (
+                                <ul className="suggestions-list">
+                                  {toSuggestions.map((suggestion, index) => (
+                                    <li key={index} onClick={() => handleToSelect(suggestion, setTo)}>
+                                      {suggestion.busodma_destination_name
+                                      }
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="col-6 mt-2">
+                          <div className="form-group">
+                              <label htmlFor="PreferredDepartureTime">Departure Date</label>
+                              <div className="date-picker-wrapper form-control">
+                                <DatePicker
+                                  name="PreferredDepartureTime"
+                                  selected={preferredDepartureTime}
+                                  onChange={(date) => handleChange(date, "PreferredDepartureTime")}
+                                  className=""
+                                  id="PreferredDepartureTime"
+                                  placeholderText="Select a date"
+                                />
+                                <MdDateRange className="date-picker-icon" />
                               </div>
                             </div>
-                          )}
-                        </div>
-                      </div>
+                          </div>
+                          <div className="col-6 mt-2">
+                            <div className="form-group">
+                              <div className="form-group">
+                                <label htmlFor="PreferredArrivalTime">Return Date</label>
+                                <div className="date-picker-wrapper form-control">
+                                  <DatePicker
+                                    name="PreferredArrivalTime"
+                                    selected={preferredArrivalTime}
+                                    onChange={(date) => handleChange(date, "PreferredArrivalTime")}
+                                    className=""
+                                    id="PreferredArrivalTime"
+                                    placeholderText="Select a date"
+                                  />
+                                  <MdDateRange className="date-picker-icon" />
+                                </div>
+                              </div>
 
-                    </form> */}
-                  </div>
-                )}
+                            </div>
+                          </div>
+
+                           <div className="col-sm-8 form-group  mt-3" onClick={handleShow}>
+                            <label htmlFor="text">Travellers $ Cabin</label>
+                            <div className="form-control flightTravellerclssFormControl">
+                              <div className="flightTravellerclss">
+                                <FaCircleUser />
+                                <p> <span>{formData.AdultCount}</span> Traveller , </p>
+                                <p> <span>{formData.JourneyType}</span> Cabin Class </p>
+                                <FaAngleDown className="downarrrow" />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="col-sm-4 form-group home-flight-search">
+                            <button onClick={getFlightList} type="button" className="btn">Search</button>
+                          </div>
+
+                          <div>
+                            {showDropdown && (
+                              <div className="row travellerdropdown">
+                                <div className="dropdown-header">
+                                  <RxCross2 onClick={handleClose} className="close-icon" />
+                                </div>
+                                <div className="col-sm-6 travellerdropdowncol1">
+                                  <h6>SELECT PASSENGERS</h6>
+                                  <div className='flightpageagebox'>
+                                    <h6 style={{ color: '#222' }}>Adults</h6>
+                                    <div className='adultIcons'>
+                                      <FiMinusCircle
+                                        className='adultMinusicon'
+                                        onClick={() => handleCount("decrement", "AdultCount")}
+                                      />
+                                      <span>{formData.AdultCount}</span>
+                                      <FiPlusCircle
+                                        className='adultPlusicon'
+                                        onClick={() => handleCount("increment", "AdultCount")}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className='flightpageagebox'>
+                                    <h6 style={{ color: '#222' }}>Children</h6>
+                                    <div className='childIcons'>
+                                      <FiMinusCircle
+                                        className='childMinusicon'
+                                        onClick={() => handleCount("decrement", "ChildCount")}
+                                      />
+                                      <span>{formData.ChildCount}</span>
+                                      <FiPlusCircle
+                                        className='childPlusicon'
+                                        onClick={() => handleCount("increment", "ChildCount")}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className='flightpageagebox'>
+                                    <h6 style={{ color: '#222' }}>Infants</h6>
+                                    <div className='infantIcons'>
+                                      <FiMinusCircle
+                                        className='infantsMinusicon'
+                                        onClick={() => handleCount("decrement", "InfantCount")} />
+                                      <span>{formData.InfantCount}</span>
+                                      <FiPlusCircle
+                                        className='infantsPlusicon'
+                                        onClick={() => handleCount("increment", "InfantCount")} />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-sm-5 travellerdropdowncol2">
+                                  <h6>SELECT TRAVEL</h6>
+                                  <p>Choose Travel Class</p>
+                                  <div>
+                                    <input
+                                      type="radio"
+                                      id="economy"
+                                      name="flightClass"
+                                      value="Economy"
+                                      checked={selectedflightClass === 'Economy'}
+                                      onChange={handleflightClassChange}
+                                    />
+                                    <label htmlFor="economy">Economy</label>
+                                  </div>
+                                  <div>
+                                    <input
+                                      type="radio"
+                                      id="premiumEconomy"
+                                      name="flightClass"
+                                      value="Premium Economy"
+                                      checked={selectedflightClass === 'Premium Economy'}
+                                      onChange={handleflightClassChange}
+                                    />
+                                    <label htmlFor="premiumEconomy">Premium Economy</label>
+                                  </div>
+                                  <div>
+                                    <input
+                                      type="radio"
+                                      id="business"
+                                      name="flightClass"
+                                      value="Business"
+                                      checked={selectedflightClass === 'Business'}
+                                      onChange={handleflightClassChange}
+                                    />
+                                    <label htmlFor="business">Business</label>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  )}
+                </div>
               </div>
+
             </div>
 
             <div className="col-lg-7 bannerSlider">
@@ -798,6 +630,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+
       <section className='flightbooksec2'>
         <div className="container">
           <div className="row">
@@ -969,8 +802,8 @@ const Home = () => {
         </div>
       </section>
 
-        </>
-    )
+    </>
+  )
 }
 
 export default Home

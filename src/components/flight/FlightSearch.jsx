@@ -1,5 +1,5 @@
 import "./FlightSearch.css"
-import '../home/Home.css';
+// import '../home/Home.css';
 import React, { useState, useEffect } from 'react';
 import { Carousel, Dropdown, Modal, Button } from 'react-bootstrap';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
@@ -14,6 +14,8 @@ import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { RiHotelFill } from "react-icons/ri";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import axios from "axios";
+
 
 
 const FlightSearch = () => {
@@ -117,29 +119,77 @@ const FlightSearch = () => {
     InfantCount: 0,
     JourneyType: 1,
     FareType: 1,
-    Segments: [{ "Origin": "LKO", "Destination": "KWI", "FlightCabinClass": "1", "PreferredDepartureTime": "2024-07-25T00:00:00", "PreferredArrivalTime": "2024-07-28T00:00:00" }]
+    Segments: [
+      {
+        Origin: "LKO",
+        Destination: "KWI",
+        FlightCabinClass: 1,
+        PreferredDepartureTime: "2024-07-28T00:00:00",
+        PreferredArrivalTime: "2024-07-28T00:00:00"
+      }
+    ]
   });
 
+  // state for traveller 
+  const [travellr, settravellr] = useState();
+
+
   // api integration for search flights
-  const getFlightList = async () => {
-    try {
-      const response = await fetch('https://srninfotech.com/projects/travel-app/api/flight-search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
 
-      const data = await response.json();
-      console.log("data", data);
-      navigate("/flight-list", { state: data });
-    }
-    catch (error) {
-      console.error('Error Api fetching suggestions:', error);
-    }
-  }
 
+  const getFlightList = async (retryCount = 3) => {
+    while (retryCount > 0) {
+      try {
+        const response = await fetch('https://srninfotech.com/projects/travel-app/api/flight-search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("data", data);
+        navigate("/flightList", { state: data });
+        return; // Exit the function if the request is successful
+      } catch (error) {
+        console.error('Error fetching suggestions:', error);
+        retryCount -= 1;
+        if (retryCount === 0) {
+          console.error('All retry attempts failed.');
+          // Optionally, handle final failure (e.g., show a message to the user)
+        }
+      }
+    }
+  };
+
+
+
+
+
+  //  const getFlightList = async () => {
+  //   try {
+  //       const response = await fetch('https://srninfotech.com/projects/travel-app/api/flight-search', {
+  //           method: 'POST',
+  //           headers: {
+  //               'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify(formData),
+  //       });
+
+
+  //       const data = await response.json();
+  //       console.log("data", data);
+  //       navigate("/flightList", { state: data });
+  //   }
+  //   catch (error) {
+  //       console.error('Error fetching suggestions:', error);
+  //   }
+  // }
 
   // function for select date send to formData
   const handleChange = (date, key) => {
@@ -171,10 +221,6 @@ const FlightSearch = () => {
 
 
   console.log("formData", formData);
-
-  // function for select flight class value and send to fromdata 
-  // State selected flight class
-  // const [selectedflightClass, setSelectedflightClass] = useState('Economy');
 
   const handleflightClassChange = (event) => {
     setSelectedflightClass(event.target.value);
@@ -267,27 +313,16 @@ const FlightSearch = () => {
                           <div className="col-6 mt-2">
                             <div className="form-group">
                               <label htmlFor="PreferredDepartureTime">Departure Date</label>
-                              {/* <div className="ipt-handle">
-                            <MdDateRange className="" />
-                            <DatePicker
-                                name="PreferredDepartureTime"
-                                selected={preferredDepartureTime}
-                                onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                className="form-control"
-                                id="PreferredDepartureTime"
-                                placeholderText="Select a date"
-                              />
-                            </div> */}
-                              <div className="date-picker-wrapper">
+                              <div className="date-picker-wrapper form-control">
                                 <DatePicker
                                   name="PreferredDepartureTime"
                                   selected={preferredDepartureTime}
                                   onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                  className="form-control"
+                                  className=""
                                   id="PreferredDepartureTime"
                                   placeholderText="Select a date"
                                 />
-                                {/* <MdDateRange className="date-picker-icon" /> */}
+                                <MdDateRange className="date-picker-icon" />
                               </div>
                             </div>
                           </div>
@@ -301,21 +336,19 @@ const FlightSearch = () => {
                           <div className="col-sm-8 form-group  mt-3" onClick={handleShow}>
                             <label htmlFor="text">Travellers $ Cabin</label>
                             <div className="form-control flightTravellerclssFormControl">
-                            <div className="flightTravellerclss">
-                              <FaCircleUser />
-                              <p> <span>{formData.AdultCount}</span> Traveller , </p>
-                              <p> <span>{formData.JourneyType}</span> Cabin Class </p>
-                              <FaAngleDown className="downarrrow" />
-                            </div>
+                              <div className="flightTravellerclss">
+                                <FaCircleUser />
+                                <p> Traveller - <span>{formData.AdultCount}</span> , </p>
+                                <p> Class - <span>{formData.JourneyType}</span>  </p>
+                                <FaAngleDown className="downarrrow" />
+                              </div>
                             </div>
                           </div>
 
-                          <div className="col-sm-3 form-group home-flight-search">
-                            <div className="form-control">
-                          {/* <label htmlFor="text"></label> */}
-                              <button onClick={getFlightList} type="button" className="btn">Search</button>
-                            </div>
+                          <div className="col-sm-4 form-group home-flight-search">
+                            <button onClick={getFlightList} type="button" className="btn">Search</button>
                           </div>
+
                           <div>
                             {showDropdown && (
                               <div className="row travellerdropdown">
@@ -329,6 +362,7 @@ const FlightSearch = () => {
                                     <div className='adultIcons'>
                                       <FiMinusCircle
                                         className='adultMinusicon'
+                                        values=""
                                         onClick={() => handleCount("decrement", "AdultCount")}
                                       />
                                       <span>{formData.AdultCount}</span>
@@ -452,50 +486,55 @@ const FlightSearch = () => {
                           <div className="col-6 mt-2">
                             <div className="form-group">
                               <label htmlFor="PreferredDepartureTime">Departure Date</label>
-                              <div className="date-picker-wrapper">
+                              <div className="date-picker-wrapper form-control">
                                 <DatePicker
                                   name="PreferredDepartureTime"
                                   selected={preferredDepartureTime}
                                   onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                  className="form-control"
+                                  className=""
                                   id="PreferredDepartureTime"
                                   placeholderText="Select a date"
                                 />
-                                {/* <MdDateRange className="date-picker-icon" /> */}
+                                <MdDateRange className="date-picker-icon" />
                               </div>
                             </div>
                           </div>
                           <div className="col-6 mt-2">
                             <div className="form-group">
-                              <label htmlFor="PreferredArrivalTime">Return Date</label>
-                              {/* <div className="date-picker-wrapper"> */}
-                              <DatePicker
-                                name="PreferredArrivalTime"
-                                selected={preferredArrivalTime}
-                                onChange={(date) => handleChange(date, "PreferredArrivalTime")}
-                                className="form-control"
-                                id="PreferredArrivalTime"
-                                placeholderText="Select a date"
-                              />
-                              {/* <MdDateRange className="date-picker-icon" /> */}
-                              {/* </div> */}
+                              <div className="form-group">
+                                <label htmlFor="PreferredArrivalTime">Return Date</label>
+                                <div className="date-picker-wrapper form-control">
+                                  <DatePicker
+                                    name="PreferredArrivalTime"
+                                    selected={preferredArrivalTime}
+                                    onChange={(date) => handleChange(date, "PreferredArrivalTime")}
+                                    className=""
+                                    id="PreferredArrivalTime"
+                                    placeholderText="Select a date"
+                                  />
+                                  <MdDateRange className="date-picker-icon" />
+                                </div>
+                              </div>
+
                             </div>
                           </div>
 
-                          <div className="col-sm-8 form-group flightTravellerclss mt-3" onClick={handleShow}>
-                            <FaCircleUser />
-                            <p>Adult <span>{formData.AdultCount}</span> |</p>
-                            <p>Child <span>{formData.ChildCount}</span> |</p>
-                            <p>Infant <span>{formData.InfantCount}</span> |</p>
-                            <p>{formData.JourneyType}</p>
-                            <FaAngleDown className="downarrrow" />
+                          <div className="col-sm-8 form-group  mt-3" onClick={handleShow}>
+                            <label htmlFor="text">Travellers $ Cabin</label>
+                            <div className="form-control flightTravellerclssFormControl">
+                              <div className="flightTravellerclss">
+                                <FaCircleUser />
+                                <p> <span>{formData.AdultCount}</span> Traveller , </p>
+                                <p> <span>{formData.JourneyType}</span> Cabin Class </p>
+                                <FaAngleDown className="downarrrow" />
+                              </div>
+                            </div>
                           </div>
 
-                          <div className="col-sm-3 home-flight-search mt-3">
-                            {/* <div> */}
+                          <div className="col-sm-4 form-group home-flight-search">
                             <button onClick={getFlightList} type="button" className="btn">Search</button>
-                            {/* </div> */}
                           </div>
+
                           <div>
                             {showDropdown && (
                               <div className="row travellerdropdown">
@@ -635,6 +674,7 @@ const FlightSearch = () => {
           </div>
         </div>
       </section>
+
       <section className='flightbooksec2'>
         <div className="container">
           <div className="row">
