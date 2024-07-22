@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import "./HotelList.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
-import "./HotelList.css";
-import { format } from 'date-fns';
 
 const renderStar = (rating) => {
   let stars = [];
@@ -31,7 +32,7 @@ const HotelList = () => {
   const resultIndex = "9";
 
   useEffect(() => {
-    console.log('hotel list data:', searchResults);
+    console.log('Hotel list data:', searchResults);
     if (searchResults && searchResults.length > 0) {
       setHotels(searchResults);
     } else {
@@ -108,41 +109,119 @@ const HotelList = () => {
     navigate('/hotel-description');
   };
 
-  const toggleReadMore = (index) => {
-    setExpandedIndex(expandedIndex === index ? null : index);
-  };
-
   return (
-    <>
-      
-      <Container>
-        <div className="hotel_list_container">
-          <h2>Hotel List</h2>
-          {error && <p>Error: {error}</p>}
-          {searchResults.length > 0 ? (
-            searchResults.map((hotel, index) => (
-              <div key={index} className="hotel_card">
-                <img src={hotel.HotelPicture} alt={hotel.HotelName} className="hotel_image" />
-                <div className="hotel_info">
-                  <h3>{hotel.HotelName}</h3>
-                  <div>{renderStar(hotel.StarRating)}</div>
-                  <p>{hotel.HotelAddress}</p>
-                  <p>
-                    {expandedIndex === index ? hotel.HotelDescription : `${hotel.HotelDescription.substring(0, 100)}...`}
-                    <button onClick={() => toggleReadMore(index)} className="read_more_btn">
-                      {expandedIndex === index ? "Read Less" : "Read More"}
-                    </button>
-                  </p>
-                  <button className="view_desc_btn" onClick={() => handleViewDescription(index)}>View Description</button>
+    <div className="listContainer">
+      <div className="listWrapper">
+        <div className="listSearch">
+          <h1 className="listTitle">Search</h1>
+          <div className="listItem">
+            <label>Destination</label>
+            <input placeholder={location.state?.destination || ""} type="text" />
+          </div>
+          <div className="listItem">
+            <label>Check-in Date</label>
+            <DatePicker
+              selected={location.state?.date?.[0]?.startDate || new Date()}
+              onChange={(date) => {}}
+              minDate={new Date()}
+              dateFormat="MM/dd/yyyy"
+            />
+          </div>
+          <div className="listItem">
+            <label>Check-out Date</label>
+            <DatePicker
+              selected={location.state?.date?.[0]?.endDate || new Date()}
+              onChange={(date) => {}}
+              minDate={new Date()}
+              dateFormat="MM/dd/yyyy"
+            />
+          </div>
+          <div className="listItem">
+            <label>Options</label>
+            <div className="listOptions">
+              <div className="listOptionItem">
+                <span className="listOptionText">
+                  Min price <small>per night</small>
+                </span>
+                <input type="number" className="listOptionInput" />
+              </div>
+              <div className="listOptionItem">
+                <span className="listOptionText">
+                  Max price <small>per night</small>
+                </span>
+                <input type="number" className="listOptionInput" />
+              </div>
+              <div className="listOptionItem">
+                <span className="listOptionText">Adult</span>
+                <input
+                  type="number"
+                  min={1}
+                  className="listOptionInput"
+                  placeholder={location.state?.options?.adult || 1}
+                />
+              </div>
+              <div className="listOptionItem">
+                <span className="listOptionText">Children</span>
+                <input
+                  type="number"
+                  min={0}
+                  className="listOptionInput"
+                  placeholder={location.state?.options?.children || 0}
+                />
+              </div>
+              <div className="listOptionItem">
+                <span className="listOptionText">Room</span>
+                <input
+                  type="number"
+                  min={1}
+                  className="listOptionInput"
+                  placeholder={location.state?.options?.room || 1}
+                />
+              </div>
+            </div>
+          </div>
+          <button>Search</button>
+        </div>
+        <div className="listResult">
+          {error && <p className="errorMessage">{error}</p>}
+          {hotels.length > 0 ? (
+            hotels.map((hotel, index) => (
+              <div key={hotel.id} className="searchItem">
+                <img
+                  src={hotel.HotelPicture}
+                  alt={hotel.HotelName}
+                  className="hotelImg"
+                />
+                <div className="hotelDescription">
+                  <h1 className="hotelTitle">{hotel.HotelName}</h1>
+                  <span className="hotelDistance">{hotel.HotelAddress}</span>
+                  <span className="hotelTaxi">{hotel.freeTaxi ? "Free airport taxi" : ""}</span>
+                  {/* <span className="Subtitle">{hotel.HotelDescription}</span> */}
+                  <span className="Features">{hotel.features}</span>
+                  <span className="Cancel">{hotel.freeCancellation ? "Free cancellation" : ""}</span>
+                  <span className="CancelSubtitle">
+                    You can cancel later, so lock in this great price today!
+                  </span>
+                </div>
+                <div className="Details">
+                  <div className="hotelRating">
+                    <span>{renderStar(hotel.StarRating)}</span>
+                
+                  </div>
+                  <div className="DetailTexts">
+                    <span className="hotelPrice"> INR{hotel.RoomPrice}</span>
+                    <span className="hotelTax">Includes taxes and fees</span>
+                    <button onClick={() => handleViewDescription(index)} className="CheckButton">See Details</button>
+                  </div>
                 </div>
               </div>
             ))
           ) : (
-            <p>Loading hotel data...</p>
+            <p className="noHotelsMessage">No hotels available.</p>
           )}
         </div>
-      </Container>
-    </>
+      </div>
+    </div>
   );
 };
 
