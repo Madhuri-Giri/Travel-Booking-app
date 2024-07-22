@@ -17,7 +17,8 @@ const renderStar = (rating) => {
   return stars;
 };
 
-const trimText = (text, maxLength) => {
+const trimText = (text = '', maxLength = 200) => {
+  if (typeof text !== 'string') return ''; // Ensure text is a string
   const cleanText = text.replace(/<[^>]+>/g, '').replace(/(?:\r\n|\r|\n)/g, ' ');
   return cleanText.length > maxLength ? cleanText.substring(0, maxLength) + "..." : cleanText;
 };
@@ -91,20 +92,19 @@ const HotelDescription = () => {
   };
 
   if (!hotel) {
-    return null;
+    return <div>Loading...</div>;
   }
 
   return (
-    <>
-      <Container>
-        <div className='hotel_description_container'>
-          <h2>{hotel.HotelName}</h2>
-          <div>{renderStar(hotel.StarRating)}</div>
-          <p>{parse(trimText(hotel.Description, 200))}</p>
-          <button className='add_room_btn' onClick={handleAddRoomClick}>Add Room</button>
-        </div>
-      </Container>
-    </>
+    <Container>
+      <div className='hotel_description_container'>
+        <h2>{hotel.HotelName || 'Hotel Name Unavailable'}</h2>
+        <div>{renderStar(hotel.StarRating || 0)}</div>
+        <p>{parse(trimText(hotel.HotelDescription || 'No description available'))}</p>
+        <button className='add_room_btn' onClick={handleAddRoomClick}>Add Room</button>
+        {error && <p className='error_message'>{error}</p>} 
+      </div>
+    </Container>
   );
 };
 
