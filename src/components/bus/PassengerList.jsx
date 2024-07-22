@@ -24,10 +24,6 @@ const PassengerList = () => {
     Gender: 'Male',
   });
 
-  // useEffect(() => {
-  //   // Save passengerData to localStorage whenever it changes
-  //   localStorage.setItem('passengerData', JSON.stringify(passengerData));
-  // }, [passengerData]);
 
   const handleDeletePassenger = (index) => {
     const updatedPassengers = [...passengerData];
@@ -37,12 +33,11 @@ const PassengerList = () => {
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('passengerData')); // Use 'passengerData' key
-    console.log('Stored Data:', storedData);
     
     if (storedData && Array.isArray(storedData) && storedData.length > 0) {
       setPassengerData(storedData);
     } else {
-      setPassengerData([]); // Handle empty or null case
+      setPassengerData([]);
     }
   }, []);
   
@@ -91,7 +86,6 @@ const PassengerList = () => {
   const saveNewPassenger = () => {
     const updatedPassengers = [...passengerData, newPassengerData];
     setPassengerData(updatedPassengers);
-    // Update localStorage with the updated passengerData
     localStorage.setItem('passengerData', JSON.stringify(updatedPassengers));
     setIsNewPassengerOpen(false);
     setNewPassengerData({

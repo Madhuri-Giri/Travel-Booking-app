@@ -25,32 +25,38 @@ const BusLists = () => {
     }
   }, [dispatch, searchResults.length]);
 
+ 
   const generateDates = (numDays) => {
     const dates = [];
     const today = new Date();
+  
     for (let i = 0; i < numDays; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
       dates.push(date);
     }
+  
     return dates;
   };
-
+  
+  // Example usage
+  const numDays = 30; // Number of future days including today
+  const dates = generateDates(numDays);
+  
   const scrollLeft = () => {
     dateMidRef.current.scrollBy({
       left: -150,  // Adjust the value as per your requirement
       behavior: 'smooth',
     });
   };
-
+  
   const scrollRight = () => {
     dateMidRef.current.scrollBy({
       left: 150,  // Adjust the value as per your requirement
       behavior: 'smooth',
     });
   };
-
-  const dates = generateDates(30);
+  
 
 
   // Function to convert UTC time to IST
@@ -224,6 +230,7 @@ const BusLists = () => {
 
           {/* Bus lists */}
           <div className="btm-lists">
+{/* ----------------------------------------------------------------------------------------------------------------- */}
             <div className="date-slider">
               <div className="d-slide">
                 <div className="date-left" onClick={scrollLeft}>
@@ -241,7 +248,7 @@ const BusLists = () => {
                 </div>
               </div>
             </div>
-
+{/* -------------------------------------------------------------------------------------------------------- */}
             <div className="bus-divs">
               {status === 'loading' && <p>Loading...</p>}
               {status === 'failed' && <p>{error}</p>}
