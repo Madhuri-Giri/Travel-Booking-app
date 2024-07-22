@@ -82,6 +82,7 @@ const HotelSearch = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+  
     const requestData = {
       BookingMode: "5",
       CheckInDate: format(inputs.checkIn, 'dd/MM/yyyy'),
@@ -105,9 +106,9 @@ const HotelSearch = () => {
       ReviewScore: null,
       IsNearBySearchAllowed: false
     };
-
+  
     console.log('Request Data:', requestData);
-
+  
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/search-hotel', {
         method: "POST",
@@ -117,15 +118,15 @@ const HotelSearch = () => {
         },
         body: JSON.stringify(requestData)
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
+  
       const data = await response.json();
       console.log('API Response:', data);
-
-      if (data) {
+  
+      if (data && data.Results) {
         localStorage.setItem('traceId', '1');
         localStorage.setItem('resultIndex', '1');
         localStorage.setItem('srdvType', 'SingleTB');
@@ -134,11 +135,14 @@ const HotelSearch = () => {
         navigate('/hotel-list', { state: { searchResults: data.Results } });
       } else {
         console.error('No search results found or error in response:', data);
+        alert('No search results found. Please try again later.');
       }
     } catch (error) {
       console.error('Error searching hotel:', error);
+      alert('Error searching hotel. Please try again later.');
     }
   };
+  
 
   const handleClickOutside = (event) => {
     if (guestRef.current && !guestRef.current.contains(event.target)) {
@@ -308,7 +312,7 @@ const HotelSearch = () => {
             </form>
           </div>
         </section>
-</div>
+          </div>
         <section>
         <Container>
           <div className="Exclusive-offer">

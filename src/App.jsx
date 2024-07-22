@@ -26,6 +26,7 @@ import GuestDetails from './components/guestDetails/GuestDetails';
 import HotelDescription from './components/hotelDescription/HotelDescription'
 import Help from './components/help/Help';
 import Reviews from './components/reviews/Review'
+import FlightDetails from './components/flight/FlightDetails';
 
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/flight-search' element={<FlightSearch />} />
           <Route path='/flight-list' element={<FlightLists />} />
+          <Route path='flight-details' element={<FlightDetails/>} />
           <Route path='/bus-search' element={<BusSearch />} />
           <Route path='/bus-list' element={<BusLists />} />
           <Route path='/bus-layout' element={<BusLayout />} />

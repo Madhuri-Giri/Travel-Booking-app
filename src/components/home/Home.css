@@ -87,6 +87,8 @@
     padding: 8px 25px;
     font-weight: bold;
     font-size: 18px;
+    width: 100%;
+    margin-top: 30px;
 }
 
 .home-flight-search button:hover {
@@ -441,7 +443,6 @@
         padding: 5px 15px;
         border-radius: 17px;
         font-size: 13px;
-        /* margin-left: 20px; */
     }
     .flistname {
         font-size: 12px;
