@@ -1,3 +1,48 @@
+/* styles.css */
+.flight-date-slider {
+    position: relative;
+    width: 100%;
+    background-color: white;
+    padding: 10px 10px;
+    border-radius: 5px;
+}
+
+.flight-d-slide {
+    display: flex;
+    align-items: center;
+}
+
+.date-left, .date-right {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: #00b7eb;
+}
+
+.date-mid {
+    flex: 1;
+    overflow: hidden;
+}
+
+.d-one {
+    padding: 10px;
+    background-color: white;
+    border: 1px solid rgba(128, 128, 128, 0.158);
+    border-radius: 5px;
+    text-align: center;
+    width: 100px; /* Adjust based on your requirement */
+}
+
+
+
+
+
+
+
+
+
 .flightlistsec1{
     background-color: #00b7eb;
     padding-top: 10px;
@@ -14,7 +59,7 @@
 
 /* -------------------slider date--------------------- */
 
-
+/* 
 .flight-date-slider{
     width: 100%;
     display: flex;
@@ -25,19 +70,17 @@
     background: #fff;
 }
 .flight-date-slider .flight-d-slide{
-    padding: 16px 30px;
+    padding: 2px 0px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 2px 3px 4px 3px antiquewhite;
-    border-radius: 35px;
+    border-radius: 5px;
     margin-top: 10px;
-    background: #faebd74f;
-    /* margin-bottom: 40px; */
+    background: whitesmoke;
 }
+
 .flight-date-slider .flight-d-slide .date-left{
-    /* width: 4%; */
     height: 5vmax;
     display: flex;
     cursor: pointer;
@@ -97,11 +140,14 @@
 .flight-date-slider .flight-d-slide .date-mid .d-one p{
     font-weight: bold;
     color: #00b7eb;
-}
+} */
 
-/* -------------------slider date--------------------- */
+/* -------------------slider date end--------------------- */
+
+
 .flightlistsec2{
     padding: 40px 50px;
+    background-color: #dddddd;
 }
 .flightlistsec2 .row{
     display: flex;
@@ -114,6 +160,7 @@
 }
 .flight-content .row{
     box-shadow: 2px 3px 4px 3px gray;
+    background-color: white;
     padding: 10px 10px;
     padding-bottom: 20px;
     border-radius: 20px;
@@ -371,5 +418,4 @@
      .FlightList .flights .flight-date-slider .d-slide .date-mid .d-one p{
               font-size: 1.5vmax; 
      }
-}
 }

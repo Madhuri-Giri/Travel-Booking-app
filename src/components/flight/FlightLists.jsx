@@ -1,11 +1,38 @@
 import "./FlightLists.css"
 import { Accordion, Form, ProgressBar } from 'react-bootstrap';
 import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation , useNavigate} from 'react-router-dom';
 import { TiPlane } from "react-icons/ti";
 import { FaCalendarAlt, FaUser } from 'react-icons/fa';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export default function FlightLists() {
+    const navigate = useNavigate();
+
+    const selectFlight = () =>{
+        navigate("/flight-details");
+    }
+
+    const sliderRef = useRef(null);
+
+    const scrollLeftClick = () => {
+        sliderRef.current.slickPrev();
+    };
+
+    const scrollRightClick = () => {
+        sliderRef.current.slickNext();
+    };
+
+    const settings = {
+        dots: false,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        variableWidth: true,
+    };
 
     const [accordiandepartime, setaccordiandepartime] = useState("02:15 AM");
     const maxaccordiandepartime = "23:15 PM";
@@ -45,17 +72,17 @@ export default function FlightLists() {
     const [startX, setStartX] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
 
-    const scrollLeftClick = () => {
-        if (dateMidRef.current) {
-            dateMidRef.current.scrollLeft -= 150;
-        }
-    };
+    // const scrollLeftClick = () => {
+    //     if (dateMidRef.current) {
+    //         dateMidRef.current.scrollLeft -= 150;
+    //     }
+    // };
 
-    const scrollRightClick = () => {
-        if (dateMidRef.current) {
-            dateMidRef.current.scrollLeft += 150;
-        }
-    };
+    // const scrollRightClick = () => {
+    //     if (dateMidRef.current) {
+    //         dateMidRef.current.scrollLeft += 150;
+    //     }
+    // };
 
     const handleMouseDown = (e) => {
         setIsDragging(true);
@@ -347,7 +374,33 @@ export default function FlightLists() {
                         </Accordion>
                     </div>
                     <div className="col-lg-8">
-                        <div className="flight-date-slider">
+
+
+                    <div className="flight-date-slider">
+            <div className="flight-d-slide">
+                <div className="date-left" onClick={scrollLeftClick}>
+                    <i className="ri-arrow-left-s-line"></i>
+                </div>
+                <div className="date-mid">
+                    <Slider ref={sliderRef} {...settings}>
+                        {flightData.map((flight, index) => (
+                            <div className="d-one" key={index}>
+                                <h6>{flight.date}</h6>
+                                <p>{flight.price}</p>
+                            </div>
+                        ))}
+                    </Slider>
+                </div>
+                <div className="date-right" onClick={scrollRightClick}>
+                    <i className="ri-arrow-right-s-line"></i>
+                </div>
+            </div>
+        </div>
+
+
+
+
+                        {/* <div className="flight-date-slider">
                             <div className="flight-d-slide">
                                 <div className="date-left" onClick={scrollLeftClick}>
                                     <i className="ri-arrow-left-s-line"></i>
@@ -371,7 +424,7 @@ export default function FlightLists() {
                                     <i className="ri-arrow-right-s-line"></i>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="f-lists">
                             <div className="flight-content">
@@ -405,7 +458,7 @@ export default function FlightLists() {
                                         </div>
                                         <div className="col-3 pricebtns">
                                             <div><p>{flight.price}</p></div>
-                                            <div> <button>SELECT</button>     </div>
+                                            <div> <button onClick={selectFlight}>SELECT</button>     </div>
                                         </div>
                                     </div>
                                 ))}

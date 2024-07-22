@@ -1,0 +1,108 @@
+.fdetailspriceBox{
+    background-color: #d4edda;
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+.flightDetailssec{
+    background-color: #f4efefd6;
+    padding: 20px 20px;
+}
+.fdetailspriceBox p{
+    color: #155724;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+.fdetailspriceBox h6{
+    font-size: 14px;
+    font-weight: 400;
+    color: #155724;
+}
+.fdetailspriceBox h5{
+    /* font-size: 16px; */
+    font-weight: bold;
+    color: #155724;
+}
+
+.fligthReviewhed{
+    display: flex;
+    margin-bottom: 10px;
+}
+.fligthReviewhed svg{
+    font-size: 20px;
+    margin-right: 10px;
+}
+.fligthReviewhed h5{
+    font-weight: 800;
+}
+
+.fligthReviewBox{
+    background-color: white;
+    padding: 20px 30px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
+    border-radius: 7px;
+}
+.fligthReviewBoxHed{
+    display: flex;
+    justify-content:center;
+    background-color: #eeeeee;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.fligthReviewBoxHed svg{
+    font-size: 25px;
+    margin-left: 10px;
+}
+.fligthReviewBoxHed h6{
+    font-weight: bold;
+}
+.fligthReviewBoxHedText{
+    display: flex;
+    justify-content: space-between;
+}
+.fligthReviewBoxHedbttn{
+    text-align: end;
+}
+.fligthReviewBoxHedbttn button{
+    background-color: #fffa9a;
+    color: #0666cd;
+    border: none;
+    border-radius: 10px;
+    margin-right: 10px;
+    padding: 2px 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+.fligthReviewBoxHedMain{
+    border: 1px solid #80808040;
+}
+.fligthReviewBoxHedMain .tabs{
+    border-bottom: 1px solid #80808040;
+}
+
+
+/*flight details tabs */
+/* styles.css */
+.tabs button {
+    padding: 10px;
+    margin-right: 5px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.tabs button.active {
+    background-color: skyblue;
+    color: white;
+    font-weight: bold;
+    border: 2px solid #80808040; /* Add border for active tab */
+}
+
+.tab-content {
+    margin-top: 20px;
+}
