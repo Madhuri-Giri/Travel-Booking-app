@@ -67,13 +67,7 @@ background-color: rgba(230, 248, 255, 0.452);
        justify-content: space-between;
        flex-direction: column;
 }
-/* .ReviewBooking .review-book .detail-flex{
-       width: 95%;
-       display: flex;
-       align-items: flex-start;
-       justify-content: space-between;
-       flex-direction: row;
-} */
+
 .ReviewBooking .review-book .p-detail{
        width: 95%;
        display: flex;
@@ -81,19 +75,39 @@ background-color: rgba(230, 248, 255, 0.452);
        justify-content: center;
        flex-direction: column;
 }
+
 .ReviewBooking .review-book .p-detail h6{
        width: 100%;
-       font-weight: 600;
-       font-size: 1.3vmax;
-       margin-top: 1vmax;
-}
-.ReviewBooking .review-book .p-detail .kuchbhi{
-       width: 95%;
-}
-.ReviewBooking .review-book  .p-contact-detail{
-       width: 95%;
        display: flex;
        align-items: flex-start;
+       justify-content: flex-start;
+       font-weight: 600;
+       font-size: 1.3vmax;
+       padding-top: 1vmax;
+}
+.ReviewBooking .review-book .p-detail  .details{
+       width: 100%;
+       display: flex;
+       align-items: center;
+       justify-content: space-evenly;
+       padding-top: 1vmax;
+       padding-bottom: 1vmax;
+
+}
+.ReviewBooking .review-book .p-detail  .details .one{
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       flex-direction: column;
+}
+.ReviewBooking .review-book .p-detail  .details .one span{
+      font-weight: 600;
+}
+
+.ReviewBooking .review-book  .p-contact-detail{
+       width: 100%;
+       display: flex;
+       align-items: center;
        justify-content: space-between;
        flex-direction: column;
 background-color: rgba(230, 248, 255, 0.452);
@@ -161,7 +175,6 @@ background-color: rgba(230, 248, 255, 0.452);
        background: #0f7000;
        justify-content: flex-end;
  }
-
 
  @media (max-width:600px) {
 
