@@ -16,16 +16,56 @@ export default function FlightDetails() {
         switch (activeTabFlightDetails) {
             case 'flight':
                 return <div>
-                    <div className="row">
-                        <div className="col-4">
-                            <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid"/>
+                    <div className="row flighttTabContent">
+                        <div className="col-3 flighttTabContentCol1">
+                            <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
                             <p>Indigo Air</p>
-                            
                         </div>
+                        <div className="col-3 flighttTabContentCol2">
+                            <p className="flighttTabContentCol2p1">Mumbai</p>
+                            <h5>00:25</h5>
+                            <p className="flighttTabContentCol2p2">Tue,July23</p>
+                            <p className="flighttTabContentCol2p3">Chhatrapati Shivaji International Airport</p>
+                        </div>
+                        <div className="col-3 flighttTabContentCol3">
+                            <p>02h 10m</p>
+                            <p>Economy</p>
+                        </div>
+                        <div className="col-3 flighttTabContentCol4">
+                            <p className="flighttTabContentCol2p1">New Delhi</p>
+                            <h5>22:15</h5>
+                            <p className="flighttTabContentCol2p2">Tue,July23</p>
+                            <p className="flighttTabContentCol2p3">Indira Gandhi International Airport</p>
+                        </div>
+
                     </div>
                 </div>;
             case 'baggage':
-                return <div>Baggage Information</div>;
+                return <div>
+                    <div className="row mt-4 mb-4 baggageTabRow">
+                        <div className="col-12">
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Airline</th>
+                                        <th scope="col">Check-in Baggage</th>
+                                        <th scope="col">Cabin Baggage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Airline 1</td>
+                                        <td>01 Bag of 15 kg</td>
+                                        <td>7 kg</td>
+                                    </tr>
+                                   
+                                </tbody>
+                            </table>
+                            <p>The baggage information is just for reference. Please Check with airline before check-in. For more information, visit Website.</p>
+                        </div>
+                    </div>
+
+                </div>;
             case 'fare':
                 return <div>Fare Information</div>;
             case 'cancellation':

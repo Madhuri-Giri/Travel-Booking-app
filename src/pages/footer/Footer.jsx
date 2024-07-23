@@ -53,7 +53,7 @@ function Footer() {
                     </div>
                 </div>
                     <div className="footrcopyright">
-                    <p>© 2024 Sajyatra. All Rights Reserved.</p>
+                    <p>© 2024 <Link to=''>Sajyatra</Link>. All Rights Reserved.</p>
                     </div>
             </section>
 
