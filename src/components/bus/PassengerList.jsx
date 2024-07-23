@@ -93,6 +93,9 @@ const PassengerList = () => {
       LastName: '',
       Age: '',
       Gender: 'Male',
+      Email: '',
+      Number: '',
+
     });
   };
 
@@ -168,8 +171,15 @@ const PassengerList = () => {
                 <input type="checkbox" />
               </div>
               <div className="p-two">
-                <p>{passenger.FirstName} <span>{passenger.LastName}</span></p>
-                <p>{passenger.Gender} <span>{passenger.Age}yr</span></p>
+                {/* <p>{passenger.FirstName} <span>{passenger.LastName}</span></p>
+                <p>{passenger.Gender} <span>{passenger.Age}yr</span></p> */}
+                <div className="lists-info">
+                   <div className='bhar'><span style={{fontWeight:'600'}}>Name</span><small>{passenger.FirstName} {passenger.LastName}</small></div>
+                   <div className='bhar'><span style={{fontWeight:'600'}}>Gender</span><small>{passenger.Gender}</small></div>
+                   <div className='bhar'><span style={{fontWeight:'600'}}>Age</span><small>{passenger.Age}</small></div>
+                   <div className='bhar'><span style={{fontWeight:'600'}}>Contact No.</span><small>{passenger.Phoneno                   }</small></div>
+
+                </div>
               </div>
               <div className="p-three">
                 <i className="ri-edit-line" onClick={() => openEditPopup(index)}></i>

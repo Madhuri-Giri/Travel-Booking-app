@@ -59,13 +59,13 @@ font-weight: lighter;
           border: 1px solid #0000003f;
   }
   .PassengerList .passanger-list  .p-lines .p-one{
-          width: 30%;
+          width: 10%;
           display: flex;
           height: 5vmax;
           align-items: center;
   }
   .PassengerList .passanger-list  .p-lines .p-two{
-          width: 30%;
+          width: 80%;
           display: flex;
           height: 5vmax;
           align-items: center;
@@ -73,8 +73,22 @@ font-weight: lighter;
           padding: 0.4vmax;
           flex-direction: column;
   }
+  .PassengerList .passanger-list  .p-lines .p-two  .lists-info{
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        align-items: center;
+        justify-content: space-evenly;
+  }  
+  .PassengerList .passanger-list  .p-lines .p-two  .lists-info  .bhar{
+        width: 30%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+  }
   .PassengerList  .passanger-list  .p-lines .p-three{
-          width: 30%;
+          width: 10%;
           display: flex;
           height: 5vmax;
           align-items: center;

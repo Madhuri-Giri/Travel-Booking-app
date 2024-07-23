@@ -79,18 +79,12 @@ const BoardAndDrop = () => {
       navigate('/passenger-info');
     }
   // ---------------------
-
-
   };
-
-  
 
 
   const backHandlerList = () => {
     navigate('/bus-list')
   }
-
-
 
   return (
 
