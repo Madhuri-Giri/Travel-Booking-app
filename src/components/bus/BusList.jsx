@@ -87,12 +87,9 @@ const BusLists = () => {
 
   const addSeatLayout = async () => {
     try {
-      // Retrieve TraceId and ResultIndex from localStorage
       const traceId = localStorage.getItem('traceId');
       const resultIndex = localStorage.getItem('resultIndex');
   
-      // Example values if they are not found in localStorage
-      // Replace with appropriate handling logic as per your application's flow
       if (!traceId || !resultIndex) {
         throw new Error('TraceId or ResultIndex not found in localStorage');
       }
@@ -101,12 +98,10 @@ const BusLists = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Add any other headers as needed
         },
         body: JSON.stringify({
           ResultIndex: resultIndex,
           TraceId: traceId,
-          // Add other parameters as required by your API
         }),
       });
   
@@ -114,15 +109,13 @@ const BusLists = () => {
         throw new Error('Failed to add seat layout');
       }
   
-      const data = await response.json(); // Parse response JSON
+      const data = await response.json(); 
   
-      console.log('SeatLayout API Response:', data); // Log parsed response data
       setLayoutResponse(data);
       
   
     } catch (error) {
       console.error('Error adding seat layout:', error.message);
-      // Optionally handle error state or show error to user
     }
   };
   
