@@ -1,4 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 import BusSearch from './components/bus/BusSearch'
 import HotelSearch from './components/hotel/HotelSearch'
 import FlightSearch from './components/flight/FlightSearch'
@@ -27,6 +31,7 @@ import HotelDescription from './components/hotelDescription/HotelDescription'
 import Help from './components/help/Help';
 import Reviews from './components/reviews/Review'
 import FlightDetails from './components/flight/FlightDetails';
+import BusBookingConfirm from './components/bus/BusBookingConfirm';
 
 
 const App = () => {
@@ -43,6 +48,8 @@ const App = () => {
           <Route path='/bus-list' element={<BusLists />} />
           <Route path='/bus-layout' element={<BusLayout />} />
           <Route path='/bord-drop' element={<BoardAndDrop />} />
+          <Route path='/bus-booking-confirm' element={<BusBookingConfirm />} />
+
           <Route path='/faq' element={<Faq />} />
           <Route path='/setting' element={< Setting/>} />
           <Route path='/signup' element={< SignUp/>} />
@@ -65,7 +72,16 @@ const App = () => {
 
           
         </Routes>
-        <Footer/>        
+        <Footer/>  
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          closeOnClick
+          pauseOnHover
+          draggable
+          pauseOnFocusLoss
+        />      
       </Router>
     </div>
   )
