@@ -1,7 +1,7 @@
 import "./FlightLists.css"
 import { Accordion, Form, ProgressBar } from 'react-bootstrap';
 import { useEffect, useRef, useState } from 'react';
-import { useLocation , useNavigate} from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { TiPlane } from "react-icons/ti";
 import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import Slider from "react-slick";
@@ -11,7 +11,7 @@ import "slick-carousel/slick/slick-theme.css";
 export default function FlightLists() {
     const navigate = useNavigate();
 
-    const selectFlight = () =>{
+    const selectFlight = () => {
         navigate("/flight-details");
     }
 
@@ -65,24 +65,31 @@ export default function FlightLists() {
             setFlightListData(location.state);
         }
     }, [location.state])
-    console.log("location", location)
+    console.log("FullData", location.state)
+    console.log("FlightlistData", flightListData)
+
+    const listData = location.state
+    const dd = listData?.Results
+    console.log("listData", listData)
+
+    // Function to convert UTC time to IST
+  const convertUTCToIST = (utcTimeString) => {
+    const utcDate = new Date(utcTimeString);
+    const istTime = new Intl.DateTimeFormat('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    }).format(utcDate);
+    return istTime;
+  };
+
+
 
     const dateMidRef = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
-
-    // const scrollLeftClick = () => {
-    //     if (dateMidRef.current) {
-    //         dateMidRef.current.scrollLeft -= 150;
-    //     }
-    // };
-
-    // const scrollRightClick = () => {
-    //     if (dateMidRef.current) {
-    //         dateMidRef.current.scrollLeft += 150;
-    //     }
-    // };
 
     const handleMouseDown = (e) => {
         setIsDragging(true);
@@ -124,99 +131,9 @@ export default function FlightLists() {
 
     ];
 
-
-    const flightsData = [
-        {
-            airline: "IndiGo",
-            imgSrc: "https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/6E.png?v=19",
-            departure: "12:30",
-            arrival: "2:10",
-            duration: "1h 35m",
-            price: "$62,000",
-            offer: "Get Rs 425 off using MMTSUPER code",
-            seatsLeft: "9 seats left",
-            startflightshortname: "DEL",
-            endflightshortname: "BLR",
-            startflightFullname: "Delhi",
-            endflightFullname: "Banglore"
-
-        },
-        {
-            airline: "Air India",
-            imgSrc: "https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19",
-            departure: "10:00",
-            arrival: "12:30",
-            duration: "2h 30m",
-            price: "$55,000",
-            offer: "Get Rs 500 off using AIRSUPER code",
-            seatsLeft: "5 seats left",
-            startflightshortname: "BOM",
-            endflightshortname: "CCU",
-            startflightFullname: "Mumbai",
-            endflightFullname: "Kolkata"
-        },
-        {
-            airline: "IndiGo",
-            imgSrc: "https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/6E.png?v=19",
-            departure: "12:30",
-            arrival: "2:10",
-            duration: "1h 35m",
-            price: "$62,000",
-            offer: "Get Rs 425 off using MMTSUPER code",
-            seatsLeft: "9 seats left",
-            startflightshortname: "HYD",
-            endflightshortname: "MAA",
-            startflightFullname: "Hydrabad",
-            endflightFullname: "Madras"
-        },
-        {
-            airline: "Air India",
-            imgSrc: "https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19",
-            departure: "10:00",
-            arrival: "12:30",
-            duration: "2h 30m",
-            price: "$55,000",
-            offer: "Get Rs 500 off using AIRSUPER code",
-            seatsLeft: "5 seats left",
-            startflightshortname: "DEL",
-            endflightshortname: "BLR",
-            startflightFullname: "Delhi",
-            endflightFullname: "Banglore"
-        },
-        {
-            airline: "IndiGo",
-            imgSrc: "https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/6E.png?v=19",
-            departure: "12:30",
-            arrival: "2:10",
-            duration: "1h 35m",
-            price: "$62,000",
-            offer: "Get Rs 425 off using MMTSUPER code",
-            seatsLeft: "9 seats left",
-            startflightshortname: "DEL",
-            endflightshortname: "BLR",
-            startflightFullname: "Delhi",
-            endflightFullname: "Banglore"
-        },
-        {
-            airline: "Air India",
-            imgSrc: "https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19",
-            departure: "10:00",
-            arrival: "12:30",
-            duration: "2h 30m",
-            price: "$55,000",
-            offer: "Get Rs 500 off using AIRSUPER code",
-            seatsLeft: "5 seats left",
-            startflightshortname: "DEL",
-            endflightshortname: "BLR",
-            startflightFullname: "Delhi",
-            endflightFullname: "Banglore"
-        },
-    ];
-
-
     return (
         <>
-        
+
             <section className='flightlistsec1'>
                 <div className="container">
                     <div className="row">
@@ -314,7 +231,7 @@ export default function FlightLists() {
                                 <Accordion.Body>
                                     {/* <ProgressBar now={(price / maxPrice) * 100} label={`${(price / maxPrice) * 100}%`} /> */}
                                     <div className="flightlistaccordianprice">
-                                        
+
                                         <div className="flightlistaccordianpricehed">
                                             <p>Rs.{price}</p><p>Rs.{maxPrice}</p>
                                         </div>
@@ -335,7 +252,7 @@ export default function FlightLists() {
                                     <div className="flightlistaccordianprice mb-5">
                                         <ul>
                                             <li>
-                                            <h6>Departure from New Delhi (DEL) </h6>
+                                                <h6>Departure from New Delhi (DEL) </h6>
                                             </li>
                                         </ul>
                                         <div className="flightlistaccordianpricehed">
@@ -376,28 +293,26 @@ export default function FlightLists() {
                     <div className="col-lg-8">
 
 
-                    <div className="flight-date-slider">
-            <div className="flight-d-slide">
-                <div className="date-left" onClick={scrollLeftClick}>
-                    <i className="ri-arrow-left-s-line"></i>
-                </div>
-                <div className="date-mid">
-                    <Slider ref={sliderRef} {...settings}>
-                        {flightData.map((flight, index) => (
-                            <div className="d-one" key={index}>
-                                <h6>{flight.date}</h6>
-                                <p>{flight.price}</p>
+                        <div className="flight-date-slider">
+                            <div className="flight-d-slide">
+                                <div className="date-left" onClick={scrollLeftClick}>
+                                    <i className="ri-arrow-left-s-line"></i>
+                                </div>
+                                <div className="date-mid">
+                                    <Slider ref={sliderRef} {...settings}>
+                                        {flightData.map((flight, index) => (
+                                            <div className="d-one" key={index}>
+                                                <h6>{flight.date}</h6>
+                                                <p>{flight.price}</p>
+                                            </div>
+                                        ))}
+                                    </Slider>
+                                </div>
+                                <div className="date-right" onClick={scrollRightClick}>
+                                    <i className="ri-arrow-right-s-line"></i>
+                                </div>
                             </div>
-                        ))}
-                    </Slider>
-                </div>
-                <div className="date-right" onClick={scrollRightClick}>
-                    <i className="ri-arrow-right-s-line"></i>
-                </div>
-            </div>
-        </div>
-
-
+                        </div>
 
 
                         {/* <div className="flight-date-slider">
@@ -428,42 +343,56 @@ export default function FlightLists() {
 
                         <div className="f-lists">
                             <div className="flight-content">
-                                {flightsData.map((flight, index) => (
-                                    <div className="row">
-                                         <div className="pricebtnsmobil">
-                                            <p>{flight.price}</p>
-                                            <button>SELECT</button> 
-                                        </div>
-                                        <p className='regulrdeal'><span>Regular Deal</span></p>
-                                        <div className="col-3">
-                                            <div className="d-flex">
-                                                <img src={flight.imgSrc} alt={flight.airline} />
-                                                <p>{flight.airline}</p>
-                                            </div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="flistname">
-                                                <p className="flistnamep1">{flight.startflightshortname}</p>
-                                                <div>
-                                                    <p className="flistnamep2">{flight.departure}</p>
-                                                    <p className="flistnamep4">{flight.startflightFullname}</p>
+                                {dd && dd.length > 0 ? (
+                                    dd.map((flightSegments, index) => {
+                                        console.log("flightSegments", flightSegments);
+
+                                        return flightSegments.map((flight, segmentIndex) => {
+
+                                            return (
+                                                <div className="row" key={`${index}-${segmentIndex}`}>
+                                                    <div className="pricebtnsmobil">
+                                                        <p>{flight?.OfferedFare || "Unknown Airline"}</p>
+                                                        <button>SELECT</button>
+                                                    </div>
+                                                    <p className='regulrdeal'><span>Regular Deal</span></p>
+
+                                                    <div className="col-3">
+                                                        <div className="d-flex">
+                                                            <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
+                                                            <p>{flight?.Segments?.[0][0]?.Airline.AirlineName}</p><br></br>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <div className="flistname">
+                                                            <p className="flistnamep1">{flight?.Segments?.[0][0]?.Origin.CityCode}</p>
+                                                            <div>
+                                                                <p className="flistnamep2">{convertUTCToIST(flight?.Segments?.[0][0]?.DepTime)}</p>
+                                                                <p className="flistnamep4">{flight?.Segments?.[0][0]?.Origin.CityName}</p>
+                                                            </div>
+                                                            <p className="flistnamep3">{flight?.Segments?.[0][0]?.Duration}</p>
+                                                            <div>
+                                                                <p className="flistnamep2">{convertUTCToIST(flight?.Segments?.[0][0]?.ArrTime)}</p>
+                                                                <p className="flistnamep4">{flight?.Segments?.[0][0]?.Destination.CityName}</p>
+                                                            </div>
+                                                            <p className="flistnamep5">{flight?.Segments?.[0][0]?.Destination.CityCode}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-3 pricebtns">
+                                                        <div><p>₹{flight?.OfferedFare}</p></div>
+                                                        <div> <button onClick={selectFlight}>SELECT</button>     </div>
+                                                    </div>
                                                 </div>
-                                                <p className="flistnamep3">02h 45m</p>
-                                                <div>
-                                                    <p className="flistnamep2">{flight.arrival}</p>
-                                                    <p className="flistnamep4">{flight.endflightFullname}</p>
-                                                </div>
-                                                <p className="flistnamep5">GOI</p>
-                                            </div>
-                                        </div>
-                                        <div className="col-3 pricebtns">
-                                            <div><p>{flight.price}</p></div>
-                                            <div> <button onClick={selectFlight}>SELECT</button>     </div>
-                                        </div>
-                                    </div>
-                                ))}
+                                            );
+                                        });
+                                    })
+                                ) : (
+                                    <p>No flights available.</p>
+                                )}
                             </div>
                         </div>
+
+
 
                     </div>
                 </div>

@@ -35,6 +35,7 @@ const FlightSearch = () => {
 
 
   const navigate = useNavigate();
+  
   // ---------------------api-data-start-----------------------------
 
   const [from, setFrom] = useState('LKO');
@@ -135,61 +136,24 @@ const FlightSearch = () => {
 
 
   // api integration for search flights
+  const getFlightList = async () => {
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-
-  const getFlightList = async (retryCount = 3) => {
-    while (retryCount > 0) {
-      try {
-        const response = await fetch('https://srninfotech.com/projects/travel-app/api/flight-search', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("data", data);
-        navigate("/flightList", { state: data });
-        return; // Exit the function if the request is successful
-      } catch (error) {
-        console.error('Error fetching suggestions:', error);
-        retryCount -= 1;
-        if (retryCount === 0) {
-          console.error('All retry attempts failed.');
-          // Optionally, handle final failure (e.g., show a message to the user)
-        }
-      }
+      const data = await response.json();
+      console.log("data", data);
+      navigate("/flight-list", { state: data });
     }
-  };
-
-
-
-
-
-  //  const getFlightList = async () => {
-  //   try {
-  //       const response = await fetch('https://srninfotech.com/projects/travel-app/api/flight-search', {
-  //           method: 'POST',
-  //           headers: {
-  //               'Content-Type': 'application/json',
-  //           },
-  //           body: JSON.stringify(formData),
-  //       });
-
-
-  //       const data = await response.json();
-  //       console.log("data", data);
-  //       navigate("/flightList", { state: data });
-  //   }
-  //   catch (error) {
-  //       console.error('Error fetching suggestions:', error);
-  //   }
-  // }
+    catch (error) {
+      console.error('Error fetching suggestions:', error);
+    }
+  }
 
   // function for select date send to formData
   const handleChange = (date, key) => {
