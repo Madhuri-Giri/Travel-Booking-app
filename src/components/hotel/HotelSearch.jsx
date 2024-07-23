@@ -41,7 +41,7 @@ const HotelSearch = () => {
           });
         }
       }
-    }, 2000); // Adjust scroll interval as needed
+    }, 2000); 
   };
 
   const stopAutoScroll = () => {
@@ -308,7 +308,7 @@ const HotelSearch = () => {
                   )}
                 </div>
               </div>
-              <button className='btn_serch' type="submit">Search</button>
+              <button onClick={handleSubmit} className='btn_serch' type="submit">Search</button>
             </form>
           </div>
         </section>

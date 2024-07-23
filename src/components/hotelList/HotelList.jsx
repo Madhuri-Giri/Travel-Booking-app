@@ -3,10 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-
 
 const renderStar = (rating) => {
   let stars = [];
@@ -23,90 +21,55 @@ const HotelList = () => {
   const { searchResults } = location.state || {};
   const [hotels, setHotels] = useState([]);
   const [error, setError] = useState(null);
-  const [expandedIndex, setExpandedIndex] = useState(null);
   const navigate = useNavigate();
 
-  const traceId = localStorage.getItem('traceId');
-  const srdvType = localStorage.getItem('srdvType');
-  const srdvIndex = localStorage.getItem('srdvIndex');
-  const resultIndex = "9";
-
   useEffect(() => {
-    console.log('Hotel list data:', searchResults);
+    console.log("Hotel list data:", searchResults);
     if (searchResults && searchResults.length > 0) {
       setHotels(searchResults);
     } else {
-      setError('No hotel details found.');
+      setError("No hotel details found.");
     }
   }, [searchResults]);
 
-  useEffect(() => {
-    const fetchHotelInfo = async () => {
-      try {
-        console.log('Fetching hotel details with traceId:', traceId, 'resultIndex:', resultIndex, 'srdvType:', srdvType, 'srdvIndex:', srdvIndex);
-
-        const rooms = 1;
-        const checkInDate = new Date('2020/04/30');
-        const noOfNights = 1;
-        const searchQuery = '130443';
-
-        const requestData = {
-          NoOfRooms: rooms,
-          CheckInDate: format(checkInDate, 'dd/MM/yyyy'),
-          MaxRating: 5,
-          NoOfNights: noOfNights,
-          CityId: searchQuery,
-          TraceId: traceId,
-          SrdvType: srdvType,
-          SrdvIndex: srdvIndex,
-          ResultIndex: resultIndex,
-          HotelCode: "92G|DEL"
-        };
-
-        console.log('Request data:', requestData);
-
-        const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-info', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestData),
-        });
-
-        const data = await response.json();
-        console.log('Hotel details response:', data);
-
-        if (response.ok) {
-          if (data && data.HotelInfoResult && data.HotelInfoResult.HotelDetails) {
-            setHotels([data.HotelInfoResult.HotelDetails]);
-            setError(null);
-          } else {
-            setError(data.message || 'No hotel details found.');
-          }
-        } else {
-          setError('Failed to fetch hotel details. Please try again later.');
-        }
-      } catch (error) {
-        console.error('Error fetching hotel details:', error);
-        setError('Failed to fetch hotel details. Please try again later.');
-      }
-    };
-
-    if (traceId && srdvType && srdvIndex) {
-      fetchHotelInfo();
-    }
-  }, [traceId, srdvType, srdvIndex, resultIndex]);
-
-  const handleViewDescription = (index) => {
+  const fetchHotelInfo = async (index) => {
     const hotel = hotels[index];
-
-    if (!hotel) {
-      setError('Hotel details are incomplete. Cannot navigate to hotel room.');
-      return;
+    try {
+      const requestData = {
+        ResultIndex: "9",
+        SrdvIndex: "SrdvTB",
+        SrdvType: "SingleTB",
+        HotelCode: "92G|DEL",
+        TraceId: "1",
+      };
+  
+      console.log("Request data:", requestData);
+  
+      const response = await fetch("/api/admin/api/hotel-info", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log("Hotel details response:", data);
+  
+      if (data && data.HotelInfoResult && data.HotelInfoResult.HotelDetails) {
+        
+        navigate("/hotel-description", { state: { hotelDetails: data.HotelInfoResult.HotelDetails } });
+      } else {
+        setError(data.message || "No hotel details found.");
+      }
+    } catch (error) {
+      console.error("Error fetching hotel details:", error);
+      setError("Failed to fetch hotel details. Please try again later.");
     }
-
-    localStorage.setItem('selectedHotel', JSON.stringify(hotel));
-    navigate('/hotel-description');
   };
 
   return (
@@ -116,7 +79,10 @@ const HotelList = () => {
           <h1 className="listTitle">Search</h1>
           <div className="listItem">
             <label>Destination</label>
-            <input placeholder={location.state?.destination || ""} type="text" />
+            <input
+              placeholder={location.state?.destination || ""}
+              type="text"
+            />
           </div>
           <div className="listItem">
             <label>Check-in Date</label>
@@ -180,13 +146,13 @@ const HotelList = () => {
               </div>
             </div>
           </div>
-          <button>Search</button>
+          <button onClick={fetchHotelInfo}>Search</button>
         </div>
         <div className="listResult">
           {error && <p className="errorMessage">{error}</p>}
           {hotels.length > 0 ? (
             hotels.map((hotel, index) => (
-              <div key={hotel.id} className="searchItem">
+              <div key={hotel.HotelCode} className="searchItem">
                 <img
                   src={hotel.HotelPicture}
                   alt={hotel.HotelName}
@@ -195,10 +161,19 @@ const HotelList = () => {
                 <div className="hotelDescription">
                   <h1 className="hotelTitle">{hotel.HotelName}</h1>
                   <span className="hotelDistance">{hotel.HotelAddress}</span>
-                  <span className="hotelTaxi">{hotel.freeTaxi ? "Free airport taxi" : ""}</span>
-                  {/* <span className="Subtitle">{hotel.HotelDescription}</span> */}
-                  <span className="Features">{hotel.features}</span>
-                  <span className="Cancel">{hotel.freeCancellation ? "Free cancellation" : ""}</span>
+                  <span className="hotelTaxi">
+                    {hotel.freeTaxi
+                      ? "Free airport taxi"
+                      : "No free airport taxi"}
+                  </span>
+                  <span className="Features">
+                    {hotel.features || "No special features"}
+                  </span>
+                  <span className="Cancel">
+                    {hotel.freeCancellation
+                      ? "Free cancellation"
+                      : "No free cancellation"}
+                  </span>
                   <span className="CancelSubtitle">
                     You can cancel later, so lock in this great price today!
                   </span>
@@ -206,12 +181,15 @@ const HotelList = () => {
                 <div className="Details">
                   <div className="hotelRating">
                     <span>{renderStar(hotel.StarRating)}</span>
-                
                   </div>
                   <div className="DetailTexts">
-                    <span className="hotelPrice"> INR{hotel.RoomPrice}</span>
+                    <span className="hotelPrice">
+                      INR {hotel.Price?.OfferedPriceRoundedOff || "N/A"}
+                    </span>
                     <span className="hotelTax">Includes taxes and fees</span>
-                    <button onClick={() => handleViewDescription(index)} className="CheckButton">See Details</button>
+                    <button onClick={() => fetchHotelInfo(index)}  className="CheckButton">
+                      See Details
+                    </button>
                   </div>
                 </div>
               </div>

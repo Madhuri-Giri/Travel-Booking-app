@@ -67,7 +67,7 @@
 }
 
 .rating_star_hotel {
-    width: 40px;
+    width: 20px;
     height: auto;
 }
 
@@ -84,11 +84,10 @@
     color: #484646;
 }
 .hotel_Button{
-    padding: 10px;
     background-color: #00b7eb;
-    color: white;
-    border: none;
-    width: 100%;
-    font-weight: 500;
-    cursor: pointer;
-  }
+  color: white;
+  font-weight: bold;
+  padding: 10px 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;  }
