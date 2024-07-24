@@ -15,6 +15,9 @@ export default function FlightLists() {
         navigate("/flight-details");
     }
 
+    const [callenderListdata, setcallenderListdata] = useState(null);
+
+
     const sliderRef = useRef(null);
 
     const scrollLeftClick = () => {
@@ -65,24 +68,63 @@ export default function FlightLists() {
             setFlightListData(location.state);
         }
     }, [location.state])
-    console.log("FullData", location.state)
-    console.log("FlightlistData", flightListData)
+    // console.log("FullData", location.state)
+    // console.log("FlightlistData", flightListData)
 
-    const listData = location.state
+    const listData = location.state.data
+    const formData = location.state.formData
+    console.log("Origin", formData.Segments[0]["Origin"])
     const dd = listData?.Results
+
     console.log("listData", listData)
 
+
+    localStorage.setItem("FlightSrdvType", listData.SrdvType)
+    localStorage.setItem("FlightTraceId", listData.TraceId)
+
+    useEffect(() => {
+        const getCallenderData = async () => {
+            try {
+
+                const payLoad = {
+                     "SrdvType": listData.SrdvType,
+                     "SrdvIndex": listData.SrdvIndex,
+                      "TraceId":listData.TraceId, 
+                      "ResultIndex":listData.ResultIndex 
+                    }
+                const response = await fetch('https://sajyatra.sajpe.in/admin/api/farerule', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payLoad),
+                });
+
+                const data = await response.json();
+                setcallenderListdata(data);
+                console.log("callenderdata", data);
+                // navigate("/flight-list", { state: { data: data, formData: formData } });
+            }
+            catch (error) {
+                console.error('Error fetching suggestions:', error);
+            }
+        }
+
+        getCallenderData();
+
+    }, [listData])
+
     // Function to convert UTC time to IST
-  const convertUTCToIST = (utcTimeString) => {
-    const utcDate = new Date(utcTimeString);
-    const istTime = new Intl.DateTimeFormat('en-IN', {
-      timeZone: 'Asia/Kolkata',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    }).format(utcDate);
-    return istTime;
-  };
+    const convertUTCToIST = (utcTimeString) => {
+        const utcDate = new Date(utcTimeString);
+        const istTime = new Intl.DateTimeFormat('en-IN', {
+            timeZone: 'Asia/Kolkata',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        }).format(utcDate);
+        return istTime;
+    };
 
 
 
