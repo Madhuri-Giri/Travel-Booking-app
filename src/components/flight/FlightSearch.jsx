@@ -35,7 +35,7 @@ const FlightSearch = () => {
 
 
   const navigate = useNavigate();
-  
+
   // ---------------------api-data-start-----------------------------
 
   const [from, setFrom] = useState('LKO');
@@ -66,6 +66,7 @@ const FlightSearch = () => {
 
   const handleFromChange = (event) => {
     const value = event.target.value;
+    console.log("vvvvvvalue", value)
     setFrom(value);
     if (value.length > 2) {
       fetchSuggestions(value, setFromSuggestions);
@@ -92,7 +93,12 @@ const FlightSearch = () => {
 
   const handleFromSelect = (suggestion) => {
     handleSuggestionClick(suggestion, setFrom);
+    console.log("sugesssss", suggestion.busodma_destination_name)
     setFromSuggestions([]);
+
+    let updatedSegments = formData.Segments;
+    updatedSegments[0]["Origin"] = suggestion.busodma_destination_name;
+    setFormData((prev) => ({ ...prev, Segments: updatedSegments }));
   };
 
   // --------------------------end-----------------
@@ -118,7 +124,7 @@ const FlightSearch = () => {
     AdultCount: 1,
     ChildCount: 0,
     InfantCount: 0,
-    JourneyType: 1,
+    JourneyType: "1",
     FareType: 1,
     Segments: [
       {
@@ -130,6 +136,8 @@ const FlightSearch = () => {
       }
     ]
   });
+
+  console.log("traveler",formData.AdultCount + formData.ChildCount + formData.InfantCount)
 
   // state for traveller 
   const [travellr, settravellr] = useState();
@@ -148,7 +156,7 @@ const FlightSearch = () => {
 
       const data = await response.json();
       console.log("data", data);
-      navigate("/flight-list", { state: data });
+      navigate("/flight-list", { state: { data: data, formData: formData } });
     }
     catch (error) {
       console.error('Error fetching suggestions:', error);
@@ -302,7 +310,7 @@ const FlightSearch = () => {
                             <div className="form-control flightTravellerclssFormControl">
                               <div className="flightTravellerclss">
                                 <FaCircleUser />
-                                <p> Traveller - <span>{formData.AdultCount}</span> , </p>
+                                <p> Traveller - <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> , </p>
                                 <p> Class - <span>{formData.JourneyType}</span>  </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
@@ -488,7 +496,7 @@ const FlightSearch = () => {
                             <div className="form-control flightTravellerclssFormControl">
                               <div className="flightTravellerclss">
                                 <FaCircleUser />
-                                <p> <span>{formData.AdultCount}</span> Traveller , </p>
+                                <p> <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> Traveller , </p>
                                 <p> <span>{formData.JourneyType}</span> Cabin Class </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
