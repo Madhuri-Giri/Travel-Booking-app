@@ -31,7 +31,7 @@ import HotelDescription from './components/hotelDescription/HotelDescription'
 import Help from './components/help/Help';
 import Reviews from './components/reviews/Review'
 import FlightDetails from './components/flight/FlightDetails';
-import BusBookingConfirm from './components/bus/BusBookingConfirm';
+import BusTikit from './components/bus/DownloadTikit/BusTikit';
 
 
 const App = () => {
@@ -48,7 +48,7 @@ const App = () => {
           <Route path='/bus-list' element={<BusLists />} />
           <Route path='/bus-layout' element={<BusLayout />} />
           <Route path='/bord-drop' element={<BoardAndDrop />} />
-          <Route path='/bus-booking-confirm' element={<BusBookingConfirm />} />
+          <Route path='/bus-tikit-download' element={<BusTikit />} />
 
           <Route path='/faq' element={<Faq />} />
           <Route path='/setting' element={< Setting/>} />
