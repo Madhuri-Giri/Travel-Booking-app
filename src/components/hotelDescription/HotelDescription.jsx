@@ -84,29 +84,32 @@ const HotelDescription = () => {
         <Col md={12}>
           <div className="search_Item">
             <div className="Description_hotel">
-              <h1 className="Title_hotel">{hotelDetails.HotelName}</h1>
-              <div dangerouslySetInnerHTML={{ __html: hotelDetails.Description }}></div>
+              <div className="Header_hotel">
+                <h1 className="Title_hotel">{hotelDetails.HotelName}</h1>
+                <div className="Rating_hotel">
+                  {renderStar(hotelDetails.StarRating)}
+                </div>
+              </div>
               <span className="Distance_hotel">{hotelDetails.Address}</span>
-              <span className="Taxi_hotel">
-                {hotelDetails.freeTaxi ? "Free airport taxi" : "No free airport taxi"}
-              </span>
+              <div className="Description_hotel">
+                <h5>Description :</h5>
+                <p dangerouslySetInnerHTML={{ __html: hotelDetails.Description }}></p>
+              </div>
+              <h5>Facilities:</h5>
               <div className="Features_hotel">
-                <h5>Facilities:</h5>
-                <ul>
-                  {hotelDetails.HotelFacilities && hotelDetails.HotelFacilities.map((facility, index) => (
-                    <li key={index}>{facility}</li>
-                  ))}
-                </ul>
+                
+                {hotelDetails.HotelFacilities && hotelDetails.HotelFacilities.map((facility, index) => (
+                  <div className="Feature_item" key={index}>
+                    {facility}
+                  </div>
+                ))}
               </div>
-              <div className="Rating_hotel">
-                <h5>Rating:</h5>
-                {renderStar(hotelDetails.StarRating)}
-              </div>
-              <div className="Price_hotel">
-                INR {hotelDetails.Price?.OfferedPriceRoundedOff || "N/A"}
-              </div>
-              <button onClick={fetchHotelRoom} className="hotel_Button">Book Now</button>
-              {error && <div className="error-message">{error}</div>} 
+              <div className="PriceAndButtonContainer">
+                <div className="Price_hotel">
+                  INR {hotelDetails.Price?.OfferedPriceRoundedOff || "N/A"}
+                </div>
+                <button onClick={fetchHotelRoom} className="hotel_Button">Book Now</button>
+              </div>              {error && <div className="error-message">{error}</div>} 
             </div>
           </div>
         </Col>

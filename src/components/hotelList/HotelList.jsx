@@ -148,16 +148,14 @@ const HotelList = () => {
           </div>
           <button onClick={fetchHotelInfo}>Search</button>
         </div>
+
+
         <div className="listResult">
           {error && <p className="errorMessage">{error}</p>}
           {hotels.length > 0 ? (
             hotels.map((hotel, index) => (
               <div key={hotel.HotelCode} className="searchItem">
-                <img
-                  src={hotel.HotelPicture}
-                  alt={hotel.HotelName}
-                  className="hotelImg"
-                />
+                <img src={hotel.HotelPicture} alt={hotel.HotelName}   className="hotelImg" />
                 <div className="hotelDescription">
                   <h1 className="hotelTitle">{hotel.HotelName}</h1>
                   <span className="hotelDistance">{hotel.HotelAddress}</span>
@@ -179,9 +177,7 @@ const HotelList = () => {
                   </span>
                 </div>
                 <div className="Details">
-                  <div className="hotelRating">
-                    <span>{renderStar(hotel.StarRating)}</span>
-                  </div>
+                    <span className="hotelRating">{renderStar(hotel.StarRating)}</span>
                   <div className="DetailTexts">
                     <span className="hotelPrice">
                       INR {hotel.Price?.OfferedPriceRoundedOff || "N/A"}
