@@ -1,7 +1,7 @@
 .search_Item {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 5px; 
     margin: 20px 0;
     padding: 20px;
     border: 1px solid #ccc;
@@ -14,30 +14,23 @@
     overflow: hidden;
 }
 
+.hotel_Img {
+    width: 100%;
+    height: auto; 
+    object-fit: contain;
+    object-position: center;
+}
 
-    .hotel_Img {
-        width: 100%;
-        height: auto; 
-        object-fit: contain;
-        object-position: center;
-    }
-    
-
-.Description_hotel {
+.Header_hotel {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .Title_hotel {
     font-size: 1.5em;
     font-weight: bold;
-}
-
-.Description_hotel, .Taxi_hotel, .Subtitle_hotel, .Features_hotel, .Cancel_hotel, .Cancel_Subtitle {
-    display: block;
-    font-size: 0.9em;
-    color: #555;
+    margin: 0; 
 }
 
 .Distance_hotel {
@@ -52,13 +45,38 @@
     color: #dc3545;
 }
 
-.Details_hotel {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+.Description_hotel h5 {
+    margin-top: 10px;
+    margin-bottom: 0; 
+    font-size: 1.1em; 
 }
 
+.Description_hotel p {
+    margin-top: 0; 
+    margin-bottom: 10px; 
+    line-height: 1.4; 
+}
+
+.Features_hotel h5 {
+    margin-top: 0; 
+    margin-bottom: 5px; 
+}
+
+.Features_hotel {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 5px; 
+    padding: 10px 0;
+}
+
+.Feature_item {
+    border: 1px solid rgb(69, 68, 68);
+    border-radius: 20px;
+    padding: 10px 15px;
+    background-color: #f9f9f9;
+    flex: 1 0 auto; 
+    margin: 2px; 
+}
 .Rating_hotel {
     display: flex;
     align-items: center;
@@ -66,29 +84,28 @@
     color: #ffc107;
 }
 
-.rating_star_hotel {
-    width: 20px;
-    height: auto;
-}
-
-.DetailTexts_hotel {
+.PriceAndButtonContainer {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    justify-content: space-between; /* Aligns items to the far left and right */
+    align-items: center; /* Vertically centers items */
+    gap: 10px; /* Space between price and button */
+    padding-top: 10px; /* Padding above the container */
 }
 
 .Price_hotel {
+    margin: 0; /* Removes any extra margins */
     font-size: 1.2em;
     font-weight: bold;
     color: #484646;
 }
-.hotel_Button{
+
+.hotel_Button {
     background-color: #00b7eb;
-  color: white;
-  font-weight: bold;
-  padding: 10px 5px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px; 
- }
+    color: white;
+    font-weight: bold;
+    padding: 10px 15px; /* Adjust padding for better button appearance */
+    border: none;
+    cursor: pointer;
+    border-radius: 5px; 
+    margin: 0; /* Removes any extra margins */
+}

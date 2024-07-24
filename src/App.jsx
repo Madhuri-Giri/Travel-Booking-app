@@ -59,10 +59,10 @@ const App = () => {
           <Route path='/passenger-info' element={<PassangerInfo/>} />
           <Route path='/passenger-list' element={<PassengerList/>} />
           <Route path='/review-booking' element={<ReviewBooking/>} />
+          
           <Route path='/hotel-search' element={<HotelSearch />} />
           <Route path='/hotel-list' element={<HotelList />} />
-
-<Route path='/hotel-room' element={<HotelRoom />} />
+          <Route path='/hotel-room' element={<HotelRoom />} />
           <Route path='/hotel-guest' element={<GuestDetails />} />
           <Route path='/hotel-description' element={<HotelDescription />} />
           <Route path='/help' element={<Help />} />

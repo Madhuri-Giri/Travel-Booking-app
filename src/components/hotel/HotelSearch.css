@@ -7,173 +7,14 @@
   /* background-color: #f8f5f5; */
   background-color: #00b7eb;
 }
-.content_box p {
-  font-size: 1.2vmax;
-}
-
-.content-row {
-  display: flex;
-  align-items: center;
-}
-
-.hotel-img-container {
-  flex: 1;
-  padding-right: 20px;
-}
-
-.hotel_img {
-  width: 80%;
-  max-width: 80%;
-  /* border-radius: 10px; */
-}
-
-.content-col {
-  flex: 2;
-}
-
-.hotel_description {
-  font-size: 20px;
-  line-height: 1.6;
-  color: #333;
-  margin-right: 40px;
-}
-.sec_book {
-  
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-  }
-  
-  .hotel_booking {
-    width: 100%;
-    max-width: 1200px; /* Adjust as needed */
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-  }
-  
-  .form-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px; 
-  }
-  
-  .form-field {
-    flex: 1;
-    min-width: 200px;
-    margin: 10px 0; 
-  }
-  
-  .form_lable {
-    display: block;
-    margin-bottom: 5px;
-    
-  }
-  
-  .form_in {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-  }
-  
-  .guest_field {
-    position: relative;
-    flex: 1;
-  }
-  
-  .guest_options {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: white;
-    border: 1px solid #ccc;
-    z-index: 10;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  
-  .guest_option {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
-  .btn-sub {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 25px; 
-    align-self: center; 
-  }
-  
-  .btn-sub:hover {
-    background-color: #0056b3;
-  }
-  
-
-.offer_container {
-  margin-top: 20px;
-  background-color: #f5f5f5;
-}
-
-.offer_img {
-  width: 80%;
-  border-radius: 10px;
-}
-
-.Hotel_Booking_container {
-  position: relative;
-  width: 100%;
-  height: 500px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-image: url('https://www.webintravel.com/wp-content/uploads/2022/03/hotel-hanieriani-GettyImages-1066x440.jpeg');
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.booking_box {
-  max-width: 600px;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-}
-
-.play_store {
-  width: 100px;
-  height: auto;
-}
-
-.apple_play_store {
-  width: 200px;
-  height: auto;
-}
-
-.booking_head {
-  margin-top: 40px;
-  text-align: center;
-}
 
 .content_wrapper {
   display: flex;
   margin-top: 50px;
-  
 }
 
-.content_box {
-  flex: 1;
-  padding: 20px;
+.content_box p {
+  font-size: 1.2vmax;
 }
 
 .images_container {
@@ -212,6 +53,143 @@
   border-radius: 20px;
   width: 80%;
 }
+/* ------------------------ */
+
+/* ------------------ */
+.sec_book {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+  }
+  
+  .hotel_booking {
+    width: 100%;
+    max-width: 1200px; 
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px; 
+  }
+  
+  .form-field {
+    flex: 1;
+    min-width: 200px;
+    margin: 10px 0; 
+  }
+  
+  .form_lable {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form_in {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  .guest_field {
+    position: relative;
+    flex: 1;
+  }
+  
+  .guest_options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    z-index: 10;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  .guest_option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+  
+  .react-datepicker__input-container {
+    width: 100%;
+  }
+  .btn-sub {
+    padding: 10px;
+    background-color: #00b7eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 25px; 
+    align-self: center; 
+  }
+  
+  .btn-sub:hover {
+    background-color: #0056b3;
+  }
+  /*------------ ------------*/
+
+.offer_container {
+  margin-top: 20px;
+  background-color: #f5f5f5;
+}
+
+.offer_img {
+  width: 90%;
+  
+}
+/* ---------------------------- */
+
+.booking_head {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.Hotel_Booking_container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url('https://www.webintravel.com/wp-content/uploads/2022/03/hotel-hanieriani-GettyImages-1066x440.jpeg');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.booking_box {
+  max-width: 600px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+}
+
+.play_store {
+  width: 100px;
+  height: auto;
+}
+
+.apple_play_store {
+  width: 200px;
+  height: auto;
+}
+/* ---------------------------- */
+
 
 /* Media Queries for Responsiveness */
 @media (max-width: 1200px) {
@@ -220,6 +198,10 @@
   }
   .hotel_booking {
     margin-top: 0;
+  }
+  .offer_img {
+    width: 100%;
+    
   }
   .content_wrapper {
     flex-direction: column;
@@ -288,9 +270,17 @@
     right: 0;
     
   }
+  .offer_img {
+    width: 100%;
+    
+  }
 }
 
 @media (max-width: 576px) {
+  .offer_img {
+    width: 100%;
+    
+  }
   .hotel_container {
     padding: 10px;
   }

@@ -231,6 +231,8 @@ const HotelRoom = () => {
                     </li>
                   ))}
                 </ul>
+                <p><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
+    
                 <button onClick={roomblockHandler} className="reserve_button">Reserve</button>
                 
               </div>
