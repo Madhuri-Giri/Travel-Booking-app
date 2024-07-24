@@ -1,17 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to, departDate }) => {
-    const response = await fetch('https://sajyatra.sajpe.in/admin/api/searchBus', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ source_city: from, destination_city: to, depart_date: departDate }),
-    });
-    const data = await response.json();
-    
-    return data;
-  }
+  const response = await fetch('https://sajyatra.sajpe.in/admin/api/searchBus', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ source_city: from, destination_city: to, depart_date: departDate }),
+  });
+  const data = await response.json();
+
+  return data;
+}
 );
 
 const busSlice = createSlice({
@@ -30,7 +30,7 @@ const busSlice = createSlice({
     status: 'idle',
     error: null,
   },
-  
+
   reducers: {
     setFrom: (state, action) => {
       state.from = action.payload;
@@ -61,33 +61,33 @@ const busSlice = createSlice({
           state.resultIndex = data.Result[0].ResultIndex;
           state.searchResults = data.Result;
 
-      
+
           localStorage.setItem('traceId', data.TraceId);
           localStorage.setItem('resultIndex', data.Result[0].ResultIndex);
           console.log('Search API Response :', data);
 
           // Process BoardingPoints with CityPointIndex
-          const boardingPoints = data.Result.flatMap(bus => 
+          const boardingPoints = data.Result.flatMap(bus =>
             bus.BoardingPoints.map(point => ({
               ...point,
-              CityPointIndex: point.CityPointIndex 
+              CityPointIndex: point.CityPointIndex
             }))
           );
           state.boardingPoints = boardingPoints;
           // console.log('Boarding Points with CityPointIndex:');
           boardingPoints.forEach(point => {
-          (`CityPointIndex: ${point.CityPointIndex}`, point);
+            (`CityPointIndex: ${point.CityPointIndex}`, point);
           });
 
-          const droppingPoints = data.Result.flatMap(bus => 
+          const droppingPoints = data.Result.flatMap(bus =>
             bus.DroppingPoints.map(point => ({
               ...point,
-              CityPointIndex: point.CityPointIndex 
+              CityPointIndex: point.CityPointIndex
             }))
           );
           state.droppingPoints = droppingPoints;
           droppingPoints.forEach(point => {
-          (`CityPointIndex: ${point.CityPointIndex}`, point);
+            (`CityPointIndex: ${point.CityPointIndex}`, point);
           });
         }
       })
