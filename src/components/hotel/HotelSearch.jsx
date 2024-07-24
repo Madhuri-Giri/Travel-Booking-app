@@ -41,7 +41,7 @@ const HotelSearch = () => {
           });
         }
       }
-    }, 2000); // Adjust scroll interval as needed
+    }, 2000); 
   };
 
   const stopAutoScroll = () => {
@@ -224,95 +224,96 @@ const HotelSearch = () => {
           </Row>
         </div>
 
-        <section className='w-100 d-flex align-items-center justify-content-center'>
-          <div className="hotel_booking">
-            <form onSubmit={handleSubmit}>
-              <div className="form-row">
-                <div className="form-field">
-                  <label className='form_lable' htmlFor="cityOrHotel">City or Hotel Name: </label>
-                  <input className='form_in'
-                    type="text"
-                    id="cityOrHotel"
-                    name="cityOrHotel"
-                    placeholder="Enter city or hotel name"
-                    value={inputs.cityOrHotel}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="form-field">
-                  <label className='form_lable' htmlFor="checkIn">Check-In Date:</label>
-                  <DatePicker
-                    className='form_in'
-                    selected={inputs.checkIn} // Use selected prop
-                    onChange={(date) => handleDateChange(date, 'checkIn')}
-                    dateFormat="dd/MM/yyyy"
-                    placeholderText="Select check-in date"
-                  />
-                </div>
-                <div className="form-field">
-                  <label className='form_lable' htmlFor="checkOut">Check-Out Date:</label>
-                  <DatePicker
-                    className='form_in'
-                    selected={inputs.checkOut} // Use selected prop
-                    onChange={(date) => handleDateChange(date, 'checkOut')}
-                    dateFormat="dd/MM/yyyy"
-                    placeholderText="Select check-out date"
-                  />
-                </div>
-                <div className="form-field guest_field">
-                  <label className='form_lable' htmlFor="guestField">Guests:</label>
-                  <input className='form_in'
-                    type="text"
-                    id="guestField"
-                    name="guestField"
-                    placeholder="Guests"
-                    onClick={() => setShowGuestOptions(!showGuestOptions)}
-                    value={`${inputs.adults} Adults, ${inputs.children} Children`}
-                    readOnly
-                  />
-                  {showGuestOptions && (
-                    <div ref={guestRef} className="guest_options">
-                      <div className="guest_option">
-                        <label htmlFor="adults">Adults:</label>
-                        <button
-                          type="button"
-                          onClick={() => handleGuestChange('adults', 'decrement')}
-                        >
-                          -
-                        </button>
-                        <span>{inputs.adults}</span>
-                        <button
-                          type="button"
-                          onClick={() => handleGuestChange('adults', 'increment')}
-                        >
-                          +
-                        </button>
-                      </div>
-                      <div className="guest_option">
-                        <label htmlFor="children">Children:</label>
-                        <button
-                          type="button"
-                          onClick={() => handleGuestChange('children', 'decrement')}
-                        >
-                          -
-                        </button>
-                        <span>{inputs.children}</span>
-                        <button
-                          type="button"
-                          onClick={() => handleGuestChange('children', 'increment')}
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
+        <section className='sec_book'>
+  <div className="hotel_booking">
+    <form onSubmit={handleSubmit}>
+      <div className="form-row">
+        <div className="form-field">
+          <label className='form_lable' htmlFor="cityOrHotel">City or Hotel Name: </label>
+          <input className='form_in'
+            type="text"
+            id="cityOrHotel"
+            name="cityOrHotel"
+            placeholder="Enter city or hotel name"
+            value={inputs.cityOrHotel}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-field">
+          <label className='form_lable' htmlFor="checkIn">Check-In Date:</label>
+          <DatePicker
+            className='form_in'
+            selected={inputs.checkIn} 
+            onChange={(date) => handleDateChange(date, 'checkIn')}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="Select check-in date"
+          />
+        </div>
+        <div className="form-field">
+          <label className='form_lable' htmlFor="checkOut">Check-Out Date:</label>
+          <DatePicker
+            className='form_in'
+            selected={inputs.checkOut} 
+            onChange={(date) => handleDateChange(date, 'checkOut')}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="Select check-out date"
+          />
+        </div>
+        <div className="form-field guest_field">
+          <label className='form_lable' htmlFor="guestField">Guests:</label>
+          <input className='form_in'
+            type="text"
+            id="guestField"
+            name="guestField"
+            placeholder="Guests"
+            onClick={() => setShowGuestOptions(!showGuestOptions)}
+            value={`${inputs.adults} Adults, ${inputs.children} Children`}
+            readOnly
+          />
+          {showGuestOptions && (
+            <div ref={guestRef} className="guest_options">
+              <div className="guest_option">
+                <label htmlFor="adults">Adults:</label>
+                <button
+                  type="button"
+                  onClick={() => handleGuestChange('adults', 'decrement')}
+                >
+                  -
+                </button>
+                <span>{inputs.adults}</span>
+                <button
+                  type="button"
+                  onClick={() => handleGuestChange('adults', 'increment')}
+                >
+                  +
+                </button>
               </div>
-              <button className='btn_serch' type="submit">Search</button>
-            </form>
-          </div>
-        </section>
-          </div>
+              <div className="guest_option">
+                <label htmlFor="children">Children:</label>
+                <button
+                  type="button"
+                  onClick={() => handleGuestChange('children', 'decrement')}
+                >
+                  -
+                </button>
+                <span>{inputs.children}</span>
+                <button
+                  type="button"
+                  onClick={() => handleGuestChange('children', 'increment')}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+        <button className='btn-sub' type="submit">Search</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+ </div>
         <section>
         <Container>
           <div className="Exclusive-offer">

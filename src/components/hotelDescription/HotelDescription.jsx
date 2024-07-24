@@ -1,109 +1,116 @@
-import { useState, useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
-import { format } from 'date-fns';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import './HotelDescription.css';
-import parse from 'html-react-parser';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Container, Row, Col, Carousel } from "react-bootstrap";
+import "./HotelDescription.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 const renderStar = (rating) => {
   let stars = [];
   for (let i = 0; i < rating; i++) {
     stars.push(
-      <FontAwesomeIcon key={i} icon={faStar} size="lg" color="#FFD700" />
+      <FontAwesomeIcon key={i} icon={faStar} size="lg" className="rating_star_hotel" />
     );
   }
   return stars;
 };
 
-const trimText = (text = '', maxLength = 200) => {
-  if (typeof text !== 'string') return ''; // Ensure text is a string
-  const cleanText = text.replace(/<[^>]+>/g, '').replace(/(?:\r\n|\r|\n)/g, ' ');
-  return cleanText.length > maxLength ? cleanText.substring(0, maxLength) + "..." : cleanText;
-};
-
 const HotelDescription = () => {
-  const [hotelRooms, setHotelRooms] = useState([]);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-  const hotel = JSON.parse(localStorage.getItem('selectedHotel'));
+  const location = useLocation();
+  const navigate = useNavigate(); 
+  const [error, setError] = useState(null); 
+  const hotelDetails = location.state?.hotelDetails;
 
-  const fetchData = async () => {
-    const traceId = localStorage.getItem('traceId');
-    const srdvType = localStorage.getItem('srdvType');
-    const srdvIndex = localStorage.getItem('srdvIndex');
-    const resultIndex = "9";
-
+  const fetchHotelRoom = async () => {
     try {
       const requestData = {
-        NoOfRooms: 1,
-        CheckInDate: format(new Date('2020-04-30'), 'dd/MM/yyyy'),
-        MaxRating: 5,
-        NoOfNights: 1,
-        CityId: '130443',
-        TraceId: traceId,
-        SrdvType: srdvType,
-        SrdvIndex: srdvIndex,
-        ResultIndex: resultIndex,
-        HotelCode: "92G|DEL"
+        ResultIndex: "9",
+        SrdvIndex: "SrdvTB",
+        SrdvType: "SingleTB",
+        HotelCode: "92G|DEL",
+        TraceId: "1",
       };
-
-      console.log('Request Data:', requestData);
-
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-room', {
-        method: 'POST',
+  
+      console.log("Request data:", requestData);
+  
+      const response = await fetch("/api/admin/api/hotel-room", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
       });
-
+  
       if (!response.ok) {
-        throw new Error(`Failed to fetch hotel rooms. Status: ${response.status}`);
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
+  
       const data = await response.json();
-      console.log('Response Data:', data);
-
-      if (data && data.GetHotelRoomResult && data.GetHotelRoomResult.HotelRoomsDetails && data.GetHotelRoomResult.HotelRoomsDetails.length > 0) {
-        setHotelRooms(data.GetHotelRoomResult.HotelRoomsDetails);
-        localStorage.setItem('hotelRooms', JSON.stringify(data.GetHotelRoomResult.HotelRoomsDetails));
-        setError(null);
+      console.log("Hotel room details response:", data);
+  
+      if (data && data.GetHotelRoomResult && data.GetHotelRoomResult.HotelRoomsDetails) {
+        console.log("Navigating with data:", data.GetHotelRoomResult.HotelRoomsDetails);
+        navigate("/hotel-room", { state: { hotelRooms: data.GetHotelRoomResult.HotelRoomsDetails } });
       } else {
-        setError(data.message || 'No hotel rooms found.');
+        console.log("Data received is not in the expected format");
+        setError(data.message || "No hotel room data available.");
       }
     } catch (error) {
-      console.error('Error fetching hotel rooms:', error);
-      setError('Failed to fetch hotel rooms. Please try again later.');
+      console.error("Error fetching hotel room details:", error);
+      setError("Failed to fetch hotel room details. Please try again later.");
     }
   };
-
-  useEffect(() => {
-    if (hotel) {
-      fetchData();
-    } else {
-      navigate('/hotel-list');
-    }
-  }, [hotel, navigate]);
-
-  const handleAddRoomClick = () => {
-    navigate('/hotel-room');
-  };
-
-  if (!hotel) {
-    return <div>Loading...</div>;
-  }
-
+  
   return (
     <Container>
-      <div className='hotel_description_container'>
-        <h2>{hotel.HotelName || 'Hotel Name Unavailable'}</h2>
-        <div>{renderStar(hotel.StarRating || 0)}</div>
-        <p>{parse(trimText(hotel.HotelDescription || 'No description available'))}</p>
-        <button className='add_room_btn' onClick={handleAddRoomClick}>Add Room</button>
-        {error && <p className='error_message'>{error}</p>} 
-      </div>
+      <Row>
+        <Col md={12}>
+          <Carousel className="hotelCarousel">
+            {hotelDetails.Images && hotelDetails.Images.map((image, index) => (
+              image && (
+                <Carousel.Item key={index}>
+                  <img
+                    className="hotel_Img"
+                    src={image}
+                    alt={`${hotelDetails.HotelName} ${index + 1}`}
+                  />
+                </Carousel.Item>
+              )
+            ))}
+          </Carousel>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={12}>
+          <div className="search_Item">
+            <div className="Description_hotel">
+              <h1 className="Title_hotel">{hotelDetails.HotelName}</h1>
+              <div dangerouslySetInnerHTML={{ __html: hotelDetails.Description }}></div>
+              <span className="Distance_hotel">{hotelDetails.Address}</span>
+              <span className="Taxi_hotel">
+                {hotelDetails.freeTaxi ? "Free airport taxi" : "No free airport taxi"}
+              </span>
+              <div className="Features_hotel">
+                <h5>Facilities:</h5>
+                <ul>
+                  {hotelDetails.HotelFacilities && hotelDetails.HotelFacilities.map((facility, index) => (
+                    <li key={index}>{facility}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="Rating_hotel">
+                <h5>Rating:</h5>
+                {renderStar(hotelDetails.StarRating)}
+              </div>
+              <div className="Price_hotel">
+                INR {hotelDetails.Price?.OfferedPriceRoundedOff || "N/A"}
+              </div>
+              <button onClick={fetchHotelRoom} className="hotel_Button">Book Now</button>
+              {error && <div className="error-message">{error}</div>} 
+            </div>
+          </div>
+        </Col>
+      </Row>
     </Container>
   );
 };
