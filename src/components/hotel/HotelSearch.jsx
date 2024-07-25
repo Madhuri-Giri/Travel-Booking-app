@@ -220,7 +220,7 @@ const HotelSearch = () => {
             <Col xl={8} md={12} className="order-md-2 order-1">
               <div className="images_container">
                 <img
-                  src="https://cf.bstatic.com/xdata/images/hotel/270x200/31211348.jpg?k=45c6e30d9c7802e893d6046b03428c5c28318b4724f941f19e2b5631e5a47ad3&o="
+                  src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/225991107.webp?k=8ac4f5d29b44a2a0a933b7c379764e547a26de0bb12e9d869e74935a8c88b33a&o="
                   alt="Image 1"
                   className="img_box image1"
                 />
@@ -232,7 +232,7 @@ const HotelSearch = () => {
                 />
 
                 <img
-                  src="https://cf.bstatic.com/xdata/images/hotel/max200/485546587.jpg?k=932ec3cf4220d05e7a6e4b5b2bc397d5b71e415d9c7f659ef7f4b991e572a7eb&o=&hp=1"
+                  src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/347516271.jpg?k=56e84e8d3ede9cd10d0156bffe90ff767a7e039ff86085b8efc2860f786a1941&o=&hp=1"
                   alt="Image 3"
                   className="img_box image3"
                 />

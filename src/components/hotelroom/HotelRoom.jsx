@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import './HotelRoom.css';
 
-// Define initialFormData here
 const initialFormData = {
   firstName: '',
   lastName: '',
@@ -245,3 +244,4 @@ const HotelRoom = () => {
 };
 
 export default HotelRoom;
+

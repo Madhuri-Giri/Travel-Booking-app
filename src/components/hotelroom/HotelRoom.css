@@ -1,80 +1,48 @@
 .hotel_room_container {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    width: 100%;
-  }
-  
-  .hotel_room_container h3 {
-    color: #5a5959;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .hotel_room_box {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 20px;
-    width: 100%; 
-    margin-bottom: 20px;
-    background-color: #f9f9f9;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-  
-  .hotel_room_box h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .hotel_room_box p {
-    margin: 5px 0;
-  }
-  
-  
-  .hotel_room_box h5 {
-    margin-top: 15px;
-    margin-bottom: 5px;
-    font-size: 16px;
-    color: #2c2c2c;
-  }
-  
-  .cancellation_policies p {
-    font-size: 14px;
-    color: #413f3f;
-    display: inline-block;
-    border-radius: 20px;
-    border: 1px solid #ccc; 
-    padding: 10px; 
-    margin: 5px 0; 
-    margin-right: 10px;
-  }
-  
-  .reserve_button {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color: orangered;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .reserve_button:hover {
-    background-color: #d9534f;
-  }
-  
-  .continue_button {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color:  #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    margin-left: 20px;
-    transition: background-color 0.3s ease;
-  }
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  width: 100%;
+}
+
+.hotel_room_container h3 {
+  color: #00b7eb;
+  margin-bottom: 20px;
+}
+
+.hotel_room_box {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+.hotel_room_box h3 {
+  margin-top: 0;
+}
+
+.loading-text, .error-text, .no-data-text {
+  color: #ff0000;
+}
+
+.error-text {
+  font-weight: bold;
+}
+
+.no-data-text {
+  color: #6c757d;
+}
+
+.reserve_button {
+  background-color: #00b7eb;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.reserve_button:hover {
+  background-color: #00b7eb;
+}
