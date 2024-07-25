@@ -32,6 +32,7 @@ import Help from './components/help/Help';
 import Reviews from './components/reviews/Review'
 import FlightDetails from './components/flight/FlightDetails';
 import BusTikit from './components/bus/DownloadTikit/BusTikit';
+import FareQuote from './components/flight/FareQuote';
 
 
 const App = () => {
@@ -67,6 +68,10 @@ const App = () => {
           <Route path='/hotel-description' element={<HotelDescription />} />
           <Route path='/help' element={<Help />} />
           <Route path='/review' element={<Reviews />} />
+
+
+          <Route path='/flight-Farequote' element={<FareQuote />} />
+
 
 
 

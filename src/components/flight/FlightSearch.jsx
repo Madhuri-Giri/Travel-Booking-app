@@ -52,7 +52,7 @@ const FlightSearch = () => {
     try {
       const response = await fetch(`https://srninfotech.com/projects/travel-app/api/bus_list?query=${query}`);
       const data = await response.json();
-      console.log('API Response:', data);
+      // console.log('API Response:', data);
       const filteredSuggestions = data.data.filter(suggestion =>
         suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
       );
@@ -93,7 +93,7 @@ const FlightSearch = () => {
 
   const handleFromSelect = (suggestion) => {
     handleSuggestionClick(suggestion, setFrom);
-    console.log("sugesssss", suggestion.busodma_destination_name)
+    // console.log("sugesssss", suggestion.busodma_destination_name)
     setFromSuggestions([]);
 
     let updatedSegments = formData.Segments;
@@ -108,7 +108,7 @@ const FlightSearch = () => {
   const [selectedflightClass, setSelectedflightClass] = useState('Economy');
 
   const handleToSelect = (suggestion) => {
-    console.log("suggestion", suggestion);
+    // console.log("suggestion", suggestion);
     handleSuggestionClick(suggestion, setTo);
     setToSuggestions([]);
   };
@@ -118,7 +118,6 @@ const FlightSearch = () => {
 
 
 
-  // api for search button for send the formdata
 
   const [formData, setFormData] = useState({
     AdultCount: 1,
@@ -137,13 +136,11 @@ const FlightSearch = () => {
     ]
   });
 
-  console.log("traveler",formData.AdultCount + formData.ChildCount + formData.InfantCount)
+    // console.log("traveler",formData.AdultCount + formData.ChildCount + formData.InfantCount)
 
-  // state for traveller 
   const [travellr, settravellr] = useState();
 
 
-  // api integration for search flights
   const getFlightList = async () => {
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
@@ -155,7 +152,25 @@ const FlightSearch = () => {
       });
 
       const data = await response.json();
-      console.log("data", data);
+      console.log("hello", data);
+      
+
+        // Save TraceId to local storage with the key "FlightTraceId2"
+        if (data.TraceId) {
+          localStorage.setItem("FlightTraceId2", data.TraceId);
+          console.log("Saved TraceId to local storage:", data.TraceId); // Log TraceId
+      }
+
+      if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.ResultIndex) {
+        const resultIndex = data.Results[0][0].FareDataMultiple[0].ResultIndex;
+        localStorage.setItem("FlightResultIndex2", resultIndex);
+        console.log("Saved ResultIndex to local storage:", resultIndex);
+    } else {
+        console.log("ResultIndex not found");
+    }
+
+
+
       navigate("/flight-list", { state: { data: data, formData: formData } });
     }
     catch (error) {
@@ -163,13 +178,11 @@ const FlightSearch = () => {
     }
   }
 
-  // function for select date send to formData
   const handleChange = (date, key) => {
     setPreferredDepartureTime(date);
     setPreferredDepartureTime(date);
-    console.log("date", date);
+    // console.log("date", date);
 
-    // Format the date to 'YYYY-MM-DDTHH:mm:ss'
     const formattedDate = new Date(date).toISOString().split('.')[0];
 
     let updatedSegments = formData.Segments;
@@ -178,11 +191,10 @@ const FlightSearch = () => {
   };
 
 
-  // function for adult, child, infants increment decrement select these values and send to formData 
   const handleCount = (key, name) => {
     console.log("called", key, name)
     if (key == "increment") {
-      console.log("called2");
+      // console.log("called2");
       setFormData((prev) => ({ ...prev, [name]: formData[name] + 1 }));
     } else if (key == "decrement") {
       if (formData[name] > 0) {
@@ -192,7 +204,7 @@ const FlightSearch = () => {
   }
 
 
-  console.log("formData", formData);
+  // console.log("formData", formData);
 
   const handleflightClassChange = (event) => {
     setSelectedflightClass(event.target.value);
@@ -200,7 +212,6 @@ const FlightSearch = () => {
   };
 
 
-  // function for tab oneway
   const [activeTab, setActiveTab] = useState('oneway');
 
   const handleTabChange = (event) => {
