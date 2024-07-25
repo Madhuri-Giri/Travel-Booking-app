@@ -24,6 +24,7 @@
 .date-mid {
     flex: 1;
     overflow: hidden;
+
 }
 
 .d-one {
@@ -32,7 +33,15 @@
     border: 1px solid rgba(128, 128, 128, 0.158);
     border-radius: 5px;
     text-align: center;
-    width: 100px; /* Adjust based on your requirement */
+    cursor: pointer;
+    margin-left: 0.7vmax;
+    transition: 0.5s;
+    width: 150px !important; /* Adjust based on your requirement */
+}
+
+.d-one:hover{
+    color: #00b7eb;
+
 }
 
 

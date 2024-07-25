@@ -11,31 +11,10 @@ import "slick-carousel/slick/slick-theme.css";
 export default function FlightLists() {
     const navigate = useNavigate();
 
-    const selectFlight = () => {
-        navigate("/flight-details");
-    }
+   
 
     const [callenderListdata, setcallenderListdata] = useState(null);
 
-
-    const sliderRef = useRef(null);
-
-    const scrollLeftClick = () => {
-        sliderRef.current.slickPrev();
-    };
-
-    const scrollRightClick = () => {
-        sliderRef.current.slickNext();
-    };
-
-    const settings = {
-        dots: false,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        variableWidth: true,
-    };
 
     const [accordiandepartime, setaccordiandepartime] = useState("02:15 AM");
     const maxaccordiandepartime = "23:15 PM";
@@ -63,6 +42,8 @@ export default function FlightLists() {
     const location = useLocation();
     const [flightListData, setFlightListData] = useState('');
 
+    const [flightData, setFlightData] = useState([]);
+    const sliderRef = useRef(null);
     useEffect(() => {
         if (location.state) {
             setFlightListData(location.state);
@@ -73,47 +54,93 @@ export default function FlightLists() {
 
     const listData = location.state.data
     const formData = location.state.formData
-    console.log("Origin", formData.Segments[0]["Origin"])
+    // console.log("Origin", formData.Segments[0]["Origin"])
     const dd = listData?.Results
 
-    console.log("listData", listData)
+    // console.log("listData", listData)
 
     localStorage.setItem("FlightSrdvType", listData.SrdvType)
     localStorage.setItem("FlightTraceId", listData.TraceId)
 
+   
+
+
+
     useEffect(() => {
         const getCallenderData = async () => {
             try {
-                const payLoad = {
-                     "SrdvType": listData.SrdvType,
-                     "SrdvIndex": listData.SrdvIndex,
-                      "TraceId":listData.TraceId, 
-                      "ResultIndex":listData.ResultIndex 
-                    }
-
-                const response = await fetch('https://sajyatra.sajpe.in/admin/api/farerule', {
+                const response = await fetch('https://sajyatra.sajpe.in/admin/api/get-calender', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(payLoad),
+                    body: JSON.stringify({
+                        "EndUserIp": "1.1.1.1",
+                        "ClientId": "180112",
+                        "UserName": "Maneesh3",
+                        "Password": "Maneesh@36",
+                        "AdultCount": 1,
+                        "ChildCount": 0,
+                        "InfantCount": 0,
+                        "JourneyType": "1",
+                        "Segments": [
+                            {
+                                "Origin": "LKO",
+                                "Destination": "KWI",
+                                "FlightCabinClass": 1,
+                                "PreferredDepartureTime": "2024-07-25T00:00:00",
+                                "PreferredArrivalTime": "2024-07-25T00:00:00",
+                            }
+                        ]
+                    })
                 });
-
                 const data = await response.json();
-                setcallenderListdata(data);
-                console.log("callenderdata", data);
-                // navigate("/flight-list", { state: { data: data, formData: formData } });
+                localStorage.setItem('callenderData', JSON.stringify(data));
+                if (data.Results) {
+                    setFlightData(data.Results);
+                }
+            } catch (error) {
+                console.error('Error fetching calendar data:', error);
             }
-            catch (error) {
-                console.error('Error fetching suggestions:', error);
-            }
-        }
+        };
 
         getCallenderData();
+    }, []);
 
-    }, [listData])
+    useEffect(() => {
+        const storedData = localStorage.getItem('callenderData');
+        if (storedData) {
+            const parsedData = JSON.parse(storedData);
+            if (parsedData.Results) {
+                setFlightData(parsedData.Results);
+            }
+        }
+    }, []);
 
-    // Function to convert UTC time to IST
+    const settings = {
+        dots: false,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        variableWidth: true,
+    };
+
+    // Scroll functions
+    const scrollLeftClick = () => {
+        if (sliderRef.current) {
+            sliderRef.current.slickPrev();
+        }
+    };
+
+    const scrollRightClick = () => {
+        if (sliderRef.current) {
+            sliderRef.current.slickNext();
+        }
+    };
+
+
+
     const convertUTCToIST = (utcTimeString) => {
         const utcDate = new Date(utcTimeString);
         const istTime = new Intl.DateTimeFormat('en-IN', {
@@ -150,27 +177,51 @@ export default function FlightLists() {
         dateMidRef.current.scrollLeft = scrollLeft - walk;
     };
 
-    // Sample data for dates and prices
-    const flightData = [
 
-        { date: '16 July,Mon', price: '$71,000' },
-        { date: '17 July,Tue', price: '$75,000' },
-        { date: '18 July,Wed', price: '$73,000' },
-        { date: '19 July,Thu', price: '$75,000' },
-        { date: '20 July,Fri', price: '$71,000' },
-        { date: '21 July,Sat', price: '$72,000' },
-        { date: '22 July,Sun', price: '$71,000' },
-        { date: '23 July,Mon', price: '$76,000' },
-        { date: '24 July,Tue', price: '$71,000' },
-        { date: '25 July,Wed', price: '$71,000' },
-        { date: '26 July,Thu', price: '$73,000' },
-        { date: '27 July,Fri', price: '$71,000' },
-        { date: '28 July,Sat', price: '$71,000' },
-        { date: '29 July,Sun', price: '$71,000' },
-        { date: '30 July,Mon', price: '$71,000' },
-        { date: '31 July,Tue', price: '$71,000' },
 
-    ];
+    // ------------------------------------------------fare-Quote-api-----------------------------------------
+    const fareQuoteHandler = async () => {
+        const traceId = localStorage.getItem('FlightTraceId2');
+        const resultIndex = localStorage.getItem('FlightResultIndex2');
+    
+        if (!traceId || !resultIndex) {
+            console.error('TraceId or ResultIndex not found in local storage');
+            return;
+        }
+    
+        const payload = {
+            SrdvIndex: "1",
+            ResultIndex: resultIndex,
+            TraceId: parseInt(traceId), 
+            SrdvType: "MixAPI"
+        };
+    
+        try {
+            const response = await fetch('https://sajyatra.sajpe.in/admin/api/farequote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+    
+            const data = await response.json();
+            console.log('FareQuote API Response:', data);
+            navigate('/flight-Farequote', { state: { fareData: data.Results } });
+    
+        } catch (error) {
+            console.error('Error calling the farequote API:', error);
+        }
+    };
+    
+
+    // -------------------------------------------------fare-Quote-api----------------------------------------
+
+
 
     return (
         <>
@@ -334,17 +385,18 @@ export default function FlightLists() {
                     <div className="col-lg-8">
 
 
+
                         <div className="flight-date-slider">
                             <div className="flight-d-slide">
                                 <div className="date-left" onClick={scrollLeftClick}>
                                     <i className="ri-arrow-left-s-line"></i>
                                 </div>
-                                <div className="date-mid">
+                                <div className="date-mid" >
                                     <Slider ref={sliderRef} {...settings}>
                                         {flightData.map((flight, index) => (
-                                            <div className="d-one" key={index}>
-                                                <h6>{flight.date}</h6>
-                                                <p>{flight.price}</p>
+                                            <div style={{ margin: '1vmax' }} className="d-one" key={index}>
+                                                <h6>{new Date(flight.DepartureDate).toLocaleDateString()}</h6>
+                                                <p>{flight.BaseFare}</p>
                                             </div>
                                         ))}
                                     </Slider>
@@ -355,38 +407,12 @@ export default function FlightLists() {
                             </div>
                         </div>
 
-
-                        {/* <div className="flight-date-slider">
-                            <div className="flight-d-slide">
-                                <div className="date-left" onClick={scrollLeftClick}>
-                                    <i className="ri-arrow-left-s-line"></i>
-                                </div>
-                                <div
-                                    className="date-mid"
-                                    ref={dateMidRef}
-                                    onMouseDown={handleMouseDown}
-                                    onMouseLeave={handleMouseLeaveOrUp}
-                                    onMouseUp={handleMouseLeaveOrUp}
-                                    onMouseMove={handleMouseMove}
-                                >
-                                    {flightData.map((flight, index) => (
-                                        <div className="d-one" key={index}>
-                                            <h6>{flight.date}</h6>
-                                            <p>{flight.price}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="date-right" onClick={scrollRightClick}>
-                                    <i className="ri-arrow-right-s-line"></i>
-                                </div>
-                            </div>
-                        </div> */}
-
                         <div className="f-lists">
                             <div className="flight-content">
                                 {dd && dd.length > 0 ? (
                                     dd.map((flightSegments, index) => {
-                                        console.log("flightSegments", flightSegments);
+                                        // console.log("flightSegments", flightSegments);
+                                    
 
                                         return flightSegments.map((flight, segmentIndex) => {
 
@@ -421,7 +447,7 @@ export default function FlightLists() {
                                                     </div>
                                                     <div className="col-3 pricebtns">
                                                         <div><p>₹{flight?.OfferedFare}</p></div>
-                                                        <div> <button onClick={selectFlight}>SELECT</button>     </div>
+                                                        <div> <button onClick={fareQuoteHandler}>SELECT</button>     </div>
                                                     </div>
                                                 </div>
                                             );
