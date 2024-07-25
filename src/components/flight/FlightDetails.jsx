@@ -58,7 +58,7 @@ export default function FlightDetails() {
                                         <td>01 Bag of 15 kg</td>
                                         <td>7 kg</td>
                                     </tr>
-                                   
+
                                 </tbody>
                             </table>
                             <p>The baggage information is just for reference. Please Check with airline before check-in. For more information, visit Website.</p>
@@ -67,9 +67,109 @@ export default function FlightDetails() {
 
                 </div>;
             case 'fare':
-                return <div>Fare Information</div>;
+                return <div>
+                    <div className="row mt-4 mb-4 fareTabRow">
+                        <div className="col-12">
+                            <table className="table fare-bordered-table">
+                                <thead>
+                                    <tr>
+                                        <td scope="col">Traveller</td>
+                                        <td scope="col" style={{ textAlign: 'end' }}>Base Fare</td>
+                                        <td scope="col" style={{ textAlign: 'end' }}>Taxes</td>
+                                        <td scope="col" style={{ textAlign: 'end' }}>Total Fare</td>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1 Adult</td>
+                                        <td style={{ textAlign: 'end' }}>₹3665</td>
+                                        <td style={{ textAlign: 'end' }}>₹551</td>
+                                        <td style={{ textAlign: 'end' }}>₹4216</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ fontWeight: 'bold' }}>Total</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td style={{ textAlign: 'end' }}>₹4216</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>;
             case 'cancellation':
-                return <div>Cancellation Policy</div>;
+                return <div>
+                    <div className="row cancellationTabRow">
+                        <div className="col-12">
+                            <div className="row">
+                                <div className="col-6 cancellationtable">
+                                    <h6>Cancellation Charges</h6>
+                                    <table className="table fare-bordered-table">
+                                        <thead>
+                                            <tr>
+                                                <td scope="col">Before 4 hours Departure</td>
+                                                <td scope="col">As per airlines policy</td>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Agency Fee</td>
+                                                <td>₹500</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div className="col-6 cancellationtable">
+                                    <h6>Reschedule Charges</h6>
+                                    <table className="table fare-bordered-table">
+                                        <thead>
+                                            <tr>
+                                                <td scope="col">Before 4 hours Departure</td>
+                                                <td scope="col">As per airlines policy</td>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Agency Fee</td>
+                                                <td>₹500</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                                <h6 style={{ fontWeight: 'bold' }}>Terms & Conditions</h6>
+                                <ul>
+                                    <li>
+                                        The charges will be on per passenger per sector
+                                    </li>
+                                    <li>
+                                        Rescheduling Charges = Rescheduling/Change Penalty + Fare Difference (if applicable)
+                                    </li>
+                                    <li>
+                                        Partial cancellation is not allowed on the flight tickets which are book under special discounted fares
+                                    </li>
+                                    <li>
+                                        In case, the customer have not cancelled the ticket within the stipulated time or no show then only statutory taxes are refundable from the respective airlines For infants there is no baggage allowance
+                                    </li>
+                                    <li>
+                                        In certain situations of restricted cases, no amendments and cancellation is allowed
+                                    </li>
+                                    <li>
+                                        Penalty from airlines needs to be reconfirmed before any cancellation or amendments
+                                    </li>
+                                    <li>
+                                        Penalty changes in airline are indicative and can be changed without any prior notice
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>;
             default:
                 return <div>Flight Information</div>;
         }
@@ -144,6 +244,65 @@ export default function FlightDetails() {
                                     </div>
                                 </div>
                             </div>
+
+                            <div className="row">
+                                <div className="fligthReviewhed">
+                                    <MdOutlineFlightTakeoff />
+                                    <h5>Price Details</h5>
+                                </div>
+                                <div className="col-12">
+                                    <div className="fligthPriceDetailsBox">
+                                        <div className="fligthPriceDetailsBoxDiv1">
+                                            <p>Base Fare</p>
+                                            <p>0</p>
+                                        </div>
+                                        <div className="fligthPriceDetailsBoxDiv2">
+                                            <p>Taxes</p>
+                                            <p>0</p>
+                                        </div>
+                                        <hr></hr>
+                                        <div className="fligthPriceDetailsBoxDiv3">
+                                            <h6>Total Fare</h6>
+                                            <p>₹0</p>
+                                        </div>
+                                        <div className="fligthPriceDetailsBoxDiv4">
+                                            <h6>Insurance (All Traveller)</h6>
+                                            <p>₹249</p>
+                                        </div>
+                                        <div className="fligthPriceDetailsBoxDiv5">
+                                            <h6>Sub Total</h6>
+                                            <p>₹249</p>
+                                        </div>
+                                        <div className="fligthPriceDetailsBoxDiv6">
+                                            <h6>Coupon Applied</h6>
+                                            <p>₹100 OFF</p>
+                                        </div>
+                                        <div className="fligthPriceDetailsBoxDiv7">
+                                            <h5>You Pay</h5>
+                                            <p>₹149</p>
+                                        </div>
+                                        <div className="fligthPriceDetailsBoxDiv8">
+                                            <img src="/src/assets/images/Low-Price-Guarantee-Offer.gif" className="img-fluid" />
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="fligthReviewhed">
+                                    <MdOutlineFlightTakeoff />
+                                    <h5>Contact Details</h5>
+                                </div>
+                                <div className="col-12">
+                                   
+                                </div>
+                            </div>
+
+
+
+
                         </div>
                         <div className="col-3">
 

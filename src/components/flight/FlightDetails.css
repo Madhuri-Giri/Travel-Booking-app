@@ -7,7 +7,7 @@
     margin-bottom: 20px;
 }
 .flightDetailssec{
-    background-color: #f4efefd6;
+    background-color: #dddddd;
     padding: 20px 20px;
 }
 .fdetailspriceBox p{
@@ -45,6 +45,7 @@
     padding: 20px 30px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
     border-radius: 7px;
+    margin-bottom: 30px;
 }
 .fligthReviewBoxHed{
     display: flex;
@@ -144,4 +145,58 @@
 }
 .baggageTabRow .col-12{
     padding: 10px 30px;
+}
+.fareTabRow .col-12{
+    padding: 10px 30px;
+}
+
+.fare-bordered-table, .fare-bordered-table th, .fare-bordered-table td {
+    border: 1px solid rgba(128, 128, 128, 0.384);
+    border-collapse: collapse;
+    padding: 8px;
+}
+
+.fare-bordered-table th, .fare-bordered-table td {
+    padding: 8px;
+    text-align: left;
+    font-size: 14px;
+}
+.cancellationTabRow{
+    padding: 10px 30px;
+}
+.cancellationtable h6{
+    font-weight: bold;
+}
+.cancellationtable{
+    margin-bottom: 20px;
+}
+.cancellationTabRow ul li{
+    font-size: 13px;
+    color: rgb(54, 52, 52);
+    line-height: 30px;
+}
+
+.fligthPriceDetailsBox{
+    background-color: white;
+    padding: 20px 30px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
+    border-radius: 10px;
+}
+.fligthPriceDetailsBoxDiv1,
+.fligthPriceDetailsBoxDiv2,
+.fligthPriceDetailsBoxDiv3,
+.fligthPriceDetailsBoxDiv4,
+.fligthPriceDetailsBoxDiv5,
+.fligthPriceDetailsBoxDiv6,
+.fligthPriceDetailsBoxDiv7
+{
+    display: flex;
+    justify-content: space-between;
+}
+.fligthPriceDetailsBoxDiv8{
+    display: flex;
+    justify-content: center;
+}
+.fligthPriceDetailsBoxDiv8 img{
+    height: 80px;
 }
