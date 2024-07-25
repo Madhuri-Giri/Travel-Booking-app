@@ -1,0 +1,190 @@
+.BusTikit{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: column;
+}
+.hide-during-download {
+          display: none;
+        }
+        
+.BusTikit .hed{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          background: #0a223d;
+          justify-content: center;
+          padding: 1vmax;
+}
+.BusTikit .hed h5{
+         font-size: 1.5vmax;
+         font-weight: 600;
+         color: #fff;
+}
+.BusTikit  .down{
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+           align-items: center;
+           justify-content: center;
+}
+
+.BusTikit  .down .tikit-status{
+          width: 80%;
+          display: flex;
+           align-items: flex-start;
+           justify-content: space-between;
+           flex-direction: row;
+           border: 0.3px solid #00000046;
+           margin-top: 1vmax;
+           margin-bottom: 1vmax;
+           border-radius: 10px;
+}
+/* .BusTikit  .down .tikit-status .image-bus{
+          width: 30%;
+}
+.BusTikit  .down .tikit-status .image-bus img{
+          width: 100%;
+} */
+
+/* .BusTikit  .down .tikit-status .tikit-list{
+          width: 30%;
+} */
+
+.BusTikit  .down .tikit-status .download-tikit{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+}
+.BusTikit  .down .tikit-status .download-tikit .dest{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content:center;
+          flex-direction: row;
+          gap: 2vmax;
+          padding-top: 0.6vmax;
+}
+.BusTikit  .down .tikit-status .download-tikit .dest h4{
+         font-weight: 700;
+}
+.BusTikit  .down .tikit-status .download-tikit .dest i{
+          font-weight: 700;
+ }
+ .BusTikit  .down .tikit-status .download-tikit .sdxfcvghb{
+          width: 100%; 
+          display: flex;
+          align-items: center;
+          justify-content: center;  
+          padding-top: 0.1vmax; 
+          border-bottom:0.4px solid #00000046 ;
+ }
+
+ .BusTikit  .down .tikit-status .download-tikit  .tikit-details{
+          width:100%; 
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start; 
+ }
+ .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-left{
+          width: 40%; 
+          display: flex;
+          align-items:center;
+          justify-content:center;  
+ }
+ .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-left img{
+          width: 90%; 
+         
+ }
+ .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right{
+          width: 60%; 
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;  
+ }
+
+ .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .details-top{
+          width: 100%;
+          display: flex;
+          align-items:center;
+          justify-content: center;
+          flex-direction: row;
+          padding: 1vmax;
+ }
+ .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .details-top .left{
+          width: 40%;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+          flex-direction: column;
+          font-weight: 600;
+ }
+ .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .details-top .right{
+          width: 40%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+ }
+ .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .detils-dowm{
+          width: 80%;
+          display: flex;
+          align-items: center;
+          justify-content:center;
+          flex-direction: column;
+     gap: 1vmax;
+     margin-bottom: 0.5vmax;
+ }
+ .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .detils-dowm button{
+        border: none;
+        width: 100%;
+        padding: 0.7vmax 2vmax;
+        border-radius: 4px;
+        font-weight: 600;
+        color: #fff;
+        background-color: #00b7eb;
+ }
+
+
+ /* --------------------download-tikit-code-------------- */
+.download-ticket-code{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+}
+.download-ticket-code .downloaded{
+          width: 60%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          box-shadow: 2px 2px 5px 2px rgb(255, 239, 239);
+          margin: 2vmax;
+          padding-top: 0.5vmax;
+          padding-bottom: 0.5vmax;
+
+}
+.download-ticket-code .downloaded h6{
+           font-weight: 700;
+           font-size: 1.3vmax;
+           margin-top: 0.5vmax;
+}
+.download-ticket-code .downloaded .down-pass, .seat-pass, .tik, .bustik{
+          width: 90%;
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          flex-direction: column;
+       border: 0.2px solid #00000046;
+       padding: 1vmax;
+}
+.download-ticket-code .downloaded .down-pass, .seat-pass, .tik, .bustik p{
+        font-weight: 600;
+        font-size: 1.2vmax;
+}
+

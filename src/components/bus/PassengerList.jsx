@@ -349,6 +349,9 @@ const PassengerList = () => {
               </div>
             </div>
           ))}
+           <div className="ad-new-passenger">
+            <button className='ad-new'><i className="ri-user-add-fill"></i>Add new passenger</button>
+          </div>
           <div className="pas-btn">
             <button 
               onClick={reviewHandler} 

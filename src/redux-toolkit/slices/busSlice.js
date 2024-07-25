@@ -70,11 +70,13 @@ const busSlice = createSlice({
           const boardingPoints = data.Result.flatMap(bus =>
             bus.BoardingPoints.map(point => ({
               ...point,
+              CityPointName: point.CityPointName,
               CityPointIndex: point.CityPointIndex
             }))
           );
           state.boardingPoints = boardingPoints;
-          // console.log('Boarding Points with CityPointIndex:');
+          // console.log('Boarding Points CityPointNames:', boardingPoints.map(point => point.CityPointName));
+
           boardingPoints.forEach(point => {
             (`CityPointIndex: ${point.CityPointIndex}`, point);
           });
@@ -82,6 +84,7 @@ const busSlice = createSlice({
           const droppingPoints = data.Result.flatMap(bus =>
             bus.DroppingPoints.map(point => ({
               ...point,
+              CityPointName: point.CityPointName,
               CityPointIndex: point.CityPointIndex
             }))
           );
