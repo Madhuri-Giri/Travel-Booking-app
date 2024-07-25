@@ -111,11 +111,11 @@
 
 .hotelTitle {
   font-size: 20px;
-  color: #0071c2;
+  color: #00b7eb;
 }
 
 .hotelDistance {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .hotelTaxi {
@@ -155,13 +155,12 @@
 }
 
 .hotelRating {
-  margin-right: 0;
-  /* display: flex; */
-  /* justify-content: space-between; */
+  display: flex;
+  justify-content: flex-end; 
 }
 
-.hotelRating  span {
-  font-weight: 500;
+.hotelRating span {
+  font-weight: 300;
 }
 
 .hotelRating  button {
@@ -181,7 +180,7 @@
 }
 
 .hotelPrice {
-  font-size: 24px;
+  font-size: 18px;
 }
 
 .hotelTax {

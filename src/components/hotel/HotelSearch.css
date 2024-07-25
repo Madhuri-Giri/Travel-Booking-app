@@ -11,10 +11,13 @@
 .content_wrapper {
   display: flex;
   margin-top: 50px;
+  margin-left: 120px;
 }
+
 
 .content_box p {
   font-size: 1.2vmax;
+  
 }
 
 .images_container {
@@ -138,7 +141,7 @@
   }
   
   .btn-sub:hover {
-    background-color: #0056b3;
+    background-color: #00b7eb;
   }
   /*------------ ------------*/
 
@@ -193,6 +196,13 @@
 
 /* Media Queries for Responsiveness */
 @media (max-width: 1200px) {
+  .content_wrapper{
+    margin-left: 0;
+  }
+  .content_box p {
+    font-size: 2.5vmax;
+    
+  }
   .hotel_container {
    margin-top: 0;
   }
@@ -212,6 +222,7 @@
     margin-top: 0;
     width: 100%;
     margin-left: 0px;
+    margin-right: 300px;
   }
 
   .img_box {
@@ -223,6 +234,7 @@
   .image1,
   .image2,
   .image3 {
+    margin-bottom: 10px;
     position: relative;
     width: 100%;
     bottom: 0;
@@ -233,6 +245,9 @@
 }
 
 @media (max-width: 768px) {
+  .content_wrapper{
+    margin-left: 0;
+  }
   .form-row {
     flex-direction: column;
   }
@@ -253,7 +268,7 @@
     width: 100%;
    
   }
-
+  
   .img_box {
     position: relative;
     width: 100%;
@@ -263,20 +278,25 @@
   .image1,
   .image2,
   .image3 {
+    margin-bottom: 10px;
     position: relative;
-    width: 100%;
+    width: 90%;
     bottom: 0;
     left: 0;
     right: 0;
     
   }
-  .offer_img {
+    .offer_img {
     width: 100%;
     
   }
+  
 }
 
 @media (max-width: 576px) {
+  .content_wrapper{
+    margin-left: 0;
+  }
   .offer_img {
     width: 100%;
     

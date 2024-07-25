@@ -5,12 +5,16 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import useGeolocation from "./UseGeolocation";
+import haversineDistance from "./HaversineDistance";
 
 const renderStar = (rating) => {
+  const totalStars = 5;
   let stars = [];
-  for (let i = 0; i < rating; i++) {
+  for (let i = 1; i <= totalStars; i++) {
+    const color = i <= rating ? "#FFD700" : "#d3d3d3"; 
     stars.push(
-      <FontAwesomeIcon key={i} icon={faStar} size="lg" color="#FFD700" />
+      <FontAwesomeIcon key={i} icon={faStar} size="lg" color={color} />
     );
   }
   return stars;
@@ -22,9 +26,46 @@ const HotelList = () => {
   const [hotels, setHotels] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [sortOption, setSortOption] = useState('name');
+  const { position: userPosition, error: geoError } = useGeolocation();
 
   useEffect(() => {
-    console.log("Hotel list data:", searchResults);
+    const sortedHotels = [...hotels];
+    switch (sortOption) {
+      case 'name':
+        sortedHotels.sort((a, b) => a.HotelName.localeCompare(b.HotelName));
+        break;
+      case 'rating':
+        sortedHotels.sort((a, b) => b.StarRating - a.StarRating);
+        break;
+      case 'price-asc':
+        sortedHotels.sort((a, b) => (a.Price?.OfferedPriceRoundedOff || 0) - (b.Price?.OfferedPriceRoundedOff || 0));
+        break;
+      case 'price-desc':
+        sortedHotels.sort((a, b) => (b.Price?.OfferedPriceRoundedOff || 0) - (a.Price?.OfferedPriceRoundedOff || 0));
+        break;
+      case 'distance':
+        if (userPosition) {
+          sortedHotels.sort((a, b) => {
+            const distanceA = haversineDistance(userPosition, {
+              latitude: parseFloat(a.Latitude),
+              longitude: parseFloat(a.Longitude),
+            });
+            const distanceB = haversineDistance(userPosition, {
+              latitude: parseFloat(b.Latitude),
+              longitude: parseFloat(b.Longitude),
+            });
+            return distanceA - distanceB;
+          });
+        }
+        break;
+      default:
+        break;
+    }
+    setHotels(sortedHotels);
+  }, [sortOption, userPosition]);
+
+  useEffect(() => {
     if (searchResults && searchResults.length > 0) {
       setHotels(searchResults);
     } else {
@@ -43,8 +84,6 @@ const HotelList = () => {
         TraceId: "1",
       };
   
-      console.log("Request data:", requestData);
-  
       const response = await fetch("/api/admin/api/hotel-info", {
         method: "POST",
         headers: {
@@ -58,144 +97,168 @@ const HotelList = () => {
       }
       
       const data = await response.json();
-      console.log("Hotel details response:", data);
   
       if (data && data.HotelInfoResult && data.HotelInfoResult.HotelDetails) {
-        
         navigate("/hotel-description", { state: { hotelDetails: data.HotelInfoResult.HotelDetails } });
       } else {
         setError(data.message || "No hotel details found.");
       }
     } catch (error) {
-      console.error("Error fetching hotel details:", error);
       setError("Failed to fetch hotel details. Please try again later.");
     }
   };
 
   return (
-    <div className="listContainer">
-      <div className="listWrapper">
-        <div className="listSearch">
-          <h1 className="listTitle">Search</h1>
-          <div className="listItem">
-            <label>Destination</label>
-            <input
-              placeholder={location.state?.destination || ""}
-              type="text"
-            />
-          </div>
-          <div className="listItem">
-            <label>Check-in Date</label>
-            <DatePicker
-              selected={location.state?.date?.[0]?.startDate || new Date()}
-              onChange={(date) => {}}
-              minDate={new Date()}
-              dateFormat="MM/dd/yyyy"
-            />
-          </div>
-          <div className="listItem">
-            <label>Check-out Date</label>
-            <DatePicker
-              selected={location.state?.date?.[0]?.endDate || new Date()}
-              onChange={(date) => {}}
-              minDate={new Date()}
-              dateFormat="MM/dd/yyyy"
-            />
-          </div>
-          <div className="listItem">
-            <label>Options</label>
-            <div className="listOptions">
-              <div className="listOptionItem">
-                <span className="listOptionText">
-                  Min price <small>per night</small>
-                </span>
-                <input type="number" className="listOptionInput" />
-              </div>
-              <div className="listOptionItem">
-                <span className="listOptionText">
-                  Max price <small>per night</small>
-                </span>
-                <input type="number" className="listOptionInput" />
-              </div>
-              <div className="listOptionItem">
-                <span className="listOptionText">Adult</span>
-                <input
-                  type="number"
-                  min={1}
-                  className="listOptionInput"
-                  placeholder={location.state?.options?.adult || 1}
-                />
-              </div>
-              <div className="listOptionItem">
-                <span className="listOptionText">Children</span>
-                <input
-                  type="number"
-                  min={0}
-                  className="listOptionInput"
-                  placeholder={location.state?.options?.children || 0}
-                />
-              </div>
-              <div className="listOptionItem">
-                <span className="listOptionText">Room</span>
-                <input
-                  type="number"
-                  min={1}
-                  className="listOptionInput"
-                  placeholder={location.state?.options?.room || 1}
-                />
+    <>
+      <div className="listContainer">
+        <div className="listWrapper">
+          <div className="listSearch">
+            <h1 className="listTitle">Search</h1>
+            <div className="listItem">
+              <label>Destination</label>
+              <input
+                placeholder={location.state?.destination || ""}
+                type="text"
+              />
+            </div>
+            <div className="listItem">
+              <label>Check-in Date</label>
+              <DatePicker
+                selected={location.state?.date?.[0]?.startDate || new Date()}
+                onChange={(date) => {}}
+                minDate={new Date()}
+                dateFormat="MM/dd/yyyy"
+              />
+            </div>
+            <div className="listItem">
+              <label>Check-out Date</label>
+              <DatePicker
+                selected={location.state?.date?.[0]?.endDate || new Date()}
+                onChange={(date) => {}}
+                minDate={new Date()}
+                dateFormat="MM/dd/yyyy"
+              />
+            </div>
+            <div className="listFilter">
+              <h5>Sort by:</h5>
+              <div className="listFilterOptions">
+                <div className="listFilterOption">
+                  <label>
+                    <input
+                      type="radio"
+                      name="sortOption"
+                      value="name"
+                      checked={sortOption === "name"}
+                      onChange={(e) => setSortOption(e.target.value)}
+                    />
+                    Name
+                  </label>
+                </div>
+                <div className="listFilterOption">
+                  <label>
+                    <input
+                      type="radio"
+                      name="sortOption"
+                      value="rating"
+                      checked={sortOption === "rating"}
+                      onChange={(e) => setSortOption(e.target.value)}
+                    />
+                    Rating
+                  </label>
+                </div>
+                <div className="listFilterOption">
+                  <label>
+                    <input
+                      type="radio"
+                      name="sortOption"
+                      value="price-asc"
+                      checked={sortOption === "price-asc"}
+                      onChange={(e) => setSortOption(e.target.value)}
+                    />
+                    Price: Low to High
+                  </label>
+                </div>
+                <div className="listFilterOption">
+                  <label>
+                    <input
+                      type="radio"
+                      name="sortOption"
+                      value="price-desc"
+                      checked={sortOption === "price-desc"}
+                      onChange={(e) => setSortOption(e.target.value)}
+                    />
+                    Price: High to Low
+                  </label>
+                </div>
+                <div className="listFilterOption">
+                  <label>
+                    <input
+                      type="radio"
+                      name="sortOption"
+                      value="distance"
+                      checked={sortOption === "distance"}
+                      onChange={(e) => setSortOption(e.target.value)}
+                    />
+                    Distance
+                  </label>
+                </div>
               </div>
             </div>
+            <button onClick={() => { /* Add your search functionality here */ }}>Search</button>
           </div>
-          <button onClick={fetchHotelInfo}>Search</button>
-        </div>
 
-
-        <div className="listResult">
-          {error && <p className="errorMessage">{error}</p>}
-          {hotels.length > 0 ? (
-            hotels.map((hotel, index) => (
-              <div key={hotel.HotelCode} className="searchItem">
-                <img src={hotel.HotelPicture} alt={hotel.HotelName}   className="hotelImg" />
-                <div className="hotelDescription">
-                  <h1 className="hotelTitle">{hotel.HotelName}</h1>
-                  <span className="hotelDistance">{hotel.HotelAddress}</span>
-                  <span className="hotelTaxi">
-                    {hotel.freeTaxi
-                      ? "Free airport taxi"
-                      : "No free airport taxi"}
-                  </span>
-                  <span className="Features">
-                    {hotel.features || "No special features"}
-                  </span>
-                  <span className="Cancel">
-                    {hotel.freeCancellation
-                      ? "Free cancellation"
-                      : "No free cancellation"}
-                  </span>
-                  <span className="CancelSubtitle">
-                    You can cancel later, so lock in this great price today!
-                  </span>
-                </div>
-                <div className="Details">
-                    <span className="hotelRating">{renderStar(hotel.StarRating)}</span>
-                  <div className="DetailTexts">
-                    <span className="hotelPrice">
-                      INR {hotel.Price?.OfferedPriceRoundedOff || "N/A"}
+          <div className="listResult">
+            {geoError && <p className="errorMessage">{geoError}</p>}
+            {error && <p className="errorMessage">{error}</p>}
+            {hotels.length > 0 ? (
+              hotels.map((hotel, index) => (
+                <div key={hotel.HotelCode} className="searchItem">
+                  <img src={hotel.HotelPicture} alt={hotel.HotelName} className="hotelImg" />
+                  <div className="hotelDescription">
+                    <h1 className="hotelTitle">{hotel.HotelName}</h1>
+                    <span className="hotelDistance">{hotel.HotelAddress}</span>
+                    {userPosition && hotel.Latitude && hotel.Longitude && (
+                      <span className="hotelDistance">
+                        {Math.round(haversineDistance(userPosition, {
+                          latitude: parseFloat(hotel.Latitude),
+                          longitude: parseFloat(hotel.Longitude),
+                        }))} km from you
+                      </span>
+                    )}
+                    <span className="hotelTaxi">
+                      {hotel.freeTaxi ? "Free airport taxi" : "No free airport taxi"}
                     </span>
-                    <span className="hotelTax">Includes taxes and fees</span>
-                    <button onClick={() => fetchHotelInfo(index)}  className="CheckButton">
-                      See Details
-                    </button>
+                    {/* <span className="Features">
+                      {hotel.features || "No special features"}
+                    </span> */}
+                    <span className="Cancel">
+                      {hotel.freeCancellation ? "Free cancellation" : "No free cancellation"}
+                    </span>
+                    <span className="CancelSubtitle">
+                      You can cancel later, so lock in this great price today!
+                    </span>
+                  </div>
+                  <div className="Details">
+                    <span className="hotelRating">{renderStar(hotel.StarRating)}</span>
+                    <div className="DetailTexts">
+                      <span className="hotelPrice">
+                        INR {hotel.Price?.OfferedPriceRoundedOff || "N/A"}
+                      </span>
+                      <span className="hotelTax">Includes taxes and fees</span>
+                      <button onClick={() => fetchHotelInfo(index)} className="CheckButton">
+                        See Details
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p className="noHotelsMessage">No hotels available.</p>
-          )}
+              ))
+            ) : (
+              <p className="noHotelsMessage">No hotels available.</p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

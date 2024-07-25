@@ -6,10 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 const renderStar = (rating) => {
+  const totalStars = 5;
   let stars = [];
-  for (let i = 0; i < rating; i++) {
+  for (let i = 1; i <= totalStars; i++) {
+    const color = i <= rating ? "#FFD700" : "#d3d3d3"; 
     stars.push(
-      <FontAwesomeIcon key={i} icon={faStar} size="lg" className="rating_star_hotel" />
+      <FontAwesomeIcon key={i} icon={faStar} size="lg" color={color} />
     );
   }
   return stars;
@@ -104,7 +106,7 @@ const HotelDescription = () => {
                   </div>
                 ))}
               </div>
-              <div className="PriceAndButtonContainer">
+              <div className="PriceButton">
                 <div className="Price_hotel">
                   INR {hotelDetails.Price?.OfferedPriceRoundedOff || "N/A"}
                 </div>
