@@ -78,20 +78,19 @@ export default function FlightLists() {
 
     console.log("listData", listData)
 
-
     localStorage.setItem("FlightSrdvType", listData.SrdvType)
     localStorage.setItem("FlightTraceId", listData.TraceId)
 
     useEffect(() => {
         const getCallenderData = async () => {
             try {
-
                 const payLoad = {
                      "SrdvType": listData.SrdvType,
                      "SrdvIndex": listData.SrdvIndex,
                       "TraceId":listData.TraceId, 
                       "ResultIndex":listData.ResultIndex 
                     }
+
                 const response = await fetch('https://sajyatra.sajpe.in/admin/api/farerule', {
                     method: 'POST',
                     headers: {
