@@ -17,10 +17,8 @@ import FlightLists from './components/flight/FlightLists';
 import BoardAndDrop from './components/bus/BoardAndDrop';
 import Faq from './pages/Faq/Faq';
 import Setting from './pages/setting/Setting ';
-import SignUp from './pages/signup/SignUp';
-import LogIn from './pages/login/LogIn';
+import LogIn from './pages/NewOne/login/LogIn';
 import LoginOtp from './pages/login-otp/LoginOtp';
-import ForgotPassword from './pages/forgotpassword/ForgotPassword';
 import PassangerInfo from './components/bus/PassangerInfo';
 import PassengerList from './components/bus/PassengerList';
 import ReviewBooking from './components/bus/ReviewBooking';
@@ -33,6 +31,8 @@ import Reviews from './components/reviews/Review'
 import FlightDetails from './components/flight/FlightDetails';
 import BusTikit from './components/bus/DownloadTikit/BusTikit';
 import FareQuote from './components/flight/FareQuote';
+import EnterNumber from './pages/NewOne/MobileNumber/EnterNumber';
+import SignUp from './pages/NewOne/signup/SignUp';
 
 
 const App = () => {
@@ -41,7 +41,7 @@ const App = () => {
       <Router>
         <CustomNavbar/>       
         <Routes>
-          <Route path='/' element={<Home />} />
+          <Route path='/flight-search' element={<Home />} />
           <Route path='/flight-search' element={<FlightSearch />} />
           <Route path='/flight-list' element={<FlightLists />} />
           <Route path='/flight-details' element={<FlightDetails/>} />
@@ -50,13 +50,14 @@ const App = () => {
           <Route path='/bus-layout' element={<BusLayout />} />
           <Route path='/bord-drop' element={<BoardAndDrop />} />
           <Route path='/bus-tikit-download' element={<BusTikit />} />
+          <Route path='/signup' element={<SignUp />} />
+
 
           <Route path='/faq' element={<Faq />} />
           <Route path='/setting' element={< Setting/>} />
-          <Route path='/signup' element={< SignUp/>} />
           <Route path='/login' element={<LogIn/>} />
           <Route path='/login-otp' element={<LoginOtp/>} />
-          <Route path='/forgotpassword' element={<ForgotPassword/>} />
+          <Route path='/enter-number' element={<EnterNumber/>} />
           <Route path='/passenger-info' element={<PassangerInfo/>} />
           <Route path='/passenger-list' element={<PassengerList/>} />
           <Route path='/review-booking' element={<ReviewBooking/>} />

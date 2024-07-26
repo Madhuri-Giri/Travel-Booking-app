@@ -1,118 +1,66 @@
-import { useState, useEffect } from 'react';
 import './LoginOtp.css';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginOtp = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const registeredEmail = location.state?.email || ''; 
-  const userId = location.state?.userId || ''; 
+  const navigate = useNavigate(); // Initialize navigate
+  const [otp, setOtp] = useState(['', '', '', '', '', '']); 
 
-  useEffect(() => {
-    if (!userId || !registeredEmail) {
-      setError('User ID or email not found.');
-      console.error('User ID or email not found in state:', location.state);
+  const handleChange = (e, index) => {
+    const newOtp = [...otp]; 
+    newOtp[index] = e.target.value; 
+
+    if (e.target.value && index < otp.length - 1) {
+      document.getElementById(`otp-input-${index + 1}`).focus();
     }
-  }, [userId, registeredEmail]);
 
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [error, setError] = useState('');
+    if (!e.target.value && index > 0) {
+      document.getElementById(`otp-input-${index - 1}`).focus();
+    }
 
-  const handleInputChange = (index, value) => {
-    if (/^\d*$/.test(value)) {
-      const newOtp = [...otp];
-      newOtp[index] = value.slice(0, 1);
-      setOtp(newOtp);
+    setOtp(newOtp); 
+  };
 
-      if (value !== '' && index < otp.length - 1) {
-        const nextInput = document.getElementById(`otp-input-${index + 1}`);
-        if (nextInput) {
-          nextInput.focus();
-        }
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Backspace' && !otp[index]) {
+      if (index > 0) {
+        document.getElementById(`otp-input-${index - 1}`).focus();
       }
     }
   };
 
-  const verifyOTP = async () => {
-    try {
-      const enteredOTP = otp.join('');
-      const response = await fetch('https://srninfotech.com/projects/travel-app/api/checkotp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          otp: enteredOTP,
-          email: registeredEmail, 
-          user_id: userId,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log('OTP verification successful!');
-        navigate('/'); 
-      } else {
-        setError(data.message || 'Invalid OTP. Please try again.');
-        console.log('Error response data:', data);
-      }
-    } catch (error) {
-      setError('An error occurred. Please try again later.');
-      console.error('Fetch error:', error);
-    }
+  const handleVerify = () => {
+    console.log('OTP entered:', otp.join(''));
   };
 
-  const resendOTP = async () => {
-    try {
-      const response = await fetch('https://srninfotech.com/projects/travel-app/api/resend-otp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: userId,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setError(''); 
-        console.log('Resend OTP request successful!');
-      } else {
-        setError(data.message || 'Failed to resend OTP. Please try again.');
-        console.error('Error response data:', data);
-      }
-    } catch (error) {
-      setError('An error occurred while resending OTP. Please try again later.');
-      console.error('Fetch error:', error);
-    }
+  const handleRegister = () => {
+    navigate('/signup'); // Navigate to the registration page
   };
 
   return (
     <div className='LoginOtp'>
       <div className="login-otp">
-        <h5>Enter 6 Digit OTP</h5>
-        <p>A 6 digit code has been sent to your registered email</p>
+        <h5></h5>
+        <p>Enter Your Mobile Number</p>
         <div className="otp-box">
           {otp.map((digit, index) => (
             <input
               key={index}
-              id={`otp-input-${index}`}
+              id={`otp-input-${index}`} 
               type="text"
               maxLength={1}
               value={digit}
-              onChange={(e) => handleInputChange(index, e.target.value)}
               className="otp-input"
+              onChange={(e) => handleChange(e, index)} 
+              onKeyDown={(e) => handleKeyDown(e, index)}
             />
           ))}
         </div>
-        {error && <p className="error">{error}</p>}
-        <div className="last">
-          <p>Not received the code? <span onClick={resendOTP}>Resend</span></p>
+        <button className='verify-otp' onClick={handleVerify}>Send Otp</button>
+        <p>Don't have an account?</p>
+        <div className='regbtn'>
+          <button type="button" onClick={handleRegister}>Register</button>
         </div>
-        <button className='verify-otp' onClick={verifyOTP}>Verify</button>
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './GuestDetails.css'; // Make sure to import the CSS file
+import axios from 'axios';
+
 
 const GuestDetails = () => {
   const [roomsData, setRoomsData] = useState([]);
@@ -10,6 +12,43 @@ const GuestDetails = () => {
       setRoomsData(JSON.parse(roomsJSON));
     }
   }, []);
+
+// ---------------------------Payment-----------------------------------------------------------
+
+
+// const [paymentDetails, setPaymentDetails] = useState(null);
+// // const [passengerData, setPassengerData] = useState([]);
+
+
+// const fetchPaymentDetails = async () => {
+//   try {
+//     const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-payment', {
+//       amount: 100,
+//       user_id: '1',
+//     });
+
+//     if (response.data.status === 'success') {
+//       setPaymentDetails(response.data.payment_details);
+//       console.log('hotel createPayment', response.data);
+//       return response.data;
+//     } else {
+//       throw new Error(response.data.message);
+//     }
+//   } catch (error) {
+//     console.error('Error fetching payment details:', error);
+//     alert('Failed to initiate payment. Please try again.');
+//     return null;
+//   }
+// };
+
+
+
+
+
+
+
+// --------------------------------------------------------------------------------------
+
 
   return (
     <div className="guest-details-container">
@@ -42,7 +81,7 @@ const GuestDetails = () => {
       ) : (
         <p className="no-room-details">No room details available.</p>
       )}
-      <button className="submit-btn">Continue</button>
+      <button onClick={hotelpayHandler} className="submit-btn">Continue</button>
     </div>
   );
 };
