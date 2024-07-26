@@ -181,6 +181,7 @@
     padding: 20px 30px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
     border-radius: 10px;
+    margin-bottom: 30px;
 }
 .fligthPriceDetailsBoxDiv1,
 .fligthPriceDetailsBoxDiv2,
@@ -199,4 +200,260 @@
 }
 .fligthPriceDetailsBoxDiv8 img{
     height: 80px;
+}
+.fligthPriceDetailsBoxDiv1 p{
+    color: gray;
+}
+.fligthPriceDetailsBoxDiv2 p{
+    color: gray;
+}
+.fligthPriceDetailsBoxDiv3 h6,
+.fligthPriceDetailsBoxDiv3 p{
+    font-weight: bold;
+}
+.fligthPriceDetailsBoxDiv4 h6,
+.fligthPriceDetailsBoxDiv4 p{
+    color: red;
+}
+.fligthPriceDetailsBoxDiv5 h6,
+.fligthPriceDetailsBoxDiv5 p{
+    font-size: 17px;
+}
+.fligthPriceDetailsBoxDiv5 h5,
+.fligthPriceDetailsBoxDiv5 p{
+    color: rgb(223, 4, 88)(212, 0, 255);
+}
+
+.fligthContactDethed{
+    display: flex;
+    margin-bottom: 20px;
+}
+.fligthContactDethed h5{
+    font-weight: 900;
+}
+.fligthContactDethed svg {
+    font-size: 20px;
+    margin-right: 10px;
+}
+.fligthContactDethedBox label{
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+.fligthContactDethedBox {
+    background-color: white;
+    padding: 20px 30px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+.fligthContactDethedBox p{
+    font-size: 12px;
+    color: gray;
+    margin-top: 20px;
+}
+.fligthTravellerDethed{
+    display: flex;
+    margin-bottom: 20px;
+}
+.fligthTravellerDethed h5{
+    font-weight: 900;
+}
+.fligthTravellerDethed svg {
+    font-size: 20px;
+    margin-right: 10px;
+}
+.fligthTravellerDethedBox {
+    background-color: white;
+    padding: 20px 30px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+.fligthTravellerDethedBox h5{
+    margin-bottom: 25px;
+}
+.fligthTravellerDethedBox .row{
+    border: 1px solid rgba(220, 220, 220, 0.486);
+    padding: 20px 10px;
+    border-radius: 10px;
+}
+.fligthTravellerDethedBox label{
+    margin-bottom: 18px;
+    font-weight: bold;
+}
+.genderFormGrp label{
+    font-weight: 500;
+    font-size: 17px;
+}
+.formdettlsDesk{
+    background: #f3efef;
+    padding: 15px 11px;
+    box-shadow: 2px 1px 4px 3px #80808073;
+}
+.formdettlsDesk strong{
+    margin-left: 13px;
+}
+.formdettlsDesk span{
+    margin-right: 13px;
+}
+.formConfbtn{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 14px;
+}
+.formdettlsMobile{
+    background: #f3efef;
+    padding: 15px 11px;
+    box-shadow: 2px 1px 4px 3px #80808073;
+}
+.formdettlsMobile strong{
+    margin-left: 13px;
+}
+.formdettlsMobile span{
+    margin-right: 13px;
+}
+
+.formdettlsMobile{
+    display: none;
+}
+.formdettlsDeskdiv{
+    display: flex;
+    justify-content: space-around;
+}
+.formdettlsDeskdivnmGen{
+    display: flex;
+    margin-top: 5px;
+}
+.selectDetInp{
+    font-size: 25px;
+}
+
+.selectSeatMealDivBtn{
+    box-shadow: 2px 3px 4px 3px gray;
+    background-color:white;
+    border-radius: 3px;
+    margin-top: 20px;
+    padding: 13px 10px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.selectSeatMealDivBtnTabss a{
+    cursor: pointer;
+}
+.selectSeatMealDivBtnTabss a:hover{
+    background-color: #00b7eb;
+    color: white;
+}
+
+.lastBtnssContinue{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+.lastBtnssContinue h5 span{
+    color: #00e100;
+    font-weight: bold;
+}
+.lastBtnssContinue button{
+    background-color: #00b7eb;
+    color: white;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 6px;
+}
+
+.seatsTabssColImg img{
+    height: 250px;
+}
+.seatsTabssColText img{
+    height: 50px;
+}
+.seatsTabss h5{
+    text-align: center;
+    font-weight: bold;
+    color: #00b7eb;
+}
+.seatsTabssRow{
+    background-color: #87ceeb36;
+}
+.seat-selection button{
+    border: 1px solid #80808087;
+    border-radius: 5px;
+    background-color: #87ceebba;
+    box-shadow: 5px 2px 6px 1px #80808054;
+    margin: 10px;
+}
+.meal-selection{
+    box-shadow: 2px 2px 3px 4px rgba(146, 142, 142, 0.548);
+    padding: 0px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.meal-selectionbtn{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+.meal-selectionbtn button{
+    border: 1px solid purple;
+    border-radius: 20px;
+    padding: 6px 30px;
+}
+.MealsTabss h5{
+    text-align: center;
+    font-weight: bold;
+    color: #00b7eb;
+}
+.baggage-selection{
+    box-shadow: 2px 2px 3px 4px rgba(146, 142, 142, 0.548);
+    padding: 0px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.baggagge-selectionbtn{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+.baggagge-selectionbtn button{
+    border: 1px solid purple;
+    border-radius: 20px;
+    padding: 6px 30px;
+}
+.baggageTabbss h5{
+    text-align: center;
+    font-weight: bold;
+    color: #00b7eb;
+}
+
+
+/* css responsive */
+/* responsive css */
+@media screen and (max-width: 992px) {
+    .fligthPriceDetailsss{
+        display: none;
+    }    
+   
+}
+@media screen and (max-width: 576px) {
+    .formdettlsMobile{
+        display: block;
+    }
+    .formdettlsDeskdivnmGen{
+        display: unset;
+    }
+    .baggageTabRow .table tr th{
+        font-size: 10px;
+    }
+    
+    .baggageTabRow .table tr td{
+        font-size: 12px;
+    }
+    
+   
 }
