@@ -1,6 +1,7 @@
 import "./HotelList.css";
+import {Container} from 'react-bootstrap'
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,6 +29,8 @@ const HotelList = () => {
   const navigate = useNavigate();
   const [sortOption, setSortOption] = useState('name');
   const { position: userPosition, error: geoError } = useGeolocation();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const sortedHotels = [...hotels];
@@ -107,9 +110,75 @@ const HotelList = () => {
       setError("Failed to fetch hotel details. Please try again later.");
     }
   };
+  const handleSortOptionChange = (option) => {
+    setSortOption(option);
+    setIsDropdownOpen(false);
+  };
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <>
+    <Container>
+    <section className="sec_book_filter">
+        <div className="hotel_booking_filter">
+          <form>
+            <div className="form-row_filter">
+              <div className="form-field_filter">
+                <label className="form_lable_filter" htmlFor="cityOrHotel">Destination: </label>
+                <input className="form_in_filter" type="text" id="cityOrHotel" name="cityOrHotel"
+                  placeholder="Enter city or hotel name" defaultValue={location.state?.destination || ""} />
+              </div>
+
+              <div className="form-field_filter">
+                <label className="form_lable_filter" htmlFor="checkIn">Check-In Date: </label>
+                <DatePicker className="form_in_filter" selected={location.state?.date?.[0]?.startDate || new Date()} 
+                  onChange={() => {}} dateFormat="dd/MM/yyyy" placeholderText="Select check-in date" />
+              </div>
+
+              <div className="form-field_filter">
+                <label className="form_lable_filter" htmlFor="checkOut">Check-Out Date:</label>
+                <DatePicker className="form_in_filter" selected={location.state?.date?.[0]?.endDate || new Date()} 
+                  onChange={() => {}} dateFormat="dd/MM/yyyy" placeholderText="Select check-out date" />
+              </div>
+
+              <div className="form-field_filter" ref={dropdownRef}>
+                <label className="form_lable_filter" htmlFor="sortOptions">Sort by:</label>
+                <input
+                  type="text"
+                  id="sortOptions"
+                  name="sortOptions"
+                  className="form_in"
+                  placeholder="Select sort option"
+                  value={sortOption}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  readOnly
+                />
+                {isDropdownOpen && (
+                  <ul className="sortDropdown">
+                    <li onClick={() => handleSortOptionChange('name')}>Name</li>
+                    <li onClick={() => handleSortOptionChange('rating')}>Rating</li>
+                    <li onClick={() => handleSortOptionChange('price-asc')}>Price: Low to High</li>
+                    <li onClick={() => handleSortOptionChange('price-desc')}>Price: High to Low</li>
+                    <li onClick={() => handleSortOptionChange('distance')}>Distance</li>
+                  </ul>
+                )}
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+      </Container>
       <div className="listContainer">
         <div className="listWrapper">
           <div className="listSearch">

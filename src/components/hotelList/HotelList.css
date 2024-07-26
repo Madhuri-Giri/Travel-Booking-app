@@ -1,3 +1,40 @@
+
+.sec_book_filter {
+  padding: 20px;
+  /* background-color: #f8f9fa; */
+  
+}
+
+.hotel_booking_filter {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.form-row_filter {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.form-field_filter {
+  flex: 1;
+  min-width: 200px;
+  margin: 10px;
+}
+
+.form_lable_filter {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form_in_filter {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+}
+
 .listContainer {
   display: flex;
   justify-content: center;
@@ -226,3 +263,5 @@
       text-align: left;
   }
 }
+
+

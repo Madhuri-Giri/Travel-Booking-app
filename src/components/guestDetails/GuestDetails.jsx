@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './GuestDetails.css'; // Make sure to import the CSS file
+import './GuestDetails.css';  
 import axios from 'axios';
 
 
@@ -57,6 +57,7 @@ const GuestDetails = () => {
         roomsData.map((room, index) => (
           <div key={index} className="guest-details-card">
             <h3 className="card-title">Room Type: {room.RoomTypeName}</h3>
+            <h2>{room.HotelName}</h2>
             <p className="info-section">Price: {room.Price?.CurrencyCode} {room.Price?.RoomPrice?.toFixed(2)}</p>
             <p className="info-section">
               Day Rate: {room.DayRates?.map(dayRate => (
