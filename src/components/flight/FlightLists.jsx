@@ -88,8 +88,8 @@ export default function FlightLists() {
                                 "Origin": "LKO",
                                 "Destination": "KWI",
                                 "FlightCabinClass": 1,
-                                "PreferredDepartureTime": "2024-07-25T00:00:00",
-                                "PreferredArrivalTime": "2024-07-25T00:00:00",
+                                "PreferredDepartureTime": "2024-07-26T00:00:00",
+                                "PreferredArrivalTime": "2024-07-26T00:00:00",
                             }
                         ]
                     })

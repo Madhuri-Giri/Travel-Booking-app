@@ -168,9 +168,6 @@ const FlightSearch = () => {
     } else {
         console.log("ResultIndex not found");
     }
-
-
-
       navigate("/flight-list", { state: { data: data, formData: formData } });
     }
     catch (error) {

@@ -299,6 +299,61 @@
     font-weight: bold;
 }
 
+/* farequote css start-------- */
+.fare-quote-main{
+    background-color: #dddddd;
+    padding: 30px 1px;
+}
+.fare-quote-box{
+    background-color: white;
+    padding: 20px 25px !important;
+}
+.fare-quote-boxRow{
+    display: flex !important;
+    justify-content: center !important;
+    /* text-align: center; */
+}
+.fareQuoteHed{
+    border: 1px solid gainsboro;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+}
+.fareQuoteHed p span{
+    margin-right: 20px;
+}
+.fareQuotemain{
+    border: 1px solid gainsboro;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+}
+.fareQuotemainh6{
+    text-align: center;
+}
+.fareQuotemainLast{
+    display: flex;
+    justify-content: space-between;
+}
+.fareQuotemainLast h5{
+    font-weight: bold;
+    margin-top: 15px;
+}
+.fareQuotemainLast span{
+    font-weight: bold;
+    color: #00e100;
+}
+.fareQuotemainLast button{
+    background-color: #00b7eb;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    padding: 10px 35px;
+    font-weight: bold;
+    /* font-size: 16px; */
+}
+/* farequote css end-------- */
+
 
 /* responsive css */
 @media screen and (max-width: 992px) {

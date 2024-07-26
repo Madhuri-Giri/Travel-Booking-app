@@ -21,7 +21,7 @@ const BusLists = () => {
   useEffect(() => {
     // Dispatch the searchBuses action when component mounts
     if (!searchResults.length) {
-      dispatch(searchBuses({ from: 'Bhopal', to: 'Indore', departDate: '2024-07-26' })); // Replace with actual values or props
+      dispatch(searchBuses({ from: 'Bhopal', to: 'Indore', departDate: '2024-07-26' })); 
     }
   }, [dispatch, searchResults.length]);
 
