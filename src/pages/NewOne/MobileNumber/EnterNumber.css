@@ -24,17 +24,12 @@
           color: #fff;
           padding: 1vmax;
  } 
- .ForgotPassword .forgot-password .top h5{
-       font-weight: 700;
-} 
- .ForgotPassword .forgot-password .top i{
-          font-size: 1.5vmax;
-          cursor: pointer;
- } 
+
  .ForgotPassword .forgot-password p{
           width: 95%;
           display: flex;
-          margin-top: 1vmax;
+          font-weight: 600;
+          font-size: 1.2vmax;
           align-items: flex-start;
           justify-content: flex-start;
  } 

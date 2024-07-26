@@ -1,58 +1,46 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from 'react';
 import "./LogIn.css";
-import loginLogo from "../../assets/images/main logo.png";
+import loginLogo from "../../../assets/images/main logo.png"
 import { Link, useNavigate } from 'react-router-dom';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
 
 const LogIn = () => {
   const navigate = useNavigate();
-  const [passwordShown, setPasswordShown] = useState(false);
+  const [otpShown, setOtpShown] = useState(false);
   const [formData, setFormData] = useState({
     mobile: '',
-    password: ''
+    otp: ''  
   });
   const [error, setError] = useState('');
 
-  const togglePasswordVisibility = () => {
-    setPasswordShown(!passwordShown);
+  const toggleOtpVisibility = () => {
+    setOtpShown(!otpShown);
   };
 
-  const submitHandler = async (e) => {
+  const loginHandler = async (e) => {
     e.preventDefault();
-    setError('');
-
-    if (formData.mobile.length !== 10) {
-      setError('Mobile number must be exactly 10 digits.');
-      return;
-    }
-
     try {
-      const response = await fetch('https://srninfotech.com/projects/travel-app/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          mobile: formData.mobile,
-          password: formData.password
-        }),
-      });
+        const response = await fetch('https://app.sajpe.in/api/v1/user/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (response.ok) {
-        console.log('Login successful!');
-        navigate('/login-otp', { state: { email: data.data.email, userId: data.data.user_id } });
-      } else {
-        setError(data.message || 'An error occurred.');
-        console.log('Error response data:', data);
-      }
+        if (response.ok) {
+            console.log('login successful:', data);
+            navigate('/flight-search');
+        } else {
+            console.log('login failed:', data);
+        }
     } catch (error) {
-      setError('An error occurred. Please try again later.');
-      console.log('Fetch error:', error);
+        console.error('Error:', error);
     }
-  };
+};
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -69,12 +57,12 @@ const LogIn = () => {
           <img src={loginLogo} alt="Logo" />
         </div>
         <h5>Login to Your Account <span>!</span></h5>
-        <form onSubmit={submitHandler}>
+        <form onSubmit={loginHandler}>
           <div className="one">
             <label>Enter Your Mobile No</label>
             <input 
               type="number" 
-              placeholder='' 
+              placeholder='Enter Your Mobile Number' 
               name='mobile' 
               value={formData.mobile} 
               onChange={handleInputChange} 
@@ -82,27 +70,23 @@ const LogIn = () => {
             />
           </div>
           <div className="one">
-            <label>Password</label>
+            <label>OTP</label>
             <div className="password-container">
               <input 
-                type={passwordShown ? 'text' : 'password'} 
-                placeholder='' 
-                name='password' 
-                value={formData.password} 
+                type={otpShown ? 'text' : 'password'} 
+                placeholder='Enter Your OTP' 
+                name='otp'  
+                value={formData.otp} 
                 onChange={handleInputChange} 
                 required 
               />
-              <span onClick={togglePasswordVisibility} className="password-toggle-icon">
-                {passwordShown ? <RiEyeFill /> : <RiEyeOffFill />}
+              <span onClick={toggleOtpVisibility} className="password-toggle-icon">
+                {otpShown ? <RiEyeFill /> : <RiEyeOffFill />}
               </span>
             </div>
           </div>
           {error && <p className="error">{error}</p>}
-          <div className="forgot">
-            <Link style={{ textDecoration: "none", color: "#000", fontWeight: '700' }} to='/forgotpassword'>
-              Forgot Your Password?
-            </Link>
-          </div>
+          
           <div className="lgin">
             <button type="submit">Login</button>
           </div>

@@ -8,8 +8,11 @@ const BusTikit = () => {
   const [passengerData, setPassengerData] = useState([]);
 
   // Accessing Redux state
+  const { from, to} = useSelector((state) => state.bus);
+
   const boardingPoints = useSelector((state) => state.bus.boardingPoints);
   const droppingPoints = useSelector((state) => state.bus.droppingPoints);
+
 
   useEffect(() => {
     const storedBookingDetails = localStorage.getItem('busTikitDetails');
@@ -32,9 +35,9 @@ const BusTikit = () => {
         <div className="tikit-status">
           <div className="download-tikit">
             <div className="dest">
-              <h4>Indore</h4>
+              <h4>{from}</h4>
               <i className="ri-arrow-left-right-line"></i>
-              <h4>Dewas</h4>
+              <h4>{to}</h4>
             </div>
             <div className="sdxfcvghb">
               <p>(CBCE-106-654)</p>
