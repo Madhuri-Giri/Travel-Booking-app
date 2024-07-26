@@ -211,6 +211,7 @@ export default function FlightLists() {
     
             const data = await response.json();
             console.log('FareQuote API Response:', data);
+            
             navigate('/flight-Farequote', { state: { fareData: data.Results } });
     
         } catch (error) {

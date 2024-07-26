@@ -1,13 +1,19 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation ,useNavigate } from 'react-router-dom';
 import "./FlightLists.css";
 
 const FareQuote = () => {
+    const navigate = useNavigate();
+
     const location = useLocation();
     const fareData = location.state?.fareData;
 
     const publishedFare = fareData?.Fare?.BaseFare;
     console.log("fareData",fareData);
     console.log("publishedFare",publishedFare);
+
+    const flightDeatilsFun = () =>{
+        navigate('/flight-details', {state : fareData});
+    }
 
 
     return (
@@ -44,7 +50,7 @@ const FareQuote = () => {
                             {publishedFare ? (
                                 <div className="fareQuotemainLast col-12">
                                     <h5>Fare  <span>₹{publishedFare}</span></h5>
-                                    <button>Proceed</button>
+                                    <button onClick={flightDeatilsFun}>Proceed</button>
                                 </div>
                             ) : (
                                 <p>No fare data available.</p>

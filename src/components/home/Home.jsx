@@ -196,7 +196,7 @@ const Home = () => {
 
   return (
     <>
-      <section className='flightPageBanner'>
+       <section className='flightPageBanner'>
         <div className="container-fluid ">
           <div className="findFlightss"><button>Find Flights</button></div>
           <div className="row">
@@ -294,7 +294,7 @@ const Home = () => {
                             <div className="form-control flightTravellerclssFormControl">
                               <div className="flightTravellerclss">
                                 <FaCircleUser />
-                                <p> Traveller - <span>{formData.AdultCount}</span> , </p>
+                                <p> Traveller - <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> , </p>
                                 <p> Class - <span>{formData.JourneyType}</span>  </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
@@ -440,7 +440,7 @@ const Home = () => {
                           </div>
 
                           <div className="col-6 mt-2">
-                          <div className="form-group">
+                            <div className="form-group">
                               <label htmlFor="PreferredDepartureTime">Departure Date</label>
                               <div className="date-picker-wrapper form-control">
                                 <DatePicker
@@ -475,12 +475,12 @@ const Home = () => {
                             </div>
                           </div>
 
-                           <div className="col-sm-8 form-group  mt-3" onClick={handleShow}>
+                          <div className="col-sm-8 form-group  mt-3" onClick={handleShow}>
                             <label htmlFor="text">Travellers $ Cabin</label>
                             <div className="form-control flightTravellerclssFormControl">
                               <div className="flightTravellerclss">
                                 <FaCircleUser />
-                                <p> <span>{formData.AdultCount}</span> Traveller , </p>
+                                <p> <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> Traveller , </p>
                                 <p> <span>{formData.JourneyType}</span> Cabin Class </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
