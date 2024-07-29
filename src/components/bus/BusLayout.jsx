@@ -137,8 +137,8 @@ const BusLayout = ({ layoutResponse }) => {
             </div>
             <small>Know your seat</small>
             <div className="two-last">
-              <p><i className="ri-armchair-fill"></i>Available Seat</p>
-              <p><i style={{ color: 'green' }} className="ri-armchair-fill"></i>Selected Seat</p>
+              <p><i className="ri-armchair-fill"></i>Available Seat: {layoutResponse.AvailableSeats}</p>
+              <p><i style={{ color: 'green' }} className="ri-armchair-fill"></i>Selected Seat:  {selectedSeats.join(', ')}</p>
               <p><i style={{ color: 'purple' }} className="ri-armchair-fill"></i>Occupied Seat</p>
               <p><i style={{ color: 'pink' }} className="ri-armchair-fill"></i>Booked Seat</p>
               <p><i style={{ color: 'gray' }} className="ri-armchair-fill"></i>Blocked Seat</p>

@@ -164,10 +164,21 @@ const FlightSearch = () => {
       if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.ResultIndex) {
         const resultIndex = data.Results[0][0].FareDataMultiple[0].ResultIndex;
         localStorage.setItem("FlightResultIndex2", resultIndex);
+        
          console.log("Saved ResultIndex to local storage:", resultIndex);
     } else {
         console.log("ResultIndex not found");
     }
+
+    if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.SrdvIndex) {
+      const srdvIndex = data.Results[0][0].FareDataMultiple[0].SrdvIndex;
+      localStorage.setItem("FlightSrdvIndex2", srdvIndex);
+      console.log("Saved SrdvIndex to local storage:", srdvIndex);
+    } else {
+      console.log("SrdvIndex not found");
+    }
+
+
       navigate("/flight-list", { state: { data: data, formData: formData } });
     }
     catch (error) {

@@ -170,6 +170,7 @@ export default function FlightLists() {
 
     localStorage.setItem("FlightSrdvType", listData.SrdvType)
     localStorage.setItem("FlightTraceId", listData.TraceId)
+
     useEffect(() => {
         const getCallenderData = async () => {
             try {
@@ -263,6 +264,10 @@ export default function FlightLists() {
     const fareQuoteHandler = async () => {
         const traceId = localStorage.getItem('FlightTraceId2');
         const resultIndex = localStorage.getItem('FlightResultIndex2');
+        const srdvType = localStorage.getItem('FlightSrdvType');
+        const srdvIndex = localStorage.getItem('FlightSrdvIndex2'); // Get SrdvIndex from local storage
+        
+
 
         if (!traceId || !resultIndex) {
             console.error('TraceId or ResultIndex not found in local storage');
@@ -270,10 +275,10 @@ export default function FlightLists() {
         }
 
         const payload = {
-            SrdvIndex: "1",
+            SrdvIndex: srdvIndex,
             ResultIndex: resultIndex,
             TraceId: parseInt(traceId),
-            SrdvType: "MixAPI"
+            SrdvType: srdvType,
         };
 
         try {

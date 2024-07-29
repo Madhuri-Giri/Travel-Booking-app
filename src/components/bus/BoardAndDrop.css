@@ -46,6 +46,7 @@
         
         .BordingDroping .bord-drop .DB-top .tab.active {
           color: blue;
+          border-bottom: 1px solid blue;
         }
         
         .BordingDroping .bord-drop .all-Bording-point,
@@ -84,6 +85,9 @@
           justify-content: space-evenly;
           flex-direction: row;
           padding: 1vmax;
+          border: 0.5px solid #00000041;
+          margin-bottom: 1vmax;
+          border-radius: 10px;
         }
         
         .BordingDroping .bord-drop .all-Bording-point .boring-last .bord-last .bd-one,
