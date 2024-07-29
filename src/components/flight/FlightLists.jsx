@@ -49,7 +49,7 @@ export default function FlightLists() {
 
     const listData = location.state.data
     const formData = location.state.formData
-    console.log("formData",formData)
+    console.log("formData", formData)
     const dd = listData?.Results
     console.log("dd", dd);
 
@@ -103,7 +103,7 @@ export default function FlightLists() {
             const checkbox = document.createElement('input');
 
             checkbox.type = 'checkbox';
-            checkbox.classList.add('airlineFilter' ,'largeCheckbox');
+            checkbox.classList.add('airlineFilter', 'largeCheckbox');
             checkbox.value = airlineNames;
             checkbox.id = `airlineNames${airlineNames}`;
             checkbox.addEventListener('change', applyFilters);
@@ -124,39 +124,42 @@ export default function FlightLists() {
         });
     };
 
+    const [selected, setselected] = useState([]);
+
     const applyFilters = () => {
-        const airlineFilters = document.querySelectorAll('.airlineFilter:checked');   
+        const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
         console.log("airlineFilters", airlineFilters)
-        const selected = Array.from(airlineFilters).map(filter => filter.value);
-        console.log("selected", selected)
+        const selectedAirlines = Array.from(airlineFilters).map(filter => filter.value);
+        console.log("selected", selectedAirlines)
+        setselected(selectedAirlines);
         const originalAirlineList = listData?.Results || []; // Ensure listData.Results is defined
 
         // Function to filter airlines based on selected names
-        const filterAirlines = (data, selected) => {
-            return data.filter(result =>
-                result.some(segmentArray =>
-                    segmentArray.Segments.some(segment =>
-                        segment.some(detail =>
-                            selected.includes(detail.Airline.AirlineName)
-                        )
-                    )
-                )
-            );
-        };
+        // const filterAirlines = (data, selectedAirlines) => {
+        //     return data.filter(result =>
+        //         result.some(segmentArray =>
+        //             segmentArray.Segments.some(segment =>
+        //                 segment.some(detail =>
+        //                     selectedAirlines.includes(detail.Airline.AirlineName)
+        //                 )
+        //             )
+        //         )
+        //     );
+        // };
 
-        const filteredAirlineList = filterAirlines(originalAirlineList, selected);
-        
-        console.log("Filtered Airline List:", filteredAirlineList);
+        // const filteredAirlineList = filterAirlines(originalAirlineList, selected);
+
+        // console.log("Filtered Airline List:", filteredAirlineList);
 
         displayTeachersPerPage(filteredTeachers, 1); // Display first page of filtered results
-        currentPage = 1; // Reset to first page
-        renderPagination(); // Update pagination
+        // currentPage = 1; // Reset to first page
+        // renderPagination(); // Update pagination
     };
 
     useEffect(() => {
         createSubjectCheckboxes();
-      }, []);
-    
+    }, []);
+
 
 
 
@@ -290,7 +293,7 @@ export default function FlightLists() {
         const resultIndex = localStorage.getItem('FlightResultIndex2');
         const srdvType = localStorage.getItem('FlightSrdvType');
         const srdvIndex = localStorage.getItem('FlightSrdvIndex2'); // Get SrdvIndex from local storage
-        
+
 
 
         if (!traceId || !resultIndex) {
@@ -323,9 +326,9 @@ export default function FlightLists() {
 
             if (data.Results && formData) {
                 navigate('/flight-Farequote', { state: { fareData: data.Results, formData: formData } });
-              } else {
+            } else {
                 console.error('data.Results or formData is undefined');
-              }
+            }
 
             // navigate('/flight-Farequote', { state: { fareData: data.Results , formData: formData } });
 
@@ -533,41 +536,86 @@ export default function FlightLists() {
                                     dd.map((flightSegments, index) => {
 
                                         return flightSegments.map((flight, segmentIndex) => {
-
+                                            console.log("flightSegments", flightSegments);
                                             return (
-                                                <div className="row" key={`${index}-${segmentIndex}`}>
-                                                    <div className="pricebtnsmobil">
-                                                        <p>{flight?.OfferedFare || "Unknown Airline"}</p>
-                                                        <button>SELECT</button>
-                                                    </div>
-                                                    <p className='regulrdeal'><span>Regular Deal</span></p>
+                                                <>{
+                                                    (
+                                                        selected.includes(flight?.Segments?.[0][0]?.Airline.AirlineName) || selected.length == 0
+                                                    )
+                                                    &&
+                                                    <div className="row" key={`${index}-${segmentIndex}`}>
+                                                        <div className="pricebtnsmobil">
+                                                            <p>{flight?.OfferedFare || "Unknown Airline"}</p>
+                                                            <button>SELECT</button>
+                                                        </div>
+                                                        <p className='regulrdeal'><span>Regular Deal</span></p>
 
-                                                    <div className="col-3">
-                                                        <div className="d-flex">
-                                                            <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
-                                                            <p>{flight?.Segments?.[0][0]?.Airline.AirlineName}</p><br></br>
+                                                        {/* {flight.Segments.map((segmentGroup, groupIndex) => {
+                                                            return segmentGroup.map((segmentOption, segmentOptionIndex) => {
+                                                                return (
+                                                                    <div key={`${index}-${segmentIndex}-${groupIndex}-${segmentOptionIndex}`}>
+
+                                                                        <div className="col-3">
+                                                                            <div className="d-flex">
+                                                                                <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
+                                                                                <p>{flight?.Segments?.[0][0]?.Airline.AirlineName}</p><br></br>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className="col-6">
+                                                                            <div className="flistname">
+                                                                                <p className="flistnamep1">{segmentOption.Origin.CityCode}</p>
+                                                                                <div>
+                                                                                    <p className="flistnamep2">{convertUTCToIST(segmentOption.DepTime)}</p>
+                                                                                    <p className="flistnamep4">{segmentOption.Origin.CityName}</p>
+                                                                                </div>
+                                                                                <p className="flistnamep3">{segmentOption.Duration}</p>
+                                                                                <div>
+                                                                                    <p className="flistnamep2">{convertUTCToIST(segmentOption.ArrTime)}</p>
+                                                                                    <p className="flistnamep4">{segmentOption.Destination.CityName}</p>
+                                                                                </div>
+                                                                                <p className="flistnamep5">{segmentOption.Destination.CityCode}</p>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                );
+                                                            });
+                                                        })} */}
+
+                                                        <div className="col-3">
+                                                            <div className="d-flex">
+                                                                <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
+                                                                <p>{flight?.Segments?.[0][0]?.Airline.AirlineName}</p><br></br>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-6">
+                                                            <div className="flistname">
+                                                                <p className="flistnamep1">{flight?.Segments?.[0][0]?.Origin.CityCode}</p>
+                                                                <div>
+                                                                    <p className="flistnamep2">{convertUTCToIST(flight?.Segments?.[0][0]?.DepTime)}</p>
+                                                                    <p className="flistnamep4">{flight?.Segments?.[0][0]?.Origin.CityName}</p>
+                                                                </div>
+                                                                <p className="flistnamep3">{flight?.Segments?.[0][0]?.Duration}</p>
+                                                                <div>
+                                                                    <p className="flistnamep2">{convertUTCToIST(flight?.Segments?.[0][0]?.ArrTime)}</p>
+                                                                    <p className="flistnamep4">{flight?.Segments?.[0][0]?.Destination.CityName}</p>
+                                                                </div>
+                                                                <p className="flistnamep5">{flight?.Segments?.[0][0]?.Destination.CityCode}</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-3 pricebtns">
+                                                            <div><p>₹{flight?.OfferedFare}</p></div>
+                                                            <div> <button onClick={fareQuoteHandler}>SELECT</button>     </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-6">
-                                                        <div className="flistname">
-                                                            <p className="flistnamep1">{flight?.Segments?.[0][0]?.Origin.CityCode}</p>
-                                                            <div>
-                                                                <p className="flistnamep2">{convertUTCToIST(flight?.Segments?.[0][0]?.DepTime)}</p>
-                                                                <p className="flistnamep4">{flight?.Segments?.[0][0]?.Origin.CityName}</p>
-                                                            </div>
-                                                            <p className="flistnamep3">{flight?.Segments?.[0][0]?.Duration}</p>
-                                                            <div>
-                                                                <p className="flistnamep2">{convertUTCToIST(flight?.Segments?.[0][0]?.ArrTime)}</p>
-                                                                <p className="flistnamep4">{flight?.Segments?.[0][0]?.Destination.CityName}</p>
-                                                            </div>
-                                                            <p className="flistnamep5">{flight?.Segments?.[0][0]?.Destination.CityCode}</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-3 pricebtns">
-                                                        <div><p>₹{flight?.OfferedFare}</p></div>
-                                                        <div> <button onClick={fareQuoteHandler}>SELECT</button>     </div>
-                                                    </div>
-                                                </div>
+
+                                                }
+
+                                                </>
                                             );
                                         });
                                     })
