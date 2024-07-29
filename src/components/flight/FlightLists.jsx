@@ -55,8 +55,118 @@ export default function FlightLists() {
 
     // console.log("airlines name", dd[0][0].Segments[0][0].Airline.AirlineName);
 
-    let originalAirlineList = [];
+ 
 
+    // --------------------------------filter-airlines-Logic-code-end -----------------------------------------
+   
+       let originalAirlineList = [];
+
+       // Function to extract all AirlineName values
+       const getAllAirlineNames = (data) => {
+           const airlineNames = [];
+           data.forEach(result => {
+               result.forEach(segmentArray => {
+                   segmentArray.Segments.forEach(segment => {
+                       segment.forEach(detail => {
+                           airlineNames.push(detail.Airline.AirlineName);
+                       });
+                   });
+               });
+           });
+   
+           return airlineNames;
+       };
+   
+   
+       const originalTeachersList = listData?.Results 
+       console.log("originalTeachersList", originalTeachersList);
+   
+       const airlineNames = getAllAirlineNames(dd);
+       console.log("All airlines names:", airlineNames);
+   
+       const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
+       console.log("uniqueAirlineNames", uniqueAirlineNames);
+   
+       const createAirlinesCheckboxes = () => {
+           const airlinesContainer = document.getElementById('airlineFilters');
+           airlinesContainer.innerHTML = ''; // Clear previous content
+   
+           const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
+   
+           uniqueAirlineNames.forEach(airlineNames => {
+               const div = document.createElement('div');
+   
+               const checkbox = document.createElement('input');
+   
+               checkbox.type = 'checkbox';
+               checkbox.classList.add('airlineFilter', 'largeCheckbox');
+               checkbox.value = airlineNames;
+               checkbox.id = `airlineNames${airlineNames}`;
+               checkbox.addEventListener('change', applyFilters);
+               const label = document.createElement('label');
+               label.setAttribute('for', `airlineNames${airlineNames}`);
+               label.textContent = airlineNames;
+               label.classList.add('largeLabel');
+   
+   
+               div.appendChild(label);
+               div.appendChild(checkbox);
+   
+               // airlinesContainer.appendChild(checkbox);
+               // airlinesContainer.appendChild(label);
+   
+               airlinesContainer.appendChild(div);
+               airlinesContainer.appendChild(document.createElement('br'));
+           });
+       };
+   
+       const applyFilters = () => {
+           const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
+           // const filteredTeachers = originalTeachersList.filter((teacher) => {
+           //     const subjectMatch = selected.length === 0 || selected.some(subject => teacher.subject.includes(subject));
+   
+           //     return subjectMatch;
+           // });
+   
+           console.log("airlineFilters", airlineFilters)
+           const selected = Array.from(airlineFilters).map(filter => filter.value);
+           console.log("selected", selected)
+   
+           const originalAirlineList = listData?.Results || []; // Ensure listData.Results is defined
+   
+           // Function to filter airlines based on selected names
+           const filterAirlines = (data, selected) => {
+               return data.filter(result =>
+                   result.some(segmentArray =>
+                       segmentArray.Segments.some(segment =>
+                           segment.some(detail =>
+                               selected.includes(detail.Airline.AirlineName)
+                           )
+                       )
+                   )
+               );
+           };
+   
+           const selectedAirlines = ["Airline1", "Airline2"]; // Example selected airline names
+           const filteredAirlineList = filterAirlines(originalAirlineList, selected);
+   
+           console.log("Filtered Airline List:", filteredAirlineList);
+   
+           displayTeachersPerPage(filteredTeachers, 1); // Display first page of filtered results
+           currentPage = 1; // Reset to first page
+           renderPagination(); // Update pagination
+       };
+   
+       useEffect(() => {
+           createAirlinesCheckboxes();
+       }, []);
+   
+       // console.log("airlines name", dd.Segments?.[0][0]?.Airline.AirlineName);
+   
+       // console.log("listData", listData)
+   
+   
+    // --------------------------------filter-airlines-Logic-code-start -----------------------------------------
 
     // Function to extract all AirlineName values
     const getAllAirlineNames = (data) => {
@@ -325,8 +435,12 @@ export default function FlightLists() {
             const data = await response.json();
             console.log('FareQuote API Response:', data);
 
-            navigate('/flight-Farequote', { state: { fareData: data.Results } });
-
+            if (data && data.Results) {
+                navigate('/flight-Farequote', { state: { fareData: data.Results } });
+              } else {
+                console.error('data.Results is undefined or null');
+              }
+              
         } catch (error) {
             console.error('Error calling the farequote API:', error);
         }

@@ -13,6 +13,7 @@ import BusLayout from './components/bus/BusLayout';
 import Home from './components/home/Home';
 import FlightLists from './components/flight/FlightLists';
 
+
 import BoardAndDrop from './components/bus/BoardAndDrop';
 import Faq from './pages/Faq/Faq';
 import Setting from './pages/setting/Setting ';
@@ -39,7 +40,6 @@ const App = () => {
   return (
     <div>
       <Router>
-        {/* Conditionally render Navbar and Footer */}
         {!noNavbarFooterRoutes.includes(window.location.pathname) && <CustomNavbar />}       
         <Routes>
           <Route path='/' element={<Home />} />
@@ -69,7 +69,6 @@ const App = () => {
           <Route path='/review' element={<Reviews />} />
           <Route path='/flight-Farequote' element={<FareQuote />} />
         </Routes>
-        {/* Conditionally render Footer */}
         {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />}  
         <ToastContainer
           position="top-right"
