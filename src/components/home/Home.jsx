@@ -17,10 +17,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 
 const Home = () => {
-
-  const fList = () => {
-    navigate("/flight-list");
-  }
   // State to keep track of the selected tab
   const [selectedTab, setSelectedTab] = useState('tab1');
   // Handler to change the selected tab
@@ -36,6 +32,7 @@ const Home = () => {
 
 
   const navigate = useNavigate();
+
   // ---------------------api-data-start-----------------------------
 
   const [from, setFrom] = useState('LKO');
@@ -52,7 +49,7 @@ const Home = () => {
     try {
       const response = await fetch(`https://srninfotech.com/projects/travel-app/api/bus_list?query=${query}`);
       const data = await response.json();
-      console.log('API Response:', data);
+      // console.log('API Response:', data);
       const filteredSuggestions = data.data.filter(suggestion =>
         suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
       );
@@ -66,6 +63,7 @@ const Home = () => {
 
   const handleFromChange = (event) => {
     const value = event.target.value;
+    console.log("vvvvvvalue", value)
     setFrom(value);
     if (value.length > 2) {
       fetchSuggestions(value, setFromSuggestions);
@@ -92,7 +90,12 @@ const Home = () => {
 
   const handleFromSelect = (suggestion) => {
     handleSuggestionClick(suggestion, setFrom);
+    // console.log("sugesssss", suggestion.busodma_destination_name)
     setFromSuggestions([]);
+
+    let updatedSegments = formData.Segments;
+    updatedSegments[0]["Origin"] = suggestion.busodma_destination_name;
+    setFormData((prev) => ({ ...prev, Segments: updatedSegments }));
   };
 
   // --------------------------end-----------------
@@ -102,7 +105,7 @@ const Home = () => {
   const [selectedflightClass, setSelectedflightClass] = useState('Economy');
 
   const handleToSelect = (suggestion) => {
-    console.log("suggestion", suggestion);
+    // console.log("suggestion", suggestion);
     handleSuggestionClick(suggestion, setTo);
     setToSuggestions([]);
   };
@@ -112,21 +115,32 @@ const Home = () => {
 
 
 
-  // api for search button for send the formdata
 
   const [formData, setFormData] = useState({
     AdultCount: 1,
     ChildCount: 0,
     InfantCount: 0,
-    JourneyType: 1,
+    JourneyType: "1",
     FareType: 1,
-    Segments: [{ "Origin": "LKO", "Destination": "KWI", "FlightCabinClass": "1", "PreferredDepartureTime": "2024-07-10T00:00:00", "PreferredArrivalTime": "2024-07-10T00:00:00" }]
+    Segments: [
+      {
+        Origin: "LKO",
+        Destination: "KWI",
+        FlightCabinClass: 1,
+        PreferredDepartureTime: "2024-07-28T00:00:00",
+        PreferredArrivalTime: "2024-07-28T00:00:00"
+      }
+    ]
   });
 
-  // api integration for search flights
+    // console.log("traveler",formData.AdultCount + formData.ChildCount + formData.InfantCount)
+
+  const [travellr, settravellr] = useState();
+
+
   const getFlightList = async () => {
     try {
-      const response = await fetch('https://srninfotech.com/projects/travel-app/api/flight-search', {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,24 +148,35 @@ const Home = () => {
         body: JSON.stringify(formData),
       });
 
-
       const data = await response.json();
-      console.log("data", data);
-      navigate("/flightList", { state: data });
+      console.log("hello", data);
+      
+
+        // Save TraceId to local storage with the key "FlightTraceId2"
+        if (data.TraceId) {
+          localStorage.setItem("FlightTraceId2", data.TraceId);
+          console.log("Saved TraceId to local storage:", data.TraceId); // Log TraceId
+      }
+
+      if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.ResultIndex) {
+        const resultIndex = data.Results[0][0].FareDataMultiple[0].ResultIndex;
+        localStorage.setItem("FlightResultIndex2", resultIndex);
+        console.log("Saved ResultIndex to local storage:", resultIndex);
+    } else {
+        console.log("ResultIndex not found");
+    }
+      navigate("/flight-list", { state: { data: data, formData: formData } });
     }
     catch (error) {
       console.error('Error fetching suggestions:', error);
     }
   }
 
-
-  // function for select date send to formData
   const handleChange = (date, key) => {
     setPreferredDepartureTime(date);
     setPreferredDepartureTime(date);
-    console.log("date", date);
+    // console.log("date", date);
 
-    // Format the date to 'YYYY-MM-DDTHH:mm:ss'
     const formattedDate = new Date(date).toISOString().split('.')[0];
 
     let updatedSegments = formData.Segments;
@@ -160,11 +185,10 @@ const Home = () => {
   };
 
 
-  // function for adult, child, infants increment decrement select these values and send to formData 
   const handleCount = (key, name) => {
     console.log("called", key, name)
     if (key == "increment") {
-      console.log("called2");
+      // console.log("called2");
       setFormData((prev) => ({ ...prev, [name]: formData[name] + 1 }));
     } else if (key == "decrement") {
       if (formData[name] > 0) {
@@ -174,11 +198,7 @@ const Home = () => {
   }
 
 
-  console.log("formData", formData);
-
-  // function for select flight class value and send to fromdata 
-  // State selected flight class
-  // const [selectedflightClass, setSelectedflightClass] = useState('Economy');
+  // console.log("formData", formData);
 
   const handleflightClassChange = (event) => {
     setSelectedflightClass(event.target.value);
@@ -186,13 +206,11 @@ const Home = () => {
   };
 
 
-  // function for tab oneway
   const [activeTab, setActiveTab] = useState('oneway');
 
   const handleTabChange = (event) => {
     setActiveTab(event.target.value);
   };
-
 
   return (
     <>
