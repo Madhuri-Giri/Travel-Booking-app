@@ -5,11 +5,7 @@
           justify-content: center;
           flex-direction: column;
 }
-.PassangerInfo img{
-      width: 100%;
-     
-}
-/* .PassangerInfo h5{
+.PassangerInfo h5{
           width: 100%; 
           font-weight: 600;   
           font-size: 1.4vmax; 
@@ -20,13 +16,13 @@
 .PassangerInfo h5 i{
           margin-right: 1vmax;
           font-weight: lighter;
-} */
+}
 .PassangerInfo .passanger{
           width: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
-/* background-color: rgba(230, 248, 255, 0.452); */
+background-color: rgba(230, 248, 255, 0.452);
           flex-direction: column;
 }
 .PassangerInfo .passanger h6{
@@ -81,7 +77,6 @@
            justify-content: space-evenly;
            flex-direction: column;
            margin-bottom: 2vmax;
-
  }
  .pessanger-main form .p-top{
           width: 100%;
@@ -94,12 +89,9 @@
  .pessanger-main form .p-top h6{
      font-weight: 700;
      width: 100%;
-     background: #0a223d;
-     padding: 1vmax;
      display: flex;
      align-items: center;
      text-align: center;
-     color: #fff;
 }
  .pessanger-main form .p-top .pas{
           width: 100%;
