@@ -86,6 +86,24 @@ const BoardAndDrop = () => {
     navigate('/bus-list')
   }
 
+
+    // Function to convert UTC date string to IST
+    const convertToIST = (dateString) => {
+      const date = new Date(dateString);
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      };
+      return date.toLocaleString('en-IN', options);
+    };
+
+
+
   return (
 
     <>
@@ -115,7 +133,7 @@ const BoardAndDrop = () => {
               {boardingPoints.map(point => (
                 <div key={point.CityPointIndex} className="bord-last">
                   <div className="bd-one">
-                    <span>{point.CityPointTime}</span>
+                    <span>{convertToIST(point.CityPointTime)}</span>
                     <span>{point.CityPointName}</span>
                   </div>
                   <div className="bd-one">
@@ -141,7 +159,7 @@ const BoardAndDrop = () => {
               {droppingPoints.map(point => (
                 <div key={point.CityPointIndex} className="bord-last">
                   <div className="bd-one">
-                    <span>{point.CityPointTime}</span>
+                    <span>{convertToIST(point.CityPointTime)}</span>
                     <span>{point.CityPointName}</span>
                   </div>
                   <div className="bd-one">
