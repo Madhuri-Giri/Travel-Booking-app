@@ -77,7 +77,7 @@ export default function FlightLists() {
        };
    
    
-       const originalTeachersList = listData?.Results
+       const originalTeachersList = listData?.Results 
        console.log("originalTeachersList", originalTeachersList);
    
        const airlineNames = getAllAirlineNames(dd);
@@ -292,8 +292,12 @@ export default function FlightLists() {
             const data = await response.json();
             console.log('FareQuote API Response:', data);
 
-            navigate('/flight-Farequote', { state: { fareData: data.Results } });
-
+            if (data && data.Results) {
+                navigate('/flight-Farequote', { state: { fareData: data.Results } });
+              } else {
+                console.error('data.Results is undefined or null');
+              }
+              
         } catch (error) {
             console.error('Error calling the farequote API:', error);
         }
