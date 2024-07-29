@@ -211,12 +211,8 @@
     text-align: center;
     padding: 10px 15px;
 }
-.flightstopaccordian  div{
-    border: 1px solid gray;
-    padding: 6px;
-    height: 10px;
-    width: 10px;
-    margin: auto;
+.flightstopaccordian  input{
+    font-size: 20px;
 }
  
 .flightstopaccordian p{
