@@ -271,11 +271,17 @@
 }
 .fligthTravellerDethedBox h5{
     margin-bottom: 25px;
+    color: #00b7eb;
+    font-weight: bold;
 }
+
 .fligthTravellerDethedBox .row{
     border: 1px solid rgba(220, 220, 220, 0.486);
     padding: 20px 10px;
     border-radius: 10px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 .fligthTravellerDethedBox label{
     margin-bottom: 18px;
@@ -286,7 +292,7 @@
     font-size: 17px;
 }
 .formdettlsDesk{
-    background: #f3efef;
+    /* background: #f3efef; */
     padding: 15px 11px;
     box-shadow: 2px 1px 4px 3px #80808073;
 }
@@ -352,6 +358,9 @@
     display: flex;
     justify-content: space-between;
     margin-top: 50px;
+}
+.lastBtnssContinue h5{
+    color: black;
 }
 .lastBtnssContinue h5 span{
     color: #00e100;
@@ -438,6 +447,15 @@
     .fligthPriceDetailsss{
         display: none;
     }    
+   
+}
+@media screen and (max-width: 768px) {
+    .formConfbtn {
+        display: flex;
+        justify-content: start;
+        align-items: flex-start;
+        margin-top: 14px;
+    }  
    
 }
 @media screen and (max-width: 576px) {

@@ -83,7 +83,7 @@ export default function FlightDetails() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [formDetails, setFormDetails] = useState([]);
-    // const [error, setError] = useState('');
+    const [error, setError] = useState('');
     const [showTabs, setShowTabs] = useState(false);
     const [activeTab, setActiveTab] = useState('Seats');
 
@@ -106,53 +106,42 @@ export default function FlightDetails() {
         setLastName(e.target.value);
     };
 
-    // const handleConfirm = (e) => {
-    //     e.preventDefault();
-    //     if (gender && firstName && lastName) {
-    //         const newDetail = { gender, firstName, lastName, selected: false };
-    //         setFormDetails([newDetail]);
-    //         setGender('');
-    //         setFirstName('');
-    //         setLastName('');
-    //         setError('');
-    //     } else {
-    //         setError('Please fill out all fields.');
-    //     }
-    // };
+    const handleConfirm = (e) => {
+        e.preventDefault();
+        if (gender && firstName && lastName) {
+            const newDetail = { gender, firstName, lastName, selected: false };
+            setFormDetails([newDetail]);
+            setGender('');
+            setFirstName('');
+            setLastName('');
+            setError('');
+        } else {
+            setError('Please fill out all fields.');
+        }
+    };
 
-    // const handleDelete = () => {
-    //     setFormDetails([]);
-    // };
+    const handleDelete = () => {
+        setFormDetails([]);
+    };
 
-    // const toggleSelect = (index) => {
-    //     setFormDetails(
-    //         formDetails.map((detail, i) =>
-    //             i === index ? { ...detail, selected: !detail.selected } : detail
-    //         )
-    //     );
-    // };
-
-
+    const toggleSelect = (index) => {
+        setFormDetails(
+            formDetails.map((detail, i) =>
+                i === index ? { ...detail, selected: !detail.selected } : detail
+            )
+        );
+    };
 
 
 
 
-    // -------------------newwwww------------
     const [adultCount, setAdultCount] = useState(formData.AdultCount);
     const [childCount, setChildCount] = useState(formData.ChildCount);
     const [infantCount, setInfantCount] = useState(formData.InfantCount);
 
-    const [adultDetails, setAdultDetails] = useState(Array(adultCount).fill({ gender: '', firstName: '', lastName: '' }));
-    const [childDetails, setChildDetails] = useState(Array(childCount).fill({ gender: '', firstName: '', lastName: '' }));
-    const [infantDetails, setInfantDetails] = useState(Array(infantCount).fill({ gender: '', firstName: '', lastName: '' }));
-
-    const [confirmedAdultDetails, setConfirmedAdultDetails] = useState([]);
-    const [confirmedChildDetails, setConfirmedChildDetails] = useState([]);
-    const [confirmedInfantDetails, setConfirmedInfantDetails] = useState([]);
-
-    const [error, setError] = useState('');
-
-
+    const [adultDetails, setAdultDetails] = useState([]);
+    const [childDetails, setChildDetails] = useState([]);
+    const [infantDetails, setInfantDetails] = useState([]);
 
     const handleInputChange = (e, index, type, field) => {
         const { value } = e.target;
@@ -180,53 +169,12 @@ export default function FlightDetails() {
         }
     };
 
-
-    const handleConfirm = (e, index, type) => {
-        e.preventDefault();
-        let details;
-
-        if (type === 'adult') {
-            details = [...adultDetails];
-        } else if (type === 'child') {
-            details = [...childDetails];
-        } else if (type === 'infant') {
-            details = [...infantDetails];
-        }
-
-        const { gender, firstName, lastName } = details[index];
-        if (gender && firstName && lastName) {
-            setError('');
-            if (type === 'adult') {
-                setConfirmedAdultDetails([...confirmedAdultDetails, details[index]]);
-            } else if (type === 'child') {
-                setConfirmedChildDetails([...confirmedChildDetails, details[index]]);
-            } else if (type === 'infant') {
-                setConfirmedInfantDetails([...confirmedInfantDetails, details[index]]);
-            }
-        } else {
-            setError(`Please fill out all fields for ${type} ${index + 1}.`);
-        }
-    };
-
-    const handleDelete = (type, index) => {
-        if (type === 'adult') {
-            setConfirmedAdultDetails(confirmedAdultDetails.filter((_, i) => i !== index));
-        } else if (type === 'child') {
-            setConfirmedChildDetails(confirmedChildDetails.filter((_, i) => i !== index));
-        } else if (type === 'infant') {
-            setConfirmedInfantDetails(confirmedInfantDetails.filter((_, i) => i !== index));
-        }
-    };
-
-
-
-
     const renderFormFields = (count, type) => {
         const details = type === 'adult' ? adultDetails : type === 'child' ? childDetails : infantDetails;
 
         return Array.from({ length: count }, (_, index) => (
             <div key={`${type}-${index}`} className="row userFormFill">
-                <div className="col-md-3 ">
+                <div className="col-lg-3 col-md-6">
                     <label>Gender:</label>
                     <div className="form-group genderFormGrp">
                         <div className="form-check form-check-inline">
@@ -255,7 +203,7 @@ export default function FlightDetails() {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-3 ">
+                <div className="col-lg-3 col-md-6">
                     <div className="form-group">
                         <label htmlFor={`firstName-${type}-${index}`}>First Name</label>
                         <input
@@ -269,7 +217,7 @@ export default function FlightDetails() {
                         />
                     </div>
                 </div>
-                <div className="col-md-3 ">
+                <div className="col-lg-3 col-md-6">
                     <div className="form-group">
                         <label htmlFor={`lastName-${type}-${index}`}>Last Name</label>
                         <input
@@ -283,67 +231,10 @@ export default function FlightDetails() {
                         />
                     </div>
                 </div>
-                <div className="col-md-3 ">
-                    <div className="form-group formConfbtn">
-                        <button className="btn btn-primary mt-4" onClick={(e) => handleConfirm(e, index, type)}>
-                            Confirm
-                        </button>
-                    </div>
-                </div>
             </div>
         ));
     };
 
-    const renderConfirmedDetails = (details, type) => (
-        <div className="mt-4 col-md-6 formdettlsDesk" style={{ display: details.length > 0 ? 'block' : 'none' }}>
-            {details.map((detail, index) => (
-                <div key={index} className="d-flex align-items-center mb-2">
-                    <div className="flex-grow-1 formdettlsDeskdiv ml-2">
-                        <input
-                            type="checkbox"
-                            className="form-check-input selectDetInp"
-                            checked={detail.selected}
-                            onChange={() => toggleSelect(index, type)}
-                        />
-                        <div className="formdettlsDeskdivnmGen">
-                            <div>
-                                <strong>Gender:</strong> <span>{detail.gender}</span>
-                            </div>
-                            <div>
-                                <strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span>
-                            </div>
-                        </div>
-                        <div>
-                            <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete(type, index)} />
-                        </div>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-
-    const toggleSelect = (index, type) => {
-        if (type === 'adult') {
-            setConfirmedAdultDetails(
-                confirmedAdultDetails.map((detail, i) =>
-                    i === index ? { ...detail, selected: !detail.selected } : detail
-                )
-            );
-        } else if (type === 'child') {
-            setConfirmedChildDetails(
-                confirmedChildDetails.map((detail, i) =>
-                    i === index ? { ...detail, selected: !detail.selected } : detail
-                )
-            );
-        } else if (type === 'infant') {
-            setConfirmedInfantDetails(
-                confirmedInfantDetails.map((detail, i) =>
-                    i === index ? { ...detail, selected: !detail.selected } : detail
-                )
-            );
-        }
-    };
-    // -------------newwwwwwwwwwwwwwwww---------------
 
     // ----------------------logic for forms---------------------------------------
 
@@ -1554,9 +1445,9 @@ export default function FlightDetails() {
                     <div className="row">
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <TiPlane className="mt-1" />
-                            <p> {formData.Segments[0].Origin} </p>
+                            <p>New Delhi <span>(DEL) </span> </p>
                             <p>-</p>
-                            <p>{formData.Segments[0].Destination} </p>
+                            <p>Banglore <span>(BLR)</span></p>
                         </div>
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaCalendarAlt className="mt-1" />
@@ -1564,7 +1455,7 @@ export default function FlightDetails() {
                         </div>
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaUser className="mt-1" />
-                            <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
+                            <p>1 <span>Traveller , Economy</span></p>
                         </div>
                     </div>
                 </div>
@@ -1667,33 +1558,25 @@ export default function FlightDetails() {
                                 <div className="col-12">
                                     <div className="fligthTravellerDethedBox">
                                         <form>
+                                            <h5>Adult 1</h5>
                                             <div className="row userFormFill">
-                                                {adultCount > 0 && (
-                                                    <>
-                                                        <h5>Adults {adultCount}</h5>
-                                                        {renderFormFields(adultCount, 'adult')}
-                                                        {renderConfirmedDetails(confirmedAdultDetails, 'adult')}
-                                                    </>
-                                                )}
-                                                {childCount > 0 && (
-                                                    <>
-                                                        <h5>Children {childCount}</h5>
-                                                        {renderFormFields(childCount, 'child')}
-                                                        {renderConfirmedDetails(confirmedChildDetails, 'child')}
-                                                    </>
-                                                )}
-                                                {infantCount > 0 && (
-                                                    <>
-                                                        <h5>Infants {infantCount}</h5>
-                                                        {renderFormFields(infantCount, 'infant')}
-                                                        {renderConfirmedDetails(confirmedInfantDetails, 'infant')}
-                                                    </>
-                                                )}
+                                                {renderFormFields(adultCount, 'adult')}
+                                                <h5>Children</h5>
+                                                {renderFormFields(childCount, 'child')}
+                                                <h5>Infants</h5>
+                                                {renderFormFields(infantCount, 'infant')}
+                                                <div className="col-lg-3 col-md-6">
+                                                    <div className="form-group formConfbtn">
+                                                        <button className="btn btn-primary mt-4" onClick={handleConfirm}>
+                                                            Confirm
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             {error && <div className="text-danger mt-2">{error}</div>}
 
-                                            {/* {formDetails.length > 0 && (
+                                            {formDetails.length > 0 && (
                                                 <div className="mt-4 col-md-6 formdettlsDesk">
                                                     {formDetails.map((detail, index) => (
                                                         <div key={index} className="d-flex align-items-center mb-2">
@@ -1720,11 +1603,8 @@ export default function FlightDetails() {
                                                         </div>
                                                     ))}
                                                 </div>
-                                            )} */}
+                                            )}
 
-
-
-                                            {/* code for tabs seat meals--------- */}
                                             <div className="col-md-4 mt-4">
                                                 <div className="selectSeatMealDivBtn" onClick={() => setShowTabs(!showTabs)}>
                                                     Add Seats, Meals, Baggage & more
