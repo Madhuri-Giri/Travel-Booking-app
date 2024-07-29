@@ -125,17 +125,10 @@ export default function FlightLists() {
     };
 
     const applyFilters = () => {
-        const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
-        // const filteredTeachers = originalTeachersList.filter((teacher) => {
-        //     const subjectMatch = selected.length === 0 || selected.some(subject => teacher.subject.includes(subject));
-
-        //     return subjectMatch;
-        // });
-
+        const airlineFilters = document.querySelectorAll('.airlineFilter:checked');   
         console.log("airlineFilters", airlineFilters)
         const selected = Array.from(airlineFilters).map(filter => filter.value);
         console.log("selected", selected)
-
         const originalAirlineList = listData?.Results || []; // Ensure listData.Results is defined
 
         // Function to filter airlines based on selected names
@@ -151,7 +144,6 @@ export default function FlightLists() {
             );
         };
 
-        const selectedAirlines = ["Airline1", "Airline2"]; // Example selected airline names
         const filteredAirlineList = filterAirlines(originalAirlineList, selected);
         
         console.log("Filtered Airline List:", filteredAirlineList);
@@ -574,9 +566,6 @@ export default function FlightLists() {
                                 )}
                             </div>
                         </div>
-
-
-
                     </div>
                 </div>
             </div>
