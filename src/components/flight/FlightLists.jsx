@@ -49,9 +49,9 @@ export default function FlightLists() {
 
     const listData = location.state.data
     const formData = location.state.formData
-    // console.log("Origin", formData.Segments[0]["Origin"])
+    console.log("formData",formData)
     const dd = listData?.Results
-    // console.log("dd", dd);
+    console.log("dd", dd);
 
     // console.log("airlines name", dd[0][0].Segments[0][0].Airline.AirlineName);
 
@@ -321,7 +321,13 @@ export default function FlightLists() {
             const data = await response.json();
             console.log('FareQuote API Response:', data);
 
-            navigate('/flight-Farequote', { state: { fareData: data.Results } });
+            if (data.Results && formData) {
+                navigate('/flight-Farequote', { state: { fareData: data.Results, formData: formData } });
+              } else {
+                console.error('data.Results or formData is undefined');
+              }
+
+            // navigate('/flight-Farequote', { state: { fareData: data.Results , formData: formData } });
 
         } catch (error) {
             console.error('Error calling the farequote API:', error);
@@ -341,9 +347,9 @@ export default function FlightLists() {
                     <div className="row">
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <TiPlane className="mt-1" />
-                            <p>New Delhi <span>(DEL) </span> </p>
+                            <p> {formData.Segments[0].Origin} </p>
                             <p>-</p>
-                            <p>Banglore <span>(BLR)</span></p>
+                            <p>{formData.Segments[0].Destination} </p>
                         </div>
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaCalendarAlt className="mt-1" />
@@ -351,7 +357,7 @@ export default function FlightLists() {
                         </div>
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaUser className="mt-1" />
-                            <p>1 <span>Traveller , Economy</span></p>
+                            <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
                         </div>
                     </div>
                 </div>
