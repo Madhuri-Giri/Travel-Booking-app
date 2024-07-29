@@ -164,7 +164,7 @@ const FlightSearch = () => {
       if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.ResultIndex) {
         const resultIndex = data.Results[0][0].FareDataMultiple[0].ResultIndex;
         localStorage.setItem("FlightResultIndex2", resultIndex);
-        console.log("Saved ResultIndex to local storage:", resultIndex);
+         console.log("Saved ResultIndex to local storage:", resultIndex);
     } else {
         console.log("ResultIndex not found");
     }

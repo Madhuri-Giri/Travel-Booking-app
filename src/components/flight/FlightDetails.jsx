@@ -11,9 +11,56 @@ import { FaTrash } from 'react-icons/fa';
 
 export default function FlightDetails() {
 
-    const location = useLocation();
-    const fareDataDetails = location.state?.fareData;
-    console.log("fareDataDetails", fareDataDetails)
+//   ----------------------------------------------------
+
+const location = useLocation();
+const [fareDataDetails, setFareDataDetails] = useState(location.state);
+
+useEffect(() => {
+  // Check if fareDataDetails is available in state
+  if (location.state) {
+    setFareDataDetails(location.state);
+    // Save to local storage
+    localStorage.setItem('fareDataDetails', JSON.stringify(location.state));
+  } else {
+    // Retrieve from local storage if state is undefined
+    const savedFareData = localStorage.getItem('fareDataDetails');
+    if (savedFareData) {
+      setFareDataDetails(JSON.parse(savedFareData));
+    }
+  }
+}, [location.state]);
+
+useEffect(() => {
+  console.log("fareDataDetails", fareDataDetails);
+  if (!fareDataDetails) {
+    console.error('fareDataDetails is undefined');
+  }
+}, [fareDataDetails]);
+
+
+const segment = fareDataDetails.Segments[0][0]; // Assuming you're taking the first segment for display
+const origin = segment.Origin;
+const destination = segment.Destination;
+const airline = segment.Airline;
+const depTime = new Date(segment.DepTime);
+const arrTime = new Date(segment.ArrTime);
+
+const fare = fareDataDetails.Fare; // Get the fare data
+const baseFare = fare.BaseFare;
+const tax = fare.Tax;
+const totalFare = baseFare + tax;
+
+const formatTime = (date) => {
+  return `${date.getHours()}:${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
+};
+
+const formatDate = (date) => {
+  const options = { weekday: 'short', month: 'short', day: 'numeric' };
+  return date.toLocaleDateString(undefined, options);
+};
+
+//   -----------------------------------------------------
 
 
 
@@ -81,23 +128,23 @@ export default function FlightDetails() {
                     <div className="row flighttTabContent">
                         <div className="col-md-3 col-sm-6 flighttTabContentCol1">
                             <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
-                            <p>Indigo Air</p>
+                            <p>{airline.AirlineName}</p>
                         </div>
                         <div className="col-md-3 col-sm-6 flighttTabContentCol2">
-                            <p className="flighttTabContentCol2p1">Mumbai</p>
-                            <h5>00:25</h5>
-                            <p className="flighttTabContentCol2p2">Tue,July23</p>
-                            <p className="flighttTabContentCol2p3">Chhatrapati Shivaji International Airport</p>
+                            <p className="flighttTabContentCol2p1">{origin.CityName}</p>
+                            <h5>{formatTime(depTime)}</h5>
+                            <p className="flighttTabContentCol2p2">{formatDate(depTime)}</p>
+                            <p className="flighttTabContentCol2p3">{origin.AirportName}</p>
                         </div>
                         <div className="col-md-3 col-sm-6 flighttTabContentCol3">
-                            <p>02h 10m</p>
-                            <p>Economy</p>
+                            <p>{segment.Duration}m</p>
+                            <p>{segment.CabinClassName}</p>
                         </div>
                         <div className="col-md-3 col-sm-6 flighttTabContentCol4">
-                            <p className="flighttTabContentCol2p1">New Delhi</p>
-                            <h5>22:15</h5>
-                            <p className="flighttTabContentCol2p2">Tue,July23</p>
-                            <p className="flighttTabContentCol2p3">Indira Gandhi International Airport</p>
+                            <p className="flighttTabContentCol2p1">{destination.CityName}</p>
+                            <h5>{formatTime(arrTime)}</h5>
+                            <p className="flighttTabContentCol2p2">{formatDate(arrTime)}</p>
+                            <p className="flighttTabContentCol2p3">{destination.AirportName}</p>
                         </div>
 
                     </div>
@@ -117,10 +164,10 @@ export default function FlightDetails() {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Airline 1</td>
+                                        <td>{airline.AirlineCode}</td>
                                         <td>Adult</td>
-                                        <td>01 Bag of 15 kg</td>
-                                        <td>7 kg</td>
+                                        <td>{segment.Baggage}</td>
+                                        <td>{segment.CabinBaggage}</td>
                                     </tr>
 
                                 </tbody>
@@ -147,15 +194,15 @@ export default function FlightDetails() {
                                 <tbody>
                                     <tr>
                                         <td>1 Adult</td>
-                                        <td style={{ textAlign: 'end' }}>₹3665</td>
-                                        <td style={{ textAlign: 'end' }}>₹551</td>
-                                        <td style={{ textAlign: 'end' }}>₹4216</td>
+                                        <td style={{ textAlign: 'end' }}>₹{baseFare.toFixed(2)}</td>
+                                        <td style={{ textAlign: 'end' }}>₹{tax.toFixed(2)}</td>
+                                        <td style={{ textAlign: 'end' }}>₹{totalFare.toFixed(2)}</td>
                                     </tr>
                                     <tr>
                                         <td style={{ fontWeight: 'bold' }}>Total</td>
                                         <td></td>
                                         <td></td>
-                                        <td style={{ textAlign: 'end' }}>₹4216</td>
+                                        <td style={{ textAlign: 'end' }}>₹{totalFare.toFixed(2)}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1319,8 +1366,8 @@ export default function FlightDetails() {
                                         <div className="fligthReviewBoxHed">
                                             <div className="col-8 mt-3 fligthReviewBoxHedText">
                                                 <MdOutlineFlightTakeoff />
-                                                <h6>DEL - BOM</h6>
-                                                <p>02h 10m</p>
+                                                <h6>{origin.CityName} - {destination.CityName}</h6>
+                                                <p>{segment.Duration}m</p>
                                             </div>
                                             <div className="col-4 fligthReviewBoxHedbttn">
                                                 <button>Regular Deal</button>
