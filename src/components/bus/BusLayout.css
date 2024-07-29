@@ -105,6 +105,7 @@
   justify-content: center;
   border: 1px solid #9999;
   flex-wrap: wrap;
+
   gap: 0.5vmax;
   /* Reduced gap */
 }

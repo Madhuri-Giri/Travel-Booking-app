@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import "./PassangerInfo.css";
 import { useNavigate } from 'react-router-dom';
+import addImg from "../../assets/images/busPassngerIng.png"
 
 const PassangerInfo = () => {
   const initialFormData = {
@@ -184,18 +185,19 @@ const PassangerInfo = () => {
 
   return (
     <div className='PassangerInfo'>
-      <h5> 
+      <img src={addImg} alt="" />
+      {/* <h5> 
         <i style={{ cursor: "pointer" }} onClick={backHandlerList} className="ri-arrow-left-s-line"></i>
         Passenger Information
-      </h5>
+      </h5> */}
       <div className="passanger">
-        <h6>Add Passengers</h6>
+        <h6 style={{fontSize:"2vmax"}}>Add Passengers</h6>
         <p>SELECTED SEATS: <span>{selectedSeats.join(', ')}</span></p>
 
-        <div className="p-detail">
+        {/* <div className="p-detail">
           <h6>Passengers Details</h6>
           <p>/ 1 Seat Selected</p>
-        </div>
+        </div> */}
         <div className="pessanger-main">
           <form onSubmit={blockHandler}>
             <div className="p-top">
