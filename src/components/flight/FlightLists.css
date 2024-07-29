@@ -175,6 +175,17 @@
     border-radius: 20px;
     margin-top: 50px;
 }
+#airlineFilters div{
+    display: flex;
+    justify-content: space-between;
+}
+#airlineFilters .largeCheckbox {
+    transform: scale(1.5); /* Increase size of checkbox */
+}
+#airlineFilters .largeLabel  {
+    font-size: 18px; /* Increase font size of label */
+}
+
 .flightlistaccordian button{
     background-color:#dddddd91;
     border-radius: 15px;
