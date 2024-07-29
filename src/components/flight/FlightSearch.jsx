@@ -130,8 +130,8 @@ const FlightSearch = () => {
         Origin: "LKO",
         Destination: "KWI",
         FlightCabinClass: 1,
-        PreferredDepartureTime: "2024-07-28T00:00:00",
-        PreferredArrivalTime: "2024-07-28T00:00:00"
+        PreferredDepartureTime: "2024-08-12T00:00:00",
+        PreferredArrivalTime: "2024-08-15T00:00:00"
       }
     ]
   });
