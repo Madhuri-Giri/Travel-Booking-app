@@ -34,10 +34,9 @@ export default function FlightLists() {
         setPrice(event.target.value);
     };
 
-
     const location = useLocation();
-
     const [flightListData, setFlightListData] = useState('');
+
     const [flightData, setFlightData] = useState([]);
     const sliderRef = useRef(null);
     useEffect(() => {
@@ -47,149 +46,22 @@ export default function FlightLists() {
     }, [location.state])
     // console.log("FullData", location.state)
     // console.log("FlightlistData", flightListData)
+
     const listData = location.state.data
     const formData = location.state.formData
-
     // console.log("Origin", formData.Segments[0]["Origin"])
-    // const dd = listData?.Results
-
+    const dd = listData?.Results
     // console.log("dd", dd);
+
     // console.log("airlines name", dd[0][0].Segments[0][0].Airline.AirlineName);
 
-
-    // ------------------------------------------------filter airlines Logic--------------------------------
-
-    const [filteredFlightData, setFilteredFlightData] = useState([]);
-    const [uniqueAirlineNames, setUniqueAirlineNames] = useState([]);
-    const [selectedAirlines, setSelectedAirlines] = useState([]);
-    const [originalFlightData, setOriginalFlightData] = useState([]);
-    const dd = filteredFlightData
+    let originalAirlineList = [];
 
 
-    useEffect(() => {
-        if (location.state && location.state.data) {
-            const flightList = location.state.data.Results;
-            setOriginalFlightData(flightList);
-            setFilteredFlightData(flightList);
-            const airlineNames = getAllAirlineNames(flightList);
-            setUniqueAirlineNames([...new Set(airlineNames)]);
-        }
-    }, [location.state]);
- 
-
-    // --------------------------------filter-airlines-Logic-code-end -----------------------------------------
-   
-       let originalAirlineList = [];
-
-       // Function to extract all AirlineName values
-       const getAllAirlineNames = (data) => {
-           const airlineNames = [];
-           data.forEach(result => {
-               result.forEach(segmentArray => {
-                   segmentArray.Segments.forEach(segment => {
-                       segment.forEach(detail => {
-                           airlineNames.push(detail.Airline.AirlineName);
-                       });
-                   });
-               });
-           });
-   
-           return airlineNames;
-       };
-   
-   
-       const originalTeachersList = listData?.Results 
-       console.log("originalTeachersList", originalTeachersList);
-   
-       const airlineNames = getAllAirlineNames(dd);
-       console.log("All airlines names:", airlineNames);
-   
-       const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
-       console.log("uniqueAirlineNames", uniqueAirlineNames);
-   
-       const createAirlinesCheckboxes = () => {
-           const airlinesContainer = document.getElementById('airlineFilters');
-           airlinesContainer.innerHTML = ''; // Clear previous content
-   
-           const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
-   
-           uniqueAirlineNames.forEach(airlineNames => {
-               const div = document.createElement('div');
-   
-               const checkbox = document.createElement('input');
-   
-               checkbox.type = 'checkbox';
-               checkbox.classList.add('airlineFilter', 'largeCheckbox');
-               checkbox.value = airlineNames;
-               checkbox.id = `airlineNames${airlineNames}`;
-               checkbox.addEventListener('change', applyFilters);
-               const label = document.createElement('label');
-               label.setAttribute('for', `airlineNames${airlineNames}`);
-               label.textContent = airlineNames;
-               label.classList.add('largeLabel');
-   
-   
-               div.appendChild(label);
-               div.appendChild(checkbox);
-   
-               // airlinesContainer.appendChild(checkbox);
-               // airlinesContainer.appendChild(label);
-   
-               airlinesContainer.appendChild(div);
-               airlinesContainer.appendChild(document.createElement('br'));
-           });
-       };
-   
-       const applyFilters = () => {
-           const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
-           // const filteredTeachers = originalTeachersList.filter((teacher) => {
-           //     const subjectMatch = selected.length === 0 || selected.some(subject => teacher.subject.includes(subject));
-   
-           //     return subjectMatch;
-           // });
-   
-           console.log("airlineFilters", airlineFilters)
-           const selected = Array.from(airlineFilters).map(filter => filter.value);
-           console.log("selected", selected)
-   
-           const originalAirlineList = listData?.Results || []; // Ensure listData.Results is defined
-   
-           // Function to filter airlines based on selected names
-           const filterAirlines = (data, selected) => {
-               return data.filter(result =>
-                   result.some(segmentArray =>
-                       segmentArray.Segments.some(segment =>
-                           segment.some(detail =>
-                               selected.includes(detail.Airline.AirlineName)
-                           )
-                       )
-                   )
-               );
-           };
-   
-           const selectedAirlines = ["Airline1", "Airline2"]; // Example selected airline names
-           const filteredAirlineList = filterAirlines(originalAirlineList, selected);
-   
-           console.log("Filtered Airline List:", filteredAirlineList);
-   
-           displayTeachersPerPage(filteredTeachers, 1); // Display first page of filtered results
-           currentPage = 1; // Reset to first page
-           renderPagination(); // Update pagination
-       };
-   
-       useEffect(() => {
-           createAirlinesCheckboxes();
-       }, []);
-   
-       // console.log("airlines name", dd.Segments?.[0][0]?.Airline.AirlineName);
-   
-       // console.log("listData", listData)
-   
-   
-    // --------------------------------filter-airlines-Logic-code-start -----------------------------------------
-
+    // Function to extract all AirlineName values
     const getAllAirlineNames = (data) => {
         const airlineNames = [];
+
         data.forEach(result => {
             result.forEach(segmentArray => {
                 segmentArray.Segments.forEach(segment => {
@@ -199,94 +71,104 @@ export default function FlightLists() {
                 });
             });
         });
+
         return airlineNames;
     };
 
-    useEffect(() => {
-        createAirlineCheckboxes();
-    }, [uniqueAirlineNames]);
 
-    const createAirlineCheckboxes = () => {
-        const airlinesContainer = document.getElementById("airlineFilters");
-        if (!airlinesContainer) return;
+    // console.log("Filtered Airline List:", filteredAirlineList);
 
-        airlinesContainer.innerHTML = "";
-        uniqueAirlineNames.forEach(airlineName => {
-            const div = document.createElement("div");
 
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.classList.add("airlineFilter", "largeCheckbox");
-            checkbox.value = airlineName;
-            checkbox.id = `airlineName${airlineName}`;
-            checkbox.addEventListener("change", handleAirlineFilterChange);
+    // originalTeachersList = Array.isArray(data.teachers) ? data.teachers : [];
+    const originalTeachersList = listData?.Results
+    console.log("originalTeachersList", originalTeachersList);
 
-            const label = document.createElement("label");
-            label.setAttribute("for", `airlineName${airlineName}`);
-            label.textContent = airlineName;
-            label.classList.add("largeLabel");
 
-            div.appendChild(checkbox);
+
+    const airlineNames = getAllAirlineNames(dd);
+    console.log("All airlines names:", airlineNames);
+
+    const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
+    console.log("uniqueAirlineNames", uniqueAirlineNames);
+
+    const createSubjectCheckboxes = () => {
+        const airlinesContainer = document.getElementById('airlineFilters');
+        airlinesContainer.innerHTML = ''; // Clear previous content
+
+        const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
+
+        uniqueAirlineNames.forEach(airlineNames => {
+            const div = document.createElement('div');
+
+            const checkbox = document.createElement('input');
+
+            checkbox.type = 'checkbox';
+            checkbox.classList.add('airlineFilter' ,'largeCheckbox');
+            checkbox.value = airlineNames;
+            checkbox.id = `airlineNames${airlineNames}`;
+            checkbox.addEventListener('change', applyFilters);
+            const label = document.createElement('label');
+            label.setAttribute('for', `airlineNames${airlineNames}`);
+            label.textContent = airlineNames;
+            label.classList.add('largeLabel');
+
+
             div.appendChild(label);
+            div.appendChild(checkbox);
+
+            // airlinesContainer.appendChild(checkbox);
+            // airlinesContainer.appendChild(label);
+
             airlinesContainer.appendChild(div);
-            airlinesContainer.appendChild(document.createElement("br"));
+            airlinesContainer.appendChild(document.createElement('br'));
         });
     };
-
-    const handleAirlineFilterChange = (event) => {
-        const { value, checked } = event.target;
-        setSelectedAirlines(prev => {
-            if (checked) {
-                return [...prev, value];
-            } else {
-                return prev.filter(airline => airline !== value);
-            }
-        });
-    };
-
-    useEffect(() => {
-        console.log('Filtered Flight Data:', filteredFlightData);
-    }, [filteredFlightData]);
-    
-
-    useEffect(() => {
-        applyFilters();
-    }, [selectedAirlines]);
-
-    const displayFilterAirlinesdata = () => {
-
-    }
 
     const applyFilters = () => {
-        if (selectedAirlines.length === 0) {
-            // If no airline is selected, show all flight data
-            setFilteredFlightData(originalFlightData);
-            return;
-        }
+        const airlineFilters = document.querySelectorAll('.airlineFilter:checked');   
+        console.log("airlineFilters", airlineFilters)
+        const selected = Array.from(airlineFilters).map(filter => filter.value);
+        console.log("selected", selected)
+        const originalAirlineList = listData?.Results || []; // Ensure listData.Results is defined
 
-        // Filter the original flight data based on selected airlines
-        const filteredData = originalFlightData.flatMap(result =>
-            result.flatMap(segmentArray =>
-                segmentArray.Segments.flatMap(segment =>
-                    segment.filter(detail =>
-                        selectedAirlines.includes(detail.Airline.AirlineName)
+        // Function to filter airlines based on selected names
+        const filterAirlines = (data, selected) => {
+            return data.filter(result =>
+                result.some(segmentArray =>
+                    segmentArray.Segments.some(segment =>
+                        segment.some(detail =>
+                            selected.includes(detail.Airline.AirlineName)
+                        )
                     )
                 )
-            )
-        );
+            );
+        };
 
-        // Update the filtered flight data state
-        setFilteredFlightData(filteredData);
+        const filteredAirlineList = filterAirlines(originalAirlineList, selected);
+        
+        console.log("Filtered Airline List:", filteredAirlineList);
+
+        displayTeachersPerPage(filteredTeachers, 1); // Display first page of filtered results
+        currentPage = 1; // Reset to first page
+        renderPagination(); // Update pagination
     };
 
+    useEffect(() => {
+        createSubjectCheckboxes();
+      }, []);
+    
 
-    // -----------------------------------------------filter airlines Logic------------------------------------
 
 
+    // console.log("airlines name", dd.Segments?.[0][0]?.Airline.AirlineName);
 
+    // console.log("listData", listData)
 
     localStorage.setItem("FlightSrdvType", listData.SrdvType)
     localStorage.setItem("FlightTraceId", listData.TraceId)
+
+
+
 
 
     useEffect(() => {
@@ -376,6 +258,32 @@ export default function FlightLists() {
     };
 
 
+
+    const dateMidRef = useRef(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
+
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        setStartX(e.pageX - dateMidRef.current.offsetLeft);
+        setScrollLeft(dateMidRef.current.scrollLeft);
+    };
+
+    const handleMouseLeaveOrUp = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - dateMidRef.current.offsetLeft;
+        const walk = (x - startX) * 3;
+        dateMidRef.current.scrollLeft = scrollLeft - walk;
+    };
+
+
+
     // ------------------------------------------------fare-Quote-api-----------------------------------------
     const fareQuoteHandler = async () => {
         const traceId = localStorage.getItem('FlightTraceId2');
@@ -409,12 +317,8 @@ export default function FlightLists() {
             const data = await response.json();
             console.log('FareQuote API Response:', data);
 
-            if (data && data.Results) {
-                navigate('/flight-Farequote', { state: { fareData: data.Results } });
-              } else {
-                console.error('data.Results is undefined or null');
-              }
-              
+            navigate('/flight-Farequote', { state: { fareData: data.Results } });
+
         } catch (error) {
             console.error('Error calling the farequote API:', error);
         }
@@ -456,27 +360,23 @@ export default function FlightLists() {
                             <Accordion.Item eventKey="0">
                                 <Accordion.Header className="flightlistaccordian">Stops</Accordion.Header>
                                 <Accordion.Body>
-
-                                    <Form>
-                                        <div className="row">
-                                            <div className="col-4 flightstopaccordian">
-                                                <Form.Check type="checkbox" id="nonstop" />
-                                                <label>Non Stop</label>
-                                                <h6>Rs.8541</h6>
-                                            </div>
-                                            <div className="col-4 flightstopaccordian">
-                                                <Form.Check type="checkbox" id="onestop" for="1 Stop" />
-                                                <label>1 Stop</label>
-                                                <h6>Rs.8541</h6>
-                                            </div>
-                                            <div className="col-4 flightstopaccordian">
-                                                <Form.Check type="checkbox" id="twostop" />
-                                                <label>2 Stop</label>
-                                                <h6>Rs.8541</h6>
-                                            </div>
+                                    <div className="row">
+                                        <div className="col-4 flightstopaccordian">
+                                            <div><span></span></div>
+                                            <p>Non Stop</p>
+                                            <h6>Rs.8541</h6>
                                         </div>
-                                    </Form>
-
+                                        <div className="col-4 flightstopaccordian">
+                                            <div><span></span></div>
+                                            <p>1 Stop</p>
+                                            <h6>Rs.8541</h6>
+                                        </div>
+                                        <div className="col-4 flightstopaccordian">
+                                            <div><span></span></div>
+                                            <p>2 Stop</p>
+                                            <h6>Rs.8541</h6>
+                                        </div>
+                                    </div>
                                 </Accordion.Body>
                             </Accordion.Item>
                             <Accordion.Item eventKey="1">
@@ -486,19 +386,61 @@ export default function FlightLists() {
 
                                     </div>
 
+                                    {/* <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Indigo Air</p>
+                                        <h6>Rs.7202</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Air India</p>
+                                        <h6>Rs.7202</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>AirIndia Express</p>
+                                        <h6>Rs.7202</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Multiple Airlines</p>
+                                        <h6>Rs.7834</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Vistara</p>
+                                        <h6>Rs.7202</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Akasa Air</p>
+                                        <h6>Rs.9956</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Spice Jet</p>
+                                        <h6>Rs.8682</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Air India Exp</p>
+                                        <h6>Rs.7202</h6>
+                                    </div> */}
                                 </Accordion.Body>
                             </Accordion.Item>
                             <Accordion.Item eventKey="2">
                                 <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
                                 <Accordion.Body>
+                                    {/* <ProgressBar now={(price / maxPrice) * 100} label={`${(price / maxPrice) * 100}%`} /> */}
                                     <div className="flightlistaccordianprice">
+
                                         <div className="flightlistaccordianpricehed">
                                             <p>Rs.{price}</p><p>Rs.{maxPrice}</p>
                                         </div>
                                         <input
                                             type="range"
                                             min="0"
-                                            max={maxPrice}
+                                            max={maxaccordiandepartime}
                                             value={price}
                                             onChange={handleSliderChange}
                                             className="form-range"
@@ -551,6 +493,9 @@ export default function FlightLists() {
                         </Accordion>
                     </div>
                     <div className="col-lg-8">
+
+
+
                         <div className="flight-date-slider">
                             <div className="flight-d-slide">
                                 <div className="date-left" onClick={scrollLeftClick}>
@@ -574,54 +519,47 @@ export default function FlightLists() {
 
                         <div className="f-lists">
                             <div className="flight-content">
-                                {Array.isArray(filteredFlightData) && filteredFlightData.length > 0 ? (
-                                    filteredFlightData.map((flightSegments, index) => {
-                                        // Ensure flightSegments is an array before mapping over it
-                                        if (Array.isArray(flightSegments)) {
-                                            return flightSegments.map((flight, segmentIndex) => {
-                                                return (
-                                                    <div className="row" key={`${index}-${segmentIndex}`}>
-                                                        <div className="pricebtnsmobil">
-                                                            <p>{flight?.OfferedFare || "Unknown Fare"}</p>
-                                                            <button onClick={fareQuoteHandler}>SELECT</button>
-                                                        </div>
-                                                        <p className='regulrdeal'><span>Regular Deal</span></p>
-                                                        <div className="col-3">
-                                                            <div className="d-flex">
-                                                            <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
+                                {dd && dd.length > 0 ? (
+                                    dd.map((flightSegments, index) => {
 
-                                                                {/* <img src={flight?.Segments?.[0]?.[0]?.Airline?.AirlineLogo || "default-logo.png"} alt="Airline Logo" className="img-fluid" /> */}
-                                                                <p>{flight?.Segments?.[0]?.[0]?.Airline?.AirlineName || "Unknown Airline"}</p>
-                                                                <br />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-6">
-                                                            <div className="flistname">
-                                                                <p className="flistnamep1">{flight?.Segments?.[0]?.[0]?.Origin?.CityCode || "N/A"}</p>
-                                                                <div>
-                                                                    <p className="flistnamep2">{convertUTCToIST(flight?.Segments?.[0]?.[0]?.DepTime) || "N/A"}</p>
-                                                                    <p className="flistnamep4">{flight?.Segments?.[0]?.[0]?.Origin?.CityName || "Unknown City"}</p>
-                                                                </div>
-                                                                <p className="flistnamep3">{flight?.Segments?.[0]?.[0]?.Duration || "N/A"}</p>
-                                                                <div>
-                                                                    <p className="flistnamep2">{convertUTCToIST(flight?.Segments?.[0]?.[0]?.ArrTime) || "N/A"}</p>
-                                                                    <p className="flistnamep4">{flight?.Segments?.[0]?.[0]?.Destination?.CityName || "Unknown City"}</p>
-                                                                </div>
-                                                                <p className="flistnamep5">{flight?.Segments?.[0]?.[0]?.Destination?.CityCode || "N/A"}</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-3 pricebtns">
-                                                            <div><p>₹{flight?.OfferedFare || "N/A"}</p></div>
-                                                            <div>
-                                                                <button onClick={fareQuoteHandler}>SELECT</button>
-                                                            </div>
+                                        return flightSegments.map((flight, segmentIndex) => {
+
+                                            return (
+                                                <div className="row" key={`${index}-${segmentIndex}`}>
+                                                    <div className="pricebtnsmobil">
+                                                        <p>{flight?.OfferedFare || "Unknown Airline"}</p>
+                                                        <button>SELECT</button>
+                                                    </div>
+                                                    <p className='regulrdeal'><span>Regular Deal</span></p>
+
+                                                    <div className="col-3">
+                                                        <div className="d-flex">
+                                                            <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
+                                                            <p>{flight?.Segments?.[0][0]?.Airline.AirlineName}</p><br></br>
                                                         </div>
                                                     </div>
-                                                );
-                                            });
-                                        } else {
-                                            return <p key={index}>Invalid flight segments data.</p>;
-                                        }
+                                                    <div className="col-6">
+                                                        <div className="flistname">
+                                                            <p className="flistnamep1">{flight?.Segments?.[0][0]?.Origin.CityCode}</p>
+                                                            <div>
+                                                                <p className="flistnamep2">{convertUTCToIST(flight?.Segments?.[0][0]?.DepTime)}</p>
+                                                                <p className="flistnamep4">{flight?.Segments?.[0][0]?.Origin.CityName}</p>
+                                                            </div>
+                                                            <p className="flistnamep3">{flight?.Segments?.[0][0]?.Duration}</p>
+                                                            <div>
+                                                                <p className="flistnamep2">{convertUTCToIST(flight?.Segments?.[0][0]?.ArrTime)}</p>
+                                                                <p className="flistnamep4">{flight?.Segments?.[0][0]?.Destination.CityName}</p>
+                                                            </div>
+                                                            <p className="flistnamep5">{flight?.Segments?.[0][0]?.Destination.CityCode}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-3 pricebtns">
+                                                        <div><p>₹{flight?.OfferedFare}</p></div>
+                                                        <div> <button onClick={fareQuoteHandler}>SELECT</button>     </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        });
                                     })
                                 ) : (
                                     <p>No flights available.</p>
