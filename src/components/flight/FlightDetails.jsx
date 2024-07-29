@@ -7,6 +7,8 @@ import { TiPlane } from "react-icons/ti";
 import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import { MdOutlineFlightTakeoff } from "react-icons/md";
 import { FaTrash } from 'react-icons/fa';
+import { IoChevronBackOutline } from "react-icons/io5";
+
 
 
 export default function FlightDetails() {
@@ -1553,6 +1555,9 @@ export default function FlightDetails() {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-4 d-flex flightlistsec1col">
+                            <Link to='/flight-Farequote'>
+                            <IoChevronBackOutline />
+                            </Link>
                             <TiPlane className="mt-1" />
                             <p> {formData.Segments[0].Origin} </p>
                             <p>-</p>
