@@ -55,121 +55,130 @@ export default function FlightLists() {
 
     // console.log("airlines name", dd[0][0].Segments[0][0].Airline.AirlineName);
 
+    let originalAirlineList = [];
 
-    // --------------------------------filter-airlines-Logic-code-end -----------------------------------------
-   
-       let originalAirlineList = [];
 
-       // Function to extract all AirlineName values
-       const getAllAirlineNames = (data) => {
-           const airlineNames = [];
-           data.forEach(result => {
-               result.forEach(segmentArray => {
-                   segmentArray.Segments.forEach(segment => {
-                       segment.forEach(detail => {
-                           airlineNames.push(detail.Airline.AirlineName);
-                       });
-                   });
-               });
-           });
-   
-           return airlineNames;
-       };
-   
-   
-       const originalTeachersList = listData?.Results
-       console.log("originalTeachersList", originalTeachersList);
-   
-       const airlineNames = getAllAirlineNames(dd);
-       console.log("All airlines names:", airlineNames);
-   
-       const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
-       console.log("uniqueAirlineNames", uniqueAirlineNames);
-   
-       const createAirlinesCheckboxes = () => {
-           const airlinesContainer = document.getElementById('airlineFilters');
-           airlinesContainer.innerHTML = ''; // Clear previous content
-   
-           const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
-   
-           uniqueAirlineNames.forEach(airlineNames => {
-               const div = document.createElement('div');
-   
-               const checkbox = document.createElement('input');
-   
-               checkbox.type = 'checkbox';
-               checkbox.classList.add('airlineFilter', 'largeCheckbox');
-               checkbox.value = airlineNames;
-               checkbox.id = `airlineNames${airlineNames}`;
-               checkbox.addEventListener('change', applyFilters);
-               const label = document.createElement('label');
-               label.setAttribute('for', `airlineNames${airlineNames}`);
-               label.textContent = airlineNames;
-               label.classList.add('largeLabel');
-   
-   
-               div.appendChild(label);
-               div.appendChild(checkbox);
-   
-               // airlinesContainer.appendChild(checkbox);
-               // airlinesContainer.appendChild(label);
-   
-               airlinesContainer.appendChild(div);
-               airlinesContainer.appendChild(document.createElement('br'));
-           });
-       };
-   
-       const applyFilters = () => {
-           const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
-           // const filteredTeachers = originalTeachersList.filter((teacher) => {
-           //     const subjectMatch = selected.length === 0 || selected.some(subject => teacher.subject.includes(subject));
-   
-           //     return subjectMatch;
-           // });
-   
-           console.log("airlineFilters", airlineFilters)
-           const selected = Array.from(airlineFilters).map(filter => filter.value);
-           console.log("selected", selected)
-   
-           const originalAirlineList = listData?.Results || []; // Ensure listData.Results is defined
-   
-           // Function to filter airlines based on selected names
-           const filterAirlines = (data, selected) => {
-               return data.filter(result =>
-                   result.some(segmentArray =>
-                       segmentArray.Segments.some(segment =>
-                           segment.some(detail =>
-                               selected.includes(detail.Airline.AirlineName)
-                           )
-                       )
-                   )
-               );
-           };
-   
-           const selectedAirlines = ["Airline1", "Airline2"]; // Example selected airline names
-           const filteredAirlineList = filterAirlines(originalAirlineList, selected);
-   
-           console.log("Filtered Airline List:", filteredAirlineList);
-   
-           displayTeachersPerPage(filteredTeachers, 1); // Display first page of filtered results
-           currentPage = 1; // Reset to first page
-           renderPagination(); // Update pagination
-       };
-   
-       useEffect(() => {
-           createAirlinesCheckboxes();
-       }, []);
-   
-       // console.log("airlines name", dd.Segments?.[0][0]?.Airline.AirlineName);
-   
-       // console.log("listData", listData)
-   
-   
-    // --------------------------------filter-airlines-Logic-code-start -----------------------------------------
+    // Function to extract all AirlineName values
+    const getAllAirlineNames = (data) => {
+        const airlineNames = [];
 
+        data.forEach(result => {
+            result.forEach(segmentArray => {
+                segmentArray.Segments.forEach(segment => {
+                    segment.forEach(detail => {
+                        airlineNames.push(detail.Airline.AirlineName);
+                    });
+                });
+            });
+        });
+
+        return airlineNames;
+    };
+
+
+    // console.log("Filtered Airline List:", filteredAirlineList);
+
+
+    // originalTeachersList = Array.isArray(data.teachers) ? data.teachers : [];
+    const originalTeachersList = listData?.Results
+    console.log("originalTeachersList", originalTeachersList);
+
+
+
+    const airlineNames = getAllAirlineNames(dd);
+    console.log("All airlines names:", airlineNames);
+
+    const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
+    console.log("uniqueAirlineNames", uniqueAirlineNames);
+
+    const createSubjectCheckboxes = () => {
+        const airlinesContainer = document.getElementById('airlineFilters');
+        airlinesContainer.innerHTML = ''; // Clear previous content
+
+        const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
+
+        uniqueAirlineNames.forEach(airlineNames => {
+            const div = document.createElement('div');
+
+            const checkbox = document.createElement('input');
+
+            checkbox.type = 'checkbox';
+            checkbox.classList.add('airlineFilter' ,'largeCheckbox');
+            checkbox.value = airlineNames;
+            checkbox.id = `airlineNames${airlineNames}`;
+            checkbox.addEventListener('change', applyFilters);
+            const label = document.createElement('label');
+            label.setAttribute('for', `airlineNames${airlineNames}`);
+            label.textContent = airlineNames;
+            label.classList.add('largeLabel');
+
+
+            div.appendChild(label);
+            div.appendChild(checkbox);
+
+            // airlinesContainer.appendChild(checkbox);
+            // airlinesContainer.appendChild(label);
+
+            airlinesContainer.appendChild(div);
+            airlinesContainer.appendChild(document.createElement('br'));
+        });
+    };
+
+    const applyFilters = () => {
+        const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
+        // const filteredTeachers = originalTeachersList.filter((teacher) => {
+        //     const subjectMatch = selected.length === 0 || selected.some(subject => teacher.subject.includes(subject));
+
+        //     return subjectMatch;
+        // });
+
+        console.log("airlineFilters", airlineFilters)
+        const selected = Array.from(airlineFilters).map(filter => filter.value);
+        console.log("selected", selected)
+
+        const originalAirlineList = listData?.Results || []; // Ensure listData.Results is defined
+
+        // Function to filter airlines based on selected names
+        const filterAirlines = (data, selected) => {
+            return data.filter(result =>
+                result.some(segmentArray =>
+                    segmentArray.Segments.some(segment =>
+                        segment.some(detail =>
+                            selected.includes(detail.Airline.AirlineName)
+                        )
+                    )
+                )
+            );
+        };
+
+        const selectedAirlines = ["Airline1", "Airline2"]; // Example selected airline names
+        const filteredAirlineList = filterAirlines(originalAirlineList, selected);
+        
+        console.log("Filtered Airline List:", filteredAirlineList);
+
+        displayTeachersPerPage(filteredTeachers, 1); // Display first page of filtered results
+        currentPage = 1; // Reset to first page
+        renderPagination(); // Update pagination
+    };
+
+    useEffect(() => {
+        createSubjectCheckboxes();
+      }, []);
+    
+
+
+
+    // console.log("airlines name", dd.Segments?.[0][0]?.Airline.AirlineName);
+
+    // console.log("listData", listData)
 
     localStorage.setItem("FlightSrdvType", listData.SrdvType)
     localStorage.setItem("FlightTraceId", listData.TraceId)
+
+
+
+
+
     useEffect(() => {
         const getCallenderData = async () => {
             try {
@@ -244,7 +253,7 @@ export default function FlightLists() {
     };
 
 
-// -----------------------------function for convert Date------------------------------
+
     const convertUTCToIST = (utcTimeString) => {
         const utcDate = new Date(utcTimeString);
         const istTime = new Intl.DateTimeFormat('en-IN', {
@@ -255,7 +264,31 @@ export default function FlightLists() {
         }).format(utcDate);
         return istTime;
     };
-// -----------------------------function for convert Date------------------------------
+
+
+
+    const dateMidRef = useRef(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
+
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        setStartX(e.pageX - dateMidRef.current.offsetLeft);
+        setScrollLeft(dateMidRef.current.scrollLeft);
+    };
+
+    const handleMouseLeaveOrUp = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - dateMidRef.current.offsetLeft;
+        const walk = (x - startX) * 3;
+        dateMidRef.current.scrollLeft = scrollLeft - walk;
+    };
 
 
 
@@ -360,7 +393,47 @@ export default function FlightLists() {
                                     <div id="airlineFilters">
 
                                     </div>
-                                   
+
+                                    {/* <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Indigo Air</p>
+                                        <h6>Rs.7202</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Air India</p>
+                                        <h6>Rs.7202</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>AirIndia Express</p>
+                                        <h6>Rs.7202</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Multiple Airlines</p>
+                                        <h6>Rs.7834</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Vistara</p>
+                                        <h6>Rs.7202</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Akasa Air</p>
+                                        <h6>Rs.9956</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Spice Jet</p>
+                                        <h6>Rs.8682</h6>
+                                    </div>
+                                    <div className="airlineaccoridna">
+                                        <span></span>
+                                        <p>Air India Exp</p>
+                                        <h6>Rs.7202</h6>
+                                    </div> */}
                                 </Accordion.Body>
                             </Accordion.Item>
                             <Accordion.Item eventKey="2">
@@ -453,7 +526,7 @@ export default function FlightLists() {
                         </div>
 
                         <div className="f-lists">
-                        <div className="flight-content">
+                            <div className="flight-content">
                                 {dd && dd.length > 0 ? (
                                     dd.map((flightSegments, index) => {
 
