@@ -2,12 +2,13 @@ import "./FlightLists.css"
 import "./FlightDetails.css"
 import React from 'react'
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { json, useLocation, useNavigate } from 'react-router-dom';
 import { TiPlane } from "react-icons/ti";
 import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import { MdOutlineFlightTakeoff } from "react-icons/md";
 import { FaTrash } from 'react-icons/fa';
 import { IoChevronBackOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 
 
@@ -20,13 +21,13 @@ export default function FlightDetails() {
 
     const formData = location.state?.formData;
 
-    console.log("fareData", fareData);
-    console.log("formData", formData);
+    // console.log("fareData", fareData);
+    // console.log("formData", formData);
 
 
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
 
-    console.log("location", fareData)
+    // console.log("location", fareData)
 
     useEffect(() => {
         // Check if fareDataDetails is available in state
@@ -44,7 +45,7 @@ export default function FlightDetails() {
     }, [fareData]);
 
     useEffect(() => {
-        console.log("fareDataDetails", fareDataDetails);
+        // console.log("fareDataDetails", fareDataDetails);
         if (!fareDataDetails) {
             console.error('fareDataDetails is undefined');
         }
@@ -73,6 +74,150 @@ export default function FlightDetails() {
     };
 
     //   -----------------------------------------------------
+
+    // --------------------------------------seat and meal api--------------------------------------------
+
+    const mealAndseatHandler = () => {
+        setShowTabs(!showTabs);
+        ssrHandler();
+        seatmap();
+    }
+
+    const [ssrData, setSsrData] = useState([]);
+
+    useEffect(() => {
+        const storedData = localStorage.getItem('FlightssrResponse');
+        if (storedData) {
+            const parsedData = JSON.parse(storedData);
+            const flattenedBaggage = parsedData.Baggage.flat();
+            setSsrData(flattenedBaggage);
+        } else {
+            ssrHandler();
+        }
+    }, []);
+
+    const ssrHandler = async () => {
+        const traceId = localStorage.getItem('FlightTraceId2');
+        const resultIndex = localStorage.getItem('FlightResultIndex2');
+        const srdvType = localStorage.getItem('FlightSrdvType');
+        const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
+
+        if (!traceId || !resultIndex) {
+            console.error('TraceId or ResultIndex not found in local storage');
+            return;
+        }
+
+        const payload = {
+            SrdvIndex: srdvIndex,
+            ResultIndex: resultIndex,
+            TraceId: parseInt(traceId),
+            SrdvType: srdvType,
+        };
+
+        try {
+            const response = await fetch('https://sajyatra.sajpe.in/admin/api/ssr', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const ssrData = await response.json();
+            console.log('ssr Api:', ssrData);
+
+            if (ssrData && ssrData.Baggage) {
+                localStorage.setItem('FlightssrResponse', JSON.stringify(ssrData));
+                const flattenedBaggage = ssrData.Baggage.flat();
+                setSsrData(flattenedBaggage);
+            } else {
+                console.error('No baggage data found in response');
+            }
+        } catch (error) {
+            console.error('API call failed:', error);
+        }
+    };
+
+
+    const [seatData, setSeatData] = useState([]);
+
+    useEffect(() => {
+        // Fetch the stored flight seat map from local storage
+        const flightData = localStorage.getItem('FlightsitMap');
+        if (flightData) {
+            const parsedData = JSON.parse(flightData);
+
+            const seatsArray = [];
+
+            // Assuming parsedData contains a structure like the one you provided
+            for (const row in parsedData.Results[0].Seats) {
+                const rowData = parsedData.Results[0].Seats[row];
+
+                for (const column in rowData) {
+                    const seat = rowData[column];
+                    seatsArray.push({
+                        seatNumber: seat.SeatNumber,
+                        price: seat.Amount,
+                        isBooked: seat.IsBooked,
+                        imgSrc: '/src/assets/images/seat-2-removebg-preview.png'
+                    });
+                }
+            }
+
+            setSeatData(seatsArray);
+        }
+    }, []);
+    
+
+    const seatmap = async () => {
+        const traceId = localStorage.getItem('FlightTraceId2');
+        const resultIndex = localStorage.getItem('FlightResultIndex2');
+        const srdvType = localStorage.getItem('FlightSrdvType');
+        const srdvIndex = localStorage.getItem('FlightSrdvIndex2'); 
+
+        if (!traceId || !resultIndex) {
+            console.error('TraceId or ResultIndex not found in local storage');
+            return;
+        }
+
+        const payload = {
+            SrdvIndex: srdvIndex,
+            ResultIndex: resultIndex,
+            TraceId: parseInt(traceId),
+            SrdvType: srdvType,
+        };
+
+        try {
+            const response = await fetch('https://sajyatra.sajpe.in/admin/api/seatmap', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const seatData = await response.json();
+            console.log('Seat Map Respose:', seatData);
+
+            localStorage.setItem('FlightsitMap', JSON.stringify(seatData))
+
+
+        } catch (error) {
+            console.error('API call failed:', error);
+        }
+    }
+
+  
+   
+    // ----------------------------------------------seat and meal api------------------------------------
 
 
     // ----------------------logic for forms---------------------------------------
@@ -515,6 +660,9 @@ export default function FlightDetails() {
         }
     }
 
+ 
+    
+
 
     // seats meals baggage tabs
     const renderSeatsTab = () => {
@@ -530,424 +678,22 @@ export default function FlightDetails() {
                         />
                     </div>
                     <div className="col-lg-6 seatsTabssColText">
-                        <div className="seat-selection">
-                            {/* Example seats, you can customize the seats */}
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
-                            <button className="seat">
-                                <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                                <h6>1A</h6>
-                                <p>999</p>
-                            </button>
 
-                        </div>
+                    <div className="seat-selection">
+            {seatData.map((seat) => (
+                <button key={seat.id} className="seat">
+                    <img
+                                    className="img-fluid"
+                                    src='/src/assets/images/seat-2-removebg-preview.png'
+                                    alt="First slide"
+                                />
+                    <h6>{seat.seatNumber}</h6>
+                    <p>₹{seat.price}</p>
+                </button>
+            ))}
+        </div>
+
+
                     </div>
                 </div>
 
@@ -1202,349 +948,39 @@ export default function FlightDetails() {
         );
     };
 
+  
+
     const renderBaggageTab = () => {
         return (
             <div className="baggageTabbss">
-                <h5>Select Your Baggage Option</h5>
-                <div className="baggage-selection">
+            <h5>Select Your Baggage Option</h5>
+            {ssrData.map((ssr, index) => (
+                <div key={index} className="baggage-selection">
                     <div className="row">
                         <div className="col-md-4">
-                            <p>0 kg</p>
-                            <h6>₹0</h6>
+                            <p>{ssr.Weight} kg</p> {/* Corrected to ssr.Weight */}
+                            <h6>₹{ssr.Price}</h6> {/* Corrected to ssr.Price */}
                         </div>
                         <div className="col-md-4">
                             <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
+                                <input type="checkbox" id={`carryOn${index}`} className="form-check-input" />
+                                <label className="form-check-label" htmlFor={`carryOn${index}`}>Carry-On</label>
                             </div>
                             <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
+                                <input type="checkbox" id={`checkedBag${index}`} className="form-check-input" />
+                                <label className="form-check-label" htmlFor={`checkedBag${index}`}>Checked Bag</label>
                             </div>
                         </div>
                         <div className="col-md-4 baggagge-selectionbtn">
                             <div>
-                                <button> + Add </button>
+                                <button>+ Add</button>
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
-                <div className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>5 kg</p>
-                            <h6>₹2250</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>10 kg</p>
-                            <h6>₹4500</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>15 kg</p>
-                            <h6>₹6750</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>20 kg</p>
-                            <h6>₹9000</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>30 kg</p>
-                            <h6>₹13500</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>0 kg</p>
-                            <h6>₹0</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>0 kg</p>
-                            <h6>₹0</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>0 kg</p>
-                            <h6>₹0</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>0 kg</p>
-                            <h6>₹0</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>0 kg</p>
-                            <h6>₹0</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>0 kg</p>
-                            <h6>₹0</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>0 kg</p>
-                            <h6>₹0</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id="carryOn" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="carryOn">Carry-On</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="checkbox" id="checkedBag" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="checkedBag">Checked Bag</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-            </div>
+            ))}
+        </div>
+        
         );
     };
 
@@ -1621,7 +1057,7 @@ export default function FlightDetails() {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            {/* <div className="row">
                                 <div className="fligthContactDethed">
                                     <MdOutlineFlightTakeoff />
                                     <h5>Contact Details</h5>
@@ -1662,7 +1098,7 @@ export default function FlightDetails() {
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="row">
                                 <div className="fligthTravellerDethed">
@@ -1731,7 +1167,10 @@ export default function FlightDetails() {
 
                                             {/* code for tabs seat meals--------- */}
                                             <div className="col-md-4 mt-4">
-                                                <div className="selectSeatMealDivBtn" onClick={() => setShowTabs(!showTabs)}>
+                                                {/* <div className="selectSeatMealDivBtn" onClick={() => setShowTabs(!showTabs)}>
+                                                    Add Seats, Meals, Baggage & more
+                                                </div> */}
+                                                  <div className="selectSeatMealDivBtn" onClick={mealAndseatHandler}>
                                                     Add Seats, Meals, Baggage & more
                                                 </div>
                                             </div>
