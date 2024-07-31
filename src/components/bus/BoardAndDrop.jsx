@@ -20,17 +20,15 @@ const BoardAndDrop = () => {
     setShowBoarding(false);
   };
 
-
-
   useEffect(() => {
     const fetchBoardingData = async () => {
       try {
         const traceId = localStorage.getItem('traceId');
-      const resultIndex = localStorage.getItem('resultIndex');
+        const resultIndex = localStorage.getItem('resultIndex');
 
-      if (!traceId || !resultIndex) {
-        throw new Error('TraceId or ResultIndex not found in localStorage');
-      }
+        if (!traceId || !resultIndex) {
+          throw new Error('TraceId or ResultIndex not found in localStorage');
+        }
 
         const response = await fetch('https://sajyatra.sajpe.in/admin/api/addboarding', {
           method: 'POST',
@@ -63,63 +61,58 @@ const BoardAndDrop = () => {
 
   const handleSelectBoarding = (index) => {
     setSelectedBoarding(index);
+    setTimeout(() => {
+      setShowBoarding(false); // Switch to dropping points view after a brief delay
+    }, 500); // Delay in milliseconds (500ms = 0.5 seconds)
   };
-
-
 
   const handleSelectDropping = (index) => {
     setSelectedDropping(index);
 
-  //  --------------------
-  const passengersAlreadyAdded = localStorage.getItem('passengersAlreadyAdded');
+    const passengersAlreadyAdded = localStorage.getItem('passengersAlreadyAdded');
     if (passengersAlreadyAdded) {
       navigate('/passenger-list');
     } else {
       localStorage.setItem('passengersAlreadyAdded', true);
       navigate('/passenger-info');
     }
-  // ---------------------
   };
 
-
   const backHandlerList = () => {
-    navigate('/bus-list')
-  }
+    navigate('/bus-list');
+  };
 
-
-    // Function to convert UTC date string to IST
-    const convertToIST = (dateString) => {
-      const date = new Date(dateString);
-      const options = {
-        timeZone: 'Asia/Kolkata',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      };
-      return date.toLocaleString('en-IN', options);
+  // Function to convert UTC date string to IST
+  const convertToIST = (dateString) => {
+    const date = new Date(dateString);
+    const options = {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
     };
-
-
+    return date.toLocaleString('en-IN', options);
+  };
 
   return (
-
-    <>
-     <div className='BordingDroping'>
+    <div className='BordingDroping'>
       <div className="bord-drop">
-        <h5><i style={{cursor:"pointer"}} onClick={backHandlerList} className="ri-arrow-left-s-line"></i> Select Boarding & Dropping Points</h5>
+        <h5>
+          <i style={{ cursor: "pointer" }} onClick={backHandlerList} className="ri-arrow-left-s-line"></i> Select Boarding & Dropping Points
+        </h5>
 
         <div className="DB-top">
-          <p 
-            className={`tab ${showBoarding ? 'active' : ''}`} 
+          <p
+            className={`tab ${showBoarding ? 'active' : ''}`}
             onClick={handleShowBoarding}
           >
             Boarding-Points
           </p>
-          <p 
-            className={`tab ${!showBoarding ? 'active' : ''}`} 
+          <p
+            className={`tab ${!showBoarding ? 'active' : ''}`}
             onClick={handleShowDropping}
           >
             Dropping-Points
@@ -133,19 +126,26 @@ const BoardAndDrop = () => {
               {boardingPoints.map(point => (
                 <div key={point.CityPointIndex} className="bord-last">
                   <div className="bd-one">
-                    <span>{convertToIST(point.CityPointTime)}</span>
-                    <span>{point.CityPointName}</span>
+                    <span>
+                      <h6>Date & Time</h6>
+                      <small>{convertToIST(point.CityPointTime)}</small>
+                    </span>
+                    {/* <span>{point.CityPointName}</span> */}
                   </div>
                   <div className="bd-one">
-                    <span>{point.CityPointLocation}</span>
-                    <span>{point.CityPointLandmark}</span>
+                    <span>
+                         <h6>CityPointName</h6>
+                         <small>{point.CityPointName}</small>
+                    </span>
+                    {/* <span>{point.CityPointLocation}</span> */}
+                    {/* <span>{point.CityPointLandmark}</span> */}
                   </div>
                   <div className="bd-two">
-                    <input 
-                      type="radio" 
+                    <input
+                      type="radio"
                       name="boarding"
-                      checked={selectedBoarding === point.CityPointIndex} 
-                      onChange={() => handleSelectBoarding(point.CityPointIndex)} 
+                      checked={selectedBoarding === point.CityPointIndex}
+                      onChange={() => handleSelectBoarding(point.CityPointIndex)}
                     />
                   </div>
                 </div>
@@ -159,19 +159,25 @@ const BoardAndDrop = () => {
               {droppingPoints.map(point => (
                 <div key={point.CityPointIndex} className="bord-last">
                   <div className="bd-one">
-                    <span>{convertToIST(point.CityPointTime)}</span>
-                    <span>{point.CityPointName}</span>
+                  <span>
+                      <h6>Date & Time</h6>
+                      <small>{convertToIST(point.CityPointTime)}</small>
+                    </span>
                   </div>
                   <div className="bd-one">
-                    <span>{point.CityPointLocation}</span>
-                    <span>{point.CityPointLandmark}</span>
+                  <span>
+                         <h6>CityPointName</h6>
+                         <small>{point.CityPointName}</small>
+                    </span>
+                    {/* <span>{point.CityPointLocation}</span> */}
+                    {/* <span>{point.CityPointLandmark}</span> */}
                   </div>
                   <div className="bd-two">
-                    <input 
-                      type="radio" 
+                    <input
+                      type="radio"
                       name="dropping"
-                      checked={selectedDropping === point.CityPointIndex} 
-                      onChange={() => handleSelectDropping(point.CityPointIndex)} 
+                      checked={selectedDropping === point.CityPointIndex}
+                      onChange={() => handleSelectDropping(point.CityPointIndex)}
                     />
                   </div>
                 </div>
@@ -183,15 +189,7 @@ const BoardAndDrop = () => {
         {error && <div className="error-message">{error}</div>}
       </div>
     </div>
-
-    
-    </>
-
-    
-
-
   );
 };
 
 export default BoardAndDrop;
-

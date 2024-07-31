@@ -13,6 +13,8 @@ import { IoChevronBackOutline } from "react-icons/io5";
 
 export default function FlightDetails() {
 
+    const navigate = useNavigate();
+
     //   ----------------------------------------------------
 
     const location = useLocation();
@@ -73,6 +75,153 @@ export default function FlightDetails() {
     };
 
     //   -----------------------------------------------------
+
+    // --------------------------------------seat and meal api--------------------------------------------
+
+    const mealAndseatHandler = () => {
+        setShowTabs(!showTabs);
+        ssrHandler();
+        seatmap();
+    }
+
+    const [ssrData, setSsrData] = useState([]);
+
+    useEffect(() => {
+        const storedData = localStorage.getItem('FlightssrResponse');
+        if (storedData) {
+            const parsedData = JSON.parse(storedData);
+            const flattenedBaggage = parsedData.Baggage.flat();
+            setSsrData(flattenedBaggage);
+        } else {
+            ssrHandler();
+        }
+    }, []);
+
+    const ssrHandler = async () => {
+        const traceId = localStorage.getItem('FlightTraceId2');
+        const resultIndex = localStorage.getItem('FlightResultIndex2');
+        const srdvType = localStorage.getItem('FlightSrdvType');
+        const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
+
+        if (!traceId || !resultIndex) {
+            console.error('TraceId or ResultIndex not found in local storage');
+            return;
+        }
+
+        const payload = {
+            SrdvIndex: srdvIndex,
+            ResultIndex: resultIndex,
+            TraceId: parseInt(traceId),
+            SrdvType: srdvType,
+        };
+
+        try {
+            const response = await fetch('https://sajyatra.sajpe.in/admin/api/ssr', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const ssrData = await response.json();
+            console.log('ssr Api:', ssrData);
+
+            if (ssrData && ssrData.Baggage) {
+                localStorage.setItem('FlightssrResponse', JSON.stringify(ssrData));
+                const flattenedBaggage = ssrData.Baggage.flat();
+                setSsrData(flattenedBaggage);
+            } else {
+                console.error('No baggage data found in response');
+            }
+        } catch (error) {
+            console.error('API call failed:', error);
+        }
+    };
+
+
+    const [seatData, setSeatData] = useState([]);
+
+    useEffect(() => {
+        // Fetch the stored flight seat map from local storage
+        const flightData = localStorage.getItem('FlightsitMap');
+        if (flightData) {
+            const parsedData = JSON.parse(flightData);
+
+            const seatsArray = [];
+
+            // Assuming parsedData contains a structure like the one you provided
+            for (const row in parsedData.Results[0].Seats) {
+                const rowData = parsedData.Results[0].Seats[row];
+
+                for (const column in rowData) {
+                    const seat = rowData[column];
+                    seatsArray.push({
+                        seatNumber: seat.SeatNumber,
+                        price: seat.Amount,
+                        isBooked: seat.IsBooked,
+                        imgSrc: '/src/assets/images/seat-2-removebg-preview.png'
+                    });
+                }
+            }
+
+            setSeatData(seatsArray);
+        }
+    }, []);
+
+
+    const seatmap = async () => {
+        const traceId = localStorage.getItem('FlightTraceId2');
+        const resultIndex = localStorage.getItem('FlightResultIndex2');
+        const srdvType = localStorage.getItem('FlightSrdvType');
+        const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
+
+        if (!traceId || !resultIndex) {
+            console.error('TraceId or ResultIndex not found in local storage');
+            return;
+        }
+
+        const payload = {
+            SrdvIndex: srdvIndex,
+            ResultIndex: resultIndex,
+            TraceId: parseInt(traceId),
+            SrdvType: srdvType,
+        };
+
+        try {
+            const response = await fetch('https://sajyatra.sajpe.in/admin/api/seatmap', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const seatData = await response.json();
+            console.log('Seat Map Respose:', seatData);
+
+            localStorage.setItem('FlightsitMap', JSON.stringify(seatData))
+
+
+        } catch (error) {
+            console.error('API call failed:', error);
+        }
+    }
+
+     const reviewHandler = () => {
+        navigate('/flight-review')
+     }
+
+
+    // ----------------------------------------------seat and meal api------------------------------------
 
 
     // ----------------------logic for forms---------------------------------------
@@ -297,31 +446,41 @@ export default function FlightDetails() {
     };
 
     const renderConfirmedDetails = (details, type) => (
-        <div className="mt-4 col-md-6 formdettlsDesk" style={{ display: details.length > 0 ? 'block' : 'none' }}>
-            {details.map((detail, index) => (
-                <div key={index} className="d-flex align-items-center mb-2">
-                    <div className="flex-grow-1 formdettlsDeskdiv ml-2">
-                        <input
-                            type="checkbox"
-                            className="form-check-input selectDetInp"
-                            checked={detail.selected}
-                            onChange={() => toggleSelect(index, type)}
-                        />
-                        <div className="formdettlsDeskdivnmGen">
-                            <div>
-                                <strong>Gender:</strong> <span>{detail.gender}</span>
+        <div className="row ">
+            <div className="mt-4 col-md-6 formdettlsDesk" style={{ display: details.length > 0 ? 'block' : 'none' }}>
+                {details.map((detail, index) => (
+                    <div key={index} className="d-flex align-items-center mb-2">
+                        <div className="flex-grow-1 formdettlsDeskdiv ml-2">
+                            <input
+                                type="checkbox"
+                                className="form-check-input selectDetInp"
+                                checked={detail.selected}
+                                onChange={() => toggleSelect(index, type)}
+                            />
+                            <div className="formdettlsDeskdivnmGen">
+                                <div>
+                                    <strong>Gender:</strong> <span>{detail.gender}</span>
+                                </div>
+                                <div>
+                                    <strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span>
+                                </div>
                             </div>
+
                             <div>
-                                <strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span>
+                                <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete(type, index)} />
                             </div>
-                        </div>
-                        <div>
-                            <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete(type, index)} />
                         </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
+            <div className="mt-4 col-md-6 float-right">
+                <button  className="mt-3 bg-primary p-2 text-light" >
+                    Proceed to seat
+                </button>
+            </div>
+
         </div>
+
     );
 
     const toggleSelect = (index, type) => {
@@ -514,7 +673,6 @@ export default function FlightDetails() {
                 return <div>Flight Information</div>;
         }
     }
-
 
     // seats meals baggage tabs
     const renderSeatsTab = () => {
@@ -947,9 +1105,32 @@ export default function FlightDetails() {
                                 <p>999</p>
                             </button>
 
+                      </div>
+                    <div className="row col-12">
+                        <div className="seatsTabssColText">
+                            <div className="seat-selection row">
+                                {seatData.map((seat) => (
+                                    <div key={seat.id} className="col-3">
+                                        <button className="f-seat">
+                                        <h6>{seat.seatNumber}</h6>
+                                            <img
+                                                className="img-fluid"
+                                                src='/src/assets/images/seat-2-removebg-preview.png'
+                                                alt="Seat"
+                                            />
+                                            <p>₹{seat.price}</p>
+                                        </button>
+
+
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
-                </div>
+
+
+
+                
 
             </div>
         );
@@ -1201,6 +1382,7 @@ export default function FlightDetails() {
             </div>
         );
     };
+
 
     const renderBaggageTab = () => {
         return (
@@ -1545,6 +1727,33 @@ export default function FlightDetails() {
 
                 </div>
             </div>
+                {ssrData.map((ssr, index) => (
+                    <div key={index} className="baggage-selection">
+                        <div className="row">
+                            <div className="col-md-4">
+                                <p>{ssr.Weight} kg</p> {/* Corrected to ssr.Weight */}
+                                <h6>₹{ssr.Price}</h6> {/* Corrected to ssr.Price */}
+                            </div>
+                            <div className="col-md-4">
+                                <div className="form-check">
+                                    <input type="checkbox" id={`carryOn${index}`} className="form-check-input" />
+                                    <label className="form-check-label" htmlFor={`carryOn${index}`}>Carry-On</label>
+                                </div>
+                                <div className="form-check">
+                                    <input type="checkbox" id={`checkedBag${index}`} className="form-check-input" />
+                                    <label className="form-check-label" htmlFor={`checkedBag${index}`}>Checked Bag</label>
+                                </div>
+                            </div>
+                            <div className="col-md-4 baggagge-selectionbtn">
+                                <div>
+                                    <button>+ Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
         );
     };
 
@@ -1556,7 +1765,7 @@ export default function FlightDetails() {
                     <div className="row">
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <Link to='/flight-Farequote'>
-                            <IoChevronBackOutline />
+                                <IoChevronBackOutline />
                             </Link>
                             <TiPlane className="mt-1" />
                             <p> {formData.Segments[0].Origin} </p>
@@ -1732,6 +1941,10 @@ export default function FlightDetails() {
                                             {/* code for tabs seat meals--------- */}
                                             <div className="col-md-4 mt-4">
                                                 <div className="selectSeatMealDivBtn" onClick={() => setShowTabs(!showTabs)}>
+                                                {/* <div className="selectSeatMealDivBtn" onClick={() => setShowTabs(!showTabs)}>
+                                                    Add Seats, Meals, Baggage & more
+                                                </div> */}
+                                                <div className="selectSeatMealDivBtn" onClick={mealAndseatHandler}>
                                                     Add Seats, Meals, Baggage & more
                                                 </div>
                                             </div>
@@ -1776,7 +1989,7 @@ export default function FlightDetails() {
 
                                             <div className="col-12 lastBtnssContinue">
                                                 <h5>Fare Breakup <span>₹13465</span></h5>
-                                                <button >Continue</button>
+                                                <button onClick={reviewHandler} >Continue</button>
                                             </div>
                                         </form>
 
