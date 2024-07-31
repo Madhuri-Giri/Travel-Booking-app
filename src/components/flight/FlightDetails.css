@@ -6,6 +6,16 @@
     border-radius: 15px;
     margin-bottom: 20px;
 }
+
+.f-seat{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    background: #000;
+}
+
+
 .flightDetailssec{
     background-color: #dddddd;
     padding: 20px 20px;
@@ -276,7 +286,7 @@
 }
 
 .fligthTravellerDethedBox .row{
-    border: 1px solid rgba(220, 220, 220, 0.486);
+    /* border: 1px solid rgba(220, 220, 220, 0.486); */
     padding: 20px 10px;
     border-radius: 10px;
     margin-bottom: 20px;

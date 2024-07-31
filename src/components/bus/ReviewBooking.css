@@ -24,16 +24,19 @@
        font-weight: lighter;
 }
 .ReviewBooking .review-book  .test-account{
-          width: 100%;
+          width: 95%;
           display: flex;
           align-items: center;
           justify-content: center;
           flex-direction: column;
-background-color: rgba(230, 248, 255, 0.452);
+          padding: 1vmax;
+          border-radius: 10px;
+          margin-top: 0.5vmax;
+          box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.176);
 
  }
  .ReviewBooking .review-book  .test-account h6{
-       width: 95%;
+       width: 100%;
     font-weight: 600;
     font-size: 1.3vmax;
 }
@@ -68,12 +71,128 @@ background-color: rgba(230, 248, 255, 0.452);
        flex-direction: column;
 }
 
+.ReviewBooking .review-book .price-page {
+       width: 95%;
+       display: flex;
+       align-items: flex-start;
+       justify-content: flex-start;
+       flex-direction: column;
+      padding: 1vmax;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.176);
+  margin-top: 1vmax
+}
+.ReviewBooking .review-book .price-page  h6{
+       width: 100%;
+       display: flex;
+       align-items: flex-start;
+       justify-content: flex-start;
+       font-weight: 600;
+       font-size: 1.3vmax;
+}
+.ReviewBooking .review-book .price-page  .price{
+       width: 40%;
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       flex-direction: column;
+       background: #f5f1f1;
+       border-radius: 10px;
+       margin-top: 0.5vmax;
+       padding: 0.5vmax;
+}
+.ReviewBooking .review-book .price-page  .price .p-line{
+       width: 100%;
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       padding-left: 1vmax;
+       padding-right: 1vmax;
+       padding-top: 0.3vmax;
+
+}
+.ReviewBooking .review-book .price-page  .price .p-line span{
+       font-weight: 600;
+       font-size: 1.1vmax;
+}
+.ReviewBooking .review-book .price-page  .price .p-line small{
+       font-size: 1.2vmax;
+}
+
+.ReviewBooking .review-book .price-page  .price .total-fare{
+       width: 100%;
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       padding-left: 1vmax;
+       padding-right: 1vmax;
+       border-top: 1px solid #0000002a;
+       padding-top: 0.2vmax;
+       margin-top: 1vmax;
+}
+.ReviewBooking .review-book .price-page  .price .total-fare span{
+       font-weight: 700;
+       font-size: 1.1vmax;
+}
+.ReviewBooking .review-book .price-page  .price .total-fare small{
+       font-size: 1.2vmax;
+       font-weight: 600;
+}
+.ReviewBooking .review-book .price-page  .price .coupen{
+       width: 100%;
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       padding-left: 1vmax;
+       padding-right: 1vmax;
+       margin-bottom: 1vmax;
+
+}
+.ReviewBooking .review-book .price-page  .price .coupen span{
+       font-size: 1.1vmax;
+       color: green;
+}
+.ReviewBooking .review-book .price-page  .price .coupen small{
+       font-size: 1.2vmax;
+       color: green;
+
+}
+
+.ReviewBooking .review-book .price-page  .price .final-pay{
+       width: 100%;
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       padding-left: 1vmax;
+       padding-right: 1vmax;
+       margin-bottom: 1vmax;
+       border-top: 1px solid #0000002a;
+        padding-top: 0.5vmax;
+}
+.ReviewBooking .review-book .price-page  .price .final-pay span{
+       font-size: 1.1vmax;
+       font-weight: 700;
+       font-size: 1.3vmax;
+}
+.ReviewBooking .review-book .price-page  .price .final-pay small{
+       font-size: 1.2vmax;
+        font-weight: 700;
+        font-size: 1.3vmax;
+}
+
+
+
+
 .ReviewBooking .review-book .p-detail{
        width: 95%;
        display: flex;
        align-items: center;
        justify-content: center;
        flex-direction: column;
+      padding: 1vmax;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.176);
+  margin-top: 1vmax
 }
 
 .ReviewBooking .review-book .p-detail h6{
@@ -83,7 +202,6 @@ background-color: rgba(230, 248, 255, 0.452);
        justify-content: flex-start;
        font-weight: 600;
        font-size: 1.3vmax;
-       padding-top: 1vmax;
 }
 .ReviewBooking .review-book .p-detail  .details{
        width: 100%;
@@ -110,7 +228,6 @@ background-color: rgba(230, 248, 255, 0.452);
        align-items: center;
        justify-content: space-between;
        flex-direction: column;
-background-color: rgba(230, 248, 255, 0.452);
 
 }
 .ReviewBooking .review-book  .p-contact-detail h6{
@@ -151,6 +268,11 @@ background-color: rgba(230, 248, 255, 0.452);
        justify-content: space-between;
        padding-bottom: 3vmax;
        margin-top: 1vmax;
+       padding: 1vmax;
+       box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.176);
+
+       margin-bottom: 1vmax;
+       border-radius: 10px;
  }
  .ReviewBooking .review-book .last-pay .fare{
        width: 50%;
@@ -158,6 +280,10 @@ background-color: rgba(230, 248, 255, 0.452);
        align-items: flex-start;
        justify-content: space-between;
        flex-direction: column;
+ }
+ .ReviewBooking .review-book .last-pay .fare small{
+     font-weight: 700;
+     font-size: 1.5vmax;
  }
  .ReviewBooking .review-book .last-pay .review-pay{
        width: 50%;
