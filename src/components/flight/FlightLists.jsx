@@ -49,9 +49,9 @@ export default function FlightLists() {
 
     const listData = location.state.data
     const formData = location.state.formData
-    console.log("formData", formData)
+    // console.log("formData", formData)
     const dd = listData?.Results
-    console.log("dd", dd);
+    // console.log("dd", dd);
 
     // console.log("airlines name", dd[0][0].Segments[0][0].Airline.AirlineName);
 
@@ -81,15 +81,15 @@ export default function FlightLists() {
 
     // originalTeachersList = Array.isArray(data.teachers) ? data.teachers : [];
     const originalTeachersList = listData?.Results
-    console.log("originalTeachersList", originalTeachersList);
+    // console.log("originalTeachersList", originalTeachersList);
 
 
 
     const airlineNames = getAllAirlineNames(dd);
-    console.log("All airlines names:", airlineNames);
+    // console.log("All airlines names:", airlineNames);
 
     const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
-    console.log("uniqueAirlineNames", uniqueAirlineNames);
+    // console.log("uniqueAirlineNames", uniqueAirlineNames);
 
     const createSubjectCheckboxes = () => {
         const airlinesContainer = document.getElementById('airlineFilters');
@@ -128,9 +128,9 @@ export default function FlightLists() {
 
     const applyFilters = () => {
         const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
-        console.log("airlineFilters", airlineFilters)
+        // console.log("airlineFilters", airlineFilters)
         const selectedAirlines = Array.from(airlineFilters).map(filter => filter.value);
-        console.log("selected", selectedAirlines)
+        // console.log("selected", selectedAirlines)
         setselected(selectedAirlines);
         const originalAirlineList = listData?.Results || []; // Ensure listData.Results is defined
 
@@ -536,7 +536,7 @@ export default function FlightLists() {
                                     dd.map((flightSegments, index) => {
 
                                         return flightSegments.map((flight, segmentIndex) => {
-                                            console.log("flightSegments", flightSegments);
+                                            // console.log("flightSegments", flightSegments);
                                             return (
                                                 <>{
                                                     (
