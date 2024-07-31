@@ -326,8 +326,23 @@
     padding: 10px 20px;
     margin-bottom: 15px;
 }
+.fareQuoteHed p{
+    margin: 0px;
+}
 .fareQuoteHed p span{
     margin-right: 20px;
+}
+.fareQuotemain p{
+    margin: 0px;
+}
+.fareQuotemainp1,
+.fareQuotemainp4{
+    font-weight:700;
+}
+.fareQuotemainp2,
+.fareQuotemainp3,
+.fareQuotemainp5{
+    color: gray;
 }
 .fareQuotemain{
     border: 1px solid gainsboro;
@@ -337,6 +352,7 @@
 }
 .fareQuotemainh6{
     text-align: center;
+    margin: 0px;
 }
 .fareQuotemainLast{
     display: flex;

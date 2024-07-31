@@ -11,6 +11,27 @@
     font-weight: bold;
     font-size: 20px;
 }
+.mobileLoginSignup{
+    display: none;
+}
+.mobileLoginNavbar,
+.mobileSignupNavbar{
+    margin-top: 6px;
+}
+.mobileLoginNavbar span{
+    background-color: #00b7eb;
+    padding: 7px 40px;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+}
+.mobileSignupNavbar span{
+    background-color: #00b7eb;
+    padding: 7px 35px;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+}
 
 .userDropdown svg {
     font-size: 40px;
@@ -110,7 +131,16 @@
         margin-right: 10px;
     }
     .navcornerr a{
-        margin-left: 20px;
+        margin-left: 25px;
+    }
+    #basic-navbar-nav{
+        padding-bottom: 20px;
+    }
+    .userDropdown{
+        display: none;
+    }
+    .mobileLoginSignup{
+        display: unset;
     }
 }
 

@@ -63,8 +63,13 @@ const CustomNavbar = () => {
                         </Nav>
                         <Nav className="navcornerr">
                             <Nav.Link href="" className='numNavbar'> <FaPhoneAlt /> <span>+91 9876543210</span> </Nav.Link>
+
+                            <div className="mobileLoginSignup">
+                            <Nav.Link href="/login" className='mobileLoginNavbar'> <span><MdLogin size={20} /> Login</span> </Nav.Link>
+                            <Nav.Link href="/signup" className='mobileSignupNavbar'> <span><LuUserPlus size={20} /> Signup</span> </Nav.Link>
+                            </div>
+
                             <NavDropdown
-                                className='userDropdown'
                                 title={<> <FaCircleUser /> </>}
                                 id="basic-nav-dropdown">
                                 <NavDropdown.Item href="/login"> <MdLogin size={20} /> Login</NavDropdown.Item>

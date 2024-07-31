@@ -9,16 +9,19 @@ import { MdDateRange } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { GiCommercialAirplane } from "react-icons/gi";
 import { TbBus } from "react-icons/tb";
-import { FaCircleUser, FaBaby, FaPerson, FaChildReaching } from "react-icons/fa6";
+import { FaCircleUser, FaBaby, FaPerson, FaChildReaching, FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { RiHotelFill } from "react-icons/ri";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from "axios";
-
-
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import PropTypes from 'prop-types';
 
 const FlightSearch = () => {
+  const navigate = useNavigate();
 
   // State to keep track of the selected tab
   const [selectedTab, setSelectedTab] = useState('tab1');
@@ -33,8 +36,6 @@ const FlightSearch = () => {
     setShowDropdown(false);
   };
 
-
-  const navigate = useNavigate();
 
   // ---------------------api-data-start-----------------------------
 
@@ -130,13 +131,13 @@ const FlightSearch = () => {
         Origin: "LKO",
         Destination: "KWI",
         FlightCabinClass: 1,
-        PreferredDepartureTime: "2024-08-12T00:00:00",
-        PreferredArrivalTime: "2024-08-15T00:00:00"
+        PreferredDepartureTime: "2024-08-20T00:00:00",
+        PreferredArrivalTime: "2024-08-29T00:00:00"
       }
     ]
   });
 
-    // console.log("traveler",formData.AdultCount + formData.ChildCount + formData.InfantCount)
+  // console.log("traveler",formData.AdultCount + formData.ChildCount + formData.InfantCount)
 
   const [travellr, settravellr] = useState();
 
@@ -153,30 +154,30 @@ const FlightSearch = () => {
 
       const data = await response.json();
       console.log("hello", data);
-      
 
-        // Save TraceId to local storage with the key "FlightTraceId2"
-        if (data.TraceId) {
-          localStorage.setItem("FlightTraceId2", data.TraceId);
-          console.log("Saved TraceId to local storage:", data.TraceId); // Log TraceId
+
+      // Save TraceId to local storage with the key "FlightTraceId2"
+      if (data.TraceId) {
+        localStorage.setItem("FlightTraceId2", data.TraceId);
+        console.log("Saved TraceId to local storage:", data.TraceId); // Log TraceId
       }
 
       if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.ResultIndex) {
         const resultIndex = data.Results[0][0].FareDataMultiple[0].ResultIndex;
         localStorage.setItem("FlightResultIndex2", resultIndex);
-        
-         console.log("Saved ResultIndex to local storage:", resultIndex);
-    } else {
-        console.log("ResultIndex not found");
-    }
 
-    if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.SrdvIndex) {
-      const srdvIndex = data.Results[0][0].FareDataMultiple[0].SrdvIndex;
-      localStorage.setItem("FlightSrdvIndex2", srdvIndex);
-      console.log("Saved SrdvIndex to local storage:", srdvIndex);
-    } else {
-      console.log("SrdvIndex not found");
-    }
+        console.log("Saved ResultIndex to local storage:", resultIndex);
+      } else {
+        console.log("ResultIndex not found");
+      }
+
+      if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.SrdvIndex) {
+        const srdvIndex = data.Results[0][0].FareDataMultiple[0].SrdvIndex;
+        localStorage.setItem("FlightSrdvIndex2", srdvIndex);
+        console.log("Saved SrdvIndex to local storage:", srdvIndex);
+      } else {
+        console.log("SrdvIndex not found");
+      }
 
 
       navigate("/flight-list", { state: { data: data, formData: formData } });
@@ -192,6 +193,7 @@ const FlightSearch = () => {
     // console.log("date", date);
 
     const formattedDate = new Date(date).toISOString().split('.')[0];
+    console.log("formattedDate", formattedDate);
 
     let updatedSegments = formData.Segments;
     updatedSegments[0][key] = formattedDate;
@@ -225,6 +227,99 @@ const FlightSearch = () => {
   const handleTabChange = (event) => {
     setActiveTab(event.target.value);
   };
+
+  // ----------  Api integration start for slider image  ----------
+  const [offerSliderImages, setOfferSliderImages] = useState([]);
+
+  useEffect(() => {
+    axios.get('https://sajyatra.sajpe.in/admin/api/offer')
+      .then(response => {
+        // console.log('API response:', response.data.data);
+        setOfferSliderImages(response.data.data);
+      })
+      .catch(error => {
+        console.error('Error slider image fetching data: ', error);
+      });
+  }, []);
+
+
+  // slider logics------------
+
+  const SamplePrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", left: "10px", zIndex: 1 }}
+        onClick={onClick}
+      >
+        {/* <FaArrowLeftLong style={{ color: 'black', fontSize: '30px' }} /> */}
+
+      </div>
+    );
+  };
+
+  SamplePrevArrow.propTypes = {
+    className: PropTypes.string,
+    style: PropTypes.object,
+    onClick: PropTypes.func,
+  };
+
+  const SampleNextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", right: "10px", zIndex: 1 }}
+        onClick={onClick}
+      >
+        {/* <FaArrowRightLong style={{ color: 'black', fontSize: '30px' }} /> */}
+      </div>
+    );
+  };
+  SampleNextArrow.propTypes = {
+    className: PropTypes.string,
+    style: PropTypes.object,
+    onClick: PropTypes.func,
+  };
+
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    prevArrow: <SamplePrevArrow />,
+    nextArrow: <SampleNextArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+        }
+      },
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1
+        }
+      }
+    ]
+  };
+
+
+  // ----------  Api integration end for slider image  ----------
 
 
   return (
@@ -632,10 +727,7 @@ const FlightSearch = () => {
                     src="https://www.vimaansafar.com/img/Vimaansafar-1.jpg?vt"
                     alt="First slide"
                   />
-                  <Carousel.Caption>
-                    <h3>First Slide</h3>
-                    <p>Description for the first slide.</p>
-                  </Carousel.Caption>
+                 
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
@@ -643,10 +735,7 @@ const FlightSearch = () => {
                     src="https://www.vimaansafar.com/img/International-Flight.jpg"
                     alt="Second slide"
                   />
-                  <Carousel.Caption>
-                    <h3>Second Slide</h3>
-                    <p>Description for the second slide.</p>
-                  </Carousel.Caption>
+                 
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
@@ -654,10 +743,7 @@ const FlightSearch = () => {
                     src="https://www.vimaansafar.com/img/Zero-vs.jpg?"
                     alt="Third slide"
                   />
-                  <Carousel.Caption>
-                    <h3>Third Slide</h3>
-                    <p>Description for the third slide.</p>
-                  </Carousel.Caption>
+                  
                 </Carousel.Item>
               </Carousel>
             </div>
@@ -703,7 +789,7 @@ const FlightSearch = () => {
         </div>
       </section>
 
-      <section className="exictingOffers">
+      {/* <section className="exictingOffers">
         <div className="container-fluid mb-5 ss">
           <div className="row">
             <h5>Exicting offers</h5>
@@ -719,7 +805,88 @@ const FlightSearch = () => {
             </div>
           </div>
         </div>
+      </section> */}
+
+
+      <section className='exictingOffers mt-5 mb-5'>
+        <div className="container-fluid">
+          <h5 className='mb-3'>Exclusive Offers</h5>
+          <Slider {...settings}>
+            {offerSliderImages.map((offer, offerIndex) => {
+              return (
+                <div className="exictingOfferslider col-md-3 mt-4 p-2" key={offerIndex}>
+                  <img className='img-fluid' src={offer.slider_img} />
+                </div>
+              )
+            }
+            )}
+          </Slider>
+        </div>
       </section>
+
+      {/* <section className="exclusive-dealsSec">
+        <div className="container-fluid mb-5">
+          <div className="row mb-4">
+            <h2>Exclusive Deals</h2>
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
+                <img src="https://www.vimaansafar.com/img/city/delhi.jpg" className="img-fluid" alt="Bangkok" />
+                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
+                  <h3>Delhi</h3>
+                  <p>Rs 2200</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
+                <img src="https://www.vimaansafar.com/img/city/amritsar.jpg" className="img-fluid" alt="Bangkok" />
+                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
+                  <h3>Amritsar</h3>
+                  <p>Rs 1900</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
+                <img src="https://www.vimaansafar.com/img/city/srinagar.jpg" className="img-fluid" alt="Bangkok" />
+                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
+                  <h3>Srinagar</h3>
+                  <p>Rs 2400</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
+                <img src="https://www.vimaansafar.com/img/city/bangkok.jpg" className="img-fluid" alt="Bangkok" />
+                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
+                  <h3>Bangkok</h3>
+                  <p>Rs 7000</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
+                <img src="https://www.vimaansafar.com/img/city/dubai.jpg" className="img-fluid" alt="Bangkok" />
+                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
+                  <h3>Dubai</h3>
+                  <p>Rs 11000</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
+                <img src="https://www.vimaansafar.com/img/city/hongkong.jpg" className="img-fluid" alt="Bangkok" />
+                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
+                  <h3>Hong Kong</h3>
+                  <p>Rs 13000</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> */}
+
+
 
       <section className="flightsec7 bg-light">
         <div className="container">
