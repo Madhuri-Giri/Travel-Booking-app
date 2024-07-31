@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 
 export default function FlightDetails() {
 
+    const navigate = useNavigate();
+
     //   ----------------------------------------------------
 
     const location = useLocation();
@@ -171,13 +173,13 @@ export default function FlightDetails() {
             setSeatData(seatsArray);
         }
     }, []);
-    
+
 
     const seatmap = async () => {
         const traceId = localStorage.getItem('FlightTraceId2');
         const resultIndex = localStorage.getItem('FlightResultIndex2');
         const srdvType = localStorage.getItem('FlightSrdvType');
-        const srdvIndex = localStorage.getItem('FlightSrdvIndex2'); 
+        const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
 
         if (!traceId || !resultIndex) {
             console.error('TraceId or ResultIndex not found in local storage');
@@ -215,8 +217,11 @@ export default function FlightDetails() {
         }
     }
 
-  
-   
+     const reviewHandler = () => {
+        navigate('/flight-review')
+     }
+
+
     // ----------------------------------------------seat and meal api------------------------------------
 
 
@@ -442,31 +447,41 @@ export default function FlightDetails() {
     };
 
     const renderConfirmedDetails = (details, type) => (
-        <div className="mt-4 col-md-6 formdettlsDesk" style={{ display: details.length > 0 ? 'block' : 'none' }}>
-            {details.map((detail, index) => (
-                <div key={index} className="d-flex align-items-center mb-2">
-                    <div className="flex-grow-1 formdettlsDeskdiv ml-2">
-                        <input
-                            type="checkbox"
-                            className="form-check-input selectDetInp"
-                            checked={detail.selected}
-                            onChange={() => toggleSelect(index, type)}
-                        />
-                        <div className="formdettlsDeskdivnmGen">
-                            <div>
-                                <strong>Gender:</strong> <span>{detail.gender}</span>
+        <div className="row ">
+            <div className="mt-4 col-md-6 formdettlsDesk" style={{ display: details.length > 0 ? 'block' : 'none' }}>
+                {details.map((detail, index) => (
+                    <div key={index} className="d-flex align-items-center mb-2">
+                        <div className="flex-grow-1 formdettlsDeskdiv ml-2">
+                            <input
+                                type="checkbox"
+                                className="form-check-input selectDetInp"
+                                checked={detail.selected}
+                                onChange={() => toggleSelect(index, type)}
+                            />
+                            <div className="formdettlsDeskdivnmGen">
+                                <div>
+                                    <strong>Gender:</strong> <span>{detail.gender}</span>
+                                </div>
+                                <div>
+                                    <strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span>
+                                </div>
                             </div>
+
                             <div>
-                                <strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span>
+                                <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete(type, index)} />
                             </div>
-                        </div>
-                        <div>
-                            <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete(type, index)} />
                         </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
+            <div className="mt-4 col-md-6 float-right">
+                <button  className="mt-3 bg-primary p-2 text-light" >
+                    Proceed to seat
+                </button>
+            </div>
+
         </div>
+
     );
 
     const toggleSelect = (index, type) => {
@@ -660,8 +675,8 @@ export default function FlightDetails() {
         }
     }
 
- 
-    
+
+
 
 
     // seats meals baggage tabs
@@ -677,25 +692,32 @@ export default function FlightDetails() {
                             alt="First slide"
                         />
                     </div>
-                    <div className="col-lg-6 seatsTabssColText">
+                      </div>
+                    <div className="row col-12">
+                        <div className="seatsTabssColText">
+                            <div className="seat-selection row">
+                                {seatData.map((seat) => (
+                                    <div key={seat.id} className="col-3">
+                                        <button className="f-seat">
+                                        <h6>{seat.seatNumber}</h6>
+                                            <img
+                                                className="img-fluid"
+                                                src='/src/assets/images/seat-2-removebg-preview.png'
+                                                alt="Seat"
+                                            />
+                                            <p>₹{seat.price}</p>
+                                        </button>
 
-                    <div className="seat-selection">
-            {seatData.map((seat) => (
-                <button key={seat.id} className="seat">
-                    <img
-                                    className="img-fluid"
-                                    src='/src/assets/images/seat-2-removebg-preview.png'
-                                    alt="First slide"
-                                />
-                    <h6>{seat.seatNumber}</h6>
-                    <p>₹{seat.price}</p>
-                </button>
-            ))}
-        </div>
 
-
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
-                </div>
+
+
+
+                
 
             </div>
         );
@@ -948,39 +970,39 @@ export default function FlightDetails() {
         );
     };
 
-  
+
 
     const renderBaggageTab = () => {
         return (
             <div className="baggageTabbss">
-            <h5>Select Your Baggage Option</h5>
-            {ssrData.map((ssr, index) => (
-                <div key={index} className="baggage-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>{ssr.Weight} kg</p> {/* Corrected to ssr.Weight */}
-                            <h6>₹{ssr.Price}</h6> {/* Corrected to ssr.Price */}
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="checkbox" id={`carryOn${index}`} className="form-check-input" />
-                                <label className="form-check-label" htmlFor={`carryOn${index}`}>Carry-On</label>
+                <h5>Select Your Baggage Option</h5>
+                {ssrData.map((ssr, index) => (
+                    <div key={index} className="baggage-selection">
+                        <div className="row">
+                            <div className="col-md-4">
+                                <p>{ssr.Weight} kg</p> {/* Corrected to ssr.Weight */}
+                                <h6>₹{ssr.Price}</h6> {/* Corrected to ssr.Price */}
                             </div>
-                            <div className="form-check">
-                                <input type="checkbox" id={`checkedBag${index}`} className="form-check-input" />
-                                <label className="form-check-label" htmlFor={`checkedBag${index}`}>Checked Bag</label>
+                            <div className="col-md-4">
+                                <div className="form-check">
+                                    <input type="checkbox" id={`carryOn${index}`} className="form-check-input" />
+                                    <label className="form-check-label" htmlFor={`carryOn${index}`}>Carry-On</label>
+                                </div>
+                                <div className="form-check">
+                                    <input type="checkbox" id={`checkedBag${index}`} className="form-check-input" />
+                                    <label className="form-check-label" htmlFor={`checkedBag${index}`}>Checked Bag</label>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-4 baggagge-selectionbtn">
-                            <div>
-                                <button>+ Add</button>
+                            <div className="col-md-4 baggagge-selectionbtn">
+                                <div>
+                                    <button>+ Add</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            ))}
-        </div>
-        
+                ))}
+            </div>
+
         );
     };
 
@@ -992,7 +1014,7 @@ export default function FlightDetails() {
                     <div className="row">
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <Link to='/flight-Farequote'>
-                            <IoChevronBackOutline />
+                                <IoChevronBackOutline />
                             </Link>
                             <TiPlane className="mt-1" />
                             <p> {formData.Segments[0].Origin} </p>
@@ -1170,7 +1192,7 @@ export default function FlightDetails() {
                                                 {/* <div className="selectSeatMealDivBtn" onClick={() => setShowTabs(!showTabs)}>
                                                     Add Seats, Meals, Baggage & more
                                                 </div> */}
-                                                  <div className="selectSeatMealDivBtn" onClick={mealAndseatHandler}>
+                                                <div className="selectSeatMealDivBtn" onClick={mealAndseatHandler}>
                                                     Add Seats, Meals, Baggage & more
                                                 </div>
                                             </div>
@@ -1215,7 +1237,7 @@ export default function FlightDetails() {
 
                                             <div className="col-12 lastBtnssContinue">
                                                 <h5>Fare Breakup <span>₹13465</span></h5>
-                                                <button >Continue</button>
+                                                <button onClick={reviewHandler} >Continue</button>
                                             </div>
                                         </form>
 

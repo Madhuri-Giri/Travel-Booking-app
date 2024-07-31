@@ -193,13 +193,13 @@ const PassangerInfo = () => {
         <p>SELECTED SEATS: <span>{selectedSeats.join(', ')}</span></p>
 
         <div className="p-detail">
-          <h6>Passengers Details</h6>
+          <h6>Traveller Details</h6>
           <p>/ 1 Seat Selected</p>
         </div>
         <div className="pessanger-main">
           <form onSubmit={blockHandler}>
             <div className="p-top">
-              <h6>Add Passenger Information</h6>
+              <h6>Enter Traveller Details</h6>
               <div className="pas">
                 <div className="ipt">
                   <label>Male</label>
