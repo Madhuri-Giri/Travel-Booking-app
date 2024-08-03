@@ -1,10 +1,10 @@
 /* HotelSearch.css */
 
+/* --------- Start --------- */
 .hotel_container {
   margin: 20px;
   padding: 20px;
   border-radius: 10px;
-  /* background-color: #f8f5f5; */
   background-color: #00b7eb;
 }
 
@@ -14,10 +14,8 @@
   margin-left: 120px;
 }
 
-
 .content_box p {
   font-size: 1.2vmax;
-  
 }
 
 .images_container {
@@ -56,111 +54,156 @@
   border-radius: 20px;
   width: 80%;
 }
-/* ------------------------ */
+/* ----------- End ---------- */
 
-/* ------------------ */
+/* ----------- Start Form--------- */
 .sec_book {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100px;
-  }
-  
-  .hotel_booking {
-    width: 100%;
-    max-width: 1200px; 
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-  }
-  
-  .form-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px; 
-  }
-  
-  .form-field {
-    flex: 1;
-    min-width: 200px;
-    margin: 10px 0; 
-  }
-  
-  .form_lable {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .form_in {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-  }
-  
-  .guest_field {
-    position: relative;
-    flex: 1;
-  }
-  
-  .guest_options {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: white;
-    border: 1px solid #ccc;
-    z-index: 10;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  
-  .guest_option {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  .react-datepicker-wrapper {
-    width: 100%;
-  }
-  
-  .react-datepicker__input-container {
-    width: 100%;
-  }
-  .btn-sub {
-    padding: 10px;
-    background-color: #00b7eb;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 25px; 
-    align-self: center; 
-  }
-  
-  .btn-sub:hover {
-    background-color: #00b7eb;
-  }
-  /*------------ ------------*/
-
-.offer_container {
-  margin-top: 20px;
-  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
 }
 
-.offer_img {
-  width: 90%;
-  
+.hotel_booking {
+  width: 100%;
+  max-width: 1200px; 
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
 }
-/* ---------------------------- */
 
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px; 
+}
+
+.form-field {
+  flex: 1;
+  min-width: 200px;
+  margin: 10px 0; 
+}
+
+.form_lable {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form_in {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.guest_field {
+  position: relative;
+  flex: 1;
+}
+
+.guest_options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  z-index: 10;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.guest_option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__input-container {
+  width: 100%;
+}
+
+.btn-sub {
+  padding: 10px;
+  background-color: #00b7eb;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 25px; 
+  align-self: center; 
+}
+
+.btn-sub:hover {
+  background-color: #00b7eb;
+}
+/* --------------- End -------------- */
+
+/* ----------- End ------------- */
+.Exclusive_offer {
+  margin-top: 2vmax;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  background: #fff;
+}
+.Exclusive_offer  h5{
+  font-size: 1.7vmax;
+  font-weight: 700;
+  margin-top: 1vmax;
+  width: 85%;
+}
+ .offer_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: row;
+  padding: 1vmax;
+  margin-top: 1vmax;
+  margin-bottom: 1vmax;
+}
+ .offer_box{
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  overflow: hidden;
+  overflow-x: auto;
+  gap: 2vmax;
+}
+
+  .offer_box::-webkit-scrollbar{
+display: none;
+}
+
+ .offer_box img{
+  width: 100%;
+  height: 300px;
+}
+/* ------------- End ----------- */
+
+/* ------------- start ----------- */
 .booking_head {
   margin-top: 40px;
   text-align: center;
+  margin-bottom: 1vmax;
 }
 
+.booking_head h5{
+font-size: 1.7vmax;
+  font-weight: 700;
+  margin-top: 1vmax;
+}
 .Hotel_Booking_container {
   position: relative;
   width: 100%;
@@ -191,26 +234,22 @@
   width: 200px;
   height: auto;
 }
-/* ---------------------------- */
-
-
-/* Media Queries for Responsiveness */
-@media (max-width: 1280px) {
-
-  .images_container {
+/* ------------- End -------------- */
+@media (max-width: 1440px) {
+.images_container {
     margin-top: 100px;
     position: relative;
     width: 300px;
-    margin-left: 600px;
+    
   }
-  
+
   .img_box {
     position: absolute;
     width: 300px;
     border: 3px solid black;
     border-radius: 20px;
   }
-  
+
   .image1 {
     bottom: -100px;
     left: -210px;
@@ -218,7 +257,7 @@
     border-radius: 20px;
     width: 330px;
   }
-  
+
   .image2 {
     bottom: -280px;
     right: 280px;
@@ -226,37 +265,30 @@
     border-radius: 20px;
     margin-bottom: 10px;
   }
-  
+
   .image3 {
     bottom: -80px;
     right: 530px;
     border: 3px solid black;
     border-radius: 20px;
     width: 80%;
-    
   }
 }
+
 @media (max-width: 1200px) {
-  .content_wrapper{
-    margin-left: 0;
-  }
-  .content_box p {
-    font-size: 2.5vmax;
-    
-  }
   .hotel_container {
-   margin-top: 0;
+    margin-top: 5px;
   }
-  .hotel_booking {
-    margin-top: 0;
-  }
-  .offer_img {
-    width: 100%;
-    
-  }
+
   .content_wrapper {
+    margin-left: 0;
     flex-direction: column;
     margin-top: 0;
+ 
+  }
+
+  .content_box p {
+    font-size: 2.5vmax;
   }
 
   .images_container {
@@ -269,7 +301,6 @@
   .img_box {
     position: relative;
     width: 100%;
-   
   }
 
   .image1,
@@ -281,18 +312,54 @@
     bottom: 0;
     left: 0;
     right: 0;
-    
   }
+
+  .offer_img {
+    width: 100%;
+    padding-left: 0;
+  }
+  
+  .hotel_booking {
+    margin-top: 0;
+  }
+
 }
 
 @media (max-width: 768px) {
-  .content_wrapper{
+  .hotel_container {
+    padding: 10px;
+    margin-top: 7px;
+  }
+
+  .content_wrapper {
     margin-left: 0;
   }
+  
+  .images_container {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .img_box {
+    position: relative;
+    width: 100%;
+  }
+
+  .image1,
+  .image2,
+  .image3 {
+    margin-bottom: 10px;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+
   .form-row {
     flex-direction: column;
   }
- 
 
   .form-field {
     margin-right: 0;
@@ -304,51 +371,43 @@
     width: 100%;
   }
 
+  .offer_img {
+    width: 100%;
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  
+  .hotel_container {
+    padding: 10px;
+    margin-top: 5px;
+  }
+
+  .content_wrapper {
+    margin-left: 0;
+  }
+  
   .images_container {
     margin-top: 20px;
     width: 100%;
-   
   }
-  
+
   .img_box {
     position: relative;
     width: 100%;
-   
   }
 
   .image1,
   .image2,
   .image3 {
-    margin-bottom: 10px;
     position: relative;
-    width: 90%;
+    width: 100%;
     bottom: 0;
     left: 0;
     right: 0;
-    
-  }
-    .offer_img {
-    width: 100%;
-    
-  }
-  
-}
-
-@media (max-width: 576px) {
-  .content_wrapper{
-    margin-left: 0;
-  }
-  .offer_img {
-    width: 100%;
-    
-  }
-  .hotel_container {
-    padding: 10px;
   }
 
-  .hotel_booking {
-    padding: 10px;
-  }
 
   .form-field .form_lable {
     margin-right: 0;
@@ -374,25 +433,19 @@
     font-size: 14px;
     padding: 10px;
   }
-
-  .images_container {
-    margin-top: 20px;
+  
+  .offer_img {
     width: 100%;
+    padding-left: 0;
   }
 
-  .img_box {
-    position: relative;
-    width: 100%;
+  .hotel_booking {
+    padding: 10px;
   }
 
-  .image1,
-  .image2,
-  .image3 {
-    position: relative;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: none;
+  .booking_box {
+    width: 80%; 
+    max-width: 320px; 
   }
 }
+

@@ -34,7 +34,12 @@ import BusTikit from './components/bus/DownloadTikit/BusTikit';
 import FareQuote from './components/flight/FareQuote';
 import EnterNumber from './pages/NewOne/MobileNumber/EnterNumber';
 import SignUp from './pages/NewOne/signup/SignUp';
+
+import HotelBillReceipt from './components/hotelBill/HotelBillReceipt';
+
+
 import FlightReview from './components/flight/FlightReview';
+
 
 const App = () => {
   const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number'];
@@ -70,6 +75,7 @@ const App = () => {
           <Route path='/hotel-description' element={<HotelDescription />} />
           <Route path='/help' element={<Help />} />
           <Route path='/review' element={<Reviews />} />
+          <Route path='/hotel-bill' element={<HotelBillReceipt />} />
           <Route path='/flight-Farequote' element={<FareQuote />} />
           <Route path='/flight-review' element={<FlightReview />} />
 

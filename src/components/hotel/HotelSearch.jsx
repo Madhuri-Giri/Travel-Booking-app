@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Button, Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./HotelSearch.css";
-import hotel_img from "../../../src/assets/images/hotel_img.png";
 import offer_img1 from "../../../src/assets/images/offer_img6.jpg";
 import offer_img2 from "../../../src/assets/images/offer_img7.jfif";
 import offer_img3 from "../../../src/assets/images/offer_img8.jpg";
@@ -15,37 +14,35 @@ import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 
 const HotelSearch = () => {
-  const slideContainerRef = useRef(null);
+  //--- Navigate Other Page ---
+  const navigate = useNavigate();
+
+//------------------- Start  carousel code ---------------------
+  const slideRef = useRef(null);
   const intervalRef = useRef(null);
   const scrollWidthRef = useRef(0);
 
-  const navigate = useNavigate();
-
   const startAutoScroll = () => {
     intervalRef.current = setInterval(() => {
-      if (slideContainerRef.current) {
-        const imageWidth =
-          slideContainerRef.current.querySelector("img").clientWidth + 32; // Including gap between images
+      if (slideRef.current) {
+        const imageWidth = slideRef.current.querySelector('img').clientWidth + 32; // Including gap between images
         scrollWidthRef.current += imageWidth;
-
-        slideContainerRef.current.scrollTo({
+        
+        slideRef.current.scrollTo({
           left: scrollWidthRef.current,
-          behavior: "smooth",
+          behavior: 'smooth',
         });
 
         // Reset scroll to start when it reaches the end
-        if (
-          scrollWidthRef.current >=
-          slideContainerRef.current.scrollWidth - slideContainerRef.current.clientWidth
-        ) {
+        if (scrollWidthRef.current >= slideRef.current.scrollWidth - slideRef.current.clientWidth) {
           scrollWidthRef.current = 0;
-          slideContainerRef.current.scrollTo({
+          slideRef.current.scrollTo({
             left: 0,
-            behavior: "auto",
+            behavior: 'auto',
           });
         }
       }
-    }, 2000);
+    }, 2000); // Adjust scroll interval as needed
   };
 
   const stopAutoScroll = () => {
@@ -54,17 +51,15 @@ const HotelSearch = () => {
 
   useEffect(() => {
     startAutoScroll();
-    return () => clearInterval(intervalRef.current);
+
+    // Clean up interval on component unmount
+    return () => {
+      stopAutoScroll();
+    };
   }, []);
+  //-------------------- End carousal code ------------------------
 
-  const [inputs, setInputs] = useState({
-    cityOrHotel: "",
-    checkIn: new Date("2020-04-30"),
-    checkOut: new Date("2020-05-01"),
-    adults: 1,
-    children: 0,
-  });
-
+  
   const [showGuestOptions, setShowGuestOptions] = useState(false);
   const guestRef = useRef(null);
 
@@ -88,6 +83,17 @@ const HotelSearch = () => {
           : 0,
     }));
   };
+
+
+// ------------- Start API code -------------------
+
+const [inputs, setInputs] = useState({
+  cityOrHotel: "",
+  checkIn: new Date("2020-04-30"),
+  checkOut: new Date("2020-05-01"),
+  adults: 1,
+  children: 0,
+});
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -136,7 +142,7 @@ const HotelSearch = () => {
       }
 
       const data = await response.json();
-      console.log("API Response:", data);
+      console.log("hotel-search API Response:", data);
 
       if (data && data.Results) {
         localStorage.setItem("traceId", "1");
@@ -155,46 +161,12 @@ const HotelSearch = () => {
     }
   };
 
+  // --------------- End API Code ---------------------
+
   const handleClickOutside = (event) => {
     if (guestRef.current && !guestRef.current.contains(event.target)) {
       setShowGuestOptions(false);
     }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          initialSlide: 1,
-        },
-      },
-    ],
   };
 
   return (
@@ -243,7 +215,7 @@ const HotelSearch = () => {
         {/* End section */}
 
         {/* New section start */}
-        <section className="sec_book">
+      <section className="sec_book">
           <div className="hotel_booking">
             <form onSubmit={handleSubmit}>
               <div className="form-row">
@@ -297,35 +269,28 @@ const HotelSearch = () => {
               </div>
             </form>
           </div>
-        </section>
+      </section>
       </div>
       {/* End section */}
 
-         {/* new section start */}
-      <section>
-        <Container>
-          <div className="Exclusive-offer">
-            <h5>
-              Exclusive <span style={{ color: "#00b7eb" }}>Offers</span>
-            </h5>
+      {/* new section start */}
+     <section>
+      <Container>
+      <div className="Exclusive_offer">
+        <h5>Exclusive <span style={{color:"#00b7eb"}}>Offers</span></h5>
+        <div className="offer_container" onMouseEnter={stopAutoScroll} onMouseLeave={startAutoScroll}>
+          <div className="offer_box" ref={slideRef}>
+            <img src={offer_img1} alt="Offer 1" />
+            <img src={offer_img2} alt="Offer 2" />
+            <img src={offer_img3} alt="Offer 3" />
+            <img src={offer_img1} alt="Offer 4" />
+            <img src={offer_img2} alt="Offer 5" />
+            <img src={offer_img3} alt="Offer 6" />
           </div>
-          <div className="offer_container">
-            <div className="offer_box" ref={slideContainerRef} >
-            <Slider {...settings}>
-                <div>
-                  <img src={offer_img1} alt="Offer Image 1" className="offer_img" />
-                </div>
-                <div>
-                  <img  src={offer_img2}  alt="Offer Image 2" className="offer_img" />
-                </div>
-                <div>
-                  <img src={offer_img3} alt="Offer Image 3" className="offer_img" />
-                </div>
-              </Slider>
-            </div>
-          </div>
-        </Container>
-      </section>
+        </div>
+      </div>
+      </Container>
+    </section>
       {/* End section */}
 
       {/* new section start */}

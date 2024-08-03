@@ -12,13 +12,15 @@
 .hotel_room_box {
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 15px;
+  padding: 20px;
   margin-bottom: 20px;
   background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .hotel_room_box h3 {
   margin-top: 0;
+  color: #333;
 }
 
 .loading-text, .error-text, .no-data-text {
@@ -41,8 +43,75 @@
   padding: 10px 15px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
 .reserve_button:hover {
+  background-color: #0099cc;
+}
+
+.remove_button {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.remove_button:hover {
+  background-color: #e60000;
+}
+
+.guest_selection {
+  margin-top: 20px;
+}
+
+.guest_count {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.guest_count button {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 5px;
+  transition: background-color 0.3s ease;
+}
+
+.guest_count button:hover {
+  background-color: #e0e0e0;
+}
+
+.guest_count span {
+  font-size: 16px;
+  margin: 0 10px;
+}
+
+.selected_rooms_summary {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
+
+.continue_button {
   background-color: #00b7eb;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.continue_button:hover {
+  background-color: #0099cc;
 }
