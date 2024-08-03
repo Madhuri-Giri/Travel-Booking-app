@@ -261,6 +261,76 @@
       padding: 0.5vmax 1vmax;
       outline: none;
  }
+
+.ReviewBooking .review-book .new-contact{
+       width: 95%;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       flex-direction: column;
+      padding: 1vmax;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.176);
+  margin-top: 1vmax   
+}
+.ReviewBooking .review-book .new-contact h6{
+       width: 100%;
+       display: flex;
+       align-items: flex-start;
+       justify-content: flex-start;
+       font-weight: 600;
+       font-size: 1.3vmax;
+}
+.ReviewBooking .review-book .new-contact form{
+       width: 100%;
+}
+.ReviewBooking .review-book .new-contact form .c-detail{
+       width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row;
+        margin-top: 1vmax;
+  margin-bottom: 1vmax   
+
+}
+.ReviewBooking .review-book .new-contact form .c-detail .cont{
+       width: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-direction: row;
+        margin-top: 1vmax;
+  margin-bottom: 1vmax  ;
+}
+.ReviewBooking .review-book .new-contact form .c-detail .cont label{
+      font-weight: 600;
+}
+.ReviewBooking .review-book .new-contact form .c-detail .cont input{
+       padding: 0.5vmax 2vmax;
+       outline: none;
+ }
+ .ReviewBooking .review-book .new-contact form .c-detail  .p-cont{
+       width: 22%;
+       display: flex;
+       align-items: center;
+       justify-content: space-evenly;
+       flex-direction: row;
+       margin-top: 1vmax;
+ margin-bottom: 1vmax  ;
+ }
+ .ReviewBooking .review-book .new-contact form .c-detail  .p-cont button{
+     border: none;
+     padding: 0.7vmax 3vmax;
+     color: #ffff;
+     background-color: #00b7eb;
+     font-weight: 600;
+     border-radius: 10px;
+
+ }
+ 
+
+
  .ReviewBooking .review-book .last-pay{
        width: 95%;
        display: flex;
@@ -295,12 +365,17 @@
        display: flex;
        align-items: flex-end;
        border: none;
-       padding: 0.6vmax 2vmax;
+       padding: 0.7vmax 2vmax;
        color: #ffff;
        font-weight: 600;
-       background: #0f7000;
+       background-color: #00b7eb;
+border-radius: 10px;
        justify-content: flex-end;
  }
+
+
+
+
 
  @media (max-width:600px) {
 

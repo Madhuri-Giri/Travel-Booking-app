@@ -12,8 +12,8 @@ const ReviewBooking = () => {
  
 
   const [paymentDetails, setPaymentDetails] = useState(null);
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [phone, setPhone] = useState('');
   const [totalFare, setTotalFare] = useState(0); 
   const navigate = useNavigate();
 
@@ -29,6 +29,36 @@ const ReviewBooking = () => {
   }, []);
 
 
+  // ---------------------------new payment ---------------------------
+  const newContactInitialData = {
+    name: '',
+    email: '',
+    contact: '',
+  };
+
+  const [newContactData, setNewContactData] = useState(newContactInitialData);
+  const [isContactSubmitted, setIsContactSubmitted] = useState(false);
+  
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setNewContactData({
+      ...newContactData,
+      [name]: value,
+    });
+  };
+
+  const newcontactHandler = (e) => {
+       e.preventDefault();
+
+       localStorage.setItem('newContactData', JSON.stringify(newContactData));
+
+    setNewContactData(newContactInitialData);
+    setIsContactSubmitted(true);
+  }
+
+  //  ------------------------------------------------------------------
+
   useEffect(() => {
     const savedTotalPrice = localStorage.getItem('totalPrice');
     if (savedTotalPrice) {
@@ -40,11 +70,16 @@ const ReviewBooking = () => {
     navigate('/passenger-list');
   };
 
+
   const fetchPaymentDetails = async () => {
     try {
+
+      const transactionNum = localStorage.getItem('transactionNum')
+      // console.log(transactionNum)
+
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
         amount: totalFare,
-        user_id: '1',
+        user_id: transactionNum,
       });
 
       if (response.data.status === 'success') {
@@ -61,7 +96,10 @@ const ReviewBooking = () => {
     }
   };
 
+
+
   // --------------------------------
+
 
   const handlePayment = async () => {
     try {
@@ -97,9 +135,9 @@ const ReviewBooking = () => {
         },
 
         prefill: {
-          name: 'Customer Name',
-          email: email,
-          contact: phone,
+          username : 'pallavi',
+          email: 'pallavi@gmail.com',
+          mobile:  '9999999999',
         },
         notes: {
           address: 'Some Address',
@@ -317,13 +355,44 @@ const bookHandler = async () => {
 
 
 
+// -------------------------------------------------------------------------------------------------
+
+
+
+const [seatPrices, setSeatPrices] = useState([]);
+    const [taxes, setTaxes] = useState(0);
+    const [igst, setIgst] = useState(0);
+    const [offeredPrice, setOfferedPrice] = useState(0);
+
+useEffect(() => {
+    const busLayoutResponse = localStorage.getItem('BuslayoutResponse');
+    if (busLayoutResponse) {
+        const parsedResponse = JSON.parse(busLayoutResponse);
+        const result = parsedResponse.Result;
+        if (result && Array.isArray(result)) {
+            const prices = result.flat().map(seat => ({
+                offeredPrice: seat.Price.OfferedPrice,
+                tax: seat.Price.Tax,
+                igstRate: seat.Price.GST.IGSTRate,
+            }));
+            setSeatPrices(prices);
+        }
+    }
+}, []);
+
+
+
+const totalPayment = totalFare + taxes + (totalFare * 0.18); 
+
+// -------------------------------------------------------------------------------------------------
+
    
   return (
     <div className='ReviewBooking'>
       <div className="review-book">
         <h5><i onClick={back} className="ri-arrow-left-s-line"></i> Review Details</h5>
         <div className="test-account">
-          <h6>TESTING ACCOUNT</h6>
+          <h6>Testing Account</h6>
           <div className="sdfgh">
             <div className="test-left">
               <p>Brand East</p>
@@ -342,10 +411,55 @@ const bookHandler = async () => {
           </div>
         </div>
 
+
+        <div className="new-contact">
+      <h6>Contact Details</h6>
+      <form onSubmit={newcontactHandler}>
+        <div className="c-detail">
+          <div className="cont">
+            <label>Name</label>
+            <input
+              type="text"
+              name="name"
+              value={newContactData.name}
+              onChange={handleInputChange}
+              placeholder="Enter Your Name"
+              required
+            />
+          </div>
+          <div className="cont">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={newContactData.email}
+              onChange={handleInputChange}
+              placeholder="Enter Your Email"
+              required
+            />
+          </div>
+          <div className="cont">
+            <label>Contact</label>
+            <input
+              type="number"
+              name="contact"
+              value={newContactData.contact}
+              onChange={handleInputChange}
+              placeholder="Enter Your Contact"
+              required
+            />
+          </div>
+          <div className="p-cont">
+            <button type="submit">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
      
 
         <div className="p-detail">
-                 <h6>TRAVELLER DETAILS</h6>
+                 <h6>Traveller Details</h6>
                  {passengerData.map((pass, index) => (
                            <div key={index} className='details'>
                               <div className="one">
@@ -374,38 +488,38 @@ const bookHandler = async () => {
 
 
         <div className="price-page">
-          <h6>PRICE DETAILS</h6>
-          <div className="price">
-                 <div className="p-line">
-                     <span>Base Fare </span>
-                     <small>$0</small>
-                 </div>
-                 <div className="p-line">
-                     <span>Taxes </span>
-                     <small>$0</small>
-                 </div>
-                 <div className="total-fare">
-                     <span>Total Fare</span>
-                     <small>$00</small>
-                 </div>
-                 <div className="p-line">
-                     <span>Convenience Fee</span>
-                     <small>$0</small>
-                 </div>
-                 <div className="p-line">
-                     <span>Sub Total</span>
-                     <small>$0</small>
-                 </div>
-                 <div className="coupen">
-                  <span>Coupon Code [NOFEE]</span>
-                  <small>25% OFF</small>
-                 </div>
-                 <div className="final-pay">
-                 <span>Total Payment</span>
-                 <small>{totalFare}</small>
-                 </div>
-          </div>
-        </div>
+    <h6>Price Details</h6>
+    <div className="price">
+      <div className="p-line">
+        <span>Base Fare</span>
+        <small>{totalFare.toFixed(2)}</small>
+      </div>
+      <div className="p-line">
+        <span>Taxes</span>
+        <small>{taxes}</small>
+      </div>
+      <div className="total-fare">
+        <span>Total Price</span>
+        <small>{totalFare.toFixed(2)}</small> 
+      </div>
+      <div className="p-line">
+        <span>Convenience Fee</span>
+        <small>0</small>
+      </div>
+      <div className="p-line">
+        <span>IGST (18%)</span>
+        <small>{(totalFare * 0.18).toFixed(2)}</small>
+      </div>
+      <div className="coupen">
+        <span>Offered Price</span>
+        <small>{offeredPrice}</small>
+      </div>
+      <div className="final-pay">
+        <span>Total Payment</span>
+        <small>{totalPayment.toFixed(2)}</small>
+      </div>
+    </div>
+      </div>
 
 
 
@@ -414,10 +528,12 @@ const bookHandler = async () => {
           <div className="last-pay">
             <div className="fare">
               <h6>TOTAL TICKET AMOUNT</h6>
-              <small >${totalFare}</small>
+              <small >{totalPayment.toFixed(2)}</small>
             </div>
             <div className="review-pay">
-              <button onClick={handlePayment}>Proceed To Pay</button>
+              <button  style={{
+                  backgroundColor: !isContactSubmitted ? '#ccc' : '', 
+                }} onClick={handlePayment}   disabled={!isContactSubmitted} >Proceed To Pay</button>
             </div>
           </div>
         </div>

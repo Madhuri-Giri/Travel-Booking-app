@@ -330,6 +330,8 @@ export default function FlightDetails() {
         } else if (type === 'infant') {
             setInfantDetails(details);
         }
+
+        localStorage.setItem(`${type}Details`, JSON.stringify(details));
     };
 
 
@@ -358,6 +360,8 @@ export default function FlightDetails() {
         } else {
             setError(`Please fill out all fields for ${type} ${index + 1}.`);
         }
+
+         localStorage.setItem(`${type}Details`, JSON.stringify(details));
     };
 
     const handleDelete = (type, index) => {
@@ -1079,48 +1083,7 @@ export default function FlightDetails() {
                                 </div>
                             </div>
 
-                            {/* <div className="row">
-                                <div className="fligthContactDethed">
-                                    <MdOutlineFlightTakeoff />
-                                    <h5>Contact Details</h5>
-                                </div>
-                                <div className="col-12">
-                                    <div className="fligthContactDethedBox">
-                                        <form>
-                                            <div className="row">
-                                                <div className="col-sm-6">
-                                                    <div className="form-group">
-                                                        <label htmlFor="email">Email:</label>
-                                                        <input
-                                                            type="email"
-                                                            id="email"
-                                                            className="form-control"
-                                                            value={email}
-                                                            onChange={handleEmailChange}
-                                                            required
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="col-sm-6">
-                                                    <div className="form-group">
-                                                        <label htmlFor="mobileNumber">Mobile Number:</label>
-                                                        <input
-                                                            type="tel"
-                                                            id="mobileNumber"
-                                                            className="form-control"
-                                                            value={mobileNumber}
-                                                            onChange={handleMobileNumberChange}
-                                                            required
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <p> Your booking details will be sent to this email address and mobile number.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div> */}
+                           
 
                             <div className="row">
                                 <div className="fligthTravellerDethed">
@@ -1156,42 +1119,12 @@ export default function FlightDetails() {
 
                                             {error && <div className="text-danger mt-2">{error}</div>}
 
-                                            {/* {formDetails.length > 0 && (
-                                                <div className="mt-4 col-md-6 formdettlsDesk">
-                                                    {formDetails.map((detail, index) => (
-                                                        <div key={index} className="d-flex align-items-center mb-2">
-                                                            <div className="flex-grow-1 formdettlsDeskdiv ml-2">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    className="form-check-input selectDetInp"
-                                                                    checked={detail.selected}
-                                                                    onChange={() => toggleSelect(index)}
-                                                                />
-                                                                <div className="formdettlsDeskdivnmGen">
-                                                                    <div>
-                                                                        <strong>Gender:</strong> <span>{detail.gender}</span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span>
-                                                                    </div>
-
-                                                                </div>
-                                                                <div>
-                                                                    <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete()} />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )} */}
-
+                                           
 
 
                                             {/* code for tabs seat meals--------- */}
                                             <div className="col-md-4 mt-4">
-                                                {/* <div className="selectSeatMealDivBtn" onClick={() => setShowTabs(!showTabs)}>
-                                                    Add Seats, Meals, Baggage & more
-                                                </div> */}
+                                              
                                                 <div className="selectSeatMealDivBtn" onClick={mealAndseatHandler}>
                                                     Add Seats, Meals, Baggage & more
                                                 </div>

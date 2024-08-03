@@ -39,6 +39,9 @@ import HotelBillReceipt from './components/hotelBill/HotelBillReceipt';
 
 
 import FlightReview from './components/flight/FlightReview';
+import FlightPayHistory from './pages/History/FlightPayHistory';
+import BusPayHistory from './pages/History/BusPayHistory';
+import HotelPayHistory from './pages/History/HotelPayHistory';
 
 
 const App = () => {
@@ -78,6 +81,11 @@ const App = () => {
           <Route path='/hotel-bill' element={<HotelBillReceipt />} />
           <Route path='/flight-Farequote' element={<FareQuote />} />
           <Route path='/flight-review' element={<FlightReview />} />
+
+          <Route path='/flight-pay-history' element={<FlightPayHistory />} />
+          <Route path='/bus-pay-history' element={<BusPayHistory />} />
+          <Route path='/hotel-pay-history' element={<HotelPayHistory />} />
+
 
         </Routes>
         {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />}  

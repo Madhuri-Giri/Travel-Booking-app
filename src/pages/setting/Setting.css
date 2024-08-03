@@ -120,6 +120,17 @@
           background-color: #fff;
 
   }
+  .Settings .setting .pay-history{
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 1vmax;
+  }
+  .Settings .setting .pay-history p:hover{
+    border-bottom: 1px solid #000;
+  }
   .language-dropdown {
           position: absolute;
           background-color: white;

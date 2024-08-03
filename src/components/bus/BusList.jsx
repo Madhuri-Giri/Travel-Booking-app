@@ -11,8 +11,9 @@ const BusLists = () => {
   const dateMidRef = useRef(null);
   const [layoutResponse, setLayoutResponse] = useState(null);
   const { from, to, selectedBusDate, searchResults, status, error } = useSelector((state) => state.bus);
+  // const priceAfterIGST = basePrice * (1 - igstRate / 100);
 
-  // State to manage the visibility of layout data for each bus
+
   const [visibleLayout, setVisibleLayout] = useState({});
 
   const [isTravelListVisible, setIsTravelListVisible] = useState(false);
@@ -264,7 +265,7 @@ const BusLists = () => {
                           </span></h6>
                         </div>
                         <div className="price">
-                          <h4>${bus.Price.BasePrice}</h4>
+                          <h4>${(bus.Price.BasePrice * (1 - 0.18)).toFixed(2)}</h4>
                           <h6 style={{ textDecorationLine: 'line-through', color: "#000000b9" }}>$1000</h6>
                         </div>
                       </div>
