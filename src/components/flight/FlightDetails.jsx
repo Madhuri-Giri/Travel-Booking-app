@@ -22,7 +22,6 @@ export default function FlightDetails() {
     const formData = location.state?.formData;
 
 
-
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
 
 
@@ -220,8 +219,6 @@ export default function FlightDetails() {
 
 
     // ----------------------------------------------seat and meal api------------------------------------
-
-
     // ----------------------logic for forms---------------------------------------
 
     const [activeTabFlightDetails, setActiveTabFlightDetails] = useState('flight');
@@ -436,7 +433,6 @@ export default function FlightDetails() {
                                     <strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span>
                                 </div>
                             </div>
-
                             <div>
                                 <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete(type, index)} />
                             </div>
