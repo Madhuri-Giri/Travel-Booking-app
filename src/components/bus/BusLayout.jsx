@@ -12,6 +12,7 @@ const BusLayout = () => {
   const [lowerSeatNames, setLowerSeatNames] = useState([]);
   const [upperBasePrices, setUpperBasePrices] = useState([]);
   const [upperSeatNames, setUpperSeatNames] = useState([]);
+  const [availableSeats, setAvailableSeats] = useState(0); 
 
   useEffect(() => {
     const busLayoutResponse = JSON.parse(localStorage.getItem('BuslayoutResponse')) || {};
@@ -19,6 +20,8 @@ const BusLayout = () => {
 
     const lowerSeats = (busLayoutResponse.Result || []).flat();
     const upperSeats = (busLayoutResponse.ResultUpperSeat || []).flat();
+    const availableSeats = busLayoutResponse.AvailableSeats;
+    setAvailableSeats(availableSeats);
     
     const extractedLowerBasePrices = lowerSeats.map(seat => seat.Price.BasePrice);
     const extractedLowerSeatNames = lowerSeats.map(seat => seat.SeatName);
@@ -36,12 +39,20 @@ const BusLayout = () => {
 
   const getLowerBasePrice = (seatName) => {
     const index = lowerSeatNames.indexOf(seatName);
-    return index !== -1 ? lowerBasePrices[index] : null; 
+    if (index !== -1) {
+      const basePrice = lowerBasePrices[index];
+      return basePrice - (basePrice * 0.18); // Deduct 18% IGST
+    }
+    return null; 
   };
 
   const getUpperBasePrice = (seatName) => {
     const index = upperSeatNames.indexOf(seatName);
-    return index !== -1 ? upperBasePrices[index] : null; 
+    if (index !== -1) {
+      const basePrice = upperBasePrices[index];
+      return basePrice - (basePrice * 0.18); // Deduct 18% IGST
+    }
+    return null; 
   };
 
   const handleSeatSelect = (seatName) => {
@@ -112,7 +123,7 @@ const BusLayout = () => {
                     const seatName = lowerSeatNames[index];
                     const isLastRow = index >= lowerSeats.length - 5;
                     const seatSelected = selectedSeats.includes(seatName);
-                    const basePrice = getLowerBasePrice(seatName);
+                    const basePrice = getLowerBasePrice(seatName); // Use updated function
                     const isDisabled = basePrice === null;
 
                     return (
@@ -127,7 +138,7 @@ const BusLayout = () => {
                       >
                         <span>{seatName}</span>
                         <img width={30} src={BusSeatImg} alt="seat" />
-                        <p>{basePrice !== null ? `$${basePrice}` : 'N/A'}</p>
+                        <p>{basePrice !== null ? `${basePrice.toFixed(2)}` : 'N/A'}</p> {/* Show adjusted price */}
                       </div>
                     );
                   })}
@@ -140,7 +151,7 @@ const BusLayout = () => {
                     const seatName = upperSeatNames[index];
                     const isLastRow = index >= upperSeats.length - 5;
                     const seatSelected = selectedSeats.includes(seatName);
-                    const basePrice = getUpperBasePrice(seatName);
+                    const basePrice = getUpperBasePrice(seatName); // Use updated function
                     const isDisabled = basePrice === null;
 
                     return (
@@ -155,7 +166,7 @@ const BusLayout = () => {
                       >
                         <span>{seatName}</span>
                         <img width={30} src={BusSeatImg} alt="seat" />
-                        <p>{basePrice !== null ? `$${basePrice}` : 'N/A'}</p>
+                        <p>{basePrice !== null ? `${basePrice.toFixed(2)}` : 'N/A'}</p> {/* Show adjusted price */}
                       </div>
                     );
                   })}
@@ -169,8 +180,8 @@ const BusLayout = () => {
             </div>
             <small>Know your seat</small>
             <div className="two-last">
-              <p><i className="ri-armchair-fill"></i>Available Seat</p>
-              <p><i style={{ color: 'green' }} className="ri-armchair-fill"></i>Selected Seat</p>
+              <p><i className="ri-armchair-fill"></i>Available Seat: {availableSeats} </p>
+              <p><i style={{ color: 'green' }} className="ri-armchair-fill"></i>Selected Seat:{selectedSeats.join(', ')}</p>
               <p><i style={{ color: 'purple' }} className="ri-armchair-fill"></i>Occupied Seat</p>
               <p><i style={{ color: 'pink' }} className="ri-armchair-fill"></i>Booked Seat</p>
               <p><i style={{ color: 'gray' }} className="ri-armchair-fill"></i>Blocked Seat</p>
@@ -181,7 +192,7 @@ const BusLayout = () => {
                 <p>Total Price: ${totalPrice}</p>
               </div>
               <div className="proceed">
-              <button
+                <button
                   onClick={handleProceed}
                   disabled={selectedSeats.length === 0}
                   style={{ backgroundColor: selectedSeats.length === 0 ? '#ccc' : '#00b7eb' }}

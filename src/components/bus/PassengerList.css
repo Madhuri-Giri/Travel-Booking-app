@@ -113,8 +113,9 @@ font-weight: lighter;
         padding: 0.6vmax;
         font-weight: 600;
         color: #fff;
-        background: #0f7000;
-         border-radius: 2px;
+        background-color: #00b7eb;
+
+         border-radius: 10px;
          border: none;
   }
 

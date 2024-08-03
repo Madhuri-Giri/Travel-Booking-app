@@ -35,6 +35,9 @@ import FareQuote from './components/flight/FareQuote';
 import EnterNumber from './pages/NewOne/MobileNumber/EnterNumber';
 import SignUp from './pages/NewOne/signup/SignUp';
 import FlightReview from './components/flight/FlightReview';
+import FlightPayHistory from './pages/History/FlightPayHistory';
+import BusPayHistory from './pages/History/BusPayHistory';
+import HotelPayHistory from './pages/History/HotelPayHistory';
 
 const App = () => {
   const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number'];
@@ -72,6 +75,11 @@ const App = () => {
           <Route path='/review' element={<Reviews />} />
           <Route path='/flight-Farequote' element={<FareQuote />} />
           <Route path='/flight-review' element={<FlightReview />} />
+
+          <Route path='/flight-pay-history' element={<FlightPayHistory />} />
+          <Route path='/bus-pay-history' element={<BusPayHistory />} />
+          <Route path='/hotel-pay-history' element={<HotelPayHistory />} />
+
 
         </Routes>
         {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />}  

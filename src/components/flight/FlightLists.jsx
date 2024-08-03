@@ -292,9 +292,7 @@ export default function FlightLists() {
         const traceId = localStorage.getItem('FlightTraceId2');
         const resultIndex = localStorage.getItem('FlightResultIndex2');
         const srdvType = localStorage.getItem('FlightSrdvType');
-        const srdvIndex = localStorage.getItem('FlightSrdvIndex2'); // Get SrdvIndex from local storage
-
-
+        const srdvIndex = localStorage.getItem('FlightSrdvIndex2'); 
 
         if (!traceId || !resultIndex) {
             console.error('TraceId or ResultIndex not found in local storage');
@@ -324,13 +322,20 @@ export default function FlightLists() {
             const data = await response.json();
             console.log('FareQuote API Response:', data);
 
+          const baseFare = data.Results.Fare.BaseFare;
+          const yqTax = data.Results.Fare.YQTax;
+          const tax = data.Results.Fare.Tax;
+  
+          localStorage.setItem('BaseFare', baseFare);
+          localStorage.setItem('YQTax', yqTax);
+          localStorage.setItem('Tax', tax);
+
+
             if (data.Results && formData) {
                 navigate('/flight-Farequote', { state: { fareData: data.Results, formData: formData } });
             } else {
                 console.error('data.Results or formData is undefined');
             }
-
-            // navigate('/flight-Farequote', { state: { fareData: data.Results , formData: formData } });
 
         } catch (error) {
             console.error('Error calling the farequote API:', error);
