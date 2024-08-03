@@ -26,13 +26,10 @@ export default function FlightDetails() {
 
 
     useEffect(() => {
-        // Check if fareDataDetails is available in state
         if (fareData) {
             setFareDataDetails(fareData);
-            // Save to local storage
             localStorage.setItem('fareDataDetails', JSON.stringify(fareData));
         } else {
-            // Retrieve from local storage if state is undefined
             const savedFareData = localStorage.getItem('fareDataDetails');
             if (savedFareData) {
                 setFareDataDetails(JSON.parse(savedFareData));
@@ -41,14 +38,13 @@ export default function FlightDetails() {
     }, [fareData]);
 
     useEffect(() => {
-        // console.log("fareDataDetails", fareDataDetails);
         if (!fareDataDetails) {
             console.error('fareDataDetails is undefined');
         }
     }, [fareDataDetails]);
 
 
-    const segment = fareDataDetails.Segments[0][0]; // Assuming you're taking the first segment for display
+    const segment = fareDataDetails.Segments[0][0];
     const origin = segment.Origin;
     const destination = segment.Destination;
     const airline = segment.Airline;
@@ -74,7 +70,6 @@ export default function FlightDetails() {
     // --------------------------------------seat and meal api--------------------------------------------
 
     const mealAndseatHandler = () => {
-        // setShowTabs(!showTabs);
         setShowTabs(!showTabs);
         if (!showTabs) {
             navigate('/seat-meal-baggage', { state: { seatData, ssrData } });
@@ -151,24 +146,28 @@ export default function FlightDetails() {
 
             const seatsArray = [];
 
-            // Assuming parsedData contains a structure like the one you provided
-            // for (const row in parsedData.Results[0].Seats) {
-            //     const rowData = parsedData.Results[0].Seats[row];
+            // Uncomment this section if your API data structure is correct
+            for (const row in parsedData.Results[0].Seats) {
+                const rowData = parsedData.Results[0].Seats[row];
 
-            //     for (const column in rowData) {
-            //         const seat = rowData[column];
-            //         seatsArray.push({
-            //             seatNumber: seat.SeatNumber,
-            //             price: seat.Amount,
-            //             isBooked: seat.IsBooked,
-            //             imgSrc: '/src/assets/images/seat-2-removebg-preview.png'
-            //         });
-            //     }
-            // }
+                for (const column in rowData) {
+                    const seat = rowData[column];
+                    seatsArray.push({
+                        seatNumber: seat.SeatNumber,
+                        price: seat.Amount,
+                        isBooked: seat.IsBooked,
+                        imgSrc: '/src/assets/images/seat-2-removebg-preview.png'
+                    });
+                }
+            }
 
             setSeatData(seatsArray);
+        } else {
+            console.warn('No flight data found in localStorage.');
+            setSeatData([]);
         }
     }, []);
+
 
 
     const seatmap = async () => {
@@ -216,6 +215,7 @@ export default function FlightDetails() {
     const reviewHandler = () => {
         navigate('/flight-review')
     }
+
 
 
     // ----------------------------------------------seat and meal api------------------------------------
@@ -270,7 +270,15 @@ export default function FlightDetails() {
 
     const [error, setError] = useState('');
 
+    const [isContinueDisabled, setIsContinueDisabled] = useState(true);
 
+    const checkButtonDisabled = () => {
+        const allAdultsConfirmed = confirmedAdultDetails.every(detail => detail.selected);
+        const allChildrenConfirmed = confirmedChildDetails.every(detail => detail.selected);
+        const allInfantsConfirmed = confirmedInfantDetails.every(detail => detail.selected);
+        setIsContinueDisabled(!(allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
+    };
+    
 
     const handleInputChange = (e, index, type, field) => {
         const { value } = e.target;
@@ -283,6 +291,7 @@ export default function FlightDetails() {
         } else if (type === 'infant') {
             details = [...infantDetails];
         }
+
 
         details[index] = {
             ...details[index],
@@ -297,14 +306,13 @@ export default function FlightDetails() {
             setInfantDetails(details);
         }
 
-        localStorage.setItem(`${type}Details`, JSON.stringify(details));
     };
 
 
     const handleConfirm = (e, index, type) => {
         e.preventDefault();
         let details;
-
+    
         if (type === 'adult') {
             details = [...adultDetails];
         } else if (type === 'child') {
@@ -312,23 +320,24 @@ export default function FlightDetails() {
         } else if (type === 'infant') {
             details = [...infantDetails];
         }
-
+    
         const { gender, firstName, lastName } = details[index];
         if (gender && firstName && lastName) {
             setError('');
+            const newDetail = { ...details[index], selected: true }; 
             if (type === 'adult') {
-                setConfirmedAdultDetails([...confirmedAdultDetails, details[index]]);
+                setConfirmedAdultDetails([...confirmedAdultDetails, newDetail]);
             } else if (type === 'child') {
-                setConfirmedChildDetails([...confirmedChildDetails, details[index]]);
+                setConfirmedChildDetails([...confirmedChildDetails, newDetail]);
             } else if (type === 'infant') {
-                setConfirmedInfantDetails([...confirmedInfantDetails, details[index]]);
+                setConfirmedInfantDetails([...confirmedInfantDetails, newDetail]);
             }
+            checkButtonDisabled(); 
         } else {
             setError(`Please fill out all fields for ${type} ${index + 1}.`);
         }
-
-        localStorage.setItem(`${type}Details`, JSON.stringify(details));
     };
+    
 
     const handleDelete = (type, index) => {
         if (type === 'adult') {
@@ -440,11 +449,6 @@ export default function FlightDetails() {
                     </div>
                 ))}
             </div>
-            <div className="mt-4 col-md-6 float-right">
-                <button className="mt-3 bg-primary p-2 text-light" >
-                    Proceed to seat
-                </button>
-            </div>
 
         </div>
 
@@ -452,25 +456,26 @@ export default function FlightDetails() {
 
     const toggleSelect = (index, type) => {
         if (type === 'adult') {
-            setConfirmedAdultDetails(
-                confirmedAdultDetails.map((detail, i) =>
-                    i === index ? { ...detail, selected: !detail.selected } : detail
-                )
+            const updatedDetails = confirmedAdultDetails.map((detail, i) =>
+                i === index ? { ...detail, selected: !detail.selected } : detail
             );
+            setConfirmedAdultDetails(updatedDetails);
         } else if (type === 'child') {
-            setConfirmedChildDetails(
-                confirmedChildDetails.map((detail, i) =>
-                    i === index ? { ...detail, selected: !detail.selected } : detail
-                )
+            const updatedDetails = confirmedChildDetails.map((detail, i) =>
+                i === index ? { ...detail, selected: !detail.selected } : detail
             );
+            setConfirmedChildDetails(updatedDetails);
         } else if (type === 'infant') {
-            setConfirmedInfantDetails(
-                confirmedInfantDetails.map((detail, i) =>
-                    i === index ? { ...detail, selected: !detail.selected } : detail
-                )
+            const updatedDetails = confirmedInfantDetails.map((detail, i) =>
+                i === index ? { ...detail, selected: !detail.selected } : detail
             );
+            setConfirmedInfantDetails(updatedDetails);
         }
+        checkButtonDisabled(); 
     };
+
+
+
     // -------------newwwwwwwwwwwwwwwww---------------
 
     // ----------------------logic for forms---------------------------------------
@@ -725,8 +730,6 @@ export default function FlightDetails() {
                                 </div>
                             </div>
 
-
-
                             <div className="row">
                                 <div className="fligthTravellerDethed">
                                     <MdOutlineFlightTakeoff />
@@ -741,30 +744,33 @@ export default function FlightDetails() {
                                                 {adultCount > 0 && (
                                                     <>
                                                         <h5>Adults {adultCount}</h5>
-                                                        {renderFormFields(adultCount, 'adult')}
-                                                        {renderConfirmedDetails(confirmedAdultDetails, 'adult')}
+                                                        <fieldset>
+                                                            {renderFormFields(adultCount, 'adult')}
+                                                            {renderConfirmedDetails(confirmedAdultDetails, 'adult')}
+                                                        </fieldset>
                                                     </>
                                                 )}
                                                 {childCount > 0 && (
                                                     <>
                                                         <h5>Children {childCount}</h5>
-                                                        {renderFormFields(childCount, 'child')}
-                                                        {renderConfirmedDetails(confirmedChildDetails, 'child')}
+                                                        <fieldset>
+                                                            {renderFormFields(childCount, 'child')}
+                                                            {renderConfirmedDetails(confirmedChildDetails, 'child')}
+                                                        </fieldset>
                                                     </>
                                                 )}
                                                 {infantCount > 0 && (
                                                     <>
                                                         <h5>Infants {infantCount}</h5>
-                                                        {renderFormFields(infantCount, 'infant')}
-                                                        {renderConfirmedDetails(confirmedInfantDetails, 'infant')}
+                                                        <fieldset>
+                                                            {renderFormFields(infantCount, 'infant')}
+                                                            {renderConfirmedDetails(confirmedInfantDetails, 'infant')}
+                                                        </fieldset>
                                                     </>
                                                 )}
                                             </div>
 
-                                            {error && <div className="text-danger mt-2">{error}</div>}
-
-
-
+                                            {error && <div className="text-danger mt-2" aria-live="assertive">{error}</div>}
 
                                             {/* code for tabs seat meals--------- */}
                                             <div className="row">
@@ -773,6 +779,7 @@ export default function FlightDetails() {
                                                         type="checkbox"
                                                         id="seatMealCheckbox"
                                                         className="form-check-input"
+                                                        onChange={handleCheckboxChange}
                                                     />
                                                     <label className="form-check-label" htmlFor="seatMealCheckbox">
                                                         Add Seats, Meals, Baggage & more
@@ -780,15 +787,26 @@ export default function FlightDetails() {
                                                 </div>
                                             </div>
 
-
                                             <div className="col-12 lastBtnssContinue">
                                                 <h5>Fare Breakup <span>₹13465</span></h5>
-                                                <button onClick={reviewHandler} >Continue</button>
+                                                <button
+                                                    onClick={reviewHandler}
+                                                    disabled={isContinueDisabled}
+                                                    style={{
+                                                        color: isContinueDisabled ? '#ccc' : '#000',
+                                                        backgroundColor: isContinueDisabled ? '#f0f0f0' : '#007bff',
+                                                        cursor: isContinueDisabled ? 'not-allowed' : 'pointer',
+                                                        border: 'none',
+                                                        padding: '10px 20px',
+                                                        borderRadius: '5px',
+                                                        transition: 'background-color 0.3s',
+                                                    }}
+                                                >
+                                                    Continue
+                                                </button>
+
                                             </div>
                                         </form>
-
-
-
                                     </div>
                                 </div>
 
