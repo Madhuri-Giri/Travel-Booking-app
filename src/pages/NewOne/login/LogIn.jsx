@@ -21,7 +21,7 @@ const LogIn = () => {
   const loginHandler = async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch('https://app.sajpe.in/api/v1/user/login', {
+        const response = await fetch('https://sajyatra.sajpe.in/admin/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -33,6 +33,7 @@ const LogIn = () => {
 
         if (response.ok) {
             console.log('login successful:', data);
+            localStorage.setItem('loginId', data.data.id);
             navigate('/flight-search');
         } else {
             console.log('login failed:', data);

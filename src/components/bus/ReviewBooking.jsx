@@ -74,12 +74,11 @@ const ReviewBooking = () => {
   const fetchPaymentDetails = async () => {
     try {
 
-      const transactionNum = localStorage.getItem('transactionNum')
-      // console.log(transactionNum)
+      const loginId = localStorage.getItem('loginId')
 
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
         amount: totalFare,
-        user_id: transactionNum,
+        user_id: loginId,
       });
 
       if (response.data.status === 'success') {
