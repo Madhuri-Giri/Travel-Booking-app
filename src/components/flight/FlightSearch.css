@@ -217,6 +217,11 @@
     margin-bottom: 20px;
     margin-top: 20px;
 }
+.exictingOfferslider img{
+    border-radius: 10px;
+    height: 270px;
+    width: 340px;
+}
 
 .exclusive-dealsSec img {
     height: 400px;

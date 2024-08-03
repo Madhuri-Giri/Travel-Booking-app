@@ -1,29 +1,65 @@
-import { useLocation, useNavigate , Link } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { TiPlane } from "react-icons/ti";
 import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import "./FlightLists.css";
+import React from 'react';
+import { LuDot } from "react-icons/lu";
+
+
 
 const FareQuote = () => {
     const navigate = useNavigate();
 
     const location = useLocation();
     const fareData = location.state?.fareData;
+    const segmentss = fareData.Segments;
+    console.log("segmentss", segmentss);
 
     const formData = location.state?.formData;  // Using optional chaining to prevent errors if state is undefined
 
+    // function for date convert into day month date--------------------------------------
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).format(date);
+    };
+
+    const formattedDate = formatDate("2024-08-29T00:00:00");
+    console.log("Formatted Date:", );
+    // function for date convert into day month date--------------------------------------
+
+    // func for date -------------------------
+    const convertUTCToIST = (utcTimeString) => {
+        const utcDate = new Date(utcTimeString);
+        const istTime = new Intl.DateTimeFormat('en-IN', {
+            timeZone: 'Asia/Kolkata',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        }).format(utcDate);
+        return istTime;
+    };
+    // func for date -------------------------
+
+    // func for duration convert hpur minute---------------------
+    const convertMinutesToHoursAndMinutes = (minutes) => {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        return `${hours}h ${remainingMinutes}m`;
+    };
+    // func for duration convert hpur minute---------------------
 
     // Check if formData exists
-  if (!formData) {
-    console.error('formData is undefined');
-    return <div>Loading...</div>; // Or any other fallback UI
-  }
+    if (!formData) {
+        console.error('formData is undefined');
+        return <div>Loading...</div>; // Or any other fallback UI
+    }
 
     const publishedFare = fareData?.Fare?.BaseFare;
     console.log("fareData", fareData);
     console.log("publishedFare", publishedFare);
 
     const flightDeatilsFun = () => {
-        navigate('/flight-details', { state: {fareData : fareData , formData: formData } });
+        navigate('/flight-details', { state: { fareData: fareData, formData: formData } });
     }
 
 
@@ -68,17 +104,28 @@ const FareQuote = () => {
                                 <div className="row ">
 
                                     <div className='col-12 fareQuoteHed'>
-                                        <h6>Departing Flight  : <span>Sat,jul 27</span></h6>
+                                        <h6>Departing Flight  : <span>{formattedDate}</span></h6>
                                         <p> <span>Delhi</span> <span>Mumbai</span> </p>
                                     </div>
-                                    <div className='col-12 fareQuotemain'>
-                                        <h6 className='fareQuotemainh6'>SpiceJet</h6>
-                                        <p className='fareQuotemainp1'>6:20</p>
-                                        <p className='fareQuotemainp2'>Delhi : <span>Indira Gandhi</span></p>
-                                        <p className='fareQuotemainp3'>Duration</p>
-                                        <p className='fareQuotemainp4'>8:45</p>
-                                        <p className='fareQuotemainp5'>Mumbai : <span>Chhatrapati shivaji</span></p>
-                                    </div>
+                                    {/* <div className='col-12 fareQuotemain'> */}
+                                        {segmentss.map((segmentGroup, groupIndex) => (
+                                            <React.Fragment key={groupIndex}>
+                                                {segmentGroup.map((segmentDetails, index) => (
+                                                    <React.Fragment key={index}>
+                                                        <div className='col-12 fareQuotemain'>
+                                                        <h6 className='fareQuotemainh6'>{segmentDetails.Airline.AirlineName} <LuDot size={30} /> {segmentDetails.Airline.AirlineCode} <LuDot size={30} /> {segmentDetails.Airline.FlightNumber} </h6>
+                                                        <p className='fareQuotemainp1'>{convertUTCToIST(segmentDetails.DepTime)}</p>
+                                                        <p className='fareQuotemainp2'>{segmentDetails.Destination.CityName} <LuDot size={30} /> <span>{segmentDetails.Destination.AirportName}</span></p>
+                                                        <p className='fareQuotemainp3'>Duration  {convertMinutesToHoursAndMinutes  (segmentDetails.Duration)}</p>
+                                                        <p className='fareQuotemainp4'>{convertUTCToIST(segmentDetails.ArrTime)}</p>
+                                                        <p className='fareQuotemainp5'>{segmentDetails.Origin.CityName} <LuDot size={30} /> <span>{segmentDetails.Origin.AirportName}</span></p>
+                                                        </div>
+                                                    </React.Fragment>
+                                                ))}
+                                            </React.Fragment>
+                                        ))}
+                                    {/* </div> */}
+
 
                                     {publishedFare ? (
                                         <div className="fareQuotemainLast col-12">

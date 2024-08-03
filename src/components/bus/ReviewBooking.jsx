@@ -20,7 +20,7 @@ const ReviewBooking = () => {
 
   const [passengerData, setPassengerData] = useState([]);
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem('passengerData')); // Use 'passengerData' key   
+    const storedData = JSON.parse(localStorage.getItem('passengerData')); 
     if (storedData && Array.isArray(storedData) && storedData.length > 0) {
       setPassengerData(storedData);
     } else {
@@ -321,9 +321,9 @@ const bookHandler = async () => {
   return (
     <div className='ReviewBooking'>
       <div className="review-book">
-        <h5><i onClick={back} className="ri-arrow-left-s-line"></i> Review Booking</h5>
+        <h5><i onClick={back} className="ri-arrow-left-s-line"></i> Review Details</h5>
         <div className="test-account">
-          <h6>Testing Account</h6>
+          <h6>TESTING ACCOUNT</h6>
           <div className="sdfgh">
             <div className="test-left">
               <p>Brand East</p>
@@ -341,8 +341,11 @@ const bookHandler = async () => {
             </div>
           </div>
         </div>
+
+     
+
         <div className="p-detail">
-                 <h6>Passenger Details</h6>
+                 <h6>TRAVELLER DETAILS</h6>
                  {passengerData.map((pass, index) => (
                            <div key={index} className='details'>
                               <div className="one">
@@ -368,11 +371,50 @@ const bookHandler = async () => {
                            </div> 
                       ))}
         </div>
+
+
+        <div className="price-page">
+          <h6>PRICE DETAILS</h6>
+          <div className="price">
+                 <div className="p-line">
+                     <span>Base Fare </span>
+                     <small>$0</small>
+                 </div>
+                 <div className="p-line">
+                     <span>Taxes </span>
+                     <small>$0</small>
+                 </div>
+                 <div className="total-fare">
+                     <span>Total Fare</span>
+                     <small>$00</small>
+                 </div>
+                 <div className="p-line">
+                     <span>Convenience Fee</span>
+                     <small>$0</small>
+                 </div>
+                 <div className="p-line">
+                     <span>Sub Total</span>
+                     <small>$0</small>
+                 </div>
+                 <div className="coupen">
+                  <span>Coupon Code [NOFEE]</span>
+                  <small>25% OFF</small>
+                 </div>
+                 <div className="final-pay">
+                 <span>Total Payment</span>
+                 <small>{totalFare}</small>
+                 </div>
+          </div>
+        </div>
+
+
+
+
         <div className="p-contact-detail">             
           <div className="last-pay">
             <div className="fare">
-              <h6>Total fare</h6>
-              <small>${totalFare}</small>
+              <h6>TOTAL TICKET AMOUNT</h6>
+              <small >${totalFare}</small>
             </div>
             <div className="review-pay">
               <button onClick={handlePayment}>Proceed To Pay</button>
