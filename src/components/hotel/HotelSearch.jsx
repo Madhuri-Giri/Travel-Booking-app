@@ -149,7 +149,9 @@ const [inputs, setInputs] = useState({
         localStorage.setItem("resultIndex", "1");
         localStorage.setItem("srdvType", "SingleTB");
         localStorage.setItem("srdvIndex", "SrdvTB");
-
+// Save hotel details in local storage
+localStorage.setItem("hotelSearchDetails", JSON.stringify(data.Results));
+        
         navigate("/hotel-list", { state: { searchResults: data.Results } });
       } else {
         console.error("No search results found or error in response:", data);
