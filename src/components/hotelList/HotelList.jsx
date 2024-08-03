@@ -87,7 +87,7 @@ const HotelList = () => {
         TraceId: "1",
       };
   
-      const response = await fetch("/api/admin/api/hotel-info", {
+      const response = await fetch("https://sajyatra.sajpe.in/admin/api/hotel-info", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -102,6 +102,10 @@ const HotelList = () => {
       const data = await response.json();
   
       if (data && data.HotelInfoResult && data.HotelInfoResult.HotelDetails) {
+        console.log('hotel-info API Response:', data.HotelInfoResult.HotelDetails);
+        // Save hotel details in local storage
+        localStorage.setItem("hotelDetails", JSON.stringify(data.HotelInfoResult.HotelDetails));
+        
         navigate("/hotel-description", { state: { hotelDetails: data.HotelInfoResult.HotelDetails } });
       } else {
         setError(data.message || "No hotel details found.");

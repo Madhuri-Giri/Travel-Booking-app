@@ -3,12 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import './HotelRoom.css';
 
+
+
 const initialFormData = {
   firstName: '',
   lastName: '',
   // Add other form fields as needed
 };
-
 const HotelRoom = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -16,7 +17,11 @@ const HotelRoom = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState(initialFormData);
-  const [selectedHotel, setSelectedHotel] = useState([]);
+
+  const [selectedSingleDeluxeRooms, setSelectedSingleDeluxeRooms] = useState([]);
+  const [selectedDoubleDeluxeRooms, setSelectedDoubleDeluxeRooms] = useState([]);
+  const [totalPriceSingleDeluxe, setTotalPriceSingleDeluxe] = useState(0);
+  const [totalPriceDoubleDeluxe, setTotalPriceDoubleDeluxe] = useState(0);
 
   useEffect(() => {
     if (location.state && Array.isArray(location.state.hotelRooms)) {
@@ -29,9 +34,91 @@ const HotelRoom = () => {
   }, [location.state]);
 
   useEffect(() => {
-    const rooms = JSON.parse(localStorage.getItem('selectedHotel')) || [];
-    setSelectedHotel(rooms);
+    const singleDeluxeRooms = JSON.parse(localStorage.getItem('selectedSingleDeluxeRooms')) || [];
+    const doubleDeluxeRooms = JSON.parse(localStorage.getItem('selectedDoubleDeluxeRooms')) || [];
+    if (Array.isArray(singleDeluxeRooms) && Array.isArray(doubleDeluxeRooms)) {
+      setSelectedSingleDeluxeRooms(singleDeluxeRooms);
+      setSelectedDoubleDeluxeRooms(doubleDeluxeRooms);
+      updateTotalPrice(singleDeluxeRooms, 'single');
+      updateTotalPrice(doubleDeluxeRooms, 'double');
+    } else {
+      console.error('Selected hotel data is not an array:', singleDeluxeRooms, doubleDeluxeRooms);
+    }
   }, []);
+
+  const updateTotalPrice = (rooms, type) => {
+    const newTotalPrice = rooms.reduce((sum, room) => {
+      const roomPrice = room.Price?.RoomPrice || 0;
+      const roomCount = room.guestCounts?.room || 1;
+      return sum + (roomPrice * roomCount);
+    }, 0);
+    
+    if (type === 'single') {
+      setTotalPriceSingleDeluxe(newTotalPrice);
+    } else if (type === 'double') {
+      setTotalPriceDoubleDeluxe(newTotalPrice);
+    }
+  };
+
+  const handleRoomToggle = (room, type) => {
+    const setSelectedRooms = type === 'single' ? setSelectedSingleDeluxeRooms : setSelectedDoubleDeluxeRooms;
+    const selectedRooms = type === 'single' ? selectedSingleDeluxeRooms : selectedDoubleDeluxeRooms;
+    setSelectedRooms((prevSelectedRooms) => {
+      const isSelected = prevSelectedRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode);
+      let newSelectedRooms;
+
+      if (isSelected) {
+        newSelectedRooms = prevSelectedRooms.filter(selectedRoom => selectedRoom.RoomTypeCode !== room.RoomTypeCode);
+      } else {
+        const newSelectedRoom = {
+          ...room,
+          guestCounts: { adults: 1, children: 0, room: 1 }
+        };
+        newSelectedRooms = [...prevSelectedRooms, newSelectedRoom];
+      }
+
+      updateTotalPrice(newSelectedRooms, type);
+
+      const localStorageKey = type === 'single' ? 'selectedSingleDeluxeRooms' : 'selectedDoubleDeluxeRooms';
+      localStorage.setItem(localStorageKey, JSON.stringify(newSelectedRooms));
+
+      return newSelectedRooms;
+    });
+  };
+
+  const handleGuestChange = (index, type, increment, roomType) => {
+    const setSelectedRooms = roomType === 'single' ? setSelectedSingleDeluxeRooms : setSelectedDoubleDeluxeRooms;
+    const selectedRooms = roomType === 'single' ? selectedSingleDeluxeRooms : selectedDoubleDeluxeRooms;
+    setSelectedRooms((prevSelectedRooms) => {
+      if (!Array.isArray(prevSelectedRooms)) {
+        console.error('selectedRooms is not an array:', prevSelectedRooms);
+        return [];
+      }
+
+      const updatedRooms = [...prevSelectedRooms];
+      const currentRoom = updatedRooms[index];
+      if (!currentRoom || !currentRoom.guestCounts) return prevSelectedRooms;
+
+      const newCount = currentRoom.guestCounts[type] + increment;
+
+      if (newCount < 1) return prevSelectedRooms; // Prevent negative or zero counts
+
+      updatedRooms[index] = {
+        ...currentRoom,
+        guestCounts: {
+          ...currentRoom.guestCounts,
+          [type]: newCount
+        }
+      };
+
+      updateTotalPrice(updatedRooms, roomType);
+
+      const localStorageKey = roomType === 'single' ? 'selectedSingleDeluxeRooms' : 'selectedDoubleDeluxeRooms';
+      localStorage.setItem(localStorageKey, JSON.stringify(updatedRooms));
+
+      return updatedRooms;
+    });
+  };
 
   const roomblockHandler = async (event) => {
     event.preventDefault();
@@ -189,18 +276,22 @@ const HotelRoom = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log('Block Response:', data.BlockRoomResult.HotelRoomsDetails);
-
-      const rooms = data.BlockRoomResult.HotelRoomsDetails;
+      const res = await response.json();
+      console.log('hotel-block API Response:', res.BlockRoomResult);
+      const rooms = res.BlockRoomResult;
       const roomsJSON = JSON.stringify(rooms);
-      localStorage.setItem('roomsData', roomsJSON); 
-      
+      localStorage.setItem('hotelBlock', roomsJSON); 
       navigate('/hotel-guest');
+
+     
+
     } catch (error) {
       console.error('Error:', error);
     }
   };
+
+  const singleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'SINGLE DELUXE');
+  const doubleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'DOUBLE Deluxe');
 
   return (
     <Container>
@@ -210,33 +301,98 @@ const HotelRoom = () => {
         {error && <p>Error: {error}</p>}
         {!loading && !error && hotelRooms.length === 0 && <p>No hotel room data available.</p>}
         {hotelRooms.length > 0 && !error && (
-          <div>
-            {hotelRooms.map((room, index) => (
-              <div key={index} className="hotel_room_box">
-                <h3>{room.RoomTypeName}</h3>
-                <p>Price: INR {room.Price?.RoomPrice?.toFixed(2)}</p>
-                <p>Day Rate: {room.DayRates?.map(dayRate => (
-                  <span key={dayRate.Date}>
-                    {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
-                  </span>
-                ))}</p>
-                <p>Smoking Preference: {room.SmokingPreference}</p>
-                <h5>Cancellation Policies:</h5>
-                <ul>
-                  {room.CancellationPolicies?.map((policy, index) => (
-                    <li key={index}>
-                      {policy.ChargeType === 1 ? 'Fixed Charge' : 'Percentage Charge'}: 
-                      {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
-                    </li>
-                  ))}
-                </ul>
-                <p><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
-    
-                <button onClick={roomblockHandler} className="reserve_button">Reserve</button>
-                
-              </div>
-            ))}
-          </div>
+          <>
+            <h4>Single Deluxe Rooms</h4>
+            <div>
+              {singleDeluxeRooms.map((room, index) => (
+                <div
+                  key={index}
+                  className={`hotel_room_box ${selectedSingleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? 'selected' : ''}`}
+                >
+                  <h3>{room.RoomTypeName}</h3>
+                  <p>Price: INR {room.Price?.RoomPrice?.toFixed(2)}</p>
+                  <p>Day Rate: {room.DayRates?.map(dayRate => (
+                    <span key={dayRate.Date}>
+                      {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
+                    </span>
+                  ))}</p>
+                  <p>Smoking Preference: {room.SmokingPreference}</p>
+                  <h5>Cancellation Policies:</h5>
+                  <ul>
+                    {room.CancellationPolicies?.map((policy, index) => (
+                      <li key={index}>
+                        {policy.ChargeType === 1 ? 'Fixed Charge' : 'Percentage Charge'}: 
+                        {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
+                      </li>
+                    ))}
+                  </ul>
+                  <p><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
+                  {!selectedSingleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
+                    <button onClick={() => handleRoomToggle(room, 'single')} className="reserve_button">Reserve</button>
+                  ) : (
+                    <div className="guest_selection">
+                      <button onClick={() => handleRoomToggle(room, 'single')} className="remove_button">Remove</button>
+                      <h5>If you want to increase room quantity:</h5>
+                      <div className="guest_count">
+                        <button onClick={() => handleGuestChange(selectedSingleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', -1, 'single')}>-</button>
+                        <span>Room: {selectedSingleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
+                        <button onClick={() => handleGuestChange(selectedSingleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'single')}>+</button>
+                      </div>
+                      <div className="selected_rooms_summary">
+                        <p>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</p>
+                        <button onClick={roomblockHandler} className="reserve_button">Continue</button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <h4>Double Deluxe Rooms</h4>
+            <div>
+              {doubleDeluxeRooms.map((room, index) => (
+                <div
+                  key={index}
+                  className={`hotel_room_box ${selectedDoubleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? 'selected' : ''}`}
+                >
+                  <h3>{room.RoomTypeName}</h3>
+                  <p>Price: INR {room.Price?.RoomPrice?.toFixed(2)}</p>
+                  <p>Day Rate: {room.DayRates?.map(dayRate => (
+                    <span key={dayRate.Date}>
+                      {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
+                    </span>
+                  ))}</p>
+                  <p>Smoking Preference: {room.SmokingPreference}</p>
+                  <h5>Cancellation Policies:</h5>
+                  <ul>
+                    {room.CancellationPolicies?.map((policy, index) => (
+                      <li key={index}>
+                        {policy.ChargeType === 1 ? 'Fixed Charge' : 'Percentage Charge'}: 
+                        {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
+                      </li>
+                    ))}
+                  </ul>
+                  <p><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
+                  {!selectedDoubleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
+                    <button onClick={() => handleRoomToggle(room, 'double')} className="reserve_button">Reserve</button>
+                  ) : (
+                    <div className="guest_selection">
+                      <button onClick={() => handleRoomToggle(room, 'double')} className="remove_button">Remove</button>
+                      <h5>If you want to increase room quantity:</h5>
+                      <div className="guest_count">
+                        <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', -1, 'double')}>-</button>
+                        <span>Room: {selectedDoubleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
+                        <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'double')}>+</button>
+                      </div>
+                      <div className="selected_rooms_summary">
+                        <p>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</p>
+                        <button onClick={roomblockHandler} className="reserve_button">Continue</button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </Container>
@@ -244,4 +400,3 @@ const HotelRoom = () => {
 };
 
 export default HotelRoom;
-

@@ -35,7 +35,7 @@ const HotelDescription = () => {
   
       console.log("Request data:", requestData);
   
-      const response = await fetch("/api/admin/api/hotel-room", {
+      const response = await fetch("https://sajyatra.sajpe.in/admin/api/hotel-room", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,8 +51,12 @@ const HotelDescription = () => {
       console.log("Hotel room details response:", data);
   
       if (data && data.GetHotelRoomResult && data.GetHotelRoomResult.HotelRoomsDetails) {
-        console.log("Navigating with data:", data.GetHotelRoomResult.HotelRoomsDetails);
+        console.log("hotel-room API response:", data.GetHotelRoomResult.HotelRoomsDetails);
+        
+        // Save the hotel room details in local storage
+        localStorage.setItem("hotelRooms", JSON.stringify(data.GetHotelRoomResult.HotelRoomsDetails));
         navigate("/hotel-room", { state: { hotelRooms: data.GetHotelRoomResult.HotelRoomsDetails } });
+  
       } else {
         console.log("Data received is not in the expected format");
         setError(data.message || "No hotel room data available.");

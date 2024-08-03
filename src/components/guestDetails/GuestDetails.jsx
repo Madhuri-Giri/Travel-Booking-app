@@ -6,8 +6,9 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';  
 
 const GuestDetails = () => {
-  const [roomsData, setRoomsData] = useState([]);
+  const [hotelBlock, setHotelBlock] = useState([]);
   const [paymentDetails, setPaymentDetails] = useState(null);
+  
   const [formData, setFormData] = useState({
     fname: "",
     mname: "",
@@ -18,11 +19,24 @@ const GuestDetails = () => {
   const navigate = useNavigate(); 
 
   useEffect(() => {
-    const roomsJSON = localStorage.getItem('roomsData');
-    if (roomsJSON) {
-      setRoomsData(JSON.parse(roomsJSON));
+    const hotelBlockData = localStorage.getItem('hotelBlock');
+
+    if (hotelBlockData) {
+      try {
+        const parsedData = JSON.parse(hotelBlockData);
+        setHotelBlock(parsedData);
+      } catch (error) {
+        console.error('Error parsing hotelBlock:', error);
+      }
     }
   }, []);
+
+  if (!hotelBlock) {
+    return <p>Loading...</p>;
+  }
+ 
+
+// ----------------Payment Integration start -------------------
 
   const fetchPaymentDetails = async () => {
     try {
@@ -133,16 +147,16 @@ const GuestDetails = () => {
     }
   };
 
+  // ----------------Payment Integration End -------------------
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
-
   
-//  ----------------------------book api-----------------------------------
-
+//  ----------------------------Start book api-----------------------------------
 const bookHandler = async () => {
   try {
     const bookingPayload = {
@@ -289,7 +303,6 @@ const bookHandler = async () => {
       Password: "XXXX"
   };
   
-
     const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-book', {
       method: 'POST',
       headers: {
@@ -324,18 +337,19 @@ navigate('/booking-details', { state: { bookingDetails: responseBody.hotelBookin
     toast.error('An error occurred during hotel booking. Please try again.');
   }
 };
+const { AddressLine1, HotelName, HotelRoomsDetails, HotelPolicyDetail, HotelNorms } = hotelBlock;
 
-
-
-// ---------------------------------------------------------------------------
-  return (
+// -------------------------------End Book API--------------------------------------------
+return (
     <div className="guest-details-container">
       <h2 className="section-title">Guest Details</h2>
-      {roomsData.length > 0 ? (
-        roomsData.map((room, index) => (
+      <h2>{HotelName}</h2>
+      <h5>{AddressLine1}</h5>
+
+      {HotelRoomsDetails && HotelRoomsDetails.length > 0 ? (
+        HotelRoomsDetails.map((room, index) => (
           <div key={index} className="guest-details-card">
             <h3 className="card-title">Room Type: {room.RoomTypeName}</h3>
-            <h2>{room.HotelName}</h2>
             <p className="info-section">Price: {room.Price?.CurrencyCode} {room.Price?.RoomPrice?.toFixed(2)}</p>
             <p className="info-section">
               Day Rate: {room.DayRates?.map(dayRate => (
@@ -354,91 +368,31 @@ navigate('/booking-details', { state: { bookingDetails: responseBody.hotelBookin
                 </li>
               ))}
             </ul>
-            <p className="info-section"><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
-            <button type="submit" onClick={bookHandler }>Continue</button>
+            <p className="info-section"><strong>Cancellation Policy:</strong> {room.CancellationPolicy}</p>
+            <div className="hotel-policies">
+              <h3>Hotel Policies</h3>
+              {HotelPolicyDetail ? (
+                <div>
+                  <p><strong>Hotel Policy Details:</strong></p>
+                  <div dangerouslySetInnerHTML={{ __html: HotelPolicyDetail }} />
+                </div>
+              ) : <p>No hotel policy details available.</p>}
+              
+              {HotelNorms ? (
+                <div>
+                  <p><strong>Hotel Norms:</strong></p>
+                  <div dangerouslySetInnerHTML={{ __html: HotelNorms }} />
+                </div>
+              ) : <p>No hotel norms available.</p>}
+            </div>
+            <button type="button" onClick={() => console.log('Continue clicked')}>Continue</button>
           </div>
         ))
       ) : (
         <p className="no-room-details">No room details available.</p>
       )}
-
-      <div>
-        <h2>Enter Your Details</h2>
-        <form onSubmit={handlePayment}>
-          <div className="row mb-3">
-            <div className="col-12">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="First Name"
-                name="fname"
-                value={formData.fname}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="row mb-3">
-            <div className="col-12">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Middle Name (Optional)"
-                name="mname"
-                value={formData.mname}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="row mb-3">
-            <div className="col-12">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Last Name"
-                name="lname"
-                value={formData.lname}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="row mb-3">
-            <div className="col-12">
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <p className="confirmation-message">Confirmation email sent to this email address</p>
-          <div className="row mb-3">
-            <div className="col-12">
-              <input
-                type="tel"
-                className="form-control"
-                placeholder="Mobile"
-                name="mobile"
-                pattern="[0-9]{10}"
-                value={formData.mobile}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12">
-              <button type="submit" className="submit-btn">Proceed To Pay</button>
-            </div>
-          </div>
-        </form>
-      </div>
     </div>
+
   );
 };
 
