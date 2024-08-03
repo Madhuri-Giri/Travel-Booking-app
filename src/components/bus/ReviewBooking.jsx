@@ -101,6 +101,12 @@ const ReviewBooking = () => {
 
 
   const handlePayment = async () => {
+    const loginId = localStorage.getItem('loginId');
+    if (!loginId) {
+      navigate('/login'); 
+      return;
+    }
+  
     try {
       const paymentData = await fetchPaymentDetails();
   
