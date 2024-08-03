@@ -42,6 +42,7 @@ import FlightReview from './components/flight/FlightReview';
 import FlightPayHistory from './pages/History/FlightPayHistory';
 import BusPayHistory from './pages/History/BusPayHistory';
 import HotelPayHistory from './pages/History/HotelPayHistory';
+import SeatMealBaggageTabs from './components/flight/SeatMealBaggageTabs';
 
 
 const App = () => {
@@ -85,6 +86,9 @@ const App = () => {
           <Route path='/flight-pay-history' element={<FlightPayHistory />} />
           <Route path='/bus-pay-history' element={<BusPayHistory />} />
           <Route path='/hotel-pay-history' element={<HotelPayHistory />} />
+          <Route path='seat-meal-baggage'  element={<SeatMealBaggageTabs/>}/>
+          {/* <Route path="/seat-meal-baggage" element={<SeatMealBaggageTabs />} /> */}
+
 
 
         </Routes>

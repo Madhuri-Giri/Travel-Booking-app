@@ -10,8 +10,6 @@ import { FaTrash } from 'react-icons/fa';
 import { IoChevronBackOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-
-
 export default function FlightDetails() {
 
     const navigate = useNavigate();
@@ -77,7 +75,11 @@ export default function FlightDetails() {
     // --------------------------------------seat and meal api--------------------------------------------
 
     const mealAndseatHandler = () => {
+        // setShowTabs(!showTabs);
         setShowTabs(!showTabs);
+        if (!showTabs) {
+            navigate('/seat-meal-baggage', { state: { seatData, ssrData } });
+        }
         ssrHandler();
         seatmap();
     }
@@ -151,19 +153,19 @@ export default function FlightDetails() {
             const seatsArray = [];
 
             // Assuming parsedData contains a structure like the one you provided
-            for (const row in parsedData.Results[0].Seats) {
-                const rowData = parsedData.Results[0].Seats[row];
+            // for (const row in parsedData.Results[0].Seats) {
+            //     const rowData = parsedData.Results[0].Seats[row];
 
-                for (const column in rowData) {
-                    const seat = rowData[column];
-                    seatsArray.push({
-                        seatNumber: seat.SeatNumber,
-                        price: seat.Amount,
-                        isBooked: seat.IsBooked,
-                        imgSrc: '/src/assets/images/seat-2-removebg-preview.png'
-                    });
-                }
-            }
+            //     for (const column in rowData) {
+            //         const seat = rowData[column];
+            //         seatsArray.push({
+            //             seatNumber: seat.SeatNumber,
+            //             price: seat.Amount,
+            //             isBooked: seat.IsBooked,
+            //             imgSrc: '/src/assets/images/seat-2-removebg-preview.png'
+            //         });
+            //     }
+            // }
 
             setSeatData(seatsArray);
         }
@@ -212,9 +214,9 @@ export default function FlightDetails() {
         }
     }
 
-     const reviewHandler = () => {
+    const reviewHandler = () => {
         navigate('/flight-review')
-     }
+    }
 
 
     // ----------------------------------------------seat and meal api------------------------------------
@@ -328,7 +330,7 @@ export default function FlightDetails() {
             setError(`Please fill out all fields for ${type} ${index + 1}.`);
         }
 
-         localStorage.setItem(`${type}Details`, JSON.stringify(details));
+        localStorage.setItem(`${type}Details`, JSON.stringify(details));
     };
 
     const handleDelete = (type, index) => {
@@ -443,7 +445,7 @@ export default function FlightDetails() {
                 ))}
             </div>
             <div className="mt-4 col-md-6 float-right">
-                <button  className="mt-3 bg-primary p-2 text-light" >
+                <button className="mt-3 bg-primary p-2 text-light" >
                     Proceed to seat
                 </button>
             </div>
@@ -643,336 +645,16 @@ export default function FlightDetails() {
         }
     }
 
+    // seats meals baggage tabs---------------------------------------------------
+    // const navigate = useNavigate();
 
-
-
-
-    // seats meals baggage tabs
-    const renderSeatsTab = () => {
-        return (
-            <div className="seatsTabss">
-                <h5>SELECT YOUR PREFERRED SEAT</h5>
-                <div className="row seatsTabssRow">
-                    <div className="col-lg-6 seatsTabssColImg">
-                        <img
-                            className="img-fluid"
-                            src='/src/assets/images/flightseattss-removebg-preview.png'
-                            alt="First slide"
-                        />
-                    </div>
-                      </div>
-                    <div className="row col-12">
-                        <div className="seatsTabssColText">
-                            <div className="seat-selection row">
-                                {seatData.map((seat) => (
-                                    <div key={seat.id} className="col-3">
-                                        <button className="f-seat">
-                                        <h6>{seat.seatNumber}</h6>
-                                            <img
-                                                className="img-fluid"
-                                                src='/src/assets/images/seat-2-removebg-preview.png'
-                                                alt="Seat"
-                                            />
-                                            <p>₹{seat.price}</p>
-                                        </button>
-
-
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                
-
-            </div>
-        );
+    const handleCheckboxChange = () => {
+        setShowTabs(!showTabs);
+        if (!showTabs) {
+            navigate('/seat-meal-baggage', { state: { seatData, ssrData } });
+        }
     };
-
-    const renderMealsTab = () => {
-        return (
-            <div className="MealsTabss">
-                <h5>Select Your Meal</h5>
-                <div className="meal-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>2</p>
-                            <h6>₹0</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="radio" id="vegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="vegMeal">Vegetarian Meal</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="radio" id="nonVegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="nonVegMeal">Non-Vegetarian Meal</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 meal-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="meal-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>2</p>
-                            <h6>₹0</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="radio" id="vegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="vegMeal">Vegetarian Meal</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="radio" id="nonVegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="nonVegMeal">Non-Vegetarian Meal</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 meal-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div className="meal-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>2</p>
-                            <h6>₹290</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="radio" id="vegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="vegMeal">Vegetarian Meal</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="radio" id="nonVegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="nonVegMeal">Non-Vegetarian Meal</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 meal-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div className="meal-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>2</p>
-                            <h6>₹300</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="radio" id="vegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="vegMeal">Vegetarian Meal</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="radio" id="nonVegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="nonVegMeal">Non-Vegetarian Meal</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 meal-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div className="meal-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>2</p>
-                            <h6>₹300</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="radio" id="vegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="vegMeal">Vegetarian Meal</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="radio" id="nonVegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="nonVegMeal">Non-Vegetarian Meal</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 meal-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div className="meal-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>2</p>
-                            <h6>₹300</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="radio" id="vegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="vegMeal">Vegetarian Meal</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="radio" id="nonVegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="nonVegMeal">Non-Vegetarian Meal</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 meal-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div className="meal-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>2</p>
-                            <h6>₹435</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="radio" id="vegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="vegMeal">Vegetarian Meal</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="radio" id="nonVegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="nonVegMeal">Non-Vegetarian Meal</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 meal-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div className="meal-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>2</p>
-                            <h6>₹450</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="radio" id="vegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="vegMeal">Vegetarian Meal</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="radio" id="nonVegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="nonVegMeal">Non-Vegetarian Meal</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 meal-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div className="meal-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>2</p>
-                            <h6>₹450</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="radio" id="vegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="vegMeal">Vegetarian Meal</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="radio" id="nonVegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="nonVegMeal">Non-Vegetarian Meal</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 meal-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div className="meal-selection">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>2</p>
-                            <h6>₹560</h6>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-check">
-                                <input type="radio" id="vegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="vegMeal">Vegetarian Meal</label>
-                            </div>
-                            <div className="form-check">
-                                <input type="radio" id="nonVegMeal" name="meal" className="form-check-input" />
-                                <label className="form-check-label" htmlFor="nonVegMeal">Non-Vegetarian Meal</label>
-                            </div>
-                        </div>
-                        <div className="col-md-4 meal-selectionbtn">
-                            <div>
-                                <button> + Add </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        );
-    };
-
-
-
-    const renderBaggageTab = () => {
-        return (
-            <div className="baggageTabbss">
-                <h5>Select Your Baggage Option</h5>
-                {ssrData.map((ssr, index) => (
-                    <div key={index} className="baggage-selection">
-                        <div className="row">
-                            <div className="col-md-4">
-                                <p>{ssr.Weight} kg</p> {/* Corrected to ssr.Weight */}
-                                <h6>₹{ssr.Price}</h6> {/* Corrected to ssr.Price */}
-                            </div>
-                            <div className="col-md-4">
-                                <div className="form-check">
-                                    <input type="checkbox" id={`carryOn${index}`} className="form-check-input" />
-                                    <label className="form-check-label" htmlFor={`carryOn${index}`}>Carry-On</label>
-                                </div>
-                                <div className="form-check">
-                                    <input type="checkbox" id={`checkedBag${index}`} className="form-check-input" />
-                                    <label className="form-check-label" htmlFor={`checkedBag${index}`}>Checked Bag</label>
-                                </div>
-                            </div>
-                            <div className="col-md-4 baggagge-selectionbtn">
-                                <div>
-                                    <button>+ Add</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-        );
-    };
+    // seats meals baggage tabs--------------------------------------------------------
 
 
     return (
@@ -1047,7 +729,7 @@ export default function FlightDetails() {
                                 </div>
                             </div>
 
-                           
+
 
                             <div className="row">
                                 <div className="fligthTravellerDethed">
@@ -1055,7 +737,7 @@ export default function FlightDetails() {
                                     <h5>Enter Traveller Details</h5>
                                 </div>
 
-                                
+
                                 <div className="col-12">
                                     <div className="fligthTravellerDethedBox">
                                         <form>
@@ -1085,53 +767,22 @@ export default function FlightDetails() {
 
                                             {error && <div className="text-danger mt-2">{error}</div>}
 
-                                           
+
 
 
                                             {/* code for tabs seat meals--------- */}
-                                            <div className="col-md-4 mt-4">
-                                              
-                                                <div className="selectSeatMealDivBtn" onClick={mealAndseatHandler}>
-                                                    Add Seats, Meals, Baggage & more
+                                            <div className="row">
+                                                <div className="col-md-4 col-lg-6 seatMealBaggageTabbtn">
+                                                    <input
+                                                        type="checkbox"
+                                                        id="seatMealCheckbox"
+                                                        className="form-check-input"
+                                                    />
+                                                    <label className="form-check-label" htmlFor="seatMealCheckbox">
+                                                        Add Seats, Meals, Baggage & more
+                                                    </label>
                                                 </div>
                                             </div>
-
-                                            {showTabs && (
-                                                <div className="mt-4 selectSeatMealDivBtnTabss">
-                                                    <ul className="nav nav-tabs">
-                                                        <li className="nav-item">
-                                                            <a
-                                                                className={`nav-link ${activeTab === 'Seats' ? 'active' : ''}`}
-                                                                onClick={() => setActiveTab('Seats')}
-                                                            >
-                                                                Seats
-                                                            </a>
-                                                        </li>
-                                                        <li className="nav-item">
-                                                            <a
-                                                                className={`nav-link ${activeTab === 'Meals' ? 'active' : ''}`}
-                                                                onClick={() => setActiveTab('Meals')}
-                                                            >
-                                                                Meals
-                                                            </a>
-                                                        </li>
-                                                        <li className="nav-item">
-                                                            <a
-                                                                className={`nav-link ${activeTab === 'Baggage' ? 'active' : ''}`}
-                                                                onClick={() => setActiveTab('Baggage')}
-                                                            >
-                                                                Baggage
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-
-                                                    <div className="tab-content mt-4">
-                                                        {activeTab === 'Seats' && renderSeatsTab()}
-                                                        {activeTab === 'Meals' && renderMealsTab()}
-                                                        {activeTab === 'Baggage' && renderBaggageTab()}
-                                                    </div>
-                                                </div>
-                                            )}
 
 
                                             <div className="col-12 lastBtnssContinue">

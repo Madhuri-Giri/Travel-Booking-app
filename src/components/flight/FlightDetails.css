@@ -301,8 +301,17 @@
     font-weight: 500;
     font-size: 17px;
 }
+.seatMealBaggageTabbtn{
+    padding: 15px 11px;
+    box-shadow: 2px 1px 4px 3px #80808073;
+    padding-bottom: 5px;
+}
+.seatMealBaggageTabbtn input{
+    margin-right: 20px;
+    font-size: 23px;
+    margin-top: 2px;
+}
 .formdettlsDesk{
-    /* background: #f3efef; */
     padding: 15px 11px;
     box-shadow: 2px 1px 4px 3px #80808073;
 }
@@ -356,6 +365,18 @@
     font-weight: 600;
     cursor: pointer;
 }
+.selectSeatMealCont{
+    background-color: #dddddd;
+    padding: 40px 10px;
+}
+.selectSeatMealContROW{
+    background-color: white;
+    padding: 10px 20px;
+    padding-bottom: 30px;
+}
+.selectSeatMealDivBtnTabss{
+    margin-bottom: 40px;
+}
 .selectSeatMealDivBtnTabss a{
     cursor: pointer;
 }
@@ -368,6 +389,7 @@
     display: flex;
     justify-content: space-between;
     margin-top: 50px;
+    
 }
 .lastBtnssContinue h5{
     color: black;
@@ -386,9 +408,9 @@
     border-radius: 6px;
 }
 
-.seatsTabssColImg img{
+/* .seatsTabssColImg img{
     height: 250px;
-}
+} */
 .seatsTabssColText img{
     height: 50px;
 }
