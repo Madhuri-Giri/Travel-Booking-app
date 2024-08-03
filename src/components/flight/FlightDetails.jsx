@@ -23,13 +23,10 @@ export default function FlightDetails() {
 
     const formData = location.state?.formData;
 
-    // console.log("fareData", fareData);
-    // console.log("formData", formData);
 
 
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
 
-    // console.log("location", fareData)
 
     useEffect(() => {
         // Check if fareDataDetails is available in state
@@ -148,7 +145,6 @@ export default function FlightDetails() {
     const [seatData, setSeatData] = useState([]);
 
     useEffect(() => {
-        // Fetch the stored flight seat map from local storage
         const flightData = localStorage.getItem('FlightsitMap');
         if (flightData) {
             const parsedData = JSON.parse(flightData);
@@ -257,34 +253,6 @@ export default function FlightDetails() {
     const handleLastNameChange = (e) => {
         setLastName(e.target.value);
     };
-
-    // const handleConfirm = (e) => {
-    //     e.preventDefault();
-    //     if (gender && firstName && lastName) {
-    //         const newDetail = { gender, firstName, lastName, selected: false };
-    //         setFormDetails([newDetail]);
-    //         setGender('');
-    //         setFirstName('');
-    //         setLastName('');
-    //         setError('');
-    //     } else {
-    //         setError('Please fill out all fields.');
-    //     }
-    // };
-
-    // const handleDelete = () => {
-    //     setFormDetails([]);
-    // };
-
-    // const toggleSelect = (index) => {
-    //     setFormDetails(
-    //         formDetails.map((detail, i) =>
-    //             i === index ? { ...detail, selected: !detail.selected } : detail
-    //         )
-    //     );
-    // };
-
-
 
 
 
@@ -1090,6 +1058,8 @@ export default function FlightDetails() {
                                     <MdOutlineFlightTakeoff />
                                     <h5>Enter Traveller Details</h5>
                                 </div>
+
+                                
                                 <div className="col-12">
                                     <div className="fligthTravellerDethedBox">
                                         <form>
@@ -1237,3 +1207,13 @@ export default function FlightDetails() {
         </>
     )
 }
+
+
+
+
+
+
+
+
+
+
