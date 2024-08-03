@@ -144,7 +144,6 @@ export default function FlightDetails() {
         }
     };
 
-
     const [seatData, setSeatData] = useState([]);
 
     useEffect(() => {
@@ -373,9 +372,6 @@ export default function FlightDetails() {
             setConfirmedInfantDetails(confirmedInfantDetails.filter((_, i) => i !== index));
         }
     };
-
-
-
 
     const renderFormFields = (count, type) => {
         const details = type === 'adult' ? adultDetails : type === 'child' ? childDetails : infantDetails;

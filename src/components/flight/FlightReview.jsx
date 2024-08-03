@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import "./FlightReview.css"
 
 const FlightReview = () => {
 
@@ -270,14 +271,51 @@ const FlightReview = () => {
   // -------------------------------------------------------------------------------------------
 
   return (
-    <div>
-      <h5>Review Your Trip Details</h5>
+    <>
 
-      <div className="flight-pay">
-        <button onClick={flightpayHandler}>Proceed To Pay</button>
+
+      <div className="container-fluid review-cont">
+        <div className="row">
+          <div className="col-md-6">
+            <div className="reviewBoxx">
+              <h5 className="reviewHed">Review Your Trip Details</h5>
+              <div className="flight-pay">
+                <div className="flightPaydetails">
+                  <div className="flightPayDivhed">
+                    <div className="flightPayDivhed1">
+                      <p>Air Fare</p>
+                      <p>₹4,233.8</p>
+                    </div>
+                    <div className="flightPayDivhed2">
+                      <p>Air Fare</p>
+                      <p>₹0</p>
+                    </div>
+                    <div className="flightPayDivhed3">
+                      <h5>Grand Total</h5>
+                      <p>₹4,233.8</p>
+                    </div>
+                  </div>
+                  <div className="flightPayDivMain">
+                    <p> Onward Thu,13 Jun </p>
+                    <p> Indore  Guwahati </p>
+                    <p> 09:20 Pm  07:15 Am </p>
+                    <p> Air India Ai-635 </p>
+                    <p> Economy Classes . Flex </p>
+                    <p> 27h 10m .1 Stop At Delhi </p>
+                    <p> Cabin Baggage 15Kg (1 Piece) </p>
+                    <p> Check-In Baggage 7Kg As Per Airline Policy </p>
+                  </div>
+                </div>
+                <div className="flightPaybtn">
+                  <button onClick={flightpayHandler}>Proceed To Pay</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-    </div>
+    </>
   )
 }
 

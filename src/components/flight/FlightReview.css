@@ -1,0 +1,72 @@
+.review-cont .row{
+    display: flex;
+    justify-content: center;
+}
+.review-cont{
+    background-color: #dddddd;
+    /* padding: 10px 10px; */
+}
+.reviewBoxx{
+    /* background-color: aqua; */
+    background-color: white;
+    padding: 20px 25px;
+    margin: 20px 10px;
+    border-radius: 3px;
+}
+.reviewHed{
+    text-align: center;
+    font-weight: bold;
+}
+.flightPaydetails{
+    margin: 2px 20px;
+}
+.flightPaybtn{
+    display: flex;
+    justify-content: center;
+}
+.flightPaybtn button{
+    width: 100%;
+    background-color: #00b7eb;
+    border: none;
+    margin: 20px;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 7px;
+}
+.flightPayDivhed{
+    border: 1px solid #80808036;
+    border-radius: 7px;
+    padding: 10px 10px;
+    margin-bottom: 15px;
+}
+.flightPayDivhed p{
+    padding: 0px;
+    margin: 0px;    
+}
+.flightPayDivhed div{
+    display: flex;
+    justify-content: space-between;
+}
+.flightPayDivhed3{
+    border-top: 1px solid #80808036;
+    padding-top: 10px;
+    font-weight: bold;
+}
+.flightPayDivMain{
+    border: 1px solid #80808036;
+    border-radius: 7px;
+    padding: 10px 10px;
+    /* margin-bottom: 15px; */
+}
+
+/* responsive css */
+@media screen and (max-width: 992px) {
+    .reviewBoxx {
+        background-color: white;
+        padding: 20px 0px;
+        margin: 20px 10px;
+        border-radius: 3px;
+    }
+}
