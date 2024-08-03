@@ -20,7 +20,7 @@ const EnterNumber = () => {
     }
 
     try {
-      const response = await fetch('https://app.sajpe.in/api/v1/user/send_otp', {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/send-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

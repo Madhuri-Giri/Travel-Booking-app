@@ -3,8 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import './HotelRoom.css';
 
-
-
 const initialFormData = {
   firstName: '',
   lastName: '',
@@ -119,11 +117,19 @@ const HotelRoom = () => {
       return updatedRooms;
     });
   };
-
+  const selectedRoomsData = {
+    singleDeluxe: selectedSingleDeluxeRooms,
+    doubleDeluxe: selectedDoubleDeluxeRooms,
+    totalPriceSingleDeluxe,
+    totalPriceDoubleDeluxe,
+    checkInDate: '2024-08-01',  // Example static date, replace with actual date
+    checkOutDate: '2024-08-07'  // Example static date, replace with actual date
+  };
   const roomblockHandler = async (event) => {
     event.preventDefault();
 
     const requestData = {
+      // payload/parameter here
       ResultIndex: "9",
       HotelCode: "92G|DEL",
       HotelName: "The Manor",
@@ -276,15 +282,20 @@ const HotelRoom = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
+      // const res = await response.json();
+      // console.log('hotel-block API Response:', res.BlockRoomResult);
+      // const rooms = res.BlockRoomResult;
+      // const roomsJSON = JSON.stringify(rooms);
+      // localStorage.setItem('hotelBlock', roomsJSON); 
+      // navigate('/hotel-guest');  
+      
       const res = await response.json();
-      console.log('hotel-block API Response:', res.BlockRoomResult);
-      const rooms = res.BlockRoomResult;
-      const roomsJSON = JSON.stringify(rooms);
-      localStorage.setItem('hotelBlock', roomsJSON); 
-      navigate('/hotel-guest');
-
-     
-
+    console.log('hotel-block API Response:', res.BlockRoomResult);
+    const rooms = res.BlockRoomResult;
+    const roomsJSON = JSON.stringify(rooms);
+    localStorage.setItem('hotelBlock', roomsJSON);
+    localStorage.setItem('selectedRoomsData', JSON.stringify(selectedRoomsData)); // Store updated room data
+    navigate('/hotel-guest')
     } catch (error) {
       console.error('Error:', error);
     }
@@ -352,8 +363,7 @@ const HotelRoom = () => {
               {doubleDeluxeRooms.map((room, index) => (
                 <div
                   key={index}
-                  className={`hotel_room_box ${selectedDoubleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? 'selected' : ''}`}
-                >
+                 className={`hotel_room_box ${selectedDoubleDeluxeRooms.some(selectedRoom =>selectedRoom.RoomTypeCode === room.RoomTypeCode) ? 'selected' : ''}`} >
                   <h3>{room.RoomTypeName}</h3>
                   <p>Price: INR {room.Price?.RoomPrice?.toFixed(2)}</p>
                   <p>Day Rate: {room.DayRates?.map(dayRate => (
