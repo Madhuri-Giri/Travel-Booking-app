@@ -132,7 +132,7 @@ const FlightSearch = () => {
         Destination: "KWI",
         FlightCabinClass: 1,
         PreferredDepartureTime: "2024-08-20T00:00:00",
-        PreferredArrivalTime: "2024-08-29T00:00:00"
+        PreferredArrivalTime: "2024-08-25T00:00:00"
       }
     ]
   });
@@ -197,6 +197,7 @@ const FlightSearch = () => {
 
     let updatedSegments = formData.Segments;
     updatedSegments[0][key] = formattedDate;
+    console.log("updatedSegments",updatedSegments);
     setFormData((prev) => ({ ...prev, Segments: updatedSegments }));
   };
 
