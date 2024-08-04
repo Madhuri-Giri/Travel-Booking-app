@@ -77,7 +77,7 @@ const FareQuote = () => {
                         </div>
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaCalendarAlt className="mt-1" />
-                            <p><span>Departure on Wed,</span> 17 July</p>
+                            <p><span>Departure on</span> {formattedDate}</p>
                         </div>
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaUser className="mt-1" />

@@ -284,14 +284,17 @@
     color: #00b7eb;
     font-weight: bold;
 }
+.userFormFill{
+    border: 1px solid rgba(220, 220, 220, 0.486);
+
+}
 
 .fligthTravellerDethedBox .row{
-    /* border: 1px solid rgba(220, 220, 220, 0.486); */
-    padding: 20px 10px;
+    padding: 6px 10px;
     border-radius: 10px;
-    margin-bottom: 20px;
     margin-left: 5px;
     margin-right: 5px;
+    margin-bottom: 10px;
 }
 .fligthTravellerDethedBox label{
     margin-bottom: 18px;

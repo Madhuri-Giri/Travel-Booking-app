@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import jsPDF from 'jspdf';
-import "jspdf-autotable";
 import "./BusTikit.css";
 import busTikitImg from "../../../assets/images/bus-tikit.png";
 
@@ -10,9 +8,11 @@ const BusTikit = () => {
   const [passengerData, setPassengerData] = useState([]);
 
   // Accessing Redux state
-  const { from, to } = useSelector((state) => state.bus);
+  const { from, to} = useSelector((state) => state.bus);
+
   const boardingPoints = useSelector((state) => state.bus.boardingPoints);
   const droppingPoints = useSelector((state) => state.bus.droppingPoints);
+
 
   useEffect(() => {
     const storedBookingDetails = localStorage.getItem('busTikitDetails');
@@ -25,45 +25,6 @@ const BusTikit = () => {
       setPassengerData(JSON.parse(storedPassengerData));
     }
   }, []);
-
-  const downloadTicket = () => {
-    const doc = new jsPDF();
-
-    doc.text("Bus Ticket", 20, 20);
-    doc.text(`From: ${from}`, 20, 30);
-    doc.text(`To: ${to}`, 20, 40);
-    doc.text(`Ticket No: ${bookingDetails.result.data.Result.TicketNo}`, 20, 50);
-    doc.text(`Bus ID: ${bookingDetails.result.data.Result.BusId}`, 20, 60);
-    doc.text(`Ticket Price: ${bookingDetails.result.data.Result.InvoiceAmount} INR`, 20, 70);
-
-    doc.autoTable({
-      startY: 80,
-      head: [['Passenger Name', 'Seat No.', 'Age']],
-      body: passengerData.map((passenger, index) => [
-        `${index + 1}. ${passenger.FirstName}`,
-        passenger.Seat.SeatName,
-        passenger.Age,
-      ]),
-    });
-
-    if (boardingPoints.length > 0) {
-      doc.autoTable({
-        startY: doc.previousAutoTable.finalY + 10,
-        head: [['Boarding Points']],
-        body: boardingPoints.map((point, index) => [`${index + 1}. ${point.CityPointName}`]),
-      });
-    }
-
-    if (droppingPoints.length > 0) {
-      doc.autoTable({
-        startY: doc.previousAutoTable.finalY + 10,
-        head: [['Dropping Points']],
-        body: droppingPoints.map((point, index) => [`${index + 1}. ${point.CityPointName}`]),
-      });
-    }
-
-    doc.save('ticket.pdf');
-  };
 
   return (
     <div className="BusTikit">
@@ -156,7 +117,7 @@ const BusTikit = () => {
                 )}
 
                 <div className="detils-dowm">
-                  <button onClick={downloadTicket}>Download Ticket</button>
+                  <button>Download Ticket</button>
                   <button>Cancel Download</button>
                 </div>
               </div>
@@ -164,6 +125,49 @@ const BusTikit = () => {
           </div>
         </div>
       </div>
+
+      {/* --------------------------------------  */}
+{/* 
+      <div className="download-ticket-code">
+        <div className="downloaded">
+          <h6>Download Ticket</h6>
+          <div className="down-pass">
+            {passengerData.length > 0 ? (
+              passengerData.map((passenger, index) => (
+                <div key={index}>
+                  <p>Passenger Name - <small style={{fontWeight:'lighter'}}>{passenger.FirstName}</small></p>
+                  <p>Age - <small style={{fontWeight:'lighter'}}>{passenger.Age}</small></p>
+                  <p>Seat No. - <small style={{fontWeight:'lighter'}}>{passenger.Seat.SeatName}</small></p>
+                </div>
+              ))
+            ) : (
+              <p>Loading passenger data...</p>
+            )}
+          </div>
+          <h6>Ticket Details</h6>
+          <div className="tik">
+            {bookingDetails ? (
+              <>
+                <p>Ticket Number - <small style={{fontWeight:'lighter'}}>{bookingDetails.result.data.Result.TicketNo}</small></p>
+                <p>Bus ID - <small style={{fontWeight:'lighter'}}>{bookingDetails.result.data.Result.BusId}</small></p>
+                <p>Ticket Price - <small style={{fontWeight:'lighter'}}>{bookingDetails.result.data.Result.InvoiceAmount} INR</small></p>
+              </>
+            ) : (
+              <p>Loading booking details...</p>
+            )}
+          </div>
+          <h6>Bus Details</h6>
+          <div className="bustik">
+            {bookingDetails ? (
+              <p>Bus ID - <small style={{fontWeight:'lighter'}}>{bookingDetails.result.data.Result.BusId}</small></p>
+            ) : (
+              <p>Loading bus details...</p>
+            )}
+          </div>
+        </div>
+      </div> */}
+
+      
     </div>
   );
 };
