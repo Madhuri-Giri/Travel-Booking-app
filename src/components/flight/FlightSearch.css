@@ -100,10 +100,13 @@
 .date-picker-wrapper {
     position: relative;
 }
-.date-picker-wrapper input{
+
+.date-picker-wrapper input {
     border: none;
-    /* padding: 0px; */
     width: 100%;
+}
+.date-picker-wrapper input:focus{
+    border: none !important;
 }
 
 .date-picker-icon {
@@ -125,11 +128,14 @@
 
 .onewayreturnhidebtn svg {
     color: gray;
+    font-size: 25px;
 }
-.flightTravellerclssFormControl{
+
+.flightTravellerclssFormControl {
     border: 1px solid gray !important;
     padding: 0px 0px !important;
 }
+
 .flightTravellerclss {
     display: flex;
     justify-content: space-evenly;
@@ -217,7 +223,8 @@
     margin-bottom: 20px;
     margin-top: 20px;
 }
-.exictingOfferslider img{
+
+.exictingOfferslider img {
     border-radius: 10px;
     height: 270px;
     width: 340px;
@@ -439,15 +446,18 @@
     background: #00b7eb;
     color: white;
     padding: 9px 23px;
-    font-size: 16px;
+    font-size: 16px;    
     border-radius: 4px;
     font-weight: bold;
 }
 
+.date-picker-wrapper:focus{
+    border: none;
+}
 
 /* responsive css */
 @media screen and (max-width: 768px) {
-    .flightbooksec2{
+    .flightbooksec2 {
         display: none;
     }
 
@@ -456,15 +466,19 @@
         border-radius: 17px;
         font-size: 13px;
     }
+
     .flistname {
         font-size: 12px;
     }
+
     .flistname p {
         font-size: 13px;
     }
+
     .flistnamep3 {
         padding: 0px 20px;
     }
+
     .flight-content .row {
         padding: 10px 0px;
     }
@@ -477,28 +491,35 @@
         padding: 10px 10px;
         font-size: 13px;
     }
-    .flightTravellerclssFormControl{
+
+    .flightTravellerclssFormControl {
         padding: 1px 2px !important;
     }
 
     .flightPageBanner {
         padding: 10px 0px !important;
     }
+
     .flightbooksec3 h5 {
         font-size: 18px !important;
     }
+
     .flightbooksec3 {
         padding: 10px 10px !important;
     }
+
     .exclusive-dealsSec {
         padding: 5px 1px !important;
     }
+
     .flightsec7 {
         padding: 0px 5px !important;
     }
+
     .flightsec6coldiv h1 {
         font-size: 15px !important;
-    }    
+    }
+
     .flightTravellerclss {
         padding: 0px 0px;
         padding-top: 6px;
@@ -507,9 +528,16 @@
     }
 
     .onewayreturnhidebtn {
-        font-size: 13px;
+        font-size: 15px;
+        margin-top: 10px;
+        display: flex;
+        justify-content: start;
     }
 
+    .onewayreturnhidebtn a {
+        margin-top: 5px;
+    }
+   
     .date-picker-wrapper .form-control {
         font-size: 13px;
     }
@@ -567,7 +595,7 @@
         padding-right: 30px;
         padding-right: 30px;
         border: 1px solid gray;
-        border-radius:7px;
+        border-radius: 7px;
         padding: 7px 17px;
         font-size: 13px;
     }
@@ -588,5 +616,3 @@
     }
 
 }
-
-

@@ -7,7 +7,6 @@ import { TiPlane } from "react-icons/ti";
 import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import { MdOutlineFlightTakeoff } from "react-icons/md";
 import { FaTrash } from 'react-icons/fa';
-import { IoChevronBackOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 export default function FlightDetails() {
@@ -22,7 +21,7 @@ export default function FlightDetails() {
     const formData = location.state?.formData;
 
 
-    const [traveller, setTraveller] = useState();
+    const [traveller, setTraveller] = useState([]);
 
 
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
@@ -32,12 +31,19 @@ export default function FlightDetails() {
         const date = new Date(dateString);
         return new Intl.DateTimeFormat('en-US', { day: 'numeric', weekday: 'long', month: 'long' }).format(date);
     };
-    
+
     const departDatee = formData.Segments[0].PreferredDepartureTime;
     const convertformattedDate = convertformatDate(departDatee);
     console.log("Formatted Date:", convertformattedDate);
     // function for date convert into day month date--------------------------------------
 
+    // func for duration convert hpur minute---------------------
+    const convertMinutesToHoursAndMinutes = (minutes) => {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        return `${hours}h ${remainingMinutes}m`;
+    };
+    // func for duration convert hpur minute---------------------
 
     useEffect(() => {
         if (fareData) {
@@ -79,10 +85,8 @@ export default function FlightDetails() {
         return date.toLocaleDateString(undefined, options);
     };
 
-    //   -----------------------------------------------------
 
     // --------------------------------------seat and meal api--------------------------------------------
-
     const mealAndseatHandler = () => {
         setShowTabs(!showTabs);
         if (!showTabs) {
@@ -147,11 +151,14 @@ export default function FlightDetails() {
                 console.error('No baggage data found in response');
             }
         } catch (error) {
-            console.error('API call failed:', error);
+            console.error('SSr API call failed:', error);
         }
     };
 
     const [seatData, setSeatData] = useState([]);
+
+    console.log("ssrData",ssrData);
+    console.log("seatData",seatData);
 
     useEffect(() => {
         const flightData = localStorage.getItem('FlightsitMap');
@@ -181,8 +188,6 @@ export default function FlightDetails() {
             setSeatData([]);
         }
     }, []);
-
-
 
     const seatmap = async () => {
         const traceId = localStorage.getItem('FlightTraceId2');
@@ -230,44 +235,20 @@ export default function FlightDetails() {
         navigate('/flight-review')
     }
 
-
-
     // ----------------------------------------------seat and meal api------------------------------------
-    // ----------------------logic for forms---------------------------------------
 
+
+    // ----------------------logic for forms---------------------------------------
     const [activeTabFlightDetails, setActiveTabFlightDetails] = useState('flight');
 
+    const [showTabs, setShowTabs] = useState(false);
     const [email, setEmail] = useState('');
     const [mobileNumber, setMobileNumber] = useState('');
     const [gender, setGender] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [formDetails, setFormDetails] = useState([]);
-    // const [error, setError] = useState('');
-    const [showTabs, setShowTabs] = useState(false);
     const [activeTab, setActiveTab] = useState('Seats');
-
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
-
-    const handleMobileNumberChange = (e) => {
-        setMobileNumber(e.target.value);
-    };
-
-    const handleGenderChange = (e) => {
-        setGender(e.target.value);
-        setError('');
-    };
-    const handleFirstNameChange = (e) => {
-        setFirstName(e.target.value);
-    };
-    const handleLastNameChange = (e) => {
-        setLastName(e.target.value);
-    };
-
-
-
 
     // -------------------newwwww------------
     const [adultCount, setAdultCount] = useState(formData.AdultCount);
@@ -292,7 +273,7 @@ export default function FlightDetails() {
         const allInfantsConfirmed = confirmedInfantDetails.every(detail => detail.selected);
         setIsContinueDisabled(!(allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
     };
-    
+
 
     const handleInputChange = (e, index, type, field) => {
         const { value } = e.target;
@@ -326,7 +307,7 @@ export default function FlightDetails() {
     const handleConfirm = (e, index, type) => {
         e.preventDefault();
         let details;
-    
+
         if (type === 'adult') {
             details = [...adultDetails];
         } else if (type === 'child') {
@@ -334,11 +315,11 @@ export default function FlightDetails() {
         } else if (type === 'infant') {
             details = [...infantDetails];
         }
-    
+
         const { gender, firstName, lastName } = details[index];
         if (gender && firstName && lastName) {
             setError('');
-            const newDetail = { ...details[index], selected: true }; 
+            const newDetail = { ...details[index], selected: true };
             if (type === 'adult') {
                 setConfirmedAdultDetails([...confirmedAdultDetails, newDetail]);
             } else if (type === 'child') {
@@ -346,12 +327,12 @@ export default function FlightDetails() {
             } else if (type === 'infant') {
                 setConfirmedInfantDetails([...confirmedInfantDetails, newDetail]);
             }
-            checkButtonDisabled(); 
+            checkButtonDisabled();
         } else {
             setError(`Please fill out all fields for ${type} ${index + 1}.`);
         }
     };
-    
+
 
     const handleDelete = (type, index) => {
         if (type === 'adult') {
@@ -485,7 +466,7 @@ export default function FlightDetails() {
             );
             setConfirmedInfantDetails(updatedDetails);
         }
-        checkButtonDisabled(); 
+        checkButtonDisabled();
     };
 
 
@@ -511,7 +492,7 @@ export default function FlightDetails() {
                             <p className="flighttTabContentCol2p3">{origin.AirportName}</p>
                         </div>
                         <div className="col-md-3 col-sm-6 flighttTabContentCol3">
-                            <p>{segment.Duration}m</p>
+                            <p>{convertMinutesToHoursAndMinutes(segment.Duration)}</p>
                             <p>{segment.CabinClassName}</p>
                         </div>
                         <div className="col-md-3 col-sm-6 flighttTabContentCol4">
@@ -666,21 +647,18 @@ export default function FlightDetails() {
     const handleCheckboxChange = () => {
         setShowTabs(!showTabs);
         if (!showTabs) {
-            navigate('/seat-meal-baggage', { state: { seatData, ssrData } });
+            navigate('/seat-meal-baggage', { state: { seatData : seatData, ssrData : ssrData } });
         }
     };
+    console.log();
     // seats meals baggage tabs--------------------------------------------------------
-
 
     return (
         <>
             <section className='flightlistsec1'>
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-4 d-flex flightlistsec1col">
-                            <Link to='/flight-Farequote'>
-                                <IoChevronBackOutline />
-                            </Link>
+                        <div className="col-lg-4 d-flex flightlistsec1col">                        
                             <TiPlane className="mt-1" />
                             <p> {formData.Segments[0].Origin} </p>
                             <p>-</p>
