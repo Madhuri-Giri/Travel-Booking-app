@@ -20,9 +20,7 @@ export default function FlightDetails() {
 
     const formData = location.state?.formData;
 
-
     const [traveller, setTraveller] = useState([]);
-
 
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
 
@@ -785,8 +783,8 @@ export default function FlightDetails() {
                                                     onClick={reviewHandler}
                                                     disabled={isContinueDisabled}
                                                     style={{
-                                                        color: isContinueDisabled ? '#ccc' : '#000',
-                                                        backgroundColor: isContinueDisabled ? '#f0f0f0' : '#007bff',
+                                                        color: isContinueDisabled ? '#ccc' : 'white',
+                                                        backgroundColor: isContinueDisabled ? '#f0f0f0' : '#00b7eb',
                                                         cursor: isContinueDisabled ? 'not-allowed' : 'pointer',
                                                         border: 'none',
                                                         padding: '10px 20px',

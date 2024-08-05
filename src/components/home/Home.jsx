@@ -883,8 +883,6 @@ const handleChange = (date) => {
         </div>
       </section>
 
-
-
       <section className="flightsec7 bg-light">
         <div className="container">
           <div className="row flightsec7row">
