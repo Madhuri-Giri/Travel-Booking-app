@@ -17,10 +17,7 @@ export default function FlightDetails() {
 
     const location = useLocation();
     const fareData = location.state?.fareData;
-
     const formData = location.state?.formData;
-
-    const [traveller, setTraveller] = useState([]);
 
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
 
@@ -85,14 +82,6 @@ export default function FlightDetails() {
 
 
     // --------------------------------------seat and meal api--------------------------------------------
-    const mealAndseatHandler = () => {
-        setShowTabs(!showTabs);
-        if (!showTabs) {
-            navigate('/seat-meal-baggage', { state: { seatData, ssrData } });
-        }
-        ssrHandler();
-        seatmap();
-    }
 
     const [ssrData, setSsrData] = useState([]);
 
@@ -155,8 +144,8 @@ export default function FlightDetails() {
 
     const [seatData, setSeatData] = useState([]);
 
-    console.log("ssrData",ssrData);
-    console.log("seatData",seatData);
+    console.log("ssrData", ssrData);
+    console.log("seatData", seatData);
 
     useEffect(() => {
         const flightData = localStorage.getItem('FlightsitMap');
@@ -236,19 +225,11 @@ export default function FlightDetails() {
     // ----------------------------------------------seat and meal api------------------------------------
 
 
-    // ----------------------logic for forms---------------------------------------
+    // ----------------------logic for total traveller forms---------------------------------------
     const [activeTabFlightDetails, setActiveTabFlightDetails] = useState('flight');
 
     const [showTabs, setShowTabs] = useState(false);
-    const [email, setEmail] = useState('');
-    const [mobileNumber, setMobileNumber] = useState('');
-    const [gender, setGender] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [formDetails, setFormDetails] = useState([]);
-    const [activeTab, setActiveTab] = useState('Seats');
 
-    // -------------------newwwww------------
     const [adultCount, setAdultCount] = useState(formData.AdultCount);
     const [childCount, setChildCount] = useState(formData.ChildCount);
     const [infantCount, setInfantCount] = useState(formData.InfantCount);
@@ -269,9 +250,8 @@ export default function FlightDetails() {
         const allAdultsConfirmed = confirmedAdultDetails.every(detail => detail.selected);
         const allChildrenConfirmed = confirmedChildDetails.every(detail => detail.selected);
         const allInfantsConfirmed = confirmedInfantDetails.every(detail => detail.selected);
-        setIsContinueDisabled(!(allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
+        setIsContinueDisabled((allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
     };
-
 
     const handleInputChange = (e, index, type, field) => {
         const { value } = e.target;
@@ -300,7 +280,6 @@ export default function FlightDetails() {
         }
 
     };
-
 
     const handleConfirm = (e, index, type) => {
         e.preventDefault();
@@ -331,7 +310,6 @@ export default function FlightDetails() {
         }
     };
 
-
     const handleDelete = (type, index) => {
         if (type === 'adult') {
             setConfirmedAdultDetails(confirmedAdultDetails.filter((_, i) => i !== index));
@@ -340,6 +318,7 @@ export default function FlightDetails() {
         } else if (type === 'infant') {
             setConfirmedInfantDetails(confirmedInfantDetails.filter((_, i) => i !== index));
         }
+        checkButtonDisabled();
     };
 
     const renderFormFields = (count, type) => {
@@ -466,14 +445,10 @@ export default function FlightDetails() {
         }
         checkButtonDisabled();
     };
+    // ----------------------logic for total traveller forms---------------------------------------
 
 
-
-    // -------------newwwwwwwwwwwwwwwww---------------
-
-    // ----------------------logic for forms---------------------------------------
-
-
+    // flight review details tabs--------------------------------------------------------
     const renderContent = () => {
         switch (activeTabFlightDetails) {
             case 'flight':
@@ -638,25 +613,33 @@ export default function FlightDetails() {
                 return <div>Flight Information</div>;
         }
     }
+    // flight review details tabs--------------------------------------------------------
 
-    // seats meals baggage tabs---------------------------------------------------
-    // const navigate = useNavigate();
 
+    // func for seat meal , baggage checkbox----------------------------------
     const handleCheckboxChange = () => {
         setShowTabs(!showTabs);
-        if (!showTabs) {
-            navigate('/seat-meal-baggage', { state: { seatData : seatData, ssrData : ssrData } });
+    };
+    // func for seat meal , baggage checkbox----------------------------------
+
+    // seat meal checkbox is selected continue buton goto seat meal tab page ---------------------
+    // but seat meal is not selected only traveller form selected then goto review page-------------------------------
+    const handleButtonClick = () => {
+        if (showTabs) {
+            navigate('/seat-meal-baggage', { state: { seatData, ssrData ,formData} });
+        } else {
+            reviewHandler();
         }
     };
-    console.log();
-    // seats meals baggage tabs--------------------------------------------------------
+    //if seat meal checkbox is selected continue buton goto seat meal tab page ---------------------
+    // else seat meal is not selected only traveller form selected then goto review page-------------------------------
 
     return (
         <>
             <section className='flightlistsec1'>
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-4 d-flex flightlistsec1col">                        
+                        <div className="col-lg-4 d-flex flightlistsec1col">
                             <TiPlane className="mt-1" />
                             <p> {formData.Segments[0].Origin} </p>
                             <p>-</p>
@@ -763,8 +746,8 @@ export default function FlightDetails() {
                                             {error && <div className="text-danger mt-2" aria-live="assertive">{error}</div>}
 
                                             {/* code for tabs seat meals--------- */}
-                                            <div className="row">
-                                                <div className="col-md-4 col-lg-6 seatMealBaggageTabbtn">
+                                            <div className="row seatMealBaggageTabRow">
+                                                <div className="col-lg-6 seatMealBaggageTabbtn">
                                                     <input
                                                         type="checkbox"
                                                         id="seatMealCheckbox"
@@ -780,7 +763,7 @@ export default function FlightDetails() {
                                             <div className="col-12 lastBtnssContinue">
                                                 <h5>Fare Breakup <span>₹13465</span></h5>
                                                 <button
-                                                    onClick={reviewHandler}
+                                                    onClick={handleButtonClick}
                                                     disabled={isContinueDisabled}
                                                     style={{
                                                         color: isContinueDisabled ? '#ccc' : 'white',
@@ -792,10 +775,10 @@ export default function FlightDetails() {
                                                         transition: 'background-color 0.3s',
                                                     }}
                                                 >
-                                                    Continue
+                                                    {showTabs ? 'Proceed to Seat Select' : 'Continue'}
                                                 </button>
-
                                             </div>
+
                                         </form>
                                     </div>
                                 </div>
@@ -814,32 +797,32 @@ export default function FlightDetails() {
                                     <div className="fligthPriceDetailsBox">
                                         <div className="fligthPriceDetailsBoxDiv1">
                                             <p>Base Fare</p>
-                                            <p>0</p>
+                                            <p>₹{baseFare.toFixed(2)}</p>
                                         </div>
                                         <div className="fligthPriceDetailsBoxDiv2">
                                             <p>Taxes</p>
-                                            <p>0</p>
+                                            <p>₹{tax.toFixed(2)}</p>
                                         </div>
                                         <hr></hr>
                                         <div className="fligthPriceDetailsBoxDiv3">
                                             <h6>Total Fare</h6>
-                                            <p>₹0</p>
+                                            <p>₹{totalFare.toFixed(2)}</p>
                                         </div>
-                                        <div className="fligthPriceDetailsBoxDiv4">
+                                        {/* <div className="fligthPriceDetailsBoxDiv4">
                                             <h6>Insurance (All Traveller)</h6>
                                             <p>₹249</p>
-                                        </div>
-                                        <div className="fligthPriceDetailsBoxDiv5">
+                                        </div> */}
+                                        {/* <div className="fligthPriceDetailsBoxDiv5">
                                             <h6>Sub Total</h6>
                                             <p>₹249</p>
-                                        </div>
-                                        <div className="fligthPriceDetailsBoxDiv6">
+                                        </div> */}
+                                        {/* <div className="fligthPriceDetailsBoxDiv6">
                                             <h6>Coupon Applied</h6>
                                             <p>₹100 OFF</p>
-                                        </div>
+                                        </div> */}
                                         <div className="fligthPriceDetailsBoxDiv7">
                                             <h5>You Pay</h5>
-                                            <p>₹149</p>
+                                            <p>₹{totalFare.toFixed(2)}</p>
                                         </div>
                                         <div className="fligthPriceDetailsBoxDiv8">
                                             <img src="/src/assets/images/Low-Price-Guarantee-Offer.gif" className="img-fluid" />

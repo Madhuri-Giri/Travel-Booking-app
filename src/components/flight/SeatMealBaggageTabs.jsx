@@ -5,10 +5,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const SeatMealBaggageTabs = () => {
     const location = useLocation();
     const { state } = location;
-    const { seatData, ssrData } = state || {}; // Destructure state
+    const { seatData, ssrData, formData } = state || {}; // Destructure state
 
     console.log('Seat Data:', seatData);
     console.log('SSR Data:', ssrData);
+    console.log('formData:', formData);
+
+    // Calculate the total count
+    const totalCount = formData.AdultCount + formData.ChildCount + formData.InfantCount;
+    console.log("Total travller",totalCount);
+
 
     const [activeTab, setActiveTab] = useState('Seats');
 
@@ -28,18 +34,18 @@ const SeatMealBaggageTabs = () => {
                         <div className="seatsTabssColText">
                             <div className="seat-selection row">
                                 {seatData.map((seat) => (
-                                <div key={seat.id} className="col-md-2 col-3">
-                                    <button className="f-seat">
-                                        <h6>{seat.seatNumber}</h6>
-                                        <img
-                                            className="img-fluid"
-                                            src='/src/assets/images/seat-2-removebg-preview.png'
-                                            alt="Seat"
-                                        />
-                                        <p>₹{seat.price}</p>
-                                    </button>
-                                </div>
-                            ))}
+                                    <div key={seat.id} className="col-md-2 col-3">
+                                        <button className="f-seat">
+                                            <h6>{seat.seatNumber}</h6>
+                                            <img
+                                                className="img-fluid"
+                                                src='/src/assets/images/seat-2-removebg-preview.png'
+                                                alt="Seat"
+                                            />
+                                            <p>₹{seat.price}</p>
+                                        </button>
+                                    </div>
+                                ))}
                                 {/* {seatData.map((seat) => (
                                 <div key={seat.id} className="col-3">
                                     <button className="f-seat">
