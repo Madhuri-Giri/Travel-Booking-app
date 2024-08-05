@@ -22,7 +22,21 @@ export default function FlightDetails() {
     const formData = location.state?.formData;
 
 
+    const [traveller, setTraveller] = useState();
+
+
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
+
+    // function for date convert into day month date--------------------------------------
+    const convertformatDate = (dateString) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('en-US', { day: 'numeric', weekday: 'long', month: 'long' }).format(date);
+    };
+    
+    const departDatee = formData.Segments[0].PreferredDepartureTime;
+    const convertformattedDate = convertformatDate(departDatee);
+    console.log("Formatted Date:", convertformattedDate);
+    // function for date convert into day month date--------------------------------------
 
 
     useEffect(() => {
@@ -674,7 +688,7 @@ export default function FlightDetails() {
                         </div>
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaCalendarAlt className="mt-1" />
-                            <p><span>Departure on Wed,</span> 17 July</p>
+                            <p><span>Departure on</span> {convertformattedDate}</p>
                         </div>
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaUser className="mt-1" />
@@ -688,13 +702,13 @@ export default function FlightDetails() {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-lg-9">
-                            <div className="fdetailspriceBox">
+                            {/* <div className="fdetailspriceBox">
                                 <p>You got the best price available!</p>
                                 <div>
                                     <h6>Final Price</h6>
                                     <h5>₹630</h5>
                                 </div>
-                            </div>
+                            </div> */}
 
 
                             <div className="row">

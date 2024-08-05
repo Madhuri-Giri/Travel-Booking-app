@@ -46,13 +46,13 @@ const CustomNavbar = () => {
                                 <RiHotelBedFill className="icon" size={22} />
                                 <span className="textNav">HOTELS</span>
                             </Nav.Link>
-                            <Nav.Link
+                            {/* <Nav.Link
                                 href="/package"
                                 className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/package' ? 'active' : ''}`}
                             >
                                 <PiSuitcaseSimpleDuotone className="icon" size={20} />
                                 <span className="textNav">PACKAGE</span>
-                            </Nav.Link>
+                            </Nav.Link> */}
                             <Nav.Link
                                 href="/my-trips"
                                 className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/my-trips' ? 'active' : ''}`}
@@ -71,7 +71,7 @@ const CustomNavbar = () => {
 
                             <NavDropdown
                                 title={<> <FaCircleUser /> </>}
-                                id="basic-nav-dropdown">
+                                id="basic-nav-dropdown" className="userDropdown">
                                 <NavDropdown.Item href="/login"> <MdLogin size={20} /> Login</NavDropdown.Item>
                                 <NavDropdown.Item href="/signup"> <LuUserPlus size={20} /> Signup</NavDropdown.Item>
                                 <NavDropdown.Item href=""> <RiBookmark3Fill size={20} /> Find Booking</NavDropdown.Item>

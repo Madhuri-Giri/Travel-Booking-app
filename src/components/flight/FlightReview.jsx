@@ -12,9 +12,13 @@ const FlightReview = () => {
 
   const flightPayCreate = async () => {
     try {
+
+      const loginId = localStorage.getItem('loginId')
+      const user_id = localStorage.getItem('user_id')
+
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-flight-payment', {
         amount: 100,
-        user_id: '2',
+        user_id: user_id,
       });
 
       if (response.data.status === 'success') {
@@ -33,6 +37,12 @@ const FlightReview = () => {
 
 
   const flightpayHandler = async () => {
+    const loginId = localStorage.getItem('loginId');
+    if (!loginId) {
+      navigate('/login'); 
+      return;
+    }
+
     try {
       const paymentData = await flightPayCreate();
       if (!paymentData) return;
@@ -200,8 +210,6 @@ const FlightReview = () => {
       toast.error('An error occurred during booking. Please try again.');
     }
   };
-
-
 
   const bookHoldApi = async () => {
     const holdPayload = {
