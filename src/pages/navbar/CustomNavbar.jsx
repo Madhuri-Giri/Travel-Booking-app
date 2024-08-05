@@ -87,18 +87,18 @@ const CustomNavbar = () => {
                 <div className="row">
                     <div className="col-3">
                         <Link to='/flight-search'>
-                         <GiCommercialAirplane className="icon" size={20} />
+                         <GiCommercialAirplane className="icon" />
                          Flight
                         </Link>
                     </div>
                     <div className="col-3">
                         <Link to='/bus-search'>
-                        <TbBus className="icon" size={22} />Bus
+                        <TbBus className="icon"/>Bus
                         </Link>
                     </div>
                     <div className="col-3">
                         <Link to='/hotel-search'>   
-                        <RiHotelBedFill className="icon" size={22} />
+                        <RiHotelBedFill className="icon"/>
                          Hotel
                         </Link>
                     </div>
