@@ -68,10 +68,13 @@ const GuestDetails = () => {
 
   const fetchPaymentDetails = async () => {
     try {
+
+      const loginId = localStorage.getItem('loginId')
+
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-payment', {
         // static 
         amount: 100,  
-        user_id: '5',
+        user_id: loginId,
       });
 
       if (response.data.status === 'success') {
@@ -422,7 +425,7 @@ return (
               ))}
             </p>
             <p className="info-section">Smoking Preference: {room.SmokingPreference}</p>
-            <h5 className="info-section">Cancellation Policies:</h5>
+            {/* <h5 className="info-section">Cancellation Policies:</h5>
             <ul>
               {room.CancellationPolicies?.map((policy, index) => (
                 <li key={index}>
@@ -430,8 +433,8 @@ return (
                   {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
                 </li>
               ))}
-            </ul>
-            <p className="info-section"><strong>Cancellation Policy:</strong> {room.CancellationPolicy}</p>
+            </ul> */}
+            {/* <p className="info-section"><strong>Cancellation Policy:</strong> {room.CancellationPolicy}</p> */}
             <div className="hotel-policies">
               <h3>Hotel Policies</h3>
               {HotelPolicyDetail ? (
@@ -469,67 +472,63 @@ return (
             </div>
 
             {!showForm && (
-                <button onClick={() => setShowForm(true)}>Add Details</button>
+                <button className='submit-btn' onClick={() => setShowForm(true)}>Add Details</button>
               )}
 
               {showForm && !formSubmitted && (
-                <div>
-        <h2>Enter Your Details</h2>
-        <form onSubmit={handleFormSubmit}>
-          <div className="row mb-3">
-            <div className="col-12">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="First Name"
-                name="fname"
-                value={formData.fname}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="row mb-3">
-            <div className="col-12">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Middle Name (Optional)"
-                name="mname"
-                value={formData.mname}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="row mb-3">
-            <div className="col-12">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Last Name"
-                name="lname"
-                value={formData.lname}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="row mb-3">
-            <div className="col-12">
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-                    <button type="submit">Save</button>
-                  </form>
-                </div>
+              
+
+    <div className="form-container">
+  <div className="form-content">
+    <h2 className="text-center">Enter Your Details</h2>
+    <form onSubmit={handleFormSubmit}>
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="First Name"
+          name="fname"
+          value={formData.fname}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Middle Name (Optional)"
+          name="mname"
+          value={formData.mname}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Last Name"
+          name="lname"
+          value={formData.lname}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="mb-3">
+        <input
+          type="email"
+          className="form-control"
+          placeholder="Email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <button className='submit-btn'  type="submit">Save</button>
+    </form>
+  </div>
+</div>
               )}
 
               {formSubmitted && (
@@ -549,14 +548,14 @@ return (
                     Confirm details are correct
                   </label>
                   {checkboxChecked && (
-                    <button onClick={handlePayment}>Proceed to Payment</button>
+                    <button className='submit-btn' onClick={handlePayment}>Proceed to Payment</button>
                   )}
                 </div>
               )}
           </div>
         ))
       ) : (
-        <p className="no-room-details">No room details available.</p>
+        <p className="submit-btn">No room details available.</p>
       )}
       </div>
 );

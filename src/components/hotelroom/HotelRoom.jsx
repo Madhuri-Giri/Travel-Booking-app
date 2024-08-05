@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
+import { Container, Card, Button } from 'react-bootstrap';
 import './HotelRoom.css';
 
 const initialFormData = {
@@ -305,105 +305,113 @@ const HotelRoom = () => {
   const doubleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'DOUBLE Deluxe');
 
   return (
-    <Container>
-      <div className="hotel_room_container">
-        <h3>Select Room</h3>
-        {loading && <p>Loading hotel rooms...</p>}
-        {error && <p>Error: {error}</p>}
-        {!loading && !error && hotelRooms.length === 0 && <p>No hotel room data available.</p>}
-        {hotelRooms.length > 0 && !error && (
-          <>
-            <h4>Single Deluxe Rooms</h4>
-            <div>
-              {singleDeluxeRooms.map((room, index) => (
-                <div
-                  key={index}
-                  className={`hotel_room_box ${selectedSingleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? 'selected' : ''}`}
-                >
-                  <h3>{room.RoomTypeName}</h3>
-                  <p>Price: INR {room.Price?.RoomPrice?.toFixed(2)}</p>
-                  <p>Day Rate: {room.DayRates?.map(dayRate => (
-                    <span key={dayRate.Date}>
-                      {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
-                    </span>
-                  ))}</p>
-                  <p>Smoking Preference: {room.SmokingPreference}</p>
-                  <h5>Cancellation Policies:</h5>
-                  <ul>
-                    {room.CancellationPolicies?.map((policy, index) => (
-                      <li key={index}>
-                        {policy.ChargeType === 1 ? 'Fixed Charge' : 'Percentage Charge'}: 
-                        {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
-                      </li>
-                    ))}
-                  </ul>
-                  <p><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
-                  {!selectedSingleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
-                    <button onClick={() => handleRoomToggle(room, 'single')} className="reserve_button">Reserve</button>
-                  ) : (
-                    <div className="guest_selection">
-                      <button onClick={() => handleRoomToggle(room, 'single')} className="remove_button">Remove</button>
-                      <h5>If you want to increase room quantity:</h5>
-                      <div className="guest_count">
-                        <button onClick={() => handleGuestChange(selectedSingleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', -1, 'single')}>-</button>
-                        <span>Room: {selectedSingleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
-                        <button onClick={() => handleGuestChange(selectedSingleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'single')}>+</button>
-                      </div>
-                      <div className="selected_rooms_summary">
-                        <p>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</p>
-                        <button onClick={roomblockHandler} className="reserve_button">Continue</button>
-                      </div>
-                    </div>
-                  )}
+ <Container className="hotel_container">
+      <div className="room_container">
+        <Container>
+          <div className="hotel_room_container">
+            {loading && <p>Loading hotel rooms...</p>}
+            {error && <p>Error: {error}</p>}
+            {!loading && !error && hotelRooms.length === 0 && <p>No hotel room data available.</p>}
+            {hotelRooms.length > 0 && !error && (
+              <>
+                <div className="room_heading">
+                  <h4 className='heading_space'>Single Deluxe <span style={{color:"#00b7eb"}}>Rooms</span></h4>
+                  {singleDeluxeRooms.map((room, index) => (
+                    <Card key={index} className="mb-4">
+                      <Card.Body>
+                        <Card.Title>{room.RoomTypeName}</Card.Title>
+                        <Card.Text>
+                          <p>Price: INR {room.Price?.RoomPrice?.toFixed(2)}</p>
+                          <p>Day Rate: {room.DayRates?.map(dayRate => (
+                            <span key={dayRate.Date}>
+                              {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
+                            </span>
+                          ))}</p>
+                          <p>Smoking Preference: {room.SmokingPreference}</p>
+                          <h5>Cancellation Policies:</h5>
+                          <ul>
+                            {room.CancellationPolicies?.map((policy, index) => (
+                              <li key={index}>
+                                {policy.ChargeType === 1 ? 'Fixed Charge' : 'Percentage Charge'}: 
+                                {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
+                              </li>
+                            ))}
+                          </ul>
+                          <p><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
+                        </Card.Text>
+                        {!selectedSingleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
+                          <button onClick={() => handleRoomToggle(room, 'single')} className="reserve_button">Reserve</button>
+                        ) : (
+                          <div className="guest_selection">
+                            <button onClick={() => handleRoomToggle(room, 'single')} className="remove_button">Remove</button>
+                            <h5>If you want to increase room quantity:</h5>
+                            <div className="guest_count">
+                              <button onClick={() => handleGuestChange(selectedSingleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', -1, 'single')}>-</button>
+                              <span>Room: {selectedSingleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
+                              <button onClick={() => handleGuestChange(selectedSingleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'single')}>+</button>
+                            </div>
+                            <div className="selected_rooms_summary">
+                              <p>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</p>
+                              <button onClick={roomblockHandler} className="reserve_button">Continue</button>
+                            </div>
+                          </div>
+                        )}
+                      </Card.Body>
+                    </Card>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <h4>Double Deluxe Rooms</h4>
-            <div>
-              {doubleDeluxeRooms.map((room, index) => (
-                <div
-                  key={index}
-                 className={`hotel_room_box ${selectedDoubleDeluxeRooms.some(selectedRoom =>selectedRoom.RoomTypeCode === room.RoomTypeCode) ? 'selected' : ''}`} >
-                  <h3>{room.RoomTypeName}</h3>
-                  <p>Price: INR {room.Price?.RoomPrice?.toFixed(2)}</p>
-                  <p>Day Rate: {room.DayRates?.map(dayRate => (
-                    <span key={dayRate.Date}>
-                      {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
-                    </span>
-                  ))}</p>
-                  <p>Smoking Preference: {room.SmokingPreference}</p>
-                  <h5>Cancellation Policies:</h5>
-                  <ul>
-                    {room.CancellationPolicies?.map((policy, index) => (
-                      <li key={index}>
-                        {policy.ChargeType === 1 ? 'Fixed Charge' : 'Percentage Charge'}: 
-                        {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
-                      </li>
-                    ))}
-                  </ul>
-                  <p><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
-                  {!selectedDoubleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
-                    <button onClick={() => handleRoomToggle(room, 'double')} className="reserve_button">Reserve</button>
-                  ) : (
-                    <div className="guest_selection">
-                      <button onClick={() => handleRoomToggle(room, 'double')} className="remove_button">Remove</button>
-                      <h5>If you want to increase room quantity:</h5>
-                      <div className="guest_count">
-                        <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', -1, 'double')}>-</button>
-                        <span>Room: {selectedDoubleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
-                        <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'double')}>+</button>
-                      </div>
-                      <div className="selected_rooms_summary">
-                        <p>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</p>
-                        <button onClick={roomblockHandler} className="reserve_button">Continue</button>
-                      </div>
-                    </div>
-                  )}
+
+                <div className="room_heading">
+                
+                  <h4  className='heading_space'>Double Deluxe <span style={{color:"#00b7eb"}}>Rooms</span></h4>
+                  {doubleDeluxeRooms.map((room, index) => (
+                    <Card key={index} className="mb-4">
+                      <Card.Body>
+                        <Card.Title>{room.RoomTypeName}</Card.Title>
+                        <Card.Text>
+                          <p>Price: INR {room.Price?.RoomPrice?.toFixed(2)}</p>
+                          <p>Day Rate: {room.DayRates?.map(dayRate => (
+                            <span key={dayRate.Date}>
+                              {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
+                            </span>
+                          ))}</p>
+                          <p>Smoking Preference: {room.SmokingPreference}</p>
+                          <h5>Cancellation Policies:</h5>
+                          <ul>
+                            {room.CancellationPolicies?.map((policy, index) => (
+                              <li key={index}>
+                                {policy.ChargeType === 1 ? 'Fixed Charge' : 'Percentage Charge'}: 
+                                {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
+                              </li>
+                            ))}
+                          </ul>
+                          <p><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
+                        </Card.Text>
+                        {!selectedDoubleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
+                          <button onClick={() => handleRoomToggle(room, 'double')} className="reserve_button">Reserve</button>
+                        ) : (
+                          <div className="guest_selection">
+                            <button onClick={() => handleRoomToggle(room, 'double')} className="remove_button">Remove</button>
+                            <h5>If you want to increase room quantity:</h5>
+                            <div className="guest_count">
+                              <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', -1, 'double')}>-</button>
+                              <span>Room: {selectedDoubleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
+                              <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'double')}>+</button>
+                            </div>
+                            <div className="selected_rooms_summary">
+                              <p>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</p>
+                              <button onClick={roomblockHandler} className="reserve_button">Continue</button>
+                            </div>
+                          </div>
+                        )}
+                      </Card.Body>
+                    </Card>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </>
-        )}
+              </>
+            )}
+          </div>
+        </Container>
       </div>
     </Container>
   );

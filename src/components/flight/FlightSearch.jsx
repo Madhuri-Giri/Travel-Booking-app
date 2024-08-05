@@ -19,7 +19,8 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import PropTypes from 'prop-types';
-
+import home_insta from "../../../src/assets/images/home-insta-new.jpg";
+import home_newsletter from "../../../src/assets/images/home-newsletter.jpg";
 const FlightSearch = () => {
   const navigate = useNavigate();
 
@@ -908,14 +909,16 @@ const FlightSearch = () => {
                 <Carousel.Item>
                   <img
                     className="d-block w-100 img-fluid"
-                    src='/src/assets/images/home-yotube.jpg'
+                    // src='/src/assets/images/home-newsletter.jpg'
+                    src={home_newsletter}
                     alt="First slide"
                   />
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
                     className="d-block w-100 img-fluid"
-                    src='/src/assets/images/home-insta.jpg'
+                    // src='/src/assets/images/home-insta-new.jpg'
+                    src={ home_insta}
                     alt="First slide"
                   />
                 </Carousel.Item>
