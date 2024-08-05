@@ -424,13 +424,14 @@
 }
 .seatsTabssRow{
     background-color: #87ceeb36;
+    padding: 15px 0px;
 }
 .seat-selection button{
     border: 1px solid #80808087;
     border-radius: 5px;
     background-color: #87ceebba;
     box-shadow: 5px 2px 6px 1px #80808054;
-    margin: 10px;
+    margin: 5px 0px;
 }
 .meal-selection{
     box-shadow: 2px 2px 3px 4px rgba(146, 142, 142, 0.548);
@@ -454,10 +455,15 @@
     color: #00b7eb;
 }
 .baggage-selection{
-    box-shadow: 2px 2px 3px 4px rgba(146, 142, 142, 0.548);
-    padding: 0px 20px;
+    box-shadow: 1px 3px 8px 2px #4d776e;
+    padding: 20px 20px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    background: aliceblue;
+    margin: 35px 0px;
+}
+.baggage-selection h6{
+    font-weight: bold;
 }
 .baggagge-selectionbtn{
     display: flex;
@@ -468,6 +474,9 @@
     border: 1px solid purple;
     border-radius: 20px;
     padding: 6px 30px;
+}
+.baggageTabbss{
+    padding: 5px 55px;
 }
 .baggageTabbss h5{
     text-align: center;
@@ -507,6 +516,12 @@
     .baggageTabRow .table tr td{
         font-size: 12px;
     }
+    .selectSeatMealContROW {
+        padding: 4px 4px;
+    }
+    .selectSeatMealCont {
+        padding: 8px 10px;
+    }    
     
    
 }
