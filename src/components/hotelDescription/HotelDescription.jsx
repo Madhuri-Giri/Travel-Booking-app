@@ -112,7 +112,7 @@ const HotelDescription = () => {
               </div>
               <div className="PriceButton">
                 <div className="Price_hotel">
-                  INR {hotelDetails.Price?.OfferedPriceRoundedOff || "N/A"}
+                  {/* INR {hotelDetails.Price?.OfferedPriceRoundedOff || "N/A"} */}
                 </div>
                 <button onClick={fetchHotelRoom} className="hotel_Button">Book Now</button>
               </div>              {error && <div className="error-message">{error}</div>} 

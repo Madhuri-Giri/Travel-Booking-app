@@ -64,3 +64,13 @@
 .submit-btn:hover {
   background-color: #00b7eb;
 }
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+.form-content {
+  width: 100%;
+  max-width: 500px; /* Adjust as needed */
+}
