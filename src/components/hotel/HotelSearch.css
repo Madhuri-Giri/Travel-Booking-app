@@ -128,11 +128,11 @@
   margin-bottom: 10px;
 }
 
-.react-datepicker-wrapper {
+.form_in .react-datepicker-wrapper {
   width: 100%;
 }
 
-.react-datepicker__input-container {
+.form_in.react-datepicker__input-container {
   width: 100%;
 }
 
