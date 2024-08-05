@@ -95,8 +95,9 @@
 .Rating_hotel {
     display: flex;
     align-items: center;
-    gap: 5px;
-    color: #ffc107;
+    gap: 4px;
+    font-size: 12px;
+    /* color: #ffc107; */
 }
 
 .PriceButton {

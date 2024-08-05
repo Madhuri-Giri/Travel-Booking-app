@@ -51,20 +51,18 @@
   width: 100%;
 }
 
-.react-datepicker-wrapper {
+.form_in_filter.react-datepicker-wrapper {
   width: 100%; 
 }
 
-.react-datepicker__input-container {
+.form_in_filter.react-datepicker__input-container {
   width: 100%; 
 }
 
-.react-datepicker__input-container input {
+.form_in_filter.react-datepicker__input-container input {
   width: 100%; 
   padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ced4da;
-  box-sizing: border-box;
+
 }
 
 .listContainer {
@@ -256,9 +254,12 @@
   display: flex;
   justify-content: flex-end; 
 }
-
+.hotelRating{
+  font-size: 12px;
+}
 .hotelRating span {
-  font-weight: 300;
+  /* font-weight: 300; */
+  font-size: 12px;
 }
 
 .hotelRating  button {
