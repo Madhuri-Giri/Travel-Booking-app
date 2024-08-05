@@ -19,8 +19,8 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import PropTypes from 'prop-types';
-import home_insta from "../../../src/assets/images/home-insta-new.jpg";
-import home_newsletter from "../../../src/assets/images/home-newsletter.jpg";
+import home_insta from "../../../src/assets/images/home-insta.jpg";
+import home_newsletter from "../../../src/assets/images/home-yotube.jpg";
 const FlightSearch = () => {
   const navigate = useNavigate();
 

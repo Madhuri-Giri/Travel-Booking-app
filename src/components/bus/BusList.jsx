@@ -84,8 +84,6 @@ const BusLists = () => {
   };
 
   
- 
-
   const addSeatLayout = async () => {
     try {
       const traceId = localStorage.getItem('traceId');
@@ -112,13 +110,49 @@ const BusLists = () => {
   
       const data = await response.json(); 
   
+      localStorage.setItem('BuslayoutResponse', JSON.stringify(data));
+  
       setLayoutResponse(data);
-      
   
     } catch (error) {
       console.error('Error adding seat layout:', error.message);
     }
   };
+  
+
+  // const addSeatLayout = async () => {
+  //   try {
+  //     const traceId = localStorage.getItem('traceId');
+  //     const resultIndex = localStorage.getItem('resultIndex');
+  
+  //     if (!traceId || !resultIndex) {
+  //       throw new Error('TraceId or ResultIndex not found in localStorage');
+  //     }
+  
+  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/AddseatLayout', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         ResultIndex: resultIndex,
+  //         TraceId: traceId,
+  //       }),
+  //     });
+  
+  //     if (!response.ok) {
+  //       throw new Error('Failed to add seat layout');
+  //     }
+  
+  //     const data = await response.json(); 
+  
+  //     setLayoutResponse(data);
+      
+  
+  //   } catch (error) {
+  //     console.error('Error adding seat layout:', error.message);
+  //   }
+  // };
   
 
 
