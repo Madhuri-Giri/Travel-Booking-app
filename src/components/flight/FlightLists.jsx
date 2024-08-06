@@ -38,6 +38,7 @@ export default function FlightLists() {
     const [flightListData, setFlightListData] = useState('');
 
     const [flightData, setFlightData] = useState([]);
+
     const sliderRef = useRef(null);
     useEffect(() => {
         if (location.state) {
@@ -47,22 +48,21 @@ export default function FlightLists() {
 
     const listData = location.state.data
     const formData = location.state.formData
-    console.log("formData", formData.Segments[0].PreferredArrivalTime)
+    const PreferredDepartureTime = formData.Segments[0].PreferredDepartureTime
+    const PreferredArrivalTime = formData.Segments[0].PreferredArrivalTime
 
 
     const dd = listData?.Results
     let originalAirlineList = [];
 
-        // function for date convert into day month date--------------------------------------
-        const formatDate = (dateString) => {
-            const date = new Date(dateString);
-            return new Intl.DateTimeFormat('en-US', { day: 'numeric', weekday: 'long', month: 'long' }).format(date);
-        };
-        
-        const departDatee = formData.Segments[0].PreferredDepartureTime;
-        const formattedDate = formatDate(departDatee);
-        console.log("Formatted Date:", formattedDate);
-        // function for date convert into day month date--------------------------------------
+    // function for date convert into day month date--------------------------------------
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('en-US', { day: 'numeric', weekday: 'long', month: 'long' }).format(date);
+    };
+    const departDatee = formData.Segments[0].PreferredDepartureTime;
+    const formattedDate = formatDate(departDatee);
+    // function for date convert into day month date--------------------------------------
 
 
     // Function to extract all AirlineName values
@@ -158,8 +158,8 @@ export default function FlightLists() {
                                 "Origin": "LKO",
                                 "Destination": "KWI",
                                 "FlightCabinClass": 1,
-                                "PreferredDepartureTime": "2024-07-30T00:00:00",
-                                "PreferredArrivalTime": "2024-07-30T00:00:00",
+                                "PreferredDepartureTime": PreferredDepartureTime,
+                                "PreferredArrivalTime": PreferredArrivalTime,
                             }
                         ]
                     })
@@ -223,38 +223,12 @@ export default function FlightLists() {
     };
 
 
-
-    const dateMidRef = useRef(null);
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
-
-    const handleMouseDown = (e) => {
-        setIsDragging(true);
-        setStartX(e.pageX - dateMidRef.current.offsetLeft);
-        setScrollLeft(dateMidRef.current.scrollLeft);
-    };
-
-    const handleMouseLeaveOrUp = () => {
-        setIsDragging(false);
-    };
-
-    const handleMouseMove = (e) => {
-        if (!isDragging) return;
-        e.preventDefault();
-        const x = e.pageX - dateMidRef.current.offsetLeft;
-        const walk = (x - startX) * 3;
-        dateMidRef.current.scrollLeft = scrollLeft - walk;
-    };
-
-
-
     // ------------------------------------------------fare-Quote-api-----------------------------------------
     const fareQuoteHandler = async () => {
         const traceId = localStorage.getItem('FlightTraceId2');
         const resultIndex = localStorage.getItem('FlightResultIndex2');
         const srdvType = localStorage.getItem('FlightSrdvType');
-        const srdvIndex = localStorage.getItem('FlightSrdvIndex2'); 
+        const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
 
         if (!traceId || !resultIndex) {
             console.error('TraceId or ResultIndex not found in local storage');
@@ -284,13 +258,13 @@ export default function FlightLists() {
             const data = await response.json();
             console.log('FareQuote API Response:', data);
 
-          const baseFare = data.Results.Fare.BaseFare;
-          const yqTax = data.Results.Fare.YQTax;
-          const tax = data.Results.Fare.Tax;
-  
-          localStorage.setItem('BaseFare', baseFare);
-          localStorage.setItem('YQTax', yqTax);
-          localStorage.setItem('Tax', tax);
+            const baseFare = data.Results.Fare.BaseFare;
+            const yqTax = data.Results.Fare.YQTax;
+            const tax = data.Results.Fare.Tax;
+
+            localStorage.setItem('BaseFare', baseFare);
+            localStorage.setItem('YQTax', yqTax);
+            localStorage.setItem('Tax', tax);
 
 
             if (data.Results && formData) {
@@ -501,9 +475,99 @@ export default function FlightLists() {
                             <div className="flight-content">
                                 {dd && dd.length > 0 ? (
                                     dd.map((flightSegments, index) => {
+                                        return flightSegments.map((flight, segmentIndex) => {
+                                            return flight?.Segments?.[0].map((option, index) => {
+                                                return (
+                                                    <>
+                                                        {(selected.includes(
+                                                            option.Airline.AirlineName
+                                                        ) ||
+                                                            selected.length == 0) && (
+                                                                <div className="row" key={`${index}-${segmentIndex}`}>
+                                                                <div className="pricebtnsmobil">
+                                                                    <p>{flight?.OfferedFare || "Unknown Airline"}</p>
+                                                                    <button>SELECT</button>
+                                                                </div>
+                                                                <p className='regulrdeal'><span>Regular Deal</span></p>
+        
+                                                                {/* {flight.Segments.map((segmentGroup, groupIndex) => {
+                                                                    return segmentGroup.map((segmentOption, segmentOptionIndex) => {
+                                                                        return (
+                                                                            <div key={`${index}-${segmentIndex}-${groupIndex}-${segmentOptionIndex}`}>
+        
+                                                                                <div className="col-3">
+                                                                                    <div className="d-flex">
+                                                                                        <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
+                                                                                        <p>{flight?.Segments?.[0][0]?.Airline.AirlineName}</p><br></br>
+                                                                                    </div>
+                                                                                </div>
+        
+                                                                                <div className="col-6">
+                                                                                    <div className="flistname">
+                                                                                        <p className="flistnamep1">{segmentOption.Origin.CityCode}</p>
+                                                                                        <div>
+                                                                                            <p className="flistnamep2">{convertUTCToIST(segmentOption.DepTime)}</p>
+                                                                                            <p className="flistnamep4">{segmentOption.Origin.CityName}</p>
+                                                                                        </div>
+                                                                                        <p className="flistnamep3">{segmentOption.Duration}</p>
+                                                                                        <div>
+                                                                                            <p className="flistnamep2">{convertUTCToIST(segmentOption.ArrTime)}</p>
+                                                                                            <p className="flistnamep4">{segmentOption.Destination.CityName}</p>
+                                                                                        </div>
+                                                                                        <p className="flistnamep5">{segmentOption.Destination.CityCode}</p>
+                                                                                    </div>
+                                                                                </div>
+        
+        
+                                                                            </div>
+                                                                        );
+                                                                    });
+                                                                })} */}
+        
+                                                                <div className="col-3">
+                                                                    <div className="d-flex">
+                                                                        <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
+                                                                        <p>{option.Airline.AirlineName}</p><br></br>
+                                                                    </div>
+                                                                </div>
+        
+                                                                <div className="col-6">
+                                                                    <div className="flistname">
+                                                                        <p className="flistnamep1">{option.Origin.CityCode}</p>
+                                                                        <div>
+                                                                            <p className="flistnamep2">{convertUTCToIST(option.DepTime)}</p>
+                                                                            <p className="flistnamep4">{option.Origin.CityName}</p>
+                                                                        </div>
+                                                                        <p className="flistnamep3">{option.Duration}</p>
+                                                                        <div>
+                                                                            <p className="flistnamep2">{convertUTCToIST(option.ArrTime)}</p>
+                                                                            <p className="flistnamep4">{option.Destination.CityName}</p>
+                                                                        </div>
+                                                                        <p className="flistnamep5">{option.Destination.CityCode}</p>
+                                                                    </div>
+                                                                </div>
+        
+                                                                <div className="col-3 pricebtns">
+                                                                    <div><p>₹{flight?.OfferedFare}</p></div>
+                                                                    <div> <button onClick={fareQuoteHandler}>SELECT</button>     </div>
+                                                                </div>
+                                                            </div>
+                                                            )}
+                                                    </>
+                                                )
+                                            })
+                                        });
+                                    })
+                                ) : (
+                                    <p>No flights available.</p>
+                                )}
+                            </div>
+
+                            {/* <div className="flight-content">
+                                {dd && dd.length > 0 ? (
+                                    dd.map((flightSegments, index) => {
 
                                         return flightSegments.map((flight, segmentIndex) => {
-                                            // console.log("flightSegments", flightSegments);
                                             return (
                                                 <>{
                                                     (
@@ -516,40 +580,6 @@ export default function FlightLists() {
                                                             <button>SELECT</button>
                                                         </div>
                                                         <p className='regulrdeal'><span>Regular Deal</span></p>
-
-                                                        {/* {flight.Segments.map((segmentGroup, groupIndex) => {
-                                                            return segmentGroup.map((segmentOption, segmentOptionIndex) => {
-                                                                return (
-                                                                    <div key={`${index}-${segmentIndex}-${groupIndex}-${segmentOptionIndex}`}>
-
-                                                                        <div className="col-3">
-                                                                            <div className="d-flex">
-                                                                                <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
-                                                                                <p>{flight?.Segments?.[0][0]?.Airline.AirlineName}</p><br></br>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div className="col-6">
-                                                                            <div className="flistname">
-                                                                                <p className="flistnamep1">{segmentOption.Origin.CityCode}</p>
-                                                                                <div>
-                                                                                    <p className="flistnamep2">{convertUTCToIST(segmentOption.DepTime)}</p>
-                                                                                    <p className="flistnamep4">{segmentOption.Origin.CityName}</p>
-                                                                                </div>
-                                                                                <p className="flistnamep3">{segmentOption.Duration}</p>
-                                                                                <div>
-                                                                                    <p className="flistnamep2">{convertUTCToIST(segmentOption.ArrTime)}</p>
-                                                                                    <p className="flistnamep4">{segmentOption.Destination.CityName}</p>
-                                                                                </div>
-                                                                                <p className="flistnamep5">{segmentOption.Destination.CityCode}</p>
-                                                                            </div>
-                                                                        </div>
-
-
-                                                                    </div>
-                                                                );
-                                                            });
-                                                        })} */}
 
                                                         <div className="col-3">
                                                             <div className="d-flex">
@@ -589,7 +619,7 @@ export default function FlightLists() {
                                 ) : (
                                     <p>No flights available.</p>
                                 )}
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

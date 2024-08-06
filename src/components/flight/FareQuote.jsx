@@ -17,17 +17,18 @@ const FareQuote = () => {
 
     const formData = location.state?.formData;  // Using optional chaining to prevent errors if state is undefined
 
+    console.log("formData",formData.Segments[0].PreferredDepartureTime)
     // function for date convert into day month date--------------------------------------
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).format(date);
     };
 
-    const formattedDate = formatDate("2024-08-29T00:00:00");
-    console.log("Formatted Date:", );
+    const formattedDate = formatDate(formData.Segments[0].PreferredDepartureTime);
+    console.log("Formatted Date:", formattedDate);
     // function for date convert into day month date--------------------------------------
 
-    // func for date -------------------------
+    // func for date -------------------------------
     const convertUTCToIST = (utcTimeString) => {
         const utcDate = new Date(utcTimeString);
         const istTime = new Intl.DateTimeFormat('en-IN', {
