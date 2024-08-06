@@ -34,15 +34,13 @@ import BusTikit from './components/bus/DownloadTikit/BusTikit';
 import FareQuote from './components/flight/FareQuote';
 import EnterNumber from './pages/NewOne/MobileNumber/EnterNumber';
 import SignUp from './pages/NewOne/signup/SignUp';
-
 import HotelBillReceipt from './components/hotelBill/HotelBillReceipt';
-
-
 import FlightReview from './components/flight/FlightReview';
 import FlightPayHistory from './pages/History/FlightPayHistory';
 import BusPayHistory from './pages/History/BusPayHistory';
 import HotelPayHistory from './pages/History/HotelPayHistory';
 import SeatMealBaggageTabs from './components/flight/SeatMealBaggageTabs';
+import Profile from './pages/Profile/Profile';
 
 
 const App = () => {
@@ -65,6 +63,7 @@ const App = () => {
           <Route path='/signup' element={<SignUp />} />
           <Route path='/faq' element={<Faq />} />
           <Route path='/setting' element={<Setting />} />
+          <Route path='profile' element={<Profile/>} />
           <Route path='/login' element={<LogIn />} />
           <Route path='/login-otp' element={<LoginOtp />} />
           <Route path='/enter-number' element={<EnterNumber />} />
@@ -87,9 +86,6 @@ const App = () => {
           <Route path='/bus-pay-history' element={<BusPayHistory />} />
           <Route path='/hotel-pay-history' element={<HotelPayHistory />} />
           <Route path='seat-meal-baggage'  element={<SeatMealBaggageTabs/>}/>
-          {/* <Route path="/seat-meal-baggage" element={<SeatMealBaggageTabs />} /> */}
-
-
 
         </Routes>
         {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />}  

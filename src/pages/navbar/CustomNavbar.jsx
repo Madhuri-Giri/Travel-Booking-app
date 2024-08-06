@@ -11,6 +11,7 @@ import { TbBus } from "react-icons/tb";
 import { PiSuitcaseSimpleDuotone } from "react-icons/pi";
 import { BsBookmarkStarFill } from "react-icons/bs";
 import MainLogo from "../../assets/images/main logo.png"
+import { FaDownload } from "react-icons/fa6";
 
 
 const CustomNavbar = () => {
@@ -74,7 +75,9 @@ const CustomNavbar = () => {
                                 id="basic-nav-dropdown" className="userDropdown">
                                 <NavDropdown.Item href="/login"> <MdLogin size={20} /> Login</NavDropdown.Item>
                                 <NavDropdown.Item href="/signup"> <LuUserPlus size={20} /> Signup</NavDropdown.Item>
-                                <NavDropdown.Item href=""> <RiBookmark3Fill size={20} /> Find Booking</NavDropdown.Item>
+                                <NavDropdown.Item href="/profile"> <FaCircleUser size={20} /> Profile</NavDropdown.Item>
+                                <NavDropdown.Item href="/setting"> <RiBookmark3Fill size={20} /> Settings</NavDropdown.Item>
+                                {/* <NavDropdown.Item href="/"> <FaDownload  size={20} /> Tickets</NavDropdown.Item> */}
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>

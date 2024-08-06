@@ -54,11 +54,37 @@
     padding-top: 10px;
     font-weight: bold;
 }
+.flightPayDivhed3 p{
+    color: #00e100;
+    font-weight: bold;
+    font-size: 20px;
+}
 .flightPayDivMain{
     border: 1px solid #80808036;
     border-radius: 7px;
     padding: 10px 10px;
     /* margin-bottom: 15px; */
+}
+.flightPayDivMain p{
+    margin: 8px 0px;
+}
+.flightPayDivMainP2 svg,
+.flightPayDivMainP3 svg{
+    font-size: 24px;
+}
+.flightPayDivMainP4,
+.flightPayDivMainP5,
+.flightPayDivMainP6,
+.flightPayDivMainP7,
+.flightPayDivMainP8{
+    color: gray;
+}
+.flightPayDivMainP4 svg,
+.flightPayDivMainP5 svg,
+.flightPayDivMainP6 svg,
+.flightPayDivMainP7 svg,
+.flightPayDivMainP8 svg{
+    font-size: 19px;
 }
 
 /* responsive css */
