@@ -44,18 +44,25 @@ export default function FlightLists() {
             setFlightListData(location.state);
         }
     }, [location.state])
-    // console.log("FullData", location.state)
-    // console.log("FlightlistData", flightListData)
 
     const listData = location.state.data
     const formData = location.state.formData
-    // console.log("formData", formData)
+    console.log("formData", formData.Segments[0].PreferredArrivalTime)
+
+
     const dd = listData?.Results
-    // console.log("dd", dd);
-
-    // console.log("airlines name", dd[0][0].Segments[0][0].Airline.AirlineName);
-
     let originalAirlineList = [];
+
+        // function for date convert into day month date--------------------------------------
+        const formatDate = (dateString) => {
+            const date = new Date(dateString);
+            return new Intl.DateTimeFormat('en-US', { day: 'numeric', weekday: 'long', month: 'long' }).format(date);
+        };
+        
+        const departDatee = formData.Segments[0].PreferredDepartureTime;
+        const formattedDate = formatDate(departDatee);
+        console.log("Formatted Date:", formattedDate);
+        // function for date convert into day month date--------------------------------------
 
 
     // Function to extract all AirlineName values
@@ -75,21 +82,11 @@ export default function FlightLists() {
         return airlineNames;
     };
 
-
-    // console.log("Filtered Airline List:", filteredAirlineList);
-
-
-    // originalTeachersList = Array.isArray(data.teachers) ? data.teachers : [];
     const originalTeachersList = listData?.Results
-    // console.log("originalTeachersList", originalTeachersList);
-
-
 
     const airlineNames = getAllAirlineNames(dd);
-    // console.log("All airlines names:", airlineNames);
 
     const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
-    // console.log("uniqueAirlineNames", uniqueAirlineNames);
 
     const createSubjectCheckboxes = () => {
         const airlinesContainer = document.getElementById('airlineFilters');
@@ -112,12 +109,8 @@ export default function FlightLists() {
             label.textContent = airlineNames;
             label.classList.add('largeLabel');
 
-
             div.appendChild(label);
             div.appendChild(checkbox);
-
-            // airlinesContainer.appendChild(checkbox);
-            // airlinesContainer.appendChild(label);
 
             airlinesContainer.appendChild(div);
             airlinesContainer.appendChild(document.createElement('br'));
@@ -134,45 +127,14 @@ export default function FlightLists() {
         setselected(selectedAirlines);
         const originalAirlineList = listData?.Results || []; // Ensure listData.Results is defined
 
-        // Function to filter airlines based on selected names
-        // const filterAirlines = (data, selectedAirlines) => {
-        //     return data.filter(result =>
-        //         result.some(segmentArray =>
-        //             segmentArray.Segments.some(segment =>
-        //                 segment.some(detail =>
-        //                     selectedAirlines.includes(detail.Airline.AirlineName)
-        //                 )
-        //             )
-        //         )
-        //     );
-        // };
-
-        // const filteredAirlineList = filterAirlines(originalAirlineList, selected);
-
-        // console.log("Filtered Airline List:", filteredAirlineList);
-
-        displayTeachersPerPage(filteredTeachers, 1); // Display first page of filtered results
-        // currentPage = 1; // Reset to first page
-        // renderPagination(); // Update pagination
     };
 
     useEffect(() => {
         createSubjectCheckboxes();
     }, []);
 
-
-
-
-    // console.log("airlines name", dd.Segments?.[0][0]?.Airline.AirlineName);
-
-    // console.log("listData", listData)
-
     localStorage.setItem("FlightSrdvType", listData.SrdvType)
     localStorage.setItem("FlightTraceId", listData.TraceId)
-
-
-
-
 
     useEffect(() => {
         const getCallenderData = async () => {
@@ -361,7 +323,7 @@ export default function FlightLists() {
                         </div>
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaCalendarAlt className="mt-1" />
-                            <p><span>Departure on Wed,</span> 17 July</p>
+                            <p><span>Departure on</span> {formattedDate}</p>
                         </div>
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaUser className="mt-1" />

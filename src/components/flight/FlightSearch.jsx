@@ -19,26 +19,12 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import PropTypes from 'prop-types';
-
+import home_insta from "../../../src/assets/images/home-insta.jpg";
+import home_newsletter from "../../../src/assets/images/home-yotube.jpg";
 const FlightSearch = () => {
   const navigate = useNavigate();
 
-  // State to keep track of the selected tab
-  const [selectedTab, setSelectedTab] = useState('tab1');
-  // Handler to change the selected tab
-
-  // function for adult , child , infact dropdown list
-  const [showDropdown, setShowDropdown] = useState(false);
-  const handleShow = () => {
-    setShowDropdown(!showDropdown);
-  };
-  const handleClose = () => {
-    setShowDropdown(false);
-  };
-
-
-  // ---------------------api-data-start-----------------------------
-
+  // states-------------------------------------------
   const [from, setFrom] = useState('LKO');
   const [to, setTo] = useState('KWI');
   const [fromSuggestions, setFromSuggestions] = useState([]);
@@ -46,14 +32,12 @@ const FlightSearch = () => {
   const [preferredDepartureTime, setPreferredDepartureTime] = useState(new Date());
   const [preferredArrivalTime, setPreferredArrivalTime] = useState(new Date());
 
-
-
   const fetchSuggestions = async (query, setSuggestions) => {
     console.log('test');
     try {
       const response = await fetch(`https://srninfotech.com/projects/travel-app/api/bus_list?query=${query}`);
       const data = await response.json();
-      // console.log('API Response:', data);
+      // console.log('API Response:', data)
       const filteredSuggestions = data.data.filter(suggestion =>
         suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
       );
@@ -64,7 +48,18 @@ const FlightSearch = () => {
     }
   };
 
+   // function for adult , child , infact dropdown list-------------------------------------------
+   const [showDropdown, setShowDropdown] = useState(false);
+   const handleShow = () => {
+     setShowDropdown(!showDropdown);
+   };
+   const handleClose = () => {
+     setShowDropdown(false);
+   };
+   // function for adult , child , infact dropdown list-------------------------------------------
+ 
 
+  // func for Origin & Destination----------------------------------------------------------------
   const handleFromChange = (event) => {
     const value = event.target.value;
     console.log("vvvvvvalue", value)
@@ -85,41 +80,30 @@ const FlightSearch = () => {
       setToSuggestions([]);
     }
   };
+  // func for Origin & Destination----------------------------------------------------------------
 
+
+  // function for select From & To --------------------------------------
   const handleSuggestionClick = (suggestion, fieldSetter) => {
     fieldSetter(suggestion.busodma_destination_name);
-
   };
 
+  const handleToSelect = (suggestion) => {
+    handleSuggestionClick(suggestion, setTo);
+    setToSuggestions([]);
+  };
 
   const handleFromSelect = (suggestion) => {
     handleSuggestionClick(suggestion, setFrom);
-    // console.log("sugesssss", suggestion.busodma_destination_name)
     setFromSuggestions([]);
 
     let updatedSegments = formData.Segments;
     updatedSegments[0]["Origin"] = suggestion.busodma_destination_name;
     setFormData((prev) => ({ ...prev, Segments: updatedSegments }));
   };
+  // function for select From & To --------------------------------------
 
-  // --------------------------end-----------------
-
-
-  // State selected flight class
-  const [selectedflightClass, setSelectedflightClass] = useState('Economy');
-
-  const handleToSelect = (suggestion) => {
-    // console.log("suggestion", suggestion);
-    handleSuggestionClick(suggestion, setTo);
-    setToSuggestions([]);
-  };
-
-  // --------------------------end-----------------
-
-
-
-
-
+  // Static formData------------------------------------------------------------
   const [formData, setFormData] = useState({
     AdultCount: 1,
     ChildCount: 0,
@@ -131,17 +115,14 @@ const FlightSearch = () => {
         Origin: "LKO",
         Destination: "KWI",
         FlightCabinClass: 1,
-        PreferredDepartureTime: "2024-08-20T00:00:00",
-        PreferredArrivalTime: "2024-08-29T00:00:00"
+         PreferredDepartureTime: "2024-08-20T00:00:00",
+        PreferredArrivalTime: "2024-08-25T00:00:00"
       }
     ]
   });
+  // Static formData------------------------------------------------------------
 
-  // console.log("traveler",formData.AdultCount + formData.ChildCount + formData.InfantCount)
-
-  const [travellr, settravellr] = useState();
-
-
+  // search API integration function----------------------------------------------
   const getFlightList = async () => {
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
@@ -186,25 +167,42 @@ const FlightSearch = () => {
       console.error('Error fetching suggestions:', error);
     }
   }
-
-  const handleChange = (date, key) => {
-    setPreferredDepartureTime(date);
-    setPreferredDepartureTime(date);
-    // console.log("date", date);
-
-    const formattedDate = new Date(date).toISOString().split('.')[0];
-    console.log("formattedDate", formattedDate);
-
-    let updatedSegments = formData.Segments;
-    updatedSegments[0][key] = formattedDate;
-    setFormData((prev) => ({ ...prev, Segments: updatedSegments }));
-  };
+  // search API integration function----------------------------------------------
 
 
+  // function for dynamic dep arr date----------------------------------------
+  // const handleChange = (date) => {
+  //   const formattedDate = new Date(date).toISOString().split('.')[0];
+  //   console.log("formattedDate", formattedDate);
+  //   setFormData((prev) => {
+  //     let updatedSegments = [...prev.Segments];
+  //     updatedSegments[0]["PreferredDepartureTime"] = formattedDate;
+  //     updatedSegments[0]["PreferredArrivalTime"] = formattedDate;
+  //     console.log("updatedSegments", updatedSegments);
+  //     return { ...prev, Segments: updatedSegments };
+  //   });
+  // };
+const handleChange = (date) => {
+  // Set the time part to "00:00:00" (AnyTime) for both PreferredDepartureTime and PreferredArrivalTime
+  const formattedDate = new Date(date).toISOString().split('T')[0] + 'T00:00:00';
+  console.log("formattedDate", formattedDate);
+
+  setFormData((prev) => {
+    let updatedSegments = [...prev.Segments];
+    updatedSegments[0]["PreferredDepartureTime"] = formattedDate;
+    updatedSegments[0]["PreferredArrivalTime"] = formattedDate;
+    console.log("updatedSegments", updatedSegments);
+    return { ...prev, Segments: updatedSegments };
+  });
+};
+
+  
+  // function for dynamic dep arr date----------------------------------------
+
+  // fun for increase decrease adult , child , infant count------------------------------------------------
   const handleCount = (key, name) => {
     console.log("called", key, name)
     if (key == "increment") {
-      // console.log("called2");
       setFormData((prev) => ({ ...prev, [name]: formData[name] + 1 }));
     } else if (key == "decrement") {
       if (formData[name] > 0) {
@@ -212,39 +210,44 @@ const FlightSearch = () => {
       }
     }
   }
+  // fun for increase decrease adult , child , infant count------------------------------------------------
 
 
-  // console.log("formData", formData);
-
+  // func for select flight class----------------------------------------------
+  const [selectedflightClass, setSelectedflightClass] = useState('Economy');
   const handleflightClassChange = (event) => {
     setSelectedflightClass(event.target.value);
     setFormData((prev) => ({ ...prev, JourneyType: event.target.value }))
   };
+  // func for select flight class----------------------------------------------
 
 
+
+  // for one way & two way tabs-----------------------------------------
   const [activeTab, setActiveTab] = useState('oneway');
 
   const handleTabChange = (event) => {
     setActiveTab(event.target.value);
   };
+  // for one way & two way tabs-----------------------------------------
+
 
   // ----------  Api integration start for slider image  ----------
   const [offerSliderImages, setOfferSliderImages] = useState([]);
-
   useEffect(() => {
     axios.get('https://sajyatra.sajpe.in/admin/api/offer')
       .then(response => {
-        // console.log('API response:', response.data.data);
         setOfferSliderImages(response.data.data);
       })
       .catch(error => {
         console.error('Error slider image fetching data: ', error);
       });
   }, []);
+  // ----------  Api integration end for slider image  ----------
 
 
-  // slider logics------------
 
+  // slider logics------------------------------------------------------
   const SamplePrevArrow = (props) => {
     const { className, style, onClick } = props;
     return (
@@ -253,18 +256,14 @@ const FlightSearch = () => {
         style={{ ...style, display: "block", left: "10px", zIndex: 1 }}
         onClick={onClick}
       >
-        {/* <FaArrowLeftLong style={{ color: 'black', fontSize: '30px' }} /> */}
-
       </div>
     );
   };
-
   SamplePrevArrow.propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
     onClick: PropTypes.func,
   };
-
   const SampleNextArrow = (props) => {
     const { className, style, onClick } = props;
     return (
@@ -282,7 +281,6 @@ const FlightSearch = () => {
     style: PropTypes.object,
     onClick: PropTypes.func,
   };
-
   const settings = {
     infinite: true,
     speed: 500,
@@ -317,9 +315,8 @@ const FlightSearch = () => {
       }
     ]
   };
+  // slider logics------------------------------------------------------
 
-
-  // ----------  Api integration end for slider image  ----------
 
 
   return (
@@ -396,7 +393,7 @@ const FlightSearch = () => {
                             </div>
                           </div>
 
-                          <div className="col-6 mt-2">
+                          <div className="col-sm-6 mt-2">
                             <div className="form-group">
                               <label htmlFor="PreferredDepartureTime">Departure Date</label>
                               <div className="date-picker-wrapper form-control">
@@ -404,7 +401,7 @@ const FlightSearch = () => {
                                   name="PreferredDepartureTime"
                                   selected={preferredDepartureTime}
                                   onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                  className=""
+                                  className="departureCallender"
                                   id="PreferredDepartureTime"
                                   placeholderText="Select a date"
                                 />
@@ -412,7 +409,7 @@ const FlightSearch = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-6">
+                          <div className="col-sm-6">
                             <div className="form-group onewayreturnhidebtn">
                               <Link>Add Return date</Link>
                               <MdDateRange className="mt-1 ms-2" />
@@ -569,7 +566,7 @@ const FlightSearch = () => {
                             </div>
                           </div>
 
-                          <div className="col-6 mt-2">
+                          <div className="col-sm-6 mt-2">
                             <div className="form-group">
                               <label htmlFor="PreferredDepartureTime">Departure Date</label>
                               <div className="date-picker-wrapper form-control">
@@ -585,7 +582,7 @@ const FlightSearch = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-6 mt-2">
+                          <div className="col-sm-6 mt-2">
                             <div className="form-group">
                               <div className="form-group">
                                 <label htmlFor="PreferredArrivalTime">Return Date</label>
@@ -727,7 +724,7 @@ const FlightSearch = () => {
                     src="https://www.vimaansafar.com/img/Vimaansafar-1.jpg?vt"
                     alt="First slide"
                   />
-                 
+
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
@@ -735,7 +732,7 @@ const FlightSearch = () => {
                     src="https://www.vimaansafar.com/img/International-Flight.jpg"
                     alt="Second slide"
                   />
-                 
+
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
@@ -743,7 +740,7 @@ const FlightSearch = () => {
                     src="https://www.vimaansafar.com/img/Zero-vs.jpg?"
                     alt="Third slide"
                   />
-                  
+
                 </Carousel.Item>
               </Carousel>
             </div>
@@ -759,6 +756,7 @@ const FlightSearch = () => {
           </div>
         </div>
       </section>
+      
       <section className="flightbooksec3">
         <h5>Reasons to book with us?</h5>
         <div className="container-fluid">
@@ -908,14 +906,16 @@ const FlightSearch = () => {
                 <Carousel.Item>
                   <img
                     className="d-block w-100 img-fluid"
-                    src='/src/assets/images/home-yotube.jpg'
+                    // src='/src/assets/images/home-newsletter.jpg'
+                    src={home_newsletter}
                     alt="First slide"
                   />
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
                     className="d-block w-100 img-fluid"
-                    src='/src/assets/images/home-insta.jpg'
+                    // src='/src/assets/images/home-insta-new.jpg'
+                    src={ home_insta}
                     alt="First slide"
                   />
                 </Carousel.Item>

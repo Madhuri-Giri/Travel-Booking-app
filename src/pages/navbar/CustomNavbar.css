@@ -69,9 +69,7 @@
 
 
 .mobilehedrbookings{
-    /* border: 1px solid #0000003e; */
     background: #00000023;
-    /* background-color: rgba(165, 42, 42, 0.623); */
     padding: 8px 0px;
 }
 .mobilehedrbookings .row{
@@ -80,7 +78,6 @@
     text-align: center;
 }
 .mobilehedrbookings .row .col-3{
-    /* box-shadow: 2px 1px 6px 4px #4ab6bb96;   */
     background-color: azure;
     border-radius: 7px;
     padding: 0.8vmax 1vmax;
@@ -91,6 +88,10 @@
     font-weight: 600;
     text-decoration: none;
     font-size: 17px;  
+}
+.mobilehedrbookings .row .col-3 svg{
+    font-size: 20px;  
+    margin-right: 15px;
 }
 
 .mobilehedrbookings{
@@ -148,6 +149,10 @@
 @media screen and (max-width: 576px) {
     .navbarlogo img {
         height: 60px !important;
+    }
+    .mobilehedrbookings .row .col-3 svg{
+        font-size: 15px;  
+        margin-right: 10px;
     }
    
 }

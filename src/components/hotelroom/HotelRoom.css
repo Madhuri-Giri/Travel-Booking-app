@@ -8,6 +8,16 @@
   color: #00b7eb;
   margin-bottom: 20px;
 }
+.heading_space {
+  margin-top: 1rem;
+  text-align: center;
+  padding: 15px 0 15px 0;
+  font-weight: bold;
+}
+
+.heading_space span{
+  font-weight: bold;
+}
 
 .hotel_room_box {
   border: 1px solid #ddd;
@@ -113,5 +123,199 @@
 }
 
 .continue_button:hover {
-  background-color: #0099cc;
+  background-color: #00b7eb;
 }
+.room_container{
+    width: 100%; 
+    margin: 0 auto; 
+}
+
+.hotel_container{
+  background-color: #00b7eb;
+}
+
+.room_heading{
+  width: 100%;
+  background-color: #f8f9fa;
+  min-height: 75vh;
+  margin-bottom: 1.5rem;
+}
+.room_heading h4{
+  margin-top: 1.5rem;
+}
+
+.card {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 50vh; 
+  display: flex;
+  width: 100%; 
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  font-weight: bold;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.card-text {
+  margin-bottom: 1rem;
+}
+.reserve_button {
+  background-color: #00b7eb;
+  color: white;
+  border: none;
+}
+
+.remove_button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+.guest_count button {
+  margin: 0 0.5rem;
+}
+
+.selected_rooms_summary {
+  margin-top: 1rem;
+}
+
+
+/* Media queries for larger screens */
+@media (min-width: 576px) {
+  
+.room_container{
+  width: 100%; 
+  margin: 0 auto; 
+
+}
+  .hotel_room_container {
+    padding: 15px;
+  }
+
+  .hotel_room_box {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .reserve_button, .remove_button, .continue_button {
+    padding: 10px 15px;
+    font-size: 16px;
+  }
+
+  .guest_count button {
+    font-size: 16px;
+  }
+
+  .room_container {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .hotel_room_container {
+    padding: 20px;
+  }
+
+  .hotel_room_box {
+    padding: 25px;
+    margin-bottom: 25px;
+  }
+
+  .reserve_button, .remove_button, .continue_button {
+    padding: 12px 20px;
+    font-size: 18px;
+  }
+
+  .guest_count button {
+    font-size: 18px;
+  }
+
+  .room_container {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .hotel_room_container {
+    padding: 25px;
+  }
+
+  .hotel_room_box {
+    padding: 30px;
+    margin-bottom: 30px;
+  }
+
+  .reserve_button, .remove_button, .continue_button {
+    padding: 15px 25px;
+    font-size: 20px;
+  }
+
+  .guest_count button {
+    font-size: 20px;
+  }
+
+  .room_container {
+    width: 100%;
+  }
+}
+/* Base styles for time card */
+.time_card {
+  width: 100%;
+  box-sizing: border-box; /* Ensure padding and border are included in width */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  /* Center the card horizontally */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Media query for screens larger than 576px */
+@media (min-width: 576px) {
+  .time_card {
+    width: 100%;
+  }
+}
+
+/* Media query for screens larger than 768px */
+@media (min-width: 768px) {
+  .time_card {
+    width: 100%;
+    max-width: 600px; /* Adjust this value as needed */
+  }
+}
+
+/* Media query for screens larger than 992px */
+@media (min-width: 992px) {
+  .time_card {
+    width: 100%;
+    max-width: 800px; /* Adjust this value as needed */
+  }
+}
+
+
+
+
+
+
+

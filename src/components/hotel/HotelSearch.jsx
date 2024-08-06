@@ -89,8 +89,10 @@ const HotelSearch = () => {
 
 const [inputs, setInputs] = useState({
   cityOrHotel: "",
-  checkIn: new Date("2020-04-30"),
-  checkOut: new Date("2020-05-01"),
+  // checkIn: new Date("2020-04-30"),
+  // checkOut: new Date("2020-05-01"),
+  checkIn: null,
+  checkOut:null,
   adults: 1,
   children: 0,
 });
@@ -98,9 +100,13 @@ const [inputs, setInputs] = useState({
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const staticCheckIn = new Date("2020-04-30"); // updated
+    const staticCheckOut = new Date("2020-05-01"); // updated
+
     const requestData = {
       BookingMode: "5",
-      CheckInDate: format(inputs.checkIn, "dd/MM/yyyy"),
+      // CheckInDate: format(inputs.checkIn, "dd/MM/yyyy"),
+      CheckInDate: format(staticCheckIn, "dd/MM/yyyy"), // updated
       NoOfNights: "1",
       CountryCode: "IN",
       CityId: "130443",
@@ -149,7 +155,9 @@ const [inputs, setInputs] = useState({
         localStorage.setItem("resultIndex", "1");
         localStorage.setItem("srdvType", "SingleTB");
         localStorage.setItem("srdvIndex", "SrdvTB");
-
+        // Save hotel details in local storage
+        localStorage.setItem("hotelSearchDetails", JSON.stringify(data.Results));
+        // Navigate Holel List
         navigate("/hotel-list", { state: { searchResults: data.Results } });
       } else {
         console.error("No search results found or error in response:", data);

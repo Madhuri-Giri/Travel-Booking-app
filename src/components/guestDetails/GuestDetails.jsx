@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const GuestDetails = () => {
   const [hotelBlock, setHotelBlock] = useState([]);
+  const [selectedRoomsData, setSelectedRoomsData] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
   
   const [formData, setFormData] = useState({
@@ -17,9 +18,13 @@ const GuestDetails = () => {
     mobile: "",
   });
   const navigate = useNavigate(); 
-
+  const [showForm, setShowForm] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
   useEffect(() => {
     const hotelBlockData = localStorage.getItem('hotelBlock');
+
+    const selectedRoomsData = localStorage.getItem('selectedRoomsData');
 
     if (hotelBlockData) {
       try {
@@ -29,20 +34,47 @@ const GuestDetails = () => {
         console.error('Error parsing hotelBlock:', error);
       }
     }
+
+    if (selectedRoomsData) {
+      try {
+        const parsedData = JSON.parse(selectedRoomsData);
+        setSelectedRoomsData(parsedData);
+      } catch (error) {
+        console.error('Error parsing selectedRoomsData:', error);
+      }
+    }
   }, []);
 
-  if (!hotelBlock) {
+  if (!selectedRoomsData) {
     return <p>Loading...</p>;
   }
  
+  const handleFormChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+  };
+
+  const handleCheckboxChange = () => {
+    setCheckboxChecked(!checkboxChecked);
+  };
 // ----------------Payment Integration start -------------------
 
   const fetchPaymentDetails = async () => {
     try {
+
+      const loginId = localStorage.getItem('loginId')
+
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-payment', {
-        amount: 100,
-        user_id: '1',
+        // static 
+        amount: 100,  
+        user_id: loginId,
       });
 
       if (response.data.status === 'success') {
@@ -338,13 +370,47 @@ navigate('/booking-details', { state: { bookingDetails: responseBody.hotelBookin
   }
 };
 const { AddressLine1, HotelName, HotelRoomsDetails, HotelPolicyDetail, HotelNorms } = hotelBlock;
-
+const { singleDeluxe, doubleDeluxe, totalPriceSingleDeluxe, totalPriceDoubleDeluxe, checkInDate, checkOutDate } = selectedRoomsData;
 // -------------------------------End Book API--------------------------------------------
+const cleanHotelPolicyDetails = (policyDetails) => {
+  // Remove HTML tags
+  let cleanedDetails = policyDetails.replace(/<\/?[^>]+(>|$)/g, '');
+
+  // Remove unwanted characters and extra spaces
+  cleanedDetails = cleanedDetails.replace(/["\s]+/g, ' ').trim();
+  
+  // Remove specific unwanted patterns like // /// |
+  cleanedDetails = cleanedDetails.replace(/\/\/\s*\/\s*\/\s*\|\s*/g, '');
+
+  // Handle specific cases, e.g., "india - land of mystries"
+  cleanedDetails = cleanedDetails.replace(/india\s-\sland\s+of\s+mystries/g, 'India - Land of Mysteries');
+
+  return cleanedDetails;
+};
+
+const cleanHotelNorms = (hotelNorms) => {
+  // Remove HTML tags
+  let cleanedNorms = hotelNorms.replace(/<\/?[^>]+(>|$)/g, '');
+
+  // Remove unwanted characters and extra spaces
+  cleanedNorms = cleanedNorms.replace(/["\s]+/g, ' ').trim();
+  
+  // Remove specific unwanted patterns like // /// |
+  cleanedNorms = cleanedNorms.replace(/\/\/\s*\/\s*\/\s*\|\s*/g, '');
+
+  // Handle specific cases, e.g., "india - land of mystries"
+  cleanedNorms = cleanedNorms.replace(/india\s-\sland\s+of\s+mystries/g, 'India - Land of Mysteries');
+
+  return cleanedNorms;
+};
+
 return (
-    <div className="guest-details-container">
+  <div className="guest-details-container">
       <h2 className="section-title">Guest Details</h2>
       <h2>{HotelName}</h2>
       <h5>{AddressLine1}</h5>
+      <p><strong>Check-in Date:</strong> {checkInDate}</p>
+      <p><strong>Check-out Date:</strong> {checkOutDate}</p>
 
       {HotelRoomsDetails && HotelRoomsDetails.length > 0 ? (
         HotelRoomsDetails.map((room, index) => (
@@ -359,7 +425,7 @@ return (
               ))}
             </p>
             <p className="info-section">Smoking Preference: {room.SmokingPreference}</p>
-            <h5 className="info-section">Cancellation Policies:</h5>
+            {/* <h5 className="info-section">Cancellation Policies:</h5>
             <ul>
               {room.CancellationPolicies?.map((policy, index) => (
                 <li key={index}>
@@ -367,33 +433,132 @@ return (
                   {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
                 </li>
               ))}
-            </ul>
-            <p className="info-section"><strong>Cancellation Policy:</strong> {room.CancellationPolicy}</p>
+            </ul> */}
+            {/* <p className="info-section"><strong>Cancellation Policy:</strong> {room.CancellationPolicy}</p> */}
             <div className="hotel-policies">
               <h3>Hotel Policies</h3>
               {HotelPolicyDetail ? (
-                <div>
-                  <p><strong>Hotel Policy Details:</strong></p>
-                  <div dangerouslySetInnerHTML={{ __html: HotelPolicyDetail }} />
+                <div className="hotel-policy">
+                  <h4>Policy Details</h4>
+                  <p>{cleanHotelPolicyDetails(HotelPolicyDetail)}</p>
                 </div>
               ) : <p>No hotel policy details available.</p>}
-              
+
               {HotelNorms ? (
-                <div>
-                  <p><strong>Hotel Norms:</strong></p>
-                  <div dangerouslySetInnerHTML={{ __html: HotelNorms }} />
+                <div className="hotel-norms">
+                  <h4>Hotel Norms</h4>
+                  <p>{cleanHotelNorms(HotelNorms)}</p>
                 </div>
               ) : <p>No hotel norms available.</p>}
             </div>
-            <button type="button" onClick={() => console.log('Continue clicked')}>Continue</button>
+
+            <div>
+              {/* <h4>Selected Single Deluxe Rooms</h4> */}
+              {singleDeluxe.map((room, index) => (
+                <div key={index}>
+                  <p>Room Type: {room.RoomTypeName}</p>
+                  <p>Room Quantity: {room.guestCounts.room}</p>
+                  <p>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</p>
+                </div>
+              ))}
+              {/* <h4>Selected Double Deluxe Rooms</h4> */}
+              {doubleDeluxe.map((room, index) => (
+                <div key={index}>
+                  <p>Room Type: {room.RoomTypeName}</p>
+                  <p>Quantity: {room.guestCounts.room}</p>
+                  <p>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</p>
+                </div>
+              ))}
+            </div>
+
+            {!showForm && (
+                <button className='submit-btn' onClick={() => setShowForm(true)}>Add Details</button>
+              )}
+
+              {showForm && !formSubmitted && (
+              
+
+    <div className="form-container">
+  <div className="form-content">
+    <h2 className="text-center">Enter Your Details</h2>
+    <form onSubmit={handleFormSubmit}>
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="First Name"
+          name="fname"
+          value={formData.fname}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Middle Name (Optional)"
+          name="mname"
+          value={formData.mname}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Last Name"
+          name="lname"
+          value={formData.lname}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="mb-3">
+        <input
+          type="email"
+          className="form-control"
+          placeholder="Email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <button className='submit-btn'  type="submit">Save</button>
+    </form>
+  </div>
+</div>
+              )}
+
+              {formSubmitted && (
+                <div>
+                  <h2>Guest Details</h2>
+                  <p><strong>First Name:</strong> {formData.fname}</p>
+                  <p><strong>Middle Name:</strong> {formData.mname}</p>
+                  <p><strong>Last Name:</strong> {formData.lname}</p>
+                  <p><strong>Email:</strong> {formData.email}</p>
+                  <p><strong>Mobile:</strong> {formData.mobile}</p>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={checkboxChecked}
+                      onChange={handleCheckboxChange}
+                    />
+                    Confirm details are correct
+                  </label>
+                  {checkboxChecked && (
+                    <button className='submit-btn' onClick={handlePayment}>Proceed to Payment</button>
+                  )}
+                </div>
+              )}
           </div>
         ))
       ) : (
-        <p className="no-room-details">No room details available.</p>
+        <p className="submit-btn">No room details available.</p>
       )}
-    </div>
-
-  );
+      </div>
+);
 };
 
 export default GuestDetails;

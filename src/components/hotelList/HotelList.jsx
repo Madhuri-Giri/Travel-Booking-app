@@ -13,7 +13,9 @@ const renderStar = (rating) => {
   const totalStars = 5;
   let stars = [];
   for (let i = 1; i <= totalStars; i++) {
-    const color = i <= rating ? "#FFD700" : "#d3d3d3"; 
+    // const color = i <= rating ? "#FFD700": "#d3d3d3"; 
+    
+    const color = i <= rating ? "#ffe234" : "#d3d3d3";
     stars.push(
       <FontAwesomeIcon key={i} icon={faStar} size="lg" color={color} />
     );
@@ -133,56 +135,58 @@ const HotelList = () => {
   }, []);
   return (
     <>
+    <div className="con">
     <Container>
-    <section className="sec_book_filter">
-        <div className="hotel_booking_filter">
-          <form>
-            <div className="form-row_filter">
-              <div className="form-field_filter">
-                <label className="form_lable_filter" htmlFor="cityOrHotel">Destination: </label>
-                <input className="form_in_filter" type="text" id="cityOrHotel" name="cityOrHotel"
-                  placeholder="Enter city or hotel name" defaultValue={location.state?.destination || ""} />
-              </div>
+   <section className="sec_book_filter">
+            <div className="hotel_booking_filter">
+              <form>
+                <div className="form-row_filter">
+                  <div className="form-field_filter">
+                    <label className="form_lable_filter" htmlFor="cityOrHotel">Destination: </label>
+                    <input className="form_in_filter" type="text" id="cityOrHotel" name="cityOrHotel"
+                      placeholder="Enter city or hotel name" defaultValue={location.state?.destination || ""} />
+                  </div>
 
-              <div className="form-field_filter">
-                <label className="form_lable_filter" htmlFor="checkIn">Check-In Date: </label>
-                <DatePicker className="form_in_filter" selected={location.state?.date?.[0]?.startDate || new Date()} 
-                  onChange={() => {}} dateFormat="dd/MM/yyyy" placeholderText="Select check-in date" />
-              </div>
+                  <div className="form-field_filter">
+                    <label className="form_lable_filter" htmlFor="checkIn">Check-In Date: </label>
+                    <DatePicker className="form_in_filter" selected={location.state?.date?.[0]?.startDate || new Date()}
+                      onChange={() => { }} dateFormat="dd/MM/yyyy" placeholderText="Select check-in date" />
+                  </div>
 
-              <div className="form-field_filter">
-                <label className="form_lable_filter" htmlFor="checkOut">Check-Out Date:</label>
-                <DatePicker className="form_in_filter" selected={location.state?.date?.[0]?.endDate || new Date()} 
-                  onChange={() => {}} dateFormat="dd/MM/yyyy" placeholderText="Select check-out date" />
-              </div>
+                  <div className="form-field_filter">
+                    <label className="form_lable_filter" htmlFor="checkOut">Check-Out Date:</label>
+                    <DatePicker className="form_in_filter" selected={location.state?.date?.[0]?.endDate || new Date()}
+                      onChange={() => { }} dateFormat="dd/MM/yyyy" placeholderText="Select check-out date" />
+                  </div>
 
-              <div className="form-field_filter" ref={dropdownRef}>
-                <label className="form_lable_filter" htmlFor="sortOptions">Sort by:</label>
-                <input
-                  type="text"
-                  id="sortOptions"
-                  name="sortOptions"
-                  className="form_in"
-                  placeholder="Select sort option"
-                  value={sortOption}
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  readOnly
-                />
-                {isDropdownOpen && (
-                  <ul className="sortDropdown">
-                    <li onClick={() => handleSortOptionChange('name')}>Name</li>
-                    <li onClick={() => handleSortOptionChange('rating')}>Rating</li>
-                    <li onClick={() => handleSortOptionChange('price-asc')}>Price: Low to High</li>
-                    <li onClick={() => handleSortOptionChange('price-desc')}>Price: High to Low</li>
-                    <li onClick={() => handleSortOptionChange('distance')}>Distance</li>
-                  </ul>
-                )}
-              </div>
+                  <div className="form-field_filter" ref={dropdownRef}>
+                    <label className="form_lable_filter" htmlFor="sortOptions">Sort by:</label>
+                    <input
+                      type="text"
+                      id="sortOptions"
+                      name="sortOptions"
+                      className="form_in"
+                      placeholder="Select sort option"
+                      value={sortOption}
+                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                      readOnly
+                    />
+                    {isDropdownOpen && (
+                      <ul className="sortDropdown">
+                        <li onClick={() => handleSortOptionChange('name')}>Name</li>
+                        <li onClick={() => handleSortOptionChange('rating')}>Rating</li>
+                        <li onClick={() => handleSortOptionChange('price-asc')}>Price: Low to High</li>
+                        <li onClick={() => handleSortOptionChange('price-desc')}>Price: High to Low</li>
+                        <li onClick={() => handleSortOptionChange('distance')}>Distance</li>
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              </form>
             </div>
-          </form>
-        </div>
       </section>
       </Container>
+      </div>
       <div className="listContainer">
         <div className="listWrapper">
           <div className="listSearch">

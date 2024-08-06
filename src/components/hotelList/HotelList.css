@@ -1,13 +1,18 @@
-
+.con {
+  width: 70%; 
+  margin: 0 auto;
+  margin-top: 10px;
+}
 .sec_book_filter {
-  padding: 20px;
-  /* background-color: #f8f9fa; */
-  
+  /* padding-top: 10px; */
+  padding: 10px;
+  background-color: #f8f9fa;
 }
 
 .hotel_booking_filter {
   max-width: 1000px;
   margin: 0 auto;
+  padding: 20px; 
 }
 
 .form-row_filter {
@@ -20,6 +25,7 @@
   flex: 1;
   min-width: 200px;
   margin: 10px;
+  box-sizing: border-box;
 }
 
 .form_lable_filter {
@@ -28,11 +34,35 @@
   font-weight: bold;
 }
 
-.form_in_filter {
-  width: 100%;
+.form_in_filter_f {
+  width: 80%; 
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #ced4da;
+  border: 1px solid #fff;
+}
+.form_in_filter {
+  width: 100%; 
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #fff;
+}
+
+.form-field_filter input[type="text"] {
+  width: 100%;
+}
+
+.form_in_filter.react-datepicker-wrapper {
+  width: 100%; 
+}
+
+.form_in_filter.react-datepicker__input-container {
+  width: 100%; 
+}
+
+.form_in_filter.react-datepicker__input-container input {
+  width: 100%; 
+  padding: 10px;
+
 }
 
 .listContainer {
@@ -73,20 +103,22 @@
   margin-bottom: 10px;
 }
 
-.listItem  label {
-  font-size: 12px;
+.listItem label {
+  font-size: 16px;
+  font-family: sans-serif;
+  font-weight: bold;
 }
 
-.listItem  input {
+.listItem input {
   height: 30px;
   border: none;
   padding: 5px;
 }
 
-.listItem  span {
+.listItem span {
   height: 30px;
   padding: 5px;
-  background-color: white;
+  background-color: #fff;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -105,23 +137,32 @@
 }
 
 .listOptionInput {
-  width: 50px;
+  width: 100%;
 }
 
-.listSearch  button {
+.listSearch button {
+  margin-top: 20px;
   padding: 10px;
   background-color: #00b7eb;
-  color: white;
+  color: #fff;
   border: none;
   width: 100%;
   font-weight: 500;
   cursor: pointer;
+  font-family: sans-serif;
 }
+
 
 .listResult {
   flex: 3;
 }
-
+/* 
+.form_in_de{
+  width: 100%; 
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #fff;
+} */
 .searchItem {
   border: 1px solid lightgray;
   padding: 10px;
@@ -149,10 +190,14 @@
 .hotelTitle {
   font-size: 20px;
   color: #00b7eb;
+  font-family: sans-serif;
+
 }
 
 .hotelDistance {
   font-size: 14px;
+  font-family: sans-serif;
+
 }
 
 .hotelTaxi {
@@ -160,28 +205,42 @@
   background-color: #008009;
   color: white;
   width: max-content;
-  padding: 3px;
+  /* padding: 6px; */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
   border-radius: 5px;
+  font-family: sans-serif;
+
 }
 
 .Subtitle {
   font-size: 12px;
   font-weight: bold;
+  font-family: sans-serif;
+
 }
 
 .Features {
   font-size: 12px;
+  font-family: sans-serif;
+
 }
 
 .Cancel {
   font-size: 12px;
   color: #333;
   font-weight: bold;
+  font-family: sans-serif;
+
 }
 
 .CancelSubtitle {
   font-size: 12px;
   color: #333;
+  font-family: sans-serif;
+
 }
 
 .Details {
@@ -195,9 +254,12 @@
   display: flex;
   justify-content: flex-end; 
 }
-
+.hotelRating{
+  font-size: 12px;
+}
 .hotelRating span {
-  font-weight: 300;
+  /* font-weight: 300; */
+  font-size: 12px;
 }
 
 .hotelRating  button {
@@ -206,6 +268,8 @@
   padding: 5px;
   font-weight: bold;
   border: none;
+  font-family: sans-serif;
+
 }
 
 
@@ -214,18 +278,25 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  font-family: sans-serif;
+
 }
 
 .hotelPrice {
   font-size: 18px;
+  font-family: sans-serif;
+
 }
 
 .hotelTax {
   font-size: 12px;
   color: gray;
+  font-family: sans-serif;
+
 }
 
 .CheckButton {
+  font-family: sans-serif;
   background-color: #00b7eb;
   color: white;
   font-weight: bold;

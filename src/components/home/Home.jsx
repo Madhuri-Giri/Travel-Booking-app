@@ -14,27 +14,16 @@ import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { RiHotelFill } from "react-icons/ri";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
+import axios from "axios";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import PropTypes from 'prop-types';
 
 const Home = () => {
-  // State to keep track of the selected tab
-  const [selectedTab, setSelectedTab] = useState('tab1');
-  // Handler to change the selected tab
-
-  // function for adult , child , infact dropdown list
-  const [showDropdown, setShowDropdown] = useState(false);
-  const handleShow = () => {
-    setShowDropdown(!showDropdown);
-  };
-  const handleClose = () => {
-    setShowDropdown(false);
-  };
-
-
   const navigate = useNavigate();
 
-  // ---------------------api-data-start-----------------------------
-
+  // states-------------------------------------------
   const [from, setFrom] = useState('LKO');
   const [to, setTo] = useState('KWI');
   const [fromSuggestions, setFromSuggestions] = useState([]);
@@ -42,14 +31,12 @@ const Home = () => {
   const [preferredDepartureTime, setPreferredDepartureTime] = useState(new Date());
   const [preferredArrivalTime, setPreferredArrivalTime] = useState(new Date());
 
-
-
   const fetchSuggestions = async (query, setSuggestions) => {
     console.log('test');
     try {
       const response = await fetch(`https://srninfotech.com/projects/travel-app/api/bus_list?query=${query}`);
       const data = await response.json();
-      // console.log('API Response:', data);
+      // console.log('API Response:', data)
       const filteredSuggestions = data.data.filter(suggestion =>
         suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
       );
@@ -60,7 +47,18 @@ const Home = () => {
     }
   };
 
+   // function for adult , child , infact dropdown list-------------------------------------------
+   const [showDropdown, setShowDropdown] = useState(false);
+   const handleShow = () => {
+     setShowDropdown(!showDropdown);
+   };
+   const handleClose = () => {
+     setShowDropdown(false);
+   };
+   // function for adult , child , infact dropdown list-------------------------------------------
+ 
 
+  // func for Origin & Destination----------------------------------------------------------------
   const handleFromChange = (event) => {
     const value = event.target.value;
     console.log("vvvvvvalue", value)
@@ -81,41 +79,30 @@ const Home = () => {
       setToSuggestions([]);
     }
   };
+  // func for Origin & Destination----------------------------------------------------------------
 
+
+  // function for select From & To --------------------------------------
   const handleSuggestionClick = (suggestion, fieldSetter) => {
     fieldSetter(suggestion.busodma_destination_name);
-
   };
 
+  const handleToSelect = (suggestion) => {
+    handleSuggestionClick(suggestion, setTo);
+    setToSuggestions([]);
+  };
 
   const handleFromSelect = (suggestion) => {
     handleSuggestionClick(suggestion, setFrom);
-    // console.log("sugesssss", suggestion.busodma_destination_name)
     setFromSuggestions([]);
 
     let updatedSegments = formData.Segments;
     updatedSegments[0]["Origin"] = suggestion.busodma_destination_name;
     setFormData((prev) => ({ ...prev, Segments: updatedSegments }));
   };
+  // function for select From & To --------------------------------------
 
-  // --------------------------end-----------------
-
-
-  // State selected flight class
-  const [selectedflightClass, setSelectedflightClass] = useState('Economy');
-
-  const handleToSelect = (suggestion) => {
-    // console.log("suggestion", suggestion);
-    handleSuggestionClick(suggestion, setTo);
-    setToSuggestions([]);
-  };
-
-  // --------------------------end-----------------
-
-
-
-
-
+  // Static formData------------------------------------------------------------
   const [formData, setFormData] = useState({
     AdultCount: 1,
     ChildCount: 0,
@@ -127,17 +114,14 @@ const Home = () => {
         Origin: "LKO",
         Destination: "KWI",
         FlightCabinClass: 1,
-        PreferredDepartureTime: "2024-07-28T00:00:00",
-        PreferredArrivalTime: "2024-07-28T00:00:00"
+         PreferredDepartureTime: "2024-08-20T00:00:00",
+        PreferredArrivalTime: "2024-08-25T00:00:00"
       }
     ]
   });
+  // Static formData------------------------------------------------------------
 
-    // console.log("traveler",formData.AdultCount + formData.ChildCount + formData.InfantCount)
-
-  const [travellr, settravellr] = useState();
-
-
+  // search API integration function----------------------------------------------
   const getFlightList = async () => {
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
@@ -150,45 +134,74 @@ const Home = () => {
 
       const data = await response.json();
       console.log("hello", data);
-      
 
-        // Save TraceId to local storage with the key "FlightTraceId2"
-        if (data.TraceId) {
-          localStorage.setItem("FlightTraceId2", data.TraceId);
-          console.log("Saved TraceId to local storage:", data.TraceId); // Log TraceId
+
+      // Save TraceId to local storage with the key "FlightTraceId2"
+      if (data.TraceId) {
+        localStorage.setItem("FlightTraceId2", data.TraceId);
+        console.log("Saved TraceId to local storage:", data.TraceId); // Log TraceId
       }
 
       if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.ResultIndex) {
         const resultIndex = data.Results[0][0].FareDataMultiple[0].ResultIndex;
         localStorage.setItem("FlightResultIndex2", resultIndex);
+
         console.log("Saved ResultIndex to local storage:", resultIndex);
-    } else {
+      } else {
         console.log("ResultIndex not found");
-    }
+      }
+
+      if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.SrdvIndex) {
+        const srdvIndex = data.Results[0][0].FareDataMultiple[0].SrdvIndex;
+        localStorage.setItem("FlightSrdvIndex2", srdvIndex);
+        console.log("Saved SrdvIndex to local storage:", srdvIndex);
+      } else {
+        console.log("SrdvIndex not found");
+      }
+
+
       navigate("/flight-list", { state: { data: data, formData: formData } });
     }
     catch (error) {
       console.error('Error fetching suggestions:', error);
     }
   }
-
-  const handleChange = (date, key) => {
-    setPreferredDepartureTime(date);
-    setPreferredDepartureTime(date);
-    // console.log("date", date);
-
-    const formattedDate = new Date(date).toISOString().split('.')[0];
-
-    let updatedSegments = formData.Segments;
-    updatedSegments[0][key] = formattedDate;
-    setFormData((prev) => ({ ...prev, Segments: updatedSegments }));
-  };
+  // search API integration function----------------------------------------------
 
 
+  // function for dynamic dep arr date----------------------------------------
+  // const handleChange = (date) => {
+  //   const formattedDate = new Date(date).toISOString().split('.')[0];
+  //   console.log("formattedDate", formattedDate);
+  //   setFormData((prev) => {
+  //     let updatedSegments = [...prev.Segments];
+  //     updatedSegments[0]["PreferredDepartureTime"] = formattedDate;
+  //     updatedSegments[0]["PreferredArrivalTime"] = formattedDate;
+  //     console.log("updatedSegments", updatedSegments);
+  //     return { ...prev, Segments: updatedSegments };
+  //   });
+  // };
+const handleChange = (date) => {
+  // Set the time part to "00:00:00" (AnyTime) for both PreferredDepartureTime and PreferredArrivalTime
+  const formattedDate = new Date(date).toISOString().split('T')[0] + 'T00:00:00';
+  console.log("formattedDate", formattedDate);
+
+  setFormData((prev) => {
+    let updatedSegments = [...prev.Segments];
+    updatedSegments[0]["PreferredDepartureTime"] = formattedDate;
+    updatedSegments[0]["PreferredArrivalTime"] = formattedDate;
+    console.log("updatedSegments", updatedSegments);
+    return { ...prev, Segments: updatedSegments };
+  });
+};
+
+  
+  // function for dynamic dep arr date----------------------------------------
+
+  // fun for increase decrease adult , child , infant count------------------------------------------------
   const handleCount = (key, name) => {
     console.log("called", key, name)
     if (key == "increment") {
-      // console.log("called2");
       setFormData((prev) => ({ ...prev, [name]: formData[name] + 1 }));
     } else if (key == "decrement") {
       if (formData[name] > 0) {
@@ -196,25 +209,120 @@ const Home = () => {
       }
     }
   }
+  // fun for increase decrease adult , child , infant count------------------------------------------------
 
 
-  // console.log("formData", formData);
-
+  // func for select flight class----------------------------------------------
+  const [selectedflightClass, setSelectedflightClass] = useState('Economy');
   const handleflightClassChange = (event) => {
     setSelectedflightClass(event.target.value);
     setFormData((prev) => ({ ...prev, JourneyType: event.target.value }))
   };
+  // func for select flight class----------------------------------------------
 
 
+
+  // for one way & two way tabs-----------------------------------------
   const [activeTab, setActiveTab] = useState('oneway');
 
   const handleTabChange = (event) => {
     setActiveTab(event.target.value);
   };
+  // for one way & two way tabs-----------------------------------------
+
+
+  // ----------  Api integration start for slider image  ----------
+  const [offerSliderImages, setOfferSliderImages] = useState([]);
+  useEffect(() => {
+    axios.get('https://sajyatra.sajpe.in/admin/api/offer')
+      .then(response => {
+        setOfferSliderImages(response.data.data);
+      })
+      .catch(error => {
+        console.error('Error slider image fetching data: ', error);
+      });
+  }, []);
+  // ----------  Api integration end for slider image  ----------
+
+
+
+  // slider logics------------------------------------------------------
+  const SamplePrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", left: "10px", zIndex: 1 }}
+        onClick={onClick}
+      >
+      </div>
+    );
+  };
+  SamplePrevArrow.propTypes = {
+    className: PropTypes.string,
+    style: PropTypes.object,
+    onClick: PropTypes.func,
+  };
+  const SampleNextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", right: "10px", zIndex: 1 }}
+        onClick={onClick}
+      >
+        {/* <FaArrowRightLong style={{ color: 'black', fontSize: '30px' }} /> */}
+      </div>
+    );
+  };
+  SampleNextArrow.propTypes = {
+    className: PropTypes.string,
+    style: PropTypes.object,
+    onClick: PropTypes.func,
+  };
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    prevArrow: <SamplePrevArrow />,
+    nextArrow: <SampleNextArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+        }
+      },
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1
+        }
+      }
+    ]
+  };
+  // slider logics------------------------------------------------------
+
+
 
   return (
     <>
-       <section className='flightPageBanner'>
+
+
+      <section className='flightPageBanner'>
         <div className="container-fluid ">
           <div className="findFlightss"><button>Find Flights</button></div>
           <div className="row">
@@ -284,7 +392,7 @@ const Home = () => {
                             </div>
                           </div>
 
-                          <div className="col-6 mt-2">
+                          <div className="col-sm-6 mt-2">
                             <div className="form-group">
                               <label htmlFor="PreferredDepartureTime">Departure Date</label>
                               <div className="date-picker-wrapper form-control">
@@ -292,7 +400,7 @@ const Home = () => {
                                   name="PreferredDepartureTime"
                                   selected={preferredDepartureTime}
                                   onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                  className=""
+                                  className="departureCallender"
                                   id="PreferredDepartureTime"
                                   placeholderText="Select a date"
                                 />
@@ -300,7 +408,7 @@ const Home = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-6">
+                          <div className="col-sm-6">
                             <div className="form-group onewayreturnhidebtn">
                               <Link>Add Return date</Link>
                               <MdDateRange className="mt-1 ms-2" />
@@ -457,7 +565,7 @@ const Home = () => {
                             </div>
                           </div>
 
-                          <div className="col-6 mt-2">
+                          <div className="col-sm-6 mt-2">
                             <div className="form-group">
                               <label htmlFor="PreferredDepartureTime">Departure Date</label>
                               <div className="date-picker-wrapper form-control">
@@ -473,7 +581,7 @@ const Home = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-6 mt-2">
+                          <div className="col-sm-6 mt-2">
                             <div className="form-group">
                               <div className="form-group">
                                 <label htmlFor="PreferredArrivalTime">Return Date</label>
@@ -615,10 +723,7 @@ const Home = () => {
                     src="https://www.vimaansafar.com/img/Vimaansafar-1.jpg?vt"
                     alt="First slide"
                   />
-                  <Carousel.Caption>
-                    <h3>First Slide</h3>
-                    <p>Description for the first slide.</p>
-                  </Carousel.Caption>
+
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
@@ -626,10 +731,7 @@ const Home = () => {
                     src="https://www.vimaansafar.com/img/International-Flight.jpg"
                     alt="Second slide"
                   />
-                  <Carousel.Caption>
-                    <h3>Second Slide</h3>
-                    <p>Description for the second slide.</p>
-                  </Carousel.Caption>
+
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
@@ -637,10 +739,7 @@ const Home = () => {
                     src="https://www.vimaansafar.com/img/Zero-vs.jpg?"
                     alt="Third slide"
                   />
-                  <Carousel.Caption>
-                    <h3>Third Slide</h3>
-                    <p>Description for the third slide.</p>
-                  </Carousel.Caption>
+
                 </Carousel.Item>
               </Carousel>
             </div>
@@ -656,6 +755,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+      
       <section className="flightbooksec3">
         <h5>Reasons to book with us?</h5>
         <div className="container-fluid">
@@ -686,7 +786,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="exictingOffers">
+      {/* <section className="exictingOffers">
         <div className="container-fluid mb-5 ss">
           <div className="row">
             <h5>Exicting offers</h5>
@@ -701,6 +801,23 @@ const Home = () => {
 
             </div>
           </div>
+        </div>
+      </section> */}
+
+
+      <section className='exictingOffers mt-5 mb-5'>
+        <div className="container-fluid">
+          <h5 className='mb-3'>Exclusive Offers</h5>
+          <Slider {...settings}>
+            {offerSliderImages.map((offer, offerIndex) => {
+              return (
+                <div className="exictingOfferslider col-md-3 mt-4 p-2" key={offerIndex}>
+                  <img className='img-fluid' src={offer.slider_img} />
+                </div>
+              )
+            }
+            )}
+          </Slider>
         </div>
       </section>
 

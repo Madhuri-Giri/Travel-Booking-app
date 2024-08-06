@@ -7,7 +7,6 @@ import { TiPlane } from "react-icons/ti";
 import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import { MdOutlineFlightTakeoff } from "react-icons/md";
 import { FaTrash } from 'react-icons/fa';
-import { IoChevronBackOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 export default function FlightDetails() {
@@ -18,12 +17,28 @@ export default function FlightDetails() {
 
     const location = useLocation();
     const fareData = location.state?.fareData;
-
     const formData = location.state?.formData;
-
 
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
 
+    // function for date convert into day month date--------------------------------------
+    const convertformatDate = (dateString) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('en-US', { day: 'numeric', weekday: 'long', month: 'long' }).format(date);
+    };
+
+    const departDatee = formData.Segments[0].PreferredDepartureTime;
+    const convertformattedDate = convertformatDate(departDatee);
+    console.log("Formatted Date:", convertformattedDate);
+    // function for date convert into day month date--------------------------------------
+
+    // func for duration convert hpur minute---------------------
+    const convertMinutesToHoursAndMinutes = (minutes) => {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        return `${hours}h ${remainingMinutes}m`;
+    };
+    // func for duration convert hpur minute---------------------
 
     useEffect(() => {
         if (fareData) {
@@ -65,18 +80,8 @@ export default function FlightDetails() {
         return date.toLocaleDateString(undefined, options);
     };
 
-    //   -----------------------------------------------------
 
     // --------------------------------------seat and meal api--------------------------------------------
-
-    const mealAndseatHandler = () => {
-        setShowTabs(!showTabs);
-        if (!showTabs) {
-            navigate('/seat-meal-baggage', { state: { seatData, ssrData } });
-        }
-        ssrHandler();
-        seatmap();
-    }
 
     const [ssrData, setSsrData] = useState([]);
 
@@ -133,11 +138,14 @@ export default function FlightDetails() {
                 console.error('No baggage data found in response');
             }
         } catch (error) {
-            console.error('API call failed:', error);
+            console.error('SSr API call failed:', error);
         }
     };
 
     const [seatData, setSeatData] = useState([]);
+
+    console.log("ssrData", ssrData);
+    console.log("seatData", seatData);
 
     useEffect(() => {
         const flightData = localStorage.getItem('FlightsitMap');
@@ -167,8 +175,6 @@ export default function FlightDetails() {
             setSeatData([]);
         }
     }, []);
-
-
 
     const seatmap = async () => {
         const traceId = localStorage.getItem('FlightTraceId2');
@@ -216,46 +222,14 @@ export default function FlightDetails() {
         navigate('/flight-review')
     }
 
-
-
     // ----------------------------------------------seat and meal api------------------------------------
-    // ----------------------logic for forms---------------------------------------
 
+
+    // ----------------------logic for total traveller forms---------------------------------------
     const [activeTabFlightDetails, setActiveTabFlightDetails] = useState('flight');
 
-    const [email, setEmail] = useState('');
-    const [mobileNumber, setMobileNumber] = useState('');
-    const [gender, setGender] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [formDetails, setFormDetails] = useState([]);
-    // const [error, setError] = useState('');
     const [showTabs, setShowTabs] = useState(false);
-    const [activeTab, setActiveTab] = useState('Seats');
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
-
-    const handleMobileNumberChange = (e) => {
-        setMobileNumber(e.target.value);
-    };
-
-    const handleGenderChange = (e) => {
-        setGender(e.target.value);
-        setError('');
-    };
-    const handleFirstNameChange = (e) => {
-        setFirstName(e.target.value);
-    };
-    const handleLastNameChange = (e) => {
-        setLastName(e.target.value);
-    };
-
-
-
-
-    // -------------------newwwww------------
     const [adultCount, setAdultCount] = useState(formData.AdultCount);
     const [childCount, setChildCount] = useState(formData.ChildCount);
     const [infantCount, setInfantCount] = useState(formData.InfantCount);
@@ -276,9 +250,8 @@ export default function FlightDetails() {
         const allAdultsConfirmed = confirmedAdultDetails.every(detail => detail.selected);
         const allChildrenConfirmed = confirmedChildDetails.every(detail => detail.selected);
         const allInfantsConfirmed = confirmedInfantDetails.every(detail => detail.selected);
-        setIsContinueDisabled(!(allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
+        setIsContinueDisabled((allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
     };
-    
 
     const handleInputChange = (e, index, type, field) => {
         const { value } = e.target;
@@ -308,11 +281,10 @@ export default function FlightDetails() {
 
     };
 
-
     const handleConfirm = (e, index, type) => {
         e.preventDefault();
         let details;
-    
+
         if (type === 'adult') {
             details = [...adultDetails];
         } else if (type === 'child') {
@@ -320,11 +292,11 @@ export default function FlightDetails() {
         } else if (type === 'infant') {
             details = [...infantDetails];
         }
-    
+
         const { gender, firstName, lastName } = details[index];
         if (gender && firstName && lastName) {
             setError('');
-            const newDetail = { ...details[index], selected: true }; 
+            const newDetail = { ...details[index], selected: true };
             if (type === 'adult') {
                 setConfirmedAdultDetails([...confirmedAdultDetails, newDetail]);
             } else if (type === 'child') {
@@ -332,12 +304,11 @@ export default function FlightDetails() {
             } else if (type === 'infant') {
                 setConfirmedInfantDetails([...confirmedInfantDetails, newDetail]);
             }
-            checkButtonDisabled(); 
+            checkButtonDisabled();
         } else {
             setError(`Please fill out all fields for ${type} ${index + 1}.`);
         }
     };
-    
 
     const handleDelete = (type, index) => {
         if (type === 'adult') {
@@ -347,6 +318,7 @@ export default function FlightDetails() {
         } else if (type === 'infant') {
             setConfirmedInfantDetails(confirmedInfantDetails.filter((_, i) => i !== index));
         }
+        checkButtonDisabled();
     };
 
     const renderFormFields = (count, type) => {
@@ -471,16 +443,12 @@ export default function FlightDetails() {
             );
             setConfirmedInfantDetails(updatedDetails);
         }
-        checkButtonDisabled(); 
+        checkButtonDisabled();
     };
+    // ----------------------logic for total traveller forms---------------------------------------
 
 
-
-    // -------------newwwwwwwwwwwwwwwww---------------
-
-    // ----------------------logic for forms---------------------------------------
-
-
+    // flight review details tabs--------------------------------------------------------
     const renderContent = () => {
         switch (activeTabFlightDetails) {
             case 'flight':
@@ -497,7 +465,7 @@ export default function FlightDetails() {
                             <p className="flighttTabContentCol2p3">{origin.AirportName}</p>
                         </div>
                         <div className="col-md-3 col-sm-6 flighttTabContentCol3">
-                            <p>{segment.Duration}m</p>
+                            <p>{convertMinutesToHoursAndMinutes(segment.Duration)}</p>
                             <p>{segment.CabinClassName}</p>
                         </div>
                         <div className="col-md-3 col-sm-6 flighttTabContentCol4">
@@ -645,18 +613,26 @@ export default function FlightDetails() {
                 return <div>Flight Information</div>;
         }
     }
+    // flight review details tabs--------------------------------------------------------
 
-    // seats meals baggage tabs---------------------------------------------------
-    // const navigate = useNavigate();
 
+    // func for seat meal , baggage checkbox----------------------------------
     const handleCheckboxChange = () => {
         setShowTabs(!showTabs);
-        if (!showTabs) {
-            navigate('/seat-meal-baggage', { state: { seatData, ssrData } });
+    };
+    // func for seat meal , baggage checkbox----------------------------------
+
+    // seat meal checkbox is selected continue buton goto seat meal tab page ---------------------
+    // but seat meal is not selected only traveller form selected then goto review page-------------------------------
+    const handleButtonClick = () => {
+        if (showTabs) {
+            navigate('/seat-meal-baggage', { state: { seatData, ssrData ,formData} });
+        } else {
+            reviewHandler();
         }
     };
-    // seats meals baggage tabs--------------------------------------------------------
-
+    //if seat meal checkbox is selected continue buton goto seat meal tab page ---------------------
+    // else seat meal is not selected only traveller form selected then goto review page-------------------------------
 
     return (
         <>
@@ -664,9 +640,6 @@ export default function FlightDetails() {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-4 d-flex flightlistsec1col">
-                            <Link to='/flight-Farequote'>
-                                <IoChevronBackOutline />
-                            </Link>
                             <TiPlane className="mt-1" />
                             <p> {formData.Segments[0].Origin} </p>
                             <p>-</p>
@@ -674,7 +647,7 @@ export default function FlightDetails() {
                         </div>
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaCalendarAlt className="mt-1" />
-                            <p><span>Departure on Wed,</span> 17 July</p>
+                            <p><span>Departure on</span> {convertformattedDate}</p>
                         </div>
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaUser className="mt-1" />
@@ -688,13 +661,13 @@ export default function FlightDetails() {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-lg-9">
-                            <div className="fdetailspriceBox">
+                            {/* <div className="fdetailspriceBox">
                                 <p>You got the best price available!</p>
                                 <div>
                                     <h6>Final Price</h6>
                                     <h5>₹630</h5>
                                 </div>
-                            </div>
+                            </div> */}
 
 
                             <div className="row">
@@ -773,8 +746,8 @@ export default function FlightDetails() {
                                             {error && <div className="text-danger mt-2" aria-live="assertive">{error}</div>}
 
                                             {/* code for tabs seat meals--------- */}
-                                            <div className="row">
-                                                <div className="col-md-4 col-lg-6 seatMealBaggageTabbtn">
+                                            <div className="row seatMealBaggageTabRow">
+                                                <div className="col-lg-6 seatMealBaggageTabbtn">
                                                     <input
                                                         type="checkbox"
                                                         id="seatMealCheckbox"
@@ -790,11 +763,11 @@ export default function FlightDetails() {
                                             <div className="col-12 lastBtnssContinue">
                                                 <h5>Fare Breakup <span>₹13465</span></h5>
                                                 <button
-                                                    onClick={reviewHandler}
+                                                    onClick={handleButtonClick}
                                                     disabled={isContinueDisabled}
                                                     style={{
-                                                        color: isContinueDisabled ? '#ccc' : '#000',
-                                                        backgroundColor: isContinueDisabled ? '#f0f0f0' : '#007bff',
+                                                        color: isContinueDisabled ? '#ccc' : 'white',
+                                                        backgroundColor: isContinueDisabled ? '#f0f0f0' : '#00b7eb',
                                                         cursor: isContinueDisabled ? 'not-allowed' : 'pointer',
                                                         border: 'none',
                                                         padding: '10px 20px',
@@ -802,10 +775,10 @@ export default function FlightDetails() {
                                                         transition: 'background-color 0.3s',
                                                     }}
                                                 >
-                                                    Continue
+                                                    {showTabs ? 'Proceed to Seat Select' : 'Continue'}
                                                 </button>
-
                                             </div>
+
                                         </form>
                                     </div>
                                 </div>
@@ -824,32 +797,32 @@ export default function FlightDetails() {
                                     <div className="fligthPriceDetailsBox">
                                         <div className="fligthPriceDetailsBoxDiv1">
                                             <p>Base Fare</p>
-                                            <p>0</p>
+                                            <p>₹{baseFare.toFixed(2)}</p>
                                         </div>
                                         <div className="fligthPriceDetailsBoxDiv2">
                                             <p>Taxes</p>
-                                            <p>0</p>
+                                            <p>₹{tax.toFixed(2)}</p>
                                         </div>
                                         <hr></hr>
                                         <div className="fligthPriceDetailsBoxDiv3">
                                             <h6>Total Fare</h6>
-                                            <p>₹0</p>
+                                            <p>₹{totalFare.toFixed(2)}</p>
                                         </div>
-                                        <div className="fligthPriceDetailsBoxDiv4">
+                                        {/* <div className="fligthPriceDetailsBoxDiv4">
                                             <h6>Insurance (All Traveller)</h6>
                                             <p>₹249</p>
-                                        </div>
-                                        <div className="fligthPriceDetailsBoxDiv5">
+                                        </div> */}
+                                        {/* <div className="fligthPriceDetailsBoxDiv5">
                                             <h6>Sub Total</h6>
                                             <p>₹249</p>
-                                        </div>
-                                        <div className="fligthPriceDetailsBoxDiv6">
+                                        </div> */}
+                                        {/* <div className="fligthPriceDetailsBoxDiv6">
                                             <h6>Coupon Applied</h6>
                                             <p>₹100 OFF</p>
-                                        </div>
+                                        </div> */}
                                         <div className="fligthPriceDetailsBoxDiv7">
                                             <h5>You Pay</h5>
-                                            <p>₹149</p>
+                                            <p>₹{totalFare.toFixed(2)}</p>
                                         </div>
                                         <div className="fligthPriceDetailsBoxDiv8">
                                             <img src="/src/assets/images/Low-Price-Guarantee-Offer.gif" className="img-fluid" />

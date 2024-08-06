@@ -1,4 +1,4 @@
-.fdetailspriceBox{
+.fdetailspriceBox {
     background-color: #d4edda;
     padding: 10px 16px;
     display: flex;
@@ -7,7 +7,7 @@
     margin-bottom: 20px;
 }
 
-.f-seat{
+.f-seat {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -16,69 +16,80 @@
 }
 
 
-.flightDetailssec{
+.flightDetailssec {
     background-color: #dddddd;
     padding: 20px 20px;
 }
-.fdetailspriceBox p{
+
+.fdetailspriceBox p {
     color: #155724;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
 }
-.fdetailspriceBox h6{
+
+.fdetailspriceBox h6 {
     font-size: 14px;
     font-weight: 400;
     color: #155724;
 }
-.fdetailspriceBox h5{
+
+.fdetailspriceBox h5 {
     /* font-size: 16px; */
     font-weight: bold;
     color: #155724;
 }
 
-.fligthReviewhed{
+.fligthReviewhed {
     display: flex;
     margin-bottom: 10px;
 }
-.fligthReviewhed svg{
+
+.fligthReviewhed svg {
     font-size: 20px;
     margin-right: 10px;
 }
-.fligthReviewhed h5{
+
+.fligthReviewhed h5 {
     font-weight: 800;
 }
 
-.fligthReviewBox{
+.fligthReviewBox {
     background-color: white;
     padding: 20px 30px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
     border-radius: 7px;
     margin-bottom: 30px;
 }
-.fligthReviewBoxHed{
+
+.fligthReviewBoxHed {
     display: flex;
-    justify-content:center;
+    justify-content: center;
     background-color: #eeeeee;
     align-items: center;
     margin-bottom: 20px;
 }
-.fligthReviewBoxHed svg{
+
+.fligthReviewBoxHed svg {
     font-size: 25px;
     margin-left: 10px;
 }
-.fligthReviewBoxHed h6{
+
+.fligthReviewBoxHed h6 {
     font-weight: bold;
 }
-.fligthReviewBoxHedText{
+
+.fligthReviewBoxHedText {
     display: flex;
     justify-content: space-between;
 }
-.fligthReviewBoxHedbttn{
+
+.fligthReviewBoxHedbttn {
     text-align: end;
 }
-.fligthReviewBoxHedbttn button{
+
+.fligthReviewBoxHedbttn button {
     background-color: #fffa9a;
     color: #0666cd;
     border: none;
@@ -88,10 +99,12 @@
     font-size: 13px;
     font-weight: bold;
 }
-.fligthReviewBoxHedMain{
+
+.fligthReviewBoxHedMain {
     border: 1px solid #80808040;
 }
-.fligthReviewBoxHedMain .tabs{
+
+.fligthReviewBoxHedMain .tabs {
     border-bottom: 1px solid #80808040;
 }
 
@@ -111,144 +124,176 @@
     background-color: skyblue;
     color: white;
     font-weight: bold;
-    border: 2px solid #80808040; /* Add border for active tab */
+    border: 2px solid #80808040;
+    /* Add border for active tab */
 }
 
 .tab-content {
     margin-top: 20px;
 }
 
-.flighttTabContent{
+.flighttTabContent {
     padding: 10px 20px;
 }
-.flighttTabContentCol1 img{
+
+.flighttTabContentCol1 img {
     border-radius: 12px;
     height: 40px;
 }
+
 .flighttTabContentCol2 h5,
-.flighttTabContentCol4 h5{
+.flighttTabContentCol4 h5 {
     font-weight: 800;
     margin: 0px;
 }
+
 .flighttTabContentCol2p1,
 .flighttTabContentCol2p2,
-.flighttTabContentCol2p3{
+.flighttTabContentCol2p3 {
     margin: 0px;
 }
-.flighttTabContentCol2p1{
+
+.flighttTabContentCol2p1 {
     font-weight: 500;
     font-size: 18px;
 }
-.flighttTabContentCol2p3{
+
+.flighttTabContentCol2p3 {
     font-size: 12px;
     color: gray;
 }
-.flighttTabContentCol2p2{
+
+.flighttTabContentCol2p2 {
     font-size: 14px;
     color: gray;
 }
 
-.baggageTabRow p{
+.baggageTabRow p {
     color: gray;
     font-size: 12px;
     margin-top: 30px;
 }
-.baggageTabRow .col-12{
-    padding: 10px 30px;
-}
-.fareTabRow .col-12{
+
+.baggageTabRow .col-12 {
     padding: 10px 30px;
 }
 
-.fare-bordered-table, .fare-bordered-table th, .fare-bordered-table td {
+.fareTabRow .col-12 {
+    padding: 10px 30px;
+}
+
+.fare-bordered-table,
+.fare-bordered-table th,
+.fare-bordered-table td {
     border: 1px solid rgba(128, 128, 128, 0.384);
     border-collapse: collapse;
     padding: 8px;
 }
 
-.fare-bordered-table th, .fare-bordered-table td {
+.fare-bordered-table th,
+.fare-bordered-table td {
     padding: 8px;
     text-align: left;
     font-size: 14px;
 }
-.cancellationTabRow{
+
+.cancellationTabRow {
     padding: 10px 30px;
 }
-.cancellationtable h6{
+
+.cancellationtable h6 {
     font-weight: bold;
 }
-.cancellationtable{
+
+.cancellationtable {
     margin-bottom: 20px;
 }
-.cancellationTabRow ul li{
+
+.cancellationTabRow ul li {
     font-size: 13px;
     color: rgb(54, 52, 52);
     line-height: 30px;
 }
 
-.fligthPriceDetailsBox{
+.fligthPriceDetailsBox {
     background-color: white;
     padding: 20px 30px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
     border-radius: 10px;
     margin-bottom: 30px;
 }
+
 .fligthPriceDetailsBoxDiv1,
 .fligthPriceDetailsBoxDiv2,
 .fligthPriceDetailsBoxDiv3,
 .fligthPriceDetailsBoxDiv4,
 .fligthPriceDetailsBoxDiv5,
 .fligthPriceDetailsBoxDiv6,
-.fligthPriceDetailsBoxDiv7
-{
+.fligthPriceDetailsBoxDiv7 {
     display: flex;
     justify-content: space-between;
 }
-.fligthPriceDetailsBoxDiv8{
+.fligthPriceDetailsBoxDiv7 {
+    color: #00e100 !important;
+    font-weight: 900 !important;
+}
+
+.fligthPriceDetailsBoxDiv8 {
     display: flex;
     justify-content: center;
 }
-.fligthPriceDetailsBoxDiv8 img{
+
+.fligthPriceDetailsBoxDiv8 img {
     height: 80px;
 }
-.fligthPriceDetailsBoxDiv1 p{
+
+.fligthPriceDetailsBoxDiv1 p {
     color: gray;
 }
-.fligthPriceDetailsBoxDiv2 p{
+
+.fligthPriceDetailsBoxDiv2 p {
     color: gray;
 }
+
 .fligthPriceDetailsBoxDiv3 h6,
-.fligthPriceDetailsBoxDiv3 p{
+.fligthPriceDetailsBoxDiv3 p {
     font-weight: bold;
 }
+
 .fligthPriceDetailsBoxDiv4 h6,
-.fligthPriceDetailsBoxDiv4 p{
+.fligthPriceDetailsBoxDiv4 p {
     color: red;
 }
+
 .fligthPriceDetailsBoxDiv5 h6,
-.fligthPriceDetailsBoxDiv5 p{
+.fligthPriceDetailsBoxDiv5 p {
     font-size: 17px;
 }
+
 .fligthPriceDetailsBoxDiv5 h5,
-.fligthPriceDetailsBoxDiv5 p{
+.fligthPriceDetailsBoxDiv5 p {
     color: rgb(223, 4, 88)(212, 0, 255);
 }
 
-.fligthContactDethed{
+.fligthContactDethed {
     display: flex;
     margin-bottom: 20px;
 }
-.fligthContactDethed h5{
+
+.fligthContactDethed h5 {
     font-weight: 900;
 }
+
 .fligthContactDethed svg {
     font-size: 20px;
     margin-right: 10px;
 }
-.fligthContactDethedBox label{
+
+.fligthContactDethedBox label {
     margin-bottom: 15px;
     font-weight: bold;
 }
+
 .fligthContactDethedBox {
     background-color: white;
     padding: 20px 30px;
@@ -256,22 +301,27 @@
     border-radius: 10px;
     margin-bottom: 30px;
 }
-.fligthContactDethedBox p{
+
+.fligthContactDethedBox p {
     font-size: 12px;
     color: gray;
     margin-top: 20px;
 }
-.fligthTravellerDethed{
+
+.fligthTravellerDethed {
     display: flex;
     margin-bottom: 20px;
 }
-.fligthTravellerDethed h5{
+
+.fligthTravellerDethed h5 {
     font-weight: 900;
 }
+
 .fligthTravellerDethed svg {
     font-size: 20px;
     margin-right: 10px;
 }
+
 .fligthTravellerDethedBox {
     background-color: white;
     padding: 20px 30px;
@@ -279,84 +329,106 @@
     border-radius: 10px;
     margin-bottom: 30px;
 }
-.fligthTravellerDethedBox h5{
+
+.fligthTravellerDethedBox h5 {
     margin-bottom: 25px;
     color: #00b7eb;
     font-weight: bold;
 }
 
-.fligthTravellerDethedBox .row{
-    /* border: 1px solid rgba(220, 220, 220, 0.486); */
-    padding: 20px 10px;
+.userFormFill {
+    border: 1px solid rgba(220, 220, 220, 0.486);
+}
+
+.seatMealBaggageTabRow {
+    padding: 10px 40px !important;
+}
+
+.fligthTravellerDethedBox .row {
+    padding: 6px 10px;
     border-radius: 10px;
-    margin-bottom: 20px;
     margin-left: 5px;
     margin-right: 5px;
+    margin-bottom: 10px;
 }
-.fligthTravellerDethedBox label{
+
+.fligthTravellerDethedBox label {
     margin-bottom: 18px;
     font-weight: bold;
 }
-.genderFormGrp label{
+
+.genderFormGrp label {
     font-weight: 500;
     font-size: 17px;
 }
-.seatMealBaggageTabbtn{
+
+.seatMealBaggageTabbtn {
     padding: 15px 11px;
     box-shadow: 2px 1px 4px 3px #80808073;
     padding-bottom: 5px;
 }
-.seatMealBaggageTabbtn input{
+
+.seatMealBaggageTabbtn input {
     margin-right: 20px;
     font-size: 23px;
     margin-top: 2px;
 }
-.formdettlsDesk{
+
+.formdettlsDesk {
     padding: 15px 11px;
     box-shadow: 2px 1px 4px 3px #80808073;
 }
-.formdettlsDesk strong{
+
+.formdettlsDesk strong {
     margin-left: 13px;
 }
-.formdettlsDesk span{
+
+.formdettlsDesk span {
     margin-right: 13px;
 }
-.formConfbtn{
+
+.formConfbtn {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     margin-top: 14px;
 }
-.formdettlsMobile{
+
+.formdettlsMobile {
     background: #f3efef;
     padding: 15px 11px;
     box-shadow: 2px 1px 4px 3px #80808073;
 }
-.formdettlsMobile strong{
+
+.formdettlsMobile strong {
     margin-left: 13px;
 }
-.formdettlsMobile span{
+
+.formdettlsMobile span {
     margin-right: 13px;
 }
 
-.formdettlsMobile{
+.formdettlsMobile {
     display: none;
 }
-.formdettlsDeskdiv{
+
+.formdettlsDeskdiv {
     display: flex;
     justify-content: space-around;
 }
-.formdettlsDeskdivnmGen{
+
+.formdettlsDeskdivnmGen {
     display: flex;
     margin-top: 5px;
 }
-.selectDetInp{
+
+.selectDetInp {
     font-size: 25px;
 }
 
-.selectSeatMealDivBtn{
+.selectSeatMealDivBtn {
     box-shadow: 2px 3px 4px 3px gray;
-    background-color:white;
+    background-color: white;
     border-radius: 3px;
     margin-top: 20px;
     padding: 13px 10px;
@@ -365,40 +437,48 @@
     font-weight: 600;
     cursor: pointer;
 }
-.selectSeatMealCont{
+
+.selectSeatMealCont {
     background-color: #dddddd;
     padding: 40px 10px;
 }
-.selectSeatMealContROW{
+
+.selectSeatMealContROW {
     background-color: white;
     padding: 10px 20px;
     padding-bottom: 30px;
 }
-.selectSeatMealDivBtnTabss{
+
+.selectSeatMealDivBtnTabss {
     margin-bottom: 40px;
 }
-.selectSeatMealDivBtnTabss a{
+
+.selectSeatMealDivBtnTabss a {
     cursor: pointer;
 }
-.selectSeatMealDivBtnTabss a:hover{
+
+.selectSeatMealDivBtnTabss a:hover {
     background-color: #00b7eb;
     color: white;
 }
 
-.lastBtnssContinue{
+.lastBtnssContinue {
     display: flex;
     justify-content: space-between;
     margin-top: 50px;
-    
+
 }
-.lastBtnssContinue h5{
+
+.lastBtnssContinue h5 {
     color: black;
 }
-.lastBtnssContinue h5 span{
+
+.lastBtnssContinue h5 span {
     color: #00e100;
     font-weight: bold;
 }
-.lastBtnssContinue button{
+
+.lastBtnssContinue button {
     background-color: #00b7eb;
     color: white;
     border: none;
@@ -411,62 +491,84 @@
 /* .seatsTabssColImg img{
     height: 250px;
 } */
-.seatsTabssColText img{
+.seatsTabssColText img {
     height: 50px;
 }
-.seatsTabss h5{
+
+.seatsTabss h5 {
     text-align: center;
     font-weight: bold;
     color: #00b7eb;
 }
-.seatsTabssRow{
+
+.seatsTabssRow {
     background-color: #87ceeb36;
+    padding: 15px 0px;
 }
-.seat-selection button{
+
+.seat-selection button {
     border: 1px solid #80808087;
     border-radius: 5px;
     background-color: #87ceebba;
     box-shadow: 5px 2px 6px 1px #80808054;
-    margin: 10px;
+    margin: 5px 0px;
 }
-.meal-selection{
+
+.meal-selection {
     box-shadow: 2px 2px 3px 4px rgba(146, 142, 142, 0.548);
     padding: 0px 20px;
     border-radius: 10px;
     margin-bottom: 20px;
 }
-.meal-selectionbtn{
+
+.meal-selectionbtn {
     display: flex;
     justify-content: end;
     align-items: center;
 }
-.meal-selectionbtn button{
+
+.meal-selectionbtn button {
     border: 1px solid purple;
     border-radius: 20px;
     padding: 6px 30px;
 }
-.MealsTabss h5{
+
+.MealsTabss h5 {
     text-align: center;
     font-weight: bold;
     color: #00b7eb;
 }
-.baggage-selection{
-    box-shadow: 2px 2px 3px 4px rgba(146, 142, 142, 0.548);
-    padding: 0px 20px;
+
+.baggage-selection {
+    box-shadow: 1px 3px 8px 2px #4d776e;
+    padding: 20px 20px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    background: aliceblue;
+    margin: 35px 0px;
 }
-.baggagge-selectionbtn{
+
+.baggage-selection h6 {
+    font-weight: bold;
+}
+
+.baggagge-selectionbtn {
     display: flex;
     justify-content: end;
     align-items: center;
 }
-.baggagge-selectionbtn button{
+
+.baggagge-selectionbtn button {
     border: 1px solid purple;
     border-radius: 20px;
     padding: 6px 30px;
 }
-.baggageTabbss h5{
+
+.baggageTabbss {
+    padding: 5px 55px;
+}
+
+.baggageTabbss h5 {
     text-align: center;
     font-weight: bold;
     color: #00b7eb;
@@ -476,34 +578,137 @@
 /* css responsive */
 /* responsive css */
 @media screen and (max-width: 992px) {
-    .fligthPriceDetailsss{
+    .fligthPriceDetailsss {
         display: none;
-    }    
-   
+    }
+
 }
+
 @media screen and (max-width: 768px) {
     .formConfbtn {
         display: flex;
         justify-content: start;
         align-items: flex-start;
         margin-top: 14px;
-    }  
-   
+    }
+
 }
+
 @media screen and (max-width: 576px) {
-    .formdettlsMobile{
+    .formdettlsMobile {
         display: block;
     }
-    .formdettlsDeskdivnmGen{
+
+    .formdettlsDeskdivnmGen {
         display: unset;
+        font-size: 13px;
     }
-    .baggageTabRow .table tr th{
+
+    .baggageTabRow .table tr th {
         font-size: 10px;
     }
-    
-    .baggageTabRow .table tr td{
+
+    .baggageTabRow .table tr td {
         font-size: 12px;
     }
-    
-   
+
+    .selectSeatMealContROW {
+        padding: 4px 4px;
+    }
+
+    .selectSeatMealCont {
+        padding: 8px 10px;
+    }
+
+    .flightDetailssec {
+        padding: 15px 0px;
+    }
+
+    .fligthReviewBox {
+        padding: 15px 10px;
+    }
+
+    .fligthReviewBoxHed svg {
+        font-size: 20px;
+        margin-left: 5px;
+    }
+
+    .fligthReviewBoxHed h6 {
+        font-size: 15px;
+    }
+
+    .fligthReviewBoxHed p {
+        font-size: 13px;
+    }
+
+    .fligthReviewBoxHedbttn button {
+        margin-right: 5px;
+        padding: 3px 7px;
+        font-size: 11px;
+    }
+
+    .cancellationTabRow {
+        padding: 0px 10px;
+    }
+
+    .fare-bordered-table th,
+    .fare-bordered-table td {
+        font-size: 13px;
+    }
+
+    .cancellationtable {
+        margin-bottom: 0px;
+    }
+
+    .fligthTravellerDethedBox {
+        padding: 15px 5px;
+        margin-bottom: 12px;
+    }
+
+    .fligthTravellerDethedBox .row {
+        padding: 5px 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-bottom: 6px;
+    }
+
+    .formdettlsDesk {
+        padding: 5px 0px;
+    }
+
+    .formConfbtn {
+        margin-top: -7px;
+        margin-bottom: 10px;
+    }
+    .fligthTravellerDethedBox label {
+        margin-bottom: 0px;
+        font-size: 12px;
+    }
+    .lastBtnssContinue h5 {
+        font-size: 14px;
+    }
+    .lastBtnssContinue {
+        margin-top: 19px;
+    }
+    .lastBtnssContinue button {
+        font-size: 12px;
+        padding: 9px 10px;
+    }
+    .seatMealBaggageTabRow {
+        padding: 10px 10px !important;
+    }
+    .seatMealBaggageTabbtn {
+        padding: 15px 11px;
+        padding-bottom: 15px;
+    }
+    .flightlistsec1col svg {
+        font-size: 14px;
+    }
+    .flightlistsec1 {
+        font-size: 12px;
+    }
+    .mobilehedrbookings .row .col-3 a {
+        font-size: 12px;
+    }
+
 }

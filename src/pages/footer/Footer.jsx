@@ -4,7 +4,7 @@ import { FaFacebookF , FaInstagram , FaTwitter } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa6";
 import { IoMdArrowDropright } from "react-icons/io";
 import FooterLogo from "../../assets/images/main logo.png"
-
+import paymentmode from '../../../src/assets/images/paymentmode.png';
 function Footer() {
     return (
         <>
@@ -47,7 +47,7 @@ function Footer() {
 
                         <div className="col-lg-2 col-sm-6 footer-links">
                             <h5>Payment Mode</h5>
-                            <img src='/src/assets/images/300px.png' className='img-fluid' alt="logo" />
+                            <img src={paymentmode} className='img-fluid' alt="logo" />
                         </div>
                         
                     </div>

@@ -2,7 +2,7 @@
 
 /* --------- Start --------- */
 .hotel_container {
-  margin: 20px;
+   margin: 20px;
   padding: 20px;
   border-radius: 10px;
   background-color: #00b7eb;
@@ -13,8 +13,11 @@
   margin-top: 50px;
   margin-left: 120px;
 }
-
+.content_box h1{
+  font-family: sans-serif;
+}
 .content_box p {
+  font-family: sans-serif;
   font-size: 1.2vmax;
 }
 
@@ -89,9 +92,13 @@
 .form_lable {
   display: block;
   margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 1.1vmax;
+  font-family: sans-serif;
 }
 
 .form_in {
+  font-family: sans-serif;
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
@@ -121,18 +128,18 @@
   margin-bottom: 10px;
 }
 
-.react-datepicker-wrapper {
+.form_in .react-datepicker-wrapper {
   width: 100%;
 }
 
-.react-datepicker__input-container {
+.form_in.react-datepicker__input-container {
   width: 100%;
 }
 
 .btn-sub {
   padding: 10px;
   background-color: #00b7eb;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -156,6 +163,7 @@
   background: #fff;
 }
 .Exclusive_offer  h5{
+  font-family: sans-serif;
   font-size: 1.7vmax;
   font-weight: 700;
   margin-top: 1vmax;
@@ -200,6 +208,7 @@ display: none;
 }
 
 .booking_head h5{
+  font-family: sans-serif;
 font-size: 1.7vmax;
   font-weight: 700;
   margin-top: 1vmax;
@@ -219,12 +228,21 @@ font-size: 1.7vmax;
 }
 
 .booking_box {
+  
   max-width: 600px;
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
 }
 
+.booking_box h5{
+  font-family: sans-serif;
+}
+
+
+.booking_box p{
+  font-family: sans-serif;
+}
 .play_store {
   width: 100px;
   height: auto;
@@ -411,6 +429,7 @@ font-size: 1.7vmax;
 
   .form-field .form_lable {
     margin-right: 0;
+    font-weight: 600;
   }
 
   .form-field .form_in,
