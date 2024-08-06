@@ -454,9 +454,14 @@
           font-weight: 600;
           padding: 0.5vmax 2vmax;
           background-color: #00b7eb;
-          border-radius: 2px;
+          border-radius: 10px;
           transition: background-color 0.3s ease; 
         }
+        .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-btm button:hover{
+             background: none;
+             border: 1px solid #00b7eb;
+             color: #00b7eb;
+              }
         
         .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-btm button.hide-seats {
           background-color: #333; 

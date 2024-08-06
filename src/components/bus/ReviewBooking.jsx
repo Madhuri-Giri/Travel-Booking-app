@@ -55,6 +55,7 @@ const ReviewBooking = () => {
 
     setNewContactData(newContactInitialData);
     setIsContactSubmitted(true);
+    toast.success("Contact details submitted successfully!"); 
   }
 
   //  ------------------------------------------------------------------
@@ -70,14 +71,15 @@ const ReviewBooking = () => {
     navigate('/passenger-list');
   };
 
-
   const fetchPaymentDetails = async () => {
     try {
-
       const loginId = localStorage.getItem('loginId')
 
+      const roundedAmount = Math.round(totalPayment * 100) / 100;
+      // console.log('Sending data to API:', { amount: totalPayment, user_id: loginId });
+      
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
-        amount: totalPayment,
+        amount: roundedAmount,
         user_id: loginId,
       });
 
@@ -88,6 +90,7 @@ const ReviewBooking = () => {
       } else {
         throw new Error(response.data.message);
       }
+
     } catch (error) {
       console.error('Error fetching payment details:', error);
       alert('Failed to initiate payment. Please try again.');
@@ -103,7 +106,7 @@ const ReviewBooking = () => {
   const handlePayment = async () => {
     const loginId = localStorage.getItem('loginId');
     if (!loginId) {
-      navigate('/login'); 
+      navigate('/enter-number'); 
       return;
     }
   
@@ -417,7 +420,77 @@ const totalPayment = totalFare + taxes + (totalFare * 0.18);
         </div>
 
 
-        <div className="new-contact">
+        <div className="p-detail">
+                 <h6>Traveller Details</h6>
+                 {passengerData.map((pass, index) => (
+                           <div key={index} className='details'>
+                              <div className="one">
+                        <span>Name</span>
+                        <small>{pass.FirstName}</small>
+                      </div>
+                     <div className="one">
+                        <span>Age</span>
+                        <small>{pass.Age}</small>
+                      </div> <div className="one">
+                        <span>Gender</span>
+                        <small>{pass.Gender}</small>
+                      </div>  
+                      <div className="one">
+                        <span>Address</span>
+                        <small>{pass.Address}</small>
+                      </div> 
+                      <div className="one">
+                        <span>Contact No</span>
+                        <small>{pass.Phoneno}</small>
+                      </div>
+
+                           </div> 
+                      ))}
+        </div>
+
+
+
+       
+
+       
+
+        <div className="price-page">
+    <h6>Price Details</h6>
+    <div className="price">
+      <div className="p-line">
+        <span>Base Fare</span>
+        <small>{totalFare.toFixed(2)}</small>
+      </div>
+      <div className="p-line">
+        <span>Taxes</span>
+        <small>{taxes}</small>
+      </div>
+      <div className="total-fare">
+        <span>Total Price</span>
+        <small>{totalFare.toFixed(2)}</small> 
+      </div>
+      <div className="p-line">
+        <span>Convenience Fee</span>
+        <small>0</small>
+      </div>
+      <div className="p-line">
+        <span>IGST (18%)</span>
+        <small>{(totalFare * 0.18).toFixed(2)}</small>
+      </div>
+      <div className="coupen">
+        <span>Offered Price</span>
+        <small>{offeredPrice}</small>
+      </div>
+      <div className="final-pay">
+        <span>Total Payment</span>
+        <small>{totalPayment.toFixed(2)}</small>
+      </div>
+    </div>
+      </div>
+
+
+
+      <div className="new-contact">
       <h6>Contact Details</h6>
       <form onSubmit={newcontactHandler}>
         <div className="c-detail">
@@ -462,70 +535,6 @@ const totalPayment = totalFare + taxes + (totalFare * 0.18);
     </div>
 
      
-
-        <div className="p-detail">
-                 <h6>Traveller Details</h6>
-                 {passengerData.map((pass, index) => (
-                           <div key={index} className='details'>
-                              <div className="one">
-                        <span>Name</span>
-                        <small>{pass.FirstName}</small>
-                      </div>
-                     <div className="one">
-                        <span>Age</span>
-                        <small>{pass.Age}</small>
-                      </div> <div className="one">
-                        <span>Gender</span>
-                        <small>{pass.Gender}</small>
-                      </div>  
-                      <div className="one">
-                        <span>Address</span>
-                        <small>{pass.Address}</small>
-                      </div> 
-                      <div className="one">
-                        <span>Contact No</span>
-                        <small>{pass.Phoneno}</small>
-                      </div>
-
-                           </div> 
-                      ))}
-        </div>
-
-
-        <div className="price-page">
-    <h6>Price Details</h6>
-    <div className="price">
-      <div className="p-line">
-        <span>Base Fare</span>
-        <small>{totalFare.toFixed(2)}</small>
-      </div>
-      <div className="p-line">
-        <span>Taxes</span>
-        <small>{taxes}</small>
-      </div>
-      <div className="total-fare">
-        <span>Total Price</span>
-        <small>{totalFare.toFixed(2)}</small> 
-      </div>
-      <div className="p-line">
-        <span>Convenience Fee</span>
-        <small>0</small>
-      </div>
-      <div className="p-line">
-        <span>IGST (18%)</span>
-        <small>{(totalFare * 0.18).toFixed(2)}</small>
-      </div>
-      <div className="coupen">
-        <span>Offered Price</span>
-        <small>{offeredPrice}</small>
-      </div>
-      <div className="final-pay">
-        <span>Total Payment</span>
-        <small>{totalPayment.toFixed(2)}</small>
-      </div>
-    </div>
-      </div>
-
 
 
 

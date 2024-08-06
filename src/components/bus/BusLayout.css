@@ -70,7 +70,6 @@
   border: 1px solid #9999;
   flex-wrap: wrap;
   gap: 0.5vmax;
-  /* Reduced gap */
 }
 
 .BusLayout .Seat-layout .seats .left-btm .lower .sit p {
@@ -156,7 +155,6 @@
 
 .sit-img.last-row {
   flex: 1 1 16%;
-  /* Adjust the width to fit 5 seats in a row */
 }
 
 /* ------------------------ */
@@ -192,7 +190,6 @@
   margin-top: 1vmax;
   margin-bottom: 1vmax;
   border: 1px solid #d4d4d482;
-
 }
 
 .BusLayout .Seat-layout .seats .right .two-last p {
@@ -241,13 +238,10 @@
   padding: 0.7vmax 1vmax;
   color: #ffff;
   font-weight: 600;
-  transition: 0.5s;
   background-color: #00b7eb;
 }
 
-.BusLayout .Seat-layout .seats .right .right-btm .proceed button:hover {
-  background-color: #48c1fecc;
-}
+
 
 @media (max-width:600px) {
   .BusLayout .Seat-layout .seats {

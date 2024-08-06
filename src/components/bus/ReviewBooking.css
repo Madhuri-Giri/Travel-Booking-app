@@ -328,6 +328,12 @@
      border-radius: 10px;
 
  }
+ .ReviewBooking .review-book .new-contact form .c-detail  .p-cont button:hover{
+       background: none;
+       border:1px solid  #00b7eb;
+       color: #00b7eb;
+   }
+   
  
 
 
@@ -371,6 +377,11 @@
        background-color: #00b7eb;
 border-radius: 10px;
        justify-content: flex-end;
+ }
+ .ReviewBooking .review-book .last-pay .review-pay button:hover{
+       background: none;
+       border:1px solid  #00b7eb;
+       color: #00b7eb;
  }
 
 

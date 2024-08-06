@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const PassengerList = () => {
   const navigate = useNavigate();
-
   const initialPassengerData = JSON.parse(localStorage.getItem('passengerData')) || [];
   const [passengerData, setPassengerData] = useState(initialPassengerData);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -142,9 +141,7 @@ const PassengerList = () => {
               </div>
             </div>
           ))}
-          <div className="ad-new-passenger">
-            <button className='ad-new'><i className="ri-user-add-fill"></i>Add new passenger</button>
-          </div>
+       
           <div className="pas-btn">
             <button 
               onClick={reviewHandler} 

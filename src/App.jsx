@@ -82,8 +82,6 @@ const App = () => {
           <Route path='seat-meal-baggage'  element={<SeatMealBaggageTabs/>}/>
           {/* <Route path="/seat-meal-baggage" element={<SeatMealBaggageTabs />} /> */}
 
-
-
         </Routes>
         {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />}  
         <ToastContainer
