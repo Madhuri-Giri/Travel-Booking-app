@@ -114,12 +114,12 @@ const Setting = () => {
             </div>
           </div>
 
-          <h5>Payment History</h5>
+          {/* <h5>Payment History</h5>
             <div className="pay-history">
             <p><Link style={{textDecoration:'none', color:'#000'}} to='/flight-pay-history'>Flight Payment History</Link></p>
                  <p><Link style={{textDecoration:'none', color:'#000'}} to='/bus-pay-history'>Bus Payment History</Link>  </p>
                   <p><Link style={{textDecoration:'none', color:'#000'}} to='/hotel-pay-history'>Hotel Payment History</Link>  </p>
-            </div>
+            </div> */}
 
         </div>
       </div>

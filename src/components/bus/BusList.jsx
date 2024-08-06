@@ -11,7 +11,6 @@ const BusLists = () => {
   const dateMidRef = useRef(null);
   const [layoutResponse, setLayoutResponse] = useState(null);
   const { from, to, selectedBusDate, searchResults, status, error } = useSelector((state) => state.bus);
-  // const priceAfterIGST = basePrice * (1 - igstRate / 100);
 
 
   const [visibleLayout, setVisibleLayout] = useState({});
@@ -20,7 +19,6 @@ const BusLists = () => {
   
 
   useEffect(() => {
-    // Dispatch the searchBuses action when component mounts
     if (!searchResults.length) {
       dispatch(searchBuses({ from: 'Bhopal', to: 'Indore', departDate: '2024-07-26' })); 
     }
@@ -40,20 +38,19 @@ const BusLists = () => {
     return dates;
   };
   
-  // Example usage
-  const numDays = 30; // Number of future days including today
+  const numDays = 30; 
   const dates = generateDates(numDays);
   
   const scrollLeft = () => {
     dateMidRef.current.scrollBy({
-      left: -150,  // Adjust the value as per your requirement
+      left: -150,  
       behavior: 'smooth',
     });
   };
   
   const scrollRight = () => {
     dateMidRef.current.scrollBy({
-      left: 150,  // Adjust the value as per your requirement
+      left: 150,  
       behavior: 'smooth',
     });
   };
@@ -120,47 +117,10 @@ const BusLists = () => {
   };
   
 
-  // const addSeatLayout = async () => {
-  //   try {
-  //     const traceId = localStorage.getItem('traceId');
-  //     const resultIndex = localStorage.getItem('resultIndex');
-  
-  //     if (!traceId || !resultIndex) {
-  //       throw new Error('TraceId or ResultIndex not found in localStorage');
-  //     }
-  
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/AddseatLayout', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         ResultIndex: resultIndex,
-  //         TraceId: traceId,
-  //       }),
-  //     });
-  
-  //     if (!response.ok) {
-  //       throw new Error('Failed to add seat layout');
-  //     }
-  
-  //     const data = await response.json(); 
-  
-  //     setLayoutResponse(data);
-      
-  
-  //   } catch (error) {
-  //     console.error('Error adding seat layout:', error.message);
-  //   }
-  // };
-  
-
-
-
+ 
   return (
     <div className='BusLists'>
       <div className="busList">
-        {/* Top section */}
         <div className="B-lists-Top">
           <div className="text">
             <h5>
@@ -185,7 +145,6 @@ const BusLists = () => {
 
         {/* Bottom section */}
         <div className="B-lists-Btm">
-          {/* Sidebar */}
           <div className="bus-sidebar">
             <div className="busSide">
               <h5>Filters</h5>
