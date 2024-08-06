@@ -20,6 +20,7 @@ export default function FlightDetails() {
     const formData = location.state?.formData;
 
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
+    console.log("fareDataDetails", fareDataDetails);
 
     // function for date convert into day month date--------------------------------------
     const convertformatDate = (dateString) => {
@@ -60,12 +61,13 @@ export default function FlightDetails() {
 
 
     const segment = fareDataDetails.Segments[0][0];
+    console.log("segment", segment);
+
     const origin = segment.Origin;
     const destination = segment.Destination;
     const airline = segment.Airline;
     const depTime = new Date(segment.DepTime);
     const arrTime = new Date(segment.ArrTime);
-
     const fare = fareDataDetails.Fare; // Get the fare data
     const baseFare = fare.BaseFare;
     const tax = fare.Tax;
@@ -219,7 +221,12 @@ export default function FlightDetails() {
     }
 
     const reviewHandler = () => {
-        navigate('/flight-review')
+        // Ensure fareDataDetails is defined before navigating
+        if (fareDataDetails) {
+            navigate('/flight-review', { state: { fareDataDetails } });
+        } else {
+            console.error('fareDataDetails is undefined');
+        }
     }
 
     // ----------------------------------------------seat and meal api------------------------------------
@@ -626,7 +633,7 @@ export default function FlightDetails() {
     // but seat meal is not selected only traveller form selected then goto review page-------------------------------
     const handleButtonClick = () => {
         if (showTabs) {
-            navigate('/seat-meal-baggage', { state: { seatData, ssrData ,formData} });
+            navigate('/seat-meal-baggage', { state: { seatData, ssrData, formData } });
         } else {
             reviewHandler();
         }
@@ -761,7 +768,7 @@ export default function FlightDetails() {
                                             </div>
 
                                             <div className="col-12 lastBtnssContinue">
-                                                <h5>Fare Breakup <span>₹13465</span></h5>
+                                                <h5>Fare Breakup <span>₹{totalFare.toFixed(2)}</span></h5>
                                                 <button
                                                     onClick={handleButtonClick}
                                                     disabled={isContinueDisabled}

@@ -396,7 +396,7 @@ const handleChange = (date) => {
                           <div className="col-sm-6 mt-2">
                             <div className="form-group">
                               <label htmlFor="PreferredDepartureTime">Departure Date</label>
-                              <div className="date-picker-wrapper form-control">
+                              <div className="date-picker-wrapper flightDateDiv form-control">
                                 <DatePicker
                                   name="PreferredDepartureTime"
                                   selected={preferredDepartureTime}
@@ -569,7 +569,7 @@ const handleChange = (date) => {
                           <div className="col-sm-6 mt-2">
                             <div className="form-group">
                               <label htmlFor="PreferredDepartureTime">Departure Date</label>
-                              <div className="date-picker-wrapper form-control">
+                              <div className="date-picker-wrapper flightDateDiv form-control">
                                 <DatePicker
                                   name="PreferredDepartureTime"
                                   selected={preferredDepartureTime}
@@ -586,7 +586,7 @@ const handleChange = (date) => {
                             <div className="form-group">
                               <div className="form-group">
                                 <label htmlFor="PreferredArrivalTime">Return Date</label>
-                                <div className="date-picker-wrapper form-control">
+                                <div className="date-picker-wrapper flightDateDiv form-control">
                                   <DatePicker
                                     name="PreferredArrivalTime"
                                     selected={preferredArrivalTime}

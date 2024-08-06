@@ -36,10 +36,9 @@ import EnterNumber from './pages/NewOne/MobileNumber/EnterNumber';
 import SignUp from './pages/NewOne/signup/SignUp';
 
 import HotelBillReceipt from './components/hotelBill/HotelBillReceipt';
-
-
 import FlightReview from './components/flight/FlightReview';
 import SeatMealBaggageTabs from './components/flight/SeatMealBaggageTabs';
+import Profile from './pages/Profile/Profile';
 
 
 const App = () => {
@@ -62,6 +61,7 @@ const App = () => {
           <Route path='/signup' element={<SignUp />} />
           <Route path='/faq' element={<Faq />} />
           <Route path='/setting' element={<Setting />} />
+          <Route path='profile' element={<Profile/>} />
           <Route path='/login' element={<LogIn />} />
           <Route path='/login-otp' element={<LoginOtp />} />
           <Route path='/enter-number' element={<EnterNumber />} />
@@ -81,6 +81,8 @@ const App = () => {
           <Route path='/flight-review' element={<FlightReview />} />
           <Route path='seat-meal-baggage'  element={<SeatMealBaggageTabs/>}/>
           {/* <Route path="/seat-meal-baggage" element={<SeatMealBaggageTabs />} /> */}
+
+
 
         </Routes>
         {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />}  

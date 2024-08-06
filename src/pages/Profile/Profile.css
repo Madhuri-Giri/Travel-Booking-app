@@ -1,0 +1,154 @@
+ /* .profile-sec-1{
+    background-image: url(https://t3.ftcdn.net/jpg/07/17/00/20/360_F_717002095_HWUuo7NkadFXFdmfETpU4hJu2YtoJU7K.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 300px;
+}
+    
+.profile-sec-1 img{
+    margin-top: 221px;
+    border-radius: 267px;
+    height: 205px;
+    width: 205px;
+}
+.nm{
+    margin-left: 350px;
+    margin-top: 20px;
+}
+.b{
+    margin-left: -400px;
+}
+.bbb{
+    margin-left: 350px;
+}
+.bb{
+    margin-left: 10px;
+} 
+ */
+ .cancel-savebtnnss{
+  display: flex;
+ }
+ .cancel-savebtnnss button{
+  margin: 0px 50px;
+ }
+ .profileSectionbg{
+  background-color: #dddddd;
+ }
+ .profile {
+    margin-top: 40px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 27px 30px;
+  }
+  
+  .profile img {
+    margin-top: 10px;
+    border-radius: 50%;
+    height: 180px;
+    width: 180px;
+  }
+  .profile-header h2{
+    text-align: left;
+  }
+  .profile-details {
+    margin-top: 40px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 50px;
+  }
+  
+  .profile-sidebar {
+    border-right: 1px solid #ddd;
+  }
+  
+  .profile-details {
+    border-left: 1px solid #ddd;
+  }
+  
+  .sidebar-options {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .sidebar-option {
+    margin-bottom: 10px;
+    cursor: pointer;
+    color: #333;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  .edit-button{
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin-left: 350px;
+  }
+  .change-password-link {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin-left: 150px;
+  }
+  
+  .details {
+    margin-bottom: 20px;
+  }
+  
+  .detail {
+    margin-bottom: 10px;
+  }
+  
+  .detail-label {
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  
+  .modal-dialog {
+    max-width: 400px;
+  }
+  
+  .modal-content {
+    padding: 20px;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .modal-title {
+    margin-bottom: 20px;
+  }
+
+  .error {
+    color: red;
+    font-size: 0.875em;
+    margin-top: 0.25em; 
+  }
+  
+
+  @media(max-width:786px){
+    .change-password-link {
+      margin-left: auto;
+      margin: 20px 0 0 130px;
+    }
+    .edit-button{
+      margin-left: 230px;
+    }
+  }

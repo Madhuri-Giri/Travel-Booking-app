@@ -1,11 +1,71 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./FlightReview.css"
+import { MdOutlineAirplanemodeActive } from "react-icons/md";
+import { FaEquals } from "react-icons/fa6";
+import { MdOutlineFlightTakeoff } from "react-icons/md";
+import { IoTimeOutline } from "react-icons/io5";
+import { PiTrolleySuitcaseFill } from "react-icons/pi";
+import { json, useLocation, useNavigate } from 'react-router-dom';
+
 
 const FlightReview = () => {
+  const navigate = useNavigate();
 
+  const location = useLocation();
+  const { fareDataDetails } = location.state || {}; // Use optional chaining
+
+  if (!fareDataDetails) {
+    console.error('fareDataDetails is undefined in FlightReview component');
+  }
+
+  useEffect(() => {
+    if (!fareDataDetails) {
+      console.error('fareDataDetails is undefined');
+    }
+  }, [fareDataDetails]);
+
+
+  const segment = fareDataDetails.Segments[0][0];
+  console.log("segment", segment);
+
+  const origin = segment.Origin;
+  const destination = segment.Destination;
+  const airline = segment.Airline;
+  const depTime = new Date(segment.DepTime);
+  const arrTime = new Date(segment.ArrTime);
+  const fare = fareDataDetails.Fare; // Get the fare data
+  const baseFaree = fare.BaseFare;
+  const taxx = fare.Tax;
+  const totalFare = baseFaree + taxx;
+
+  const formatTime = (date) => {
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+    return `${hours}:${minutesStr} ${ampm}`;
+  };
+
+  const formatDate = (date) => {
+    const options = { weekday: 'short', month: 'short', day: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
+  };
+
+  // func for duration convert hpur minute---------------------
+  const convertMinutesToHoursAndMinutes = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}h ${remainingMinutes}m`;
+  };
+  // func for duration convert hpur minute---------------------
+
+
+  console.log("fareDataDetails", fareDataDetails);
 
   //-----------------------------Payment apis--------------------------------------------------------------------------------------
   const [flightpayDetails, setFlightpayDetails] = useState(null);
@@ -35,11 +95,10 @@ const FlightReview = () => {
     }
   };
 
-
   const flightpayHandler = async () => {
     const loginId = localStorage.getItem('loginId');
     if (!loginId) {
-      navigate('/login'); 
+      navigate('/login');
       return;
     }
 
@@ -292,26 +351,26 @@ const FlightReview = () => {
                   <div className="flightPayDivhed">
                     <div className="flightPayDivhed1">
                       <p>Air Fare</p>
-                      <p>₹4,233.8</p>
+                      <p>₹{baseFaree.toFixed(2)}</p>
                     </div>
                     <div className="flightPayDivhed2">
-                      <p>Air Fare</p>
+                      <p>Add Ons</p>
                       <p>₹0</p>
                     </div>
                     <div className="flightPayDivhed3">
                       <h5>Grand Total</h5>
-                      <p>₹4,233.8</p>
+                      <p>₹{totalFare.toFixed(2)}</p>
                     </div>
                   </div>
                   <div className="flightPayDivMain">
-                    <p> Onward Thu,13 Jun </p>
-                    <p> Indore  Guwahati </p>
-                    <p> 09:20 Pm  07:15 Am </p>
-                    <p> Air India Ai-635 </p>
-                    <p> Economy Classes . Flex </p>
-                    <p> 27h 10m .1 Stop At Delhi </p>
-                    <p> Cabin Baggage 15Kg (1 Piece) </p>
-                    <p> Check-In Baggage 7Kg As Per Airline Policy </p>
+                    <p className="flightPayDivMainP1"> Onward {formatDate(depTime)} </p>
+                    <p className="flightPayDivMainP2">{origin.CityName} <MdOutlineAirplanemodeActive />  {destination.CityName} </p> 
+                    <p className="flightPayDivMainP3"> {formatTime(depTime)}  <FaEquals /> {formatTime(arrTime)}</p>
+                    <p className="flightPayDivMainP5"> {segment.CabinClassName} Classes . Flex </p>
+                    <p className="flightPayDivMainP4"> <MdOutlineFlightTakeoff /> {airline.AirlineName} {airline.AirlineCode}-{airline.FlightNumber}</p>
+                    <p className="flightPayDivMainP6"> <IoTimeOutline />  {convertMinutesToHoursAndMinutes(segment.Duration)} .1 Stop At Delhi </p>
+                    <p className="flightPayDivMainP7"> <PiTrolleySuitcaseFill /> Cabin Baggage {segment.CabinBaggage} (1 Piece) </p>
+                    <p className="flightPayDivMainP8"> <PiTrolleySuitcaseFill /> Check-In Baggage 7Kg As Per Airline Policy </p>
                   </div>
                 </div>
                 <div className="flightPaybtn">
