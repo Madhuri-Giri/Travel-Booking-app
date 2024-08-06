@@ -95,7 +95,7 @@
 .Rating_hotel {
     display: flex;
     align-items: center;
-    gap: 4px;
+    /* gap: 3px; */
     font-size: 12px;
     /* color: #ffc107; */
 }
