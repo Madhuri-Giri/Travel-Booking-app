@@ -39,9 +39,6 @@ import HotelBillReceipt from './components/hotelBill/HotelBillReceipt';
 
 
 import FlightReview from './components/flight/FlightReview';
-import FlightPayHistory from './pages/History/FlightPayHistory';
-import BusPayHistory from './pages/History/BusPayHistory';
-import HotelPayHistory from './pages/History/HotelPayHistory';
 import SeatMealBaggageTabs from './components/flight/SeatMealBaggageTabs';
 
 
@@ -82,10 +79,6 @@ const App = () => {
           <Route path='/hotel-bill' element={<HotelBillReceipt />} />
           <Route path='/flight-Farequote' element={<FareQuote />} />
           <Route path='/flight-review' element={<FlightReview />} />
-
-          <Route path='/flight-pay-history' element={<FlightPayHistory />} />
-          <Route path='/bus-pay-history' element={<BusPayHistory />} />
-          <Route path='/hotel-pay-history' element={<HotelPayHistory />} />
           <Route path='seat-meal-baggage'  element={<SeatMealBaggageTabs/>}/>
           {/* <Route path="/seat-meal-baggage" element={<SeatMealBaggageTabs />} /> */}
 
