@@ -34,7 +34,6 @@ import BusTikit from './components/bus/DownloadTikit/BusTikit';
 import FareQuote from './components/flight/FareQuote';
 import EnterNumber from './pages/NewOne/MobileNumber/EnterNumber';
 import SignUp from './pages/NewOne/signup/SignUp';
-
 import HotelBillReceipt from './components/hotelBill/HotelBillReceipt';
 import FlightReview from './components/flight/FlightReview';
 import SeatMealBaggageTabs from './components/flight/SeatMealBaggageTabs';
