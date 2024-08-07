@@ -34,6 +34,7 @@ const HotelRoom = () => {
   useEffect(() => {
     const singleDeluxeRooms = JSON.parse(localStorage.getItem('selectedSingleDeluxeRooms')) || [];
     const doubleDeluxeRooms = JSON.parse(localStorage.getItem('selectedDoubleDeluxeRooms')) || [];
+
     if (Array.isArray(singleDeluxeRooms) && Array.isArray(doubleDeluxeRooms)) {
       setSelectedSingleDeluxeRooms(singleDeluxeRooms);
       setSelectedDoubleDeluxeRooms(doubleDeluxeRooms);
@@ -125,6 +126,8 @@ const HotelRoom = () => {
     checkInDate: '2024-08-01',  // Example static date, replace with actual date
     checkOutDate: '2024-08-07'  // Example static date, replace with actual date
   };
+
+  
   const roomblockHandler = async (event) => {
     event.preventDefault();
 

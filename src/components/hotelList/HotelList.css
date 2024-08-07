@@ -37,33 +37,62 @@
 .form_in_filter_f {
   width: 80%; 
   padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #fff;
+  /* border-radius: 5px;
+  border: 1px solid #fff; */
 }
 .form_in_filter {
   width: 100%; 
   padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #fff;
+  /* border-radius: 5px;
+  border: 1px solid #fff; */
 }
 
 .form-field_filter input[type="text"] {
   width: 100%;
 }
 
-.form_in_filter.react-datepicker-wrapper {
-  width: 100%; 
+.date_picker {
+  width: 100%;
 }
 
-.form_in_filter.react-datepicker__input-container {
-  width: 100%; 
-}
-
-.form_in_filter.react-datepicker__input-container input {
+.date_picker input {
   width: 100%; 
   padding: 10px;
 
 }
+.dropdown {
+  position: relative;
+}
+
+.sortDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  display: block;
+}
+
+.dropdown-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none; 
+}
+
+.sortDropdown li {
+  padding: 8px 16px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.sortDropdown li:hover {
+  background-color: #ddd;
+}
+
 
 .listContainer {
   display: flex;
@@ -150,6 +179,15 @@
   font-weight: 500;
   cursor: pointer;
   font-family: sans-serif;
+}
+.listFilterOption{
+  margin-bottom: 8px;
+}
+.radioButton {
+  margin-right: 8px; 
+}
+.listFilterOption label {
+  font-weight: 600; 
 }
 
 
@@ -304,6 +342,49 @@
   border: none;
   cursor: pointer;
   border-radius: 5px;
+}
+/* Pagination Container */
+.paginationContainer {
+  display: flex;
+  justify-content: end;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+/* Pagination List */
+.paginationContainer .pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Pagination Items */
+.paginationContainer .pagination li {
+  margin: 0 5px;
+}
+
+/* Pagination Links */
+.paginationContainer .pagination li a {
+  display: block;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  text-decoration: none;
+  color: #00b7eb;
+}
+
+/* Active Page */
+.paginationContainer .pagination li.active a {
+  background-color: #00b7eb;
+  color: white;
+  border-color: #00b7eb;
+}
+
+/* Hover Effect */
+.paginationContainer .pagination li a:hover {
+  background-color: #ddd;
 }
 
 /* Responsive CSS */

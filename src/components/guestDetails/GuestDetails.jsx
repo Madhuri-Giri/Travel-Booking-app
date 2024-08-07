@@ -21,6 +21,46 @@ const GuestDetails = () => {
   const [showForm, setShowForm] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPriceWithGST, setTotalPriceWithGST] = useState(0);
+  const gstRate = 18; // GST rate in percentage
+  
+  // Function to calculate total price with GST
+  // const calculateTotalWithGST = (amount, gstRate) => {
+  //   return amount + (amount * gstRate / 100);
+  // };
+
+  useEffect(() => {
+    // Retrieve and parse the selectedRoomsData from localStorage
+    const selectedRoomsData = localStorage.getItem('selectedRoomsData');
+    
+    if (selectedRoomsData) {
+      try {
+        const parsedData = JSON.parse(selectedRoomsData);
+        
+        // Extract the total prices
+        const totalPriceDoubleDeluxe = parseFloat(parsedData.totalPriceDoubleDeluxe) || 0;
+        const totalPriceSingleDeluxe = parseFloat(parsedData.totalPriceSingleDeluxe) || 0;
+        
+        // Calculate the total price
+        const total = totalPriceDoubleDeluxe + totalPriceSingleDeluxe;
+        setTotalPrice(total);
+        
+        // Calculate total price with GST
+        const totalWithGST = calculateTotalWithGST(total, gstRate);
+        setTotalPriceWithGST(totalWithGST);
+        
+        // Optionally store total price with GST in localStorage
+        localStorage.setItem('totalPriceWithGST', totalWithGST.toFixed(2));
+      } catch (error) {
+        console.error('Error parsing selectedRoomsData:', error);
+      }
+    } else {
+      console.log('No selectedRoomsData found in localStorage');
+    }
+  }, []);
+
+
   useEffect(() => {
     const hotelBlockData = localStorage.getItem('hotelBlock');
 
@@ -63,6 +103,7 @@ const GuestDetails = () => {
 
   const handleCheckboxChange = () => {
     setCheckboxChecked(!checkboxChecked);
+    
   };
 // ----------------Payment Integration start -------------------
 
@@ -70,10 +111,10 @@ const GuestDetails = () => {
     try {
 
       const loginId = localStorage.getItem('loginId')
-
+      const roundedAmount = Math.round(totalPriceWithGST * 100) / 100;
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-payment', {
-        // static 
-        amount: 100,  
+        
+        amount: roundedAmount, 
         user_id: loginId,
       });
 
@@ -92,6 +133,12 @@ const GuestDetails = () => {
   };
 
   const handlePayment = async (e) => {
+    //  const loginId = localStorage.getItem('loginId');
+    // if (!loginId) {
+    //   navigate('/login'); 
+    //   return;
+    // }
+  
     e.preventDefault();
     try {
       const paymentData = await fetchPaymentDetails();
@@ -359,8 +406,10 @@ const bookHandler = async () => {
 
       localStorage.setItem('HotelBookingDetails', JSON.stringify(responseBody));
 
+// Retrieve guest details from localStorage
+ const guestDetails = JSON.parse(localStorage.getItem('guestDetails'));
       setTimeout(() => {
-navigate('/booking-details', { state: { bookingDetails: responseBody.hotelBooking } });
+navigate('/hotel-bill', { state: { bookingDetails: responseBody.hotelBooking} });
 
       }, 2000);
     }
@@ -371,34 +420,24 @@ navigate('/booking-details', { state: { bookingDetails: responseBody.hotelBookin
 };
 const { AddressLine1, HotelName, HotelRoomsDetails, HotelPolicyDetail, HotelNorms } = hotelBlock;
 const { singleDeluxe, doubleDeluxe, totalPriceSingleDeluxe, totalPriceDoubleDeluxe, checkInDate, checkOutDate } = selectedRoomsData;
+
 // -------------------------------End Book API--------------------------------------------
+const calculateTotalWithGST = (amount, gstRate) => {
+  return amount + (amount * gstRate / 100);
+};
 const cleanHotelPolicyDetails = (policyDetails) => {
-  // Remove HTML tags
   let cleanedDetails = policyDetails.replace(/<\/?[^>]+(>|$)/g, '');
-
-  // Remove unwanted characters and extra spaces
   cleanedDetails = cleanedDetails.replace(/["\s]+/g, ' ').trim();
-  
-  // Remove specific unwanted patterns like // /// |
   cleanedDetails = cleanedDetails.replace(/\/\/\s*\/\s*\/\s*\|\s*/g, '');
-
-  // Handle specific cases, e.g., "india - land of mystries"
   cleanedDetails = cleanedDetails.replace(/india\s-\sland\s+of\s+mystries/g, 'India - Land of Mysteries');
 
   return cleanedDetails;
 };
 
 const cleanHotelNorms = (hotelNorms) => {
-  // Remove HTML tags
   let cleanedNorms = hotelNorms.replace(/<\/?[^>]+(>|$)/g, '');
-
-  // Remove unwanted characters and extra spaces
   cleanedNorms = cleanedNorms.replace(/["\s]+/g, ' ').trim();
-  
-  // Remove specific unwanted patterns like // /// |
   cleanedNorms = cleanedNorms.replace(/\/\/\s*\/\s*\/\s*\|\s*/g, '');
-
-  // Handle specific cases, e.g., "india - land of mystries"
   cleanedNorms = cleanedNorms.replace(/india\s-\sland\s+of\s+mystries/g, 'India - Land of Mysteries');
 
   return cleanedNorms;
@@ -459,6 +498,8 @@ return (
                   <p>Room Type: {room.RoomTypeName}</p>
                   <p>Room Quantity: {room.guestCounts.room}</p>
                   <p>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</p>
+                  <p><strong>Total Price:</strong> {totalPriceWithGST.toFixed(2)}</p>
+                  <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p>
                 </div>
               ))}
               {/* <h4>Selected Double Deluxe Rooms</h4> */}
@@ -467,8 +508,13 @@ return (
                   <p>Room Type: {room.RoomTypeName}</p>
                   <p>Quantity: {room.guestCounts.room}</p>
                   <p>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</p>
+                  <div className="payment-summary">
+        <p><strong>Total Price:</strong> {totalPriceWithGST.toFixed(2)}</p>
+        <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p>
+      </div>
                 </div>
               ))}
+              
             </div>
 
             {!showForm && (
@@ -557,6 +603,7 @@ return (
       ) : (
         <p className="submit-btn">No room details available.</p>
       )}
+     
       </div>
 );
 };
