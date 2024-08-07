@@ -15,7 +15,7 @@ const GuestDetails = () => {
     mname: "",
     lname: "",
     email: "",
-    mobile: "",
+    // mobile: "",
   });
   const navigate = useNavigate(); 
   const [showForm, setShowForm] = useState(false);
@@ -26,9 +26,9 @@ const GuestDetails = () => {
   const gstRate = 18; // GST rate in percentage
   
   // Function to calculate total price with GST
-  // const calculateTotalWithGST = (amount, gstRate) => {
-  //   return amount + (amount * gstRate / 100);
-  // };
+  const calculateTotalWithGST = (amount, gstRate) => {
+    return amount + (amount * gstRate / 100);
+  };
 
   useEffect(() => {
     // Retrieve and parse the selectedRoomsData from localStorage
@@ -99,6 +99,8 @@ const GuestDetails = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setFormSubmitted(true);
+     // Save form data to localStorage
+     localStorage.setItem('guestDetails', JSON.stringify(formData));
   };
 
   const handleCheckboxChange = () => {
@@ -110,12 +112,15 @@ const GuestDetails = () => {
   const fetchPaymentDetails = async () => {
     try {
 
-      const loginId = localStorage.getItem('loginId')
+      // const loginId = localStorage.getItem('loginId')
+
       const roundedAmount = Math.round(totalPriceWithGST * 100) / 100;
+      
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-payment', {
         
         amount: roundedAmount, 
-        user_id: loginId,
+        // user_id: loginId,
+        user_id: "1"
       });
 
       if (response.data.status === 'success') {
@@ -405,7 +410,6 @@ const bookHandler = async () => {
       toast.success('Hotel Booking successful!');
 
       localStorage.setItem('HotelBookingDetails', JSON.stringify(responseBody));
-
 // Retrieve guest details from localStorage
  const guestDetails = JSON.parse(localStorage.getItem('guestDetails'));
       setTimeout(() => {
@@ -422,9 +426,7 @@ const { AddressLine1, HotelName, HotelRoomsDetails, HotelPolicyDetail, HotelNorm
 const { singleDeluxe, doubleDeluxe, totalPriceSingleDeluxe, totalPriceDoubleDeluxe, checkInDate, checkOutDate } = selectedRoomsData;
 
 // -------------------------------End Book API--------------------------------------------
-const calculateTotalWithGST = (amount, gstRate) => {
-  return amount + (amount * gstRate / 100);
-};
+
 const cleanHotelPolicyDetails = (policyDetails) => {
   let cleanedDetails = policyDetails.replace(/<\/?[^>]+(>|$)/g, '');
   cleanedDetails = cleanedDetails.replace(/["\s]+/g, ' ').trim();
@@ -584,7 +586,7 @@ return (
                   <p><strong>Middle Name:</strong> {formData.mname}</p>
                   <p><strong>Last Name:</strong> {formData.lname}</p>
                   <p><strong>Email:</strong> {formData.email}</p>
-                  <p><strong>Mobile:</strong> {formData.mobile}</p>
+                  {/* <p><strong>Mobile:</strong> {formData.mobile}</p> */}
                   <label>
                     <input
                       type="checkbox"
