@@ -13,7 +13,7 @@ const EnterNumber = () => {
     e.preventDefault();
 
     // Validate mobile number
-    const mobilePattern = /^[0-9]{10}$/; // Adjust the pattern as needed for your use case
+    const mobilePattern = /^[0-9]{10}$/; 
     if (!mobilePattern.test(mobile)) {
       setError('Please enter a valid mobile number (10 digits).');
       return;
@@ -38,7 +38,6 @@ const EnterNumber = () => {
       const data = await response.json();
       console.log(data);
 
-      // Save response data to local storage
       localStorage.setItem('otpResponse', JSON.stringify(data));
 
       if (data.user_registered) {
@@ -55,7 +54,7 @@ const EnterNumber = () => {
 
   const inputHandler = (e) => {
     setMobile(e.target.value); 
-    setError(''); // Clear error message on input change
+    setError(''); 
   };
 
   return (

@@ -9,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const ReviewBooking = () => {
 
- 
 
   const [paymentDetails, setPaymentDetails] = useState(null);
   // const [email, setEmail] = useState('');
@@ -77,7 +76,7 @@ const ReviewBooking = () => {
 
       const roundedAmount = Math.round(totalPayment * 100) / 100;
       // console.log('Sending data to API:', { amount: totalPayment, user_id: loginId });
-      
+
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
         amount: roundedAmount,
         user_id: loginId,

@@ -36,7 +36,7 @@ const FlightReview = () => {
   const airline = segment.Airline;
   const depTime = new Date(segment.DepTime);
   const arrTime = new Date(segment.ArrTime);
-  const fare = fareDataDetails.Fare; // Get the fare data
+  const fare = fareDataDetails.Fare; 
   const baseFaree = fare.BaseFare;
   const taxx = fare.Tax;
   const totalFare = baseFaree + taxx;
@@ -57,11 +57,13 @@ const FlightReview = () => {
   };
 
   // func for duration convert hpur minute---------------------
+
   const convertMinutesToHoursAndMinutes = (minutes) => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
     return `${hours}h ${remainingMinutes}m`;
   };
+
   // func for duration convert hpur minute---------------------
 
 
@@ -70,7 +72,7 @@ const FlightReview = () => {
   //-----------------------------Payment apis--------------------------------------------------------------------------------------
   const [flightpayDetails, setFlightpayDetails] = useState(null);
 
-  const flightPayCreate = async () => {
+  const flightPayCreate = async (  ) => {
     try {
 
       const loginId = localStorage.getItem('loginId')
