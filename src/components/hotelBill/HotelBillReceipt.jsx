@@ -1,23 +1,36 @@
-// BookingBill.js
 import React from 'react';
-import { GeneratePdf } from './GeneratePdf';
+import { useLocation } from 'react-router-dom';
 
-const HotelBillReceipt = ({ hotelName, roomQuantity, price, roomType, checkInDate, checkOutDate }) => {
+
+const BookingBill = () => {
+  const location = useLocation();
+  const { bookingDetails, guestDetails } = location.state || {};
+
+  if (!bookingDetails || !guestDetails) {
+    return <p>Loading...</p>;
+  }
+
   return (
-    <div>
-      <h1>Booking Bill</h1>
-      <p>Hotel Name: {hotelName}</p>
-      <p>Room Quantity: {roomQuantity}</p>
-      <p>Price: {price}</p>
-      <p>Room Type: {roomType}</p>
-      <p>Check-In Date: {checkInDate}</p>
-      <p>Check-Out Date: {checkOutDate}</p>
-      
-      <button onClick={() => GeneratePdf(hotelName, roomQuantity, price, roomType, checkInDate, checkOutDate)}>
-        Download as PDF
-      </button>
+    <div className="booking-bill-container">
+      <h2>Booking Receipt</h2>
+      <h3>Guest Details</h3>
+      <p><strong>First Name:</strong> {guestDetails.fname}</p>
+      <p><strong>Middle Name:</strong> {guestDetails.mname}</p>
+      <p><strong>Last Name:</strong> {guestDetails.lname}</p>
+      <p><strong>Email:</strong> {guestDetails.email}</p>
+      <p><strong>Mobile:</strong> {guestDetails.mobile}</p>
+
+      <h3>Booking Details</h3>
+      <p><strong>Hotel Name:</strong> {bookingDetails.HotelName}</p>
+      <p><strong>Check-in Date:</strong> {bookingDetails.CheckInDate}</p>
+      <p><strong>Check-out Date:</strong> {bookingDetails.CheckOutDate}</p>
+      {/* Add more booking details as needed */}
+
+      <h3>Price Summary</h3>
+      <p><strong>Total Price:</strong> {bookingDetails.TotalPrice}</p>
+      <p><strong>Total Price with GST:</strong> {bookingDetails.TotalPriceWithGST}</p>
     </div>
   );
 };
 
-export default HotelBillReceipt;
+export default BookingBill;

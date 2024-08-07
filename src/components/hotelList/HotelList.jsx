@@ -5,16 +5,17 @@ import { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar,  faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import useGeolocation from "./UseGeolocation";
 import haversineDistance from "./HaversineDistance";
+import ReactPaginate from 'react-paginate';
 
+// Rating star Logic
 const renderStar = (rating) => {
   const totalStars = 5;
   let stars = [];
   for (let i = 1; i <= totalStars; i++) {
     // const color = i <= rating ? "#FFD700": "#d3d3d3"; 
-    
     const color = i <= rating ? "#ffe234" : "#d3d3d3";
     stars.push(
       <FontAwesomeIcon key={i} icon={faStar} size="lg" color={color} />
@@ -33,6 +34,26 @@ const HotelList = () => {
   const { position: userPosition, error: geoError } = useGeolocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  
+// IGST Rate
+const IGST_RATE = 0.18; // 18% IGST
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(0);
+  const hotelsPerPage = 9;
+  const [pageCount, setPageCount] = useState(0);
+
+  useEffect(() => {
+    const totalPages = Math.ceil(hotels.length / hotelsPerPage);
+    setPageCount(totalPages);
+  }, [hotels]);
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const offset = currentPage * hotelsPerPage;
+  const currentHotels = hotels.slice(offset, offset + hotelsPerPage);
 
   useEffect(() => {
     const sortedHotels = [...hotels];
@@ -118,26 +139,31 @@ const HotelList = () => {
   };
   const handleSortOptionChange = (option) => {
     setSortOption(option);
-    setIsDropdownOpen(false);
+    setIsDropdownOpen(false); // Close the dropdown after selecting an option
   };
-
+  
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsDropdownOpen(false);
     }
   };
-
+  
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Function to calculate IGST
+  const calculateIGST = (price) => price * IGST_RATE;
+  const calculateTotalPrice = (price) => price - calculateIGST(price);
+  
   return (
     <>
     <div className="con">
-    <Container>
-   <section className="sec_book_filter">
+        <Container>
+          <section className="sec_book_filter">
             <div className="hotel_booking_filter">
               <form>
                 <div className="form-row_filter">
@@ -160,32 +186,35 @@ const HotelList = () => {
                   </div>
 
                   <div className="form-field_filter" ref={dropdownRef}>
-                    <label className="form_lable_filter" htmlFor="sortOptions">Sort by:</label>
-                    <input
-                      type="text"
-                      id="sortOptions"
-                      name="sortOptions"
-                      className="form_in"
-                      placeholder="Select sort option"
-                      value={sortOption}
-                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      readOnly
-                    />
-                    {isDropdownOpen && (
-                      <ul className="sortDropdown">
-                        <li onClick={() => handleSortOptionChange('name')}>Name</li>
-                        <li onClick={() => handleSortOptionChange('rating')}>Rating</li>
-                        <li onClick={() => handleSortOptionChange('price-asc')}>Price: Low to High</li>
-                        <li onClick={() => handleSortOptionChange('price-desc')}>Price: High to Low</li>
-                        <li onClick={() => handleSortOptionChange('distance')}>Distance</li>
-                      </ul>
-                    )}
+                    <label className="form_lable_filter">Sort by:</label>
+                    <div className="dropdown">
+                      <input 
+                        type="text"
+                        id="sortOptions"
+                        name="sortOptions"
+                        className="form_in"
+                        placeholder="Select sort option"
+                        value={sortOption}
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        readOnly
+                      />
+                      <FontAwesomeIcon icon={faAngleDown} className="dropdown-icon" />
+                      {isDropdownOpen && (
+                        <ul className="sortDropdown">
+                          <li onClick={() => handleSortOptionChange('name')}>Name</li>
+                          <li onClick={() => handleSortOptionChange('rating')}>Rating</li>
+                          <li onClick={() => handleSortOptionChange('price-asc')}>Price: Low to High</li>
+                          <li onClick={() => handleSortOptionChange('price-desc')}>Price: High to Low</li>
+                          <li onClick={() => handleSortOptionChange('distance')}>Distance</li>
+                        </ul>
+                      )}
+                    </div>
                   </div>
                 </div>
               </form>
             </div>
-      </section>
-      </Container>
+          </section>
+        </Container>
       </div>
       <div className="listContainer">
         <div className="listWrapper">
@@ -200,7 +229,7 @@ const HotelList = () => {
             </div>
             <div className="listItem">
               <label>Check-in Date</label>
-              <DatePicker
+              <DatePicker className="date_picker"
                 selected={location.state?.date?.[0]?.startDate || new Date()}
                 onChange={(date) => {}}
                 minDate={new Date()}
@@ -209,7 +238,7 @@ const HotelList = () => {
             </div>
             <div className="listItem">
               <label>Check-out Date</label>
-              <DatePicker
+              <DatePicker className="date_picker"
                 selected={location.state?.date?.[0]?.endDate || new Date()}
                 onChange={(date) => {}}
                 minDate={new Date()}
@@ -221,12 +250,13 @@ const HotelList = () => {
               <div className="listFilterOptions">
                 <div className="listFilterOption">
                   <label>
-                    <input
+                    <input 
                       type="radio"
                       name="sortOption"
                       value="name"
                       checked={sortOption === "name"}
                       onChange={(e) => setSortOption(e.target.value)}
+                       className="radioButton"
                     />
                     Name
                   </label>
@@ -239,6 +269,7 @@ const HotelList = () => {
                       value="rating"
                       checked={sortOption === "rating"}
                       onChange={(e) => setSortOption(e.target.value)}
+                      className="radioButton"
                     />
                     Rating
                   </label>
@@ -251,18 +282,20 @@ const HotelList = () => {
                       value="price-asc"
                       checked={sortOption === "price-asc"}
                       onChange={(e) => setSortOption(e.target.value)}
+                      className="radioButton"
                     />
                     Price: Low to High
                   </label>
                 </div>
                 <div className="listFilterOption">
                   <label>
-                    <input
+                    <input 
                       type="radio"
                       name="sortOption"
                       value="price-desc"
                       checked={sortOption === "price-desc"}
                       onChange={(e) => setSortOption(e.target.value)}
+                      className="radioButton"
                     />
                     Price: High to Low
                   </label>
@@ -275,6 +308,7 @@ const HotelList = () => {
                       value="distance"
                       checked={sortOption === "distance"}
                       onChange={(e) => setSortOption(e.target.value)}
+                      className="radioButton"
                     />
                     Distance
                   </label>
@@ -288,7 +322,7 @@ const HotelList = () => {
             {geoError && <p className="errorMessage">{geoError}</p>}
             {error && <p className="errorMessage">{error}</p>}
             {hotels.length > 0 ? (
-              hotels.map((hotel, index) => (
+              currentHotels.map((hotel, index) => (
                 <div key={hotel.HotelCode} className="searchItem">
                   <img src={hotel.HotelPicture} alt={hotel.HotelName} className="hotelImg" />
                   <div className="hotelDescription">
@@ -319,8 +353,9 @@ const HotelList = () => {
                     <span className="hotelRating">{renderStar(hotel.StarRating)}</span>
                     <div className="DetailTexts">
                       <span className="hotelPrice">
-                        INR {hotel.Price?.OfferedPriceRoundedOff || "N/A"}
+                        ₹{calculateTotalPrice(hotel.Price?.OfferedPriceRoundedOff || 0).toFixed(2)}
                       </span>
+                      
                       <span className="hotelTax">Includes taxes and fees</span>
                       <button onClick={() => fetchHotelInfo(index)} className="CheckButton">
                         See Details
@@ -328,12 +363,34 @@ const HotelList = () => {
                     </div>
                   </div>
                 </div>
+                
               ))
             ) : (
               <p className="noHotelsMessage">No hotels available.</p>
             )}
           </div>
         </div>
+      </div>
+      <div className="paginationContainer">
+        <ReactPaginate
+          previousLabel={'previous'}
+          nextLabel={'next'}
+          breakLabel={'...'}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={'pagination'}
+          activeClassName={'active'}
+          pageClassName={'page-item'}
+          pageLinkClassName={'page-link'}
+          previousClassName={'page-item'}
+          previousLinkClassName={'page-link'}
+          nextClassName={'page-item'}
+          nextLinkClassName={'page-link'}
+          breakClassName={'page-item'}
+          breakLinkClassName={'page-link'}
+        />
       </div>
     </>
   );
