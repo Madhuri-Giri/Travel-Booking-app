@@ -99,7 +99,7 @@ const FlightReview = () => {
   const flightpayHandler = async () => {
     const loginId = localStorage.getItem('loginId');
     if (!loginId) {
-      navigate('/enter-number');
+      navigate('/enter-number',{ state: { from: location } });
       return;
     }
 
