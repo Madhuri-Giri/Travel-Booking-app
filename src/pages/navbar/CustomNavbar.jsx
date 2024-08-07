@@ -28,7 +28,7 @@ const CustomNavbar = () => {
                         <Nav className="mx-auto navmenuss">
                             <Nav.Link
                                 href="/flight-search"
-                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/flight-search' ? 'active' : ''} , ${location.pathname === '/flight-list' ? 'active' : ''} , ${location.pathname === '/flight-details' ? "active" : ''} `}
+                                className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/flight-search' ? 'active' : ''} , ${location.pathname === '/flight-list' ? 'active' : ''} , ${location.pathname === '/flight-details' ? "active" : ''} , ${location.pathname === '/seat-meal-baggage' ? 'active' : ''} , ${location.pathname === '/flight-review' ? 'active' : ''} `}
                             >
                                 <GiCommercialAirplane className="icon" size={20} />
                                 <span className="textNav">FLIGHTS</span>
