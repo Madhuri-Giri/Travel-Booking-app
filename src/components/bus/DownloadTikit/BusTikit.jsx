@@ -32,16 +32,16 @@ const BusTikit = () => {
     doc.text("Bus Ticket", 20, 20);
     doc.text(`From: ${from}`, 20, 30);
     doc.text(`To: ${to}`, 20, 40);
-    doc.text(`Ticket No: ${bookingDetails.result.data.Result.TicketNo}`, 20, 50);
-    doc.text(`Bus ID: ${bookingDetails.result.data.Result.BusId}`, 20, 60);
-    doc.text(`Ticket Price: ${bookingDetails.result.data.Result.InvoiceAmount} INR`, 20, 70);
+    doc.text(`Ticket No: ${bookingDetails?.result?.data?.Result?.TicketNo || 'N/A'}`, 20, 50);
+    doc.text(`Bus ID: ${bookingDetails?.result?.data?.Result?.BusId || 'N/A'}`, 20, 60);
+    doc.text(`Ticket Price: ${bookingDetails?.result?.data?.Result?.InvoiceAmount || 'N/A'} INR`, 20, 70);
 
     doc.autoTable({
       startY: 80,
       head: [['Passenger Name', 'Seat No.', 'Age']],
       body: passengerData.map((passenger, index) => [
         `${index + 1}. ${passenger.FirstName}`,
-        passenger.Seat.SeatName,
+        passenger.Seat.SeatName || 'N/A',
         passenger.Age,
       ]),
     });
@@ -65,6 +65,9 @@ const BusTikit = () => {
     doc.save('ticket.pdf');
   };
 
+  // Check if data is missing
+  const isDataMissing = !bookingDetails || passengerData.length === 0;
+
   return (
     <div className="BusTikit">
       <div className="hed">
@@ -74,9 +77,9 @@ const BusTikit = () => {
         <div className="tikit-status">
           <div className="download-tikit">
             <div className="dest">
-              <h4>{from}</h4>
+              <h4>{from || 'From Location Not Available'}</h4>
               <i className="ri-arrow-left-right-line"></i>
-              <h4>{to}</h4>
+              <h4>{to || 'To Location Not Available'}</h4>
             </div>
             <div className="sdxfcvghb">
               <p>(CBCE-106-654)</p>
@@ -88,77 +91,83 @@ const BusTikit = () => {
                 <img src={busTikitImg} alt="" />
               </div>
               <div className="t-right">
-                {passengerData.length > 0 ? (
-                  <div className="details-top">
-                    <div className="left">
-                      <p>Passenger Name</p>
-                      <p>Seat No.</p>
-                      <p>Age</p>
-                    </div>
-                    <div className="right">
-                      {passengerData.map((passenger, index) => (
-                        <div key={index} className="passenger-info">
-                          <p>{`${index + 1}. ${passenger.FirstName}`}</p>
-                          <p>{passenger.Seat.SeatName}</p>
-                          <p>{passenger.Age}</p>
+                {isDataMissing ? (
+                  <div style={{ color: 'red' }}>Data Not Found</div>
+                ) : (
+                  <>
+                    {passengerData.length > 0 ? (
+                      <div className="details-top">
+                        <div className="left">
+                          <p>Passenger Name</p>
+                          <p>Seat No.</p>
+                          <p>Age</p>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <div>Loading passenger data...</div>
-                )}
+                        <div className="right">
+                          {passengerData.map((passenger, index) => (
+                            <div key={index} className="passenger-info">
+                              <p>{`${index + 1}. ${passenger.FirstName}`}</p>
+                              <p>{passenger.Seat ? passenger.Seat.SeatName : 'N/A'}</p>
+                              <p>{passenger.Age}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div>Loading passenger data...</div>
+                    )}
 
-                {/* Booking Details */}
-                {bookingDetails ? (
-                  <div className="details-top">
-                    <div className="left">
-                      <p>Ticket No.</p>
-                      <p>Bus ID</p>
-                      <p>Ticket Price</p>
-                    </div>
-                    <div className="right">
-                      <p>{bookingDetails.result.data.Result.TicketNo}</p>
-                      <p>{bookingDetails.result.data.Result.BusId}</p>
-                      <p>{bookingDetails.result.data.Result.InvoiceAmount} INR</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div>Loading booking details...</div>
-                )}
+                    {/* Booking Details */}
+                    {bookingDetails ? (
+                      <div className="details-top">
+                        <div className="left">
+                          <p>Ticket No.</p>
+                          <p>Bus ID</p>
+                          <p>Ticket Price</p>
+                        </div>
+                        <div className="right">
+                          <p>{bookingDetails.result.data.Result.TicketNo}</p>
+                          <p>{bookingDetails.result.data.Result.BusId}</p>
+                          <p>{bookingDetails.result.data.Result.InvoiceAmount} INR</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div>Loading booking details...</div>
+                    )}
 
-                {/* Boarding Points */}
-                {boardingPoints.length > 0 && (
-                  <div className="details-top">
-                    <div className="left">
-                      <p>Boarding Point</p>
-                    </div>
-                    <div className="right">
-                      {boardingPoints.map((point, index) => (
-                        <p key={index}>{`${index + 1}. ${point.CityPointName}`}</p>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                    {/* Boarding Points */}
+                    {boardingPoints.length > 0 && (
+                      <div className="details-top">
+                        <div className="left">
+                          <p>Boarding Point</p>
+                        </div>
+                        <div className="right">
+                          {boardingPoints.map((point, index) => (
+                            <p key={index}>{`${index + 1}. ${point.CityPointName}`}</p>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
-                {/* Dropping Points */}
-                {droppingPoints.length > 0 && (
-                  <div className="details-top">
-                    <div className="left">
-                      <p>Dropping Point</p>
-                    </div>
-                    <div className="right">
-                      {droppingPoints.map((point, index) => (
-                        <p key={index}>{`${index + 1}. ${point.CityPointName}`}</p>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                    {/* Dropping Points */}
+                    {droppingPoints.length > 0 && (
+                      <div className="details-top">
+                        <div className="left">
+                          <p>Dropping Point</p>
+                        </div>
+                        <div className="right">
+                          {droppingPoints.map((point, index) => (
+                            <p key={index}>{`${index + 1}. ${point.CityPointName}`}</p>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
-                <div className="detils-dowm">
-                  <button onClick={downloadTicket}>Download Ticket</button>
-                  <button>Cancel Download</button>
-                </div>
+                    <div className="detils-dowm">
+                      <button onClick={downloadTicket}>Download Ticket</button>
+                      <button>Cancel Download</button>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

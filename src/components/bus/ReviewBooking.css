@@ -281,6 +281,13 @@
        font-weight: 600;
        font-size: 1.3vmax;
 }
+.ReviewBooking .review-book .new-contact p{
+       width: 100%;
+       display: flex;
+       align-items: flex-start;
+       justify-content: flex-start;
+       font-size: 1.2vmax;
+}
 .ReviewBooking .review-book .new-contact form{
        width: 100%;
 }
@@ -377,11 +384,6 @@
        background-color: #00b7eb;
 border-radius: 10px;
        justify-content: flex-end;
- }
- .ReviewBooking .review-book .last-pay .review-pay button:hover{
-       background: none;
-       border:1px solid  #00b7eb;
-       color: #00b7eb;
  }
 
 

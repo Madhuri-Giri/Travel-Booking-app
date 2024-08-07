@@ -21,6 +21,8 @@ const BoardAndDrop = () => {
   };
 
   useEffect(() => {
+    localStorage.removeItem('passengersAlreadyAdded');
+
     const fetchBoardingData = async () => {
       try {
         const traceId = localStorage.getItem('traceId');
@@ -58,18 +60,19 @@ const BoardAndDrop = () => {
 
     fetchBoardingData();
   }, []);
+  
 
   const handleSelectBoarding = (index) => {
     setSelectedBoarding(index);
     setTimeout(() => {
-      setShowBoarding(false); // Switch to dropping points view after a brief delay
-    }, 500); // Delay in milliseconds (500ms = 0.5 seconds)
+      setShowBoarding(false); 
+    }, 500); 
   };
 
   const handleSelectDropping = (index) => {
     setSelectedDropping(index);
-
     const passengersAlreadyAdded = localStorage.getItem('passengersAlreadyAdded');
+
     if (passengersAlreadyAdded) {
       navigate('/passenger-list');
     } else {
@@ -82,7 +85,6 @@ const BoardAndDrop = () => {
     navigate('/bus-list');
   };
 
-  // Function to convert UTC date string to IST
   const convertToIST = (dateString) => {
     const date = new Date(dateString);
     const options = {
