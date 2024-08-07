@@ -13,7 +13,6 @@ import BusLayout from './components/bus/BusLayout';
 import Home from './components/home/Home';
 import FlightLists from './components/flight/FlightLists';
 
-
 import BoardAndDrop from './components/bus/BoardAndDrop';
 import Faq from './pages/Faq/Faq';
 import Setting from './pages/setting/Setting ';
@@ -45,7 +44,7 @@ const App = () => {
   return (
     <div>
       <Router>
-        {!noNavbarFooterRoutes.includes(window.location.pathname) && <CustomNavbar />}       
+        {!noNavbarFooterRoutes.includes(window.location.pathname) && <CustomNavbar />}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/flight-search' element={<FlightSearch />} />
@@ -59,7 +58,7 @@ const App = () => {
           <Route path='/signup' element={<SignUp />} />
           <Route path='/faq' element={<Faq />} />
           <Route path='/setting' element={<Setting />} />
-          <Route path='profile' element={<Profile/>} />
+          <Route path='profile' element={<Profile />} />
           <Route path='/login' element={<LogIn />} />
           <Route path='/enter-number' element={<EnterNumber />} />
           <Route path='/passenger-info' element={<PassangerInfo />} />
@@ -76,13 +75,11 @@ const App = () => {
           <Route path='/hotel-bill' element={<HotelBillReceipt />} />
           <Route path='/flight-Farequote' element={<FareQuote />} />
           <Route path='/flight-review' element={<FlightReview />} />
-          <Route path='seat-meal-baggage'  element={<SeatMealBaggageTabs/>}/>
+          <Route path='seat-meal-baggage' element={<SeatMealBaggageTabs />} />
           {/* <Route path="/seat-meal-baggage" element={<SeatMealBaggageTabs />} /> */}
 
-
-
         </Routes>
-        {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />}  
+        {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />}
         <ToastContainer
           position="top-right"
           autoClose={5000}
@@ -91,7 +88,7 @@ const App = () => {
           pauseOnHover
           draggable
           pauseOnFocusLoss
-        />      
+        />
       </Router>
     </div>
   );
