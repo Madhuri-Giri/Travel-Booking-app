@@ -208,7 +208,6 @@ const FlightReview = () => {
   const tax = localStorage.getItem('Tax');
   const yqTax = localStorage.getItem('YQTax');
 
-
   const bookLccApi = async () => {
     try {
       const llcPayload = {
@@ -240,7 +239,6 @@ const FlightReview = () => {
         "AdditionalTxnFeePub": "",
         "AirTransFee": "0"
       };
-
 
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/bookllc', {
         method: 'POST',
