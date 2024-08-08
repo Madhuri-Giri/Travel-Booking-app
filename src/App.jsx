@@ -36,6 +36,7 @@ import HotelBillReceipt from './components/hotelBill/HotelBillReceipt';
 import FlightReview from './components/flight/FlightReview';
 import SeatMealBaggageTabs from './components/flight/SeatMealBaggageTabs';
 import Profile from './pages/Profile/Profile';
+import Loading from './pages/loading/Loading';
 
 
 const App = () => {
@@ -77,6 +78,7 @@ const App = () => {
           <Route path='/flight-review' element={<FlightReview />} />
           <Route path='seat-meal-baggage' element={<SeatMealBaggageTabs />} />
           {/* <Route path="/seat-meal-baggage" element={<SeatMealBaggageTabs />} /> */}
+          <Route path='load'  element={<Loading/>}/>
 
         </Routes>
         {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />}

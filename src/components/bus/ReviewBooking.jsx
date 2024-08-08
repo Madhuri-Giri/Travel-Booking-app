@@ -559,7 +559,7 @@ const totalPayment = totalFare + taxes + (totalFare * 0.18);
         <div className="p-contact-detail">             
           <div className="last-pay">
             <div className="fare">
-              <h6>TOTAL TICKET AMOUNT</h6>
+              <h6>Total Ticket Amount</h6>
               <small >{totalPayment.toFixed(2)}</small>
             </div>
             <div className="review-pay">

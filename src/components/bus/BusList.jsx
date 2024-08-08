@@ -218,7 +218,7 @@ const BusLists = () => {
           {/* Bus lists */}
           <div className="btm-lists">
 {/* ----------------------------------------------------------------------------------------------------------------- */}
-            <div className="date-slider">
+            {/* <div className="date-slider">
               <div className="d-slide">
                 <div className="date-left" onClick={scrollLeft}>
                   <i className="ri-arrow-left-s-line"></i>
@@ -234,7 +234,7 @@ const BusLists = () => {
                   <i className="ri-arrow-right-s-line"></i>
                 </div>
               </div>
-            </div>
+            </div> */}
 {/* -------------------------------------------------------------------------------------------------------- */}
             <div className="bus-divs">
               {status === 'loading' && <p>Loading...</p>}
