@@ -16,12 +16,22 @@
           background: #f4efefd6;
 
 }
+.BusLists .timer-bus{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1vmax;
+        color:rgba(255, 0, 0, 0.71);
+        font-weight: 700;
+        font-size: 1vmax;
+}
 .BusLists .busList .B-lists-Top{
           width: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: #0a223d;
+          background: #00b7eb;
 }
 
 .BusLists .busList .B-lists-Top .text{
@@ -30,38 +40,33 @@
           align-items: center;
           justify-content: space-between;
           flex-direction: row;
-        margin-top: 1.3vmax;
 }
 .BusLists .busList .B-lists-Top .text h5{
           font-weight: 600;
-          display: flex;gap: 0.5vmax;
+          display: flex;gap: 0.1vmax;
           align-items: center;
           font-size: 1.2vmax;  
           flex-direction: row;
+          justify-content: center;
 
 }
 .BusLists .busList .B-lists-Top .text .destination {
-          display: flex;
-          align-items: center;
-          font-size: 1.2vmax;  
-          flex-direction: row;
+         display: flex;
+         align-items: center;
+         justify-content: space-evenly;
+         flex-direction: row;
 }
 .BusLists .busList .B-lists-Top .text .destination p{
-         padding-left: 1vmax;
-         padding-right: 8vmax;
-         padding-top: 0.3vmax;
-         padding-bottom: 0.3vmax;
          display: flex;
          flex-direction: column;
-         align-items: flex-start;
-         justify-content: flex-start;
-         background: #28465f58;
-         border-radius: 5px;
+         align-items:center;
+         justify-content:center;
          color: #fff;
-
+         padding: 0.4vmax;
+margin-top: 1vmax;
 }
-.BusLists .busList .B-lists-Top .text h5 i{
-          color: #000;
+.BusLists .busList .B-lists-Top .text .destination i{
+          color: #fff;
           font-size: 1.5vmax;
           font-weight: lighter;
 }
@@ -70,13 +75,8 @@
           display: flex;gap: 0.7vmax;
           align-items: center; 
           font-size: 1vmax;  
-          background: #28465f58;
           color: #fff;
-          padding-left: 1vmax;
-          padding-right: 2vmax;
-          padding-top: 0.6vmax;
-          padding-bottom: 0.6vmax;
-         border-radius: 5px;
+          justify-content: center;
 
 }
 .BusLists .busList .B-lists-Top .text span i{
@@ -107,6 +107,7 @@
           justify-content: center;
           background: #fff;
           flex-direction: column;
+          border-radius: 15px;
  }
  .bus-sidebar .busSide h5{
           width: 100%;
@@ -306,84 +307,7 @@
 /* -------------------slider date--------------------- */
 
 
- .date-slider{
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 5vmax;
-          margin-bottom: 1vmax;
-          background: #fff;
- }
- .date-slider .d-slide{
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-direction: row;
-          box-shadow: 2px 2px 5px 2px rgb(255, 235, 235);
- }
- .date-slider .d-slide .date-left{
-          width: 4%;
-          height: 5vmax;
-          display: flex;
-          cursor: pointer;
-          align-items: center;
-          justify-content: center;  
-          z-index: 111;
- }
- .date-slider .d-slide .date-left i{
-         font-size: 2vmax;
-         font-weight: lighter;
- }
- .date-slider .d-slide .date-right{
-          width: 4%;
-          height: 5vmax;
-          display: flex;
-          cursor: pointer;
-          align-items: center;
-          justify-content: center;  
-          z-index: 111;
- }
- .date-slider .d-slide .date-right i{
-         font-size: 2vmax;
-         font-weight: lighter;
- }
- .date-slider .d-slide .date-mid{
-          width: auto;
-          display: flex;
-          align-items: center;
-          justify-content: flex-start; 
-
-          flex-direction: row;
-          overflow-x: auto;
-          overflow-y: hidden;
-          scroll-behavior: smooth;
- }
- .date-slider .d-slide .date-mid::-webkit-scrollbar{
-        display: none;
- }
- .date-slider .d-slide .date-mid .d-one{
-          width: 15%; 
-          height: 5vmax;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          border: 0.5px solid #00000016;
-          padding: 2vmax; 
-          margin: 0.2vmax;
-          cursor:pointer;
-
- }
- .date-slider .d-slide .date-mid .d-one h6{
-          width: 100%;
-          margin: 0.2vmax 1vmax; 
-          font-size: 0.7vmax; 
-          text-align: center; 
- }
-
-
+ 
 /* -------------------slider date--------------------- */
 .BusLists .busList .B-lists-Btm .btm-lists .bus-divs{
           width: 100%;
@@ -401,6 +325,7 @@
          margin-bottom: 1vmax;
          background: #fff;
          padding: 1vmax;
+         border-radius: 15px;
 }
 .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top{
           width: 100%;
@@ -482,28 +407,39 @@
                 width: 100%; 
                 flex-direction: row;
                 display:flex;
-                background: red;
                 justify-content: space-evenly;
                 align-items: center;
       }
+      .BusLists .busList .B-lists-Top .text h5 i{
+      display: none;
+}
+.BusLists .busList .B-lists-Top .text h5 p small{
+        display: none;
+  }
+  .BusLists .busList .B-lists-Top .text h5 p {
+      background: none;
+  }
       .BusLists .busList .B-lists-Top .text .destination {
                 display: flex;
                 align-items: center;
                 font-size: 2.5vmax;  
                 flex-direction: row;
-                gap: 2vmax;
+                width: 90%;
+                justify-content: space-between;
       }
+      .BusLists .busList .B-lists-Top .text .destination p{
+        padding-left: 0vmax;
+        padding-right: 0vmax;
+        padding-top: 0vmax;
+        padding-bottom: 0vmax;
+        background:none;
+
+}
       .BusLists .busList .B-lists-Top .text h5 i{
                 font-size: 3vmax;
       }
       .BusLists .busList .B-lists-Top .text span{
-        width: 100%;
-                font-size: 2vmax;  
-                padding-left: 1vmax;
-                padding-right: 2vmax;
-                padding-top: 2vmax;
-                padding-bottom: 2vmax;
-               margin-bottom: 2vmax;
+       display: none;
       
       }
       .BusLists .busList .B-lists-Top .text span i{
