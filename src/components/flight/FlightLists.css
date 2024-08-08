@@ -60,6 +60,44 @@
 .flightlistsec1col svg{
     font-size: 22px;
 }
+.flightlistsec1Mobile{
+    background-color: #00b7eb;
+    padding-top: 7px;
+    /* padding-bottom: 11px; */
+    color: white;
+    display: none;
+}
+.flightlistsec1colMobileOriDes{
+    display: flex;
+    justify-content: space-between;
+}
+.flightlistsec1colMobileOriDes p{
+    font-size: 20px;
+    font-weight: bold;
+}
+.flightlistsec1colMobileOriDes svg{
+    font-size: 20px;
+    margin-top: 3px;
+}
+.filterIcondiv,
+.editIconDiv{
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+.filterIcondiv svg,
+.editIconDiv svg{
+    border: 1px solid white;
+    font-size: 47px;
+    padding: 5px 7px;
+}
+.flightlistsec1col p{
+    font-weight: bold;
+    margin: 0px 13px;
+}
+.flightlistsec1col svg{
+    font-size: 22px;
+}
 
 .flightlistsec2{
     padding: 40px 50px;
@@ -80,8 +118,9 @@
     padding: 10px 10px;
     padding-bottom: 20px;
     border-radius: 20px;
-    margin-top: 50px;
+    margin-top: 25px;
 }
+
 #airlineFilters div{
     display: flex;
     justify-content: space-between;
@@ -167,12 +206,19 @@
 .flistname p{
     margin: 0px 10px;
 }
-.flistnamep1{
+.flistnamep1,
+.flistnamep5{
     font-size: 18px;
+    font-weight:600;
 }
 .flistnamep2{
     font-weight: bold;
     font-size: 18px;
+}
+.flistnamep4{
+    font-weight: 500;
+    font-size: 19px;
+    color: gray;
 }
 .flistnamep3{
     border-bottom: 1px solid rgba(128, 128, 128, 0.301);
@@ -186,14 +232,17 @@
     font-weight: bold;
     font-size: 22px;
     color: #00e100;
+    margin-right: 15px;
 }
 .pricebtns button{
     background-color: #00b7eb;
     border: none;
     color: white;
-    padding: 7px 20px;
+    padding: 6px 35px;
     border-radius: 17px;
     font-weight: bold;
+    margin-left: 50px;
+    font-size: 22px;
 }
 
 .pricebtnsmobil{
@@ -291,7 +340,19 @@
         margin-bottom: 40px;
     }
     .flightlistsec2 .row .f-lists{
-        padding: 0px 25px;
+        padding: 0px 10px;
+    }
+    .f-listCol1 p{
+        font-size: 12px;
+    }
+    .flightlistsec2col1{
+        display: none;
+    }
+    .flightlistsec1{
+        display: none;
+    }
+    .flightlistsec1Mobile{
+        display: block;
     }
 }
 /* responsive css */
@@ -314,8 +375,8 @@
         display: none;
     }
     .pricebtnsmobil button {
-        padding: 0px 12px;
-        font-size: 12px;
+        padding: 0px 35px;
+        font-size: 15px;
     }
     .flight-content .row {
         padding: 8px 0px;
@@ -329,7 +390,7 @@
 }
 
 
-@media (max-width:600px) {
+/* @media (max-width:600px) {
     .FlightList{
               width: 100%;
     }
@@ -412,4 +473,55 @@
      .FlightList .flights .flight-date-slider .d-slide .date-mid .d-one p{
               font-size: 1.5vmax; 
      }
+} */
+
+
+/* slider csssss */
+.flight-date-slider {
+    overflow: hidden;
 }
+
+.flight-d-slide {
+    display: flex;
+    align-items: center;
+}
+
+.date-left, .date-right {
+    cursor: pointer;
+    padding: 10px;
+}
+
+.date-mid {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.d-one {
+    text-align: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .date-left, .date-right {
+        padding: 5px;
+    }
+
+    .d-one {
+        margin: 0.5vmax;
+    }
+}
+
+@media (max-width: 480px) {
+    .date-left, .date-right {
+        padding: 2px;
+    }
+
+    .d-one {
+        margin: 0.2vmax;
+    }
+}
+
+/* slider csssss */
