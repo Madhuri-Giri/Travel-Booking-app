@@ -1,4 +1,26 @@
 /* styles.css */
+.timer-FlightLists {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 10px;
+    background-color: #eaffef;
+    color: rgba(255, 0, 0, 0.71);
+    font-weight: bold;
+    border-top: 1px solid #00e10070;
+    transition: box-shadow 0.3s ease-in-out; /* Smooth transition for the shadow */
+}
+.timer-FlightLists.scrolled {
+    box-shadow: 1px 2px 3px 2px gray;
+}
+.timer-FlightLists p{
+    margin: 0px;
+    font-size: 19px;
+}
+
 .flight-date-slider {
     position: relative;
     width: 100%;

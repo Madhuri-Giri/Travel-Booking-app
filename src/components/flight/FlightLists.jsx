@@ -10,9 +10,35 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { FaFilter } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
+import { RiTimerLine } from "react-icons/ri";
+import Loading from '../../pages/loading/Loading'; // Import the Loading component
 
 export default function FlightLists() {
     const navigate = useNavigate();
+
+    // for timerss----------------------------------
+    const [timer, setTimer] = useState(600000);
+
+    useEffect(() => {
+        const countdown = setInterval(() => {
+            setTimer((prev) => prev - 100);
+        }, 100);
+
+        if (timer <= 0) {
+            clearInterval(countdown);
+            navigate('/bus-search');
+        }
+
+        return () => clearInterval(countdown);
+    }, [timer, navigate]);
+
+    const formatTimers = (milliseconds) => {
+        const totalSeconds = Math.floor(milliseconds / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes} min ${seconds} sec left`;
+    };
+    // for timerss----------------------------------
 
     const [callenderListdata, setcallenderListdata] = useState(null);
 
@@ -61,7 +87,7 @@ export default function FlightLists() {
     // function for date convert into day month date--------------------------------------
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return new Intl.DateTimeFormat('en-US', {month: 'short', day: 'numeric', weekday: 'short' }).format(date);
+        return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', weekday: 'short' }).format(date);
     };
     const departDatee = formData.Segments[0].PreferredDepartureTime;
     const formattedDate = formatDate(departDatee);
@@ -320,6 +346,11 @@ export default function FlightLists() {
 
     return (
         <>
+            {/* timerrr-------------------  */}
+            <div className="timer-FlightLists">
+                <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
+            </div>
+            {/* timerrr-------------------  */}
 
             <section className='flightlistsec1'>
                 <div className="container">
@@ -347,25 +378,25 @@ export default function FlightLists() {
                     <div className="row">
                         <div className="col-2 d-flex flightlistsec1colMobile">
                             <div className="filterIcondiv">
-                            <FaFilter className="mt-1" />
+                                <FaFilter className="mt-1" />
                             </div>
                         </div>
                         <div className="col-8  flightlistsec1colMobile">
                             <div className="flightlistsec1colMobileOriDes">
-                            <p> {formData.Segments[0].Origin} </p>
-                            <FaArrowRightLong />
-                            <p>{formData.Segments[0].Destination} </p>
+                                <p> {formData.Segments[0].Origin} </p>
+                                <FaArrowRightLong />
+                                <p>{formData.Segments[0].Destination} </p>
                             </div>
-                           <div className="d-flex">
-                           <p><span></span> {formattedDate}</p>
-                           <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
-                           </div>
+                            <div className="d-flex">
+                                <p><span></span> {formattedDate}</p>
+                                <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
+                            </div>
 
 
                         </div>
                         <div className="col-2 d-flex flightlistsec1colMobile">
                             <div className="editIconDiv">
-                            <MdModeEdit className="mt-1" />
+                                <MdModeEdit className="mt-1" />
                             </div>
                         </div>
                     </div>
