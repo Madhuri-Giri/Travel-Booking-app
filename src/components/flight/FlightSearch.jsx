@@ -37,7 +37,9 @@ const FlightSearch = () => {
   const [preferredDepartureTime, setPreferredDepartureTime] = useState(new Date());
   const [preferredArrivalTime, setPreferredArrivalTime] = useState(new Date());
 
- const fetchSuggestions = async (query, setSuggestions) => {
+
+
+const fetchSuggestions = async (query, setSuggestions) => {
   console.log('test');
   try {
     const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
@@ -48,14 +50,17 @@ const FlightSearch = () => {
       body: JSON.stringify({ query })
     });
     const data = await response.json();
-    const filteredSuggestions = data.data.filter(suggestion =>
-      suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
-    );
+    const filteredSuggestions = data.data
+      .filter(suggestion =>
+        suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
+      )
+      .slice(0, 7); // Limit the number of suggestions to 7
     setSuggestions(filteredSuggestions);
   } catch (error) {
     console.error('Error fetching suggestions:', error);
   }
 };
+
 
 
   // function for adult , child , infact dropdown list-------------------------------------------
