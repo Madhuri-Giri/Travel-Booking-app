@@ -76,8 +76,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border: 1px solid #0000003f;
+  border: 1px solid #0000004a;
   padding-left: 0.3vmax;
+  border-radius: 7px;
 }
 
 .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus .ipt-handle i {
@@ -91,6 +92,8 @@
   outline: none;
   border: none;
   padding: 0.5vmax 1vmax;
+  border-radius: 7px;
+
 }
 
 .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .one .ipt-bus label {
@@ -125,6 +128,8 @@
   font-weight: 600;
   background-color: #00b7eb;
   color: #fff;
+  border-radius: 7px;
+
 }
 
 .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn button:hover{
