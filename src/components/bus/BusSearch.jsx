@@ -6,6 +6,7 @@ import { setFrom, setTo, setFromSuggestions, setToSuggestions, setSelectedBusDat
 import BusMainImg from "../../assets/images/busMainImg.png";
 import "./BusSearch.css";
 import BusGurantee from './BusGurantee';
+import loaderGif from "../../assets/images/loading-animation-v2.gif"
 
 const BusSearch = () => {
   const dateInputRef = useRef(null);
@@ -134,10 +135,10 @@ const BusSearch = () => {
                   </div>
                 </div>
                 <div className="one">
-                  <div className="ipt-bus">
+                  <div className="ipt-bus" onClick={handleIconClick}>
                     <label>Departure Date</label>
                     <div className="ipt-handle">
-                      <i className="ri-calendar-2-line" onClick={handleIconClick}></i>
+                      <i className="ri-calendar-2-line"></i>
                       <input
                         type="date"
                         placeholder=''

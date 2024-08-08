@@ -114,7 +114,6 @@ const PassangerInfo = () => {
         const data = await response.json();
         console.log('Block Response:', data);
 
-        // Add passenger data to state
         setPassengers((prevPassengers) => [
           ...prevPassengers,
           {
@@ -128,14 +127,11 @@ const PassangerInfo = () => {
           },
         ]);
 
-        // Increment the passenger count
         setPassengerCount(passengerCount + 1);
 
-        // Clear form after adding passenger
         setFormData(initialFormData);
 
        
-        // Check if all passengers are added
         if (passengers.length + 1 >= selectedSeats.length) {
           const passengersJSON = JSON.stringify([...passengers, {
             FirstName: formData.firstName,
@@ -177,11 +173,13 @@ const PassangerInfo = () => {
           <h6>Traveller Details</h6>
           <p><span>{passengerCount} passenger{passengerCount !== 1 ? 's' : ''} added</span> / {selectedSeats.length} Seat{selectedSeats.length > 1 ? 's' : ''} Selected</p>
         </div>
+        <p>It is compulsory to add passengers as per the number of seats.</p>
+        
         <div className="pessanger-main">
           <form onSubmit={blockHandler}>
             <div className="travelller">
               <div className="p-top">
-                <h6>Enter Traveller Details</h6>
+                <h6>Enter Traveller Details </h6>
                 <div className="pas">
                   <div className="ipt">
                     <label>Male</label>

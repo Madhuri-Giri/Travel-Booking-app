@@ -122,8 +122,10 @@ background-color: rgba(230, 248, 255, 0.452);
 }
 .pessanger-main form .travelller2 .p-mid2 .p-form input{
       width: 100%;
-      padding: 0.4vmax;
+      padding: 0.6vmax;
       outline: none;
+      border-radius: 5px;
+      border: 0.1px solid #00000082;
 }
 
 
@@ -196,9 +198,11 @@ background-color: rgba(230, 248, 255, 0.452);
           margin-bottom: 0.5vmax;
  }
  .pessanger-main form .p-mid .p-form input{
-          width: 100%;
-          padding: 0.4vmax;
-          outline: none;
+      width: 100%;
+      padding: 0.6vmax;
+      outline: none;
+      border-radius: 5px;
+      border: 0.1px solid #00000082;
  }
 .pessanger-main form .p-btn{
      width: 100%;

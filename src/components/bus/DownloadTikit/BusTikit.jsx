@@ -27,6 +27,11 @@ const BusTikit = () => {
   }, []);
 
   const downloadTicket = () => {
+    if (!bookingDetails || passengerData.length === 0) {
+      console.error("Missing booking details or passenger data");
+      return;
+    }
+
     const doc = new jsPDF();
 
     doc.text("Bus Ticket", 20, 20);
@@ -41,7 +46,7 @@ const BusTikit = () => {
       head: [['Passenger Name', 'Seat No.', 'Age']],
       body: passengerData.map((passenger, index) => [
         `${index + 1}. ${passenger.FirstName}`,
-        passenger.Seat.SeatName || 'N/A',
+        passenger.Seat?.SeatName || 'N/A',
         passenger.Age,
       ]),
     });
@@ -65,7 +70,6 @@ const BusTikit = () => {
     doc.save('ticket.pdf');
   };
 
-  // Check if data is missing
   const isDataMissing = !bookingDetails || passengerData.length === 0;
 
   return (
@@ -77,15 +81,14 @@ const BusTikit = () => {
         <div className="tikit-status">
           <div className="download-tikit">
             <div className="dest">
-              <h4>{from || 'From Location Not Available'}</h4>
+              <h4>{from || 'Bhopal'}</h4>
               <i className="ri-arrow-left-right-line"></i>
-              <h4>{to || 'To Location Not Available'}</h4>
+              <h4>{to || 'Indore'}</h4>
             </div>
             <div className="sdxfcvghb">
               <p>(CBCE-106-654)</p>
             </div>
 
-            {/* Passenger Details */}
             <div className="tikit-details">
               <div className="t-left">
                 <img src={busTikitImg} alt="" />
@@ -95,46 +98,36 @@ const BusTikit = () => {
                   <div style={{ color: 'red' }}>Data Not Found</div>
                 ) : (
                   <>
-                    {passengerData.length > 0 ? (
-                      <div className="details-top">
-                        <div className="left">
-                          <p>Passenger Name</p>
-                          <p>Seat No.</p>
-                          <p>Age</p>
-                        </div>
-                        <div className="right">
-                          {passengerData.map((passenger, index) => (
-                            <div key={index} className="passenger-info">
-                              <p>{`${index + 1}. ${passenger.FirstName}`}</p>
-                              <p>{passenger.Seat ? passenger.Seat.SeatName : 'N/A'}</p>
-                              <p>{passenger.Age}</p>
-                            </div>
-                          ))}
-                        </div>
+                    <div className="details-top">
+                      <div className="left">
+                        <p>Passenger Name</p>
+                        <p>Seat No.</p>
+                        <p>Age</p>
                       </div>
-                    ) : (
-                      <div>Loading passenger data...</div>
-                    )}
-
-                    {/* Booking Details */}
-                    {bookingDetails ? (
-                      <div className="details-top">
-                        <div className="left">
-                          <p>Ticket No.</p>
-                          <p>Bus ID</p>
-                          <p>Ticket Price</p>
-                        </div>
-                        <div className="right">
-                          <p>{bookingDetails.result.data.Result.TicketNo}</p>
-                          <p>{bookingDetails.result.data.Result.BusId}</p>
-                          <p>{bookingDetails.result.data.Result.InvoiceAmount} INR</p>
-                        </div>
+                      <div className="right">
+                        {passengerData.map((passenger, index) => (
+                          <div key={index} className="passenger-info">
+                            <p>{`${index + 1}. ${passenger.FirstName}`}</p>
+                            <p>{passenger.Seat ? passenger.Seat.SeatName : 'N/A'}</p>
+                            <p>{passenger.Age}</p>
+                          </div>
+                        ))}
                       </div>
-                    ) : (
-                      <div>Loading booking details...</div>
-                    )}
+                    </div>
 
-                    {/* Boarding Points */}
+                    <div className="details-top">
+                      <div className="left">
+                        <p>Ticket No.</p>
+                        <p>Bus ID</p>
+                        <p>Ticket Price</p>
+                      </div>
+                      <div className="right">
+                        <p>{bookingDetails.result.data.Result.TicketNo}</p>
+                        <p>{bookingDetails.result.data.Result.BusId}</p>
+                        <p>{bookingDetails.result.data.Result.InvoiceAmount}INR</p>
+                      </div>
+                    </div>
+
                     {boardingPoints.length > 0 && (
                       <div className="details-top">
                         <div className="left">
@@ -148,7 +141,6 @@ const BusTikit = () => {
                       </div>
                     )}
 
-                    {/* Dropping Points */}
                     {droppingPoints.length > 0 && (
                       <div className="details-top">
                         <div className="left">
