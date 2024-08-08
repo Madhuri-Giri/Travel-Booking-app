@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import './BusLayout.css';
 import BusSeatImg from '../../assets/images/bussit.png';
 import { useNavigate } from 'react-router-dom';
+import { MdAirlineSeatReclineNormal } from "react-icons/md";
+
 
 const BusLayout = () => {
   const navigate = useNavigate();
@@ -116,7 +118,8 @@ const BusLayout = () => {
         <div className="seats">
           <div className="left">
             <div className="left-top">
-              <h6>Select Seats</h6>
+              <h6>SELECT BUS SEATS</h6>
+              <p> <MdAirlineSeatReclineNormal />available seats ({availableSeats})</p>
             </div>
             <div className="left-btm">
               <div className="lower">
@@ -178,20 +181,10 @@ const BusLayout = () => {
             </div>
           </div>
           <div className="right">
-            <div className="right-top">
-              <h6>Selected</h6>
-            </div>
-            <small>Know your seat</small>
-            <div className="two-last">
-              <p><i className="ri-armchair-fill"></i>Available Seat: {availableSeats} </p>
-              <p><i style={{ color: 'green' }} className="ri-armchair-fill"></i>Selected Seat:{selectedSeats.join(', ')}</p>
-              <p><i style={{ color: 'purple' }} className="ri-armchair-fill"></i>Occupied Seat</p>
-              <p><i style={{ color: 'pink' }} className="ri-armchair-fill"></i>Booked Seat</p>
-              <p><i style={{ color: 'gray' }} className="ri-armchair-fill"></i>Blocked Seat</p>
-            </div>
+           
             <div className="right-btm">
               <div className="tax">
-                <p>Selected Seats: {selectedSeats.join(', ')}</p>
+                <p><MdAirlineSeatReclineNormal />Selected Seats: {selectedSeats.join(', ')}</p>
                 <p>Total Price: ${totalPrice}</p>
               </div>
               <div className="proceed">

@@ -5,6 +5,48 @@
           justify-content: center;
 }
 
+/* Add these styles to BusList.css */
+
+.overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        z-index: 1000; 
+      }
+      
+      .overlay-content {
+        background-color: #fff;
+        border-radius: 10px;
+        max-width: 50%;
+        height: 100%;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      .overlay-content .tppp {
+       width: 100%;
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       flex-direction: row;
+       padding: 1vmax;
+       background:#fafafa;
+       border-bottom-color: #eee;
+       color: #000000bc;
+      }
+      .overlay-content .tppp i{
+        font-size: 2vmax;
+        font-weight: 700;
+        cursor: pointer;
+       }
+      
+
 
 .BusLists .busList{
           width: 100%;
@@ -14,6 +56,7 @@
           justify-content: center;
           flex-direction: column;
           background: #f4efefd6;
+          letter-spacing: 0.2px;
 
 }
 .BusLists .timer-bus{
@@ -67,7 +110,7 @@ margin-top: 1vmax;
 }
 .BusLists .busList .B-lists-Top .text .destination i{
           color: #fff;
-          font-size: 1.5vmax;
+          font-size: 1.1vmax;
           font-weight: lighter;
 }
 .BusLists .busList .B-lists-Top .text span{
@@ -83,6 +126,14 @@ margin-top: 1vmax;
           color: #000;
           font-size: 1.2vmax;
           font-weight: lighter;
+}
+.BusLists .search-functinality button{
+         border: none;
+         padding: 0.6vmax 1vmax;
+         border-radius: 10px;
+         background-color: rgba(255, 0, 0, 0.749);
+         color: #fff;
+         font-weight: 600;
 }
 /* ------------------------------------------------------------ */
 .BusLists .busList .B-lists-Btm{
@@ -108,6 +159,8 @@ margin-top: 1vmax;
           background: #fff;
           flex-direction: column;
           border-radius: 15px;
+         box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
+
  }
  .bus-sidebar .busSide h5{
           width: 100%;
@@ -302,13 +355,6 @@ margin-top: 1vmax;
           flex-direction: column; 
           margin-top: 1vmax;
 }
-
-
-/* -------------------slider date--------------------- */
-
-
- 
-/* -------------------slider date--------------------- */
 .BusLists .busList .B-lists-Btm .btm-lists .bus-divs{
           width: 100%;
           display: flex;
@@ -323,9 +369,10 @@ margin-top: 1vmax;
           justify-content: space-between;
          flex-direction: column;
          margin-bottom: 1vmax;
-         background: #fff;
+         box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
          padding: 1vmax;
          border-radius: 15px;
+         background: #fff;
 }
 .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top{
           width: 100%;
@@ -370,6 +417,11 @@ margin-top: 1vmax;
          flex-direction: row;
          margin-top: 0.5vmax;
 }
+.BusLists .busList .rating{
+        display: flex;
+        flex-direction: row;
+        gap: 1vmax;
+}
 
 .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-btm button {
           border: none;
@@ -379,7 +431,7 @@ margin-top: 1vmax;
           padding: 0.5vmax 2vmax;
           background-color: #00b7eb;
           border-radius: 10px;
-          transition: background-color 0.3s ease; 
+          transition:  0.3s ease; 
         }
         .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-btm button:hover{
              background: none;
@@ -393,305 +445,276 @@ margin-top: 1vmax;
 
 
 @media (max-width:600px) {
+        .overlay-content {
+                border-radius: 0px;
+                max-width: 100%;
+                height: 100%;
+              }
+              .overlay-content .tppp {
+               width: 100%;
+               display: flex;
+              }
+              .overlay-content .tppp i{
+                font-size: 4vmax;
+               }
+              
+        .BusLists{
+                width: 100%;
+      }
+      .BusLists .busList{
+                width: 100%;
+      }
+      .BusLists .timer-bus{
+              width: 100%;
+              font-size: 2vmax;
+      }
       .BusLists .busList .B-lists-Top{
-                justify-content: space-evenly;
+                width: 100%;
+                justify-content: center;
+                background: #00b7eb;
       }
       
       .BusLists .busList .B-lists-Top .text{
                 width: 95%;
-                justify-content:space-evenly;
-                flex-direction: column;
-      }
-      .BusLists .busList .B-lists-Top .text h5{
-                font-size: 2.5vmax; 
-                width: 100%; 
-                flex-direction: row;
-                display:flex;
-                justify-content: space-evenly;
-                align-items: center;
-      }
-      .BusLists .busList .B-lists-Top .text h5 i{
-      display: none;
-}
-.BusLists .busList .B-lists-Top .text h5 p small{
-        display: none;
-  }
-  .BusLists .busList .B-lists-Top .text h5 p {
-      background: none;
-  }
-      .BusLists .busList .B-lists-Top .text .destination {
-                display: flex;
-                align-items: center;
-                font-size: 2.5vmax;  
-                flex-direction: row;
-                width: 90%;
                 justify-content: space-between;
       }
+      .BusLists .busList .B-lists-Top .text h5{
+                font-size: 2.5vmax;        
+      }
       .BusLists .busList .B-lists-Top .text .destination p{
-        padding-left: 0vmax;
-        padding-right: 0vmax;
-        padding-top: 0vmax;
-        padding-bottom: 0vmax;
-        background:none;
-
-}
-      .BusLists .busList .B-lists-Top .text h5 i{
-                font-size: 3vmax;
+               padding: 0.4vmax;
+      margin-top: 2vmax;
+      }
+      .BusLists .busList .B-lists-Top .text .destination i{
+                font-size: 1.8vmax;
       }
       .BusLists .busList .B-lists-Top .text span{
-       display: none;
+               display: none;
       
       }
-      .BusLists .busList .B-lists-Top .text span i{
-                font-size: 2vmax;
-      }   
-/* --------------  */
-.BusLists .busList .B-lists-Btm{
-        width: 100%;
-}
-.bus-sidebar{
-       display: none;
-}
-
-
-
-
+      .BusLists .search-functinality button{
+               padding: 1.2vmax 2.5vmax;
+               font-weight: 600;
+      }
+      /* ------------------------------------------------------------ */
+      .BusLists .busList .B-lists-Btm{
+                width: 95%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+      }
+      
+       .bus-sidebar{
+               display: none;
+       }     
 .BusLists .busList .B-lists-Btm .btm-lists{
-        width: 100%; 
-        margin-top: 2vmax;
-}
-/* -------------------slider date--------------------- */
-
-
-.date-slider{
-     display: none;
-}
-/* .date-slider .d-slide{
         width: 100%;
-        height: 15vmax;
+        margin-top: 1vmax;
 }
-.date-slider .d-slide .date-left{
-        width: 5%;
-        height:10vmax;
-}
-.date-slider .d-slide .date-left i{
-       font-size: 4vmax;
-}
-.date-slider .d-slide .date-right{
-        width: 5%;
-        height:10vmax;
-}
-.date-slider .d-slide .date-right i{
-       font-size: 4vmax;
-}
-.date-slider .d-slide .date-mid{
-        width: auto;
-        height: 10vmax;
-}
-
-.date-slider .d-slide .date-mid .d-one{
-        width: 15%; 
-        height: 10vmax;
-
-}
-.date-slider .d-slide .date-mid .d-one h6{
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs{
         width: 100%;
-        margin: 0.2vmax 1.5vmax; 
-        font-size: 0.9vmax; 
-} */
-
+       padding-top: 1vmax;
+}
 .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one{
-        width: 95%;
-       margin-bottom: 2vmax;
-       padding: 1.5vmax;
-       border-radius: 30px;
-       box-shadow: 2px 2px 5px 2px gray;
+        width: 100%;
+       flex-direction: column;
+       box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.644);
+       padding: 1.2vmax;
+       margin-top: 2vmax;
+       border-radius: 20px;
 }
 .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top{
-        align-items: flex-start;
        flex-direction: column;
 }
 .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .name{
-        width: 100%;
+       width: 95%;
+ }
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .name h5{
+font-size: 1.5vmax;
+font-weight: 700;
 }
-.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .price{
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 3vmax;
-        padding: 1vmax;
-        border-top: 1px solid #0000006b;
+
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .name span{
+        font-size: 1.5vmax;
+}
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .price h4{
+     font-weight: 700;
 }
 .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .drop-time{
-                width: 100%;
-      }
-     
-.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .drop-time h6 span{
-        font-size: 2vmax;
+                 align-items:center;
+                 justify-content: space-between;
+                 gap: 3vmax;
+}
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .drop-time h6 small{
+      font-size: 1.3vmax;
+}  
+.BusLists .busList .B-lists-Btm .btm-lists .price{
+        width: 100%;
+        justify-content: space-between;
+        align-items: flex-end;
+        display: flex;
+        background: #504f4f18;
+}
+.BusLists .busList .B-lists-Btm .btm-lists .price h4{
+       font-size: 2vmax;
 }
 
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-btm{
+        width: 95%;
+        align-items: center;
+}
+.BusLists .busList .rating{
+      display: flex;
+      gap: 2vmax;
+}
+.BusLists .busList .rating a{
+      font-size: 1.5vmax;
+  }
 
 .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-btm button {
-        padding: 1.5vmax 6vmax;
-        margin-top: 1vmax;
-        border-radius: 20px;
-      }
-      
-
-
+        padding: 0.7vmax 1.5vmax;
+        background-color: #00b7eb;
+        transition:  0.3s ease; 
+ }
 
 }
 
-
-
-
 @media (min-width:600px) and (max-width:1150px) {
-        .BusLists .busList .B-lists-Top{
-                  justify-content: space-evenly;
-        }
-        
-        .BusLists .busList .B-lists-Top .text{
-                  width: 95%;
-                  justify-content:space-evenly;
-                  flex-direction: column;
-        }
-        .BusLists .busList .B-lists-Top .text h5{
-                  font-size: 2.5vmax; 
-                  width: 100%; 
-                  flex-direction: row;
-                  display:flex;
-                  justify-content: space-evenly;
-                  align-items: center;
-        }
-        .BusLists .busList .B-lists-Top .text .destination {
-                  display: flex;
-                  align-items: center;
-                  font-size: 2.5vmax;  
-                  flex-direction: row;
-                  gap: 2vmax;
-        }
-        .BusLists .busList .B-lists-Top .text h5 i{
-                  font-size: 3vmax;
-        }
-        .BusLists .busList .B-lists-Top .text span{
-          width: 100%;
-                  font-size: 2vmax;  
-                  padding-left: 1vmax;
-                  padding-right: 2vmax;
-                  padding-top: 2vmax;
-                  padding-bottom: 2vmax;
-                 margin-bottom: 2vmax;
-        
-        }
-        .BusLists .busList .B-lists-Top .text span i{
-                  font-size: 2vmax;
-        }   
-  /* --------------  */
-  .BusLists .busList .B-lists-Btm{
-          width: 100%;
-  }
-  .bus-sidebar{
-         display: none;
-  }
-  
-  
-  
-  
-  .BusLists .busList .B-lists-Btm .btm-lists{
-          width: 100%; 
-          margin-top: 2vmax;
-  }
-  /* -------------------slider date--------------------- */
-  
-  
-  .date-slider{
-          width: 95%;
-          height: 15vmax;
-  }
-  .date-slider .d-slide{
-          width: 100%;
-          height: 15vmax;
-  }
-  .date-slider .d-slide .date-left{
-          width: 5%;
-          height:10vmax;
-  }
-  .date-slider .d-slide .date-left i{
-         font-size: 4vmax;
-  }
-  .date-slider .d-slide .date-right{
-          width: 5%;
-          height:10vmax;
-  }
-  .date-slider .d-slide .date-right i{
-         font-size: 4vmax;
-  }
-  .date-slider .d-slide .date-mid{
-          width: auto;
-          height: 10vmax;
-  }
-  
-  .date-slider .d-slide .date-mid .d-one{
-          width: 15%; 
-          height: 10vmax;
-  
-  }
-  .date-slider .d-slide .date-mid .d-one h6{
-          width: 100%;
-          margin: 0.2vmax 1.5vmax; 
-          font-size: 0.9vmax; 
-  }
-  
-  .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one{
-          width: 95%;
-         margin-bottom: 2vmax;
-         padding: 2vmax;
-  }
-  .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top{
-          align-items: flex-start;
-         flex-direction: column;
-  }
-  .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .name{
-          width: 100%;
-  }
-  .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .price{
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-top: 3vmax;
-          padding: 1vmax;
-          border-top: 1px solid #0000006b;
-  }
-  .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .drop-time{
-                  width: 100%;
-        }
-       
-  .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .drop-time h6 span{
-          font-size: 2vmax;
-  }
-  
-  
-  .BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-btm button {
-          padding: 1.5vmax 6vmax;
-          margin-top: 1vmax;
-        }
-        
-  
-  
-  
-  }
-  
-  
-          
-  
+        .BusLists{
+                width: 100%;
+      }
+      .overlay-content {
+        border-radius: 0px;
+        max-width: 100%;
+        height: 100%;
+      }
+      .overlay-content .tppp {
+       width: 100%;
+       display: flex;
+      }
+      .overlay-content .tppp i{
+        font-size: 4vmax;
+       }
+      
+      .BusLists .busList{
+                width: 100%;
+      }
+      .BusLists .timer-bus{
+              width: 100%;
+              font-size: 2vmax;
+      }
+      .BusLists .busList .B-lists-Top{
+                width: 100%;
+                justify-content: center;
+                background: #00b7eb;
+      }
+      
+      .BusLists .busList .B-lists-Top .text{
+                width: 95%;
+                justify-content: space-between;
+      }
+      .BusLists .busList .B-lists-Top .text h5{
+                font-size: 2.5vmax;        
+      }
+      .BusLists .busList .B-lists-Top .text .destination p{
+               padding: 0.4vmax;
+      margin-top: 2vmax;
+      }
+      .BusLists .busList .B-lists-Top .text .destination i{
+                font-size: 1.8vmax;
+      }
+      .BusLists .busList .B-lists-Top .text span{
+               display: none;
+      
+      }
+      .BusLists .search-functinality button{
+               padding: 1.2vmax 2.5vmax;
+               font-weight: 600;
+      }
+      /* ------------------------------------------------------------ */
+      .BusLists .busList .B-lists-Btm{
+                width: 95%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+      }
+      
+       .bus-sidebar{
+               display: none;
+       }     
+.BusLists .busList .B-lists-Btm .btm-lists{
+        width: 100%;
+        margin-top: 1vmax;
+}
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs{
+        width: 100%;
+       padding-top: 1vmax;
+}
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one{
+        width: 100%;
+       flex-direction: column;
+       box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.644);
+       padding: 0.5vmax;
+       border-radius: 20px;
+       margin-top: 2vmax;
+}
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top{
+       flex-direction: column;
+}
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .name{
+       width: 95%;
+ }
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .name h5{
+font-size: 1.5vmax;
+font-weight: 700;
+}
 
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .name span{
+        font-size: 1.5vmax;
+}
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .price h4{
+     font-weight: 700;
+}
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .drop-time{
+                 align-items:center;
+                 justify-content: space-between;
+                 gap: 3vmax;
+}
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-top .drop-time h6 small{
+      font-size: 1.3vmax;
+}  
+.BusLists .busList .B-lists-Btm .btm-lists .price{
+        width: 100%;
+        justify-content: space-between;
+        align-items: flex-end;
+        display: flex;
+        background: #504f4f18;
+}
+.BusLists .busList .B-lists-Btm .btm-lists .price h4{
+       font-size: 2vmax;
+}
 
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-btm{
+        width: 95%;
+        align-items: center;
+}
+.BusLists .busList .rating{
+      display: flex;
+      gap: 2vmax;
+}
+.BusLists .busList .rating a{
+      font-size: 1.5vmax;
+  }
 
+.BusLists .busList .B-lists-Btm .btm-lists .bus-divs .one .one-btm button {
+        padding: 0.7vmax 1.5vmax;
+      }
 
-  /* ------------------------------------------------------------------------------------------ */
-         
+  
+  }
+           
 
         
 
