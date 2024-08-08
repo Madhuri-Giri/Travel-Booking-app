@@ -4,11 +4,13 @@ import './BusList.css';
 import busImg from "../../assets/images/bus.png2.png";
 import BusLayout from './BusLayout';
 import { searchBuses } from '../../redux-toolkit/slices/busSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 const BusLists = () => {
   const dispatch = useDispatch();
   const dateMidRef = useRef(null);
+  const navigate = useNavigate();
   const [layoutResponse, setLayoutResponse] = useState(null);
   const { from, to, selectedBusDate, searchResults, status, error } = useSelector((state) => state.bus);
 
@@ -16,7 +18,29 @@ const BusLists = () => {
   const [visibleLayout, setVisibleLayout] = useState({});
 
   const [isTravelListVisible, setIsTravelListVisible] = useState(false);
-  
+
+  const [timer, setTimer] = useState(600000);
+
+  useEffect(() => {
+    const countdown = setInterval(() => {
+      setTimer((prev) => prev - 100);
+    }, 100); 
+
+    if (timer <= 0) {
+      clearInterval(countdown);
+      navigate('/bus-search'); 
+    }
+
+    return () => clearInterval(countdown);
+  }, [timer, navigate]);
+
+  const formatTime = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes} min ${seconds} sec left`;
+  };
+
 
   useEffect(() => {
     if (!searchResults.length) {
@@ -38,22 +62,6 @@ const BusLists = () => {
     return dates;
   };
   
-  const numDays = 30; 
-  const dates = generateDates(numDays);
-  
-  const scrollLeft = () => {
-    dateMidRef.current.scrollBy({
-      left: -150,  
-      behavior: 'smooth',
-    });
-  };
-  
-  const scrollRight = () => {
-    dateMidRef.current.scrollBy({
-      left: 150,  
-      behavior: 'smooth',
-    });
-  };
   
 
 
@@ -121,22 +129,24 @@ const BusLists = () => {
   return (
     <div className='BusLists'>
       <div className="busList">
+      <div className="timer-bus">
+           <p>Redirecting in {formatTime(timer)}...</p> 
+            </div>
         <div className="B-lists-Top">
           <div className="text">
             <h5>
-              <i style={{ color: "#00b7eb" }} className="ri-map-pin-line"></i>
               <div className="destination">
-                <p><small style={{ color: "#00b7eb" }}>From</small>{from}</p>
-                <i style={{ fontSize: "1.5vmax", color: "#00b7eb" }} className="ri-arrow-left-right-line"></i>
-                <p><small style={{ color: "#00b7eb" }}>To</small>{to}</p>
+              <i style={{ color: "#fff" }} className="ri-map-pin-line"></i>
+                <p>{from}</p>
+                <p><i style={{fontSize:"1vmax"}} className="ri-arrow-left-right-line"></i></p>
+                <p>{to}</p>
               </div>
             </h5>
             <span>
-              <i style={{ color: "#00b7eb" }} className="ri-calendar-line"></i>
+              <i style={{ color: "#fff" }} className="ri-calendar-line"></i>
               Depart Date: {selectedBusDate && (
                 <>
                   {selectedBusDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })}{' '}
-                  {selectedBusDate.toLocaleString('default', { month: 'short' })}
                 </>
               )}
             </span>
@@ -218,23 +228,7 @@ const BusLists = () => {
           {/* Bus lists */}
           <div className="btm-lists">
 {/* ----------------------------------------------------------------------------------------------------------------- */}
-            {/* <div className="date-slider">
-              <div className="d-slide">
-                <div className="date-left" onClick={scrollLeft}>
-                  <i className="ri-arrow-left-s-line"></i>
-                </div>
-                <div className="date-mid" ref={dateMidRef}>
-                  {dates.map((date, index) => (
-                    <div className="d-one" key={index}>
-                      <h6>{date.toDateString()}</h6>
-                    </div>
-                  ))}
-                </div>
-                <div className="date-right" onClick={scrollRight}>
-                  <i className="ri-arrow-right-s-line"></i>
-                </div>
-              </div>
-            </div> */}
+
 {/* -------------------------------------------------------------------------------------------------------- */}
             <div className="bus-divs">
               {status === 'loading' && <p>Loading...</p>}

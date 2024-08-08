@@ -2,13 +2,21 @@
 import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setFrom, setTo, setFromSuggestions, setToSuggestions, setSelectedBusDate, searchBuses } from '../../redux-toolkit/slices/busSlice';
+import {
+  setFrom,
+  setTo,
+  setFromSuggestions,
+  setToSuggestions,
+  setSelectedBusDate,
+  searchBuses
+} from '../../redux-toolkit/slices/busSlice';
 import BusMainImg from "../../assets/images/busMainImg.png";
 import "./BusSearch.css";
 import BusGurantee from './BusGurantee';
-import loaderGif from "../../assets/images/loading-animation-v2.gif"
+import Loading from '../../pages/loading/Loading'; // Import the Loading component
 
 const BusSearch = () => {
+  const [loading, setLoading] = useState(false); // Add loading state
   const dateInputRef = useRef(null);
 
   const handleIconClick = () => {
@@ -25,9 +33,12 @@ const BusSearch = () => {
     try {
       const response = await fetch(`https://sajyatra.sajpe.in/admin/api/bus_list?query=${query}`);
       const data = await response.json();
-      const filteredSuggestions = data.data.filter(suggestion =>
-        suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
-      );
+      const filteredSuggestions = data.data
+        .filter(suggestion =>
+          suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
+        )
+        .sort((a, b) => a.busodma_destination_name.localeCompare(b.busodma_destination_name)) // Sort alphabetically
+        .slice(0, 7); // Limit to 7 suggestions
       dispatch(setSuggestions(filteredSuggestions));
     } catch (error) {
       console.error('Error fetching suggestions:', error);
@@ -37,7 +48,7 @@ const BusSearch = () => {
   const handleFromChange = (event) => {
     const value = event.target.value;
     dispatch(setFrom(value));
-    if (value.length > 2) {
+    if (value.length >= 1) {
       fetchSuggestions(value, setFromSuggestions);
     } else {
       dispatch(setFromSuggestions([]));
@@ -47,15 +58,23 @@ const BusSearch = () => {
   const handleToChange = (event) => {
     const value = event.target.value;
     dispatch(setTo(value));
-    if (value.length > 2) {
+    if (value.length >= 1) {
       fetchSuggestions(value, setToSuggestions);
     } else {
       dispatch(setToSuggestions([]));
     }
   };
 
-  const handleSuggestionClick = (suggestion, fieldSetter) => {
-    fieldSetter(suggestion.busodma_destination_name);
+  const handleFromFocus = () => {
+    if (from.length >= 1) {
+      fetchSuggestions(from, setFromSuggestions);
+    }
+  };
+
+  const handleToFocus = () => {
+    if (to.length >= 1) {
+      fetchSuggestions(to, setToSuggestions);
+    }
   };
 
   const handleFromSelect = (suggestion) => {
@@ -69,14 +88,21 @@ const BusSearch = () => {
   };
 
   const handleSearch = () => {
+    setLoading(true);
     dispatch(searchBuses({ from, to, departDate: selectedBusDate ? selectedBusDate.toISOString().split('T')[0] : null }))
       .then(() => {
+        setLoading(false);
         navigate('/bus-list');
       })
       .catch((error) => {
+        setLoading(false);
         console.error('Error searching buses:', error);
       });
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -98,6 +124,7 @@ const BusSearch = () => {
                         placeholder='Starting Point'
                         value={from}
                         onChange={handleFromChange}
+                        onFocus={handleFromFocus}
                       />
                     </div>
                     {fromSuggestions.length > 0 && (
@@ -121,6 +148,7 @@ const BusSearch = () => {
                         placeholder='Destination'
                         value={to}
                         onChange={handleToChange}
+                        onFocus={handleToFocus}
                       />
                     </div>
                     {toSuggestions.length > 0 && (
@@ -146,7 +174,7 @@ const BusSearch = () => {
                         className="date-input"
                         value={selectedBusDate ? selectedBusDate.toISOString().split('T')[0] : ''}
                         onChange={(e) => dispatch(setSelectedBusDate(new Date(e.target.value)))}
-                        min={new Date().toISOString().split('T')[0]}
+                        min={today}
                       />
                     </div>
                   </div>

@@ -40,7 +40,7 @@ import Loading from './pages/loading/Loading';
 
 
 const App = () => {
-  const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number'];
+  const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number',  '/load'];
 
   return (
     <div>
