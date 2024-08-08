@@ -43,7 +43,7 @@
 }
 
 .navmenuss a {
-    font-weight: bold;
+    font-weight: 500;
     color: rgba(29, 27, 27, 0.849);
     padding: 10px 25px !important;
 }
