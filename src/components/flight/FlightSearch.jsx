@@ -1,6 +1,6 @@
 import "./FlightSearch.css"
 // import '../home/Home.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Carousel, Dropdown, Modal, Button } from 'react-bootstrap';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { FaCalendarAlt, FaUser, FaAngleDown } from 'react-icons/fa';
@@ -21,7 +21,12 @@ import 'slick-carousel/slick/slick-theme.css';
 import PropTypes from 'prop-types';
 import home_insta from "../../../src/assets/images/home-insta.jpg";
 import home_newsletter from "../../../src/assets/images/home-yotube.jpg";
+import Loading from '../../pages/loading/Loading'; // Import the Loading component
+
+
 const FlightSearch = () => {
+  const [loading, setLoading] = useState(false); // Add loading state
+
   const navigate = useNavigate();
 
   // states-------------------------------------------
@@ -32,32 +37,37 @@ const FlightSearch = () => {
   const [preferredDepartureTime, setPreferredDepartureTime] = useState(new Date());
   const [preferredArrivalTime, setPreferredArrivalTime] = useState(new Date());
 
-  const fetchSuggestions = async (query, setSuggestions) => {
-    console.log('test');
-    try {
-      const response = await fetch(`https://srninfotech.com/projects/travel-app/api/bus_list?query=${query}`);
-      const data = await response.json();
-      // console.log('API Response:', data)
-      const filteredSuggestions = data.data.filter(suggestion =>
-        suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
-      );
-      setSuggestions(filteredSuggestions);
-    }
-    catch (error) {
-      console.error('Error fetching suggestions:', error);
-    }
-  };
+ const fetchSuggestions = async (query, setSuggestions) => {
+  console.log('test');
+  try {
+    const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ query })
+    });
+    const data = await response.json();
+    const filteredSuggestions = data.data.filter(suggestion =>
+      suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
+    );
+    setSuggestions(filteredSuggestions);
+  } catch (error) {
+    console.error('Error fetching suggestions:', error);
+  }
+};
 
-   // function for adult , child , infact dropdown list-------------------------------------------
-   const [showDropdown, setShowDropdown] = useState(false);
-   const handleShow = () => {
-     setShowDropdown(!showDropdown);
-   };
-   const handleClose = () => {
-     setShowDropdown(false);
-   };
-   // function for adult , child , infact dropdown list-------------------------------------------
- 
+
+  // function for adult , child , infact dropdown list-------------------------------------------
+  const [showDropdown, setShowDropdown] = useState(false);
+  const handleShow = () => {
+    setShowDropdown(!showDropdown);
+  };
+  const handleClose = () => {
+    setShowDropdown(false);
+  };
+  // function for adult , child , infact dropdown list-------------------------------------------
+
 
   // func for Origin & Destination----------------------------------------------------------------
   const handleFromChange = (event) => {
@@ -115,7 +125,7 @@ const FlightSearch = () => {
         Origin: "LKO",
         Destination: "KWI",
         FlightCabinClass: 1,
-         PreferredDepartureTime: "2024-08-20T00:00:00",
+        PreferredDepartureTime: "2024-08-20T00:00:00",
         PreferredArrivalTime: "2024-08-25T00:00:00"
       }
     ]
@@ -124,6 +134,7 @@ const FlightSearch = () => {
 
   // search API integration function----------------------------------------------
   const getFlightList = async () => {
+    setLoading(true);
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
         method: 'POST',
@@ -160,10 +171,12 @@ const FlightSearch = () => {
         console.log("SrdvIndex not found");
       }
 
-
+      setLoading(false);
       navigate("/flight-list", { state: { data: data, formData: formData } });
     }
+
     catch (error) {
+      setLoading(false);
       console.error('Error fetching suggestions:', error);
     }
   }
@@ -182,21 +195,25 @@ const FlightSearch = () => {
   //     return { ...prev, Segments: updatedSegments };
   //   });
   // };
-const handleChange = (date) => {
-  // Set the time part to "00:00:00" (AnyTime) for both PreferredDepartureTime and PreferredArrivalTime
-  const formattedDate = new Date(date).toISOString().split('T')[0] + 'T00:00:00';
-  console.log("formattedDate", formattedDate);
 
-  setFormData((prev) => {
-    let updatedSegments = [...prev.Segments];
-    updatedSegments[0]["PreferredDepartureTime"] = formattedDate;
-    updatedSegments[0]["PreferredArrivalTime"] = formattedDate;
-    console.log("updatedSegments", updatedSegments);
-    return { ...prev, Segments: updatedSegments };
-  });
-};
+  const departureDatePickerRef = useRef(null);
+  const arrivalDatePickerRef = useRef(null);
 
-  
+  const handleChange = (date) => {
+    // Set the time part to "00:00:00" (AnyTime) for both PreferredDepartureTime and PreferredArrivalTime
+    const formattedDate = new Date(date).toISOString().split('T')[0] + 'T00:00:00';
+    console.log("formattedDate", formattedDate);
+
+    setFormData((prev) => {
+      let updatedSegments = [...prev.Segments];
+      updatedSegments[0]["PreferredDepartureTime"] = formattedDate;
+      updatedSegments[0]["PreferredArrivalTime"] = formattedDate;
+      console.log("updatedSegments", updatedSegments);
+      return { ...prev, Segments: updatedSegments };
+    });
+  };
+
+
   // function for dynamic dep arr date----------------------------------------
 
   // fun for increase decrease adult , child , infant count------------------------------------------------
@@ -319,6 +336,10 @@ const handleChange = (date) => {
 
 
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <>
 
@@ -365,7 +386,7 @@ const handleChange = (date) => {
                               <label htmlFor="text" >From</label>
                               <input type="text" className="form-control" id="flightSatrtingPoint" placeholder='Starting Point' value={from} onChange={handleFromChange} />
                               {fromSuggestions.length > 0 && (
-                                <ul className="suggestions-list">
+                                <ul className="suggestions-list flight-suggestions-listFrom">
                                   {fromSuggestions.map((suggestion, index) => (
                                     <li className='text-red' key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
                                       {suggestion.
@@ -381,7 +402,7 @@ const handleChange = (date) => {
                               <label htmlFor="text">To</label>
                               <input type="text" className="form-control" id="flightDestinationPoint" placeholder='Destination' value={to} onChange={handleToChange} />
                               {toSuggestions.length > 0 && (
-                                <ul className="suggestions-list">
+                                <ul className="suggestions-list flight-suggestions-listTo">
                                   {toSuggestions.map((suggestion, index) => (
                                     <li key={index} onClick={() => handleToSelect(suggestion, setTo)}>
                                       {suggestion.busodma_destination_name
@@ -404,8 +425,12 @@ const handleChange = (date) => {
                                   className="departureCallender"
                                   id="PreferredDepartureTime"
                                   placeholderText="Select a date"
+                                  ref={departureDatePickerRef}
                                 />
-                                <MdDateRange className="date-picker-icon" />
+                                <MdDateRange
+                                  className="date-picker-icon"
+                                  onClick={() => departureDatePickerRef.current.setOpen(true)}
+                                />
                               </div>
                             </div>
                           </div>
@@ -538,7 +563,7 @@ const handleChange = (date) => {
                               <label htmlFor="text" >From</label>
                               <input type="text" className="form-control" id="flightSatrtingPoint" placeholder='Starting Point' value={from} onChange={handleFromChange} />
                               {fromSuggestions.length > 0 && (
-                                <ul className="suggestions-list">
+                                <ul className="suggestions-list flight-suggestions-listFrom">
                                   {fromSuggestions.map((suggestion, index) => (
                                     <li className='text-red' key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
                                       {suggestion.
@@ -554,7 +579,7 @@ const handleChange = (date) => {
                               <label htmlFor="text">To</label>
                               <input type="text" className="form-control" id="flightDestinationPoint" placeholder='Destination' value={to} onChange={handleToChange} />
                               {toSuggestions.length > 0 && (
-                                <ul className="suggestions-list">
+                                <ul className="suggestions-list flight-suggestions-listTo">
                                   {toSuggestions.map((suggestion, index) => (
                                     <li key={index} onClick={() => handleToSelect(suggestion, setTo)}>
                                       {suggestion.busodma_destination_name
@@ -574,11 +599,15 @@ const handleChange = (date) => {
                                   name="PreferredDepartureTime"
                                   selected={preferredDepartureTime}
                                   onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                  className=""
+                                  className="departureCallender"
                                   id="PreferredDepartureTime"
                                   placeholderText="Select a date"
+                                  ref={departureDatePickerRef}
                                 />
-                                <MdDateRange className="date-picker-icon" />
+                                <MdDateRange
+                                  className="date-picker-icon"
+                                  onClick={() => departureDatePickerRef.current.setOpen(true)}
+                                />
                               </div>
                             </div>
                           </div>
@@ -594,8 +623,12 @@ const handleChange = (date) => {
                                     className=""
                                     id="PreferredArrivalTime"
                                     placeholderText="Select a date"
+                                    ref={arrivalDatePickerRef}
                                   />
-                                  <MdDateRange className="date-picker-icon" />
+                                  <MdDateRange
+                                    className="date-picker-icon"
+                                    onClick={() => arrivalDatePickerRef.current.setOpen(true)}
+                                  />
                                 </div>
                               </div>
 
@@ -756,7 +789,7 @@ const handleChange = (date) => {
           </div>
         </div>
       </section>
-      
+
       <section className="flightbooksec3">
         <h5>Reasons to book with us?</h5>
         <div className="container-fluid">
@@ -806,9 +839,9 @@ const handleChange = (date) => {
       </section> */}
 
 
-      <section className='exictingOffers mt-5 mb-5'>
+      <section className='exictingOffers'>
         <div className="container-fluid">
-          <h5 className='mb-3'>Exclusive Offers</h5>
+          <h5 className=''>Exclusive Offers</h5>
           <Slider {...settings}>
             {offerSliderImages.map((offer, offerIndex) => {
               return (
@@ -915,7 +948,7 @@ const handleChange = (date) => {
                   <img
                     className="d-block w-100 img-fluid"
                     // src='/src/assets/images/home-insta-new.jpg'
-                    src={ home_insta}
+                    src={home_insta}
                     alt="First slide"
                   />
                 </Carousel.Item>
