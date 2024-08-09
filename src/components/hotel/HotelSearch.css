@@ -2,17 +2,19 @@
 
 /* --------- Start --------- */
 .hotel_container {
-   margin: 20px;
+   /* margin: 20px; */
   padding: 20px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   background-color: #00b7eb;
   
 }
-
+.content_wrapperRow{
+  margin-bottom: 25px;
+}
 .content_wrapper {
   display: flex;
   margin-top: 50px;
-  margin-left: 120px;
+  /* margin-left: 120px; */
 }
 .content_box h1 {
   font-family: sans-serif;
