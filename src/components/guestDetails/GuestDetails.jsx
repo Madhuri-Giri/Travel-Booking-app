@@ -453,16 +453,21 @@ const cleanHotelNorms = (hotelNorms) => {
 return (
   
   <div className="guest-details-container">
-      <h2 className="section-title">Guest Details</h2>
-      <h2>{HotelName}</h2>
+  <h2 className="section-title">Guest <span style={{color:"#00b7eb"}}>Details</span> </h2>
+  <div className="details-wrapper">
+    <div className="left-side">
+      <h3>{HotelName}</h3>
       <h5>{AddressLine1}</h5>
+    </div>
+    <div className="right-side">
       <p><strong>Check-in Date:</strong> {checkInDate}</p>
       <p><strong>Check-out Date:</strong> {checkOutDate}</p>
-
+    </div>
+  </div>
       {HotelRoomsDetails && HotelRoomsDetails.length > 0 ? (
         HotelRoomsDetails.map((room, index) => (
           <div key={index} className="guest-details-card">
-            <h3 className="card-title">Room Type: {room.RoomTypeName}</h3>
+            {/* <h3 className="card-title">Room Type: {room.RoomTypeName}</h3>
             <p className="info-section">Price: {room.Price?.CurrencyCode} {room.Price?.RoomPrice?.toFixed(2)}</p>
             <p className="info-section">
               Day Rate: {room.DayRates?.map(dayRate => (
@@ -471,7 +476,7 @@ return (
                 </span>
               ))}
             </p>
-            <p className="info-section">Smoking Preference: {room.SmokingPreference}</p>
+            <p className="info-section">Smoking Preference: {room.SmokingPreference}</p> */}
             {/* <h5 className="info-section">Cancellation Policies:</h5>
             <ul>
               {room.CancellationPolicies?.map((policy, index) => (
@@ -483,26 +488,53 @@ return (
             </ul> */}
             {/* <p className="info-section"><strong>Cancellation Policy:</strong> {room.CancellationPolicy}</p> */}
             <div className="hotel-policies">
-              <h3>Hotel Policies</h3>
-              {HotelPolicyDetail ? (
+            <Accordion className="accordian_space">
+              <Accordion.Item eventKey="0">
+                  <Accordion.Header><b>Hotel Policies:</b></Accordion.Header>
+                  <Accordion.Body>
+                  {HotelPolicyDetail ? (
                 <div className="hotel-policy">
                   <h4>Policy Details</h4>
                   <p>{cleanHotelPolicyDetails(HotelPolicyDetail)}</p>
                 </div>
               ) : <p>No hotel policy details available.</p>}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
 
-              {HotelNorms ? (
-                <div className="hotel-norms">
+              {/* <h3>Hotel Policies</h3>
+              {HotelPolicyDetail ? (
+                <div className="hotel-policy">
+                  <h4>Policy Details</h4>
+                  <p>{cleanHotelPolicyDetails(HotelPolicyDetail)}</p>
+                </div>
+              ) : <p>No hotel policy details available.</p>} */}
+              <Accordion className="accordian_space">
+              <Accordion.Item eventKey="0">
+                  <Accordion.Header><b>Hotel Policies:</b></Accordion.Header>
+                  <Accordion.Body>
+                  {HotelPolicyDetail ? (
+                <div className="hotel-policy">
                   <h4>Hotel Norms</h4>
                   <p>{cleanHotelNorms(HotelNorms)}</p>
                 </div>
               ) : <p>No hotel norms available.</p>}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+
+              {/* {HotelNorms ? (
+                <div className="hotel-norms">
+                  <h4>Hotel Norms</h4>
+                  <p>{cleanHotelNorms(HotelNorms)}</p>
+                </div>
+              ) : <p>No hotel norms available.</p>} */}
             </div>
 
-            <div>
+            <div className="room-details-container">
               {/* <h4>Selected Single Deluxe Rooms</h4> */}
               {singleDeluxe.map((room, index) => (
-                <div key={index}>
+                <div key={index}  className="room-details">
                   <p>Room Type: {room.RoomTypeName}</p>
                   <p>Room Quantity: {room.guestCounts.room}</p>
                   <p>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</p>
@@ -510,8 +542,9 @@ return (
                   <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p>
                 </div>
               ))}
+              
               {/* <h4>Selected Double Deluxe Rooms</h4> */}
-              {doubleDeluxe.map((room, index) => (
+              {/* {doubleDeluxe.map((room, index) => (
                 <div key={index}>
                   <p>Room Type: {room.RoomTypeName}</p>
                   <p>Quantity: {room.guestCounts.room}</p>
@@ -521,7 +554,7 @@ return (
         <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p>
       </div>
                 </div>
-              ))}
+              ))} */}
               
             </div>
 

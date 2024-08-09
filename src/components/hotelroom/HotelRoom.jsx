@@ -16,9 +16,11 @@ const HotelRoom = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState(initialFormData);
+
 // Single and Double delux element 
   const [selectedSingleDeluxeRooms, setSelectedSingleDeluxeRooms] = useState([]);
   const [selectedDoubleDeluxeRooms, setSelectedDoubleDeluxeRooms] = useState([]);
+
   const [totalPriceSingleDeluxe, setTotalPriceSingleDeluxe] = useState(0);
   const [totalPriceDoubleDeluxe, setTotalPriceDoubleDeluxe] = useState(0);
 
@@ -81,8 +83,11 @@ useEffect(() => {
     if (Array.isArray(singleDeluxeRooms) && Array.isArray(doubleDeluxeRooms)) {
       setSelectedSingleDeluxeRooms(singleDeluxeRooms);
       setSelectedDoubleDeluxeRooms(doubleDeluxeRooms);
+
       updateTotalPrice(singleDeluxeRooms, 'single');
       updateTotalPrice(doubleDeluxeRooms, 'double');
+
+      
     } else {
       console.error('Selected hotel data is not an array:', singleDeluxeRooms, doubleDeluxeRooms);
     }
@@ -92,18 +97,22 @@ useEffect(() => {
     const newTotalPrice = rooms.reduce((sum, room) => {
       const roomPrice = room.Price?.RoomPrice || 0;
       const roomCount = room.guestCounts?.room || 1;
+
+      
       return sum + (roomPrice * roomCount);
     }, 0);
     
     if (type === 'single') {
       setTotalPriceSingleDeluxe(newTotalPrice);
-    } else if (type === 'double') {
+    }
+     else if (type === 'double') {
       setTotalPriceDoubleDeluxe(newTotalPrice);
     }
   };
 
   const handleRoomToggle = (room, type) => {
     const setSelectedRooms = type === 'single' ? setSelectedSingleDeluxeRooms : setSelectedDoubleDeluxeRooms;
+    
     const selectedRooms = type === 'single' ? selectedSingleDeluxeRooms : selectedDoubleDeluxeRooms;
     setSelectedRooms((prevSelectedRooms) => {
       const isSelected = prevSelectedRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode);
@@ -129,8 +138,11 @@ useEffect(() => {
   };
 
   const handleGuestChange = (index, type, increment, roomType) => {
+
     const setSelectedRooms = roomType === 'single' ? setSelectedSingleDeluxeRooms : setSelectedDoubleDeluxeRooms;
+
     const selectedRooms = roomType === 'single' ? selectedSingleDeluxeRooms : selectedDoubleDeluxeRooms;
+    
     setSelectedRooms((prevSelectedRooms) => {
       if (!Array.isArray(prevSelectedRooms)) {
         console.error('selectedRooms is not an array:', prevSelectedRooms);
@@ -378,14 +390,14 @@ useEffect(() => {
       </div>
                         <Card.Title><b>{room.RoomTypeName}</b></Card.Title>
                         <Card.Text>
-                          <p><b>Price:</b> INR {room.Price?.RoomPrice?.toFixed(2)}</p>
+                        <p><b>Price: INR</b> {room.Price?.RoomPrice?.toFixed(2)}</p>
                           <p><b>Day Rate:</b> {room.DayRates?.map(dayRate => (
                             <span key={dayRate.Date}>
                               {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
                             </span>
                           ))}</p>
                           
-                          <p><b>Smoking Preference:</b>{room.SmokingPreference}</p>
+                          <p className='space_r'><b>Smoking Preference:</b>{room.SmokingPreference}</p>
                           
                           <Accordion className="accordian_space">
                 <Accordion.Item eventKey="0">
@@ -405,7 +417,6 @@ useEffect(() => {
                   <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
                   <Accordion.Body>
                     {room.CancellationPolicy}
-                    
                   </Accordion.Body>
                 </Accordion.Item>
               </Accordion>
@@ -454,7 +465,7 @@ useEffect(() => {
           </div>
         </div>
       </div>
-                        <Card.Title>{room.RoomTypeName}</Card.Title>
+                        <Card.Title><b>{room.RoomTypeName}</b></Card.Title>
                         <Card.Text>
                           <p><b>Price: INR</b> {room.Price?.RoomPrice?.toFixed(2)}</p>
                           <p><b>Day Rate:</b> {room.DayRates?.map(dayRate => (
@@ -462,7 +473,7 @@ useEffect(() => {
                               {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
                             </span>
                           ))}</p>
-                          <p><b>Smoking Preference:</b> {room.SmokingPreference}</p>
+                          <p className='space_r'><b>Smoking Preference:</b> {room.SmokingPreference}</p>
                           
                           <Accordion className="accordian_space">
                 <Accordion.Item eventKey="0">
@@ -493,12 +504,15 @@ useEffect(() => {
                             <button onClick={() => handleRoomToggle(room, 'double')} className="remove_button">Remove</button>
                             <h5>If you want to increase room quantity:</h5>
                             <div className="guest_count">
+                            
                               <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', -1, 'double')}>-</button>
+                              
                               <span>Room: {selectedDoubleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
                               <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'double')}>+</button>
                             </div>
                             <div className="selected_rooms_summary">
-                              <p>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</p>
+                              <span>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</span>
+                              
                               <button onClick={roomblockHandler} className="reserve_button">Continue</button>
                             </div>
                           </div>

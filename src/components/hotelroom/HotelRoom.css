@@ -32,9 +32,9 @@
 .Exclusive_room {
   margin: 20px;
   padding: 20px;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  /* box-shadow: 0 4px 8px rgba(0,0,0,0.1); */
 }
 
 .room_type_container {
@@ -70,11 +70,18 @@
   display: none;
   }
 
+.space_r b{
+margin-right: 5px;
+}
 
+
+.space_r p{
+  word-spacing: 2px;
+  }
   .card {
-    border: 1px solid #1b1b1b;
-    border-radius: 8px;
-    box-shadow: 2px 2px 5px 2px rgba(9, 9, 9, 0.386);
+    /* border: 1px solid #1b1b1b; */
+    /* border-radius: 8px; */
+    /* box-shadow: 2px 2px 5px 2px rgba(9, 9, 9, 0.386); */
   }
   
   .card-title {
@@ -83,7 +90,9 @@
     color: #00b7eb;
     /* margin-bottom: 10px; */
   }
-  
+  .card-title b{
+    color: #007bff;
+  }
   .card-text {
     font-size: 1rem;
   }
