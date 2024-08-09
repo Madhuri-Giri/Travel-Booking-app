@@ -46,6 +46,7 @@ const Help = () => {
     return (
         <>
         
+        <section className='helpSecMain'>
         <div className="help-page">
             <h2>Help</h2>
             <form ref={form} onSubmit={sendEmail}>
@@ -83,6 +84,7 @@ const Help = () => {
                 </div>
             )}
         </div>
+        </section>
         </>
     );
 };

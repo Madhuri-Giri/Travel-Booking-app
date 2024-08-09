@@ -33,21 +33,21 @@ const CustomNavbar = () => {
                                 className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/flight-search' ? 'active' : ''} , ${location.pathname === '/flight-list' ? 'active' : ''} , ${location.pathname === '/flight-details' ? "active" : ''} , ${location.pathname === '/seat-meal-baggage' ? 'active' : ''} , ${location.pathname === '/flight-review' ? 'active' : ''} `}
                             >
                                 <GiCommercialAirplane className="icon" size={20} />
-                                <span className="textNav">FLIGHTS</span>
+                                <span className="textNav">FLIGHT</span>
                             </Nav.Link>
                             <Nav.Link
                                 href="/bus-search"
                                 className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/bus-search' ? 'active' : ''} , ${location.pathname === '/bus-list' ? 'active' : ''} `}
                             >
-                                <TbBus className="icon" size={22} />
-                                <span className="textNav">BUSES</span>
+                                <FaBusAlt className="icon" size={22} />
+                                <span className="textNav">BUS</span>
                             </Nav.Link>
                             <Nav.Link
                                 href="/hotel-search"
                                 className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/hotel-search' ? 'active' : ''} , ${location.pathname === '/hotel-list' ? 'active' : ''}`}
                             >
                                 <RiHotelBedFill className="icon" size={22} />
-                                <span className="textNav">HOTELS</span>
+                                <span className="textNav">HOTEL</span>
                             </Nav.Link>
                             {/* <Nav.Link
                                 href="/package"

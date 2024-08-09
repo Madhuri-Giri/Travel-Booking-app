@@ -3,8 +3,8 @@ import "./FlightSearch.css"
 import React, { useState, useEffect, useRef } from 'react';
 import { Carousel, Dropdown, Modal, Button } from 'react-bootstrap';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
-import { FaCalendarAlt, FaUser, FaAngleDown } from 'react-icons/fa';
-import { BiLogoPlayStore } from "react-icons/bi";
+import { FaCalendarAlt, FaUser, FaAngleDown, FaPlaneDeparture } from 'react-icons/fa';
+import { BiLogoPlayStore, BiSolidPlaneTakeOff, BiSolidPlaneLand } from "react-icons/bi";
 import { MdDateRange } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { GiCommercialAirplane } from "react-icons/gi";
@@ -37,25 +37,30 @@ const FlightSearch = () => {
   const [preferredDepartureTime, setPreferredDepartureTime] = useState(new Date());
   const [preferredArrivalTime, setPreferredArrivalTime] = useState(new Date());
 
- const fetchSuggestions = async (query, setSuggestions) => {
-  console.log('test');
-  try {
-    const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ query })
-    });
-    const data = await response.json();
-    const filteredSuggestions = data.data.filter(suggestion =>
-      suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
-    );
-    setSuggestions(filteredSuggestions);
-  } catch (error) {
-    console.error('Error fetching suggestions:', error);
-  }
-};
+
+
+  const fetchSuggestions = async (query, setSuggestions) => {
+    console.log('test');
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query })
+      });
+      const data = await response.json();
+      const filteredSuggestions = data.data
+        .filter(suggestion =>
+          suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
+        )
+        .slice(0, 7); // Limit the number of suggestions to 7
+      setSuggestions(filteredSuggestions);
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+    }
+  };
+
 
 
   // function for adult , child , infact dropdown list-------------------------------------------
@@ -180,21 +185,6 @@ const FlightSearch = () => {
       console.error('Error fetching suggestions:', error);
     }
   }
-  // search API integration function----------------------------------------------
-
-
-  // function for dynamic dep arr date----------------------------------------
-  // const handleChange = (date) => {
-  //   const formattedDate = new Date(date).toISOString().split('.')[0];
-  //   console.log("formattedDate", formattedDate);
-  //   setFormData((prev) => {
-  //     let updatedSegments = [...prev.Segments];
-  //     updatedSegments[0]["PreferredDepartureTime"] = formattedDate;
-  //     updatedSegments[0]["PreferredArrivalTime"] = formattedDate;
-  //     console.log("updatedSegments", updatedSegments);
-  //     return { ...prev, Segments: updatedSegments };
-  //   });
-  // };
 
   const departureDatePickerRef = useRef(null);
   const arrivalDatePickerRef = useRef(null);
@@ -381,25 +371,39 @@ const FlightSearch = () => {
                     <div className="ps-2 pe-2">
                       <form action="" >
                         <div className="row flightformRow">
-                          <div className="col-12">
-                            <div className="form-group  position-relative">
-                              <label htmlFor="text" >From</label>
-                              <input type="text" className="form-control" id="flightSatrtingPoint" placeholder='Starting Point' value={from} onChange={handleFromChange} />
+                          <div className="col-12 flightformCol">
+                            <div className="form-group position-relative flight-input-container">
+                              <span className="plane-icon">
+                                <BiSolidPlaneTakeOff />
+                              </span>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="flightSatrtingPoint"
+                                placeholder="Starting Point"
+                                value={from}
+                                onChange={handleFromChange}
+                              />
                               {fromSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listFrom">
                                   {fromSuggestions.map((suggestion, index) => (
-                                    <li className='text-red' key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
-                                      {suggestion.
-                                        busodma_destination_name
-                                      }              </li>
+                                    <li className="text-red" key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
+                                      {suggestion.busodma_destination_name}
+                                    </li>
                                   ))}
                                 </ul>
                               )}
+                              <label className="flight-input-labelFrom" htmlFor="From">
+                                Starting Point
+                              </label>
                             </div>
                           </div>
-                          <div className="col-12 mt-2">
-                            <div className="form-group">
-                              <label htmlFor="text">To</label>
+
+                          <div className="col-12 flightformCol">
+                            <div className="form-group flight-input-container">
+                              <span className="plane-icon">
+                                <BiSolidPlaneLand />
+                              </span>
                               <input type="text" className="form-control" id="flightDestinationPoint" placeholder='Destination' value={to} onChange={handleToChange} />
                               {toSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listTo">
@@ -411,12 +415,14 @@ const FlightSearch = () => {
                                   ))}
                                 </ul>
                               )}
+                              <label className="flight-input-labelTo" htmlFor="flightDestinationPoint">Destination</label>
                             </div>
                           </div>
-
-                          <div className="col-sm-6 mt-2">
-                            <div className="form-group">
-                              <label htmlFor="PreferredDepartureTime">Departure Date</label>
+                          <div className="col-6 flightformCol">
+                            <div className="form-group flight-input-container">
+                              <span className="plane-icon">
+                                <MdDateRange />
+                              </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
                                 <DatePicker
                                   name="PreferredDepartureTime"
@@ -427,29 +433,35 @@ const FlightSearch = () => {
                                   placeholderText="Select a date"
                                   ref={departureDatePickerRef}
                                 />
-                                <MdDateRange
+                                {/* <MdDateRange
                                   className="date-picker-icon"
                                   onClick={() => departureDatePickerRef.current.setOpen(true)}
-                                />
+                                /> */}
                               </div>
+                              <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure Date</label>
                             </div>
                           </div>
-                          <div className="col-sm-6">
-                            <div className="form-group onewayreturnhidebtn">
-                              <Link>Add Return date</Link>
-                              <MdDateRange className="mt-1 ms-2" />
-                            </div>
+                          {/* <div className="col-sm-6 flightformCol"> */}
+                          <div className="col-6 flight-input-container onewayreturnhidebtn">
+                            <span className="plane-icon">
+                              <MdDateRange />
+                            </span>
+                            <Link>Add Return date</Link>
+                            {/* <MdDateRange className="" /> */}
                           </div>
-
-                          <div className="col-sm-8 form-group  mt-3" onClick={handleShow}>
-                            <label htmlFor="text">Travellers $ Cabin</label>
-                            <div className="form-control flightTravellerclssFormControl">
-                              <div className="flightTravellerclss">
+                          {/* </div> */}
+                          <div className="col-sm-8 flightformCol form-group " onClick={handleShow}>
+                            <div className="form-control flightTravellerclssFormControl  flight-input-container">
+                              <span className="plane-icon">
                                 <FaCircleUser />
+                              </span>
+                              <div className="flightTravellerclss">
+                                {/* <FaCircleUser /> */}
                                 <p> Traveller - <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> , </p>
                                 <p> Class - <span>{formData.JourneyType}</span>  </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
+                              <label className="flight-input-labelTravel" htmlFor="text">Travellers $ Cabin</label>
                             </div>
                           </div>
 
@@ -558,25 +570,38 @@ const FlightSearch = () => {
 
                       <form action="" >
                         <div className="row flightformRow">
-                          <div className="col-12">
-                            <div className="form-group  position-relative">
-                              <label htmlFor="text" >From</label>
-                              <input type="text" className="form-control" id="flightSatrtingPoint" placeholder='Starting Point' value={from} onChange={handleFromChange} />
+                          <div className="col-12 flightformCol">
+                            <div className="form-group position-relative flight-input-container">
+                              <span className="plane-icon">
+                                <BiSolidPlaneTakeOff />
+                              </span>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="flightSatrtingPoint"
+                                placeholder="Starting Point"
+                                value={from}
+                                onChange={handleFromChange}
+                              />
                               {fromSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listFrom">
                                   {fromSuggestions.map((suggestion, index) => (
-                                    <li className='text-red' key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
-                                      {suggestion.
-                                        busodma_destination_name
-                                      }              </li>
+                                    <li className="text-red" key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
+                                      {suggestion.busodma_destination_name}
+                                    </li>
                                   ))}
                                 </ul>
                               )}
+                              <label className="flight-input-labelFrom" htmlFor="From">
+                                Starting Point
+                              </label>
                             </div>
                           </div>
-                          <div className="col-12 mt-2">
-                            <div className="form-group">
-                              <label htmlFor="text">To</label>
+                          <div className="col-12 flightformCol">
+                            <div className="form-group flight-input-container">
+                              <span className="plane-icon">
+                                <BiSolidPlaneLand />
+                              </span>
                               <input type="text" className="form-control" id="flightDestinationPoint" placeholder='Destination' value={to} onChange={handleToChange} />
                               {toSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listTo">
@@ -588,12 +613,15 @@ const FlightSearch = () => {
                                   ))}
                                 </ul>
                               )}
+                              <label className="flight-input-labelTo" htmlFor="flightDestinationPoint">Destination</label>
                             </div>
                           </div>
 
-                          <div className="col-sm-6 mt-2">
-                            <div className="form-group">
-                              <label htmlFor="PreferredDepartureTime">Departure Date</label>
+                          <div className="col-6 flightformCol">
+                            <div className="form-group flight-input-container">
+                              <span className="plane-icon">
+                                <MdDateRange />
+                              </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
                                 <DatePicker
                                   name="PreferredDepartureTime"
@@ -604,46 +632,47 @@ const FlightSearch = () => {
                                   placeholderText="Select a date"
                                   ref={departureDatePickerRef}
                                 />
-                                <MdDateRange
+                                {/* <MdDateRange
                                   className="date-picker-icon"
                                   onClick={() => departureDatePickerRef.current.setOpen(true)}
+                                /> */}
+                              </div>
+                              <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure Date</label>
+                            </div>
+                          </div>
+
+                          <div className="col-6 flightformCol">
+                            <div className="form-group flight-input-container">
+                                <span className="plane-icon">
+                                  <MdDateRange />
+                                </span>
+                              <div className="date-picker-wrapper flightDateDiv form-control">
+                                <DatePicker
+                                  name="PreferredArrivalTime"
+                                  selected={preferredArrivalTime}
+                                  onChange={(date) => handleChange(date, "PreferredArrivalTime")}
+                                  className=""
+                                  id="PreferredArrivalTime"
+                                  placeholderText="Select a date"
+                                  ref={arrivalDatePickerRef}
                                 />
                               </div>
-                            </div>
-                          </div>
-                          <div className="col-sm-6 mt-2">
-                            <div className="form-group">
-                              <div className="form-group">
-                                <label htmlFor="PreferredArrivalTime">Return Date</label>
-                                <div className="date-picker-wrapper flightDateDiv form-control">
-                                  <DatePicker
-                                    name="PreferredArrivalTime"
-                                    selected={preferredArrivalTime}
-                                    onChange={(date) => handleChange(date, "PreferredArrivalTime")}
-                                    className=""
-                                    id="PreferredArrivalTime"
-                                    placeholderText="Select a date"
-                                    ref={arrivalDatePickerRef}
-                                  />
-                                  <MdDateRange
-                                    className="date-picker-icon"
-                                    onClick={() => arrivalDatePickerRef.current.setOpen(true)}
-                                  />
-                                </div>
-                              </div>
-
+                              <label className="flight-input-labelDepDate" htmlFor="PreferredArrivalTime">Return Date</label>
                             </div>
                           </div>
 
-                          <div className="col-sm-8 form-group  mt-3" onClick={handleShow}>
-                            <label htmlFor="text">Travellers $ Cabin</label>
-                            <div className="form-control flightTravellerclssFormControl">
-                              <div className="flightTravellerclss">
+                          <div className="col-sm-8 flightformCol form-group " onClick={handleShow}>
+                            <div className="form-control flightTravellerclssFormControl  flight-input-container">
+                              <span className="plane-icon">
                                 <FaCircleUser />
-                                <p> <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> Traveller , </p>
-                                <p> <span>{formData.JourneyType}</span> Cabin Class </p>
+                              </span>
+                              <div className="flightTravellerclss">
+                                {/* <FaCircleUser /> */}
+                                <p> Traveller - <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> , </p>
+                                <p> Class - <span>{formData.JourneyType}</span>  </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
+                              <label className="flight-input-labelTravel" htmlFor="text">Travellers $ Cabin</label>
                             </div>
                           </div>
 

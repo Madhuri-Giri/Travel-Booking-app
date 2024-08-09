@@ -56,6 +56,7 @@ const Faq = () => {
 
   return (
     <>
+    <section className="faqSecMain">
       <div className='Faq'>
         <div className="faqq">
           <h5>FAQ</h5>
@@ -85,6 +86,7 @@ const Faq = () => {
           </div>
         </div>
       </div>
+    </section>
     </>
   );
 };
