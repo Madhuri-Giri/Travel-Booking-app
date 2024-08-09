@@ -3,7 +3,7 @@ import './BusLayout.css';
 import BusSeatImg from '../../assets/images/bussit.png';
 import { useNavigate } from 'react-router-dom';
 import { MdAirlineSeatReclineNormal } from "react-icons/md";
-
+import Loading from '../../pages/loading/Loading'; 
 
 const BusLayout = () => {
   const navigate = useNavigate();
@@ -15,13 +15,12 @@ const BusLayout = () => {
   const [upperBasePrices, setUpperBasePrices] = useState([]);
   const [upperSeatNames, setUpperSeatNames] = useState([]);
   const [availableSeats, setAvailableSeats] = useState(0); 
+  const [loading, setLoading] = useState(false); // Loading state
 
   useEffect(() => {
     const busLayoutResponse = JSON.parse(localStorage.getItem('BuslayoutResponse')) || {};
     
     console.log('BuslayoutResponse:', busLayoutResponse);
-
-
 
     const lowerSeats = (busLayoutResponse.Result || []).flat();
     const upperSeats = (busLayoutResponse.ResultUpperSeat || []).flat();
@@ -78,6 +77,7 @@ const BusLayout = () => {
   };
 
   const handleProceed = async () => {
+    setLoading(true); // Set loading to true before API call
     try {
       const traceId = localStorage.getItem('traceId');
       const resultIndex = localStorage.getItem('resultIndex');
@@ -109,8 +109,14 @@ const BusLayout = () => {
       navigate('/bord-drop');
     } catch (error) {
       console.error('Error adding seat layout:', error.message);
+    } finally {
+      setLoading(false); // Reset loading state after API call
     }
   };
+
+  if (loading) {
+    return <Loading />; // Show Loading component while loading
+  }
 
   return (
     <div className="BusLayout">
@@ -119,7 +125,7 @@ const BusLayout = () => {
           <div className="left">
             <div className="left-top">
               <h6>SELECT BUS SEATS</h6>
-              <p> <MdAirlineSeatReclineNormal />available seats ({availableSeats})</p>
+              <p><MdAirlineSeatReclineNormal /> available seats ({availableSeats})</p>
             </div>
             <div className="left-btm">
               <div className="lower">
@@ -129,7 +135,7 @@ const BusLayout = () => {
                     const seatName = lowerSeatNames[index];
                     const isLastRow = index >= lowerSeats.length - 5;
                     const seatSelected = selectedSeats.includes(seatName);
-                    const basePrice = getLowerBasePrice(seatName); // Use updated function
+                    const basePrice = getLowerBasePrice(seatName);
                     const isDisabled = basePrice === null;
 
                     return (
@@ -144,7 +150,7 @@ const BusLayout = () => {
                       >
                         <span>{seatName}</span>
                         <img width={30} src={BusSeatImg} alt="seat" />
-                        <p>{basePrice !== null ? `${basePrice.toFixed(2)}` : 'N/A'}</p> {/* Show adjusted price */}
+                        <p>{basePrice !== null ? `${basePrice.toFixed(2)}` : 'N/A'}</p>
                       </div>
                     );
                   })}
@@ -157,7 +163,7 @@ const BusLayout = () => {
                     const seatName = upperSeatNames[index];
                     const isLastRow = index >= upperSeats.length - 5;
                     const seatSelected = selectedSeats.includes(seatName);
-                    const basePrice = getUpperBasePrice(seatName); // Use updated function
+                    const basePrice = getUpperBasePrice(seatName);
                     const isDisabled = basePrice === null;
 
                     return (
@@ -172,7 +178,7 @@ const BusLayout = () => {
                       >
                         <span>{seatName}</span>
                         <img width={30} src={BusSeatImg} alt="seat" />
-                        <p>{basePrice !== null ? `${basePrice.toFixed(2)}` : 'N/A'}</p> {/* Show adjusted price */}
+                        <p>{basePrice !== null ? `${basePrice.toFixed(2)}` : 'N/A'}</p>
                       </div>
                     );
                   })}
@@ -181,10 +187,9 @@ const BusLayout = () => {
             </div>
           </div>
           <div className="right">
-           
             <div className="right-btm">
               <div className="tax">
-                <p><MdAirlineSeatReclineNormal />Selected Seats: {selectedSeats.join(', ')}</p>
+                <p><MdAirlineSeatReclineNormal /> Selected Seats: {selectedSeats.join(', ')}</p>
                 <p>Total Price: ${totalPrice}</p>
               </div>
               <div className="proceed">

@@ -63,9 +63,7 @@ const BoardAndDrop = () => {
 
   const handleSelectBoarding = (index) => {
     setSelectedBoarding(index);
-    setTimeout(() => {
-      setShowBoarding(false);
-    }, 500);
+    handleConfirmSelection(); // Navigate to dropping points immediately after selecting a boarding point
   };
 
   const handleSelectDropping = (index) => {
@@ -77,6 +75,20 @@ const BoardAndDrop = () => {
     } else {
       localStorage.setItem('passengersAlreadyAdded', true);
       navigate('/passenger-info');
+    }
+  };
+
+  const handleConfirmSelection = () => {
+    if (showBoarding && selectedBoarding !== null) {
+      setShowBoarding(false); // Switch to dropping points if a boarding point is selected
+    } else if (!showBoarding && selectedDropping !== null) {
+      const passengersAlreadyAdded = localStorage.getItem('passengersAlreadyAdded');
+      if (passengersAlreadyAdded) {
+        navigate('/passenger-list');
+      } else {
+        localStorage.setItem('passengersAlreadyAdded', true);
+        navigate('/passenger-info');
+      }
     }
   };
 
@@ -128,17 +140,24 @@ const BoardAndDrop = () => {
                 <tr>
                   <th>Boarding Points</th>
                   <th>Date & Time</th>
+                  <th>Select</th>
                 </tr>
               </thead>
               <tbody>
                 {boardingPoints.map(point => (
-                  <tr
-                    key={point.CityPointIndex}
-                    className={selectedBoarding === point.CityPointIndex ? 'selected' : ''}
-                    onClick={() => handleSelectBoarding(point.CityPointIndex)}
-                  >
+                  <tr key={point.CityPointIndex}>
                     <td>{point.CityPointName}</td>
                     <td>{convertToIST(point.CityPointTime)}</td>
+                    <td>
+                      <input
+                        type="radio"
+                        id={`boarding-${point.CityPointIndex}`}
+                        name="boarding"
+                        value={point.CityPointIndex}
+                        checked={selectedBoarding === point.CityPointIndex}
+                        onChange={() => handleSelectBoarding(point.CityPointIndex)}
+                      />
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -152,17 +171,24 @@ const BoardAndDrop = () => {
                 <tr>
                   <th>Dropping Points</th>
                   <th>Date & Time</th>
+                  <th>Select</th>
                 </tr>
               </thead>
               <tbody>
                 {droppingPoints.map(point => (
-                  <tr
-                    key={point.CityPointIndex}
-                    className={selectedDropping === point.CityPointIndex ? 'selected' : ''}
-                    onClick={() => handleSelectDropping(point.CityPointIndex)}
-                  >
+                  <tr key={point.CityPointIndex}>
                     <td>{point.CityPointName}</td>
                     <td>{convertToIST(point.CityPointTime)}</td>
+                    <td>
+                      <input
+                        type="radio"
+                        id={`dropping-${point.CityPointIndex}`}
+                        name="dropping"
+                        value={point.CityPointIndex}
+                        checked={selectedDropping === point.CityPointIndex}
+                        onChange={() => handleSelectDropping(point.CityPointIndex)}
+                      />
+                    </td>
                   </tr>
                 ))}
               </tbody>
