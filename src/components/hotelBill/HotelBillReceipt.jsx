@@ -6,6 +6,7 @@ const BookingBill = () => {
   const [guestDetails, setGuestDetails] = useState(null);
   const [totalPrice, setTotalPrice] = useState(null);
 
+
   useEffect(() => {
     // Retrieve data from local storage
     const storedBookingDetails = JSON.parse(localStorage.getItem('selectedRoomsData'));
@@ -35,7 +36,7 @@ const BookingBill = () => {
   };
 
   return (
-    <div className="BusTikit">
+    <div className="hotelTikit">
       <div className="hed">
         <h5>Booking Receipt</h5>
       </div>

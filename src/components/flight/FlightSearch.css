@@ -814,6 +814,9 @@
         margin-bottom: 20px;
         box-shadow: 1px 1px 1px 1px gray;
     }
+    .flight-input-labelTravel {
+        left: 17%;
+    }
 }
 
 /* responsive css */

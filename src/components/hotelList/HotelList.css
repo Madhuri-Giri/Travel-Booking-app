@@ -87,12 +87,15 @@
  */
 
 
-/* ----------start side filter--------- */
+ .hotelMainsec{
+  padding: 40px 0px;
+  background-color: #dddddd;
+ }
 .listContainer {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
-  padding: 0 10px;
+  /* margin-top: 20px; */
+  /* padding: 40 0px; */
 }
 
 .listWrapper {
@@ -110,6 +113,7 @@
   border-radius: 10px;
   position: sticky;
   top: 10px;
+  background-color: white;
   height: max-content;
 
 }
