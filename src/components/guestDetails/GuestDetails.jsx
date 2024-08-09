@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';  
+import Accordion from 'react-bootstrap/Accordion';
 
 const GuestDetails = () => {
   const [hotelBlock, setHotelBlock] = useState([]);
@@ -446,6 +447,7 @@ const cleanHotelNorms = (hotelNorms) => {
 };
 
 return (
+  
   <div className="guest-details-container">
       <h2 className="section-title">Guest Details</h2>
       <h2>{HotelName}</h2>

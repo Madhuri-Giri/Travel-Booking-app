@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Container, Row, Col, Carousel } from "react-bootstrap";
+import { Container, Row, Col, Carousel,  Modal} from "react-bootstrap";
 import "./HotelDescription.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
@@ -22,6 +22,7 @@ const HotelDescription = () => {
   const navigate = useNavigate(); 
   const [error, setError] = useState(null); 
   const hotelDetails = location.state?.hotelDetails;
+  const [showModal, setShowModal] = useState(false); // For modal visibility
 
   const fetchHotelRoom = async () => {
     try {
@@ -68,9 +69,11 @@ const HotelDescription = () => {
   };
   
   return (
+    <>
     <Container>
+    <div className="ro">
       <Row>
-        <Col md={12}>
+        <Col>
           <Carousel className="hotelCarousel">
             {hotelDetails.Images && hotelDetails.Images.map((image, index) => (
               image && (
@@ -85,9 +88,45 @@ const HotelDescription = () => {
             ))}
           </Carousel>
         </Col>
+        <Col>
+          {hotelDetails.Images && hotelDetails.Images.length > 0 && (
+            <img
+              className="hotel_Img_single"
+              src={hotelDetails.Images[0]} // Show the first image as a thumbnail
+              alt={`${hotelDetails.HotelName} Thumbnail`}
+              onClick={() => setShowModal(true)} // Open modal on click
+              style={{ cursor: "pointer" }} // Change cursor to indicate it's clickable
+            />
+          )}
+        </Col>
       </Row>
+      {/* Modal for showing all images */}
+      <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{hotelDetails.HotelName} - All Images</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Carousel>
+            {hotelDetails.Images && hotelDetails.Images.map((image, index) => (
+              image && (
+                <Carousel.Item key={index}>
+                  <img
+                    className="hotel_Img_modal"
+                    src={image}
+                    alt={`${hotelDetails.HotelName} ${index + 1}`}
+                  />
+                </Carousel.Item>
+              )
+            ))}
+          </Carousel>
+        </Modal.Body>
+      </Modal>
+      </div>
+      </Container>
+
+      <Container>
       <Row>
-        <Col md={12}>
+        <Col>
           <div className="search_Item">
             <div className="Description_hotel">
               <div className="Header_hotel">
@@ -121,6 +160,7 @@ const HotelDescription = () => {
         </Col>
       </Row>
     </Container>
+    </>
   );
 };
 

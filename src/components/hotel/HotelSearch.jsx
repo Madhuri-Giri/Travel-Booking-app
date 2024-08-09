@@ -183,21 +183,16 @@ const [inputs, setInputs] = useState({
       <div className="hotel_container">
         <div className="content_wrapper">
           <Row>
-            <Col xl={4} md={12} className="order-md-1 order-2">
-              <div className="content_box">
-                <h1>Discover Your Perfect Getaway</h1>
-                <p>
-                  Experience luxury and comfort at Hotel. Located in the heart
-                  of City, our hotel offers top-notch amenities and services.
-                  Explore our curated list of top-rated hotels tailored just for
-                  you. Choose from a variety of room types to suit your needs
-                  and preferences. Enter your destination, dates, and
-                  preferences to find the perfect stay.
-                </p>
-              </div>
+            <Col xl={5} md={12} className="order-md-1 order-2">
+            <div className="content_box">
+       <h1>
+        Discover <span className="luxury-font">luxury</span> and comfort in the heart of the city. Choose your  <span className="luxury-font"> perfect room  </span> and enjoy top-notch amenities and <span className="luxury-font">services</span>.
+        </h1>
+      </div>
+        <button className="btn-book" type="submit">Book Now</button>
             </Col>
 
-            <Col xl={8} md={12} className="order-md-2 order-1">
+            <Col xl={7} md={12} className="order-md-2 order-1">
               <div className="images_container">
                 <img
                   src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/225991107.webp?k=8ac4f5d29b44a2a0a933b7c379764e547a26de0bb12e9d869e74935a8c88b33a&o="

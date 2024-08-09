@@ -1,5 +1,5 @@
 import "./HotelList.css";
-import {Container} from 'react-bootstrap'
+import {Container, Row, Col} from 'react-bootstrap'
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
@@ -161,7 +161,7 @@ const IGST_RATE = 0.18; // 18% IGST
   
   return (
     <>
-    <div className="con">
+    {/* <div className="con">
         <Container>
           <section className="sec_book_filter">
             <div className="hotel_booking_filter">
@@ -215,11 +215,15 @@ const IGST_RATE = 0.18; // 18% IGST
             </div>
           </section>
         </Container>
-      </div>
+      </div> */}
+      
       <div className="listContainer">
         <div className="listWrapper">
+        <Container>
+      <Row>
+        <Col md={3}>
           <div className="listSearch">
-            <h1 className="listTitle">Search</h1>
+            <h1 className="listTitle">Search Your Hotels ....</h1>
             <div className="listItem">
               <label>Destination</label>
               <input
@@ -317,7 +321,8 @@ const IGST_RATE = 0.18; // 18% IGST
             </div>
             <button onClick={() => { /* Add your search functionality here */ }}>Search</button>
           </div>
-
+        </Col>
+        <Col md={9}>
           <div className="listResult">
             {geoError && <p className="errorMessage">{geoError}</p>}
             {error && <p className="errorMessage">{error}</p>}
@@ -369,8 +374,12 @@ const IGST_RATE = 0.18; // 18% IGST
               <p className="noHotelsMessage">No hotels available.</p>
             )}
           </div>
+          </Col>
+      </Row>
+    </Container>
         </div>
       </div>
+      
       <div className="paginationContainer">
         <ReactPaginate
           previousLabel={'previous'}

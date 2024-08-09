@@ -57,6 +57,7 @@ const EnterNumber = () => {
     setError(''); 
   };
 
+  
   return (
     <div className='ForgotPassword'>
       <div className="forgot-password">

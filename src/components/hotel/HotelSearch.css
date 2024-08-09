@@ -6,6 +6,7 @@
   padding: 20px;
   border-radius: 10px;
   background-color: #00b7eb;
+  
 }
 
 .content_wrapper {
@@ -13,19 +14,35 @@
   margin-top: 50px;
   margin-left: 120px;
 }
-.content_box h1{
+.content_box h1 {
   font-family: sans-serif;
+  font-size: 2rem;
+  font-weight: 100;
+  letter-spacing: 1px;
+  color: #fff;
+  text-transform: capitalize;
+  margin: 15px 0 0 10px;
 }
+
+.luxury-font {
+  font-family: "Lucida Handwriting", cursive;
+  color:#bbe4f0 ;
+  font-size: 2.5rem;
+}
+/* 
 .content_box p {
   font-family: sans-serif;
   font-size: 1.2vmax;
-}
+  color: #282727;
+  margin-top: 10px;
+  letter-spacing: 1px;
+} */
 
 .images_container {
   margin-top: 100px;
   position: relative;
   width: 300px;
-  margin-left: 600px;
+  margin-left: 550px;
 }
 
 .img_box {
@@ -37,25 +54,26 @@
 
 .image1 {
   bottom: -100px;
-  left: -100px;
+  left: -200px;
   border: 3px solid black;
   border-radius: 20px;
-  width: 350px;
+  width: 300px;
 }
 
 .image2 {
-  bottom: -280px;
-  right: 250px;
+  bottom: -250px;
+  right: 350px;
   border: 3px solid black;
   border-radius: 20px;
+  width: 260px;
 }
 
 .image3 {
-  bottom: -80px;
-  right: 420px;
+  bottom: -110px;
+  right: 520px;
   border: 3px solid black;
   border-radius: 20px;
-  width: 80%;
+  width: 70%;
 }
 /* ----------- End ---------- */
 
@@ -64,7 +82,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
+  margin-top: 80px;
 }
 
 .hotel_booking {
@@ -135,7 +153,17 @@
 .form_in.react-datepicker__input-container {
   width: 100%;
 }
-
+.btn-book{
+  padding: 10px;
+  background-color: #fc3a21;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 25px; 
+  align-self: center; 
+  letter-spacing: 1px;
+}
 .btn-sub {
   padding: 10px;
   background-color: #00b7eb;
@@ -145,6 +173,7 @@
   cursor: pointer;
   margin-top: 25px; 
   align-self: center; 
+  letter-spacing: 1px;
 }
 
 .btn-sub:hover {
@@ -213,6 +242,7 @@ font-size: 1.7vmax;
   font-weight: 700;
   margin-top: 1vmax;
 }
+
 .Hotel_Booking_container {
   position: relative;
   width: 100%;
@@ -339,13 +369,6 @@ font-size: 1.7vmax;
     margin-top: 0;
   }
   
-.form_in .react-datepicker-wrapper {
-  width: 100%;
-}
-
-.form_in.react-datepicker__input-container {
-  width: 100%;
-}
 
 }
 
@@ -400,13 +423,6 @@ font-size: 1.7vmax;
     padding-left: 0;
   }
   
-.form_in .react-datepicker-wrapper {
-  width: 100%;
-}
-
-.form_in.react-datepicker__input-container {
-  width: 100%;
-}
 }
 
 @media (max-width: 576px) {
@@ -481,12 +497,5 @@ font-size: 1.7vmax;
     max-width: 320px; 
   }
   
-.form_in .react-datepicker-wrapper {
-  width: 100%;
-}
-
-.form_in.react-datepicker__input-container {
-  width: 100%;
-}
 }
 

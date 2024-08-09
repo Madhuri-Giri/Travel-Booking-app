@@ -4,9 +4,11 @@ import "./LogIn.css";
 import loginLogo from "../../../assets/images/main logo.png"
 import { Link, useNavigate } from 'react-router-dom';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
+import { useLocation } from 'react-router-dom';
 
 const LogIn = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [otpShown, setOtpShown] = useState(false);
   const [formData, setFormData] = useState({
     mobile: '',
@@ -20,6 +22,9 @@ const LogIn = () => {
 
   const loginHandler = async (e) => {
     e.preventDefault();
+
+    const { state } = location;
+
     try {
         const response = await fetch('https://sajyatra.sajpe.in/admin/api/login', {
             method: 'POST',
@@ -34,7 +39,10 @@ const LogIn = () => {
         if (response.ok) {
             console.log('login successful:', data);
             localStorage.setItem('loginId', data.data.id);
-            navigate('/flight-search');
+            localStorage.setItem('loginData', JSON.stringify(data.data));
+            const redirectTo = state?.from ? state.from : '/flight-search';
+            navigate(redirectTo);
+
         } else {
             console.log('login failed:', data);
         }

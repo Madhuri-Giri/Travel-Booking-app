@@ -10,6 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const ReviewBooking = () => {
 
 
+
+
   const [paymentDetails, setPaymentDetails] = useState(null);
   // const [email, setEmail] = useState('');
   // const [phone, setPhone] = useState('');
@@ -36,16 +38,31 @@ const ReviewBooking = () => {
   };
 
   const [newContactData, setNewContactData] = useState(newContactInitialData);
+
   const [isContactSubmitted, setIsContactSubmitted] = useState(false);
   
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setNewContactData({
-      ...newContactData,
-      [name]: value,
-    });
-  };
+  const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewContactData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+
+    useEffect(() => {
+      const loginData = JSON.parse(localStorage.getItem('loginData'));
+      if (loginData) {
+          setNewContactData((prevData) => ({
+              ...prevData,
+              name: loginData.name || '',  
+              email: loginData.email || '', 
+              contact: loginData.contact || '' 
+          }));
+      }
+  }, []);
+
 
   const newcontactHandler = (e) => {
        e.preventDefault();
@@ -104,8 +121,9 @@ const ReviewBooking = () => {
 
   const handlePayment = async () => {
     const loginId = localStorage.getItem('loginId');
+    
     if (!loginId) {
-      navigate('/enter-number'); 
+      navigate('/enter-number',{ state: { from: location } }); 
       return;
     }
   
@@ -147,7 +165,7 @@ const ReviewBooking = () => {
           mobile:  '9999999999',
         },
         notes: {
-          address: 'Some Address',
+          address: 'Indore',
         },
         theme: {
           color: '#3399cc',
@@ -490,7 +508,8 @@ const totalPayment = totalFare + taxes + (totalFare * 0.18);
 
 
       <div className="new-contact">
-      <h6>Contact Details</h6>
+      <h6>Contact Details </h6>
+      <p>We'll send you ticket here.Please fill this form before pay.</p>
       <form onSubmit={newcontactHandler}>
         <div className="c-detail">
           <div className="cont">
