@@ -89,27 +89,27 @@ const CustomNavbar = () => {
 
             {/* mobile header for bookings */}
             <div className="container-fluid mobilehedrbookings">
-  <div className="row">
-    <div className={`col-4 ${location.pathname === '/flight-search' || location.pathname === '/' ? 'active-link' : ''}`}>
-      <NavLink to='/flight-search'>
-        <FaPlaneDeparture className="icon" />
-        Flight
-      </NavLink>
-    </div>
-    <div className={`col-4 ${location.pathname === '/bus-search' ? 'active-link' : ''}`}>
-      <NavLink to='/bus-search'>
-        <FaBusAlt className="icon" />
-        Bus
-      </NavLink>
-    </div>
-    <div className={`col-4 ${location.pathname === '/hotel-search' ? 'active-link' : ''}`}>
-      <NavLink to='/hotel-search'>
-        <RiHotelBedFill className="icon" />
-        Hotel
-      </NavLink>
-    </div>
-  </div>
-</div>
+                <div className="row">
+                    <div className={`col-4 ${location.pathname === '/flight-search' || location.pathname === '/' ? 'active-link' : ''}`}>
+                        <NavLink to='/flight-search'>
+                            <FaPlaneDeparture className="icon" />
+                            Flight
+                        </NavLink>
+                    </div>
+                    <div className={`col-4 ${location.pathname === '/bus-search' ? 'active-link' : ''}`}>
+                        <NavLink to='/bus-search'>
+                            <FaBusAlt className="icon" />
+                            Bus
+                        </NavLink>
+                    </div>
+                    <div className={`col-4 ${location.pathname === '/hotel-search' ? 'active-link' : ''}`}>
+                        <NavLink to='/hotel-search'>
+                            <RiHotelBedFill className="icon" />
+                            Hotel
+                        </NavLink>
+                    </div>
+                </div>
+            </div>
 
 
 

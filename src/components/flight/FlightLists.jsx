@@ -3,7 +3,7 @@ import { Accordion, Form, ProgressBar } from 'react-bootstrap';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TiPlane } from "react-icons/ti";
-import { FaCalendarAlt, FaUser } from 'react-icons/fa';
+import { FaCalendarAlt, FaUser, FaTimes } from 'react-icons/fa';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -26,7 +26,8 @@ export default function FlightLists() {
 
         if (timer <= 0) {
             clearInterval(countdown);
-            navigate('/bus-search');
+            alert("Your Session is Expired")
+            navigate('/flight-search');
         }
 
         return () => clearInterval(countdown);
@@ -80,6 +81,8 @@ export default function FlightLists() {
     const PreferredDepartureTime = formData.Segments[0].PreferredDepartureTime
     const PreferredArrivalTime = formData.Segments[0].PreferredArrivalTime
 
+    localStorage.setItem("FlightSrdvType", listData.SrdvType)
+    localStorage.setItem("FlightTraceId", listData.TraceId)
 
     const dd = listData?.Results
     let originalAirlineList = [];
@@ -102,6 +105,7 @@ export default function FlightLists() {
     // func for duration convert hpur minute---------------------
 
     // Function to extract all AirlineName values
+    // -------------------------------------------------------------airline filters logic----------------
     const getAllAirlineNames = (data) => {
         const airlineNames = [];
 
@@ -117,13 +121,9 @@ export default function FlightLists() {
 
         return airlineNames;
     };
-
     const originalTeachersList = listData?.Results
-
     const airlineNames = getAllAirlineNames(dd);
-
-    const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
-
+    const uniqueAirlineNames = [...new Set(airlineNames)];
     const createSubjectCheckboxes = () => {
         const airlinesContainer = document.getElementById('airlineFilters');
         airlinesContainer.innerHTML = ''; // Clear previous content
@@ -152,9 +152,7 @@ export default function FlightLists() {
             airlinesContainer.appendChild(document.createElement('br'));
         });
     };
-
     const [selected, setselected] = useState([]);
-
     const applyFilters = () => {
         const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
         // console.log("airlineFilters", airlineFilters)
@@ -164,13 +162,12 @@ export default function FlightLists() {
         const originalAirlineList = listData?.Results || []; // Ensure listData.Results is defined
 
     };
-
     useEffect(() => {
         createSubjectCheckboxes();
     }, []);
+    // -------------------------------------------------------------airline filters logic----------------
 
-    localStorage.setItem("FlightSrdvType", listData.SrdvType)
-    localStorage.setItem("FlightTraceId", listData.TraceId)
+   
 
     // for callender slider-----------------------------------------------------------------------
     useEffect(() => {
@@ -224,50 +221,74 @@ export default function FlightLists() {
         }
     }, []);
 
-    const settings = {
+
+    const sliderSettings = {
         dots: false,
-        infinite: false,
+        infinite: true,
         speed: 500,
-        slidesToShow: 3,
+        slidesToShow: 6,
         slidesToScroll: 1,
-        variableWidth: true,
         responsive: [
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: 5,
                     slidesToScroll: 1,
+                    infinite: true,
                 }
             },
             {
-                breakpoint: 768,
+                breakpoint: 600,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: 4,
                     slidesToScroll: 1,
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
+                    initialSlide: 1
                 }
             }
         ]
     };
 
-    // Scroll functions
-    const scrollLeftClick = () => {
-        if (sliderRef.current) {
-            sliderRef.current.slickPrev();
-        }
-    };
-
-    const scrollRightClick = () => {
-        if (sliderRef.current) {
-            sliderRef.current.slickNext();
-        }
-    };
+    // const settings = {
+    //     dots: false,
+    //     infinite: false,
+    //     speed: 500,
+    //     slidesToShow: 3,
+    //     slidesToScroll: 1,
+    //     variableWidth: true,
+    //     responsive: [
+    //         {
+    //             breakpoint: 1024,
+    //             settings: {
+    //                 slidesToShow: 3,
+    //                 slidesToScroll: 1,
+    //             }
+    //         },
+    //         {
+    //             breakpoint: 768,
+    //             settings: {
+    //                 slidesToShow: 2,
+    //                 slidesToScroll: 1,
+    //             }
+    //         },
+    //         {
+    //             breakpoint: 480,
+    //             settings: {
+    //                 slidesToShow: 1,
+    //                 slidesToScroll: 1,
+    //             }
+    //         }
+    //     ]
+    // };
+    // const scrollLeftClick = () => {
+    //     if (sliderRef.current) {
+    //         sliderRef.current.slickPrev();
+    //     }
+    // };
+    // const scrollRightClick = () => {
+    //     if (sliderRef.current) {
+    //         sliderRef.current.slickNext();
+    //     }
+    // };
     // for callender slider-----------------------------------------------------------------------
 
 
@@ -338,11 +359,18 @@ export default function FlightLists() {
             console.error('Error calling the farequote API:', error);
         }
     };
-
-
     // -------------------------------------------------fare-Quote-api----------------------------------------
 
+    // -----------------mobile view filter side bar------------------------ 
+    const [isSidebarOpen, setSidebarOpen] = useState(false);
+    const toggleSidebar = () => {
+        setSidebarOpen(!isSidebarOpen);
+    };
+    // -----------------mobile view filter side bar------------------------ 
 
+    const navigateSearch = () => {
+        navigate('/flight-search');
+    };
 
     return (
         <>
@@ -353,21 +381,26 @@ export default function FlightLists() {
             {/* timerrr-------------------  */}
 
             <section className='flightlistsec1'>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-4 d-flex flightlistsec1col">
-                            <TiPlane className="mt-1" />
-                            <p> {formData.Segments[0].Origin} </p>
-                            <p>-</p>
-                            <p>{formData.Segments[0].Destination} </p>
+                <div className="container-fluid">
+                    <div className="row flightlistsec1Row">
+                        <div className="col-10 flightlistsec1MainCol">
+                            <div className="d-flex flightlistsec1col">
+                                <TiPlane className="mt-1" />
+                                <p> {formData.Segments[0].Origin} </p>
+                                <p>-</p>
+                                <p>{formData.Segments[0].Destination} </p>
+                            </div>
+                            <div className="d-flex flightlistsec1col">
+                                <FaCalendarAlt className="mt-1" />
+                                <p><span>Departure on</span> {formattedDate}</p>
+                            </div>
+                            <div className="d-flex flightlistsec1col">
+                                <FaUser className="mt-1" />
+                                <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
+                            </div>
                         </div>
-                        <div className="col-lg-4 d-flex flightlistsec1col">
-                            <FaCalendarAlt className="mt-1" />
-                            <p><span>Departure on</span> {formattedDate}</p>
-                        </div>
-                        <div className="col-lg-4 d-flex flightlistsec1col">
-                            <FaUser className="mt-1" />
-                            <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
+                        <div className="col-2 search-functinality">
+                            <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
                         </div>
                     </div>
                 </div>
@@ -377,35 +410,144 @@ export default function FlightLists() {
                 <div className="container">
                     <div className="row">
                         <div className="col-2 d-flex flightlistsec1colMobile">
-                            <div className="filterIcondiv">
+                            <div className="filterIcondiv" onClick={toggleSidebar}>
                                 <FaFilter className="mt-1" />
                             </div>
                         </div>
-                        <div className="col-8  flightlistsec1colMobile">
+                        <div className="col-8 flightlistsec1colMobile">
                             <div className="flightlistsec1colMobileOriDes">
-                                <p> {formData.Segments[0].Origin} </p>
+                                <p>{formData.Segments[0].Origin}</p>
                                 <FaArrowRightLong />
-                                <p>{formData.Segments[0].Destination} </p>
+                                <p>{formData.Segments[0].Destination}</p>
                             </div>
                             <div className="d-flex">
                                 <p><span></span> {formattedDate}</p>
-                                <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
+                                <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount}, </span> <span>Economy</span></p>
                             </div>
-
-
                         </div>
                         <div className="col-2 d-flex flightlistsec1colMobile">
                             <div className="editIconDiv">
-                                <MdModeEdit className="mt-1" />
+                                <MdModeEdit className="mt-1" onClick={navigateSearch} />
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
+            {/* Sidebar */}
+            {isSidebarOpen && (
+                <div className="filter-sidebar">
+                    <div className="filter-content">
+                        <div className="filterHeder">
+                            <button className="close-btn" onClick={toggleSidebar}>
+                                <FaTimes />
+                            </button>
+                            <h4>Filter</h4>
+                        </div>
+                        <div className="filterSidebarMain row">
+                            <div className="col-12 flightlistsec2col1 flightlistsec2col1MobileView">
+                                <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
+                                    <Accordion.Item eventKey="0">
+                                        <Accordion.Header className="flightlistaccordian">Stops</Accordion.Header>
+                                        <Accordion.Body>
+                                            <div className="row">
+                                                <div className="col-4 flightstopaccordian">
+                                                    <div><span></span></div>
+                                                    <p>Non Stop</p>
+                                                    <h6>Rs.8541</h6>
+                                                </div>
+                                                <div className="col-4 flightstopaccordian">
+                                                    <div><span></span></div>
+                                                    <p>1 Stop</p>
+                                                    <h6>Rs.8541</h6>
+                                                </div>
+                                                <div className="col-4 flightstopaccordian">
+                                                    <div><span></span></div>
+                                                    <p>2 Stop</p>
+                                                    <h6>Rs.8541</h6>
+                                                </div>
+                                            </div>
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                    <Accordion.Item eventKey="1">
+                                        <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
+                                        <Accordion.Body>
+                                            <div id="airlineFilters"> </div>
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                    <Accordion.Item eventKey="2">
+                                        <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
+                                        <Accordion.Body>
+                                            {/* <ProgressBar now={(price / maxPrice) * 100} label={`${(price / maxPrice) * 100}%`} /> */}
+                                            <div className="flightlistaccordianprice">
+
+                                                <div className="flightlistaccordianpricehed">
+                                                    <p>Rs.{price}</p><p>Rs.{maxPrice}</p>
+                                                </div>
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max={maxaccordiandepartime}
+                                                    value={price}
+                                                    onChange={handleSliderChange}
+                                                    className="form-range"
+                                                />
+                                            </div>
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                    <Accordion.Item eventKey="3">
+                                        <Accordion.Header>Another Accordion</Accordion.Header>
+                                        <Accordion.Body>
+                                            <div className="flightlistaccordianprice mb-5">
+                                                <ul>
+                                                    <li>
+                                                        <h6>Departure from New Delhi (DEL) </h6>
+                                                    </li>
+                                                </ul>
+                                                <div className="flightlistaccordianpricehed">
+                                                    <p>Rs.{accordiandepartime}</p><p>Rs.{maxaccordiandepartime}</p>
+                                                </div>
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max={maxPrice}
+                                                    value={price}
+                                                    onChange={handledeparttimeSliderChange}
+                                                    className="form-range"
+                                                />
+                                            </div>
+
+                                            <div className="flightlistaccordianprice">
+                                                <ul>
+                                                    <li>
+                                                        <h6>Arrived at Banglore (BLR) </h6>
+                                                    </li>
+                                                </ul>
+                                                <div className="flightlistaccordianpricehed">
+                                                    <p>Rs.{accordianArrivedtime}</p><p>Rs.{maxaccordianArrivedtime}</p>
+                                                </div>
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max={maxaccordianArrivedtime}
+                                                    value={accordianArrivedtime}
+                                                    onChange={handleArrivedtimeSliderChange}
+                                                    className="form-range"
+                                                />
+                                            </div>
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                </Accordion>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
             <div className="container-fluid flightlistsec2">
                 <div className="row">
-                    <div className="col-lg-3 flightlistsec2col1">
+                    <div className="col-lg-3 flightlistsec2col1 flightlistsec2col1DeskView">
                         <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
                             <Accordion.Item eventKey="0">
                                 <Accordion.Header className="flightlistaccordian">Stops</Accordion.Header>
@@ -500,10 +642,28 @@ export default function FlightLists() {
                         </Accordion>
                     </div>
                     <div className="col-lg-8">
+                        <div className="slider-container">
+                            <Slider {...sliderSettings}>
+                                {flightData.map((flight, index) => (
+                                    <div key={index} className="flight-slide">
+                                        <h6>
+                                            {new Date(flight.DepartureDate).toLocaleDateString('en-US', {
+                                                weekday: 'short',
+                                                month: 'short',
+                                                day: 'numeric',
+                                            })}
+                                        </h6>
+                                        <p>₹{flight.BaseFare}</p>
+                                    </div>
+                                ))}
+                            </Slider>
+                        </div>
 
 
 
-                        <div className="flight-date-slider">
+
+
+                        {/* <div className="flight-date-slider">
                             <div className="flight-d-slide">
                                 <div className="date-left" onClick={scrollLeftClick}>
                                     <i className="ri-arrow-left-s-line"></i>
@@ -516,13 +676,14 @@ export default function FlightLists() {
                                                 <p>{flight.BaseFare}</p>
                                             </div>
                                         ))}
-                                    </Slider>
+                                    </Slider>                                
+
                                 </div>
                                 <div className="date-right" onClick={scrollRightClick}>
                                     <i className="ri-arrow-right-s-line"></i>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="f-lists">
                             <div className="flight-content">
