@@ -63,7 +63,7 @@ const BoardAndDrop = () => {
 
   const handleSelectBoarding = (index) => {
     setSelectedBoarding(index);
-    handleConfirmSelection(); // Navigate to dropping points immediately after selecting a boarding point
+    handleConfirmSelection();
   };
 
   const handleSelectDropping = (index) => {
