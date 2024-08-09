@@ -1,0 +1,22 @@
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1vmax;
+  }
+  
+  .details-table th,
+  .details-table td {
+    border: 1px solid #00b7eb;;
+    padding: 0.5vmax;
+    text-align: left;
+  }
+  
+  .details-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .details-table td {
+    background-color: #fff;
+  }
+  

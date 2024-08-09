@@ -258,7 +258,6 @@ font-size: 1.7vmax;
     margin-top: 100px;
     position: relative;
     width: 300px;
-    
   }
 
   .img_box {
@@ -302,7 +301,6 @@ font-size: 1.7vmax;
     margin-left: 0;
     flex-direction: column;
     margin-top: 0;
- 
   }
 
   .content_box p {
@@ -340,6 +338,14 @@ font-size: 1.7vmax;
   .hotel_booking {
     margin-top: 0;
   }
+  
+.form_in .react-datepicker-wrapper {
+  width: 100%;
+}
+
+.form_in.react-datepicker__input-container {
+  width: 100%;
+}
 
 }
 
@@ -393,6 +399,14 @@ font-size: 1.7vmax;
     width: 100%;
     padding-left: 0;
   }
+  
+.form_in .react-datepicker-wrapper {
+  width: 100%;
+}
+
+.form_in.react-datepicker__input-container {
+  width: 100%;
+}
 }
 
 @media (max-width: 576px) {
@@ -466,5 +480,13 @@ font-size: 1.7vmax;
     width: 80%; 
     max-width: 320px; 
   }
+  
+.form_in .react-datepicker-wrapper {
+  width: 100%;
+}
+
+.form_in.react-datepicker__input-container {
+  width: 100%;
+}
 }
 
