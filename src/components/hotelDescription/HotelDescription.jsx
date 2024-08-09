@@ -71,17 +71,24 @@ const HotelDescription = () => {
   // -----------------------End Api Integration--------------------
   return (
     <>
+    <section className="hotelDescriptionSection">
     <Container>
     {/* -----start new section---------- */}
     <div className="ro">
-      <Row>
-        <Col>
+     <Container>
+     <h3 className="hotelName">{hotelDetails.HotelName} Hotel 
+     <span> {renderStar(hotelDetails.StarRating)}   </span>
+     </h3>
+    
+     <Row>
+
+        <Col md={7}>
           <Carousel className="hotelCarousel">
             {hotelDetails.Images && hotelDetails.Images.map((image, index) => (
               image && (
                 <Carousel.Item key={index}>
                   <img
-                    className="hotel_Img"
+                    className="hotel_Img img-fluid"
                     src={image}
                     alt={`${hotelDetails.HotelName} ${index + 1}`}
                   />
@@ -90,7 +97,7 @@ const HotelDescription = () => {
             ))}
           </Carousel>
         </Col>
-        <Col>
+        <Col md={5}>
           {hotelDetails.Images && hotelDetails.Images.length > 0 && (
             <img
               className="hotel_Img_single"
@@ -104,6 +111,7 @@ const HotelDescription = () => {
       </Row>
 
 
+     </Container>
       {/* Modal for showing all images */}
       <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
         <Modal.Header closeButton>
@@ -166,7 +174,11 @@ const HotelDescription = () => {
         </Col>
       </Row>
     </Container>
-    {/*------------- End section----------- */}
+
+    
+
+    </section>
+
     </>
   );
 };
