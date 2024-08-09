@@ -161,6 +161,8 @@ useEffect(() => {
       return updatedRooms;
     });
   };
+
+  // ----------Start API Integration---------
   const selectedRoomsData = {
     singleDeluxe: selectedSingleDeluxeRooms,
     doubleDeluxe: selectedDoubleDeluxeRooms,
@@ -328,13 +330,6 @@ useEffect(() => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // const res = await response.json();
-      // console.log('hotel-block API Response:', res.BlockRoomResult);
-      // const rooms = res.BlockRoomResult;
-      // const roomsJSON = JSON.stringify(rooms);
-      // localStorage.setItem('hotelBlock', roomsJSON); 
-      // navigate('/hotel-guest');  
-      
       const res = await response.json();
     console.log('hotel-block API Response:', res.BlockRoomResult);
     const rooms = res.BlockRoomResult;
@@ -346,6 +341,8 @@ useEffect(() => {
       console.error('Error:', error);
     }
   };
+
+  // --------------End API Integration-----------------
 
   const singleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'SINGLE DELUXE');
   const doubleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'DOUBLE Deluxe');
@@ -360,6 +357,8 @@ useEffect(() => {
             {!loading && !error && hotelRooms.length === 0 && <p>No hotel room data available.</p>}
             {hotelRooms.length > 0 && !error && (
               <>
+
+              {/* -------Start Single Deluxe ----------- */}
                 <div className="room_heading">
                   {singleDeluxeRooms.map((room, index) => (
                     <Card key={index} className="mb-4">
@@ -435,7 +434,9 @@ useEffect(() => {
                     </Card>
                   ))}
                 </div>
+                {/*---------End Single Deluxe------------ */}
 
+                {/* ---------Start Double Delux---------- */}
                 <div className="room_heading">
                   {doubleDeluxeRooms.map((room, index) => (
                     <Card key={index} className="mb-4">
@@ -506,6 +507,7 @@ useEffect(() => {
                     </Card>
                   ))}
                 </div>
+                {/* ---------End Double Deluxe---------- */}
               </>
             )}
           </div>

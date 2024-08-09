@@ -8,20 +8,9 @@
   border-radius: 10px;
   margin-top: 20px;
 }
-.charge{
-  color: #535766;
-  font-size: 14px;
-  letter-spacing: 0.8px;
-  margin-left: 5px;
-}
+
 .room_container {
   margin-top: 20px;
-}
-.room_container p{
-  /* margin: 0px !important; */
-}
-.room_container h5{
-  margin-top: 16px;
 }
 
 .hotel_room_container {
@@ -29,23 +18,17 @@
   flex-direction: row;
   gap: 20px;
 }
-.cancel_box{
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
-}
-
-.room_heading {
-  /* margin-bottom: 20px; */
-}
 
 /* 
-.room_heading h4{
-  background-color: #ddd;
-  padding-top: 20px;
-  padding-bottom: 20px;
+.room_heading {
+  margin-bottom: 20px;
+}
+
+.heading_space {
+  margin-bottom: 10px;
   text-align: center;
-  box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
-} */
+}  */
+
 .Exclusive_room {
   margin: 20px;
   padding: 20px;
@@ -88,30 +71,43 @@
   }
 
 
-.heading_space {
-  /* margin-bottom: 10px; */
-  text-align: center;
-} 
+  .card {
+    border: 1px solid #1b1b1b;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px 2px rgba(9, 9, 9, 0.386);
+  }
+  
+  .card-title {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    color: #00b7eb;
+    /* margin-bottom: 10px; */
+  }
+  
+  .card-text {
+    font-size: 1rem;
+  }
 
-.card {
-  border: 1px solid #1b1b1b;
-  border-radius: 8px;
-  box-shadow: 2px 2px 5px 2px rgba(9, 9, 9, 0.386);
-}
-
-.card-title {
-  font-size: 1.5rem;
-  letter-spacing: 1px;
-  color: #00b7eb;
-  /* margin-bottom: 10px; */
-}
-
-.card-text {
-  font-size: 1rem;
-}
+  
 .accordian_space{
   margin-top: 20px;
 }
+
+
+.card-body {
+  padding: 20px;
+}
+
+.card-text ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.card-text ul li {
+  margin-bottom: 5px;
+}
+
+
 .reserve_button, .remove_button {
   margin-top: 14px;
   background-color: #00b7eb;
@@ -173,15 +169,34 @@
   margin-top: 0px;
 }
 
-.card-body {
-  padding: 20px;
+.charge{
+  color: #535766;
+  font-size: 14px;
+  letter-spacing: 0.8px;
+  margin-left: 5px;
 }
 
-.card-text ul {
-  list-style-type: none;
-  padding: 0;
+.room_container h5{
+  margin-top: 16px;
 }
 
-.card-text ul li {
-  margin-bottom: 5px;
+.cancel_box{
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
 }
+
+/* 
+.room_container p{
+  margin: 0px !important;
+} */
+
+/* 
+.room_heading h4{
+  background-color: #ddd;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
+} */
+
+

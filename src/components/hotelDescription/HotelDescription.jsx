@@ -24,6 +24,7 @@ const HotelDescription = () => {
   const hotelDetails = location.state?.hotelDetails;
   const [showModal, setShowModal] = useState(false); // For modal visibility
 
+  // ------------Start Api Integration--------------
   const fetchHotelRoom = async () => {
     try {
       const requestData = {
@@ -67,10 +68,11 @@ const HotelDescription = () => {
       setError("Failed to fetch hotel room details. Please try again later.");
     }
   };
-  
+  // -----------------------End Api Integration--------------------
   return (
     <>
     <Container>
+    {/* -----start new section---------- */}
     <div className="ro">
       <Row>
         <Col>
@@ -100,6 +102,8 @@ const HotelDescription = () => {
           )}
         </Col>
       </Row>
+
+
       {/* Modal for showing all images */}
       <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
         <Modal.Header closeButton>
@@ -123,7 +127,9 @@ const HotelDescription = () => {
       </Modal>
       </div>
       </Container>
+{/* -----------end section */}
 
+{/* -------------start new section-------------- */}
       <Container>
       <Row>
         <Col>
@@ -154,12 +160,13 @@ const HotelDescription = () => {
                   {/* INR {hotelDetails.Price?.OfferedPriceRoundedOff || "N/A"} */}
                 </div>
                 <button onClick={fetchHotelRoom} className="hotel_Button">Book Now</button>
-              </div>              {error && <div className="error-message">{error}</div>} 
+              </div>{error && <div className="error-message">{error}</div>} 
             </div>
           </div>
         </Col>
       </Row>
     </Container>
+    {/*------------- End section----------- */}
     </>
   );
 };
