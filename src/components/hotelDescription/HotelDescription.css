@@ -6,19 +6,27 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
 }
-
+.ro{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .hotelCarousel {
     width: 100%;
-    border-radius: 5px;
+    /* max-width: 500px; */
+    border-radius: 10px;
     overflow: hidden;
+    margin-top: 20px;
 }
 
 .hotel_Img {
     width: 100%;
-    max-height: 400px; 
-    object-fit: cover;
-    object-position: center;
+    max-height:500px; 
+    object-fit: cover; 
+    
 }
 
 .Header_hotel {
@@ -36,7 +44,6 @@
 .Distance_hotel {
     color: #00b7eb;
     font-family: sans-serif;
-
 }
 
 .Taxi_hotel {
@@ -53,7 +60,6 @@
     font-size: 1.1em; 
     font-family: sans-serif;
     font-weight: bold;
-
 }
 
 .Description_hotel p {
@@ -61,16 +67,12 @@
     margin-bottom: 10px; 
     line-height: 1.4; 
     font-family: sans-serif;
-
 }
 
 .Features_hotel h5 {
     margin-top: 0; 
     margin-bottom: 5px; 
     font-family: sans-serif;
-    
-    
-
 }
 
 .Features_hotel {
@@ -79,8 +81,6 @@
     gap: 5px; 
     padding: 10px 0;
     font-family: sans-serif;
-    
-
 }
 
 .Feature_item {
@@ -128,6 +128,40 @@
     margin: 0; 
     font-family: sans-serif;
 }
+
+
+/* Single image in the second column */
+.hotel_Img_single {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    margin-top: 25px;
+  }
+  
+  .hotel_Img_single:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Modal image styling */
+  .hotel_Img_modal {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  /* Hotel description section */
+  .search_Item {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+
+
+
 
 @media (max-width: 768px) {
     .Feature_item{

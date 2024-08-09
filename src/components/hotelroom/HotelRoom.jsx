@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Container, Card, Button } from 'react-bootstrap';
+import { Container, Card, Button,Accordion } from 'react-bootstrap';
 import './HotelRoom.css';
 
 const initialFormData = {
@@ -8,6 +8,7 @@ const initialFormData = {
   lastName: '',
   // Add other form fields as needed
 };
+
 const HotelRoom = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -15,11 +16,53 @@ const HotelRoom = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState(initialFormData);
-
+// Single and Double delux element 
   const [selectedSingleDeluxeRooms, setSelectedSingleDeluxeRooms] = useState([]);
   const [selectedDoubleDeluxeRooms, setSelectedDoubleDeluxeRooms] = useState([]);
   const [totalPriceSingleDeluxe, setTotalPriceSingleDeluxe] = useState(0);
   const [totalPriceDoubleDeluxe, setTotalPriceDoubleDeluxe] = useState(0);
+
+//------------------- Start  carousel code ---------------------
+const slideRef = useRef(null);
+const intervalRef = useRef(null);
+const scrollWidthRef = useRef(0);
+
+const startAutoScroll = () => {
+  intervalRef.current = setInterval(() => {
+    if (slideRef.current) {
+      const imageWidth = slideRef.current.querySelector('img').clientWidth + 32; // Including gap between images
+      scrollWidthRef.current += imageWidth;
+      
+      slideRef.current.scrollTo({
+        left: scrollWidthRef.current,
+        behavior: 'smooth',
+      });
+
+      // Reset scroll to start when it reaches the end
+      if (scrollWidthRef.current >= slideRef.current.scrollWidth - slideRef.current.clientWidth) {
+        scrollWidthRef.current = 0;
+        slideRef.current.scrollTo({
+          left: 0,
+          behavior: 'auto',
+        });
+      }
+    }
+  }, 2000); // Adjust scroll interval as needed
+};
+
+const stopAutoScroll = () => {
+  clearInterval(intervalRef.current);
+};
+
+useEffect(() => {
+  startAutoScroll();
+
+  // Clean up interval on component unmount
+  return () => {
+    stopAutoScroll();
+  };
+}, []);
+//-------------------- End carousal code ------------------------
 
   useEffect(() => {
     if (location.state && Array.isArray(location.state.hotelRooms)) {
@@ -308,7 +351,7 @@ const HotelRoom = () => {
   const doubleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'DOUBLE Deluxe');
 
   return (
- <Container className="hotel_container">
+ <Container className="hotelroom_container">
       <div className="room_container">
         <Container>
           <div className="hotel_room_container">
@@ -318,29 +361,56 @@ const HotelRoom = () => {
             {hotelRooms.length > 0 && !error && (
               <>
                 <div className="room_heading">
-                  <h4 className='heading_space'>Single Deluxe <span style={{color:"#00b7eb"}}>Rooms</span></h4>
                   {singleDeluxeRooms.map((room, index) => (
                     <Card key={index} className="mb-4">
                       <Card.Body>
-                        <Card.Title>{room.RoomTypeName}</Card.Title>
+                      <h4 className='heading_space'>Single Deluxe <span style={{color:"#00b7eb"}}>Rooms</span></h4>
+                <div className="Exclusive_room">
+                <div className="room_type_container" onMouseEnter={stopAutoScroll} onMouseLeave={startAutoScroll}>
+                <div className="room_type_box" ref={slideRef}>
+          <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="single_delux1" />
+            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="single_delux2" />
+            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="single_delux3" />
+            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="single_delux4" />
+            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="single_delux5" />
+            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="single_delux6" />
+          </div>
+        </div>
+      </div>
+                        <Card.Title><b>{room.RoomTypeName}</b></Card.Title>
                         <Card.Text>
-                          <p>Price: INR {room.Price?.RoomPrice?.toFixed(2)}</p>
-                          <p>Day Rate: {room.DayRates?.map(dayRate => (
+                          <p><b>Price:</b> INR {room.Price?.RoomPrice?.toFixed(2)}</p>
+                          <p><b>Day Rate:</b> {room.DayRates?.map(dayRate => (
                             <span key={dayRate.Date}>
                               {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
                             </span>
                           ))}</p>
-                          <p>Smoking Preference: {room.SmokingPreference}</p>
-                          <h5>Cancellation Policies:</h5>
-                          <ul>
-                            {room.CancellationPolicies?.map((policy, index) => (
-                              <li key={index}>
-                                {policy.ChargeType === 1 ? 'Fixed Charge' : 'Percentage Charge'}: 
-                                {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
-                              </li>
-                            ))}
-                          </ul>
-                          <p><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
+                          
+                          <p><b>Smoking Preference:</b>{room.SmokingPreference}</p>
+                          
+                          <Accordion className="accordian_space">
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header><b>Cancellation Policy</b></Accordion.Header>
+                  <Accordion.Body>
+                    {room.CancellationPolicies.map((policy, idx) => (
+                      <p key={idx}>
+                        {policy.FromDate} to {policy.ToDate}: {policy.Charge}% will be charged.
+                      </p>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+              
+              <Accordion className="accordian_space">
+              <Accordion.Item eventKey="0">
+                  <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
+                  <Accordion.Body>
+                    {room.CancellationPolicy}
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+
                         </Card.Text>
                         {!selectedSingleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
                           <button onClick={() => handleRoomToggle(room, 'single')} className="reserve_button">Reserve</button>
@@ -352,11 +422,13 @@ const HotelRoom = () => {
                               <button onClick={() => handleGuestChange(selectedSingleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', -1, 'single')}>-</button>
                               <span>Room: {selectedSingleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
                               <button onClick={() => handleGuestChange(selectedSingleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'single')}>+</button>
-                            </div>
+                           
                             <div className="selected_rooms_summary">
-                              <p>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</p>
-                              <button onClick={roomblockHandler} className="reserve_button">Continue</button>
+                              <span>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</span>
                             </div>
+                            
+                            </div>
+                            <button onClick={roomblockHandler} className="reserve_button">Continue</button>
                           </div>
                         )}
                       </Card.Body>
@@ -365,30 +437,53 @@ const HotelRoom = () => {
                 </div>
 
                 <div className="room_heading">
-                
-                  <h4  className='heading_space'>Double Deluxe <span style={{color:"#00b7eb"}}>Rooms</span></h4>
                   {doubleDeluxeRooms.map((room, index) => (
                     <Card key={index} className="mb-4">
                       <Card.Body>
+                  <h4  className='heading_space'>Double Deluxe <span style={{color:"#00b7eb"}}>Rooms</span></h4>
+                  <div className="Exclusive_room">
+       <div className="room_type_container" onMouseEnter={stopAutoScroll} onMouseLeave={startAutoScroll}>
+          <div className="room_type_box" ref={slideRef}>
+            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="double_delux1" />
+            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="double_delux2" />
+            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="double_delux3" />
+            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="double_delux4" />
+            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="double_delux5" />
+            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="double_delux6" />
+          </div>
+        </div>
+      </div>
                         <Card.Title>{room.RoomTypeName}</Card.Title>
                         <Card.Text>
-                          <p>Price: INR {room.Price?.RoomPrice?.toFixed(2)}</p>
-                          <p>Day Rate: {room.DayRates?.map(dayRate => (
+                          <p><b>Price: INR</b> {room.Price?.RoomPrice?.toFixed(2)}</p>
+                          <p><b>Day Rate:</b> {room.DayRates?.map(dayRate => (
                             <span key={dayRate.Date}>
                               {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
                             </span>
                           ))}</p>
-                          <p>Smoking Preference: {room.SmokingPreference}</p>
-                          <h5>Cancellation Policies:</h5>
-                          <ul>
-                            {room.CancellationPolicies?.map((policy, index) => (
-                              <li key={index}>
-                                {policy.ChargeType === 1 ? 'Fixed Charge' : 'Percentage Charge'}: 
-                                {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
-                              </li>
-                            ))}
-                          </ul>
-                          <p><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
+                          <p><b>Smoking Preference:</b> {room.SmokingPreference}</p>
+                          
+                          <Accordion className="accordian_space">
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header><b>Cancellation Policy</b></Accordion.Header>
+                  <Accordion.Body>
+                    {room.CancellationPolicies.map((policy, idx) => (
+                      <p key={idx}>
+                        {policy.FromDate} to {policy.ToDate}: {policy.Charge}% will be charged.
+                      </p>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+              <Accordion className="accordian_space">
+              <Accordion.Item eventKey="0">
+                  <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
+                  <Accordion.Body>
+                    {room.CancellationPolicy}
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
                         </Card.Text>
                         {!selectedDoubleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
                           <button onClick={() => handleRoomToggle(room, 'double')} className="reserve_button">Reserve</button>
