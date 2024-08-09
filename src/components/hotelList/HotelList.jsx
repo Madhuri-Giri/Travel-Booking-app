@@ -222,7 +222,8 @@ const IGST_RATE = 0.18; // 18% IGST
           </section>
         </Container>
       </div> */}
-      
+
+      <section className="hotelMainsec">
       <div className="listContainer">
         <div className="listWrapper">
         <Container>
@@ -412,6 +413,9 @@ const IGST_RATE = 0.18; // 18% IGST
           breakLinkClassName={'page-link'}
         />
       </div>
+
+      </section>
+      
     </>
   );
 };
