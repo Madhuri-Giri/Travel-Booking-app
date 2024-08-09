@@ -266,7 +266,7 @@
 .ReviewBooking .main-branch .r-left .left-main .l-coupen .cop .cp-r button{
      border: none;
      padding: 0.5vmax 2.5vmax ;
-     background: red;
+     background-color: rgba(255, 0, 0, 0.749);
      color: #fff;
      border-radius: 10px;
      font-weight: 600;
@@ -351,7 +351,7 @@
      border: none;
      padding: 0.6vmax 2.5vmax;
      color: #ffff;
-     background-color: red;
+     background-color: rgba(255, 0, 0, 0.749);
      font-weight: 600;
      border-radius: 10px;
 
@@ -423,7 +423,14 @@ border-radius: 10px;
     .ReviewBooking .review-book h5{
               width: 100%;
               justify-content:center;
-              padding: 0vmax;
+              padding: 2vmax;
+              margin-top: 0.1vmax;
+              color: #ffff;   
+              font-size: 3vmax;
+              background-color:#00b7eb;    
+              letter-spacing: 2px;
+              align-items: center;
+                    
     }
     .ReviewBooking .review-book h5 i{
          display: none;
@@ -494,6 +501,13 @@ border-radius: 10px;
        align-items: flex-start;
        flex-direction: column;
 }
+.ReviewBooking .main-branch .r-left .left-main .line-btm p{
+      font-size: 2vmax;
+}
+.ReviewBooking .main-branch .r-left .left-main .line-btm span{
+     font-size: 1.7vmax;
+}
+
 
 .ReviewBooking .main-branch .r-left .left-main .l-coupen{
        width: 95%;
@@ -522,12 +536,12 @@ border-radius: 10px;
 }
 .ReviewBooking .main-branch .r-left .left-main .l-coupen .cop .cp-r input{
       padding: 1.5vmax 5vmax;
-      width: 90%;
+      width: 95%;
 }
 .ReviewBooking .main-branch .r-left .left-main .l-coupen .cop .cp-r button{
      margin-top: 2vmax;
      padding: 1.5vmax 2.5vmax ;
-      width: 90%;
+      width: 95%;
       margin-bottom: 1vmax;
  }
 

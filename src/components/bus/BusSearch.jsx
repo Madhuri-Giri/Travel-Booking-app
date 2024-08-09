@@ -13,7 +13,9 @@ import {
 import BusMainImg from "../../assets/images/busMainImg.png";
 import "./BusSearch.css";
 import BusGurantee from './BusGurantee';
-import Loading from '../../pages/loading/Loading'; // Import the Loading component
+import Loading from '../../pages/loading/Loading'; 
+// import Lottie from 'lottie-react';
+// import LottieImg from '../../../assets/images/languageanimation.json';
 
 const BusSearch = () => {
   const [loading, setLoading] = useState(false); // Add loading state
@@ -111,6 +113,8 @@ const BusSearch = () => {
           <div className="B-main">
             <div className="B-main-top">
               <img src={BusMainImg} alt="" />
+              {/* <Lottie animationData={LottieImg} style={{ height: '70%', width: '100%' }} /> */}
+
             </div>
             <div className="B-main-btm">
               <div className="sarch-tab">

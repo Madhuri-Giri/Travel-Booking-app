@@ -132,6 +132,11 @@ justify-content: flex-start;
   .PassangerInfo  .p-upr h6{
         font-size: 2.2vmax;
   }
+ .PassangerInfo  .pbh{
+      width: 95%;
+      text-align: center;
+      font-size: 1.5vmax;
+ }
   
    .pessanger-main form .travelller .p-top .pas{
             width: 100%;
