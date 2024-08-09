@@ -5,176 +5,73 @@
           justify-content: center;
           flex-direction: column;
 }
-.PassangerInfo h5{
-          width: 100%; 
-          font-weight: 600;   
-          font-size: 1.4vmax; 
-          padding: 1vmax;   
-          color: #fff;
-          background: #0a223d;
+.PassangerInfo .pbh {
+      width: 95%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      color: #6d6d6d;
+}
+.PassangerInfo .p-upr{
+      width: 95%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
 }
 
-.PassangerInfo h5 i{
-          margin-right: 1vmax;
-          font-weight: lighter;
+.PassangerInfo  .p-upr h6{
+      font-size: 1vmax;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 0.4vmax;
 }
-.PassangerInfo .passanger{
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-background-color: rgba(230, 248, 255, 0.452);
-          flex-direction: column;
-}
-.PassangerInfo .passanger h6{
-          width: 90%;
-          font-weight: 600;
-          display: flex;font-size: 1.2vmax;
-          align-items: flex-start;
-          justify-content: flex-start;
+.PassangerInfo  .p-upr p{
+          color: #6d6d6d;
+      margin-top: 0.4vmax;
+
 }
 
-.PassangerInfo .passanger p{
-          width: 90%;
-}
-.PassangerInfo .passanger span{
-        margin-left: 1vmax;
-}
-.PassangerInfo .passanger .p-detail{
-          width: 90%;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-direction: row;
-}
-.PassangerInfo .passanger .p-detail h6{
-          width: 50%; 
-          display: flex;  
-          align-items: flex-start;   
-          justify-content: flex-start;
-          font-weight: 600;
-}
-.PassangerInfo .passanger .p-detail p{
-          width: 50%; 
-          display: flex;  
-          align-items: flex-end;   
-          justify-content: flex-end;
-          color: red;
-}
  .pessanger-main{
           width: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
           flex-direction: column;
-          padding: 1vmax;
-          background: #fff;
-          box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.183);
+          margin-top: 1vmax;
  }
  .pessanger-main form{
-          width: 95%;
-           display: flex;
-           align-items: center;
-           justify-content: space-evenly;
-           flex-direction: column;
-           margin-bottom: 2vmax;
+          width: 100%;
  }
-
-
-.pessanger-main form .travelller2{
-      width: 100%; 
-      box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.297);
-      display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
-      flex-direction: column;
-      border-radius: 10px;
-      margin-top: 1vmax;  
-}
-.pessanger-main form .travelller2 h6{
-      font-weight: 700;
-     width: 100%;
-     display: flex;
-     align-items: center;
-     text-align: center;
-     padding: 1vmax;
-
- }
- .pessanger-main form .travelller2 .p-mid2{
-      width: 49%;
-       display: flex;
-       align-items: flex-start;
-       justify-content: space-between;
-       flex-direction: row;
-       padding: 1vmax;
-}
-.pessanger-main form .travelller2 .p-mid2 .p-form{
-      width: 45%;
-      display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
-      flex-direction: column;   
-      margin-bottom: 1vmax;  
-}
-.pessanger-main form .travelller2 .p-mid2 .p-form label{
-      font-weight: 600;
-      margin-bottom: 0.5vmax;
-}
-.pessanger-main form .travelller2 .p-mid2 .p-form input{
-      width: 100%;
-      padding: 0.6vmax;
-      outline: none;
-      border-radius: 5px;
-      border: 0.1px solid #00000082;
-}
-
-
-
-
 .pessanger-main form .travelller{
       width: 100%; 
-      box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.297);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-direction: column;
-      border-radius: 10px;
  }
 
- 
-   
 
  .pessanger-main form .travelller .p-top{
-          width: 100%;
-      border-radius: 10px;
+          width: 95%;
            display: flex;
            align-items: flex-start;
            justify-content: flex-start;
            flex-direction: column;
-           padding: 1vmax;
  }
- .pessanger-main form .travelller .p-top h6{
-     font-weight: 700;
-     width: 100%;
-     display: flex;
-     align-items: center;
-     text-align: center;
-}
  .pessanger-main form .travelller .p-top .pas{
           width: 30%;
            display: flex;
            justify-content: space-between;
            flex-direction: row;
-           padding: 1vmax;
            margin-top: 1vmax;
-           background-color: rgba(230, 248, 255, 0.452);
-
  }
  .pessanger-main form .travelller .p-top .pas .ipt{
-          width: 30%;
+          width: 40%;
           display: flex;
           align-items: center;
           justify-content: space-between;
+          
  }
 
  .pessanger-main form .p-mid{
@@ -183,241 +80,130 @@ background-color: rgba(230, 248, 255, 0.452);
            align-items: center;
            justify-content: space-between;
            flex-direction: row;
-           margin-top: 2vmax;
+           margin-top: 1vmax;
  }
  .pessanger-main form .p-mid .p-form{
-          width: 22%;
+          width: 23%;
           display: flex;
           align-items: flex-start;
           justify-content: flex-start;
-          flex-direction: column;   
-          margin-bottom: 1vmax;  
+          flex-direction: column; 
  }
- .pessanger-main form .p-mid .p-form label{
-          font-weight: 600;
-          margin-bottom: 0.5vmax;
- }
+
  .pessanger-main form .p-mid .p-form input{
       width: 100%;
       padding: 0.6vmax;
       outline: none;
-      border-radius: 5px;
+      border-radius: 10px;
       border: 0.1px solid #00000082;
  }
 .pessanger-main form .p-btn{
      width: 100%;
-     /* box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.297); */
-padding: 1vmax;
+padding-left: 1.5vmax;
 display: flex;
-align-items: center;
-justify-content: center;
-     margin-top: 1vmax;
+align-items: flex-start;
+justify-content: flex-start;
+     margin-bottom: 1vmax;
      border-radius: 10px;
 }
 .pessanger-main form .p-btn button{
           border: none;
-          padding: 0.7vmax 3vmax;
+          padding: 0.7vmax 1vmax;
           border-radius: 10px;
           font-weight: 600;
           color: #fff;
           background-color: #00b7eb;
-        transition: 0.5s;
  } 
- .pessanger-main form .p-btn button:hover{
-     
-    border: 1px solid #00b7eb;
-    color: #00b7eb;
-    background: none;
-} 
+
  
- 
-  @media (max-width:600px) {
-        .PassangerInfo{
-                width: 100%;
-      }
-      .PassangerInfo h5{
-                width: 95%; 
-                font-size: 3vmax; 
-                padding: 2vmax;   
-      }
-      .PassangerInfo .passanger h6{
-                width: 95%;
-            font-size: 2vmax;
-      }
-      
-      .PassangerInfo .passanger p{
-                width: 95%;
-      }
-      .PassangerInfo .passanger .p-detail{
-                width: 95%;
-      }
-       .pessanger-main{
-                padding: 2vmax;
-       }
-       .pessanger-main form{
-                width: 100%;
-       }
-       .pessanger-main form .p-top .pas .ipt{
-                width: 40%;
-       }
-       .pessanger-main form .p-mid .p-form{
-                width: 90%;
-                gap: 0.3vmax;
-                margin-bottom: 2vmax;
-       }
-       .pessanger-main form .p-btm .p-form input{
-      padding: 1vmax;
-}
-       .pessanger-main form .p-btm .p-btn button{
-                padding: 1.5vmax;
-                margin-top: 1vmax;
-       }
-      
-        
+
+@media (max-width:600px) {
+      .PassangerInfo{
+            width: 100%;
   }
-
-
-@media (min-width:600px) and (max-width:1250px) {
-        .PassangerInfo{
-                width: 100%;
-      }
-      .PassangerInfo h5{
-                width: 95%; 
-                font-size: 3vmax; 
-                padding: 2vmax;   
-      }
-      .PassangerInfo .passanger h6{
-                width: 95%;
-            font-size: 2vmax;
-      }
-      
-      .PassangerInfo .passanger p{
-                width: 95%;
-      }
-      .PassangerInfo .passanger .p-detail{
-                width: 95%;
-      }
-       .pessanger-main{
-                padding: 2vmax;
-       }
-       .pessanger-main form{
-                width: 100%;
-       }
-       .pessanger-main form .p-top .pas .ipt{
-                width: 40%;
-       }
-       .pessanger-main form .p-btm .p-form{
-                width: 90%;
-                gap: 0.3vmax;
-                margin-bottom: 2vmax;
-       }
-       .pessanger-main form .p-btm .p-form input{
-      padding: 1vmax;
-}
-       .pessanger-main form .p-btm .p-btn button{
-                padding: 1.5vmax;
-                margin-top: 1vmax;
-       }
-       
-        
-        
+  
+  .PassangerInfo .p-upr{
+        width: 95%;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 1vmax;
   }
+  
+  .PassangerInfo  .p-upr h6{
+        font-size: 2.2vmax;
+  }
+  
+   .pessanger-main form .travelller .p-top .pas{
+            width: 100%;
+   }
+   .pessanger-main form .p-mid{
+             flex-direction: column;
+   }
+   .pessanger-main form .p-mid .p-form{
+            width: 100%;
+          padding-top: 1.5vmax;
+   }
+  
+   .pessanger-main form .p-mid .p-form input{
+        width: 100%;
+        padding: 1.5vmax;
+   }
+  .pessanger-main form .p-btn{
+       width: 100%;
+  padding-left: 0vmax;
+  align-items: center;
+  justify-content: center;
+  }
+  .pessanger-main form .p-btn button{
+      width: 95%;
+            padding: 1.5vmax 1vmax;
+   } 
+      
+}
+
 
 
 
-  /* ----------------------------------------------------------------------------- */
- /* .PassangerInfo{
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+@media (min-width:600px) and (max-width:1150px) {
+      .PassangerInfo{
+            width: 100%;
+  }
+  
+  .PassangerInfo .p-upr{
+        width: 95%;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 1vmax;
+  }
+  
+  .PassangerInfo  .p-upr h6{
+        font-size: 2.2vmax;
+  }
+  
+   .pessanger-main form .travelller .p-top .pas{
+            width: 100%;
+   }
+   .pessanger-main form .p-mid{
+             flex-direction: column;
+   }
+   .pessanger-main form .p-mid .p-form{
+            width: 100%;
+          padding-top: 1.5vmax;
+   }
+  
+   .pessanger-main form .p-mid .p-form input{
+        width: 100%;
+        padding: 1.5vmax;
+   }
+  .pessanger-main form .p-btn{
+       width: 100%;
+  padding-left: 0vmax;
+  align-items: center;
+  justify-content: center;
+  }
+  .pessanger-main form .p-btn button{
+      width: 95%;
+            padding: 1.5vmax 1vmax;
+   } 
+      
 }
-
-.PassangerInfo .passanger{
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      background: #fff;
-}
-.PassangerInfo .passanger .sbse-top {
-      width: 100%;
-      height: 350px;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
- }
- .PassangerInfo .passanger .sbse-top img {
-      width: 100%;
-      height: 350px;
-    
- }
-
- .PassangerInfo .passanger .sbse-btm {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
- }
- .PassangerInfo .passanger .sbse-btm h5{
-      width: 100%; 
-      font-weight: 600;   
-      font-size: 1.8vmax; 
-      padding: 1vmax;   
-      padding-left: 10vmax;   
-      color: #000;
-}
-.PassangerInfo .passanger .sbse-btm .passenger-form{
-      width: 80%;
-}
-.PassangerInfo .passanger .sbse-btm .passenger-form form{
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-evenly;
-      flex-direction: column;
-
-}
-.PassangerInfo .passanger .sbse-btm .passenger-form form .one{
-      width: 100%;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-direction: row;
-      padding: 2vmax;
-}
-.PassangerInfo .passanger .sbse-btm .passenger-form form .one .add{
-      width: 22%;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-direction: column;
-}
-.PassangerInfo .passanger .sbse-btm .passenger-form form .one .add input{
-      width: 100%;
-      outline: none;
-      border-radius: 8px solid #68686844;   
-      padding: 0.6vmax 1vmax;
-      margin-top: 0.3vmax;
-}
-.PassangerInfo .passanger .sbse-btm .passenger-form form .one .add label{
-   font-weight: 600;
-}
-.PassangerInfo .passanger .sbse-btm .passenger-form form .add-pas{
-      width: 100%;
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-end;
-      padding: 2vmax;
-}
-.PassangerInfo .passanger .sbse-btm .passenger-form form .add-pas button{
-     padding: 0.7vmax 4vmax;
-     border: none;
-     color: #fff;
-     background-color: #00b7eb;
-     font-weight: 600;
-} */

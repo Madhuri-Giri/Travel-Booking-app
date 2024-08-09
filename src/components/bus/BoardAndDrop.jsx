@@ -63,33 +63,16 @@ const BoardAndDrop = () => {
 
   const handleSelectBoarding = (index) => {
     setSelectedBoarding(index);
-    handleConfirmSelection();
+    setShowBoarding(false); // Switch to dropping points
   };
 
   const handleSelectDropping = (index) => {
     setSelectedDropping(index);
-    const passengersAlreadyAdded = localStorage.getItem('passengersAlreadyAdded');
+    // Save the selected dropping point to localStorage (optional)
+    localStorage.setItem('selectedDroppingPoint', index);
 
-    if (passengersAlreadyAdded) {
-      navigate('/passenger-list');
-    } else {
-      localStorage.setItem('passengersAlreadyAdded', true);
-      navigate('/passenger-info');
-    }
-  };
-
-  const handleConfirmSelection = () => {
-    if (showBoarding && selectedBoarding !== null) {
-      setShowBoarding(false); // Switch to dropping points if a boarding point is selected
-    } else if (!showBoarding && selectedDropping !== null) {
-      const passengersAlreadyAdded = localStorage.getItem('passengersAlreadyAdded');
-      if (passengersAlreadyAdded) {
-        navigate('/passenger-list');
-      } else {
-        localStorage.setItem('passengersAlreadyAdded', true);
-        navigate('/passenger-info');
-      }
-    }
+    // Navigate to the review-booking page
+    navigate('/review-booking');
   };
 
   const backHandlerList = () => {

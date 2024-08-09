@@ -10,7 +10,6 @@ const store = configureStore ({
                     profile: profileReducer,   
                     hotelSearch: hotelSearchReducer,
 
-                    profile: profileReducer, 
 
           }
 })

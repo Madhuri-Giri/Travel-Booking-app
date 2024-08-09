@@ -17,8 +17,6 @@ import BoardAndDrop from './components/bus/BoardAndDrop';
 import Faq from './pages/Faq/Faq';
 import Setting from './pages/setting/Setting ';
 import LogIn from './pages/NewOne/login/LogIn';
-import PassangerInfo from './components/bus/PassangerInfo';
-import PassengerList from './components/bus/PassengerList';
 import ReviewBooking from './components/bus/ReviewBooking';
 
 import HotelRoom from './components/hotelroom/HotelRoom';
@@ -62,8 +60,6 @@ const App = () => {
           <Route path='profile' element={<Profile />} />
           <Route path='/login' element={<LogIn />} />
           <Route path='/enter-number' element={<EnterNumber />} />
-          <Route path='/passenger-info' element={<PassangerInfo />} />
-          <Route path='/passenger-list' element={<PassengerList />} />
           <Route path='/review-booking' element={<ReviewBooking />} />
           <Route path='/hotel-search' element={<HotelSearch />} />
           <Route path='/hotel-list' element={<HotelList />} />
