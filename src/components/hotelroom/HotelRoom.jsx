@@ -406,7 +406,7 @@ useEffect(() => {
                   <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
                   <Accordion.Body>
                     {room.CancellationPolicy}
-                    ))}
+                    
                   </Accordion.Body>
                 </Accordion.Item>
               </Accordion>
@@ -480,7 +480,7 @@ useEffect(() => {
                   <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
                   <Accordion.Body>
                     {room.CancellationPolicy}
-                    ))}
+                    
                   </Accordion.Body>
                 </Accordion.Item>
               </Accordion>
