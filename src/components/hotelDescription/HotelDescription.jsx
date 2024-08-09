@@ -175,7 +175,10 @@ const HotelDescription = () => {
       </Row>
     </Container>
 
-    
+
+    {/*------------- End section----------- */}
+
+
 
     </section>
 
