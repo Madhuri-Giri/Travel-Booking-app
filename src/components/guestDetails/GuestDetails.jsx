@@ -108,20 +108,22 @@ const GuestDetails = () => {
     setCheckboxChecked(!checkboxChecked);
     
   };
-// ----------------Payment Integration start -------------------
+// ---------------- RozarPay Payment Gateway  Integration start -------------------
 
   const fetchPaymentDetails = async () => {
+
     try {
 
-      // const loginId = localStorage.getItem('loginId')
+      const loginId = localStorage.getItem('loginId')
 
+      //for Handle Decimal digit of amount
       const roundedAmount = Math.round(totalPriceWithGST * 100) / 100;
       
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-payment', {
         
         amount: roundedAmount, 
-        // user_id: loginId,
-        user_id: "1"
+        user_id: loginId,
+        
       });
 
       if (response.data.status === 'success') {
@@ -139,11 +141,11 @@ const GuestDetails = () => {
   };
 
   const handlePayment = async (e) => {
-    //  const loginId = localStorage.getItem('loginId');
-    // if (!loginId) {
-    //   navigate('/login'); 
-    //   return;
-    // }
+     const loginId = localStorage.getItem('loginId');
+    if (!loginId) {
+      navigate('/login'); 
+      return;
+    }
   
     e.preventDefault();
     try {
@@ -428,6 +430,8 @@ const { singleDeluxe, doubleDeluxe, totalPriceSingleDeluxe, totalPriceDoubleDelu
 
 // -------------------------------End Book API--------------------------------------------
 
+
+// for Handle html tag and symbol
 const cleanHotelPolicyDetails = (policyDetails) => {
   let cleanedDetails = policyDetails.replace(/<\/?[^>]+(>|$)/g, '');
   cleanedDetails = cleanedDetails.replace(/["\s]+/g, ' ').trim();
@@ -527,7 +531,7 @@ return (
 
               {showForm && !formSubmitted && (
               
-
+      /* ---------Start form----------- */
     <div className="form-container">
   <div className="form-content">
     <h2 className="text-center">Enter Your Details</h2>

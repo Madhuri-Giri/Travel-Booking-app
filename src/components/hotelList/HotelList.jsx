@@ -55,6 +55,7 @@ const IGST_RATE = 0.18; // 18% IGST
   const offset = currentPage * hotelsPerPage;
   const currentHotels = hotels.slice(offset, offset + hotelsPerPage);
 
+// ----------------for filter----------------
   useEffect(() => {
     const sortedHotels = [...hotels];
     switch (sortOption) {
@@ -99,6 +100,8 @@ const IGST_RATE = 0.18; // 18% IGST
     }
   }, [searchResults]);
 
+  // -----------API start --------------------
+
   const fetchHotelInfo = async (index) => {
     const hotel = hotels[index];
     try {
@@ -137,6 +140,9 @@ const IGST_RATE = 0.18; // 18% IGST
       setError("Failed to fetch hotel details. Please try again later.");
     }
   };
+
+
+  // ----------------Api End------------------
   const handleSortOptionChange = (option) => {
     setSortOption(option);
     setIsDropdownOpen(false); // Close the dropdown after selecting an option
@@ -221,6 +227,7 @@ const IGST_RATE = 0.18; // 18% IGST
       <div className="listContainer">
         <div className="listWrapper">
         <Container>
+        {/* New section start */}
       <Row>
         <Col md={3}>
           <div className="listSearch">
@@ -323,6 +330,9 @@ const IGST_RATE = 0.18; // 18% IGST
             <button onClick={() => { /* Add your search functionality here */ }}>Search</button>
           </div>
         </Col>
+        {/* Section End */}
+
+        {/* New section Start */}
         <Col md={9}>
           <div className="listResult">
             {geoError && <p className="errorMessage">{geoError}</p>}
@@ -376,6 +386,7 @@ const IGST_RATE = 0.18; // 18% IGST
             )}
           </div>
           </Col>
+          {/* End new section */}
       </Row>
     </Container>
         </div>

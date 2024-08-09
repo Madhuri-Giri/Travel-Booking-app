@@ -87,10 +87,13 @@
  */
 
 
+
+/* ----------start side filter--------- */
  .hotelMainsec{
   padding: 40px 0px;
   background-color: #dddddd;
  }
+
 .listContainer {
   display: flex;
   justify-content: center;
@@ -191,18 +194,12 @@
 .listFilterOption label {
   font-weight: 600; 
 }
-
+/* ---------------End ------------------- */
 
 .listResult {
   flex: 3;
 }
-/* 
-.form_in_de{
-  width: 100%; 
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #fff;
-} */
+
 .searchItem {
   box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
   background-color: white;
@@ -339,7 +336,10 @@
   cursor: pointer;
   border-radius: 5px;
 }
-/* Pagination Container */
+/* ------------End -------------- */
+
+
+/*----------------- Pagination Container--------------- */
 .paginationContainer {
   display: flex;
   justify-content: end;
@@ -382,6 +382,7 @@
 .paginationContainer .pagination li a:hover {
   background-color: #ddd;
 }
+/* ---------------------End--------------------- */
 
 /* Responsive CSS */
 @media (max-width: 768px) {
