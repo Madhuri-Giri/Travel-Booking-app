@@ -1,6 +1,6 @@
 import React, { useState,useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Container, Card, Button } from 'react-bootstrap';
+import { Container, Card, Button,Accordion } from 'react-bootstrap';
 import './HotelRoom.css';
 
 const initialFormData = {
@@ -379,28 +379,38 @@ useEffect(() => {
       </div>
                         <Card.Title><b>{room.RoomTypeName}</b></Card.Title>
                         <Card.Text>
-                        
                           <p><b>Price:</b> INR {room.Price?.RoomPrice?.toFixed(2)}</p>
                           <p><b>Day Rate:</b> {room.DayRates?.map(dayRate => (
                             <span key={dayRate.Date}>
                               {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
                             </span>
                           ))}</p>
-                          <p>Smoking Preference: {room.SmokingPreference}</p>
-                          <h5>Cancellation Policies:</h5>
-                          <ul>
-                            {room.CancellationPolicies?.map((policy, index) => (
-                              <li key={index}>
-                              
-                                {policy.ChargeType === 1 ? 'Fixed Charge' : 'Percentage Charge'}:
-                                <div className="d-inline charge">
-                                {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
-                                </div> 
-                               
-                              </li>
-                            ))}
-                          </ul>
-                          <p className='cancel_box'><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
+                          
+                          <p><b>Smoking Preference:</b>{room.SmokingPreference}</p>
+                          
+                          <Accordion className="accordian_space">
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header><b>Cancellation Policy</b></Accordion.Header>
+                  <Accordion.Body>
+                    {room.CancellationPolicies.map((policy, idx) => (
+                      <p key={idx}>
+                        {policy.FromDate} to {policy.ToDate}: {policy.Charge}% will be charged.
+                      </p>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+              
+              <Accordion className="accordian_space">
+              <Accordion.Item eventKey="0">
+                  <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
+                  <Accordion.Body>
+                    {room.CancellationPolicy}
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+
                         </Card.Text>
                         {!selectedSingleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
                           <button onClick={() => handleRoomToggle(room, 'single')} className="reserve_button">Reserve</button>
@@ -445,24 +455,35 @@ useEffect(() => {
       </div>
                         <Card.Title>{room.RoomTypeName}</Card.Title>
                         <Card.Text>
-                          <p>Price: INR {room.Price?.RoomPrice?.toFixed(2)}</p>
-                          <p>Day Rate: {room.DayRates?.map(dayRate => (
+                          <p><b>Price: INR</b> {room.Price?.RoomPrice?.toFixed(2)}</p>
+                          <p><b>Day Rate:</b> {room.DayRates?.map(dayRate => (
                             <span key={dayRate.Date}>
                               {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
                             </span>
                           ))}</p>
-                          <p>Smoking Preference: {room.SmokingPreference}</p>
+                          <p><b>Smoking Preference:</b> {room.SmokingPreference}</p>
                           
-                          <h5>Cancellation Policies:</h5>
-                          <ul>
-                            {room.CancellationPolicies?.map((policy, index) => (
-                              <li key={index}>
-                                {policy.ChargeType === 1 ? 'Fixed Charge' : 'Percentage Charge'}: 
-                                {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
-                              </li>
-                            ))}
-                          </ul>
-                          <p><strong>Cancellation Policies:</strong> {room.CancellationPolicy}</p>
+                          <Accordion className="accordian_space">
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header><b>Cancellation Policy</b></Accordion.Header>
+                  <Accordion.Body>
+                    {room.CancellationPolicies.map((policy, idx) => (
+                      <p key={idx}>
+                        {policy.FromDate} to {policy.ToDate}: {policy.Charge}% will be charged.
+                      </p>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+              <Accordion className="accordian_space">
+              <Accordion.Item eventKey="0">
+                  <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
+                  <Accordion.Body>
+                    {room.CancellationPolicy}
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
                         </Card.Text>
                         {!selectedDoubleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
                           <button onClick={() => handleRoomToggle(room, 'double')} className="reserve_button">Reserve</button>

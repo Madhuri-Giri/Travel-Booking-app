@@ -30,6 +30,7 @@ const Review = () => {
     return (
         <>
         
+        <section className='reviewSecMain'>
         <Container>
             <div className='review_container'>
                 {mockData.map((review, index) => (
@@ -61,6 +62,7 @@ const Review = () => {
                 ))}
             </div>
         </Container>
+        </section>
         </>
     );
 };

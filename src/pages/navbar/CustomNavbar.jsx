@@ -12,6 +12,8 @@ import { PiSuitcaseSimpleDuotone } from "react-icons/pi";
 import { BsBookmarkStarFill } from "react-icons/bs";
 import MainLogo from "../../assets/images/main logo.png"
 import { FaDownload } from "react-icons/fa6";
+import { FaPlaneDeparture } from "react-icons/fa";
+import { FaBusAlt } from "react-icons/fa";
 
 
 const CustomNavbar = () => {
@@ -19,9 +21,9 @@ const CustomNavbar = () => {
         <>
             <Navbar expand="lg" className="mainNavbar">
                 <Container>
-                   
+
                     <Navbar.Brand href="/" className='navbarlogo'>
-                        <img   src={MainLogo} className='img-fluid logoimg' alt="logo" />
+                        <img src={MainLogo} className='img-fluid logoimg' alt="logo" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -31,21 +33,21 @@ const CustomNavbar = () => {
                                 className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/flight-search' ? 'active' : ''} , ${location.pathname === '/flight-list' ? 'active' : ''} , ${location.pathname === '/flight-details' ? "active" : ''} , ${location.pathname === '/seat-meal-baggage' ? 'active' : ''} , ${location.pathname === '/flight-review' ? 'active' : ''} `}
                             >
                                 <GiCommercialAirplane className="icon" size={20} />
-                                <span className="textNav">FLIGHTS</span>
+                                <span className="textNav">FLIGHT</span>
                             </Nav.Link>
                             <Nav.Link
                                 href="/bus-search"
                                 className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/bus-search' ? 'active' : ''} , ${location.pathname === '/bus-list' ? 'active' : ''} `}
                             >
-                                <TbBus className="icon" size={22} />
-                                <span className="textNav">BUSES</span>
+                                <FaBusAlt className="icon" size={22} />
+                                <span className="textNav">BUS</span>
                             </Nav.Link>
                             <Nav.Link
                                 href="/hotel-search"
                                 className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/hotel-search' ? 'active' : ''} , ${location.pathname === '/hotel-list' ? 'active' : ''}`}
                             >
                                 <RiHotelBedFill className="icon" size={22} />
-                                <span className="textNav">HOTELS</span>
+                                <span className="textNav">HOTEL</span>
                             </Nav.Link>
                             {/* <Nav.Link
                                 href="/package"
@@ -66,8 +68,8 @@ const CustomNavbar = () => {
                             <Nav.Link href="" className='numNavbar'> <FaPhoneAlt /> <span>+91 9876543210</span> </Nav.Link>
 
                             <div className="mobileLoginSignup">
-                            <Nav.Link href="/login" className='mobileLoginNavbar'> <span><MdLogin size={20} /> Login</span> </Nav.Link>
-                            <Nav.Link href="/signup" className='mobileSignupNavbar'> <span><LuUserPlus size={20} /> Signup</span> </Nav.Link>
+                                <Nav.Link href="/login" className='mobileLoginNavbar'> <span><MdLogin size={20} /> Login</span> </Nav.Link>
+                                <Nav.Link href="/signup" className='mobileSignupNavbar'> <span><LuUserPlus size={20} /> Signup</span> </Nav.Link>
                             </div>
 
                             <NavDropdown
@@ -88,22 +90,29 @@ const CustomNavbar = () => {
             {/* mobile header for bookings */}
             <div className="container-fluid mobilehedrbookings">
                 <div className="row">
-                    <div className="col-3">
-                        <Link to='/flight-search'>
-                         <GiCommercialAirplane className="icon" />
-                         Flight
-                        </Link>
+                    <div className={`col-4 ${location.pathname === '/flight-search' ? 'active-link' : ''} , ${location.pathname === '/' ? 'active-link' : ''}`}>
+                        <div>
+                        <NavLink to='/flight-search'>
+                            <FaPlaneDeparture  className="icon" />
+                            Flight
+                        </NavLink>
+                        </div>
                     </div>
-                    <div className="col-3">
-                        <Link to='/bus-search'>
-                        <TbBus className="icon"/>Bus
-                        </Link>
+                    <div className={`col-4 ${location.pathname === '/bus-search' ? 'active-link' : ''}`}>
+                       <div>
+                       <NavLink to='/bus-search'>
+                            <FaBusAlt  className="icon" />
+                            Bus
+                        </NavLink>
+                       </div>
                     </div>
-                    <div className="col-3">
-                        <Link to='/hotel-search'>   
-                        <RiHotelBedFill className="icon"/>
-                         Hotel
-                        </Link>
+                    <div className={`col-4 ${location.pathname === '/hotel-search' ? 'active-link' : ''}`}>
+                       <div>
+                       <NavLink to='/hotel-search'>
+                            <RiHotelBedFill className="icon" />
+                            Hotel
+                        </NavLink>
+                       </div>
                     </div>
                 </div>
             </div>

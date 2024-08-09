@@ -1,110 +1,172 @@
 .BordingDroping {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        
-        .BordingDroping .bord-drop {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-        }
-        
-        .BordingDroping .bord-drop h5 {
-          width: 100%;
-          display: flex;
-          align-items: flex-start;
-          justify-content: flex-start;
-          padding: 1vmax;
-          font-weight: 600;
-          font-size: 1vmax;
-          color: #fff;
-          background: #0a223d;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3vmax;
+}
 
-        }
-        .BordingDroping .bord-drop h5 i{
-         margin-right: 1vmax;
-        }
-        
-        .BordingDroping .bord-drop .DB-top {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: row;
-          margin-bottom: 2vmax;
-        }
-        
-        .BordingDroping .bord-drop .DB-top .tab {
-          padding: 1vmax;
-          font-size: 1.2vmax;
-          cursor: pointer;
-        }
-        
-        .BordingDroping .bord-drop .DB-top .tab.active {
-          color: blue;
-          text-decoration: underline;
-        }
-        
-        .BordingDroping .bord-drop .all-Bording-point,
-        .BordingDroping .bord-drop .all-Droping-point {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-        }
-        
-        .BordingDroping .bord-drop .all-Bording-point p,
-        .BordingDroping .bord-drop .all-Droping-point p {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.2vmax;
-          font-weight: 600;
-        }
-        
-        .BordingDroping .bord-drop .all-Bording-point .boring-last,
-        .BordingDroping .bord-drop .all-Droping-point .boring-last {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-        }
-        
-        .BordingDroping .bord-drop .all-Bording-point .boring-last .bord-last,
-        .BordingDroping .bord-drop .all-Droping-point .boring-last .bord-last {
-          width: 90%;
-          display: flex;
-          align-items: center;
-          justify-content: space-evenly;
-          flex-direction: row;
-          padding: 1vmax;
-          margin-bottom: 1vmax;
-          border:1px solid #00000040;
-          border-radius: 10px;
-        }
-        
-        .BordingDroping .bord-drop .all-Bording-point .boring-last .bord-last .bd-one,
-        .BordingDroping .bord-drop .all-Droping-point .boring-last .bord-last .bd-one {
-          width: 30%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-        }
-        
-        .BordingDroping .bord-drop .all-Bording-point .boring-last .bord-last .bd-two,
-        .BordingDroping .bord-drop .all-Droping-point .boring-last .bord-last .bd-two {
-          width: 30%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-        }
-        
+.BordingDroping .bord-drop {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.BordingDroping .bord-drop h5 {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 1vmax;
+  font-weight: 600;
+  font-size: 1vmax;
+  color: #fff;
+  background: #0a223d;
+}
+
+.BordingDroping .bord-drop h5 i {
+  margin-right: 1vmax;
+}
+
+.BordingDroping .bord-drop .DB-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  margin-bottom: 1vmax;
+}
+
+.BordingDroping .bord-drop .DB-top .tab {
+  padding: 1vmax;
+  font-size: 1.2vmax;
+  cursor: pointer;
+}
+
+.BordingDroping .bord-drop .DB-top .tab.active {
+  color: blue;
+  text-decoration: underline;
+}
+
+.BordingDroping .bord-drop .all-Bording-point,
+.BordingDroping .bord-drop .all-Droping-point {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.BordingDroping .bord-drop .all-Bording-point p,
+.BordingDroping .bord-drop .all-Droping-point p {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2vmax;
+  font-weight: 600;
+
+}
+
+/* Table styles for boarding points */
+.boarding-table,
+.dropping-table {
+  width: 90%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.boarding-table th,
+.dropping-table th {
+  border: none; /* No border for header */
+  padding: 0.5rem;
+  text-align: center;
+  background-color: #f2f2f2;
+  border: 1px solid  #00000033;
+
+}
+
+.boarding-table td,
+.dropping-table td {
+  border: none; 
+  padding: 0.5rem;
+  text-align: center;
+  border: 1px solid  #00000033;
+}
+
+/* Adjusted width for Date & Time column */
+.boarding-table td:nth-child(2),
+.dropping-table td:nth-child(2) {
+  width: 30%; /* Adjust width of Date & Time column */
+}
+
+.selected {
+  background-color: #e0f7fa; /* Highlight selected row */
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+/* Focus style for accessibility */
+.BordingDroping .bord-drop .DB-top .tab:focus {
+  outline: 2px solid blue; /* Add focus outline */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .BordingDroping .bord-drop h5 {
+    font-size: 2.5vmax; /* Adjusted font size for h5 */
+    padding: 1.5vmax; /* Increased padding */
+  }
+
+  .BordingDroping .bord-drop .DB-top .tab {
+    font-size: 2vmax; /* Adjusted font size for tabs */
+    padding: 1.5vmax; /* Increased padding for tabs */
+  }
+
+  .BordingDroping .bord-drop .all-Bording-point p,
+  .BordingDroping .bord-drop .all-Droping-point p {
+    font-size: 2vmax; /* Adjusted font size for paragraphs */
+  }
+
+  .boarding-table,
+  .dropping-table {
+    width: 100%; /* Full width for tables */
+  }
+
+  .boarding-table th,
+  .dropping-table th,
+  .boarding-table td,
+  .dropping-table td {
+    font-size: 1.5vmax; /* Adjusted font size for table cells */
+  }
+}
+
+@media (max-width: 480px) {
+  .BordingDroping .bord-drop h5 {
+    font-size: 2vmax; /* Smaller font size for very small devices */
+    padding: 1vmax; /* Less padding */
+  }
+
+  .BordingDroping .bord-drop .DB-top .tab {
+    font-size: 1.5vmax; /* Smaller font size for tabs */
+    padding: 1vmax; /* Less padding for tabs */
+  }
+
+  .boarding-table th,
+  .dropping-table th,
+  .boarding-table td,
+  .dropping-table td {
+    font-size: 1.2vmax; /* Smaller font size for table cells */
+  }
+
+  .boarding-table,
+  .dropping-table {
+    width: 100%; /* Full width for tables */
+  }
+}

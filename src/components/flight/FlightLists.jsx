@@ -7,9 +7,38 @@ import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { FaArrowRightLong } from "react-icons/fa6";
+import { FaFilter } from "react-icons/fa";
+import { MdModeEdit } from "react-icons/md";
+import { RiTimerLine } from "react-icons/ri";
+import Loading from '../../pages/loading/Loading'; // Import the Loading component
 
 export default function FlightLists() {
     const navigate = useNavigate();
+
+    // for timerss----------------------------------
+    const [timer, setTimer] = useState(600000);
+
+    useEffect(() => {
+        const countdown = setInterval(() => {
+            setTimer((prev) => prev - 100);
+        }, 100);
+
+        if (timer <= 0) {
+            clearInterval(countdown);
+            navigate('/bus-search');
+        }
+
+        return () => clearInterval(countdown);
+    }, [timer, navigate]);
+
+    const formatTimers = (milliseconds) => {
+        const totalSeconds = Math.floor(milliseconds / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes} min ${seconds} sec left`;
+    };
+    // for timerss----------------------------------
 
     const [callenderListdata, setcallenderListdata] = useState(null);
 
@@ -58,12 +87,19 @@ export default function FlightLists() {
     // function for date convert into day month date--------------------------------------
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return new Intl.DateTimeFormat('en-US', { day: 'numeric', weekday: 'long', month: 'long' }).format(date);
+        return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', weekday: 'short' }).format(date);
     };
     const departDatee = formData.Segments[0].PreferredDepartureTime;
     const formattedDate = formatDate(departDatee);
     // function for date convert into day month date--------------------------------------
 
+    // func for duration convert hpur minute---------------------
+    const convertMinutesToHoursAndMinutes = (minutes) => {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        return `${hours}h ${remainingMinutes}m`;
+    };
+    // func for duration convert hpur minute---------------------
 
     // Function to extract all AirlineName values
     const getAllAirlineNames = (data) => {
@@ -136,6 +172,7 @@ export default function FlightLists() {
     localStorage.setItem("FlightSrdvType", listData.SrdvType)
     localStorage.setItem("FlightTraceId", listData.TraceId)
 
+    // for callender slider-----------------------------------------------------------------------
     useEffect(() => {
         const getCallenderData = async () => {
             try {
@@ -194,6 +231,29 @@ export default function FlightLists() {
         slidesToShow: 3,
         slidesToScroll: 1,
         variableWidth: true,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                }
+            }
+        ]
     };
 
     // Scroll functions
@@ -208,6 +268,7 @@ export default function FlightLists() {
             sliderRef.current.slickNext();
         }
     };
+    // for callender slider-----------------------------------------------------------------------
 
 
 
@@ -285,6 +346,11 @@ export default function FlightLists() {
 
     return (
         <>
+            {/* timerrr-------------------  */}
+            <div className="timer-FlightLists">
+                <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
+            </div>
+            {/* timerrr-------------------  */}
 
             <section className='flightlistsec1'>
                 <div className="container">
@@ -302,6 +368,36 @@ export default function FlightLists() {
                         <div className="col-lg-4 d-flex flightlistsec1col">
                             <FaUser className="mt-1" />
                             <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className='flightlistsec1Mobile'>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-2 d-flex flightlistsec1colMobile">
+                            <div className="filterIcondiv">
+                                <FaFilter className="mt-1" />
+                            </div>
+                        </div>
+                        <div className="col-8  flightlistsec1colMobile">
+                            <div className="flightlistsec1colMobileOriDes">
+                                <p> {formData.Segments[0].Origin} </p>
+                                <FaArrowRightLong />
+                                <p>{formData.Segments[0].Destination} </p>
+                            </div>
+                            <div className="d-flex">
+                                <p><span></span> {formattedDate}</p>
+                                <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
+                            </div>
+
+
+                        </div>
+                        <div className="col-2 d-flex flightlistsec1colMobile">
+                            <div className="editIconDiv">
+                                <MdModeEdit className="mt-1" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -336,50 +432,7 @@ export default function FlightLists() {
                             <Accordion.Item eventKey="1">
                                 <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
                                 <Accordion.Body>
-                                    <div id="airlineFilters">
-
-                                    </div>
-
-                                    {/* <div className="airlineaccoridna">
-                                        <span></span>
-                                        <p>Indigo Air</p>
-                                        <h6>Rs.7202</h6>
-                                    </div>
-                                    <div className="airlineaccoridna">
-                                        <span></span>
-                                        <p>Air India</p>
-                                        <h6>Rs.7202</h6>
-                                    </div>
-                                    <div className="airlineaccoridna">
-                                        <span></span>
-                                        <p>AirIndia Express</p>
-                                        <h6>Rs.7202</h6>
-                                    </div>
-                                    <div className="airlineaccoridna">
-                                        <span></span>
-                                        <p>Multiple Airlines</p>
-                                        <h6>Rs.7834</h6>
-                                    </div>
-                                    <div className="airlineaccoridna">
-                                        <span></span>
-                                        <p>Vistara</p>
-                                        <h6>Rs.7202</h6>
-                                    </div>
-                                    <div className="airlineaccoridna">
-                                        <span></span>
-                                        <p>Akasa Air</p>
-                                        <h6>Rs.9956</h6>
-                                    </div>
-                                    <div className="airlineaccoridna">
-                                        <span></span>
-                                        <p>Spice Jet</p>
-                                        <h6>Rs.8682</h6>
-                                    </div>
-                                    <div className="airlineaccoridna">
-                                        <span></span>
-                                        <p>Air India Exp</p>
-                                        <h6>Rs.7202</h6>
-                                    </div> */}
+                                    <div id="airlineFilters"> </div>
                                 </Accordion.Body>
                             </Accordion.Item>
                             <Accordion.Item eventKey="2">
@@ -484,13 +537,13 @@ export default function FlightLists() {
                                                         ) ||
                                                             selected.length == 0) && (
                                                                 <div className="row" key={`${index}-${segmentIndex}`}>
-                                                                <div className="pricebtnsmobil">
-                                                                    <p>{flight?.OfferedFare || "Unknown Airline"}</p>
-                                                                    <button>SELECT</button>
-                                                                </div>
-                                                                <p className='regulrdeal'><span>Regular Deal</span></p>
-        
-                                                                {/* {flight.Segments.map((segmentGroup, groupIndex) => {
+                                                                    <div className="pricebtnsmobil">
+                                                                        <p>{flight?.OfferedFare || "Unknown Airline"}</p>
+                                                                        <button>SELECT</button>
+                                                                    </div>
+                                                                    <p className='regulrdeal'><span>Regular Deal</span></p>
+
+                                                                    {/* {flight.Segments.map((segmentGroup, groupIndex) => {
                                                                     return segmentGroup.map((segmentOption, segmentOptionIndex) => {
                                                                         return (
                                                                             <div key={`${index}-${segmentIndex}-${groupIndex}-${segmentOptionIndex}`}>
@@ -523,35 +576,35 @@ export default function FlightLists() {
                                                                         );
                                                                     });
                                                                 })} */}
-        
-                                                                <div className="col-3">
-                                                                    <div className="d-flex">
-                                                                        <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
-                                                                        <p>{option.Airline.AirlineName}</p><br></br>
+
+                                                                    <div className="col-md-3 col-4 f-listCol1">
+                                                                        <div className="d-flex">
+                                                                            <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
+                                                                            <p>{option.Airline.AirlineName}</p><br></br>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div className="col-md-6 col-8 f-listCol2">
+                                                                        <div className="flistname">
+                                                                            <p className="flistnamep1">{option.Origin.CityCode}</p>
+                                                                            <div>
+                                                                                <p className="flistnamep2">{convertUTCToIST(option.DepTime)}</p>
+                                                                                <p className="flistnamep4">{option.Origin.CityName}</p>
+                                                                            </div>
+                                                                            <p className="flistnamep3">{convertMinutesToHoursAndMinutes(option.Duration)}</p>
+                                                                            <div>
+                                                                                <p className="flistnamep2">{convertUTCToIST(option.ArrTime)}</p>
+                                                                                <p className="flistnamep4">{option.Destination.CityName}</p>
+                                                                            </div>
+                                                                            <p className="flistnamep5">{option.Destination.CityCode}</p>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div className="col-md-3 pricebtns f-listCol3">
+                                                                        <div><p>₹{flight?.OfferedFare}</p></div>
+                                                                        <div> <button onClick={fareQuoteHandler}>SELECT</button>     </div>
                                                                     </div>
                                                                 </div>
-        
-                                                                <div className="col-6">
-                                                                    <div className="flistname">
-                                                                        <p className="flistnamep1">{option.Origin.CityCode}</p>
-                                                                        <div>
-                                                                            <p className="flistnamep2">{convertUTCToIST(option.DepTime)}</p>
-                                                                            <p className="flistnamep4">{option.Origin.CityName}</p>
-                                                                        </div>
-                                                                        <p className="flistnamep3">{option.Duration}</p>
-                                                                        <div>
-                                                                            <p className="flistnamep2">{convertUTCToIST(option.ArrTime)}</p>
-                                                                            <p className="flistnamep4">{option.Destination.CityName}</p>
-                                                                        </div>
-                                                                        <p className="flistnamep5">{option.Destination.CityCode}</p>
-                                                                    </div>
-                                                                </div>
-        
-                                                                <div className="col-3 pricebtns">
-                                                                    <div><p>₹{flight?.OfferedFare}</p></div>
-                                                                    <div> <button onClick={fareQuoteHandler}>SELECT</button>     </div>
-                                                                </div>
-                                                            </div>
                                                             )}
                                                     </>
                                                 )

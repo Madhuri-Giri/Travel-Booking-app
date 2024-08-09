@@ -96,12 +96,12 @@ const Profile = () => {
 
   return (
     <section className='profileSectionbg'>
-      <Container className="d-flex justify-content-center align-items-center">
         {message && (
           <Alert variant={messageType} onClose={() => setMessage('')} dismissible>
             {message}
           </Alert>
         )}
+      <Container className="d-flex justify-content-center align-items-center">
         <Row>
           <Col md={4}>
             <div className="profile profile-sidebar box">
@@ -116,7 +116,7 @@ const Profile = () => {
             </div>
           </Col>
           <Col md={8}>
-            <div className="profile profile-details box">
+            <div className="profile-details box">
               <div className="profile-header">
                 <h2>Profile Details</h2>
                 <button className="edit-button" onClick={() => setEditing(!editing)}>

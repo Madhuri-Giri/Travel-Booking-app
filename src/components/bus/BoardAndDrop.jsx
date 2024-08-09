@@ -60,13 +60,10 @@ const BoardAndDrop = () => {
 
     fetchBoardingData();
   }, []);
-  
 
   const handleSelectBoarding = (index) => {
     setSelectedBoarding(index);
-    setTimeout(() => {
-      setShowBoarding(false); 
-    }, 500); 
+    handleConfirmSelection();
   };
 
   const handleSelectDropping = (index) => {
@@ -78,6 +75,20 @@ const BoardAndDrop = () => {
     } else {
       localStorage.setItem('passengersAlreadyAdded', true);
       navigate('/passenger-info');
+    }
+  };
+
+  const handleConfirmSelection = () => {
+    if (showBoarding && selectedBoarding !== null) {
+      setShowBoarding(false); // Switch to dropping points if a boarding point is selected
+    } else if (!showBoarding && selectedDropping !== null) {
+      const passengersAlreadyAdded = localStorage.getItem('passengersAlreadyAdded');
+      if (passengersAlreadyAdded) {
+        navigate('/passenger-list');
+      } else {
+        localStorage.setItem('passengersAlreadyAdded', true);
+        navigate('/passenger-info');
+      }
     }
   };
 
@@ -111,80 +122,77 @@ const BoardAndDrop = () => {
             className={`tab ${showBoarding ? 'active' : ''}`}
             onClick={handleShowBoarding}
           >
-            Boarding-Points
+            Boarding Points
           </p>
           <p
             className={`tab ${!showBoarding ? 'active' : ''}`}
             onClick={handleShowDropping}
           >
-            Dropping-Points
+            Dropping Points
           </p>
         </div>
 
         {showBoarding ? (
           <div className="all-Bording-point">
             <p>ALL BOARDING POINTS</p>
-            <div className="boring-last">
-              {boardingPoints.map(point => (
-                <div key={point.CityPointIndex} className="bord-last">
-                  <div className="bd-one">
-                    <span>
-                      <h6>Date & Time</h6>
-                      <small>{convertToIST(point.CityPointTime)}</small>
-                    </span>
-                    {/* <span>{point.CityPointName}</span> */}
-                  </div>
-                  <div className="bd-one">
-                    <span>
-                         <h6>CityPointName</h6>
-                         <small>{point.CityPointName}</small>
-                    </span>
-                    {/* <span>{point.CityPointLocation}</span> */}
-                    {/* <span>{point.CityPointLandmark}</span> */}
-                  </div>
-                  <div className="bd-two">
-                    <input
-                      type="radio"
-                      name="boarding"
-                      checked={selectedBoarding === point.CityPointIndex}
-                      onChange={() => handleSelectBoarding(point.CityPointIndex)}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <table className="boarding-table">
+              <thead>
+                <tr>
+                  <th>Boarding Points</th>
+                  <th>Date & Time</th>
+                  <th>Select</th>
+                </tr>
+              </thead>
+              <tbody>
+                {boardingPoints.map(point => (
+                  <tr key={point.CityPointIndex}>
+                    <td>{point.CityPointName}</td>
+                    <td>{convertToIST(point.CityPointTime)}</td>
+                    <td>
+                      <input
+                        type="radio"
+                        id={`boarding-${point.CityPointIndex}`}
+                        name="boarding"
+                        value={point.CityPointIndex}
+                        checked={selectedBoarding === point.CityPointIndex}
+                        onChange={() => handleSelectBoarding(point.CityPointIndex)}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         ) : (
           <div className="all-Droping-point">
             <p>ALL DROPPING POINTS</p>
-            <div className="boring-last">
-              {droppingPoints.map(point => (
-                <div key={point.CityPointIndex} className="bord-last">
-                  <div className="bd-one">
-                  <span>
-                      <h6>Date & Time</h6>
-                      <small>{convertToIST(point.CityPointTime)}</small>
-                    </span>
-                  </div>
-                  <div className="bd-one">
-                  <span>
-                         <h6>CityPointName</h6>
-                         <small>{point.CityPointName}</small>
-                    </span>
-                    {/* <span>{point.CityPointLocation}</span> */}
-                    {/* <span>{point.CityPointLandmark}</span> */}
-                  </div>
-                  <div className="bd-two">
-                    <input
-                      type="radio"
-                      name="dropping"
-                      checked={selectedDropping === point.CityPointIndex}
-                      onChange={() => handleSelectDropping(point.CityPointIndex)}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <table className="dropping-table">
+              <thead>
+                <tr>
+                  <th>Dropping Points</th>
+                  <th>Date & Time</th>
+                  <th>Select</th>
+                </tr>
+              </thead>
+              <tbody>
+                {droppingPoints.map(point => (
+                  <tr key={point.CityPointIndex}>
+                    <td>{point.CityPointName}</td>
+                    <td>{convertToIST(point.CityPointTime)}</td>
+                    <td>
+                      <input
+                        type="radio"
+                        id={`dropping-${point.CityPointIndex}`}
+                        name="dropping"
+                        value={point.CityPointIndex}
+                        checked={selectedDropping === point.CityPointIndex}
+                        onChange={() => handleSelectDropping(point.CityPointIndex)}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
 

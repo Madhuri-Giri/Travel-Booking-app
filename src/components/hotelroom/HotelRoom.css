@@ -18,7 +18,7 @@
   margin-top: 20px;
 }
 .room_container p{
-  margin: 0px !important;
+  /* margin: 0px !important; */
 }
 .room_container h5{
   margin-top: 16px;
@@ -109,7 +109,9 @@
 .card-text {
   font-size: 1rem;
 }
-
+.accordian_space{
+  margin-top: 20px;
+}
 .reserve_button, .remove_button {
   margin-top: 14px;
   background-color: #00b7eb;

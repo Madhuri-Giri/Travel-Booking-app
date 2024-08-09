@@ -191,7 +191,7 @@
        flex-direction: column;
       padding: 1vmax;
       border-radius: 10px;
-      box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.176);
+      box-shadow: 2px 2px 5px 2px rgba(164, 164, 164, 0.176);
   margin-top: 1vmax
 }
 
@@ -210,7 +210,8 @@
        justify-content: space-evenly;
        padding-top: 1vmax;
        padding-bottom: 1vmax;
-
+       border: 0.2px solid #0000004d;
+       border-radius: 5px;
 }
 .ReviewBooking .review-book .p-detail  .details .one{
        display: flex;
@@ -260,6 +261,8 @@
        width: 100%;
       padding: 0.5vmax 1vmax;
       outline: none;
+      border: 0.1px solid #0000;
+      border-radius: 5px;
  }
 
 .ReviewBooking .review-book .new-contact{
@@ -314,8 +317,13 @@
       font-weight: 600;
 }
 .ReviewBooking .review-book .new-contact form .c-detail .cont input{
-       padding: 0.5vmax 2vmax;
+       padding: 0.6vmax 2vmax;
        outline: none;
+       /* width: 100%; */
+       /* padding: 0.6vmax; */
+       /* outline: none; */
+       border-radius: 10px;
+       border: 0.1px solid #00000082;
  }
  .ReviewBooking .review-book .new-contact form .c-detail  .p-cont{
        width: 22%;
@@ -328,7 +336,8 @@
  }
  .ReviewBooking .review-book .new-contact form .c-detail  .p-cont button{
      border: none;
-     padding: 0.7vmax 3vmax;
+     padding: 0.6vmax 7vmax;
+
      color: #ffff;
      background-color: #00b7eb;
      font-weight: 600;
