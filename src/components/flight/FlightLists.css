@@ -1,4 +1,114 @@
+
 /* styles.css */
+.slider-container {
+    background-color: white; 
+    padding:0px 25px; 
+    border-radius: 10px; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+}
+
+.flight-slide {
+    text-align: center; 
+    padding: 10px; 
+    box-shadow: 0px 0px 1px rgb(0 0 0 / 38%);
+}
+.flight-slide h6{
+    font-weight: 500;
+    font-size: 13px;
+}
+.flight-slide p{
+    font-weight: 600;
+    font-size: 13px;
+    color: #00b7eb;
+    margin: 0px;
+}
+/* Slick arrow customization */
+.slider-container .slick-prev, .slick-next {
+    /* background-color: #ddd;  */
+    /* border-radius: 50%; */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1; 
+}
+.flight-slide:hover{
+    background-color: #eaffef;
+}
+
+.slider-container .slick-prev:before, .slider-container .slick-next:before {
+    color: #333333a8; 
+    font-size: 30px;
+}
+
+
+
+
+
+
+
+
+.filter-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Transparent background */
+    display: flex;
+    justify-content: flex-start; /* Align content to the left */
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.filter-content {
+    width: 75%;
+    height: 100%;
+    background-color: white;
+    /* padding: 20px; */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+.filterHeder{
+    background-color: #dddddd;
+    padding: 10px 20px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+
+.flightlistsec1MainCol{
+    display: flex;
+    padding: 10px 40px;
+    /* justify-content: space-around; */
+}
+.flightlistsec1Row{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.flightlistsec1 .search-functinality button {
+    border: none;
+    padding: 5px 13px;
+    border-radius: 10px;
+    background-color: rgba(255, 0, 0, 0.749);
+    color: #fff;
+    font-weight: 600;
+}
+.search-functinality{
+    display: flex;
+    justify-content: center;
+}
+
 .timer-FlightLists {
     position: sticky;
     top: 0;
@@ -75,12 +185,16 @@
     padding-bottom: 11px;
     color: white;
 }
+.flightlistsec1col{
+    display: flex;
+    padding: 0px 15px;
+}
 .flightlistsec1col p{
     font-weight: bold;
-    margin: 0px 13px;
+    margin: 0px 5px;
 }
 .flightlistsec1col svg{
-    font-size: 22px;
+    font-size: 16px;
 }
 .flightlistsec1Mobile{
     background-color: #00b7eb;
@@ -113,13 +227,7 @@
     font-size: 47px;
     padding: 5px 7px;
 }
-.flightlistsec1col p{
-    font-weight: bold;
-    margin: 0px 13px;
-}
-.flightlistsec1col svg{
-    font-size: 22px;
-}
+
 
 .flightlistsec2{
     padding: 40px 50px;
@@ -260,7 +368,7 @@
     background-color: #00b7eb;
     border: none;
     color: white;
-    padding: 6px 35px;
+    padding: 6px 20px;
     border-radius: 17px;
     font-weight: bold;
     margin-left: 50px;
@@ -355,149 +463,6 @@
 }
 /* farequote css end-------- */
 
-
-/* responsive css */
-@media screen and (max-width: 576px) {
-    .flightlistsec2col1{
-        margin-bottom: 40px;
-    }
-    .flightlistsec2 .row .f-lists{
-        padding: 0px 10px;
-    }
-    .f-listCol1 p{
-        font-size: 12px;
-    }
-    .flightlistsec2col1{
-        display: none;
-    }
-    .flightlistsec1{
-        display: none;
-    }
-    .flightlistsec1Mobile{
-        display: block;
-    }
-}
-/* responsive css */
-@media screen and (max-width: 768px) {
-    .flistnamep1,
-    .flistnamep5{
-        display: none;
-    }
-    .pricebtnsmobil p {
-        font-size: 15px;
-    }
-    .flistname p {
-        margin: 0px 5px;
-    }
-    .pricebtnsmobil{
-        display: flex;
-        justify-content: space-between;
-    }
-    .pricebtns{
-        display: none;
-    }
-    .pricebtnsmobil button {
-        padding: 0px 35px;
-        font-size: 15px;
-    }
-    .flight-content .row {
-        padding: 8px 0px;
-    }
-    .f-lists img {
-        height: 20px;
-        border-radius: 5px;
-        margin-right: 15px;
-        margin-top: 10px;
-    }
-}
-
-
-/* @media (max-width:600px) {
-    .FlightList{
-              width: 100%;
-    }
-    .FlightList .flights .f-top{
-              width: 95%;
-              padding: 1vmax;
-    }
-    .FlightList .flights .f-top h5{
-            font-size: 2vmax;
-    }
-     .FlightList .flights .flight-date-slider{
-              height: 10vmax;
-     }
-     .FlightList .flights .flight-date-slider .d-slide{
-              width: 95%;
-     }
-     .FlightList .flights .flight-date-slider .d-slide .date-left{
-              width: 10%;
-              height: 10vmax;
-     }
-     .FlightList .flights .flight-date-slider .d-slide .date-left i{
-             font-size: 2.5vmax;
-     }
-     .FlightList .flights .flight-date-slider .d-slide .date-right{
-              width: 10%;
-              height: 10vmax;
-     }
-     .FlightList .flights .flight-date-slider .d-slide .date-right i{
-             font-size: 2.5vmax;
-     }
-     .FlightList .flights .flight-date-slider .d-slide .date-mid .d-one{
-              width: 20%; 
-              height: 10vmax;
-              padding: 2vmax; 
-     }
-     .FlightList .flights .flight-date-slider .d-slide .date-mid .d-one p{
-              font-size: 1.5vmax; 
-     }
-    
-            
-}
-
-
-@media (min-width:600px) and (max-width:1250px) {
-    .FlightList{
-              width: 100%;
-    }
-    .FlightList .flights .f-top{
-              width: 95%;
-              padding: 1vmax;
-    }
-    .FlightList .flights .f-top h5{
-            font-size: 2vmax;
-    }
-     .FlightList .flights .flight-date-slider{
-              height: 10vmax;
-     }
-     .FlightList .flights .flight-date-slider .d-slide{
-              width: 95%;
-     }
-     .FlightList .flights .flight-date-slider .d-slide .date-left{
-              width: 10%;
-              height: 10vmax;
-     }
-     .FlightList .flights .flight-date-slider .d-slide .date-left i{
-             font-size: 2.5vmax;
-     }
-     .FlightList .flights .flight-date-slider .d-slide .date-right{
-              width: 10%;
-              height: 10vmax;
-     }
-     .FlightList .flights .flight-date-slider .d-slide .date-right i{
-             font-size: 2.5vmax;
-     }
-     .FlightList .flights .flight-date-slider .d-slide .date-mid .d-one{
-              width: 20%; 
-              height: 10vmax;
-              padding: 2vmax; 
-     }
-     .FlightList .flights .flight-date-slider .d-slide .date-mid .d-one p{
-              font-size: 1.5vmax; 
-     }
-} */
-
-
 /* slider csssss */
 .flight-date-slider {
     overflow: hidden;
@@ -524,9 +489,29 @@
     background-color: #f0f0f0;
     border-radius: 5px;
 }
+/* slider csssss */
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
+
+
+@media screen and (max-width: 992px) {
+    .flightlistsec2col1DeskView{
+        display: none;
+    } 
+    .flightlistsec1Mobile{
+        display: block;
+    }
+    .flight-content{
+        padding: 0px 20px ;
+    }
+    .flightlistsec1{
+        display: none;
+    }
+    
+}
+
+/* responsive css */
+@media screen and (max-width: 768px) {
+    
     .date-left, .date-right {
         padding: 5px;
     }
@@ -534,6 +519,57 @@
     .d-one {
         margin: 0.5vmax;
     }
+    .flistnamep1,
+    .flistnamep5{
+        display: none;
+    }
+    .pricebtnsmobil p {
+        font-size: 15px;
+    }
+    .flistname p {
+        margin: 0px 5px;
+    }
+    .pricebtnsmobil{
+        display: flex;
+        justify-content: space-between;
+    }
+    .pricebtns{
+        display: none;
+    }
+    .pricebtnsmobil button {
+        padding: 0px 35px;
+        font-size: 15px;
+    }
+    
+    .flight-content .row {
+        padding: 8px 0px;
+    }
+    .f-lists img {
+        height: 20px;
+        border-radius: 5px;
+        margin-right: 15px;
+        margin-top: 10px;
+    }
+   
+}
+
+@media screen and (max-width: 576px) {
+    .flightlistsec2 {
+        padding: 20px 0px;
+    }
+    .flight-content{
+        padding: 0px 0px;
+    }
+    .flightlistsec2col1{
+        margin-bottom: 40px;
+    }
+    .flightlistsec2 .row .f-lists{
+        padding: 0px 10px;
+    }
+    .f-listCol1 p{
+        font-size: 12px;
+    }
+    
 }
 
 @media (max-width: 480px) {
@@ -545,5 +581,3 @@
         margin: 0.2vmax;
     }
 }
-
-/* slider csssss */
