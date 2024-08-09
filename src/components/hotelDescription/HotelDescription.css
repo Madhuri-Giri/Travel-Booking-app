@@ -17,23 +17,12 @@
     border-radius: 5px;
     box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
 }
+
 .ro{
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f8f9fa;
-    border-radius: 25px;
-    padding: 20px 50px;
-    box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
-}
-.hotelName{
-    color: black;
-    font-weight: 800;
-}
-.hotelName span{
-    font-size: 11px;
-    margin-top: -10px;
 }
 
 
@@ -101,7 +90,8 @@
     height: 320px !important;
     /* max-height:500px;  */
     /* object-fit: cover;  */
-   
+    
+
 }
 
 .Header_hotel {
@@ -151,7 +141,7 @@
 }
 
 .Feature_item {
-    border: 1px solid rgb(69, 68, 68);
+    /* border: 1px solid rgb(69, 68, 68); */
     border-radius: 5px;
     padding: 10px 15px;
     background-color: #f9f9f9;

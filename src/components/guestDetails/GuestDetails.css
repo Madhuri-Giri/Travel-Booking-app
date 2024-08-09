@@ -1,3 +1,4 @@
+
 .guest-details-container {
   background-color: #f8f9fa;
   padding: 30px;
@@ -8,13 +9,28 @@
   margin: 0 auto;
 }
 
+.details-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-side {
+  text-align: left;
+}
+
+.right-side {
+  text-align: right;
+}
 .section-title {
   font-size: 2em;
   margin-bottom: 20px;
   color: #343a40;
   text-align: center;
 }
-
+.guest-details-container h3{
+  color: #007bff;
+}
 .guest-details-card {
   background-color: white;
   padding: 20px;
@@ -73,4 +89,18 @@
 .form-content {
   width: 100%;
   max-width: 500px; 
+}
+
+.room-details-container {
+  margin-top: 20px;
+  display: inline-table;
+  flex-direction:row;
+  background-color: #f8f9fa;
+}
+
+.room-details {
+  margin-bottom: 1rem; 
+  padding: 1rem;
+  /* border: 1px solid #ddd;  */
+  /* border-radius: 5px; */
 }
