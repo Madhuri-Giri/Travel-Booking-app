@@ -444,7 +444,7 @@ const FlightSearch = () => {
                           {/* <div className="col-sm-6 flightformCol"> */}
                           <div className="col-6 flight-input-container onewayreturnhidebtn">
                             <span className="plane-icon">
-                              <MdDateRange />
+                              {/* <MdDateRange /> */}
                             </span>
                             <Link>Add Return date</Link>
                             {/* <MdDateRange className="" /> */}

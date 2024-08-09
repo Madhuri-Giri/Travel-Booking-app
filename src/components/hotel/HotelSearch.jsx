@@ -17,7 +17,7 @@ const HotelSearch = () => {
   //--- Navigate Other Page ---
   const navigate = useNavigate();
 
-//------------------- Start  carousel code ---------------------
+  //------------------- Start  carousel code ---------------------
   const slideRef = useRef(null);
   const intervalRef = useRef(null);
   const scrollWidthRef = useRef(0);
@@ -27,7 +27,7 @@ const HotelSearch = () => {
       if (slideRef.current) {
         const imageWidth = slideRef.current.querySelector('img').clientWidth + 32; // Including gap between images
         scrollWidthRef.current += imageWidth;
-        
+
         slideRef.current.scrollTo({
           left: scrollWidthRef.current,
           behavior: 'smooth',
@@ -59,7 +59,7 @@ const HotelSearch = () => {
   }, []);
   //-------------------- End carousal code ------------------------
 
-  
+
   const [showGuestOptions, setShowGuestOptions] = useState(false);
   const guestRef = useRef(null);
 
@@ -79,23 +79,23 @@ const HotelSearch = () => {
         operation === "increment"
           ? values[name] + 1
           : values[name] > 0
-          ? values[name] - 1
-          : 0,
+            ? values[name] - 1
+            : 0,
     }));
   };
 
 
-// ------------- Start API code -------------------
+  // ------------- Start API code -------------------
 
-const [inputs, setInputs] = useState({
-  cityOrHotel: "",
-  // checkIn: new Date("2020-04-30"),
-  // checkOut: new Date("2020-05-01"),
-  checkIn: null,
-  checkOut:null,
-  adults: 1,
-  children: 0,
-});
+  const [inputs, setInputs] = useState({
+    cityOrHotel: "",
+    // checkIn: new Date("2020-04-30"),
+    // checkOut: new Date("2020-05-01"),
+    checkIn: null,
+    checkOut: null,
+    adults: 1,
+    children: 0,
+  });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -182,14 +182,15 @@ const [inputs, setInputs] = useState({
       {/* New section start */}
       <div className="hotel_container">
         <div className="content_wrapper">
-          <Row>
+          <Container>
+          <Row className="content_wrapperRow">
             <Col xl={5} md={12} className="order-md-1 order-2">
-            <div className="content_box">
-       <h1>
-        Discover <span className="luxury-font">luxury</span> and comfort in the heart of the city. Choose your  <span className="luxury-font"> perfect room  </span> and enjoy top-notch amenities and <span className="luxury-font">services</span>.
-        </h1>
-      </div>
-        <button className="btn-book" type="submit">Book Now</button>
+              <div className="content_box">
+                <h1>
+                  Discover <span className="luxury-font">luxury</span> and comfort in the heart of the city. Choose your  <span className="luxury-font"> perfect room  </span> and enjoy top-notch amenities and <span className="luxury-font">services</span>.
+                </h1>
+              </div>
+              <button className="btn-book" type="submit">Book Now</button>
             </Col>
 
             <Col xl={7} md={12} className="order-md-2 order-1">
@@ -214,18 +215,20 @@ const [inputs, setInputs] = useState({
               </div>
             </Col>
           </Row>
+
+          </Container>
         </div>
         {/* End section */}
 
         {/* New section start */}
-      <section className="sec_book">
+        <section className="sec_book">
           <div className="hotel_booking">
             <form onSubmit={handleSubmit}>
               <div className="form-row">
                 <div className="form-field">
                   <label className="form_lable" htmlFor="cityOrHotel">City or Hotel Name: </label>
-                  <input className="form_in" type="text" id="cityOrHotel"  name="cityOrHotel"
-                    placeholder="Enter city or hotel name" value={inputs.cityOrHotel} onChange={handleChange}  />
+                  <input className="form_in" type="text" id="cityOrHotel" name="cityOrHotel"
+                    placeholder="Enter city or hotel name" value={inputs.cityOrHotel} onChange={handleChange} />
                 </div>
 
                 <div className="form-field">
@@ -235,23 +238,23 @@ const [inputs, setInputs] = useState({
 
                 <div className="form-field">
                   <label className="form_lable" htmlFor="checkOut">Check-Out Date:</label>
-                  <DatePicker  className="form_in" selected={inputs.checkOut} onChange={(date) => handleDateChange(date, "checkOut")} dateFormat="dd/MM/yyyy" placeholderText="Select check-out date" />
+                  <DatePicker className="form_in" selected={inputs.checkOut} onChange={(date) => handleDateChange(date, "checkOut")} dateFormat="dd/MM/yyyy" placeholderText="Select check-out date" />
                 </div>
 
                 <div className="form-field guest_field">
                   <label className="form_lable" htmlFor="guestField"> Guests:</label>
                   <input className="form_in" type="text" id="guestField" name="guestField" placeholder="Guests" onClick={() => setShowGuestOptions(!showGuestOptions)}
-            value={`${inputs.adults} Adults, ${inputs.children} Children`} readOnly />
+                    value={`${inputs.adults} Adults, ${inputs.children} Children`} readOnly />
                   {showGuestOptions && (
                     <div ref={guestRef} className="guest_options">
                       <div className="guest_option">
                         <label htmlFor="adults">Adults:</label>
                         <button
-                          type="button" onClick={() => handleGuestChange("adults", "decrement") }>-
+                          type="button" onClick={() => handleGuestChange("adults", "decrement")}>-
                         </button>
                         <span>{inputs.adults}</span>
                         <button
-                          type="button" onClick={() =>  handleGuestChange("adults", "increment")}>+
+                          type="button" onClick={() => handleGuestChange("adults", "increment")}>+
                         </button>
                       </div>
 
@@ -262,7 +265,7 @@ const [inputs, setInputs] = useState({
                         </button>
                         <span>{inputs.children}</span>
                         <button
-                          type="button"onClick={() => handleGuestChange("children", "increment")}>+
+                          type="button" onClick={() => handleGuestChange("children", "increment")}>+
                         </button>
                       </div>
                     </div>
@@ -272,28 +275,28 @@ const [inputs, setInputs] = useState({
               </div>
             </form>
           </div>
-      </section>
+        </section>
       </div>
       {/* End section */}
 
       {/* new section start */}
-     <section>
-      <Container>
-      <div className="Exclusive_offer">
-        <h5>Exclusive <span style={{color:"#00b7eb"}}>Offers</span></h5>
-        <div className="offer_container" onMouseEnter={stopAutoScroll} onMouseLeave={startAutoScroll}>
-          <div className="offer_box" ref={slideRef}>
-            <img src={offer_img1} alt="Offer 1" />
-            <img src={offer_img2} alt="Offer 2" />
-            <img src={offer_img3} alt="Offer 3" />
-            <img src={offer_img1} alt="Offer 4" />
-            <img src={offer_img2} alt="Offer 5" />
-            <img src={offer_img3} alt="Offer 6" />
+      <section>
+        <Container>
+          <div className="Exclusive_offer">
+            <h5>Exclusive <span style={{ color: "#00b7eb" }}>Offers</span></h5>
+            <div className="offer_container" onMouseEnter={stopAutoScroll} onMouseLeave={startAutoScroll}>
+              <div className="offer_box" ref={slideRef}>
+                <img src={offer_img1} alt="Offer 1" />
+                <img src={offer_img2} alt="Offer 2" />
+                <img src={offer_img3} alt="Offer 3" />
+                <img src={offer_img1} alt="Offer 4" />
+                <img src={offer_img2} alt="Offer 5" />
+                <img src={offer_img3} alt="Offer 6" />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      </Container>
-    </section>
+        </Container>
+      </section>
       {/* End section */}
 
       {/* new section start */}
@@ -312,7 +315,7 @@ const [inputs, setInputs] = useState({
         </div>
       </section>
       {/* end section */}
-      
+
     </>
   );
 };
