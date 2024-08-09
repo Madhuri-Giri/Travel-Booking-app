@@ -66,9 +66,28 @@ const BusLists = () => {
     }));
   };
 
+  const storeSelectedBusDetails = (bus) => {
+    const selectedBusDetails = {
+      busName: bus.TravelName,
+      boardingPoints: bus.BoardingPoints,
+      droppingPoints: bus.DroppingPoints,
+
+    };
+  
+    localStorage.setItem('selectedBusDetails', JSON.stringify(selectedBusDetails));
+  };
+  
+
   const handleSelectSeat = async (index) => {
     setVisibleLayout(index);
-    await addSeatLayout(); // Call the function to fetch and set the layout
+
+    const selectedBus = searchResults[index];
+  
+    // Store selected bus details in localStorage
+    storeSelectedBusDetails(selectedBus);
+
+
+    await addSeatLayout(); 
   };
 
   const toggleTravelList = () => {

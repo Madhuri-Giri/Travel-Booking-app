@@ -8,8 +8,6 @@ const PassangerInfo = () => {
     lastName: '',
     address: '',
     age: '',
-    number: '',
-    email: '',
     gender: '1',
   };
 
@@ -35,7 +33,7 @@ const PassangerInfo = () => {
   const blockHandler = async (event) => {
     event.preventDefault();
 
-    if (passengers.length < selectedSeats.length) {
+    if (passengerCount < selectedSeats.length) {
       const requestData = {
         ResultIndex: '1',
         TraceId: '1',
@@ -48,8 +46,8 @@ const PassangerInfo = () => {
             Title: 'Mr',
             FirstName: formData.firstName,
             LastName: formData.lastName,
-            Email: formData.email,
-            Phoneno: formData.number,
+            Email: 'tani@gmail.com',
+            Phoneno: '9999999999',
             Gender: formData.gender,
             IdType: null,
             Idnumber: null,
@@ -119,8 +117,6 @@ const PassangerInfo = () => {
           {
             FirstName: formData.firstName,
             LastName: formData.lastName,
-            Email: formData.email,
-            Phoneno: formData.number,
             Gender: formData.gender,
             Address: formData.address,
             Age: formData.age,
@@ -128,16 +124,12 @@ const PassangerInfo = () => {
         ]);
 
         setPassengerCount(passengerCount + 1);
-
         setFormData(initialFormData);
 
-       
-        if (passengers.length + 1 >= selectedSeats.length) {
+        if (passengerCount + 1 >= selectedSeats.length) {
           const passengersJSON = JSON.stringify([...passengers, {
             FirstName: formData.firstName,
             LastName: formData.lastName,
-            Email: formData.email,
-            Phoneno: formData.number,
             Gender: formData.gender,
             Address: formData.address,
             Age: formData.age,
@@ -145,7 +137,6 @@ const PassangerInfo = () => {
           localStorage.setItem('passengerData', passengersJSON);
           const transactionNum = data.result.saved_bookings[0].transaction_num;
           localStorage.setItem('transactionNum', transactionNum);
-          navigate('/passenger-list');
         }
       } catch (error) {
         console.error('Error:', error);
@@ -155,138 +146,94 @@ const PassangerInfo = () => {
     }
   };
 
-  const backHandlerList = () => {
-    navigate('/bord-drop');
-  };
-
   return (
     <div className='PassangerInfo'>
-      <h5>
-        <i style={{ cursor: "pointer" }} onClick={backHandlerList} className="ri-arrow-left-s-line"></i>
-        Passenger Information
-      </h5>
-      <div className="passanger">
-        <h6>Add Passengers</h6>
-        <p>SELECTED SEATS: <span>{selectedSeats.join(', ')}</span></p>
+      <div className="p-upr">
+        <h6><i className="ri-user-add-line"></i>Traveller Details <br />
+        </h6>
+        <p><span>{passengerCount} passenger{passengerCount !== 1 ? 's' : ''} added</span> / {selectedSeats.length} Seat{selectedSeats.length > 1 ? 's' : ''} Selected</p>
+      </div>
 
-        <div className="p-detail">
-          <h6>Traveller Details</h6>
-          <p><span>{passengerCount} passenger{passengerCount !== 1 ? 's' : ''} added</span> / {selectedSeats.length} Seat{selectedSeats.length > 1 ? 's' : ''} Selected</p>
-        </div>
-        <p>It is compulsory to add passengers as per the number of seats.</p>
-        
-        <div className="pessanger-main">
-          <form onSubmit={blockHandler}>
-            <div className="travelller">
-              <div className="p-top">
-                <h6>Enter Traveller Details </h6>
-                <div className="pas">
-                  <div className="ipt">
-                    <label>Male</label>
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="1"
-                      checked={formData.gender === '1'}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="ipt">
-                    <label>Female</label>
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="2"
-                      checked={formData.gender === '2'}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
+      <div className='pbh'>It is compulsory to add passengers as per the number of seats.</div>
 
-                <p className="p-mid">
-                  <div className="p-form">
-                    <label>First Name</label>
-                    <input
-                      type="text"
-                      name='firstName'
-                      value={formData.firstName}
-                      onChange={handleInputChange}
-                      placeholder='Enter Name'
-                      required
-                    />
-                  </div>
-                  <div className="p-form">
-                    <label>Last Name</label>
-                    <input
-                      type="text"
-                      name='lastName'
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      placeholder='Enter Last Name'
-                      required
-                    />
-                  </div>
-                  <div className="p-form">
-                    <label>Address</label>
-                    <input
-                      type="text"
-                      name='address'
-                      value={formData.address}
-                      onChange={handleInputChange}
-                      placeholder='Enter Address'
-                      required
-                    />
-                  </div>
-                  <div className="p-form">
-                    <label>Age</label>
-                    <input
-                      type="text"
-                      name='age'
-                      value={formData.age}
-                      onChange={handleInputChange}
-                      placeholder='Enter Age'
-                      required
-                    />
-                  </div>
-                </p>
-              </div>
-            </div>
-
-            <div className="travelller2">
-              <h6>Enter Contact Details</h6>
-              <p className="p-mid2">
-                <div className="p-form">
-                  <label>Email</label>
+      <div className="pessanger-main">
+        <form onSubmit={blockHandler}>
+          <div className="travelller">
+            <div className="p-top">
+              <div className="pas">
+                <div className="ipt">
+                  <label>Male</label>
                   <input
-                    type="email"
-                    name='email'
-                    value={formData.email}
+                    type="radio"
+                    name="gender"
+                    value="1"
+                    checked={formData.gender === '1'}
                     onChange={handleInputChange}
-                    placeholder='Enter Email'
+                  />
+                </div>
+                <div className="ipt">
+                  <label>Female</label>
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="2"
+                    checked={formData.gender === '2'}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+
+              <p className="p-mid">
+                <div className="p-form">
+                  <input
+                    type="text"
+                    name='firstName'
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    placeholder='Enter Name'
                     required
                   />
                 </div>
                 <div className="p-form">
-                  <label>Contact</label>
                   <input
-                    type="number"
-                    name='number'
-                    value={formData.number}
+                    type="text"
+                    name='lastName'
+                    value={formData.lastName}
                     onChange={handleInputChange}
-                    placeholder='Enter Number'
+                    placeholder='Enter Last Name'
+                    required
+                  />
+                </div>
+                <div className="p-form">
+                  <input
+                    type="text"
+                    name='address'
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    placeholder='Enter Address'
+                    required
+                  />
+                </div>
+                <div className="p-form">
+                  <input
+                    type="text"
+                    name='age'
+                    value={formData.age}
+                    onChange={handleInputChange}
+                    placeholder='Enter Age'
                     required
                   />
                 </div>
               </p>
             </div>
+          </div>
 
-            <div className="p-btn">
-              <button type='submit'>
-                {passengers.length < selectedSeats.length - 1 ? 'Add Passenger' : 'Add New Passenger'}
-              </button>
-            </div>
-          </form>
-        </div>
+          <div className="p-btn">
+            <button type='submit' disabled={passengerCount >= selectedSeats.length}>
+              Add Passenger
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -21,13 +21,16 @@
   justify-content: flex-start;
   padding: 1vmax;
   font-weight: 600;
-  font-size: 1vmax;
+  font-size: 1.2vmax;
   color: #fff;
-  background: #0a223d;
+  background: #00b7eb;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .BordingDroping .bord-drop h5 i {
-  margin-right: 1vmax;
+  margin-right: 0.4vmax;
+  font-size: 1.3vmax;
 }
 
 .BordingDroping .bord-drop .DB-top {
