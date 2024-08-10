@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect } from 'react';
 import "./FlightDetails.css"
 import { useLocation, useNavigate } from 'react-router-dom';
+import { RiTimerLine } from "react-icons/ri";
+import CustomNavbar from '../../pages/navbar/CustomNavbar';
+import Footer from '../../pages/footer/Footer';
 
 const SeatMealBaggageTabs = () => {
+    const navigate = useNavigate();
     const location = useLocation();
     const { state } = location;
     const { seatData, ssrData, formData } = state || {}; // Destructure state
 
-    console.log('Seat Data:', seatData);
-    console.log('SSR Data:', ssrData);
-    console.log('formData:', formData);
+    // console.log('Seat Data:', seatData);
+    // console.log('SSR Data:', ssrData);
+    // console.log('formData:', formData);
 
     // Calculate the total count
     const totalCount = formData.AdultCount + formData.ChildCount + formData.InfantCount;
-    console.log("Total travller",totalCount);
+    // console.log("Total travller", totalCount);
 
 
     const [activeTab, setActiveTab] = useState('Seats');
@@ -23,14 +27,14 @@ const SeatMealBaggageTabs = () => {
             <div className="seatsTabss">
                 <h5>SELECT YOUR PREFERRED SEAT</h5>
                 <div className="row seatsTabssRow">
-                    <div className="col-lg-6 seatsTabssColImg">
+                    <div className="col-lg-4 seatsTabssColImg">
                         <img
                             className="img-fluid"
                             src='/src/assets/images/flightseattss-removebg-preview.png'
                             alt="First slide"
                         />
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-8">
                         <div className="seatsTabssColText">
                             <div className="seat-selection row">
                                 {seatData.map((seat) => (
@@ -110,8 +114,42 @@ const SeatMealBaggageTabs = () => {
         );
     };
 
+
+    // for timerss----------------------------------
+    const [timer, setTimer] = useState(600000);
+
+    useEffect(() => {
+        const countdown = setInterval(() => {
+            setTimer((prev) => prev - 50); // Decrease timer by 50 milliseconds each tick
+        }, 50); // Interval of 50 milliseconds
+
+        if (timer <= 0) {
+            clearInterval(countdown);
+            alert("Your Session is Expired");
+            navigate('/flight-search');
+        }
+
+        return () => clearInterval(countdown);
+    }, [timer, navigate]);
+
+    const formatTimers = (milliseconds) => {
+        const totalSeconds = Math.floor(milliseconds / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes} min ${seconds} sec left`;
+    };
+
+    // for timerss----------------------------------
+
     return (
         <>
+        <CustomNavbar/>
+            {/* timerrr-------------------  */}
+            <div className="timer-FlightLists">
+                <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
+            </div>
+            {/* timerrr-------------------  */}
+
             <div className="container-fluid selectSeatMealCont">
                 <div className='container'>
                     <div className="row selectSeatMealContROW">
@@ -159,7 +197,7 @@ const SeatMealBaggageTabs = () => {
                     </div>
                 </div>
             </div>
-
+            <Footer/>
         </>
     );
 };

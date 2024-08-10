@@ -12,6 +12,8 @@ import { FaFilter } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
 import { RiTimerLine } from "react-icons/ri";
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
+import Footer from "../../pages/footer/Footer";
+import CustomNavbar from "../../pages/navbar/CustomNavbar";
 
 export default function FlightLists() {
     const navigate = useNavigate();
@@ -374,6 +376,7 @@ export default function FlightLists() {
 
     return (
         <>
+        <CustomNavbar/>
             {/* timerrr-------------------  */}
             <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
@@ -420,7 +423,7 @@ export default function FlightLists() {
                                 <FaArrowRightLong />
                                 <p>{formData.Segments[0].Destination}</p>
                             </div>
-                            <div className="d-flex">
+                            <div className="d-flex flightlistsec1colMobileTravlr">
                                 <p><span></span> {formattedDate}</p>
                                 <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount}, </span> <span>Economy</span></p>
                             </div>
@@ -543,7 +546,6 @@ export default function FlightLists() {
                     </div>
                 </div>
             )}
-
 
             <div className="container-fluid flightlistsec2">
                 <div className="row">
@@ -700,7 +702,7 @@ export default function FlightLists() {
                                                                 <div className="row" key={`${index}-${segmentIndex}`}>
                                                                     <div className="pricebtnsmobil">
                                                                         <p>{flight?.OfferedFare || "Unknown Airline"}</p>
-                                                                        <button>SELECT</button>
+                                                                        <button onClick={fareQuoteHandler}>SELECT</button>
                                                                     </div>
                                                                     <p className='regulrdeal'><span>Regular Deal</span></p>
 
@@ -838,6 +840,7 @@ export default function FlightLists() {
                     </div>
                 </div>
             </div>
+            <Footer/>
         </>
     )
 }

@@ -1,17 +1,14 @@
 import "./FlightSearch.css"
 // import '../home/Home.css';
 import React, { useState, useEffect, useRef } from 'react';
-import { Carousel, Dropdown, Modal, Button } from 'react-bootstrap';
-import { NavLink, useNavigate, Link } from 'react-router-dom';
-import { FaCalendarAlt, FaUser, FaAngleDown, FaPlaneDeparture } from 'react-icons/fa';
+import { Carousel } from 'react-bootstrap';
+import { useNavigate, Link } from 'react-router-dom';
+import { FaAngleDown } from 'react-icons/fa';
 import { BiLogoPlayStore, BiSolidPlaneTakeOff, BiSolidPlaneLand } from "react-icons/bi";
 import { MdDateRange } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
-import { GiCommercialAirplane } from "react-icons/gi";
-import { TbBus } from "react-icons/tb";
-import { FaCircleUser, FaBaby, FaPerson, FaChildReaching, FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
+import { FaCircleUser } from "react-icons/fa6";
 import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
-import { RiHotelFill } from "react-icons/ri";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from "axios";
@@ -21,7 +18,9 @@ import 'slick-carousel/slick/slick-theme.css';
 import PropTypes from 'prop-types';
 import home_insta from "../../../src/assets/images/home-insta.jpg";
 import home_newsletter from "../../../src/assets/images/home-yotube.jpg";
-import Loading from '../../pages/loading/Loading'; // Import the Loading component
+import Loading from '../../pages/loading/Loading';
+import Footer from "../../pages/footer/Footer";
+import CustomNavbar from "../../pages/navbar/CustomNavbar";
 
 
 const FlightSearch = () => {
@@ -333,6 +332,7 @@ const FlightSearch = () => {
   return (
     <>
 
+      <CustomNavbar />
 
       <section className='flightPageBanner'>
         <div className="container-fluid ">
@@ -441,15 +441,11 @@ const FlightSearch = () => {
                               <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure Date</label>
                             </div>
                           </div>
-                          {/* <div className="col-sm-6 flightformCol"> */}
                           <div className="col-6 flight-input-container onewayreturnhidebtn">
                             <span className="plane-icon">
-                              {/* <MdDateRange /> */}
                             </span>
                             <Link>Add Return date</Link>
-                            {/* <MdDateRange className="" /> */}
                           </div>
-                          {/* </div> */}
                           <div className="col-sm-8 flightformCol form-group " onClick={handleShow}>
                             <div className="form-control flightTravellerclssFormControl  flight-input-container">
                               <span className="plane-icon">
@@ -643,9 +639,9 @@ const FlightSearch = () => {
 
                           <div className="col-6 flightformCol">
                             <div className="form-group flight-input-container">
-                                <span className="plane-icon">
-                                  <MdDateRange />
-                                </span>
+                              <span className="plane-icon">
+                                <MdDateRange />
+                              </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
                                 <DatePicker
                                   name="PreferredArrivalTime"
@@ -1003,7 +999,7 @@ const FlightSearch = () => {
           </div>
         </div>
       </section>
-
+      <Footer />
     </>
   )
 }

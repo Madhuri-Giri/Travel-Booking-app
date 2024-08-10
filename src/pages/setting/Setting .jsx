@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './Setting.css';
 import { Link } from 'react-router-dom';
+import CustomNavbar from '../navbar/CustomNavbar';
+import Footer from '../footer/Footer';
 
 const Setting = () => {
   const [locationTrackEnabled, setLocationTrackEnabled] = useState(true);
@@ -27,7 +29,7 @@ const Setting = () => {
 
   return (
     <>
-
+<CustomNavbar/>
     <div className="Settings">
       <div className="setting">
         <div className="s-tp">
@@ -124,6 +126,7 @@ const Setting = () => {
         </div>
       </div>
     </div>
+    <Footer/>
     
     </>
   );

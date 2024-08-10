@@ -1,12 +1,14 @@
 import "./Faq.css";
 import { useState, useEffect } from 'react';
 import 'remixicon/fonts/remixicon.css';
+import CustomNavbar from "../navbar/CustomNavbar";
+import Footer from "../footer/Footer";
 
 const Faq = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [faqData, setFaqData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   const handleToggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
@@ -49,44 +51,46 @@ const Faq = () => {
     faqhandler();
   }, []);
 
-  const filteredFaqs = faqData.filter(faq => 
+  const filteredFaqs = faqData.filter(faq =>
     faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
     faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <>
-    <section className="faqSecMain">
-      <div className='Faq'>
-        <div className="faqq">
-          <h5>FAQ</h5>
-          <div className="f-top">
-            <i className="ri-search-line"></i>
-            <input 
-              type="text" 
-              placeholder='Search Here' 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <div className="f-btm">
-            {filteredFaqs.map((faq, index) => (
-              <div className="line" key={index}>
-                <div className="one" onClick={() => handleToggle(index)}>
-                  <p>{faq.question}</p>
-                  <i className={openIndex === index ? "ri-arrow-up-s-line" : "ri-arrow-down-s-line"}></i>
-                </div>
-                {openIndex === index && (
-                  <div className="two show">
-                    <div dangerouslySetInnerHTML={{ __html: faq.answer }}></div>
+      <CustomNavbar />
+      <section className="faqSecMain">
+        <div className='Faq'>
+          <div className="faqq">
+            <h5>FAQ</h5>
+            <div className="f-top">
+              <i className="ri-search-line"></i>
+              <input
+                type="text"
+                placeholder='Search Here'
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div className="f-btm">
+              {filteredFaqs.map((faq, index) => (
+                <div className="line" key={index}>
+                  <div className="one" onClick={() => handleToggle(index)}>
+                    <p>{faq.question}</p>
+                    <i className={openIndex === index ? "ri-arrow-up-s-line" : "ri-arrow-down-s-line"}></i>
                   </div>
-                )}
-              </div>
-            ))}
+                  {openIndex === index && (
+                    <div className="two show">
+                      <div dangerouslySetInnerHTML={{ __html: faq.answer }}></div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <Footer />
     </>
   );
 };

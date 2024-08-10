@@ -19,7 +19,8 @@
 .flight-slide p{
     font-weight: 600;
     font-size: 13px;
-    color: #00b7eb;
+    color: green;
+    /* color: #00b7eb; */
     margin: 0px;
 }
 /* Slick arrow customization */
@@ -210,6 +211,16 @@
 .flightlistsec1colMobileOriDes p{
     font-size: 20px;
     font-weight: bold;
+    margin:0px;
+}
+.flightlistsec1colMobileTravlr{
+    /* text-align: center; */
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+.flightlistsec1colMobileTravlr p{
+    font-size: 13px;
 }
 .flightlistsec1colMobileOriDes svg{
     font-size: 20px;
@@ -437,8 +448,9 @@
     margin-bottom: 15px;
 }
 .fareQuotemainh6{
-    text-align: center;
+    /* text-align: center; */
     margin: 0px;
+    color: #00b7eb;
 }
 .fareQuotemainLast{
     display: flex;
@@ -554,6 +566,9 @@
 }
 
 @media screen and (max-width: 576px) {
+    .fare-quote-main {
+        padding: 20px 10px;
+    }
     .flightlistsec2 {
         padding: 20px 0px;
     }

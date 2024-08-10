@@ -8,6 +8,9 @@ import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import { MdOutlineFlightTakeoff } from "react-icons/md";
 import { FaTrash } from 'react-icons/fa';
 import { Link } from "react-router-dom";
+import { RiTimerLine } from "react-icons/ri";
+import CustomNavbar from "../../pages/navbar/CustomNavbar";
+import Footer from "../../pages/footer/Footer";
 
 export default function FlightDetails() {
 
@@ -20,7 +23,7 @@ export default function FlightDetails() {
     const formData = location.state?.formData;
 
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
-    console.log("fareDataDetails", fareDataDetails);
+    // console.log("fareDataDetails", fareDataDetails);
 
     // function for date convert into day month date--------------------------------------
     const convertformatDate = (dateString) => {
@@ -30,7 +33,7 @@ export default function FlightDetails() {
 
     const departDatee = formData.Segments[0].PreferredDepartureTime;
     const convertformattedDate = convertformatDate(departDatee);
-    console.log("Formatted Date:", convertformattedDate);
+    // console.log("Formatted Date:", convertformattedDate);
     // function for date convert into day month date--------------------------------------
 
     // func for duration convert hpur minute---------------------
@@ -61,7 +64,7 @@ export default function FlightDetails() {
 
 
     const segment = fareDataDetails.Segments[0][0];
-    console.log("segment", segment);
+    // console.log("segment", segment);
 
     const origin = segment.Origin;
     const destination = segment.Destination;
@@ -213,7 +216,6 @@ export default function FlightDetails() {
             console.log('Seat Map Respose:', seatData);
 
             localStorage.setItem('FlightsitMap', JSON.stringify(seatData))
-
 
         } catch (error) {
             console.error('API call failed:', error);
@@ -461,25 +463,29 @@ export default function FlightDetails() {
             case 'flight':
                 return <div>
                     <div className="row flighttTabContent">
-                        <div className="col-md-3 col-sm-6 flighttTabContentCol1">
+                        <div className="col-md-2 col-2 flighttTabContentCol1">
                             <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
                             <p>{airline.AirlineName}</p>
                         </div>
-                        <div className="col-md-3 col-sm-6 flighttTabContentCol2">
-                            <p className="flighttTabContentCol2p1">{origin.CityName}</p>
+                        <div className="col-md-4 col-3 flighttTabContentCol2">
+                           <div>
+                           <p className="flighttTabContentCol2p1">{origin.CityName}</p>
                             <h5>{formatTime(depTime)}</h5>
                             <p className="flighttTabContentCol2p2">{formatDate(depTime)}</p>
                             <p className="flighttTabContentCol2p3">{origin.AirportName}</p>
+                           </div>
                         </div>
-                        <div className="col-md-3 col-sm-6 flighttTabContentCol3">
-                            <p>{convertMinutesToHoursAndMinutes(segment.Duration)}</p>
-                            <p>{segment.CabinClassName}</p>
+                        <div className="col-md-1 col-3 flighttTabContentCol3">
+                            <p className="flighttTabContentCol3p1">{convertMinutesToHoursAndMinutes(segment.Duration)}</p>
+                            <p className="flighttTabContentCol3p2">{segment.CabinClassName}</p>
                         </div>
-                        <div className="col-md-3 col-sm-6 flighttTabContentCol4">
+                        <div className="col-md-5 col-4 flighttTabContentCol4">
+                            <div>
                             <p className="flighttTabContentCol2p1">{destination.CityName}</p>
                             <h5>{formatTime(arrTime)}</h5>
                             <p className="flighttTabContentCol2p2">{formatDate(arrTime)}</p>
                             <p className="flighttTabContentCol2p3">{destination.AirportName}</p>
+                            </div>
                         </div>
 
                     </div>
@@ -641,25 +647,65 @@ export default function FlightDetails() {
     //if seat meal checkbox is selected continue buton goto seat meal tab page ---------------------
     // else seat meal is not selected only traveller form selected then goto review page-------------------------------
 
+
+
+     // for timerss----------------------------------
+     const [timer, setTimer] = useState(600000);
+
+     useEffect(() => {
+         const countdown = setInterval(() => {
+             setTimer((prev) => prev - 50); // Decrease timer by 50 milliseconds each tick
+         }, 50); // Interval of 50 milliseconds
+ 
+         if (timer <= 0) {
+             clearInterval(countdown);
+             alert("Your Session is Expired");
+             navigate('/flight-search');
+         }
+ 
+         return () => clearInterval(countdown);
+     }, [timer, navigate]);
+ 
+     const formatTimers = (milliseconds) => {
+         const totalSeconds = Math.floor(milliseconds / 1000);
+         const minutes = Math.floor(totalSeconds / 60);
+         const seconds = totalSeconds % 60;
+         return `${minutes} min ${seconds} sec left`;
+     };
+ 
+     // for timerss----------------------------------
+
     return (
         <>
+        <CustomNavbar/>
+         {/* timerrr-------------------  */}
+         <div className="timer-FlightLists">
+                <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
+            </div>
+            {/* timerrr-------------------  */}
+
             <section className='flightlistsec1'>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-4 d-flex flightlistsec1col">
-                            <TiPlane className="mt-1" />
-                            <p> {formData.Segments[0].Origin} </p>
-                            <p>-</p>
-                            <p>{formData.Segments[0].Destination} </p>
+                <div className="container-fluid">
+                    <div className="row flightlistsec1Row">
+                        <div className="col-12 flightlistsec1MainCol">
+                            <div className="d-flex flightlistsec1col">
+                                <TiPlane className="mt-1" />
+                                <p> {formData.Segments[0].Origin} </p>
+                                <p>-</p>
+                                <p>{formData.Segments[0].Destination} </p>
+                            </div>
+                            <div className="d-flex flightlistsec1col">
+                                <FaCalendarAlt className="mt-1" />
+                                <p><span>Departure on</span> {convertformattedDate}</p>
+                                </div>
+                            <div className="d-flex flightlistsec1col">
+                                <FaUser className="mt-1" />
+                                <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
+                            </div>
                         </div>
-                        <div className="col-lg-4 d-flex flightlistsec1col">
-                            <FaCalendarAlt className="mt-1" />
-                            <p><span>Departure on</span> {convertformattedDate}</p>
-                        </div>
-                        <div className="col-lg-4 d-flex flightlistsec1col">
-                            <FaUser className="mt-1" />
-                            <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
-                        </div>
+                        {/* <div className="col-2 search-functinality">
+                            <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
+                        </div> */}
                     </div>
                 </div>
             </section>
@@ -844,7 +890,7 @@ export default function FlightDetails() {
                     </div>
                 </div>
             </section>
-
+            <Footer/>
         </>
     )
 }

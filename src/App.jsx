@@ -43,7 +43,7 @@ const App = () => {
   return (
     <div>
       <Router>
-        {!noNavbarFooterRoutes.includes(window.location.pathname) && <CustomNavbar />}
+        {/* {!noNavbarFooterRoutes.includes(window.location.pathname) && <CustomNavbar />} */}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/flight-search' element={<FlightSearch />} />
@@ -77,7 +77,7 @@ const App = () => {
           <Route path='load'  element={<Loading/>}/>
 
         </Routes>
-        {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />}
+        {/* {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />} */}
         <ToastContainer
           position="top-right"
           autoClose={5000}
