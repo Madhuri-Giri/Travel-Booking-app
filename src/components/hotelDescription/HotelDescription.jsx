@@ -191,6 +191,7 @@ const HotelDescription = () => {
     </Container>
     {/*------------- End section----------- */}
     </section>
+    <Footer />
 
     </>
   );

@@ -463,7 +463,7 @@ return (
   <>
               <CustomNavbar />
 
-  
+  <div className="guest_bg">
   <div className="guest-details-container">
   <h2 className="section-title">Guest <span style={{color:"#00b7eb"}}>Details</span> </h2>
   <div className="details-wrapper">
@@ -758,6 +758,9 @@ return (
       )}
      
       </div>
+      </div>
+      <Footer />
+
       </>
 );
 };

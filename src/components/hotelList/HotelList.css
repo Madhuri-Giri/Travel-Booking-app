@@ -423,7 +423,7 @@
 
 @media (min-width: 768px) and (max-width: 1280px) {
   .listSearch {
-      display: none; /* Hide the listSearch section on screens between 768px and 1280px */
+      
   }
   
 }
