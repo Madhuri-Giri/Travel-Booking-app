@@ -109,44 +109,46 @@ export default function FlightLists() {
     // func for duration convert hpur minute---------------------
 
     // Function to extract all AirlineName values
-    // -------------------------------------------------------------airline filters logic----------------
-    const getAllAirlineNames = (data) => {
-        const airlineNames = [];
+  // -------------------------------------------------------------airline filters logic----------------
+const getAllAirlineNames = (data) => {
+    const airlineNames = [];
 
-        data.forEach(result => {
-            result.forEach(segmentArray => {
-                segmentArray.Segments.forEach(segment => {
-                    segment.forEach(detail => {
-                        airlineNames.push(detail.Airline.AirlineName);
-                    });
+    data.forEach(result => {
+        result.forEach(segmentArray => {
+            segmentArray.Segments.forEach(segment => {
+                segment.forEach(detail => {
+                    airlineNames.push(detail.Airline.AirlineName);
                 });
             });
         });
+    });
 
-        return airlineNames;
-    };
-    const originalTeachersList = listData?.Results
-    const airlineNames = getAllAirlineNames(dd);
-    const uniqueAirlineNames = [...new Set(airlineNames)];
-    const createSubjectCheckboxes = () => {
-        const airlinesContainer = document.getElementById('airlineFilters');
-        airlinesContainer.innerHTML = ''; // Clear previous content
+    return airlineNames;
+};
 
-        const uniqueAirlineNames = [...new Set(airlineNames)]; // Get unique subjects
+const airlineNames = getAllAirlineNames(dd);
+const uniqueAirlineNames = [...new Set(airlineNames)];
 
-        uniqueAirlineNames.forEach(airlineNames => {
+const createSubjectCheckboxes = () => {
+    const airlinesContainers = document.querySelectorAll('.airlineFilters');
+
+    // Clear previous content in all elements with class "airlineFilters"
+    airlinesContainers.forEach(airlinesContainer => {
+        airlinesContainer.innerHTML = ''; 
+
+        uniqueAirlineNames.forEach(airlineName => {
             const div = document.createElement('div');
 
             const checkbox = document.createElement('input');
-
             checkbox.type = 'checkbox';
             checkbox.classList.add('airlineFilter', 'largeCheckbox');
-            checkbox.value = airlineNames;
-            checkbox.id = `airlineNames${airlineNames}`;
+            checkbox.value = airlineName;
+            checkbox.id = `airlineName${airlineName}`;
             checkbox.addEventListener('change', applyFilters);
+
             const label = document.createElement('label');
-            label.setAttribute('for', `airlineNames${airlineNames}`);
-            label.textContent = airlineNames;
+            label.setAttribute('for', `airlineName${airlineName}`);
+            label.textContent = airlineName;
             label.classList.add('largeLabel');
 
             div.appendChild(label);
@@ -155,23 +157,26 @@ export default function FlightLists() {
             airlinesContainer.appendChild(div);
             airlinesContainer.appendChild(document.createElement('br'));
         });
-    };
-    const [selected, setselected] = useState([]);
-    const applyFilters = () => {
-        const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
-        // console.log("airlineFilters", airlineFilters)
-        const selectedAirlines = Array.from(airlineFilters).map(filter => filter.value);
-        // console.log("selected", selectedAirlines)
-        setselected(selectedAirlines);
-        const originalAirlineList = listData?.Results || []; // Ensure listData.Results is defined
+    });
+};
 
-    };
-    useEffect(() => {
-        createSubjectCheckboxes();
-    }, []);
-    // -------------------------------------------------------------airline filters logic----------------
+const [selected, setSelected] = useState([]);
 
-   
+const applyFilters = () => {
+    const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
+    const selectedAirlines = Array.from(airlineFilters).map(filter => filter.value);
+    setSelected(selectedAirlines);
+    const originalAirlineList = listData?.Results || [];
+};
+
+useEffect(() => {
+    createSubjectCheckboxes();
+}, []);
+
+// -------------------------------------------------------------airline filters logic----------------
+
+
+
 
     // for callender slider-----------------------------------------------------------------------
     useEffect(() => {
@@ -340,12 +345,12 @@ export default function FlightLists() {
 
     if (loading) {
         return <Loading />;
-      }
-    
+    }
+
 
     return (
         <>
-        <CustomNavbar/>
+            <CustomNavbar />
             {/* timerrr-------------------  */}
             <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
@@ -444,7 +449,7 @@ export default function FlightLists() {
                                     <Accordion.Item eventKey="1">
                                         <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
                                         <Accordion.Body>
-                                            <div id="airlineFilters"> </div>
+                                            <div className="airlineFilters mobileAirlines" > </div>
                                         </Accordion.Body>
                                     </Accordion.Item>
                                     <Accordion.Item eventKey="2">
@@ -468,7 +473,7 @@ export default function FlightLists() {
                                         </Accordion.Body>
                                     </Accordion.Item>
                                     <Accordion.Item eventKey="3">
-                                        <Accordion.Header>Another Accordion</Accordion.Header>
+                                        <Accordion.Header>Time</Accordion.Header>
                                         <Accordion.Body>
                                             <div className="flightlistaccordianprice mb-5">
                                                 <ul>
@@ -545,7 +550,7 @@ export default function FlightLists() {
                             <Accordion.Item eventKey="1">
                                 <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
                                 <Accordion.Body>
-                                    <div id="airlineFilters"> </div>
+                                    <div className="airlineFilters desktopAirlines"> </div>
                                 </Accordion.Body>
                             </Accordion.Item>
                             <Accordion.Item eventKey="2">
@@ -569,7 +574,7 @@ export default function FlightLists() {
                                 </Accordion.Body>
                             </Accordion.Item>
                             <Accordion.Item eventKey="3">
-                                <Accordion.Header>Another Accordion</Accordion.Header>
+                                <Accordion.Header>Time</Accordion.Header>
                                 <Accordion.Body>
                                     <div className="flightlistaccordianprice mb-5">
                                         <ul>
@@ -809,7 +814,7 @@ export default function FlightLists() {
                     </div>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </>
     )
 }

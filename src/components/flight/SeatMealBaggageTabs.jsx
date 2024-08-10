@@ -139,6 +139,15 @@ const SeatMealBaggageTabs = () => {
         return `${minutes} min ${seconds} sec left`;
     };
 
+    // const fareDataDetails = localStorage.getItem('fareDataDetails');
+    // const reviewHandler = () => {
+    //     if (fareDataDetails) {
+    //         navigate('/flight-review', { state: { fareDataDetails } });
+    //     } else {
+    //         console.error('fareDataDetails is undefined');
+    //     }
+    // }
+
     // for timerss----------------------------------
 
     return (
@@ -193,6 +202,7 @@ const SeatMealBaggageTabs = () => {
                         <div class="col-12 lastBtnssContinue">
                             <h5>Fare Breakup <span>₹13465</span></h5>
                             <button>Continue</button>
+                            {/* <button onClick={reviewHandler}>Continue</button> */}
                         </div>
                     </div>
                 </div>
