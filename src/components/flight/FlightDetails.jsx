@@ -714,15 +714,6 @@ export default function FlightDetails() {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-lg-9">
-                            {/* <div className="fdetailspriceBox">
-                                <p>You got the best price available!</p>
-                                <div>
-                                    <h6>Final Price</h6>
-                                    <h5>₹630</h5>
-                                </div>
-                            </div> */}
-
-
                             <div className="row">
                                 <div className="fligthReviewhed">
                                     <MdOutlineFlightTakeoff />
