@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';  
 import Accordion from 'react-bootstrap/Accordion';
+import CustomNavbar from "../../pages/navbar/CustomNavbar";
+import Footer from "../../pages/footer/Footer";
 
 const GuestDetails = () => {
   const [hotelBlock, setHotelBlock] = useState([]);
@@ -16,7 +18,14 @@ const GuestDetails = () => {
     mname: "",
     lname: "",
     email: "",
-    // mobile: "",
+    mobile: "",
+    age:"",
+    paxType: "",
+    leadPassenger:"",
+    passportNo: "",
+    passportIssueDate:"",
+    passportExpDate:"",
+    PAN:"",
   });
   const navigate = useNavigate(); 
   const [showForm, setShowForm] = useState(false);
@@ -451,6 +460,9 @@ const cleanHotelNorms = (hotelNorms) => {
 };
 
 return (
+  <>
+              <CustomNavbar />
+
   
   <div className="guest-details-container">
   <h2 className="section-title">Guest <span style={{color:"#00b7eb"}}>Details</span> </h2>
@@ -534,13 +546,16 @@ return (
             <div className="room-details-container">
               {/* <h4>Selected Single Deluxe Rooms</h4> */}
               {singleDeluxe.map((room, index) => (
-                <div key={index}  className="room-details">
+                <div key={index}>
                   <p>Room Type: {room.RoomTypeName}</p>
-                  <p>Room Quantity: {room.guestCounts.room}</p>
-                  <p>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</p>
-                  <p><strong>Total Price:</strong> {totalPriceWithGST.toFixed(2)}</p>
-                  <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p>
+                  <p>Quantity: {room.guestCounts.room}</p>
+                  <p>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</p>
+                  <div className="payment-summary">
+        <p><strong>Total Price:</strong> {totalPriceWithGST.toFixed(2)}</p>
+        <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p>
+      </div>
                 </div>
+
               ))}
               
               {/* <h4>Selected Double Deluxe Rooms</h4> */}
@@ -565,57 +580,154 @@ return (
               {showForm && !formSubmitted && (
               
       /* ---------Start form----------- */
-    <div className="form-container">
+      <div className="form-container">
   <div className="form-content">
     <h2 className="text-center">Enter Your Details</h2>
     <form onSubmit={handleFormSubmit}>
-      <div className="mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="First Name"
-          name="fname"
-          value={formData.fname}
-          onChange={handleChange}
-          required
-        />
+      <div className="row">
+        
+        <div className="col-md-6">
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="First Name"
+              name="fname"
+              value={formData.fname}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Middle Name (Optional)"
+              name="mname"
+              value={formData.mname}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Last Name"
+              name="lname"
+              value={formData.lname}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="tel"
+              className="form-control"
+              placeholder="Contact Number"
+              name="mobile"
+              value={formData.mobile}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="PAN No."
+              name="number"
+              value={formData.number}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+        
+        <div className="col-md-6">
+          <div className="mb-3">
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Age"
+              name="age"
+              value={formData.age}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="date"
+              className="form-control"
+              placeholder="Passport Expiry Date"
+              name="passportExpDate"
+              value={formData.passportExpDate}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="date"
+              className="form-control"
+              placeholder="Passport Issue Date"
+              name="passportIssueDate"
+              value={formData.passportIssueDate}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Passport No."
+              name="passportNo"
+              value={formData.passportNo}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Lead Passenger (Yes/No)"
+              name="leadPassenger"
+              value={formData.leadPassenger}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Pax Type"
+              name="paxType"
+              value={formData.paxType}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
       </div>
-      <div className="mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Middle Name (Optional)"
-          name="mname"
-          value={formData.mname}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Last Name"
-          name="lname"
-          value={formData.lname}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <input
-          type="email"
-          className="form-control"
-          placeholder="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <button className='submit-btn'  type="submit">Save</button>
+      <button className='submit-btn' type="submit">Save</button>
     </form>
   </div>
 </div>
+
               )}
 
               {formSubmitted && (
@@ -625,7 +737,7 @@ return (
                   <p><strong>Middle Name:</strong> {formData.mname}</p>
                   <p><strong>Last Name:</strong> {formData.lname}</p>
                   <p><strong>Email:</strong> {formData.email}</p>
-                  {/* <p><strong>Mobile:</strong> {formData.mobile}</p> */}
+                  <p><strong>Mobile:</strong> {formData.mobile}</p>
                   <label>
                     <input
                       type="checkbox"
@@ -646,6 +758,7 @@ return (
       )}
      
       </div>
+      </>
 );
 };
 

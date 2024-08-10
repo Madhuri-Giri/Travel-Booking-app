@@ -9,6 +9,8 @@ import { faStar,  faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import useGeolocation from "./UseGeolocation";
 import haversineDistance from "./HaversineDistance";
 import ReactPaginate from 'react-paginate';
+import CustomNavbar from "../../pages/navbar/CustomNavbar";
+import Footer from "../../pages/footer/Footer";
 
 // Rating star Logic
 const renderStar = (rating) => {
@@ -167,6 +169,8 @@ const IGST_RATE = 0.18; // 18% IGST
   
   return (
     <>
+          <CustomNavbar />
+
     {/* <div className="con">
         <Container>
           <section className="sec_book_filter">
@@ -229,8 +233,10 @@ const IGST_RATE = 0.18; // 18% IGST
         <Container>
         {/* New section start */}
       <Row>
-        <Col md={3}>
-          <div className="listSearch">
+      <Col md={3}>
+
+        <div className="listSearch">
+
             <h1 className="listTitle">Search Your Hotels ....</h1>
             <div className="listItem">
               <label>Destination</label>
@@ -328,12 +334,14 @@ const IGST_RATE = 0.18; // 18% IGST
               </div>
             </div>
             <button onClick={() => { /* Add your search functionality here */ }}>Search</button>
-          </div>
+            </div>
+
         </Col>
         {/* Section End */}
 
         {/* New section Start */}
         <Col md={9}>
+
           <div className="listResult">
             {geoError && <p className="errorMessage">{geoError}</p>}
             {error && <p className="errorMessage">{error}</p>}
@@ -415,7 +423,8 @@ const IGST_RATE = 0.18; // 18% IGST
       </div>
 
       </section>
-      
+      <Footer />
+
     </>
   );
 };

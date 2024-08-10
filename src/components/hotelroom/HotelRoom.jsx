@@ -1,7 +1,9 @@
-import React, { useState,useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Container, Card, Button,Accordion } from 'react-bootstrap';
+import { Container, Card,Accordion } from 'react-bootstrap';
 import './HotelRoom.css';
+import CustomNavbar from "../../pages/navbar/CustomNavbar";
+import Footer from "../../pages/footer/Footer";
 
 const initialFormData = {
   firstName: '',
@@ -24,47 +26,7 @@ const HotelRoom = () => {
   const [totalPriceSingleDeluxe, setTotalPriceSingleDeluxe] = useState(0);
   const [totalPriceDoubleDeluxe, setTotalPriceDoubleDeluxe] = useState(0);
 
-//------------------- Start  carousel code ---------------------
-const slideRef = useRef(null);
-const intervalRef = useRef(null);
-const scrollWidthRef = useRef(0);
 
-const startAutoScroll = () => {
-  intervalRef.current = setInterval(() => {
-    if (slideRef.current) {
-      const imageWidth = slideRef.current.querySelector('img').clientWidth + 32; // Including gap between images
-      scrollWidthRef.current += imageWidth;
-      
-      slideRef.current.scrollTo({
-        left: scrollWidthRef.current,
-        behavior: 'smooth',
-      });
-
-      // Reset scroll to start when it reaches the end
-      if (scrollWidthRef.current >= slideRef.current.scrollWidth - slideRef.current.clientWidth) {
-        scrollWidthRef.current = 0;
-        slideRef.current.scrollTo({
-          left: 0,
-          behavior: 'auto',
-        });
-      }
-    }
-  }, 2000); // Adjust scroll interval as needed
-};
-
-const stopAutoScroll = () => {
-  clearInterval(intervalRef.current);
-};
-
-useEffect(() => {
-  startAutoScroll();
-
-  // Clean up interval on component unmount
-  return () => {
-    stopAutoScroll();
-  };
-}, []);
-//-------------------- End carousal code ------------------------
 
   useEffect(() => {
     if (location.state && Array.isArray(location.state.hotelRooms)) {
@@ -360,6 +322,10 @@ useEffect(() => {
   const doubleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'DOUBLE Deluxe');
 
   return (
+    <>
+                <CustomNavbar />
+
+    
  <Container className="hotelroom_container">
       <div className="room_container">
         <Container>
@@ -377,14 +343,10 @@ useEffect(() => {
                       <Card.Body>
                       <h4 className='heading_space'>Single Deluxe <span style={{color:"#00b7eb"}}>Rooms</span></h4>
                 <div className="Exclusive_room">
-                <div className="room_type_container" onMouseEnter={stopAutoScroll} onMouseLeave={startAutoScroll}>
-                <div className="room_type_box" ref={slideRef}>
-          <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="single_delux1" />
-            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="single_delux2" />
-            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="single_delux3" />
-            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="single_delux4" />
-            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="single_delux5" />
-            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="single_delux6" />
+                <div className="room_type_container">
+                <div className="room_type_box">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQChoqyNKN6YKMcxWCLOmy21prYOB9b9dYApg&s" alt="single_delux1" />
+            
           </div>
         </div>
       </div>
@@ -454,14 +416,9 @@ useEffect(() => {
                       <Card.Body>
                   <h4  className='heading_space'>Double Deluxe <span style={{color:"#00b7eb"}}>Rooms</span></h4>
                   <div className="Exclusive_room">
-       <div className="room_type_container" onMouseEnter={stopAutoScroll} onMouseLeave={startAutoScroll}>
-          <div className="room_type_box" ref={slideRef}>
-            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="double_delux1" />
-            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="double_delux2" />
-            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="double_delux3" />
-            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="double_delux4" />
-            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="double_delux5" />
-            <img src="https://www.a-onehotel.com/aonenewwinghotel/wp-content/uploads/2022/07/DeluxeRoomDoubleBed-02.png" alt="double_delux6" />
+       <div className="room_type_container">
+          <div className="room_type_box">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTRg_N-yr4A_-MUDghr0VQoP10l9AebA7Kxw&s" alt="double_delux1" />
           </div>
         </div>
       </div>
@@ -528,6 +485,7 @@ useEffect(() => {
         </Container>
       </div>
     </Container>
+    </>
   );
 };
 
