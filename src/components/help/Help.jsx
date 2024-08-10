@@ -1,6 +1,8 @@
 import  { useState, useRef } from 'react';
 import './Help.css'; 
 import emailjs from '@emailjs/browser';
+import CustomNavbar from '../../pages/navbar/CustomNavbar';
+import Footer from '../../pages/footer/Footer';
 
 
 const Help = () => {
@@ -45,7 +47,7 @@ const Help = () => {
 
     return (
         <>
-        
+        <CustomNavbar/>
         <section className='helpSecMain'>
         <div className="help-page">
             <h2>Help</h2>
@@ -85,6 +87,7 @@ const Help = () => {
             )}
         </div>
         </section>
+        <Footer/>
         </>
     );
 };

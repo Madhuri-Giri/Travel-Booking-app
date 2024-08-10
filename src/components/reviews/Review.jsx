@@ -5,6 +5,8 @@ import './Review.css';
 import { Container } from 'react-bootstrap';
 import Lottie from 'lottie-react';
 import ReviewImg from '../../assets/images/Reviewsimage.json';
+import CustomNavbar from '../../pages/navbar/CustomNavbar';
+import Footer from '../../pages/footer/Footer';
 const mockData = [
     {
         image: ReviewImg,
@@ -29,7 +31,7 @@ const Review = () => {
 
     return (
         <>
-        
+        <CustomNavbar/>        
         <section className='reviewSecMain'>
         <Container>
             <div className='review_container'>
@@ -63,6 +65,7 @@ const Review = () => {
             </div>
         </Container>
         </section>
+        <Footer/>
         </>
     );
 };

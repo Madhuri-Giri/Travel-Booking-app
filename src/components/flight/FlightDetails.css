@@ -1,3 +1,4 @@
+
 .fdetailspriceBox {
     background-color: #d4edda;
     padding: 10px 16px;
@@ -151,6 +152,25 @@
 .flighttTabContentCol2p2,
 .flighttTabContentCol2p3 {
     margin: 0px;
+}
+.flighttTabContentCol3p1{
+    margin: 0px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.274);
+    margin-top: 15px;
+    font-size: 14px;
+    color: gray;
+}
+.flighttTabContentCol3p2{
+    font-size: 14px;
+    color: gray;
+}
+.flighttTabContentCol4{
+    display: flex;
+    justify-content: end;
+}
+.flighttTabContentCol2{
+    display: flex;
+    justify-content: center;
 }
 
 .flighttTabContentCol2p1 {
@@ -581,6 +601,9 @@
     .fligthPriceDetailsss {
         display: none;
     }
+    .baggageTabbss {
+        padding: 5px 20px;
+    }
 
 }
 
@@ -595,6 +618,20 @@
 }
 
 @media screen and (max-width: 576px) {
+    .baggageTabbss {
+        padding: 5px 10px;
+    }
+    .flighttTabContentCol2 h5, .flighttTabContentCol4 h5 {
+        font-weight: 800;
+        margin: 0px;
+        font-size: 15px;
+    }
+    .flighttTabContentCol2p1 {
+        font-size: 15px;
+    }
+    .flighttTabContentCol2p2 {
+        font-size: 11px;
+    }
     .formdettlsMobile {
         display: block;
     }

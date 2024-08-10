@@ -9,6 +9,8 @@ import { MdOutlineFlightTakeoff } from "react-icons/md";
 import { IoTimeOutline } from "react-icons/io5";
 import { PiTrolleySuitcaseFill } from "react-icons/pi";
 import { json, useLocation, useNavigate } from 'react-router-dom';
+import CustomNavbar from "../../pages/navbar/CustomNavbar";
+import Footer from "../../pages/footer/Footer";
 
 
 const FlightReview = () => {
@@ -36,7 +38,7 @@ const FlightReview = () => {
   const airline = segment.Airline;
   const depTime = new Date(segment.DepTime);
   const arrTime = new Date(segment.ArrTime);
-  const fare = fareDataDetails.Fare; 
+  const fare = fareDataDetails.Fare;
   const baseFaree = fare.BaseFare;
   const taxx = fare.Tax;
   const totalFare = baseFaree + taxx;
@@ -72,7 +74,7 @@ const FlightReview = () => {
   //-----------------------------Payment apis--------------------------------------------------------------------------------------
   const [flightpayDetails, setFlightpayDetails] = useState(null);
 
-  const flightPayCreate = async (  ) => {
+  const flightPayCreate = async () => {
     try {
 
       const loginId = localStorage.getItem('loginId')
@@ -99,7 +101,7 @@ const FlightReview = () => {
   const flightpayHandler = async () => {
     const loginId = localStorage.getItem('loginId');
     if (!loginId) {
-      navigate('/enter-number',{ state: { from: location } });
+      navigate('/enter-number', { state: { from: location } });
       return;
     }
 
@@ -198,7 +200,7 @@ const FlightReview = () => {
   }
 
 
-  // -----------------------flight LLC Api-----------------------------------------------------------------------------------
+  // -----------------------flight LLC Api----------------------------------------------
 
   const traceId = localStorage.getItem('FlightTraceId2');
   const resultIndex = localStorage.getItem('FlightResultIndex2');
@@ -338,8 +340,7 @@ const FlightReview = () => {
 
   return (
     <>
-
-
+      <CustomNavbar />
       <div className="container-fluid review-cont">
         <div className="row">
           <div className="col-md-6">
@@ -363,7 +364,7 @@ const FlightReview = () => {
                   </div>
                   <div className="flightPayDivMain">
                     <p className="flightPayDivMainP1"> Onward {formatDate(depTime)} </p>
-                    <p className="flightPayDivMainP2">{origin.CityName} <MdOutlineAirplanemodeActive />  {destination.CityName} </p> 
+                    <p className="flightPayDivMainP2">{origin.CityName} <MdOutlineAirplanemodeActive />  {destination.CityName} </p>
                     <p className="flightPayDivMainP3"> {formatTime(depTime)}  <FaEquals /> {formatTime(arrTime)}</p>
                     <p className="flightPayDivMainP5"> {segment.CabinClassName} Classes . Flex </p>
                     <p className="flightPayDivMainP4"> <MdOutlineFlightTakeoff /> {airline.AirlineName} {airline.AirlineCode}-{airline.FlightNumber}</p>
@@ -380,7 +381,7 @@ const FlightReview = () => {
           </div>
         </div>
       </div>
-
+      <Footer />
     </>
   )
 }
