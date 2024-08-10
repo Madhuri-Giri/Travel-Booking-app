@@ -1,7 +1,7 @@
 /* GuestDetails.css */
 .guest_bg{
   background-color: #dddddd;
-  margin-top: 20px;
+  padding: 20px 10px;
 }
 
 .guest-details-container {
@@ -101,11 +101,13 @@
 
 .room-details-container {
   margin-top: 20px;
-  display: flex; 
-  flex-direction: row; 
-  flex-wrap: wrap; 
-  background-color: #f8f9fa;
-  padding: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* background-color: #a52a2a14; */
+    padding: 10px;
+    box-shadow: 1px 2px 3px 3px #80808073;
+  background-color: #f8fafa;
 }
 
 .room-details {

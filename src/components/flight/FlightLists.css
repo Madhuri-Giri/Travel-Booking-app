@@ -267,10 +267,20 @@
     justify-content: space-between;
 }
 #airlineFilters .largeCheckbox {
-    transform: scale(1.5); /* Increase size of checkbox */
+    transform: scale(1.5); 
 }
 #airlineFilters .largeLabel  {
-    font-size: 18px; /* Increase font size of label */
+    font-size: 18px; 
+}
+.airlineFilters div{
+    display: flex;
+    justify-content: space-between;
+}
+.airlineFilters .largeCheckbox {
+    transform: scale(1.5); 
+}
+.airlineFilters .largeLabel  {
+    font-size: 18px; 
 }
 
 .flightlistaccordian button{
