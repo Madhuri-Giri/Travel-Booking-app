@@ -5,6 +5,8 @@ import busImg from "../../assets/images/bus.png2.png";
 import BusLayout from './BusLayout';
 import { searchBuses } from '../../redux-toolkit/slices/busSlice';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../../pages/footer/Footer';
+import CustomNavbar from '../../pages/navbar/CustomNavbar';
 
 const BusLists = () => {
   const dispatch = useDispatch();
@@ -140,7 +142,9 @@ const BusLists = () => {
   };
 
   return (
-    <div className='BusLists'>
+    <>
+    <CustomNavbar />
+     <div className='BusLists'>
       <div className="busList">
         <div className="timer-bus">
           <p>Redirecting in {formatTime(timer)}...</p>
@@ -303,6 +307,8 @@ const BusLists = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

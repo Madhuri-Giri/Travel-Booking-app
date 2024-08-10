@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BoardAndDrop.css';
+import CustomNavbar from '../../pages/navbar/CustomNavbar';
+import Footer from '../../pages/footer/Footer';
 
 const BoardAndDrop = () => {
   const navigate = useNavigate();
@@ -94,7 +96,9 @@ const BoardAndDrop = () => {
   };
 
   return (
-    <div className='BordingDroping'>
+   <>
+     <CustomNavbar />
+     <div className='BordingDroping'>
       <div className="bord-drop">
         <h5>
           <i style={{ cursor: "pointer" }} onClick={backHandlerList} className="ri-arrow-left-s-line"></i> Select Boarding & Dropping Points
@@ -182,6 +186,9 @@ const BoardAndDrop = () => {
         {error && <div className="error-message">{error}</div>}
       </div>
     </div>
+
+     <Footer />
+   </>
   );
 };
 

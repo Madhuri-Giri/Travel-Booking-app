@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PassangerInfo from './PassangerInfo';
 import { useSelector } from 'react-redux';
+import CustomNavbar from '../../pages/navbar/CustomNavbar';
+import Footer from '../../pages/footer/Footer';
 
 const ReviewBooking = () => {
 
@@ -440,6 +442,8 @@ const ReviewBooking = () => {
  
 
   return (
+   <>
+    <CustomNavbar />
     <div className='ReviewBooking'>
       <div className="review-book">
         <h5><i onClick={back} className="ri-arrow-left-s-line"></i> Review Details</h5>
@@ -644,6 +648,8 @@ const ReviewBooking = () => {
 
       </div>
     </div>
+    <Footer />
+   </>
   );
 };
 

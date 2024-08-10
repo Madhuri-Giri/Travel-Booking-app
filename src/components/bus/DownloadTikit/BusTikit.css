@@ -150,41 +150,114 @@
  }
 
 
- /* --------------------download-tikit-code-------------- */
-.download-ticket-code{
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-}
-.download-ticket-code .downloaded{
-          width: 60%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          box-shadow: 2px 2px 5px 2px rgb(255, 239, 239);
-          margin: 2vmax;
-          padding-top: 0.5vmax;
-          padding-bottom: 0.5vmax;
 
-}
-.download-ticket-code .downloaded h6{
-           font-weight: 700;
-           font-size: 1.3vmax;
-           margin-top: 0.5vmax;
-}
-.download-ticket-code .downloaded .down-pass, .seat-pass, .tik, .bustik{
-          width: 90%;
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
-          flex-direction: column;
-       border: 0.2px solid #00000046;
-       padding: 1vmax;
-}
-.download-ticket-code .downloaded .down-pass, .seat-pass, .tik, .bustik p{
-        font-weight: 600;
-        font-size: 1.2vmax;
-}
 
+ @media (max-width:600px) {
+    
+      .BusTikit .hed h5{
+               font-size: 2.5vmax;
+             
+      }
+      .BusTikit  .down{
+                flex-direction: column;
+      }
+      
+       .BusTikit  .down .tikit-status .download-tikit  .tikit-details{
+                width:100%; 
+                align-items: center;
+                justify-content: center; 
+                flex-direction: column;
+       }
+       .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-left{
+                width: 100%; 
+       }
+       .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-left img{
+                width: 70%; 
+               
+       }
+       .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right{
+                width: 100%; 
+       }
+      
+       .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .details-top{
+                width: 100%;
+                justify-content: space-between;
+                flex-direction: row;
+       }
+       .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .details-top .left{
+                width: 50%;
+                align-items: flex-start;
+                justify-content: flex-start;
+             
+       }
+       .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .details-top .right{
+                width: 50%;
+                display: flex;
+                align-items: flex-start;
+                justify-content: flex-start;
+       }
+       .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .detils-dowm{
+                width: 95%;
+       }
+       .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .detils-dowm button{
+              padding: 1.4vmax 2vmax;
+       }
+      
+      
+ }
+
+
+ 
+ @media (min-width:600px) and (max-width:1150px){
+    
+        .BusTikit .hed h5{
+                 font-size: 2.5vmax;
+               
+        }
+        .BusTikit  .down{
+                  flex-direction: column;
+        }
+        
+         .BusTikit  .down .tikit-status .download-tikit  .tikit-details{
+                  width:100%; 
+                  align-items: center;
+                  justify-content: center; 
+                  flex-direction: column;
+         }
+         .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-left{
+                  width: 100%; 
+         }
+         .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-left img{
+                  width: 70%; 
+                 
+         }
+         .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right{
+                  width: 100%; 
+         }
+        
+         .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .details-top{
+                  width: 100%;
+                  justify-content: space-between;
+                  flex-direction: row;
+         }
+         .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .details-top .left{
+                  width: 50%;
+                  align-items: flex-start;
+                  justify-content: flex-start;
+               
+         }
+         .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .details-top .right{
+                  width: 50%;
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: flex-start;
+         }
+         .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .detils-dowm{
+                  width: 95%;
+         }
+         .BusTikit  .down .tikit-status .download-tikit  .tikit-details .t-right .detils-dowm button{
+                padding: 1.4vmax 2vmax;
+         }
+        
+        
+   }

@@ -4,6 +4,8 @@ import jsPDF from 'jspdf';
 import "jspdf-autotable";
 import "./BusTikit.css";
 import busTikitImg from "../../../assets/images/bus-tikit.png";
+import CustomNavbar from '../../../pages/navbar/CustomNavbar';
+import Footer from '../../../pages/footer/Footer';
 
 const BusTikit = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
@@ -73,7 +75,10 @@ const BusTikit = () => {
   const isDataMissing = !bookingDetails || passengerData.length === 0;
 
   return (
-    <div className="BusTikit">
+  <>
+  <CustomNavbar />
+
+  <div className="BusTikit">
       <div className="hed">
         <h5>Download Ticket Status</h5>
       </div>
@@ -166,6 +171,9 @@ const BusTikit = () => {
         </div>
       </div>
     </div>
+
+  <Footer />
+  </>
   );
 };
 

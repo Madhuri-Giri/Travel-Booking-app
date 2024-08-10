@@ -1,4 +1,3 @@
-// src/components/BusSearch/BusSearch.js
 import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,12 +12,12 @@ import {
 import BusMainImg from "../../assets/images/busMainImg.png";
 import "./BusSearch.css";
 import BusGurantee from './BusGurantee';
-import Loading from '../../pages/loading/Loading'; 
-// import Lottie from 'lottie-react';
-// import LottieImg from '../../../assets/images/languageanimation.json';
+import Loading from '../../pages/loading/Loading';
+import CustomNavbar from '../../pages/navbar/CustomNavbar';
+import Footer from '../../pages/footer/Footer';
 
 const BusSearch = () => {
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
   const dateInputRef = useRef(null);
 
   const handleIconClick = () => {
@@ -33,15 +32,21 @@ const BusSearch = () => {
 
   const fetchSuggestions = async (query, setSuggestions) => {
     try {
-      const response = await fetch(`https://sajyatra.sajpe.in/admin/api/bus_list?query=${query}`);
+      const response = await fetch(`https://sajyatra.sajpe.in/admin/api/bus_list`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query })
+      });
       const data = await response.json();
-      const filteredSuggestions = data.data
-        .filter(suggestion =>
-          suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
-        )
-        .sort((a, b) => a.busodma_destination_name.localeCompare(b.busodma_destination_name)) // Sort alphabetically
-        .slice(0, 7); // Limit to 7 suggestions
-      dispatch(setSuggestions(filteredSuggestions));
+
+      // Filter suggestions on the client side for partial matches
+      const filteredSuggestions = data.data.filter(suggestion =>
+        suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
+      );
+
+      dispatch(setSuggestions(filteredSuggestions.slice(0, 7))); // Limit to 7 suggestions
     } catch (error) {
       console.error('Error fetching suggestions:', error);
     }
@@ -68,15 +73,11 @@ const BusSearch = () => {
   };
 
   const handleFromFocus = () => {
-    if (from.length >= 1) {
-      fetchSuggestions(from, setFromSuggestions);
-    }
+    fetchSuggestions(from, setFromSuggestions);
   };
 
   const handleToFocus = () => {
-    if (to.length >= 1) {
-      fetchSuggestions(to, setToSuggestions);
-    }
+    fetchSuggestions(to, setToSuggestions);
   };
 
   const handleFromSelect = (suggestion) => {
@@ -107,94 +108,93 @@ const BusSearch = () => {
   }
 
   return (
-    <>
-      <div className='BusSearch'>
-        <div className="bus-search">
-          <div className="B-main">
-            <div className="B-main-top">
-              <img src={BusMainImg} alt="" />
-              {/* <Lottie animationData={LottieImg} style={{ height: '70%', width: '100%' }} /> */}
+   <>
+   <CustomNavbar />
+     <div className='BusSearch'>
+      <div className="bus-search">
+        <div className="B-main">
+          <div className="B-main-top">
+            <img src={BusMainImg} alt="" />
+          </div>
+          <div className="B-main-btm">
+            <div className="sarch-tab">
+              <div className="one">
+                <div className="ipt-bus">
+                  <label>From</label>
+                  <div className="ipt-handle">
+                    <i className="ri-map-pin-line"></i>
+                    <input
+                      type="text"
+                      placeholder='Starting Point'
+                      value={from}
+                      onChange={handleFromChange}
+                      onFocus={handleFromFocus}
+                    />
+                  </div>
+                  {fromSuggestions.length > 0 && (
+                    <ul className="suggestions-list">
+                      {fromSuggestions.map((suggestion, index) => (
+                        <li key={index} onClick={() => handleFromSelect(suggestion)}>
+                          {suggestion.busodma_destination_name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+              <div className="one">
+                <div className="ipt-bus">
+                  <label>To</label>
+                  <div className="ipt-handle">
+                    <i className="ri-map-pin-line"></i>
+                    <input
+                      type="text"
+                      placeholder='Destination'
+                      value={to}
+                      onChange={handleToChange}
+                      onFocus={handleToFocus}
+                    />
+                  </div>
+                  {toSuggestions.length > 0 && (
+                    <ul className="suggestions-list">
+                      {toSuggestions.map((suggestion, index) => (
+                        <li key={index} onClick={() => handleToSelect(suggestion)}>
+                          {suggestion.busodma_destination_name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+              <div className="one">
+                <div className="ipt-bus" onClick={handleIconClick}>
+                  <label>Departure Date</label>
+                  <div className="ipt-handle">
+                    <i className="ri-calendar-2-line"></i>
+                    <input
+                      type="date"
+                      ref={dateInputRef}
+                      className="date-input"
+                      value={selectedBusDate ? selectedBusDate.toISOString().split('T')[0] : ''}
+                      onChange={(e) => dispatch(setSelectedBusDate(new Date(e.target.value)))}
+                      min={today}
+                    />
+                  </div>
+                </div>
+              </div>
 
-            </div>
-            <div className="B-main-btm">
-              <div className="sarch-tab">
-                <div className="one">
-                  <div className="ipt-bus">
-                    <label>From</label>
-                    <div className="ipt-handle">
-                      <i className="ri-map-pin-line"></i>
-                      <input
-                        type="text"
-                        placeholder='Starting Point'
-                        value={from}
-                        onChange={handleFromChange}
-                        onFocus={handleFromFocus}
-                      />
-                    </div>
-                    {fromSuggestions.length > 0 && (
-                      <ul className="suggestions-list">
-                        {fromSuggestions.map((suggestion, index) => (
-                          <li key={index} onClick={() => handleFromSelect(suggestion)}>
-                            {suggestion.busodma_destination_name}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-                <div className="one">
-                  <div className="ipt-bus">
-                    <label>To</label>
-                    <div className="ipt-handle">
-                      <i className="ri-map-pin-line"></i>
-                      <input
-                        type="text"
-                        placeholder='Destination'
-                        value={to}
-                        onChange={handleToChange}
-                        onFocus={handleToFocus}
-                      />
-                    </div>
-                    {toSuggestions.length > 0 && (
-                      <ul className="suggestions-list">
-                        {toSuggestions.map((suggestion, index) => (
-                          <li key={index} onClick={() => handleToSelect(suggestion)}>
-                            {suggestion.busodma_destination_name}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-                <div className="one">
-                  <div className="ipt-bus" onClick={handleIconClick}>
-                    <label>Departure Date</label>
-                    <div className="ipt-handle">
-                      <i className="ri-calendar-2-line"></i>
-                      <input
-                        type="date"
-                        placeholder=''
-                        ref={dateInputRef}
-                        className="date-input"
-                        value={selectedBusDate ? selectedBusDate.toISOString().split('T')[0] : ''}
-                        onChange={(e) => dispatch(setSelectedBusDate(new Date(e.target.value)))}
-                        min={today}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="search-bus-btn">
-                  <label>Search Bus</label>
-                  <button onClick={handleSearch}>Search Buses</button>
-                </div>
+              <div className="search-bus-btn">
+                <label>Search Bus</label>
+                <button onClick={handleSearch}>Search Buses</button>
               </div>
             </div>
           </div>
-          <BusGurantee />
         </div>
+        <BusGurantee />
       </div>
-    </>
+    </div>
+    <Footer />
+   </>
   );
 };
 
