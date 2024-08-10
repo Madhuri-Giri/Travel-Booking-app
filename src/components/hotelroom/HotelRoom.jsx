@@ -328,7 +328,9 @@ const HotelRoom = () => {
       <section className='room_bg'>
         <Container className="hotelroom_container">
           <div className="room_container">
-            <Container>
+            {/* <Container> */}
+            <div className="container">
+              <div className="row">
               <div className="hotel_room_container">
                 {loading && <p>Loading hotel rooms...</p>}
                 {error && <p>Error: {error}</p>}
@@ -337,7 +339,7 @@ const HotelRoom = () => {
                   <>
 
                     {/* -------Start Single Deluxe ----------- */}
-                    <div className="room_heading">
+                    <div className="col-lg-6 room_heading">
                       {singleDeluxeRooms.map((room, index) => (
                         <Card key={index} className="mb-4">
                           <Card.Body>
@@ -410,7 +412,7 @@ const HotelRoom = () => {
                     {/*---------End Single Deluxe------------ */}
 
                     {/* ---------Start Double Delux---------- */}
-                    <div className="room_heading">
+                    <div className="col-lg-6 room_heading">
                       {doubleDeluxeRooms.map((room, index) => (
                         <Card key={index} className="mb-4">
                           <Card.Body>
@@ -482,7 +484,9 @@ const HotelRoom = () => {
                   </>
                 )}
               </div>
-            </Container>
+              </div>
+            </div>
+            {/* </Container> */}
           </div>
         </Container>
       </section>

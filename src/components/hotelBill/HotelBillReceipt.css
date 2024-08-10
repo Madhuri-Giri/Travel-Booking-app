@@ -1,3 +1,8 @@
+.hotelTicketSec{
+  background-color: #dddddd;
+  padding: 10px 10px;
+}
+
 .booking-bill-container {
   max-width: 800px;
   margin: 2vmax auto;
