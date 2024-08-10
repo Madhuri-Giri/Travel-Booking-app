@@ -42,7 +42,18 @@
 .flight-input-labelDepDate {
     position: absolute;
     top: -12px;
-    left: 33%;
+    left: 25%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 0 6px;
+    cursor: pointer;
+    margin: 0 6px;
+}
+
+.flight-input-labelRetDate {
+    position: absolute;
+    top: -12px;
+    left: 20%;
     transform: translateX(-50%);
     background-color: white;
     padding: 0 6px;
@@ -762,8 +773,7 @@
     }
 
     .flightmainBooking label {
-        font-size: 13px !important;
-        text-transform: lowercase;
+        font-size: 14px !important;
     }
     .flight-input-container input {
         line-height: 21px;
@@ -815,7 +825,7 @@
         box-shadow: 1px 1px 1px 1px gray;
     }
     .flight-input-labelTravel {
-        left: 17%;
+        left: 19%;
     }
 }
 
