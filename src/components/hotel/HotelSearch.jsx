@@ -14,10 +14,12 @@ import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
+import Loading from '../../pages/loading/Loading';
 
 const HotelSearch = () => {
   //--- Navigate Other Page ---
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // Add loading state
 
   //------------------- Start  carousel code ---------------------
   const slideRef = useRef(null);
@@ -101,6 +103,7 @@ const HotelSearch = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); // Show loader
 
     const staticCheckIn = new Date("2020-04-30"); // updated
     const staticCheckOut = new Date("2020-05-01"); // updated
@@ -169,6 +172,9 @@ const HotelSearch = () => {
       console.error("Error searching hotel:", error);
       alert("Error searching hotel. Please try again later.");
     }
+    finally {
+      setLoading(false); // Hide loader
+    }
   };
 
   // --------------- End API Code ---------------------
@@ -178,6 +184,11 @@ const HotelSearch = () => {
       setShowGuestOptions(false);
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
+
 
   return (
     <>    
