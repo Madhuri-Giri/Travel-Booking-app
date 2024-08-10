@@ -233,7 +233,7 @@ const IGST_RATE = 0.18; // 18% IGST
         <Container>
         {/* New section start */}
       <Row>
-      <Col md={3}>
+      <Col lg={3} className="listSearchcol">
 
         <div className="listSearch">
 
@@ -340,7 +340,7 @@ const IGST_RATE = 0.18; // 18% IGST
         {/* Section End */}
 
         {/* New section Start */}
-        <Col md={9}>
+        <Col lg={9} className="listResultcol">
 
           <div className="listResult">
             {geoError && <p className="errorMessage">{geoError}</p>}
