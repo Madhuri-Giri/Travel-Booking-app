@@ -109,7 +109,7 @@ const FareQuote = () => {
             <section className='flightlistsec1'>
                 <div className="container-fluid">
                     <div className="row flightlistsec1Row">
-                        <div className="col-10 flightlistsec1MainCol">
+                        <div className="col-12 flightlistsec1MainCol">
                             <div className="d-flex flightlistsec1col">
                                 <TiPlane className="mt-1" />
                                 <p> {formData.Segments[0].Origin} </p>
@@ -125,9 +125,9 @@ const FareQuote = () => {
                                 <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
                             </div>
                         </div>
-                        <div className="col-2 search-functinality">
+                        {/* <div className="col-2 search-functinality">
                             <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </section>

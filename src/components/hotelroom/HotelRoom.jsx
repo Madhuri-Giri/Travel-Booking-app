@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Container, Card,Accordion } from 'react-bootstrap';
+import { Container, Card, Accordion } from 'react-bootstrap';
 import './HotelRoom.css';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
@@ -19,7 +19,7 @@ const HotelRoom = () => {
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState(initialFormData);
 
-// Single and Double delux element 
+  // Single and Double delux element 
   const [selectedSingleDeluxeRooms, setSelectedSingleDeluxeRooms] = useState([]);
   const [selectedDoubleDeluxeRooms, setSelectedDoubleDeluxeRooms] = useState([]);
 
@@ -49,7 +49,7 @@ const HotelRoom = () => {
       updateTotalPrice(singleDeluxeRooms, 'single');
       updateTotalPrice(doubleDeluxeRooms, 'double');
 
-      
+
     } else {
       console.error('Selected hotel data is not an array:', singleDeluxeRooms, doubleDeluxeRooms);
     }
@@ -60,21 +60,21 @@ const HotelRoom = () => {
       const roomPrice = room.Price?.RoomPrice || 0;
       const roomCount = room.guestCounts?.room || 1;
 
-      
+
       return sum + (roomPrice * roomCount);
     }, 0);
-    
+
     if (type === 'single') {
       setTotalPriceSingleDeluxe(newTotalPrice);
     }
-     else if (type === 'double') {
+    else if (type === 'double') {
       setTotalPriceDoubleDeluxe(newTotalPrice);
     }
   };
 
   const handleRoomToggle = (room, type) => {
     const setSelectedRooms = type === 'single' ? setSelectedSingleDeluxeRooms : setSelectedDoubleDeluxeRooms;
-    
+
     const selectedRooms = type === 'single' ? selectedSingleDeluxeRooms : selectedDoubleDeluxeRooms;
     setSelectedRooms((prevSelectedRooms) => {
       const isSelected = prevSelectedRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode);
@@ -104,7 +104,7 @@ const HotelRoom = () => {
     const setSelectedRooms = roomType === 'single' ? setSelectedSingleDeluxeRooms : setSelectedDoubleDeluxeRooms;
 
     const selectedRooms = roomType === 'single' ? selectedSingleDeluxeRooms : selectedDoubleDeluxeRooms;
-    
+
     setSelectedRooms((prevSelectedRooms) => {
       if (!Array.isArray(prevSelectedRooms)) {
         console.error('selectedRooms is not an array:', prevSelectedRooms);
@@ -146,7 +146,7 @@ const HotelRoom = () => {
     checkOutDate: '2024-08-07'  // Example static date, replace with actual date
   };
 
-  
+
   const roomblockHandler = async (event) => {
     event.preventDefault();
 
@@ -305,12 +305,12 @@ const HotelRoom = () => {
       }
 
       const res = await response.json();
-    console.log('hotel-block API Response:', res.BlockRoomResult);
-    const rooms = res.BlockRoomResult;
-    const roomsJSON = JSON.stringify(rooms);
-    localStorage.setItem('hotelBlock', roomsJSON);
-    localStorage.setItem('selectedRoomsData', JSON.stringify(selectedRoomsData)); // Store updated room data
-    navigate('/hotel-guest')
+      console.log('hotel-block API Response:', res.BlockRoomResult);
+      const rooms = res.BlockRoomResult;
+      const roomsJSON = JSON.stringify(rooms);
+      localStorage.setItem('hotelBlock', roomsJSON);
+      localStorage.setItem('selectedRoomsData', JSON.stringify(selectedRoomsData)); // Store updated room data
+      navigate('/hotel-guest')
     } catch (error) {
       console.error('Error:', error);
     }
@@ -323,170 +323,174 @@ const HotelRoom = () => {
 
   return (
     <>
-    <CustomNavbar />
+      <CustomNavbar />
 
-    <div className='room_bg'>
- <Container className="hotelroom_container">
-      <div className="room_container">
-        <Container>
-          <div className="hotel_room_container">
-            {loading && <p>Loading hotel rooms...</p>}
-            {error && <p>Error: {error}</p>}
-            {!loading && !error && hotelRooms.length === 0 && <p>No hotel room data available.</p>}
-            {hotelRooms.length > 0 && !error && (
-              <>
+      <section className='room_bg'>
+        <Container className="hotelroom_container">
+          <div className="room_container">
+            {/* <Container> */}
+            <div className="container">
+              <div className="row">
+              <div className="hotel_room_container">
+                {loading && <p>Loading hotel rooms...</p>}
+                {error && <p>Error: {error}</p>}
+                {!loading && !error && hotelRooms.length === 0 && <p>No hotel room data available.</p>}
+                {hotelRooms.length > 0 && !error && (
+                  <>
 
-              {/* -------Start Single Deluxe ----------- */}
-                <div className="room_heading">
-                  {singleDeluxeRooms.map((room, index) => (
-                    <Card key={index} className="mb-4">
-                      <Card.Body>
-                      <h4 className='heading_space'>Single Deluxe <span style={{color:"#00b7eb"}}>Rooms</span></h4>
-                <div className="Exclusive_room">
-                <div className="room_type_container">
-                <div className="room_type_box">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQChoqyNKN6YKMcxWCLOmy21prYOB9b9dYApg&s" alt="single_delux1" />
-            
-          </div>
-        </div>
-      </div>
-                        <Card.Title><b>{room.RoomTypeName}</b></Card.Title>
-                        <Card.Text>
-                        <p><b>Price: INR</b> {room.Price?.RoomPrice?.toFixed(2)}</p>
-                          <p><b>Day Rate:</b> {room.DayRates?.map(dayRate => (
-                            <span key={dayRate.Date}>
-                              {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
-                            </span>
-                          ))}</p>
-                          
-                          <p className='space_r'><b>Smoking Preference:</b>{room.SmokingPreference}</p>
-                          
-                          <Accordion className="accordian_space">
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header><b>Cancellation Policy</b></Accordion.Header>
-                  <Accordion.Body>
-                    {room.CancellationPolicies.map((policy, idx) => (
-                      <p key={idx}>
-                        {policy.FromDate} to {policy.ToDate}: {policy.Charge}% will be charged.
-                      </p>
-                    ))}
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
-              
-              <Accordion className="accordian_space">
-              <Accordion.Item eventKey="0">
-                  <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
-                  <Accordion.Body>
-                    {room.CancellationPolicy}
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
+                    {/* -------Start Single Deluxe ----------- */}
+                    <div className="col-lg-6 room_heading">
+                      {singleDeluxeRooms.map((room, index) => (
+                        <Card key={index} className="mb-4">
+                          <Card.Body>
+                            <h4 className='heading_space'>Single Deluxe <span style={{ color: "#00b7eb" }}>Rooms</span></h4>
+                            <div className="Exclusive_room">
+                              <div className="room_type_container">
+                                <div className="room_type_box">
+                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQChoqyNKN6YKMcxWCLOmy21prYOB9b9dYApg&s" alt="single_delux1" />
 
-                        </Card.Text>
-                        {!selectedSingleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
-                          <button onClick={() => handleRoomToggle(room, 'single')} className="reserve_button">Reserve</button>
-                        ) : (
-                          <div className="guest_selection">
-                            <button onClick={() => handleRoomToggle(room, 'single')} className="remove_button">Remove</button>
-                            <h5>If you want to increase room quantity:</h5>
-                            <div className="guest_count">
-                              <button onClick={() => handleGuestChange(selectedSingleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', -1, 'single')}>-</button>
-                              <span>Room: {selectedSingleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
-                              <button onClick={() => handleGuestChange(selectedSingleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'single')}>+</button>
-                           
-                            <div className="selected_rooms_summary">
-                              <span>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</span>
+                                </div>
+                              </div>
                             </div>
-                            
-                            </div>
-                            <button onClick={roomblockHandler} className="reserve_button">Continue</button>
-                          </div>
-                        )}
-                      </Card.Body>
-                    </Card>
-                  ))}
-                </div>
-                {/*---------End Single Deluxe------------ */}
+                            <Card.Title><b>{room.RoomTypeName}</b></Card.Title>
+                            <Card.Text>
+                              <p><b>Price: INR</b> {room.Price?.RoomPrice?.toFixed(2)}</p>
+                              <p><b>Day Rate:</b> {room.DayRates?.map(dayRate => (
+                                <span key={dayRate.Date}>
+                                  {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
+                                </span>
+                              ))}</p>
 
-                {/* ---------Start Double Delux---------- */}
-                <div className="room_heading">
-                  {doubleDeluxeRooms.map((room, index) => (
-                    <Card key={index} className="mb-4">
-                      <Card.Body>
-                  <h4  className='heading_space'>Double Deluxe <span style={{color:"#00b7eb"}}>Rooms</span></h4>
-                  <div className="Exclusive_room">
-       <div className="room_type_container">
-          <div className="room_type_box">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTRg_N-yr4A_-MUDghr0VQoP10l9AebA7Kxw&s" alt="double_delux1" />
-          </div>
-        </div>
-      </div>
-                        <Card.Title><b>{room.RoomTypeName}</b></Card.Title>
-                        <Card.Text>
-                          <p><b>Price: INR</b> {room.Price?.RoomPrice?.toFixed(2)}</p>
-                          <p><b>Day Rate:</b> {room.DayRates?.map(dayRate => (
-                            <span key={dayRate.Date}>
-                              {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
-                            </span>
-                          ))}</p>
-                          <p className='space_r'><b>Smoking Preference:</b> {room.SmokingPreference}</p>
-                          
-                          <Accordion className="accordian_space">
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header><b>Cancellation Policy</b></Accordion.Header>
-                  <Accordion.Body>
-                    {room.CancellationPolicies.map((policy, idx) => (
-                      <p key={idx}>
-                        {policy.FromDate} to {policy.ToDate}: {policy.Charge}% will be charged.
-                      </p>
-                    ))}
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
-              <Accordion className="accordian_space">
-              <Accordion.Item eventKey="0">
-                  <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
-                  <Accordion.Body>
-                    {room.CancellationPolicy}
-                    
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
-                        </Card.Text>
-                        {!selectedDoubleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
-                          <button onClick={() => handleRoomToggle(room, 'double')} className="reserve_button">Reserve</button>
-                        ) : (
-                          <div className="guest_selection">
-                            <button onClick={() => handleRoomToggle(room, 'double')} className="remove_button">Remove</button>
-                            <h5>If you want to increase room quantity:</h5>
-                            <div className="guest_count">
-                            
-                              <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', -1, 'double')}>-</button>
-                              
-                              <span>Room: {selectedDoubleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
-                              <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'double')}>+</button>
+                              <p className='space_r'><b>Smoking Preference:</b>{room.SmokingPreference}</p>
+
+                              <Accordion className="accordian_space">
+                                <Accordion.Item eventKey="0">
+                                  <Accordion.Header><b>Cancellation Policy</b></Accordion.Header>
+                                  <Accordion.Body>
+                                    {room.CancellationPolicies.map((policy, idx) => (
+                                      <p key={idx}>
+                                        {policy.FromDate} to {policy.ToDate}: {policy.Charge}% will be charged.
+                                      </p>
+                                    ))}
+                                  </Accordion.Body>
+                                </Accordion.Item>
+                              </Accordion>
+
+                              <Accordion className="accordian_space">
+                                <Accordion.Item eventKey="0">
+                                  <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
+                                  <Accordion.Body>
+                                    {room.CancellationPolicy}
+                                  </Accordion.Body>
+                                </Accordion.Item>
+                              </Accordion>
+
+                            </Card.Text>
+                            {!selectedSingleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
+                              <button onClick={() => handleRoomToggle(room, 'single')} className="reserve_button">Reserve</button>
+                            ) : (
+                              <div className="guest_selection">
+                                <button onClick={() => handleRoomToggle(room, 'single')} className="remove_button">Remove</button>
+                                <h5>If you want to increase room quantity:</h5>
+                                <div className="guest_count">
+                                  <button onClick={() => handleGuestChange(selectedSingleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', -1, 'single')}>-</button>
+                                  <span>Room: {selectedSingleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
+                                  <button onClick={() => handleGuestChange(selectedSingleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'single')}>+</button>
+
+                                  <div className="selected_rooms_summary">
+                                    <span>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</span>
+                                  </div>
+
+                                </div>
+                                <button onClick={roomblockHandler} className="reserve_button">Continue</button>
+                              </div>
+                            )}
+                          </Card.Body>
+                        </Card>
+                      ))}
+                    </div>
+                    {/*---------End Single Deluxe------------ */}
+
+                    {/* ---------Start Double Delux---------- */}
+                    <div className="col-lg-6 room_heading">
+                      {doubleDeluxeRooms.map((room, index) => (
+                        <Card key={index} className="mb-4">
+                          <Card.Body>
+                            <h4 className='heading_space'>Double Deluxe <span style={{ color: "#00b7eb" }}>Rooms</span></h4>
+                            <div className="Exclusive_room">
+                              <div className="room_type_container">
+                                <div className="room_type_box">
+                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTRg_N-yr4A_-MUDghr0VQoP10l9AebA7Kxw&s" alt="double_delux1" />
+                                </div>
+                              </div>
                             </div>
-                            <div className="selected_rooms_summary">
-                              <span>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</span>
-                              
-                              <button onClick={roomblockHandler} className="reserve_button">Continue</button>
-                            </div>
-                          </div>
-                        )}
-                      </Card.Body>
-                    </Card>
-                  ))}
-                </div>
-                {/* ---------End Double Deluxe---------- */}
-              </>
-            )}
+                            <Card.Title><b>{room.RoomTypeName}</b></Card.Title>
+                            <Card.Text>
+                              <p><b>Price: INR</b> {room.Price?.RoomPrice?.toFixed(2)}</p>
+                              <p><b>Day Rate:</b> {room.DayRates?.map(dayRate => (
+                                <span key={dayRate.Date}>
+                                  {new Date(dayRate.Date).toLocaleDateString()} - INR {dayRate.Amount}
+                                </span>
+                              ))}</p>
+                              <p className='space_r'><b>Smoking Preference:</b> {room.SmokingPreference}</p>
+
+                              <Accordion className="accordian_space">
+                                <Accordion.Item eventKey="0">
+                                  <Accordion.Header><b>Cancellation Policy</b></Accordion.Header>
+                                  <Accordion.Body>
+                                    {room.CancellationPolicies.map((policy, idx) => (
+                                      <p key={idx}>
+                                        {policy.FromDate} to {policy.ToDate}: {policy.Charge}% will be charged.
+                                      </p>
+                                    ))}
+                                  </Accordion.Body>
+                                </Accordion.Item>
+                              </Accordion>
+                              <Accordion className="accordian_space">
+                                <Accordion.Item eventKey="0">
+                                  <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
+                                  <Accordion.Body>
+                                    {room.CancellationPolicy}
+
+                                  </Accordion.Body>
+                                </Accordion.Item>
+                              </Accordion>
+                            </Card.Text>
+                            {!selectedDoubleDeluxeRooms.some(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode) ? (
+                              <button onClick={() => handleRoomToggle(room, 'double')} className="reserve_button">Reserve</button>
+                            ) : (
+                              <div className="guest_selection">
+                                <button onClick={() => handleRoomToggle(room, 'double')} className="remove_button">Remove</button>
+                                <h5>If you want to increase room quantity:</h5>
+                                <div className="guest_count">
+
+                                  <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', -1, 'double')}>-</button>
+
+                                  <span>Room: {selectedDoubleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
+                                  <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'double')}>+</button>
+                                </div>
+                                <div className="selected_rooms_summary">
+                                  <span>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</span>
+
+                                  <button onClick={roomblockHandler} className="reserve_button">Continue</button>
+                                </div>
+                              </div>
+                            )}
+                          </Card.Body>
+                        </Card>
+                      ))}
+                    </div>
+                    {/* ---------End Double Deluxe---------- */}
+                  </>
+                )}
+              </div>
+              </div>
+            </div>
+            {/* </Container> */}
           </div>
         </Container>
-      </div>
-    </Container>
-    </div>
-    <Footer />
+      </section>
+      <Footer />
 
     </>
   );

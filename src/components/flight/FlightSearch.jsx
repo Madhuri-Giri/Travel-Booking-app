@@ -437,7 +437,7 @@ const FlightSearch = () => {
                                   onClick={() => departureDatePickerRef.current.setOpen(true)}
                                 /> */}
                               </div>
-                              <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure Date</label>
+                              <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
                           </div>
                           <div className="col-6 flight-input-container onewayreturnhidebtn">
@@ -632,7 +632,7 @@ const FlightSearch = () => {
                                   onClick={() => departureDatePickerRef.current.setOpen(true)}
                                 /> */}
                               </div>
-                              <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure Date</label>
+                              <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
                           </div>
 
@@ -652,7 +652,7 @@ const FlightSearch = () => {
                                   ref={arrivalDatePickerRef}
                                 />
                               </div>
-                              <label className="flight-input-labelDepDate" htmlFor="PreferredArrivalTime">Return Date</label>
+                              <label className="flight-input-labelRetDate" htmlFor="PreferredArrivalTime">Return</label>
                             </div>
                           </div>
 

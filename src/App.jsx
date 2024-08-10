@@ -35,6 +35,7 @@ import FlightReview from './components/flight/FlightReview';
 import SeatMealBaggageTabs from './components/flight/SeatMealBaggageTabs';
 import Profile from './pages/Profile/Profile';
 import Loading from './pages/loading/Loading';
+import FlightTickect from './components/flight/DownloadTikit/FlightTickect';
 
 
 const App = () => {
@@ -54,6 +55,7 @@ const App = () => {
           <Route path='/bus-layout' element={<BusLayout />} />
           <Route path='/bord-drop' element={<BoardAndDrop />} />
           <Route path='/bus-tikit-download' element={<BusTikit />} />
+          <Route path='flight-ticket-download' element={<FlightTickect />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/faq' element={<Faq />} />
           <Route path='/setting' element={<Setting />} />
