@@ -1,22 +1,68 @@
-.details-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1vmax;
-  }
+.booking-bill-container {
+  max-width: 800px;
+  margin: 2vmax auto;
+  padding: 2vmax;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2vmax;
+}
+
+.header h2 {
+  font-size: 2.5vmax;
+  color: #333;
+  margin-bottom: 1vmax;
+}
+
+.details-section {
+  margin-bottom: 2vmax;
+}
+
+.details-section h3 {
+  font-size: 1.8vmax;
+  color: #007bff;
+  margin-bottom: 1vmax;
   
-  .details-table th,
-  .details-table td {
-    border: 1px solid #00b7eb;;
-    padding: 0.5vmax;
-    text-align: left;
-  }
-  
-  .details-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
-  
-  .details-table td {
-    background-color: #fff;
-  }
-  
+  padding-bottom: 0.5vmax;
+}
+
+.detail-card {
+  background-color: #fff;
+  padding: 1.5vmax;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detail-card p {
+  font-size: 1.2vmax;
+  color: #333;
+  margin: 0.5vmax 0;
+}
+
+.detail-card p span {
+  font-weight: bold;
+  color: #0a0b0b;
+}
+
+.download-pdf-button {
+  display: block;
+  width: 100%;
+  padding: 1vmax;
+  margin-top: 2vmax;
+  background-color: #00b7eb;
+  color: white;
+  text-align: center;
+  font-size: 1.8vmax;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-pdf-button:hover {
+  background-color: #0099cc;
+}
