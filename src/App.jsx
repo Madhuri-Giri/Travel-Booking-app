@@ -21,7 +21,7 @@ import ReviewBooking from './components/bus/ReviewBooking';
 
 import HotelRoom from './components/hotelroom/HotelRoom';
 import GuestDetails from './components/guestDetails/GuestDetails';
-import BookingDetails from './components/HotelBookingDetails/BookingDetails'
+
 import HotelDescription from './components/hotelDescription/HotelDescription';
 import Help from './components/help/Help';
 import Reviews from './components/reviews/Review';
@@ -65,7 +65,7 @@ const App = () => {
           <Route path='/hotel-list' element={<HotelList />} />
           <Route path='/hotel-room' element={<HotelRoom />} />
           <Route path='/hotel-guest' element={<GuestDetails />} />
-          <Route path='/booking-details' element={<BookingDetails />} />
+        
           <Route path='/hotel-description' element={<HotelDescription />} />
           <Route path='/help' element={<Help />} />
           <Route path='/review' element={<Reviews />} />
