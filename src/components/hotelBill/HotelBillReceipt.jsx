@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { GeneratePdf } from './GeneratePdf'; // Import the GeneratePdf function
-import './HotelBillReceipt.css'
+import './HotelBillReceipt.css';
+
 const BookingBill = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [guestDetails, setGuestDetails] = useState(null);
   const [totalPrice, setTotalPrice] = useState(null);
-
 
   useEffect(() => {
     // Retrieve data from local storage
     const storedBookingDetails = JSON.parse(localStorage.getItem('selectedRoomsData'));
     const storedGuestDetails = JSON.parse(localStorage.getItem('guestDetails'));
     const storedTotalPrice = localStorage.getItem('totalPriceWithGST');
-    
+
     if (storedBookingDetails && storedGuestDetails && storedTotalPrice) {
       setBookingDetails(storedBookingDetails);
       setGuestDetails(storedGuestDetails);
@@ -21,7 +21,7 @@ const BookingBill = () => {
   }, []);
 
   if (!bookingDetails || !guestDetails || !totalPrice) {
-    return <p>Loading...</p>;
+    return <p>Loading your booking details...</p>;
   }
 
   const handleDownloadPDF = () => {
@@ -36,84 +36,43 @@ const BookingBill = () => {
   };
 
   return (
-    <div className="hotelTikit">
-      <div className="hed">
-        <h5>Booking Receipt</h5>
+    <div className="booking-bill-container">
+      <div className="header">
+        <h2>Booking Receipt</h2>
       </div>
-      <div className="down">
-        <div className="tikit-status">
-          <div className="download-tikit">
-            <h4>Guest Details</h4>
-            <table className="details-table">
-              <tbody>
-                <tr>
-                  <th>First Name</th>
-                  <td>{guestDetails.fname}</td>
-                </tr>
-                <tr>
-                  <th>Middle Name</th>
-                  <td>{guestDetails.mname}</td>
-                </tr>
-                <tr>
-                  <th>Last Name</th>
-                  <td>{guestDetails.lname}</td>
-                </tr>
-                <tr>
-                  <th>Email</th>
-                  <td>{guestDetails.email}</td>
-                </tr>
-                <tr>
-                  <th>Mobile</th>
-                  <td>{guestDetails.mobile}</td>
-                </tr>
-              </tbody>
-            </table>
 
-            <h4>Booking Details</h4>
-            <table className="details-table">
-              <tbody>
-                <tr>
-                  <th>Hotel Name</th>
-                  <td>{bookingDetails.hotelName || 'Not Provided'}</td>
-                </tr>
-                <tr>
-                  <th>Check-in Date</th>
-                  <td>{bookingDetails.checkInDate || 'Not Provided'}</td>
-                </tr>
-                <tr>
-                  <th>Check-out Date</th>
-                  <td>{bookingDetails.checkOutDate || 'Not Provided'}</td>
-                </tr>
-                <tr>
-                  <th>Room Type</th>
-                  <td>{bookingDetails.roomType || 'Not Provided'}</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h4>Price Summary</h4>
-            <table className="details-table">
-              <tbody>
-                <tr>
-                  <th>Total Price (Double Deluxe)</th>
-                  <td>{bookingDetails.totalPriceDoubleDeluxe || 'Not Provided'}</td>
-                </tr>
-                <tr>
-                  <th>Total Price (Single Deluxe)</th>
-                  <td>{bookingDetails.totalPriceSingleDeluxe || 'Not Provided'}</td>
-                </tr>
-                <tr>
-                  <th>Total Price with GST</th>
-                  <td>{totalPrice || 'Not Provided'}</td>
-                </tr>
-              </tbody>
-            </table>
-
-            {/* Button to download the PDF */}
-            <button onClick={handleDownloadPDF}>Download PDF</button>
-          </div>
+      <div className="details-section">
+        <h3>Guest Details</h3>
+        <div className="detail-card">
+          <p><span>First Name:</span> {guestDetails.fname}</p>
+          <p><span>Middle Name:</span> {guestDetails.mname}</p>
+          <p><span>Last Name:</span> {guestDetails.lname}</p>
+          <p><span>Email:</span> {guestDetails.email}</p>
+          <p><span>Mobile:</span> {guestDetails.mobile}</p>
         </div>
       </div>
+
+      <div className="details-section">
+        <h3>Booking Details</h3>
+        <div className="detail-card">
+          <p><span>Hotel Name:</span> {bookingDetails.hotelName || 'Not Provided'}</p>
+          <p><span>Check-in Date:</span> {bookingDetails.checkInDate || 'Not Provided'}</p>
+          <p><span>Check-out Date:</span> {bookingDetails.checkOutDate || 'Not Provided'}</p>
+          <p><span>Room Type:</span> {bookingDetails.roomType || 'Not Provided'}</p>
+        </div>
+      </div>
+
+      <div className="details-section">
+        <h3>Price Summary</h3>
+        <div className="detail-card">
+          <p><span>Total Price (Double Deluxe):</span> {bookingDetails.totalPriceDoubleDeluxe || 'Not Provided'}</p>
+          <p><span>Total Price (Single Deluxe):</span> {bookingDetails.totalPriceSingleDeluxe || 'Not Provided'}</p>
+          <p><span>Total Price with GST:</span> {totalPrice || 'Not Provided'}</p>
+        </div>
+      </div>
+
+      {/* Button to download the PDF */}
+      <button className="download-pdf-button" onClick={handleDownloadPDF}>Download PDF</button>
     </div>
   );
 };
