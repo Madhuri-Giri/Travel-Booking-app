@@ -399,7 +399,13 @@
       flex-direction: column;
   }
   
-
+  .listSearch {
+    
+      margin-bottom: 20px;
+      display: none;
+    
+  }
+  
   .listResult {
       flex: none;
   }
@@ -423,4 +429,9 @@
 
 }
 
-
+@media (min-width: 768px) and (max-width: 1280px) {
+  .listSearch {
+      
+  }
+  
+}
