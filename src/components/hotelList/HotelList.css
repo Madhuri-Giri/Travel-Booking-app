@@ -343,7 +343,7 @@
 /*----------------- Pagination Container--------------- */
 .paginationContainer {
   display: flex;
-  justify-content: end;
+  justify-content: center;
   margin-top: 20px;
   margin-bottom: 20px;
   margin-right: 20px;
@@ -386,18 +386,20 @@
 /* ---------------------End--------------------- */
 
 /* Responsive CSS */
+@media (max-width: 992px) {
+.listSearchcol{
+  display: none;
+}
+  
+}
+
+
 @media (max-width: 768px) {
   .listWrapper {
       flex-direction: column;
   }
   
-  .listSearch {
-    
-      margin-bottom: 20px;
-      display: none;
-    
-  }
-  
+
   .listResult {
       flex: none;
   }
@@ -421,9 +423,4 @@
 
 }
 
-@media (min-width: 768px) and (max-width: 1280px) {
-  .listSearch {
-      
-  }
-  
-}
+
