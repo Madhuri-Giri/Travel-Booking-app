@@ -16,6 +16,8 @@ import Footer from "../../pages/footer/Footer";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 
 export default function FlightLists() {
+    const [loading, setLoading] = useState(false); // Add loading state
+
     const navigate = useNavigate();
 
     // for timerss----------------------------------
@@ -250,47 +252,6 @@ export default function FlightLists() {
         ]
     };
 
-    // const settings = {
-    //     dots: false,
-    //     infinite: false,
-    //     speed: 500,
-    //     slidesToShow: 3,
-    //     slidesToScroll: 1,
-    //     variableWidth: true,
-    //     responsive: [
-    //         {
-    //             breakpoint: 1024,
-    //             settings: {
-    //                 slidesToShow: 3,
-    //                 slidesToScroll: 1,
-    //             }
-    //         },
-    //         {
-    //             breakpoint: 768,
-    //             settings: {
-    //                 slidesToShow: 2,
-    //                 slidesToScroll: 1,
-    //             }
-    //         },
-    //         {
-    //             breakpoint: 480,
-    //             settings: {
-    //                 slidesToShow: 1,
-    //                 slidesToScroll: 1,
-    //             }
-    //         }
-    //     ]
-    // };
-    // const scrollLeftClick = () => {
-    //     if (sliderRef.current) {
-    //         sliderRef.current.slickPrev();
-    //     }
-    // };
-    // const scrollRightClick = () => {
-    //     if (sliderRef.current) {
-    //         sliderRef.current.slickNext();
-    //     }
-    // };
     // for callender slider-----------------------------------------------------------------------
 
 
@@ -309,6 +270,7 @@ export default function FlightLists() {
 
     // ------------------------------------------------fare-Quote-api-----------------------------------------
     const fareQuoteHandler = async () => {
+        setLoading(true);
         const traceId = localStorage.getItem('FlightTraceId2');
         const resultIndex = localStorage.getItem('FlightResultIndex2');
         const srdvType = localStorage.getItem('FlightSrdvType');
@@ -352,12 +314,14 @@ export default function FlightLists() {
 
 
             if (data.Results && formData) {
+                setLoading(false);
                 navigate('/flight-Farequote', { state: { fareData: data.Results, formData: formData } });
             } else {
                 console.error('data.Results or formData is undefined');
             }
 
         } catch (error) {
+            setLoading(false);
             console.error('Error calling the farequote API:', error);
         }
     };
@@ -373,6 +337,11 @@ export default function FlightLists() {
     const navigateSearch = () => {
         navigate('/flight-search');
     };
+
+    if (loading) {
+        return <Loading />;
+      }
+    
 
     return (
         <>

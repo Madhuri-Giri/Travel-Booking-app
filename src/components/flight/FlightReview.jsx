@@ -264,9 +264,15 @@ const FlightReview = () => {
       } else {
         toast.success(' flight Booking successful!');
 
+        localStorage.setItem('flightTikitDetails', JSON.stringify(responseBody));
+
+        setTimeout(() => {
+          navigate('/flight-ticket-download', { state: { flightbookingDetails: responseBody } });
+        }, 2000);
+
       }
     } catch (error) {
-      console.error('Error during booking:', error.message);
+      console.error('Failed to book seats:', error.message);
       toast.error('An error occurred during booking. Please try again.');
     }
   };
