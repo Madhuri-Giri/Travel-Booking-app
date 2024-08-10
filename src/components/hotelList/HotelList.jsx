@@ -421,6 +421,7 @@ const IGST_RATE = 0.18; // 18% IGST
           breakLinkClassName={'page-link'}
         />
       </div>
+      <Footer />
 
       </section>
 
