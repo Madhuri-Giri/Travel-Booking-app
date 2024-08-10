@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { GeneratePdf } from './GeneratePdf'; // Import the GeneratePdf function
 import './HotelBillReceipt.css';
+import CustomNavbar from '../../pages/navbar/CustomNavbar';
+import Footer from '../../pages/footer/Footer';
 
 const BookingBill = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
@@ -36,6 +38,9 @@ const BookingBill = () => {
   };
 
   return (
+    <>
+    <CustomNavbar/>
+    <section className='hotelTicketSec'>
     <div className="booking-bill-container">
       <div className="header">
         <h2>Booking Receipt</h2>
@@ -74,6 +79,9 @@ const BookingBill = () => {
       {/* Button to download the PDF */}
       <button className="download-pdf-button" onClick={handleDownloadPDF}>Download PDF</button>
     </div>
+    </section>
+    <Footer/>
+    </>
   );
 };
 
