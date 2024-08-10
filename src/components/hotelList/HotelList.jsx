@@ -423,7 +423,6 @@ const IGST_RATE = 0.18; // 18% IGST
       </div>
 
       </section>
-      <Footer />
 
     </>
   );

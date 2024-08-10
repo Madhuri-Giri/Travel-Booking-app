@@ -1,4 +1,8 @@
 /* GuestDetails.css */
+.guest_bg{
+  background-color: #dddddd;
+  margin-top: 20px;
+}
 
 .guest-details-container {
   background-color: #f8f9fa;

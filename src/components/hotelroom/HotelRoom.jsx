@@ -323,9 +323,9 @@ const HotelRoom = () => {
 
   return (
     <>
-                <CustomNavbar />
+    <CustomNavbar />
 
-    
+    <div className='room_bg'>
  <Container className="hotelroom_container">
       <div className="room_container">
         <Container>
@@ -485,6 +485,9 @@ const HotelRoom = () => {
         </Container>
       </div>
     </Container>
+    </div>
+    <Footer />
+
     </>
   );
 };
