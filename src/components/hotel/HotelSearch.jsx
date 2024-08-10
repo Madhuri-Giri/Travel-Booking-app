@@ -12,6 +12,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import CustomNavbar from "../../pages/navbar/CustomNavbar";
+import Footer from "../../pages/footer/Footer";
 
 const HotelSearch = () => {
   //--- Navigate Other Page ---
@@ -178,7 +180,10 @@ const HotelSearch = () => {
   };
 
   return (
-    <>
+    <>    
+      <CustomNavbar />
+
+
       {/* New section start */}
       <div className="hotel_container">
         <div className="content_wrapper">
@@ -315,6 +320,7 @@ const HotelSearch = () => {
         </div>
       </section>
       {/* end section */}
+      <Footer />
 
     </>
   );

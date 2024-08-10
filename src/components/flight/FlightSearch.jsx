@@ -19,9 +19,8 @@ import PropTypes from 'prop-types';
 import home_insta from "../../../src/assets/images/home-insta.jpg";
 import home_newsletter from "../../../src/assets/images/home-yotube.jpg";
 import Loading from '../../pages/loading/Loading';
-import Footer from "../../pages/footer/Footer";
+import Footer from "../../pages/footer/Footer"
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
-
 
 const FlightSearch = () => {
   const [loading, setLoading] = useState(false); // Add loading state

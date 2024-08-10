@@ -1,5 +1,3 @@
-/* HotelRoom.css */
-
 .hotelroom_container {
   padding: 20px;
   background-color: #feffff;
@@ -41,10 +39,9 @@
   overflow: hidden;
   position: relative;
 }
-
-.room_type_box {
-  width: 100%;
-  height: 300px;
+.room_type_box{
+ width: 100%;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -79,6 +76,7 @@ margin-right: 5px;
   word-spacing: 2px;
   }
   .card {
+  width: 100%;
     /* border: 1px solid #1b1b1b; */
     /* border-radius: 8px; */
     /* box-shadow: 2px 2px 5px 2px rgba(9, 9, 9, 0.386); */
@@ -208,4 +206,66 @@ margin-right: 5px;
   box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
 } */
 
+/* Media query for responsive design */
+@media (max-width: 768px) {
+  .hotel_room_container {
+    flex-direction: column;
+  }
+}
 
+.card {
+  width: 100%;
+}
+
+.reserve_button, .remove_button {
+  margin-top: 14px;
+  background-color: #00b7eb;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.remove_button {
+  background-color: #f44336;
+}
+
+.reserve_button:hover, .remove_button:hover {
+  opacity: 0.8;
+}
+
+.guest_count {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.guest_count button {
+  background-color: #00b7eb;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.guest_count button:hover {
+  opacity: 0.8;
+}
+
+.selected_rooms_summary span {
+  display: flex;
+  justify-content: end;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-left: 8px;
+}
+
+.selected_rooms_summary .reserve_button {
+  margin-top: 0px;
+}

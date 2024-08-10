@@ -4,6 +4,8 @@ import { Container, Row, Col, Carousel,  Modal} from "react-bootstrap";
 import "./HotelDescription.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import CustomNavbar from "../../pages/navbar/CustomNavbar";
+import Footer from "../../pages/footer/Footer";
 
 const renderStar = (rating) => {
   const totalStars = 5;
@@ -71,12 +73,14 @@ const HotelDescription = () => {
   // -----------------------End Api Integration--------------------
   return (
     <>
+              <CustomNavbar />
+
     <section className="hotelDescriptionSection">
     <Container>
     {/* -----start new section---------- */}
     <div className="ro">
-     <Container>
-     <h3 className="hotelName">{hotelDetails.HotelName} Hotel 
+     <Container className="hotelName">
+     <h3>{hotelDetails.HotelName} Hotel 
      <span> {renderStar(hotelDetails.StarRating)}   </span>
      </h3>
     
@@ -101,16 +105,27 @@ const HotelDescription = () => {
           {hotelDetails.Images && hotelDetails.Images.length > 0 && (
             <img
               className="hotel_Img_single"
-              src={hotelDetails.Images[0]} // Show the first image as a thumbnail
+              src={hotelDetails.Images[0]}
               alt={`${hotelDetails.HotelName} Thumbnail`}
-              onClick={() => setShowModal(true)} // Open modal on click
-              style={{ cursor: "pointer" }} // Change cursor to indicate it's clickable
+              onClick={() => setShowModal(true)} 
+              style={{ cursor: "pointer" }} 
             />
           )}
+          {hotelDetails.Images && hotelDetails.Images.length > 1 && (
+                    <img
+                      className="hotel_Img_single_above"
+                      src={hotelDetails.Images[2]}
+                      alt={`${hotelDetails.HotelName} Second Thumbnail`}
+                      style={{ marginBottom: "15px", cursor: "pointer" }} 
+                      onClick={() => setShowModal(true)} 
+                    />
+                  )}
+
+
         </Col>
+        
+        
       </Row>
-
-
      </Container>
       {/* Modal for showing all images */}
       <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
@@ -174,12 +189,7 @@ const HotelDescription = () => {
         </Col>
       </Row>
     </Container>
-
-
     {/*------------- End section----------- */}
-
-
-
     </section>
 
     </>

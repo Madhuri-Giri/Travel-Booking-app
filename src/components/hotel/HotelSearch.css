@@ -2,9 +2,7 @@
 
 /* --------- Start --------- */
 .hotel_container {
-   /* margin: 20px; */
   padding: 20px;
-  /* border-radius: 10px; */
   background-color: #00b7eb;
 }
 .content_wrapperRow{
@@ -13,7 +11,6 @@
 .content_wrapper {
   display: flex;
   margin-top: 50px;
-  /* margin-left: 120px; */
 }
 
 .content_box h1 {
@@ -31,15 +28,6 @@
   color:#bbe4f0 ;
   font-size: 2.5rem;
 }
-
-/* 
-.content_box p {
-  font-family: sans-serif;
-  font-size: 1.2vmax;
-  color: #282727;
-  margin-top: 10px;
-  letter-spacing: 1px;
-} */
 
 .images_container {
   margin-top: 100px;
@@ -96,6 +84,18 @@
   border-radius: 8px;
 }
 
+.form-field input,
+.form-field .react-datepicker-wrapper {
+  font-family: sans-serif;
+  width: 100%;
+  padding: 8px;
+
+}
+
+.form-field .react-datepicker-wrapper {
+  width: 100%;
+}
+
 .form-row {
   display: flex;
   justify-content: space-between;
@@ -117,22 +117,6 @@
   font-weight: 600;
   font-size: 1.1vmax;
   font-family: sans-serif;
-}
-/* 
-.form_lable {
-  width: 100%;
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 600;
-  font-size: 1.1vmax;
-  font-family: sans-serif;
-} */
-
-.form-field input {
-  font-family: sans-serif;
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
 }
 
 .guest_field {
@@ -159,13 +143,6 @@
   margin-bottom: 10px;
 }
 
-.form-field input .react-datepicker-wrapper {
-  width: 100%;
-}
-
-.form-field input .react-datepicker__input-container {
-  width: 100%;
-}
 .btn-book{
   padding: 10px;
   background-color: #fc3a21;
@@ -362,9 +339,7 @@ font-size: 1.7vmax;
     width: 100%;
   }
 
-  .image1,
-  .image2,
-  .image3 {
+  .image1 {
     margin-bottom: 10px;
     position: relative;
     width: 100%;
@@ -372,7 +347,12 @@ font-size: 1.7vmax;
     left: 0;
     right: 0;
   }
-
+.image2{
+  display: none;
+}
+.image3{
+  display: none;
+}
   .offer_img {
     width: 100%;
     padding-left: 0;
@@ -382,7 +362,11 @@ font-size: 1.7vmax;
     margin-top: 0;
   }
   
-
+  .btn-book{
+    margin-left: 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -395,36 +379,54 @@ font-size: 1.7vmax;
     margin-left: 0;
   }
   
+
+  
+  
   .images_container {
-    margin-top: 20px;
+  
     width: 100%;
   }
 
   .img_box {
     position: relative;
     width: 100%;
+margin-top: 0;
+    
   }
 
-  .image1,
-  .image2,
+
+  .image1 {
+    margin-top: 20px;
+    border: 3px solid black;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  
+  .image2 {
+    display: none;
+  }
+  
   .image3 {
-    margin-bottom: 10px;
-    position: relative;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    display: none;
   }
-
 
   .form-row {
     flex-direction: column;
+    gap: 0;
   }
 
   .form-field {
     margin-right: 0;
     margin-bottom: 15px;
     width: 100%;
+  }
+
+  .form-field .form_lable {
+    margin-right: 0;
+    font-weight: 600;
+    font-size: 16px;
   }
 
   .btn-sub {
@@ -445,6 +447,10 @@ font-size: 1.7vmax;
     margin-top: 5px;
   }
 
+  .btn-book{
+    margin-left: 10px;
+    margin-bottom: 0;
+  }
   .content_wrapper {
     margin-left: 0;
   }
@@ -467,12 +473,17 @@ font-size: 1.7vmax;
     bottom: 0;
     left: 0;
     right: 0;
+    display: none;
   }
 
+  .form-row {
+    gap: 0;
+  }
 
   .form-field .form_lable {
     margin-right: 0;
     font-weight: 600;
+    font-size: 16px;
   }
 
   .form-field .form_in,
@@ -509,6 +520,7 @@ font-size: 1.7vmax;
     width: 80%; 
     max-width: 320px; 
   }
+
   
 }
 

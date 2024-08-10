@@ -392,8 +392,10 @@
   }
   
   .listSearch {
-      position: static;
+    
       margin-bottom: 20px;
+      display: none;
+    
   }
   
   .listResult {
@@ -402,6 +404,7 @@
 
   .searchItem {
       flex-direction: column;
+      
   }
 
   .hotelImg {
@@ -412,6 +415,15 @@
   .DetailTexts {
       text-align: left;
   }
+  .paginationContainer .pagination li {
+    margin: 0 !important; 
+  }
+
 }
 
-
+@media (min-width: 768px) and (max-width: 1280px) {
+  .listSearch {
+      display: none; /* Hide the listSearch section on screens between 768px and 1280px */
+  }
+  
+}
