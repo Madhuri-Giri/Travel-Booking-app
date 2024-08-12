@@ -200,9 +200,12 @@
     font-weight: 600;
     font-size: 17px;
     color: #00b7eb;
-    /* color: black; */
-    /* color: #9d86d9; */
     text-transform: uppercase;
+}
+.travellerdropdowncol2 label {
+    font-size: 15px;
+    color: #00b7eb;
+    /* color: black; */
 }
 
 .flightmainBooking .onewaybutton {
