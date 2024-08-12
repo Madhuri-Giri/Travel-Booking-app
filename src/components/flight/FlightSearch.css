@@ -722,10 +722,40 @@
         z-index: 2;
     }
 
+    .flight-input-labelFrom {
+        left: 22%;
+        padding: 0 6px;
+        margin: 0 6px;
+    }
+    .flight-input-labelTo {
+        left: 18%;
+        padding: 0 6px;
+        margin: 0 6px;
+    }
+    .flight-input-labelDepDate{
+        left: 35%;
+        padding: 0 6px;
+        margin: 0 6px;
+    }
+    .flight-input-labelTravel{
+        left: 26%;
+        padding: 0 6px;
+        margin: 0 6px;
+    }
+    .flight-input-labelRetDate{
+        left: 26%;
+        padding: 0 6px;
+        margin: 0 6px;
+    }
+
     .flightformRow .form-control {
         border-radius: 15px;
         border: 1px solid gray;
-        padding: 9px 50px;
+        padding: 7px 29px;
+    }
+    .plane-icon {
+        left: 8px;
+        font-size: 20px;
     }
 
     .flightTravellerclssFormControl {
@@ -781,8 +811,9 @@
 
     .travellerdropdown {
         position: absolute;
+        top: 390px;
         z-index: 1000;
-        width: 264px !important;
+        width: 300px !important;
         padding-bottom: 20px;
         border-radius: 4px;
     }
@@ -844,10 +875,6 @@
     .flightsec7col {
         margin-bottom: 20px;
         box-shadow: 1px 1px 1px 1px gray;
-    }
-
-    .flight-input-labelTravel {
-        left: 19%;
     }
 }
 
