@@ -24,13 +24,13 @@
 .left-side {
   text-align: left;
   flex: 1;
-  min-width: 200px; /* Minimum width for responsiveness */
+  min-width: 200px;
 }
 
 .right-side {
   text-align: right;
   flex: 1;
-  min-width: 200px; /* Minimum width for responsiveness */
+  min-width: 200px; 
 }
 
 .section-title {
@@ -91,7 +91,7 @@
 }
 
 .submit-btn:hover {
-  background-color: #0099d8; /* Slightly darker color for hover effect */
+  background-color: #0099d8; 
 }
 
 .form-container {
@@ -149,6 +149,13 @@
 .room-details p:nth-child(5) {
   flex-basis: 20%; 
 }
+.form-content{
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+
+
 
 /* Responsive styles */
 @media (max-width: 1024px) {
