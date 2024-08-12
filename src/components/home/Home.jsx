@@ -34,33 +34,74 @@ const Home = () => {
   const [toSuggestions, setToSuggestions] = useState([]);
   const [preferredDepartureTime, setPreferredDepartureTime] = useState(new Date());
   const [preferredArrivalTime, setPreferredArrivalTime] = useState(new Date());
+  const inputRef = useRef(null);
 
-
-
-  const fetchSuggestions = async (query, setSuggestions) => {
-    console.log('test');
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+        setFromSuggestions([]); // Clear suggestions if click is outside
+        setToSuggestions([]); // Clear suggestions if click is outside
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  // Function to fetch suggestions
+  const fetchSuggestions = async (query, setSuggestions, limit = 10) => {
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query })
+        body: JSON.stringify({ query }),
       });
+
       const data = await response.json();
-      const filteredSuggestions = data.data
-        .filter(suggestion =>
+      let suggestions = data.data;
+
+      if (query) {
+        suggestions = suggestions.filter((suggestion) =>
           suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
-        )
-        .slice(0, 7); // Limit the number of suggestions to 7
-      setSuggestions(filteredSuggestions);
+        );
+      }
+
+      setSuggestions(suggestions.slice(0, limit)); // Limit the number of suggestions based on the provided limit
     } catch (error) {
       console.error('Error fetching suggestions:', error);
     }
   };
 
+  // Function to handle input focus
+  const handleFromInputFocus = () => {
+    console.log('Input field focused');
+    fetchSuggestions('', setFromSuggestions); // Fetch and show 10 suggestions when the input is focused
+  };
+  const handleToInputFocus = () => {
+    console.log('Destination input field focused');
+    fetchSuggestions('', setToSuggestions); // Fetch and show 10 suggestions when the "Destination" input is focused
+  };
 
+  // Function for selecting a suggestion
+  const handleSuggestionClick = (suggestion, fieldSetter) => {
+    fieldSetter(suggestion.busodma_destination_name);
+  };
+  // Function to handle "From" selection
+  const handleFromSelect = (suggestion) => {
+    handleSuggestionClick(suggestion, setFrom);
+    setFromSuggestions([]);
 
+    let updatedSegments = formData.Segments;
+    updatedSegments[0]["Origin"] = suggestion.busodma_destination_name;
+    setFormData((prev) => ({ ...prev, Segments: updatedSegments }));
+  };
+  // Function to handle "To" selection
+  const handleToSelect = (suggestion) => {
+    handleSuggestionClick(suggestion, setTo);
+    setToSuggestions([]);
+  };
   // function for adult , child , infact dropdown list-------------------------------------------
   const [showDropdown, setShowDropdown] = useState(false);
   const handleShow = () => {
@@ -93,28 +134,7 @@ const Home = () => {
       setToSuggestions([]);
     }
   };
-  // func for Origin & Destination----------------------------------------------------------------
-
-
-  // function for select From & To --------------------------------------
-  const handleSuggestionClick = (suggestion, fieldSetter) => {
-    fieldSetter(suggestion.busodma_destination_name);
-  };
-
-  const handleToSelect = (suggestion) => {
-    handleSuggestionClick(suggestion, setTo);
-    setToSuggestions([]);
-  };
-
-  const handleFromSelect = (suggestion) => {
-    handleSuggestionClick(suggestion, setFrom);
-    setFromSuggestions([]);
-
-    let updatedSegments = formData.Segments;
-    updatedSegments[0]["Origin"] = suggestion.busodma_destination_name;
-    setFormData((prev) => ({ ...prev, Segments: updatedSegments }));
-  };
-  // function for select From & To --------------------------------------
+  // func for Origin & Destination--------------------------------------------------------------- 
 
   // Static formData------------------------------------------------------------
   const [formData, setFormData] = useState({
@@ -382,11 +402,17 @@ const Home = () => {
                                 placeholder="Starting Point"
                                 value={from}
                                 onChange={handleFromChange}
+                                onFocus={handleFromInputFocus}
+                                ref={inputRef}
                               />
                               {fromSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listFrom">
                                   {fromSuggestions.map((suggestion, index) => (
-                                    <li className="text-red" key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
+                                    <li
+                                      className="text-red"
+                                      key={index}
+                                      onClick={() => handleFromSelect(suggestion)}
+                                    >
                                       {suggestion.busodma_destination_name}
                                     </li>
                                   ))}
@@ -403,7 +429,16 @@ const Home = () => {
                               <span className="plane-icon">
                                 <BiSolidPlaneLand />
                               </span>
-                              <input type="text" className="form-control" id="flightDestinationPoint" placeholder='Destination' value={to} onChange={handleToChange} />
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="flightDestinationPoint"
+                                placeholder='Destination'
+                                value={to}
+                                onChange={handleToChange}
+                                onFocus={handleToInputFocus}
+                                ref={inputRef}
+                              />
                               {toSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listTo">
                                   {toSuggestions.map((suggestion, index) => (
@@ -560,9 +595,7 @@ const Home = () => {
                     </div>
                   )}
                   {activeTab === 'twoway' && (
-
                     <div className="ps-2 pe-2">
-
                       <form action="" >
                         <div className="row flightformRow">
                           <div className="col-12 flightformCol">
@@ -577,6 +610,8 @@ const Home = () => {
                                 placeholder="Starting Point"
                                 value={from}
                                 onChange={handleFromChange}
+                                onFocus={handleFromInputFocus}
+                                ref={inputRef}
                               />
                               {fromSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listFrom">
@@ -597,7 +632,16 @@ const Home = () => {
                               <span className="plane-icon">
                                 <BiSolidPlaneLand />
                               </span>
-                              <input type="text" className="form-control" id="flightDestinationPoint" placeholder='Destination' value={to} onChange={handleToChange} />
+                              <input type="text"
+                                className="form-control"
+                                id="flightDestinationPoint"
+                                placeholder='Destination'
+                                value={to}
+                                onChange={handleToChange}
+                                onFocus={handleToInputFocus}
+                                ref={inputRef}
+
+                              />
                               {toSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listTo">
                                   {toSuggestions.map((suggestion, index) => (
@@ -879,7 +923,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* <section className="exclusive-dealsSec">
+      <section className="exclusive-dealsSec">
         <div className="container-fluid mb-5">
           <div className="row mb-4">
             <h2>Exclusive Deals</h2>
@@ -939,7 +983,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section> */}
+      </section>
 
 
 
