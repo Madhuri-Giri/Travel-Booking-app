@@ -254,6 +254,9 @@ const IGST_RATE = 0.18; // 18% IGST
       </div> */}
 
       <section className="hotelMainsec">
+      <div className="timer">
+        <p>Redirecting in {formatTime(timer)}...</p>
+</div>
       <div className="listContainer">
         <div className="listWrapper">
         <Container>
@@ -367,8 +370,7 @@ const IGST_RATE = 0.18; // 18% IGST
 
         {/* New section Start */}
         <Col lg={9} className="listResultcol">
-        <p>Redirecting in {formatTime(timer)}...</p>
-
+        
           <div className="listResult">
             {geoError && <p className="errorMessage">{geoError}</p>}
             {error && <p className="errorMessage">{error}</p>}
