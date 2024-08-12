@@ -108,7 +108,8 @@
  }
  .BusPage .Exclusive-offer .offer-slider .slide img{
           width: 30%;
-          height: 300px;
+          height: 290px;
+          border-radius: 15px;
  }
 
  /* --------------- */
