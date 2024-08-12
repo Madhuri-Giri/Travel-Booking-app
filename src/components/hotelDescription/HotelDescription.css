@@ -56,7 +56,14 @@ margin-left: 10px;
     height: 250px;
     object-fit: cover;
     margin-top: 5px;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
 }
+
+/* 
+.hotel_Img_single_above:hover {
+    transform: scale(1.05);
+  } */
 
 /* Single image in the second column */
 .hotel_Img_single {
@@ -67,10 +74,10 @@ margin-left: 10px;
     transition: transform 0.3s ease;
     margin-top: 20px;
   }
-  
+/*   
   .hotel_Img_single:hover {
     transform: scale(1.05);
-  }
+  } */
   
   /* Modal image styling */
   .hotel_Img_modal {

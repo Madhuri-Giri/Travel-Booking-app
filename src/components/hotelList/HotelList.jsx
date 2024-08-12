@@ -57,6 +57,32 @@ const IGST_RATE = 0.18; // 18% IGST
   const offset = currentPage * hotelsPerPage;
   const currentHotels = hotels.slice(offset, offset + hotelsPerPage);
 
+  const [timer, setTimer] = useState(600000);
+
+  useEffect(() => {
+    const countdown = setInterval(() => {
+      setTimer((prev) => prev - 100);
+    }, 100);
+
+    if (timer <= 0) {
+      clearInterval(countdown);
+      navigate('/hotel-search');
+    }
+
+    return () => clearInterval(countdown);
+  }, [timer, navigate]);
+
+  const formatTime = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes} min ${seconds} sec left`;
+  };
+
+  const navigateSearch = () => {
+    navigate('/hotel-search');
+  };
+
 // ----------------for filter----------------
   useEffect(() => {
     const sortedHotels = [...hotels];
@@ -341,6 +367,7 @@ const IGST_RATE = 0.18; // 18% IGST
 
         {/* New section Start */}
         <Col lg={9} className="listResultcol">
+        <p>Redirecting in {formatTime(timer)}...</p>
 
           <div className="listResult">
             {geoError && <p className="errorMessage">{geoError}</p>}

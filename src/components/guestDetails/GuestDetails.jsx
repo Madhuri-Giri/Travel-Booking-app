@@ -123,7 +123,7 @@ const GuestDetails = () => {
 
     try {
 
-      // const loginId = localStorage.getItem('loginId')
+      const loginId = localStorage.getItem('loginId')
 
       //for Handle Decimal digit of amount
       const roundedAmount = Math.round(totalPriceWithGST * 100) / 100;
@@ -131,8 +131,8 @@ const GuestDetails = () => {
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-payment', {
         
         amount: roundedAmount, 
-        // user_id: loginId,
-        user_id: "1"
+        user_id: loginId,
+        
       });
 
       if (response.data.status === 'success') {
@@ -150,11 +150,11 @@ const GuestDetails = () => {
   };
 
   const handlePayment = async (e) => {
-    //  const loginId = localStorage.getItem('loginId');
-    // if (!loginId) {
-    //   navigate('/login'); 
-    //   return;
-    // }
+     const loginId = localStorage.getItem('loginId');
+    if (!loginId) {
+      navigate('/enter-number'); 
+      return;
+    }
   
     e.preventDefault();
     try {
@@ -549,7 +549,7 @@ return (
                 <div key={index}>
                   <p>Room Type: {room.RoomTypeName}</p>
                   <p>Quantity: {room.guestCounts.room}</p>
-                  <p>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</p>
+                  <p>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</p>
                   <div className="payment-summary">
         <p><strong>Total Price:</strong> {totalPriceWithGST.toFixed(2)}</p>
         <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p>
@@ -559,7 +559,7 @@ return (
               ))}
               
               {/* <h4>Selected Double Deluxe Rooms</h4> */}
-              {/* {doubleDeluxe.map((room, index) => (
+              {doubleDeluxe.map((room, index) => (
                 <div key={index}>
                   <p>Room Type: {room.RoomTypeName}</p>
                   <p>Quantity: {room.guestCounts.room}</p>
@@ -569,7 +569,7 @@ return (
         <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p>
       </div>
                 </div>
-              ))} */}
+              ))}
               
             </div>
 
@@ -649,7 +649,7 @@ return (
               name="number"
               value={formData.number}
               onChange={handleChange}
-              required
+              
             />
           </div>
         </div>
@@ -663,7 +663,19 @@ return (
               name="age"
               value={formData.age}
               onChange={handleChange}
-              required
+              
+            />
+          </div>
+
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Passport No."
+              name="passportNo"
+              value={formData.passportNo}
+              onChange={handleChange}
+              
             />
           </div>
           <div className="mb-3">
@@ -674,7 +686,7 @@ return (
               name="passportExpDate"
               value={formData.passportExpDate}
               onChange={handleChange}
-              required
+              
             />
           </div>
           <div className="mb-3">
@@ -685,20 +697,10 @@ return (
               name="passportIssueDate"
               value={formData.passportIssueDate}
               onChange={handleChange}
-              required
+             
             />
           </div>
-          <div className="mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Passport No."
-              name="passportNo"
-              value={formData.passportNo}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          
           <div className="mb-3">
             <input
               type="text"
@@ -707,7 +709,7 @@ return (
               name="leadPassenger"
               value={formData.leadPassenger}
               onChange={handleChange}
-              required
+              
             />
           </div>
           <div className="mb-3">
@@ -718,7 +720,7 @@ return (
               name="paxType"
               value={formData.paxType}
               onChange={handleChange}
-              required
+              
             />
           </div>
         </div>
@@ -732,12 +734,12 @@ return (
 
               {formSubmitted && (
                 <div>
-                  <h2>Guest Details</h2>
+                  {/* <h2>Guest Details</h2>
                   <p><strong>First Name:</strong> {formData.fname}</p>
                   <p><strong>Middle Name:</strong> {formData.mname}</p>
                   <p><strong>Last Name:</strong> {formData.lname}</p>
                   <p><strong>Email:</strong> {formData.email}</p>
-                  <p><strong>Mobile:</strong> {formData.mobile}</p>
+                  <p><strong>Mobile:</strong> {formData.mobile}</p> */}
                   <label>
                     <input
                       type="checkbox"
