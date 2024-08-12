@@ -161,7 +161,16 @@
 .listOptions {
   padding: 10px;
 }
-
+ .timer{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1vmax;
+  color:rgba(255, 0, 0, 0.71);
+  font-weight: 700;
+  font-size: 1vmax;
+}
 .listOptionItem {
   display: flex;
   justify-content: space-between;
@@ -426,12 +435,7 @@
   .paginationContainer .pagination li {
     margin: 0 !important; 
   }
-
-}
-
-@media (min-width: 768px) and (max-width: 1280px) {
-  .listSearch {
-      
+  .timer{
+    font-size: 14px;
   }
-  
 }

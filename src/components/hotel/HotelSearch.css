@@ -130,7 +130,7 @@
   left: 0;
   width: 100%;
   background: white;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   z-index: 10;
   padding: 10px;
   box-sizing: border-box;
@@ -141,6 +141,18 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+}
+
+.guest_option label {
+  margin-right: 10px; 
+}
+
+.guest_option button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #00b7eb;
 }
 
 .btn-book{
