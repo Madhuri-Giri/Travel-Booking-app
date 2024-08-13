@@ -34,22 +34,32 @@ const FlightSearch = () => {
   const [toSuggestions, setToSuggestions] = useState([]);
   const [preferredDepartureTime, setPreferredDepartureTime] = useState(new Date());
   const [preferredArrivalTime, setPreferredArrivalTime] = useState(new Date());
-  const inputRef = useRef(null);
+  const fromInputRef = useRef(null);
+  const toInputRef = useRef(null);
+  const fromSuggestionsRef = useRef(null);
+  const toSuggestionsRef = useRef(null);
+  const mainCityNames = ['Delhi', 'Mumbai', 'Bangalore', 'Kolkata', 'Goa', 'Hyderabad'];
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (inputRef.current && !inputRef.current.contains(event.target)) {
+      if (
+        (fromInputRef.current && !fromInputRef.current.contains(event.target)) &&
+        (toInputRef.current && !toInputRef.current.contains(event.target)) &&
+        (!fromSuggestionsRef.current || !fromSuggestionsRef.current.contains(event.target)) &&
+        (!toSuggestionsRef.current || !toSuggestionsRef.current.contains(event.target))
+      ) {
         setFromSuggestions([]); // Clear suggestions if click is outside
         setToSuggestions([]); // Clear suggestions if click is outside
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
   // Function to fetch suggestions
-  const fetchSuggestions = async (query, setSuggestions, limit = 10) => {
+  const fetchSuggestions = async (query, setSuggestions, isMainCityFetch = false) => {
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
         method: 'POST',
@@ -62,31 +72,53 @@ const FlightSearch = () => {
       const data = await response.json();
       let suggestions = data.data;
 
-      if (query) {
+      if (isMainCityFetch) {
+        // Filter to only include main cities from the API response
+        suggestions = suggestions.filter((suggestion) =>
+          mainCityNames.includes(suggestion.busodma_destination_name)
+        );
+      } else {
+        // Filter suggestions based on the input query
         suggestions = suggestions.filter((suggestion) =>
           suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
         );
       }
-
-      setSuggestions(suggestions.slice(0, limit)); // Limit the number of suggestions based on the provided limit
+      setSuggestions(suggestions.slice(0, 6)); // Show up to 10 suggestions
     } catch (error) {
       console.error('Error fetching suggestions:', error);
     }
   };
-
   // Function to handle input focus
   const handleFromInputFocus = () => {
-    console.log('Input field focused');
-    fetchSuggestions('', setFromSuggestions); // Fetch and show 10 suggestions when the input is focused
+    fetchSuggestions('', setFromSuggestions, true);
   };
   const handleToInputFocus = () => {
-    console.log('Destination input field focused');
-    fetchSuggestions('', setToSuggestions); // Fetch and show 10 suggestions when the "Destination" input is focused
+    fetchSuggestions('', setToSuggestions, true);
   };
-
+  // Function to handle "From" input change
+  const handleFromChange = (event) => {
+    const value = event.target.value;
+    setFrom(value);
+    if (value.length > 2) {
+      fetchSuggestions(value, setFromSuggestions);
+    } else {
+      setFromSuggestions([]);
+    }
+  };
+  // Function to handle "To" input change
+  const handleToChange = (event) => {
+    const value = event.target.value;
+    setTo(value);
+    if (value.length > 2) {
+      fetchSuggestions(value, setToSuggestions);
+    } else {
+      setToSuggestions([]);
+    }
+  };
   // Function for selecting a suggestion
-  const handleSuggestionClick = (suggestion, fieldSetter) => {
+  const handleSuggestionClick = (suggestion, fieldSetter, setSuggestions) => {
     fieldSetter(suggestion.busodma_destination_name);
+    setSuggestions([]);
   };
   // Function to handle "From" selection
   const handleFromSelect = (suggestion) => {
@@ -102,6 +134,8 @@ const FlightSearch = () => {
     handleSuggestionClick(suggestion, setTo);
     setToSuggestions([]);
   };
+
+
   // function for adult , child , infact dropdown list-------------------------------------------
   const [showDropdown, setShowDropdown] = useState(false);
   const handleShow = () => {
@@ -114,26 +148,25 @@ const FlightSearch = () => {
 
 
   // func for Origin & Destination----------------------------------------------------------------
-  const handleFromChange = (event) => {
-    const value = event.target.value;
-    console.log("vvvvvvalue", value)
-    setFrom(value);
-    if (value.length > 2) {
-      fetchSuggestions(value, setFromSuggestions);
-    } else {
-      setFromSuggestions([]);
-    }
-  };
-
-  const handleToChange = (event) => {
-    const value = event.target.value;
-    setTo(value);
-    if (value.length > 2) {
-      fetchSuggestions(value, setToSuggestions);
-    } else {
-      setToSuggestions([]);
-    }
-  };
+  // const handleFromChange = (event) => {
+  //   const value = event.target.value;
+  //   console.log("vvvvvvalue", value)
+  //   setFrom(value);
+  //   if (value.length > 2) {
+  //     fetchSuggestions(value, setFromSuggestions);
+  //   } else {
+  //     setFromSuggestions([]);
+  //   }
+  // };
+  // const handleToChange = (event) => {
+  //   const value = event.target.value;
+  //   setTo(value);
+  //   if (value.length > 2) {
+  //     fetchSuggestions(value, setToSuggestions);
+  //   } else {
+  //     setToSuggestions([]);
+  //   }
+  // };
   // func for Origin & Destination--------------------------------------------------------------- 
 
   // Static formData------------------------------------------------------------
@@ -355,7 +388,7 @@ const FlightSearch = () => {
 
       <section className='flightPageBanner'>
         <div className="container-fluid ">
-          <div className="findFlightss"><button>Find Flights</button></div>
+          {/* <div className="findFlightss"><button>Find Flights</button></div> */}
           <div className="row">
             <div className="col-lg-5 ">
               <div className="flightmainBooking">
@@ -401,17 +434,18 @@ const FlightSearch = () => {
                                 id="flightSatrtingPoint"
                                 placeholder="Starting Point"
                                 value={from}
+                                // onChange={(e) => setFrom(e.target.value)}
                                 onChange={handleFromChange}
                                 onFocus={handleFromInputFocus}
-                                ref={inputRef}
+                                ref={fromInputRef}
                               />
                               {fromSuggestions.length > 0 && (
-                                <ul className="suggestions-list flight-suggestions-listFrom">
+                                <ul className="suggestions-list flight-suggestions-listFrom" ref={fromSuggestionsRef}>
                                   {fromSuggestions.map((suggestion, index) => (
                                     <li
                                       className="text-red"
                                       key={index}
-                                      onClick={() => handleFromSelect(suggestion)}
+                                      onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions)}
                                     >
                                       {suggestion.busodma_destination_name}
                                     </li>
@@ -435,16 +469,16 @@ const FlightSearch = () => {
                                 id="flightDestinationPoint"
                                 placeholder='Destination'
                                 value={to}
-                                onChange={handleToChange}
+                                // onChange={(e) => setTo(e.target.value)}
                                 onFocus={handleToInputFocus}
-                                ref={inputRef}
+                                onChange={handleToChange}
+                                ref={toInputRef}
                               />
                               {toSuggestions.length > 0 && (
-                                <ul className="suggestions-list flight-suggestions-listTo">
+                                <ul className="suggestions-list flight-suggestions-listTo" ref={toSuggestionsRef}>
                                   {toSuggestions.map((suggestion, index) => (
-                                    <li key={index} onClick={() => handleToSelect(suggestion, setTo)}>
-                                      {suggestion.busodma_destination_name
-                                      }
+                                    <li key={index} onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions)}>
+                                      {suggestion.busodma_destination_name}
                                     </li>
                                   ))}
                                 </ul>
@@ -611,7 +645,7 @@ const FlightSearch = () => {
                                 value={from}
                                 onChange={handleFromChange}
                                 onFocus={handleFromInputFocus}
-                                ref={inputRef}
+                                ref={fromInputRef}
                               />
                               {fromSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listFrom">
@@ -639,7 +673,7 @@ const FlightSearch = () => {
                                 value={to}
                                 onChange={handleToChange}
                                 onFocus={handleToInputFocus}
-                                ref={inputRef}
+                                ref={toInputRef}
 
                               />
                               {toSuggestions.length > 0 && (
