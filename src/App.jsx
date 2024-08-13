@@ -13,7 +13,6 @@ import BusLayout from './components/bus/BusLayout';
 import Home from './components/home/Home';
 import FlightLists from './components/flight/FlightLists';
 
-import BoardAndDrop from './components/bus/BoardAndDrop';
 import Faq from './pages/Faq/Faq';
 import Setting from './pages/setting/Setting ';
 import LogIn from './pages/NewOne/login/LogIn';
@@ -53,7 +52,6 @@ const App = () => {
           <Route path='/bus-search' element={<BusSearch />} />
           <Route path='/bus-list' element={<BusLists />} />
           <Route path='/bus-layout' element={<BusLayout />} />
-          <Route path='/bord-drop' element={<BoardAndDrop />} />
           <Route path='/bus-tikit-download' element={<BusTikit />} />
           <Route path='flight-ticket-download' element={<FlightTickect />} />
           <Route path='/signup' element={<SignUp />} />
