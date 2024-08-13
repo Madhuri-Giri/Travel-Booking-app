@@ -141,6 +141,7 @@ const BusLayout = () => {
               <p><MdAirlineSeatReclineNormal /> available seats ({availableSeats})</p>
             </div>
             <div className='sel'>please selct seats and boarding droping points before proceed.</div>
+
             <div className="left-btm">
               <div className="lower">
                 <h6>Lower Seats</h6>
@@ -198,7 +199,17 @@ const BusLayout = () => {
                   })}
                 </div>
               </div>
-            </div>
+            </div> 
+         
+             
+             {/* --------------------------------------------- */}
+                
+               <div className="responsive-tab">
+                
+               </div>
+         
+             {/* --------------------------------------------- */}
+             
           </div>
 
           <div className="bord-drop">

@@ -96,6 +96,19 @@ const BusLists = () => {
     setIsTravelListVisible((prev) => !prev);
   };
 
+  const [isPickupVisible, setIsPickupVisible] = useState(false);
+const [isDropVisible, setIsDropVisible] = useState(false);
+
+const togglePickupVisibility = () => {
+  setIsPickupVisible((prev) => !prev);
+};
+
+const toggleDropVisibility = () => {
+  setIsDropVisible((prev) => !prev);
+};
+
+
+
   const addSeatLayout = async () => {
     try {
       const traceId = localStorage.getItem('traceId');
@@ -141,174 +154,212 @@ const BusLists = () => {
     return `${hours}h ${minutes}m`;
   };
 
+  const [price, setPrice] = useState(10); // Default value is 10
+
+  const handlePriceChange = (event) => {
+    setPrice(event.target.value);
+  };
+
+
+  const [priceFilter, setPriceFilter] = useState(10000); // Default max value
+  const [operatorFilter, setOperatorFilter] = useState('');
+
+  const filteredResults = searchResults.filter(bus => {
+    const withinPrice = bus.Price.BasePrice <= priceFilter;
+    const matchesOperator = operatorFilter ? bus.TravelName === operatorFilter : true;
+    return withinPrice && matchesOperator;
+  });
+
+  const backHandle = () => {
+    navigate('/bus-search')
+  }
+
+
   return (
     <>
-    <CustomNavbar />
-     <div className='BusLists'>
-      <div className="busList">
-        <div className="timer-bus">
-          <p>Redirecting in {formatTime(timer)}...</p>
-        </div>
-        <div className="B-lists-Top">
-          <div className="text">
-            <h5>
-              <div className="destination">
-                <i style={{ color: "#fff" }} className="ri-map-pin-line"></i>
-                <p>{from}</p>
-                <p><i style={{ fontSize: "1vmax" }} className="ri-arrow-left-right-line"></i></p>
-                <p>{to}</p>
-              </div>
-            </h5>
-            <span>
-              <i style={{ color: "#fff" }} className="ri-calendar-line"></i>
-              Depart Date: {selectedBusDate && (
-                <>
-                  {selectedBusDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })}{' '}
-                </>
-              )}
-            </span>
-            <div className="search-functinality">
-              <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
+  <CustomNavbar />
+  <div className='BusLists'>
+    <div className="busList">
+      <div className="timer-bus">
+        <p>Redirecting in {formatTime(timer)}...</p>
+      </div>
+      <div className="B-lists-Top">
+        <div className="text">
+          <div className="back">
+          <i onClick={backHandle} className="ri-arrow-left-s-line"></i>
+          </div>
+          <h5>
+            <div className="destination">
+              <h6>{from}-{to}</h6>
             </div>
+          </h5>
+          <span>
+            <i style={{ color: "#fff" }} className="ri-calendar-line"></i>
+            Depart Date: {selectedBusDate && (
+              <>
+                {selectedBusDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })}{' '}
+              </>
+            )}
+          </span>
+          <div className="search-functinality">
+            <button className='filter-bus'><i className="ri-equalizer-line"></i>Filter</button>
+            <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
+
           </div>
         </div>
+      </div>
 
-        {/* Bottom section */}
-        <div className="B-lists-Btm">
-          <div className="bus-sidebar">
-            <div className="busSide">
-              <h5>Filters</h5>
-              <div className="seat-type">
-                <h6>Seat Type</h6>
-                <div className="filter-seat">
-                  <div className="sleeper">
-                    <p>Sleeper</p>
-                  </div>
-                  <div className="seater">
-                    <p>Seater</p>
-                  </div>
-                </div>
+      {/* Bottom section */}
+      <div className="B-lists-Btm">
+
+
+        <div className="bus-sidebar">
+          <div className="busSide">
+            <h5>Filters</h5>
+            <div className="seat-type">
+              <h6>Price</h6>
+              <div className="filter-seat">
+                <input
+                  type="range"
+                  className="form-range"
+                  id="customRange1"
+                  min="10"
+                  max="10000"
+                  step="1"
+                  value={price}
+                  onChange={handlePriceChange}
+                />
               </div>
-              <div className="Travel-operator">
-                <h6 onClick={toggleTravelList}>
-                  <span> Travel Operators</span> <i className={`ri-arrow-${isTravelListVisible ? 'up' : 'down'}-s-line down-aro`}></i>
-                </h6>
-                {isTravelListVisible && (
-                  <div className="travel-list">
-                    {searchResults.map((bus, index) => (
-                      <p key={index}>{bus.TravelName}</p>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div className="pick-up">
-                <h6>
-                  <span>{from} </span>
-                  <i className={`ri-arrow-${isTravelListVisible ? 'up' : 'down'}-s-line down-aro`}></i>
-                </h6>
-                {searchResults.map((bus, index) => (
-                  <div key={index}>
-                    <div className="pick-list">
-                      <p>
-                        <span style={{ fontWeight: "600" }}>Pick-Up Point & Time:</span>
-                        <small style={{ fontSize: '0.8vmax' }}>{bus.BoardingPoints.map((point, i) => (
-                          <div key={i}>
-                            {point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})
-                          </div>
-                        ))}</small>
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="drop-up">
-                <h6>
-                  <span>{to} </span>
-                  <i className={`ri-arrow-${isTravelListVisible ? 'up' : 'down'}-s-line down-aro`}></i>
-                </h6>
-                {searchResults.map((bus, index) => (
-                  <div key={index}>
-                    <div className="drop-list">
-                      <p>
-                        <span style={{ fontWeight: "500" }}>Drop Points & Time:</span>
-                        <small style={{ fontSize: '0.8vmax' }}>{bus.DroppingPoints.map((point, i) => (
-                          <div key={i}>
-                            {point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})
-                          </div>
-                        ))}</small>
-                      </p>
-                    </div>
-                  </div>
-                ))}
+              <div className="price-display">
+                <span>{price} INR</span>
               </div>
             </div>
-          </div>
-
-          {/* Bus lists */}
-          <div className="btm-lists">
-            <div className="bus-divs">
-              {status === 'loading' && <p>Loading...</p>}
-              {status === 'failed' && <p>{error}</p>}
-              {status === 'succeeded' && (
-                <>
+            <div className="Travel-operator">
+              <h6 onClick={toggleTravelList}>
+                <span> Travel Operators</span> <i className={`ri-arrow-${isTravelListVisible ? 'up' : 'down'}-s-line down-aro`}></i>
+              </h6>
+              {isTravelListVisible && (
+                <div className="travel-list">
                   {searchResults.map((bus, index) => (
-                    <div className="one" key={index}>
-                      <div className="one-top">
-                        <div className="name">
-                          <span>{bus.BusType}</span>
-                          <img width={40} src={busImg} alt="Bus" />
-                          <h5>{bus.TravelName}</h5>
-                        </div>
-                        <div className="drop-time">
-                          <h6><small>ARRIVAL TIME: </small><span style={{ fontSize: "1.2vmax" }}>
-                            {convertUTCToIST(bus.ArrivalTime)}
-                          </span></h6>
-                          <p style={{ fontSize: "1.2vmax", color: "red", borderBottom: "1px solid red" }}>
-                            {calculateTimeDifference(bus.ArrivalTime, bus.DepartureTime)}
-                          </p>
-                          <h6><small>DROP TIME: </small><span style={{ fontSize: "1.2vmax" }}>
-                            {convertUTCToIST(bus.DepartureTime)}
-                          </span></h6>
-
-                        </div>
-                        <div className="price">
-                          <h4>${(bus.Price.BasePrice * (1 - 0.18)).toFixed(2)}</h4>
-                          <h6 style={{ textDecorationLine: 'line-through', color: "#000000b9" }}>$1000</h6>
-                        </div>
-                      </div>
-
-                      <div className="one-btm">
-                        <div className="rating">
-                          <a style={{textDecoration:"none", color:'green'}}>boarding points<i className="ri-arrow-down-s-line"></i></a>
-                          <a style={{textDecoration:"none", color:'green'}}>dropping points<i className="ri-arrow-down-s-line"></i></a>
-                        </div>
-                        <button className="btn btn-primary" onClick={() => handleSelectSeat(index)}>Select Seat</button>
-                      </div>
-
-                      {visibleLayout !== null && (
-                        <div className="overlay" onClick={() => setVisibleLayout(null)}>
-                          <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
-                            <div className="tppp">
-                              <h5>{from}-{to} <br />
-                                     <span style={{fontSize:"0.8vmax", color:"green"}}>({bus.TravelName})</span>
-                               </h5>
-                              <i onClick={() => setVisibleLayout(null)} className="ri-close-line"></i>
-                            </div>
-                            <BusLayout layoutResponse={layoutResponse} />
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                    <p key={index} onClick={() => setOperatorFilter(bus.TravelName)}>{bus.TravelName}</p>
                   ))}
-                </>
+                </div>
               )}
             </div>
+             
+            <div className="pick-up">
+  <h6 onClick={togglePickupVisibility}>
+    <span>{from} </span>
+    <i className={`ri-arrow-${isPickupVisible ? 'up' : 'down'}-s-line down-aro`}></i>
+  </h6>
+  {isPickupVisible && searchResults.map((bus, index) => (
+    <div key={index} className="pick-list">
+      <p>
+        <span style={{ fontWeight: "600" }}>Pick-Up Point & Time:</span>
+        <small style={{ fontSize: '0.8vmax' }}>{bus.BoardingPoints.map((point, i) => (
+          <div key={i}>
+            {point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})
+          </div>
+        ))}</small>
+      </p>
+    </div>
+  ))}
+</div>
+
+<div className="drop-up">
+  <h6 onClick={toggleDropVisibility}>
+    <span>{to} </span>
+    <i className={`ri-arrow-${isDropVisible ? 'up' : 'down'}-s-line down-aro`}></i>
+  </h6>
+  {isDropVisible && searchResults.map((bus, index) => (
+    <div key={index} className="drop-list">
+      <p>
+        <span style={{ fontWeight: "500" }}>Drop Points & Time:</span>
+        <small style={{ fontSize: '0.8vmax' }}>{bus.DroppingPoints.map((point, i) => (
+          <div key={i}>
+            {point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})
+          </div>
+        ))}</small>
+      </p>
+    </div>
+  ))}
+</div>
+
+
+
+
+          </div>
+        </div>
+
+
+        
+
+
+        {/* Bus lists */}
+        <div className="btm-lists">
+          <div className="bus-divs">
+            {status === 'loading' && <p>Loading...</p>}
+            {status === 'failed' && <p>{error}</p>}
+            {status === 'succeeded' && (
+              <>
+                {filteredResults.map((bus, index) => (
+                  <div className="one" key={index}>
+                    <div className="one-top">
+                      <div className="name">
+                        <span>{bus.BusType}</span>
+                        <img width={40} src={busImg} alt="Bus" />
+                        <h5>{bus.TravelName}</h5>
+                      </div>
+                      <div className="drop-time">
+                        <h6><small>ARRIVAL TIME: </small><span style={{ fontSize: "1.2vmax" }}>
+                          {convertUTCToIST(bus.ArrivalTime)}
+                        </span></h6>
+                        <p style={{ fontSize: "1.2vmax", color: "red", borderBottom: "1px solid red" }}>
+                          {calculateTimeDifference(bus.ArrivalTime, bus.DepartureTime)}
+                        </p>
+                        <h6><small>DROP TIME: </small><span style={{ fontSize: "1.2vmax" }}>
+                          {convertUTCToIST(bus.DepartureTime)}
+                        </span></h6>
+                      </div>
+                      <div className="price">
+                        <h4>₹{(bus.Price.BasePrice * (1 - 0.18)).toFixed(2)}</h4>
+                        <h6 style={{ textDecorationLine: 'line-through', color: "#000000b9" }}>₹1000</h6>
+                      </div>
+                    </div>
+
+                    <div className="one-btm">
+                      <div className="rating">
+                        <a style={{ textDecoration: "none", color: 'green' }}>boarding points<i className="ri-arrow-down-s-line"></i></a>
+                        <a style={{ textDecoration: "none", color: 'green' }}>dropping points<i className="ri-arrow-down-s-line"></i></a>
+                      </div>
+                      <button className="btn btn-primary" onClick={() => handleSelectSeat(index)}>Select Seat</button>
+                    </div>
+
+                    {visibleLayout !== null && (
+                      <div className="overlay" onClick={() => setVisibleLayout(null)}>
+                        <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
+                          <div className="tppp">
+                            <h5>{from}-{to} <br />
+                              <span style={{ fontSize: "0.8vmax", color: "green" }}>({bus.TravelName})</span>
+                            </h5>
+                            <i onClick={() => setVisibleLayout(null)} className="ri-close-line"></i>
+                          </div>
+                          <BusLayout layoutResponse={layoutResponse} />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
       </div>
     </div>
-    <Footer />
-    </>
+  </div>
+  <Footer />
+</>
+
   );
 };
 
