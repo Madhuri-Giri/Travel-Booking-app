@@ -1,30 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import Accordion from 'react-bootstrap/Accordion';
 import './BoardAndDrop.css';
-import CustomNavbar from '../../pages/navbar/CustomNavbar';
-import Footer from '../../pages/footer/Footer';
 
-const BoardAndDrop = () => {
-  const navigate = useNavigate();
-
-  const [showBoarding, setShowBoarding] = useState(true);
-  const [selectedBoarding, setSelectedBoarding] = useState(null);
-  const [selectedDropping, setSelectedDropping] = useState(null);
+const BoardAndDrop = ({ onBoardingSelect, onDroppingSelect }) => {
+  const [showBoarding, setShowBoarding] = useState(false);
+  const [showDropping, setShowDropping] = useState(false);
   const [boardingPoints, setBoardingPoints] = useState([]);
   const [droppingPoints, setDroppingPoints] = useState([]);
+  const [selectedBoarding, setSelectedBoarding] = useState(null);
+  const [selectedDropping, setSelectedDropping] = useState(null);
   const [error, setError] = useState(null);
 
-  const handleShowBoarding = () => {
-    setShowBoarding(true);
-  };
-
-  const handleShowDropping = () => {
-    setShowBoarding(false);
-  };
-
   useEffect(() => {
-    localStorage.removeItem('passengersAlreadyAdded');
-
     const fetchBoardingData = async () => {
       try {
         const traceId = localStorage.getItem('traceId');
@@ -50,7 +37,6 @@ const BoardAndDrop = () => {
         }
 
         const data = await response.json();
-
         setBoardingPoints(data.BoardingPoints || []);
         setDroppingPoints(data.DroppingPoints || []);
         setError(null);
@@ -63,132 +49,60 @@ const BoardAndDrop = () => {
     fetchBoardingData();
   }, []);
 
-  const handleSelectBoarding = (index) => {
-    setSelectedBoarding(index);
-    setShowBoarding(false); // Switch to dropping points
+  const handleBoardingSelect = (point) => {
+    setSelectedBoarding(point);
+    onBoardingSelect(point);
   };
 
-  const handleSelectDropping = (index) => {
-    setSelectedDropping(index);
-    // Save the selected dropping point to localStorage (optional)
-    localStorage.setItem('selectedDroppingPoint', index);
-
-    // Navigate to the review-booking page
-    navigate('/review-booking');
-  };
-
-  const backHandlerList = () => {
-    navigate('/bus-list');
-  };
-
-  const convertToIST = (dateString) => {
-    const date = new Date(dateString);
-    const options = {
-      timeZone: 'Asia/Kolkata',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    };
-    return date.toLocaleString('en-IN', options);
+  const handleDroppingSelect = (point) => {
+    setSelectedDropping(point);
+    onDroppingSelect(point);
   };
 
   return (
-   <>
-     <CustomNavbar />
-     <div className='BordingDroping'>
-      <div className="bord-drop">
-        <h5>
-          <i style={{ cursor: "pointer" }} onClick={backHandlerList} className="ri-arrow-left-s-line"></i> Select Boarding & Dropping Points
-        </h5>
-
-        <div className="DB-top">
-          <p
-            className={`tab ${showBoarding ? 'active' : ''}`}
-            onClick={handleShowBoarding}
-          >
-            Boarding Points
-          </p>
-          <p
-            className={`tab ${!showBoarding ? 'active' : ''}`}
-            onClick={handleShowDropping}
-          >
-            Dropping Points
-          </p>
-        </div>
-
-        {showBoarding ? (
-          <div className="all-Bording-point">
-            <p>ALL BOARDING POINTS</p>
-            <table className="boarding-table">
-              <thead>
-                <tr>
-                  <th>Boarding Points</th>
-                  <th>Date & Time</th>
-                  <th>Select</th>
-                </tr>
-              </thead>
-              <tbody>
+    <div className="bording">
+      <Accordion className="accordian_space">
+        <Accordion.Item eventKey="0" className='bord'>
+          <Accordion.Header onClick={() => setShowBoarding(!showBoarding)}>
+            <h6>Boarding Points</h6>
+          </Accordion.Header>
+          <Accordion.Body>
+            {showBoarding && (
+              <div className="points-list">
                 {boardingPoints.map(point => (
-                  <tr key={point.CityPointIndex}>
-                    <td>{point.CityPointName}</td>
-                    <td>{convertToIST(point.CityPointTime)}</td>
-                    <td>
-                      <input
-                        type="radio"
-                        id={`boarding-${point.CityPointIndex}`}
-                        name="boarding"
-                        value={point.CityPointIndex}
-                        checked={selectedBoarding === point.CityPointIndex}
-                        onChange={() => handleSelectBoarding(point.CityPointIndex)}
-                      />
-                    </td>
-                  </tr>
+                  <div key={point.CityPointIndex} className="point-item" onClick={() => handleBoardingSelect(point)}>
+                    <p>{point.CityPointName}</p>
+                  </div>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <div className="all-Droping-point">
-            <p>ALL DROPPING POINTS</p>
-            <table className="dropping-table">
-              <thead>
-                <tr>
-                  <th>Dropping Points</th>
-                  <th>Date & Time</th>
-                  <th>Select</th>
-                </tr>
-              </thead>
-              <tbody>
+                {boardingPoints.length === 0 && <p>No Boarding Points Available</p>}
+              </div>
+            )}
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+
+      <Accordion className="accordian_space">
+        <Accordion.Item eventKey="1">
+          <Accordion.Header onClick={() => setShowDropping(!showDropping)}>
+            <h6>Dropping Points</h6>
+          </Accordion.Header>
+          <Accordion.Body>
+            {showDropping && (
+              <div className="points-list">
                 {droppingPoints.map(point => (
-                  <tr key={point.CityPointIndex}>
-                    <td>{point.CityPointName}</td>
-                    <td>{convertToIST(point.CityPointTime)}</td>
-                    <td>
-                      <input
-                        type="radio"
-                        id={`dropping-${point.CityPointIndex}`}
-                        name="dropping"
-                        value={point.CityPointIndex}
-                        checked={selectedDropping === point.CityPointIndex}
-                        onChange={() => handleSelectDropping(point.CityPointIndex)}
-                      />
-                    </td>
-                  </tr>
+                  <div key={point.CityPointIndex} className="point-item" onClick={() => handleDroppingSelect(point)}>
+                    <p>{point.CityPointName}</p>
+                  </div>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                {droppingPoints.length === 0 && <p>No Dropping Points Available</p>}
+              </div>
+            )}
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
 
-        {error && <div className="error-message">{error}</div>}
-      </div>
+      {error && <div className="error-message">{error}</div>}
     </div>
-
-     <Footer />
-   </>
   );
 };
 
