@@ -4,24 +4,24 @@ import BusSeatImg from '../../assets/images/bussit.png';
 import { useNavigate } from 'react-router-dom';
 import { MdAirlineSeatReclineNormal } from "react-icons/md";
 import Loading from '../../pages/loading/Loading'; 
+import BoardAndDrop from "../bus/BoardAndDrop";
 
 const BusLayout = () => {
   const navigate = useNavigate();
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  
   const [lowerBasePrices, setLowerBasePrices] = useState([]);
   const [lowerSeatNames, setLowerSeatNames] = useState([]);
   const [upperBasePrices, setUpperBasePrices] = useState([]);
   const [upperSeatNames, setUpperSeatNames] = useState([]);
   const [availableSeats, setAvailableSeats] = useState(0); 
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); 
+  const [boardingSelected, setBoardingSelected] = useState(false); // State for boarding point selection
+  const [droppingSelected, setDroppingSelected] = useState(false); // State for dropping point selection
 
   useEffect(() => {
     const busLayoutResponse = JSON.parse(localStorage.getItem('BuslayoutResponse')) || {};
     
-    console.log('BuslayoutResponse:', busLayoutResponse);
-
     const lowerSeats = (busLayoutResponse.Result || []).flat();
     const upperSeats = (busLayoutResponse.ResultUpperSeat || []).flat();
     const availableSeats = busLayoutResponse.AvailableSeats;
@@ -45,7 +45,7 @@ const BusLayout = () => {
     const index = lowerSeatNames.indexOf(seatName);
     if (index !== -1) {
       const basePrice = lowerBasePrices[index];
-      return basePrice - (basePrice * 0.18); // Deduct 18% IGST
+      return basePrice - (basePrice * 0.18);
     }
     return null; 
   };
@@ -54,7 +54,7 @@ const BusLayout = () => {
     const index = upperSeatNames.indexOf(seatName);
     if (index !== -1) {
       const basePrice = upperBasePrices[index];
-      return basePrice - (basePrice * 0.18); // Deduct 18% IGST
+      return basePrice - (basePrice * 0.18);
     }
     return null; 
   };
@@ -72,12 +72,17 @@ const BusLayout = () => {
     });
 
     setTotalPrice((prevTotal) => {
-      return isSelected ? prevTotal - price : prevTotal + price; // Correctly adding or subtracting the price
+      return isSelected ? prevTotal - price : prevTotal + price;
     });
   };
 
   const handleProceed = async () => {
-    setLoading(true); // Set loading to true before API call
+    if (!boardingSelected || !droppingSelected) {
+      alert('Please select both boarding and dropping points before proceeding.');
+      return;
+    }
+
+    setLoading(true);
     try {
       const traceId = localStorage.getItem('traceId');
       const resultIndex = localStorage.getItem('resultIndex');
@@ -106,16 +111,26 @@ const BusLayout = () => {
 
       const data = await response.json();
       console.log('bord-drop API Response:', data);
-      navigate('/bord-drop');
+      navigate('/review-booking');
     } catch (error) {
       console.error('Error adding seat layout:', error.message);
     } finally {
-      setLoading(false); // Reset loading state after API call
+      setLoading(false);
     }
   };
 
+  const handleBoardingSelect = (point) => {
+    setBoardingSelected(true);
+    // You may want to store or handle the selected boarding point further if needed
+  };
+
+  const handleDroppingSelect = (point) => {
+    setDroppingSelected(true);
+    // You may want to store or handle the selected dropping point further if needed
+  };
+
   if (loading) {
-    return <Loading />; // Show Loading component while loading
+    return <Loading />;
   }
 
   return (
@@ -149,7 +164,7 @@ const BusLayout = () => {
                         key={seatName}
                       >
                         <span>{seatName}</span>
-                        <img width={30} src={BusSeatImg} alt="seat" />
+                        <img width={25} src={BusSeatImg} alt="seat" />
                         <p>{basePrice !== null ? `${basePrice.toFixed(2)}` : 'N/A'}</p>
                       </div>
                     );
@@ -177,7 +192,7 @@ const BusLayout = () => {
                         key={seatName}
                       >
                         <span>{seatName}</span>
-                        <img width={30} src={BusSeatImg} alt="seat" />
+                        <img width={25} src={BusSeatImg} alt="seat" />
                         <p>{basePrice !== null ? `${basePrice.toFixed(2)}` : 'N/A'}</p>
                       </div>
                     );
@@ -186,6 +201,11 @@ const BusLayout = () => {
               </div>
             </div>
           </div>
+
+          <div className="bord-drop">
+            <BoardAndDrop onBoardingSelect={handleBoardingSelect} onDroppingSelect={handleDroppingSelect} />
+          </div>
+
           <div className="right">
             <div className="right-btm">
               <div className="tax">
@@ -195,8 +215,7 @@ const BusLayout = () => {
               <div className="proceed">
                 <button
                   onClick={handleProceed}
-                  disabled={selectedSeats.length === 0}
-                  style={{ backgroundColor: selectedSeats.length === 0 ? '#ccc' : '#00b7eb' }}
+                  style={{ backgroundColor: selectedSeats.length > 0 ? '#00b7eb' : '#ccc' }}
                 >
                   Proceed
                 </button>

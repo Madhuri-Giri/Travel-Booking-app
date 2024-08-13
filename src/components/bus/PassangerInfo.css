@@ -1,214 +1,263 @@
-.PassangerInfo{
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-}
-.PassangerInfo .pbh {
+.PassangerInfo {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    
+    .PassangerInfo .pbh {
       width: 95%;
       display: flex;
       align-items: flex-start;
       justify-content: flex-start;
       color: #6d6d6d;
-}
-.PassangerInfo .p-upr{
+    }
+    
+    .PassangerInfo .p-upr {
       width: 95%;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-}
-
-.PassangerInfo  .p-upr h6{
+    }
+    
+    .PassangerInfo .p-upr h6 {
       font-size: 1vmax;
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-top: 0.4vmax;
-}
-.PassangerInfo  .p-upr p{
-          color: #6d6d6d;
+    }
+    
+    .PassangerInfo .p-upr p {
+      color: #6d6d6d;
       margin-top: 0.4vmax;
-
-}
-
- .pessanger-main{
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          margin-top: 1vmax;
- }
- .pessanger-main form{
-          width: 100%;
- }
-.pessanger-main form .travelller{
-      width: 100%; 
+    }
+    
+    .pessanger-main {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      margin-top: 1vmax;
+    }
+    
+    .pessanger-main form {
+      width: 100%;
+    }
+    
+    .pessanger-main form .travelller {
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-direction: column;
- }
-
-
- .pessanger-main form .travelller .p-top{
-          width: 95%;
-           display: flex;
-           align-items: flex-start;
-           justify-content: flex-start;
-           flex-direction: column;
- }
- .pessanger-main form .travelller .p-top .pas{
-          width: 30%;
-           display: flex;
-           justify-content: space-between;
-           flex-direction: row;
-           margin-top: 1vmax;
- }
- .pessanger-main form .travelller .p-top .pas .ipt{
-          width: 40%;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          
- }
-
- .pessanger-main form .p-mid{
-          width: 100%;
-           display: flex;
-           align-items: center;
-           justify-content: space-between;
-           flex-direction: row;
-           margin-top: 1vmax;
- }
- .pessanger-main form .p-mid .p-form{
-          width: 23%;
-          display: flex;
-          align-items: flex-start;
-          justify-content: flex-start;
-          flex-direction: column; 
- }
-
- .pessanger-main form .p-mid .p-form input{
+    }
+    
+    .pessanger-main form .travelller .p-top {
+      width: 95%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      flex-direction: column;
+    }
+    
+    .pessanger-main form .travelller .p-top .pas {
+      width: 30%;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      margin-top: 1vmax;
+    }
+    
+    .pessanger-main form .travelller .p-top .pas .ipt {
+      width: 40%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .pessanger-main form .p-mid {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+      margin-top: 1vmax;
+    }
+    
+    .pessanger-main form .p-mid .p-form {
+      width: 23%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      flex-direction: column;
+    }
+    
+    .pessanger-main form .p-mid .p-form input {
       width: 100%;
       padding: 0.6vmax;
       outline: none;
       border-radius: 10px;
       border: 0.1px solid #00000082;
- }
-.pessanger-main form .p-btn{
-     width: 100%;
-padding-left: 1.5vmax;
-display: flex;
-align-items: flex-start;
-justify-content: flex-start;
-     margin-bottom: 1vmax;
-     border-radius: 10px;
-}
-.pessanger-main form .p-btn button{
-          border: none;
-          padding: 0.7vmax 1vmax;
-          border-radius: 10px;
-          font-weight: 600;
-          color: #fff;
-          background-color: #00b7eb;
- } 
-
- 
-
-@media (max-width:600px) {
-      .PassangerInfo{
-            width: 100%;
-  }
-  
-  .PassangerInfo .p-upr{
+    }
+    
+    .pessanger-main form .p-btn {
+      width: 100%;
+      padding-right: 1.5vmax;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      margin-bottom: 1vmax;
+      border-radius: 10px;
+    }
+    
+    .pessanger-main form .p-btn button {
+      border: none;
+      padding: 0.7vmax 1vmax;
+      border-radius: 10px;
+      font-weight: 600;
+      color: #fff;
+      background-color: #00b7eb;
+    }
+    
+    .passenger-details-display {
+      width: 95%;
+      margin-bottom: 0.6vmax;
+    }
+    
+    .passenger-list {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+    }
+    
+    .passenger-headings {
+      display: flex;
+      font-weight: 600;
+      align-items: center;
+      padding: 10px 0;
+      justify-content: space-evenly;
+      border-bottom: 1px solid #ccc; /* Add a border to separate headings from details */
+    }
+    
+    .passenger-headings span,
+    .passenger-item span {
+      flex: 1;
+      text-align: left; /* Ensure all text aligns to the left */
+    }
+    
+    .passenger-item {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      padding: 10px 0;
+      border-bottom: 1px solid #ccc; /* Optional: add a border for better separation */
+    }
+    
+    .passenger-item:last-child {
+      border-bottom: none; /* Remove border from the last item */
+    }
+    
+    /* Media queries */
+    @media (max-width: 600px) {
+      .PassangerInfo {
+        width: 100%;
+      }
+    
+      .PassangerInfo .p-upr {
         width: 95%;
         flex-direction: column;
         align-items: flex-start;
         margin-top: 1vmax;
-  }
-  
-  .PassangerInfo  .p-upr h6{
+      }
+    
+      .PassangerInfo .p-upr h6 {
         font-size: 2.2vmax;
-  }
- .PassangerInfo  .pbh{
-      width: 95%;
-      text-align: center;
-      font-size: 1.5vmax;
- }
-  
-   .pessanger-main form .travelller .p-top .pas{
-            width: 100%;
-   }
-   .pessanger-main form .p-mid{
-             flex-direction: column;
-   }
-   .pessanger-main form .p-mid .p-form{
-            width: 100%;
-          padding-top: 1.5vmax;
-   }
-  
-   .pessanger-main form .p-mid .p-form input{
+      }
+    
+      .PassangerInfo .pbh {
+        width: 95%;
+        text-align: center;
+        font-size: 1.5vmax;
+      }
+    
+      .pessanger-main form .travelller .p-top .pas {
+        width: 100%;
+      }
+    
+      .pessanger-main form .p-mid {
+        flex-direction: column;
+      }
+    
+      .pessanger-main form .p-mid .p-form {
+        width: 100%;
+        padding-top: 1.5vmax;
+      }
+    
+      .pessanger-main form .p-mid .p-form input {
         width: 100%;
         padding: 1.5vmax;
-   }
-  .pessanger-main form .p-btn{
-       width: 100%;
-  padding-left: 0vmax;
-  align-items: center;
-  justify-content: center;
-  }
-  .pessanger-main form .p-btn button{
-      width: 95%;
-            padding: 1.5vmax 1vmax;
-   } 
-      
-}
-
-
-
-
-@media (min-width:600px) and (max-width:1150px) {
-      .PassangerInfo{
-            width: 100%;
-  }
-  
-  .PassangerInfo .p-upr{
+      }
+    
+      .pessanger-main form .p-btn {
+        width: 100%;
+        padding-left: 0vmax;
+        align-items: center;
+        justify-content: center;
+      }
+    
+      .pessanger-main form .p-btn button {
+        width: 95%;
+        padding: 1.5vmax 1vmax;
+      }
+    }
+    
+    @media (min-width: 600px) and (max-width: 1150px) {
+      .PassangerInfo {
+        width: 100%;
+      }
+    
+      .PassangerInfo .p-upr {
         width: 95%;
         flex-direction: column;
         align-items: flex-start;
         margin-top: 1vmax;
-  }
-  
-  .PassangerInfo  .p-upr h6{
+      }
+    
+      .PassangerInfo .p-upr h6 {
         font-size: 2.2vmax;
-  }
-  
-   .pessanger-main form .travelller .p-top .pas{
-            width: 100%;
-   }
-   .pessanger-main form .p-mid{
-             flex-direction: column;
-   }
-   .pessanger-main form .p-mid .p-form{
-            width: 100%;
-          padding-top: 1.5vmax;
-   }
-  
-   .pessanger-main form .p-mid .p-form input{
+      }
+    
+      .pessanger-main form .travelller .p-top .pas {
+        width: 100%;
+      }
+    
+      .pessanger-main form .p-mid {
+        flex-direction: column;
+      }
+    
+      .pessanger-main form .p-mid .p-form {
+        width: 100%;
+        padding-top: 1.5vmax;
+      }
+    
+      .pessanger-main form .p-mid .p-form input {
         width: 100%;
         padding: 1.5vmax;
-   }
-  .pessanger-main form .p-btn{
-       width: 100%;
-  padding-left: 0vmax;
-  align-items: center;
-  justify-content: center;
-  }
-  .pessanger-main form .p-btn button{
-      width: 95%;
-            padding: 1.5vmax 1vmax;
-   } 
-      
-}
+      }
+    
+      .pessanger-main form .p-btn {
+        width: 100%;
+        padding-left: 0vmax;
+        align-items: center;
+        justify-content: center;
+      }
+    
+      .pessanger-main form .p-btn button {
+        width: 95%;
+        padding: 1.5vmax 1vmax;
+      }
+    }
+    
