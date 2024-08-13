@@ -16,21 +16,8 @@
            letter-spacing: 0.4px
  }
 
- .accordion-button:not(.collapsed) {
-  color: none;
-  background-color: none;
-  box-shadow:none;
-}
-.accordion-button:focus {
-  z-index: 3;
-  outline: none;
-  box-shadow:none;
-}
 
 
 
-.accordion-item:first-of-type>.accordion-header .accordion-button {
-  border-top-left-radius: none;
-  border-top-right-radius: none;
-}
+
 

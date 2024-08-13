@@ -53,7 +53,7 @@ const App = () => {
           <Route path='/flight-details' element={<FlightDetails />} />
           <Route path='/bus-search' element={<BusSearch />} />
           <Route path='/bus-list' element={<BusLists />} />
-          <Route path='/bus-layout' element={<BusLayout />} />
+          <Route path='/layout' element={<BusLayout />} />
           <Route path='/bus-tikit-download' element={<BusTikit />} />
           <Route path='flight-ticket-download' element={<FlightTickect />} />
           <Route path='/signup' element={<SignUp />} />

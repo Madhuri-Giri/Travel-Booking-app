@@ -16,8 +16,8 @@ const BusLayout = () => {
   const [upperSeatNames, setUpperSeatNames] = useState([]);
   const [availableSeats, setAvailableSeats] = useState(0); 
   const [loading, setLoading] = useState(false); 
-  const [boardingSelected, setBoardingSelected] = useState(false); // State for boarding point selection
-  const [droppingSelected, setDroppingSelected] = useState(false); // State for dropping point selection
+  const [boardingSelected, setBoardingSelected] = useState(false);
+  const [droppingSelected, setDroppingSelected] = useState(false);
 
   useEffect(() => {
     const busLayoutResponse = JSON.parse(localStorage.getItem('BuslayoutResponse')) || {};
@@ -121,12 +121,10 @@ const BusLayout = () => {
 
   const handleBoardingSelect = (point) => {
     setBoardingSelected(true);
-    // You may want to store or handle the selected boarding point further if needed
   };
 
   const handleDroppingSelect = (point) => {
     setDroppingSelected(true);
-    // You may want to store or handle the selected dropping point further if needed
   };
 
   if (loading) {
@@ -142,6 +140,7 @@ const BusLayout = () => {
               <h6>SELECT BUS SEATS</h6>
               <p><MdAirlineSeatReclineNormal /> available seats ({availableSeats})</p>
             </div>
+            <div className='sel'>please selct seats and boarding droping points before proceed.</div>
             <div className="left-btm">
               <div className="lower">
                 <h6>Lower Seats</h6>
@@ -203,7 +202,10 @@ const BusLayout = () => {
           </div>
 
           <div className="bord-drop">
-            <BoardAndDrop onBoardingSelect={handleBoardingSelect} onDroppingSelect={handleDroppingSelect} />
+            <BoardAndDrop 
+              onBoardingSelect={handleBoardingSelect} 
+              onDroppingSelect={handleDroppingSelect} 
+            />
           </div>
 
           <div className="right">
@@ -215,7 +217,8 @@ const BusLayout = () => {
               <div className="proceed">
                 <button
                   onClick={handleProceed}
-                  style={{ backgroundColor: selectedSeats.length > 0 ? '#00b7eb' : '#ccc' }}
+                  style={{ backgroundColor: selectedSeats.length > 0 && boardingSelected && droppingSelected ? '#00b7eb' : '#ccc' }}
+                  disabled={!(selectedSeats.length > 0 && boardingSelected && droppingSelected)} // Disable if not selected
                 >
                   Proceed
                 </button>
