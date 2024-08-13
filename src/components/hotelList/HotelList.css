@@ -1,95 +1,5 @@
-/* .con {
-  width: 70%; 
-  margin: 0 auto;
-  margin-top: 10px;
-}
-.sec_book_filter {
-  padding: 10px;
-  background-color: #f8f9fa;
-}
-
-.hotel_booking_filter {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px; 
-}
-
-.form-row_filter {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.form-field_filter {
-  flex: 1;
-  min-width: 200px;
-  margin: 10px;
-  box-sizing: border-box;
-}
-
-.form_lable_filter {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-} */
-/* 
-.form_in_filter {
-  width: 100%; 
-  padding: 10px; */
-  /* border-radius: 5px;
-  border: 1px solid #fff; */
-/* } */
-/* 
-.form-field_filter input[type="text"] {
-  width: 100%;
-}
-
-.date_picker {
-  width: 100%;
-}
-
-.date_picker input {
-  width: 100%; 
-  padding: 10px;
-}
-.dropdown {
-  position: relative;
-}
-
-.sortDropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  display: block;
-}
-
-.dropdown-icon {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  pointer-events: none; 
-}
-
-.sortDropdown li {
-  padding: 8px 16px;
-  cursor: pointer;
-  list-style: none;
-}
-
-.sortDropdown li:hover {
-  background-color: #ddd;
-}
- */
-
-
 
 /* ----------start side filter--------- */
-
  .hotelMainsec{
   padding: 40px 0px;
   background-color: #dddddd;
@@ -119,7 +29,6 @@
   top: 10px;
   background-color: white;
   height: max-content;
-
 }
 
 .listTitle {
@@ -204,6 +113,7 @@
 .listFilterOption label {
   font-weight: 600; 
 }
+
 /* ---------------End ------------------- */
 
 .listResult {
@@ -409,10 +319,8 @@
   }
   
   .listSearch {
-    
       margin-bottom: 20px;
       display: none;
-    
   }
   
   .listResult {
@@ -421,7 +329,6 @@
 
   .searchItem {
       flex-direction: column;
-      
   }
 
   .hotelImg {

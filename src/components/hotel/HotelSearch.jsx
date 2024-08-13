@@ -16,11 +16,17 @@ import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import Loading from '../../pages/loading/Loading';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarDays} from '@fortawesome/free-solid-svg-icons';
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faHotel} from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+
 const HotelSearch = () => {
   //--- Navigate Other Page ---
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Add loading state
-
+  const [startDate, setStartDate] = useState(null);
   //------------------- Start  carousel code ---------------------
   const slideRef = useRef(null);
   const intervalRef = useRef(null);
@@ -63,7 +69,7 @@ const HotelSearch = () => {
   }, []);
   //-------------------- End carousal code ------------------------
 
-
+  const [isVisible, setIsVisible] = useState(true);
   const [showGuestOptions, setShowGuestOptions] = useState(false);
   const guestRef = useRef(null);
 
@@ -88,7 +94,9 @@ const HotelSearch = () => {
     }));
   };
 
-
+  const handleClose = () => {
+    setIsVisible(false); // Hide the guest options
+  };
   // ------------- Start API code -------------------
 
   const [inputs, setInputs] = useState({
@@ -239,57 +247,83 @@ const HotelSearch = () => {
         {/* New section start */}
         <section className="sec_book">
           <div className="hotel_booking">
-            <form onSubmit={handleSubmit}>
-              <div className="form-row">
-                <div className="form-field">
-                  <label className="form_lable" htmlFor="cityOrHotel">City or Hotel Name: </label>
-                  <input className="form_in" type="text" id="cityOrHotel" name="cityOrHotel"
-                    placeholder="Enter city or hotel name" value={inputs.cityOrHotel} onChange={handleChange} />
-                </div>
+          <form onSubmit={handleSubmit}>
+  <div className="form-row">
+    <div className="form-field">
+      <label className="form_label" htmlFor="cityOrHotel">City or Hotel Name:</label>
+      <div className="input-with-icon">
+      <input className="form_in" type="text" id="cityOrHotel" name="cityOrHotel"
+        placeholder="Enter city or hotel name" value={inputs.cityOrHotel} onChange={handleChange} />
+        <FontAwesomeIcon icon={faHotel} className="calendar-icon" />
+    </div>
+    
+</div>
+    <div className="form-field date-picker-field">
+      <label className="form_label" htmlFor="checkIn">Check-In Date:</label>
+      <div className="input-with-icon">
+        <DatePicker className="form_in" selected={inputs.checkIn} 
+          onChange={(date) => handleDateChange(date, "checkIn")} 
+          dateFormat="dd/MM/yyyy" 
+          placeholderText="Select check-in date"
+          minDate={new Date()} 
+        />
+        <FontAwesomeIcon icon={faCalendarDays} className="calendar-icon" />
+      </div>
+    </div>
 
-                <div className="form-field">
-                  <label className="form_lable" htmlFor="checkIn">Check-In Date: </label>
-                  <DatePicker className="form_in" selected={inputs.checkIn} onChange={(date) => handleDateChange(date, "checkIn")} dateFormat="dd/MM/yyyy" placeholderText="Select check-in date" />
-                </div>
+    <div className="form-field date-picker-field">
+      <label className="form_label" htmlFor="checkOut">Check-Out Date:</label>
+      <div className="input-with-icon">
+        <DatePicker className="form_in" selected={inputs.checkOut} 
+          onChange={(date) => handleDateChange(date, "checkOut")} 
+          dateFormat="dd/MM/yyyy" 
+          placeholderText="Select check-out date" 
+          minDate={inputs.checkIn || new Date()} 
+        />
+       <FontAwesomeIcon icon={faCalendarDays} className="calendar-icon" />
+      </div>
+    </div>
 
-                <div className="form-field">
-                  <label className="form_lable" htmlFor="checkOut">Check-Out Date:</label>
-                  <DatePicker className="form_in" selected={inputs.checkOut} onChange={(date) => handleDateChange(date, "checkOut")} dateFormat="dd/MM/yyyy" placeholderText="Select check-out date" />
-                </div>
+    <div className="form-field guest_field">
+  <label className="form_label" htmlFor="guestField">Guests:</label>
+  <div className="input-with-icon">
+    <input className="form_in" type="text" id="guestField" name="guestField" 
+      placeholder="Guests" onClick={() => setShowGuestOptions(!showGuestOptions)}
+      value={`${inputs.adults} Adults, ${inputs.children} Children`} readOnly />
+    <FontAwesomeIcon icon={faUser} className="user-icon" />
+    
+    {showGuestOptions && isVisible && (
+      
+      <div ref={guestRef} className="guest_options">
+        < FontAwesomeIcon 
+          icon={faXmark} 
+          className="close_icon" 
+          onClick={handleClose}
+        />
+      {/* <div ref={guestRef} className="guest_options"> */}
+        <div className="guest_option">
+        
+          <label htmlFor="adults">Adults:</label>
+          <button type="button" onClick={() => handleGuestChange("adults", "decrement")}>-</button>
+          <span>{inputs.adults}</span>
+          <button type="button" onClick={() => handleGuestChange("adults", "increment")}>+</button>
+        </div>
 
-                <div className="form-field guest_field">
-                  <label className="form_lable" htmlFor="guestField"> Guests:</label>
-                  <input className="form_in" type="text" id="guestField" name="guestField" placeholder="Guests" onClick={() => setShowGuestOptions(!showGuestOptions)}
-                    value={`${inputs.adults} Adults, ${inputs.children} Children`} readOnly />
-                  {showGuestOptions && (
-                    <div ref={guestRef} className="guest_options">
-                      <div className="guest_option">
-                        <label htmlFor="adults">Adults:</label>
-                        <button
-                          type="button" onClick={() => handleGuestChange("adults", "decrement")}>-
-                        </button>
-                        <span>{inputs.adults}</span>
-                        <button
-                          type="button" onClick={() => handleGuestChange("adults", "increment")}>+
-                        </button>
-                      </div>
+        <div className="guest_option">
+          <label htmlFor="children">Children:</label>
+          <button type="button" onClick={() => handleGuestChange("children", "decrement")}>-</button>
+          <span>{inputs.children}</span>
+          <button type="button" onClick={() => handleGuestChange("children", "increment")}>+</button>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
 
-                      <div className="guest_option">
-                        <label htmlFor="children">Children:</label>
-                        <button
-                          type="button" onClick={() => handleGuestChange("children", "decrement")}> -
-                        </button>
-                        <span>{inputs.children}</span>
-                        <button
-                          type="button" onClick={() => handleGuestChange("children", "increment")}>+
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <button className="btn-sub" type="submit">Search Now</button>
-              </div>
-            </form>
+    <button className="btn-sub" type="submit">Search Now</button>
+  </div>
+</form>
+
           </div>
         </section>
       </div>

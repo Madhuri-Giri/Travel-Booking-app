@@ -12,7 +12,6 @@ import HotelList from './components/hotelList/HotelList';
 import BusLayout from './components/bus/BusLayout';
 import Home from './components/home/Home';
 import FlightLists from './components/flight/FlightLists';
-
 import BoardAndDrop from './components/bus/BoardAndDrop';
 import Faq from './pages/Faq/Faq';
 import Setting from './pages/setting/Setting ';
@@ -21,7 +20,6 @@ import ReviewBooking from './components/bus/ReviewBooking';
 
 import HotelRoom from './components/hotelroom/HotelRoom';
 import GuestDetails from './components/guestDetails/GuestDetails';
-
 import HotelDescription from './components/hotelDescription/HotelDescription';
 import Help from './components/help/Help';
 import Reviews from './components/reviews/Review';
@@ -36,7 +34,7 @@ import SeatMealBaggageTabs from './components/flight/SeatMealBaggageTabs';
 import Profile from './pages/Profile/Profile';
 import Loading from './pages/loading/Loading';
 import FlightTickect from './components/flight/DownloadTikit/FlightTickect';
-
+import SajyatraLogin from './components/SajyatraLogin';
 
 const App = () => {
   const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number',  '/load'];
@@ -67,7 +65,6 @@ const App = () => {
           <Route path='/hotel-list' element={<HotelList />} />
           <Route path='/hotel-room' element={<HotelRoom />} />
           <Route path='/hotel-guest' element={<GuestDetails />} />
-        
           <Route path='/hotel-description' element={<HotelDescription />} />
           <Route path='/help' element={<Help />} />
           <Route path='/review' element={<Reviews />} />
@@ -75,6 +72,7 @@ const App = () => {
           <Route path='/flight-Farequote' element={<FareQuote />} />
           <Route path='/flight-review' element={<FlightReview />} />
           <Route path='seat-meal-baggage' element={<SeatMealBaggageTabs />} />
+          <Route path='/sajyatra-login' element={<SajyatraLogin />} />
           {/* <Route path="/seat-meal-baggage" element={<SeatMealBaggageTabs />} /> */}
           <Route path='load'  element={<Loading/>}/>
 

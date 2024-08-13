@@ -370,7 +370,6 @@ const IGST_RATE = 0.18; // 18% IGST
 
         {/* New section Start */}
         <Col lg={9} className="listResultcol">
-        
           <div className="listResult">
             {geoError && <p className="errorMessage">{geoError}</p>}
             {error && <p className="errorMessage">{error}</p>}
