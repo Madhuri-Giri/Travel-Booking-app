@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import './ReviewBooking.css';
 import "./PassangerInfo.css";
 import copImg from "../../assets/images/Gift-rafiki.png"
-
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PassangerInfo from './PassangerInfo';
@@ -14,7 +13,6 @@ import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 
 const ReviewBooking = () => {
-
 
   const from = useSelector((state) => state.bus.from);
   const to = useSelector((state) => state.bus.to);
@@ -131,6 +129,13 @@ const ReviewBooking = () => {
 
 
   const handlePayment = async () => {
+     
+    if (!newContactData.name || !newContactData.email || !newContactData.contact) {
+      alert('Please fill in your contact details before proceeding to payment.');
+      return;
+    }
+
+
     const loginId = localStorage.getItem('loginId');
 
     if (!loginId) {
@@ -439,11 +444,12 @@ const ReviewBooking = () => {
 
   // -------------------------------------------------------------------------------------------------
 
- 
 
+  
   return (
    <>
     <CustomNavbar />
+   
     <div className='ReviewBooking'>
       <div className="review-book">
         <h5><i onClick={back} className="ri-arrow-left-s-line"></i> Review Details</h5>
@@ -489,23 +495,12 @@ const ReviewBooking = () => {
 
               </div>
 
-              <div className="l-coupen">
-                <h6><i className="ri-price-tag-2-line"></i> Have Coupon?</h6>
-                <div className="cop">
-                  <div className="cp-l">
-                    <img src={copImg} alt="" />
-                  </div>
-                  <div className="cp-r">
-                    <input type="text" placeholder='Enter coupon code' />
-                    <button>Apply</button>
-                  </div>
-                </div>
-              </div>
-
+            
               <div className="passnger-Info-page">
                 <PassangerInfo />
               </div>
 
+              
 
               <div className="new-contact">
                 <h6><i className="ri-user-add-line"></i> Contact Details </h6>
@@ -542,26 +537,35 @@ const ReviewBooking = () => {
                         required
                       />
                     </div>
-                    <div className="p-cont">
-                      <button type="submit">Submit</button>
-                    </div>
+                    
+
+
                   </div>
-                </form>
-              </div>
+                   
 
-
-              <div className="last-pay">
+                  <div className="last-pay">
                 <div className="fare">
                   <h6><i className="ri-price-tag-2-line"></i>Total Ticket Amount</h6>
                   <small >{totalPayment.toFixed(2)}</small>
                 </div>
                 <div className="review-pay">
-                  <button style={{
-                    backgroundColor: !isContactSubmitted ? '#ccc' : '',
-                  }} onClick={handlePayment} disabled={!isContactSubmitted} >Proceed To Pay</button>
+                <button 
+                          style={{ backgroundColor: (!newContactData.name || !newContactData.email || !newContactData.contact) ? '#ccc' : '' }} 
+                          onClick={handlePayment} 
+                          disabled={!newContactData.name || !newContactData.email || !newContactData.contact}
+                        >
+                          Proceed To Pay
+                        </button>
                 </div>
               </div>
 
+
+
+                </form>
+              </div>
+
+
+             
 
 
             </div>
@@ -588,6 +592,10 @@ const ReviewBooking = () => {
                   <small>0</small>
                 </div>
                 <div className="p-line">
+                  <span>Sajpe Discount</span>
+                  <small>0</small>
+                </div>
+                <div className="p-line">
                   <span>IGST (18%)</span>
                   <small>{(totalFare * 0.18).toFixed(2)}</small>
                 </div>
@@ -607,34 +615,7 @@ const ReviewBooking = () => {
 
         {/* ------------------------------------------------------------------------------------------------------------------------------- */}
 
-        {/* <div className="p-detail">
-                 <h6>Traveller Details</h6>
-                 {passengerData.map((pass, index) => (
-                           <div key={index} className='details'>
-                              <div className="one">
-                        <span>Name</span>
-                        <small>{pass.FirstName}</small>
-                      </div>
-                     <div className="one">
-                        <span>Age</span>
-                        <small>{pass.Age}</small>
-                      </div> <div className="one">
-                        <span>Gender</span>
-                        <small>{pass.Gender}</small>
-                      </div>  
-                      <div className="one">
-                        <span>Address</span>
-                        <small>{pass.Address}</small>
-                      </div> 
-                      <div className="one">
-                        <span>Contact No</span>
-                        <small>{pass.Phoneno}</small>
-                      </div>
-
-                           </div> 
-                      ))}
-        </div>       */}
-
+       
 
 
 

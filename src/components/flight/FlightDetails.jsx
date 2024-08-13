@@ -487,7 +487,6 @@ export default function FlightDetails() {
                             <p className="flighttTabContentCol2p3">{destination.AirportName}</p>
                             </div>
                         </div>
-
                     </div>
                 </div>;
             case 'baggage':

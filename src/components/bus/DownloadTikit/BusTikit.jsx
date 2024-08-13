@@ -1,31 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import jsPDF from 'jspdf';
 import "jspdf-autotable";
-import "./BusTikit.css";
-import busTikitImg from "../../../assets/images/bus-tikit.png";
+import "./BusTikit.css"; // Ensure your CSS file is set up correctly
 import CustomNavbar from '../../../pages/navbar/CustomNavbar';
 import Footer from '../../../pages/footer/Footer';
+import { useSelector } from 'react-redux';
+
 
 const BusTikit = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [passengerData, setPassengerData] = useState([]);
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [selectedBusDetails, setSelectedBusDetails] = useState(null);
 
-  // Accessing Redux state
-  const { from, to } = useSelector((state) => state.bus);
-  const boardingPoints = useSelector((state) => state.bus.boardingPoints);
-  const droppingPoints = useSelector((state) => state.bus.droppingPoints);
+  const from = useSelector((state) => state.bus.from);
+  const to = useSelector((state) => state.bus.to);
 
   useEffect(() => {
     const storedBookingDetails = localStorage.getItem('busTikitDetails');
+    const storedPassengerData = localStorage.getItem('passengerData');
+    const storedBusDetails = localStorage.getItem('selectedBusDetails');
+
     if (storedBookingDetails) {
       setBookingDetails(JSON.parse(storedBookingDetails));
     }
-
-    const storedPassengerData = localStorage.getItem('passengerData');
     if (storedPassengerData) {
       setPassengerData(JSON.parse(storedPassengerData));
     }
+    if (storedBusDetails) {
+      setSelectedBusDetails(JSON.parse(storedBusDetails));
+    }
+
+    const seats = JSON.parse(localStorage.getItem('selectedSeats')) || [];
+    setSelectedSeats(seats);
   }, []);
 
   const downloadTicket = () => {
@@ -35,13 +42,14 @@ const BusTikit = () => {
     }
 
     const doc = new jsPDF();
+    const { From, To } = selectedBusDetails || {};
 
     doc.text("Bus Ticket", 20, 20);
-    doc.text(`From: ${from}`, 20, 30);
-    doc.text(`To: ${to}`, 20, 40);
-    doc.text(`Ticket No: ${bookingDetails?.result?.data?.Result?.TicketNo || 'N/A'}`, 20, 50);
-    doc.text(`Bus ID: ${bookingDetails?.result?.data?.Result?.BusId || 'N/A'}`, 20, 60);
-    doc.text(`Ticket Price: ${bookingDetails?.result?.data?.Result?.InvoiceAmount || 'N/A'} INR`, 20, 70);
+    doc.text(`From: ${From || 'N/A'}`, 20, 30);
+    doc.text(`To: ${To || 'N/A'}`, 20, 40);
+    doc.text(`Ticket No: ${bookingDetails.result.data.Result.TicketNo || 'N/A'}`, 20, 50);
+    doc.text(`Bus ID: ${bookingDetails.result.data.Result.BusId || 'N/A'}`, 20, 60);
+    doc.text(`Ticket Price: ${bookingDetails.result.data.Result.InvoiceAmount || 'N/A'} INR`, 20, 70);
 
     doc.autoTable({
       startY: 80,
@@ -53,127 +61,79 @@ const BusTikit = () => {
       ]),
     });
 
-    if (boardingPoints.length > 0) {
-      doc.autoTable({
-        startY: doc.previousAutoTable.finalY + 10,
-        head: [['Boarding Points']],
-        body: boardingPoints.map((point, index) => [`${index + 1}. ${point.CityPointName}`]),
-      });
-    }
-
-    if (droppingPoints.length > 0) {
-      doc.autoTable({
-        startY: doc.previousAutoTable.finalY + 10,
-        head: [['Dropping Points']],
-        body: droppingPoints.map((point, index) => [`${index + 1}. ${point.CityPointName}`]),
-      });
-    }
-
     doc.save('ticket.pdf');
   };
 
-  const isDataMissing = !bookingDetails || passengerData.length === 0;
-
   return (
-  <>
-  <CustomNavbar />
+    <>
+      <CustomNavbar />
 
-  <div className="BusTikit">
-      <div className="hed">
-        <h5>Download Ticket Status</h5>
-      </div>
-      <div className="down">
-        <div className="tikit-status">
-          <div className="download-tikit">
-            <div className="dest">
-              <h4>{from || 'Bhopal'}</h4>
-              <i className="ri-arrow-left-right-line"></i>
-              <h4>{to || 'Indore'}</h4>
+      <div className="Bus-Tikit">
+        <div className="b-hed">
+          <h5>Download Ticket Status</h5>
+        </div>
+        <div className="do-wn">
+          <div className="top">
+            <h5>{from}-{to}</h5>
+          </div>
+          <div className="mid">
+            <div className="left">
+              <h6 style={{ textTransform: "uppercase" }}>Passenger Name-</h6>
+              <h6 style={{ textTransform: "uppercase" }}>Age-</h6>
+              <h6 style={{ textTransform: "uppercase" }}>Seat No.-</h6>
+              <h6 style={{ textTransform: "uppercase" }}>Bus Name-</h6>
+              <h6 style={{ textTransform: "uppercase" }}>BusId-</h6>
+              <h6 style={{ textTransform: "uppercase" }}>Boarding Point-</h6>
+              <h6 style={{ textTransform: "uppercase" }}>Dropping Point-</h6>
+              <h6 style={{ textTransform: "uppercase" }}>Ticket No.-</h6>
+              <h6 style={{ textTransform: "uppercase" }}>Ticket Price-</h6>
             </div>
-            <div className="sdxfcvghb">
-              <p>(CBCE-106-654)</p>
-            </div>
+            <div className="right">
+              <h6>
+              {passengerData.map((passenger, index) => (
+                <div key={index}>
+                  <h6 style={{ fontWeight: "400" }}>{`${passenger.FirstName}`}</h6>
+                  <h6 style={{ fontWeight: "400" }}>{passenger.Age}</h6>
+                </div>
+              ))}
+              </h6>
+              <h6 style={{ fontWeight: "400" }}>{selectedSeats.join(', ')}</h6>
+              <h6 style={{ fontWeight: "400" }}>{selectedBusDetails?.busName}</h6>
+              <h6 style={{ fontWeight: "400" }}>{bookingDetails?.result?.data?.Result?.BusId}</h6>
 
-            <div className="tikit-details">
-              <div className="t-left">
-                <img src={busTikitImg} alt="" />
-              </div>
-              <div className="t-right">
-                {isDataMissing ? (
-                  <div style={{ color: 'red' }}>Data Not Found</div>
-                ) : (
-                  <>
-                    <div className="details-top">
-                      <div className="left">
-                        <p>Passenger Name</p>
-                        <p>Seat No.</p>
-                        <p>Age</p>
-                      </div>
-                      <div className="right">
-                        {passengerData.map((passenger, index) => (
-                          <div key={index} className="passenger-info">
-                            <p>{`${index + 1}. ${passenger.FirstName}`}</p>
-                            <p>{passenger.Seat ? passenger.Seat.SeatName : 'N/A'}</p>
-                            <p>{passenger.Age}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="details-top">
-                      <div className="left">
-                        <p>Ticket No.</p>
-                        <p>Bus ID</p>
-                        <p>Ticket Price</p>
-                      </div>
-                      <div className="right">
-                        <p>{bookingDetails.result.data.Result.TicketNo}</p>
-                        <p>{bookingDetails.result.data.Result.BusId}</p>
-                        <p>{bookingDetails.result.data.Result.InvoiceAmount}INR</p>
-                      </div>
-                    </div>
-
-                    {boardingPoints.length > 0 && (
-                      <div className="details-top">
-                        <div className="left">
-                          <p>Boarding Point</p>
-                        </div>
-                        <div className="right">
-                          {boardingPoints.map((point, index) => (
-                            <p key={index}>{`${index + 1}. ${point.CityPointName}`}</p>
-                          ))}
-                        </div>
-                      </div>
+                <h6 style={{ fontWeight: "400" }}>
+                    {selectedBusDetails && selectedBusDetails.boardingPoints && selectedBusDetails.boardingPoints.length > 0 ? (
+                      selectedBusDetails.boardingPoints.map((point) => (
+                        <span key={point.CityPointIndex}>{point.CityPointName}</span>
+                      ))
+                    ) : (
+                      <p>No Boarding Points Available</p>
                     )}
+                </h6>
 
-                    {droppingPoints.length > 0 && (
-                      <div className="details-top">
-                        <div className="left">
-                          <p>Dropping Point</p>
-                        </div>
-                        <div className="right">
-                          {droppingPoints.map((point, index) => (
-                            <p key={index}>{`${index + 1}. ${point.CityPointName}`}</p>
-                          ))}
-                        </div>
-                      </div>
+                <h6 style={{ fontWeight: "400" }}>
+                    {selectedBusDetails && selectedBusDetails.droppingPoints && selectedBusDetails.droppingPoints.length > 0 ? (
+                      selectedBusDetails.droppingPoints.map((point) => (
+                        <span key={point.CityPointIndex}>{point.CityPointName}</span>
+                      ))
+                    ) : (
+                      <p>No Dropping Points Available</p>
                     )}
+                </h6>
 
-                    <div className="detils-dowm">
-                      <button onClick={downloadTicket}>Download Ticket</button>
-                      <button>Cancel Download</button>
-                    </div>
-                  </>
-                )}
-              </div>
+              <h6 style={{ fontWeight: "400" }}>{bookingDetails?.result?.data?.Result?.TicketNo}</h6>
+              <h6 style={{ fontWeight: "400" }}>{bookingDetails?.result?.data?.Result?.InvoiceAmount} INR</h6>
             </div>
+          </div>
+          <div className="btm">
+            <button>CANCEL</button>
+            <button onClick={downloadTicket}>DOWNLOAD <i className="ri-download-line"></i></button>
           </div>
         </div>
       </div>
-    </div>
 
-  <Footer />
-  </>
+      <Footer />
+    </>
   );
 };
 

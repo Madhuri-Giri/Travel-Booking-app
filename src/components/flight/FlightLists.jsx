@@ -675,53 +675,20 @@ useEffect(() => {
                                                             selected.length == 0) && (
                                                                 <div className="row" key={`${index}-${segmentIndex}`}>
                                                                     <div className="pricebtnsmobil">
-                                                                        <p>{flight?.OfferedFare || "Unknown Airline"}</p>
+                                                                        <p>₹{flight?.OfferedFare || "Unknown Airline"}</p>
                                                                         <button onClick={fareQuoteHandler}>SELECT</button>
                                                                     </div>
                                                                     <p className='regulrdeal'><span>Regular Deal</span></p>
+                                                                    <p className="f-listAirlinesNameMOB">{option.Airline.AirlineName}</p><br></br>
 
-                                                                    {/* {flight.Segments.map((segmentGroup, groupIndex) => {
-                                                                    return segmentGroup.map((segmentOption, segmentOptionIndex) => {
-                                                                        return (
-                                                                            <div key={`${index}-${segmentIndex}-${groupIndex}-${segmentOptionIndex}`}>
-        
-                                                                                <div className="col-3">
-                                                                                    <div className="d-flex">
-                                                                                        <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
-                                                                                        <p>{flight?.Segments?.[0][0]?.Airline.AirlineName}</p><br></br>
-                                                                                    </div>
-                                                                                </div>
-        
-                                                                                <div className="col-6">
-                                                                                    <div className="flistname">
-                                                                                        <p className="flistnamep1">{segmentOption.Origin.CityCode}</p>
-                                                                                        <div>
-                                                                                            <p className="flistnamep2">{convertUTCToIST(segmentOption.DepTime)}</p>
-                                                                                            <p className="flistnamep4">{segmentOption.Origin.CityName}</p>
-                                                                                        </div>
-                                                                                        <p className="flistnamep3">{segmentOption.Duration}</p>
-                                                                                        <div>
-                                                                                            <p className="flistnamep2">{convertUTCToIST(segmentOption.ArrTime)}</p>
-                                                                                            <p className="flistnamep4">{segmentOption.Destination.CityName}</p>
-                                                                                        </div>
-                                                                                        <p className="flistnamep5">{segmentOption.Destination.CityCode}</p>
-                                                                                    </div>
-                                                                                </div>
-        
-        
-                                                                            </div>
-                                                                        );
-                                                                    });
-                                                                })} */}
-
-                                                                    <div className="col-md-3 col-4 f-listCol1">
-                                                                        <div className="d-flex">
+                                                                    <div className="col-2 col-sm-3 f-listCol1">
+                                                                        <div className="f-listAirlines">
                                                                             <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
-                                                                            <p>{option.Airline.AirlineName}</p><br></br>
+                                                                            <p className="f-listAirlinesNameWEb">{option.Airline.AirlineName}</p><br></br>
                                                                         </div>
                                                                     </div>
 
-                                                                    <div className="col-md-6 col-8 f-listCol2">
+                                                                    <div className="col-sm-6 col-10 f-listCol2">
                                                                         <div className="flistname">
                                                                             <p className="flistnamep1">{option.Origin.CityCode}</p>
                                                                             <div>
