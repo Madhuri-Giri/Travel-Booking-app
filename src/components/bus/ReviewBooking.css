@@ -409,10 +409,10 @@ border-radius: 10px;
     .ReviewBooking .review-book h5{
               width: 100%;
               justify-content:center;
-              padding: 2vmax;
+              padding: 1vmax;
               margin-top: 0.1vmax;
               color: #ffff;   
-              font-size: 3vmax;
+              font-size: 2.2vmax;
               background-color:#00b7eb;    
               letter-spacing: 2px;
               align-items: center;
@@ -585,14 +585,14 @@ border-radius: 10px;
    
  
    .ReviewBooking .review-book  .r-left .left-main .last-pay{
-       width: 95%;
+       width: 100%;
  flex-direction: column;
   padding-left:0vmax;
   padding-right:0vmax;
 
  }
  .ReviewBooking .review-book .r-left .left-main  .last-pay .fare{
-       width: 90%;
+       width: 95%;
  }
  .ReviewBooking .review-book .r-left .left-main  .last-pay .fare h6{
        width: 100%;
@@ -633,6 +633,8 @@ border-radius: 10px;
                  width: 100%;
                  justify-content:center;
                  padding: 0vmax;
+              font-size: 2.2vmax;
+
        }
        .ReviewBooking .review-book h5 i{
             display: none;
@@ -794,14 +796,14 @@ border-radius: 10px;
       
     
       .ReviewBooking .review-book  .r-left .left-main .last-pay{
-          width: 95%;
+          width: 100%;
     flex-direction: column;
      padding-left:0vmax;
      padding-right:0vmax;
    
     }
     .ReviewBooking .review-book .r-left .left-main  .last-pay .fare{
-          width: 90%;
+          width: 95%;
     }
     .ReviewBooking .review-book .r-left .left-main  .last-pay .fare h6{
           width: 100%;
