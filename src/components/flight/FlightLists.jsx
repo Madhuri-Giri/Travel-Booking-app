@@ -83,7 +83,7 @@ export default function FlightLists() {
     const listData = location.state.data
     const formData = location.state.formData
     const PreferredDepartureTime = formData.Segments[0].PreferredDepartureTime
-    const PreferredArrivalTime = formData.Segments[0].PreferredArrivalTime
+    const PreferredArrivalTime = formData.Segments[0].PreferredArrivalTime   
 
     localStorage.setItem("FlightSrdvType", listData.SrdvType)
     localStorage.setItem("FlightTraceId", listData.TraceId)
