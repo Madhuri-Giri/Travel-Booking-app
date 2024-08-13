@@ -279,8 +279,8 @@ const BusLists = () => {
 
                       <div className="one-btm">
                         <div className="rating">
-                          <a style={{textDecoration:"none", color:'green'}} href="/bord-drop">boarding points<i className="ri-arrow-down-s-line"></i></a>
-                          <a style={{textDecoration:"none", color:'green'}} href='/bord-drop'>dropping points<i className="ri-arrow-down-s-line"></i></a>
+                          <a style={{textDecoration:"none", color:'green'}}>boarding points<i className="ri-arrow-down-s-line"></i></a>
+                          <a style={{textDecoration:"none", color:'green'}}>dropping points<i className="ri-arrow-down-s-line"></i></a>
                         </div>
                         <button className="btn btn-primary" onClick={() => handleSelectSeat(index)}>Select Seat</button>
                       </div>

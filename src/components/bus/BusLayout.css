@@ -43,6 +43,10 @@
   letter-spacing: 1px;
   color: green;
  }
+ .BusLayout .sel{
+  width: 98%;
+  margin-bottom: 1vmax;
+ }
 
 .BusLayout .Seat-layout .seats .left-btm {
   width: 100%;
