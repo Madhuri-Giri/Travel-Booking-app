@@ -9,3 +9,20 @@
           z-index: 1040; /* Below the Bootstrap modal */
         }
         
+  .Login_container .login {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+.Login_container .login  input {
+  width: 100%;
+  margin-top: 0.6vmax;
+  border: none;
+  background-color: none;
+  border: 0.2px solid #0000003d;
+  padding: 0.7vmax 1vmax;
+  border-radius: 5px;
+  outline: none;
+}

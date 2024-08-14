@@ -101,7 +101,7 @@ const HotelDescription = () => {
   return (
     <>
      <CustomNavbar />
-     <div className="timer timer-FlightLists">
+     <div className="timer">
           
           <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
         </div>

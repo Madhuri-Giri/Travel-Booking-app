@@ -71,14 +71,18 @@
 }
 
 .timer {
-  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1vmax;
+  padding: 10px 10px;
+  background-color: #eaffef;
   color: rgba(255, 0, 0, 0.71);
-  font-weight: 700;
-  font-size: 1vmax;
+  font-weight: bold;
+  border-top: 1px solid #00e10070;
+  transition: box-shadow 0.3s ease-in-out;
 }
 
 .listOptionItem {
@@ -371,4 +375,20 @@
     margin-bottom: 7px;
   }
 
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .timer {
+    padding: 8px 8px; 
+    font-size: 14px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .timer {
+    padding: 6px 6px; 
+    font-size: 12px; 
+    text-align: center; 
+  }
 }

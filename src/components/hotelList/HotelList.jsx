@@ -12,6 +12,7 @@ import ReactPaginate from 'react-paginate';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import { RiTimerLine } from "react-icons/ri";
+import EnterOtp from '../popUp/EnterOtp';
 
 // Rating star Logic
 const renderStar = (rating) => {
@@ -46,6 +47,8 @@ const HotelList = () => {
   const hotelsPerPage = 9;
   const [pageCount, setPageCount] = useState(0);
 
+  const [showOtpOverlay, setShowOtpOverlay] = useState(false);
+  
   useEffect(() => {
     const totalPages = Math.ceil(hotels.length / hotelsPerPage);
     setPageCount(totalPages);
@@ -129,53 +132,9 @@ const HotelList = () => {
     }
   }, [searchResults]);
 
-
-// API Integration for checking user login or not
-// const checkUserLogin = async () => {
-//   const user_id = localStorage.getItem("loginId");
-//   if (!user_id) {
-//     navigate('/enter-number', { state: { returnTo: '/hotel-list' } });
-//     return false;
-//   }
-
-//   try {
-//     const response = await fetch("https://sajyatra.sajpe.in/admin/api/user-detail", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Accept: "application/json",
-//       },
-//       body: JSON.stringify({ user_id }),
-//     });
-
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-
-//     const data = await response.json();
-//     console.log('Full API response:', data.transaction.transaction_num); // Log the full response for debugging
-     
-//     // Check if the expected fields are present in the response
-//     if (data.transaction.transaction_num) {
-//       localStorage.setItem("transactionId", data.transaction.transaction_num);
-
-//       return true;
-//     } else {
-//       throw new Error("User details fetch failed: Missing transaction_id or success flag.");
-//     }
-//   } catch (error) {
-//     console.error("Error fetching user login details:", error);
-//     return false;
-//   }
-// };
-
-
   // -----------API start --------------------
 
   const fetchHotelInfo = async (index) => {
-
-    // const isLoggedIn = await checkUserLogin();
-    // if (!isLoggedIn) return;
 
     const hotel = hotels[index];
     try {
@@ -215,7 +174,63 @@ const HotelList = () => {
     }
   };
 
+// --------------
 
+
+
+const HandelHotelInfo = async (index) => {
+  const loginId = localStorage.getItem('loginId');
+  console.log('Current loginId:', loginId);
+  
+  await useridHandler();
+
+  if (!loginId) {
+    console.log('No loginId found after fetching user details');
+    setShowOtpOverlay(true);
+    return;
+  }
+
+  await fetchHotelInfo(index);
+};
+
+
+  const closeOtpOverlay = () => {
+    setShowOtpOverlay(false); 
+  };
+
+  const useridHandler = async () => {
+
+  const loginId = localStorage.getItem('loginId');
+     
+    try {
+      const requestBody = {
+        user_id:loginId , 
+      };
+  
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/user-detail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch user details');
+      }
+  
+      const data = await response.json();
+      
+      console.log('User details:', data);
+      if (data.result && data.transaction) {
+        localStorage.setItem('transactionId', data.transaction.id);
+        localStorage.setItem('transactionNum', data.transaction.transaction_num);
+      }
+    } catch (error) {
+      console.error('Error fetching user details:', error.message);
+    }
+  };
+  
   // ----------------Api End------------------
   const handleSortOptionChange = (option) => {
     setSortOption(option);
@@ -242,63 +257,7 @@ const HotelList = () => {
   return (
     <>
       <CustomNavbar />
-
-      {/* <div className="con">
-        <Container>
-          <section className="sec_book_filter">
-            <div className="hotel_booking_filter">
-              <form>
-                <div className="form-row_filter">
-                  <div className="form-field_filter">
-                    <label className="form_lable_filter" htmlFor="cityOrHotel">Destination: </label>
-                    <input className="form_in_filter" type="text" id="cityOrHotel" name="cityOrHotel"
-                      placeholder="Enter city or hotel name" defaultValue={location.state?.destination || ""} />
-                  </div>
-
-                  <div className="form-field_filter">
-                    <label className="form_lable_filter" htmlFor="checkIn">Check-In Date: </label>
-                    <DatePicker className="form_in_filter" selected={location.state?.date?.[0]?.startDate || new Date()}
-                      onChange={() => { }} dateFormat="dd/MM/yyyy" placeholderText="Select check-in date" />
-                  </div>
-
-                  <div className="form-field_filter">
-                    <label className="form_lable_filter" htmlFor="checkOut">Check-Out Date:</label>
-                    <DatePicker className="form_in_filter" selected={location.state?.date?.[0]?.endDate || new Date()}
-                      onChange={() => { }} dateFormat="dd/MM/yyyy" placeholderText="Select check-out date" />
-                  </div>
-
-                  <div className="form-field_filter" ref={dropdownRef}>
-                    <label className="form_lable_filter">Sort by:</label>
-                    <div className="dropdown">
-                      <input 
-                        type="text"
-                        id="sortOptions"
-                        name="sortOptions"
-                        className="form_in"
-                        placeholder="Select sort option"
-                        value={sortOption}
-                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                        readOnly
-                      />
-                      <FontAwesomeIcon icon={faAngleDown} className="dropdown-icon" />
-                      {isDropdownOpen && (
-                        <ul className="sortDropdown">
-                          <li onClick={() => handleSortOptionChange('name')}>Name</li>
-                          <li onClick={() => handleSortOptionChange('rating')}>Rating</li>
-                          <li onClick={() => handleSortOptionChange('price-asc')}>Price: Low to High</li>
-                          <li onClick={() => handleSortOptionChange('price-desc')}>Price: High to Low</li>
-                          <li onClick={() => handleSortOptionChange('distance')}>Distance</li>
-                        </ul>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </section>
-        </Container>
-      </div> */}
-      <div className="timer timer-FlightLists">
+      <div className="timer">
           {/* <p>Redirecting in {formatTime(timer)}...</p> */}
           <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
         </div>
@@ -457,7 +416,7 @@ const HotelList = () => {
                               </span>
 
                               <span className="hotelTax">Includes taxes and fees</span>
-                              <button onClick={() => fetchHotelInfo(index)} className="CheckButton">
+                              <button onClick={()=>HandelHotelInfo(index)} className="CheckButton">
                                 See Details
                               </button>
                             </div>
@@ -474,6 +433,7 @@ const HotelList = () => {
               </Row>
             </Container>
           </div>
+          <EnterOtp showModal={showOtpOverlay} onClose={() => setShowOtpOverlay(false)} />
         </div>
 
         <div className="paginationContainer">
@@ -497,6 +457,7 @@ const HotelList = () => {
             breakLinkClassName={'page-link'}
           />
         </div>
+
         <Footer />
 
       </section>
