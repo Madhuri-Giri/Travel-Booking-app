@@ -1,6 +1,33 @@
 .BusLayout {
   width: 100%;
 }
+.busseatTabs{
+  display: none;
+}
+.busseatTabsBTN{
+  display: flex;
+    justify-content: center;
+    font-size: 17px;
+    background: #9daaab3b;
+}
+.busseatTabsBTN button.active {
+  background-color: skyblue !important;
+  color: white;
+  font-weight: bold;
+  border: 2px solid #80808040;
+  font-size: 17px !important;
+  padding: 2px 35px !important;
+  text-transform: uppercase !important;
+
+}
+.busseatTabsBTN button {
+  font-size: 13px !important;
+  background-color: #ccc !important;
+  padding: 2px 35px !important;
+  border: 2px solid #80808040 !important;
+  text-transform: uppercase !important;
+
+}
 
 .BusLayout .Seat-layout {
   width: 100%;
@@ -33,6 +60,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: -1vmax;
   /* background: linear-gradient(90deg, #f2f2f2, hsla(0, 0%, 94.9%, 0)); */
 }
 .BusLayout .Seat-layout .seats .left-top h6{
@@ -225,6 +253,14 @@
 
 
 @media (max-width:600px) {
+  .busseatTabs{
+    display: block;
+    margin-bottom: -15px;
+  }
+  .lowerSeatWEB,
+  .upperSeatWEB{
+    display: none !important;
+  }
   .BusLayout {
     width: 100%;
   }
@@ -307,7 +343,7 @@
 }
 
 .sit-img {
-  height: 90px;
+  height: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;
