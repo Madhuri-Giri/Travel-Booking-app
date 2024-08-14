@@ -200,6 +200,7 @@ const FlightSearch = () => {
 
       const data = await response.json();
       console.log("hello", data);
+      localStorage.setItem('Flight-search', data)
       // Save TraceId to local storage with the key "FlightTraceId2"
       if (data.TraceId) {
         localStorage.setItem("FlightTraceId2", data.TraceId);
@@ -221,6 +222,14 @@ const FlightSearch = () => {
         console.log("Saved SrdvIndex to local storage:", srdvIndex);
       } else {
         console.log("SrdvIndex not found");
+      }
+
+      if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.IsLCC) {
+        const IsLCC = data.Results[0][0].FareDataMultiple[0].IsLCC;
+        localStorage.setItem("IsLCC", IsLCC);
+        console.log("Saved IsLCC to local storage:", IsLCC);
+      } else {
+        console.log("IsLCC not found");
       }
 
       setLoading(false);

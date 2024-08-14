@@ -45,6 +45,9 @@ const EnterOtp = ({ showModal, onClose }) => {
 
       localStorage.setItem("otpResponse", JSON.stringify(data));
 
+      onClose(); 
+
+
       // Show the appropriate modal based on the user registration status
       if (data.user_registered) {
         setShowLoginModal(true);

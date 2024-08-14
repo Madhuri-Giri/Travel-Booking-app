@@ -652,7 +652,7 @@ font-weight: 700;
       .BusLists .busList .B-lists-Top{
                 width: 100%;
                 justify-content: center;
-                background: #004d62eb;
+                background: #004a5ec3;
       }
       
       .BusLists .busList .B-lists-Top .text{
@@ -778,7 +778,6 @@ font-weight: 700;
         background-color: #00b7eb;
         transition:  0.3s ease; 
  }
-
 
   
   }
