@@ -244,6 +244,9 @@ const ReviewBooking = () => {
 
   const bookHandler = async () => {
     try {
+
+      // const transactionNum = localStorage.getItem('transactionNum');
+
       const bookingPayload = {
         ResultIndex: "1",
         TraceId: "1",

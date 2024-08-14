@@ -47,10 +47,8 @@ const EnterOtp = ({ showModal, onClose }) => {
 
       // Show the appropriate modal based on the user registration status
       if (data.user_registered) {
-        // If the user is already registered, navigate to the login modal
         setShowLoginModal(true);
       } else {
-        // If the user is not registered, show the register modal
         setShowRegisterModal(true);
       }
 
