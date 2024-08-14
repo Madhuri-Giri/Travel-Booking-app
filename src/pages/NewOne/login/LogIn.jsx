@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
+
 import { useState } from 'react';
 import "./LogIn.css";
 import loginLogo from "../../../assets/images/main logo.png"

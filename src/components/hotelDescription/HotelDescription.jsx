@@ -73,8 +73,7 @@ const HotelDescription = () => {
   // -----------------------End Api Integration--------------------
   return (
     <>
-              <CustomNavbar />
-
+     <CustomNavbar />
     <section className="hotelDescriptionSection">
     <Container>
     {/* -----start new section---------- */}
@@ -85,7 +84,6 @@ const HotelDescription = () => {
      </h3>
     
      <Row>
-
         <Col md={7}>
           <Carousel className="hotelCarousel">
             {hotelDetails.Images && hotelDetails.Images.map((image, index) => (
@@ -120,11 +118,7 @@ const HotelDescription = () => {
                       onClick={() => setShowModal(true)} 
                     />
                   )}
-
-
         </Col>
-        
-        
       </Row>
      </Container>
       {/* Modal for showing all images */}

@@ -128,9 +128,54 @@ const IGST_RATE = 0.18; // 18% IGST
     }
   }, [searchResults]);
 
+
+// API Integration for checking user login or not
+const checkUserLogin = async () => {
+  const user_id = localStorage.getItem("loginId");
+  if (!user_id) {
+    navigate('/enter-number', { state: { returnTo: '/hotel-list' } });
+    return false;
+  }
+
+  try {
+    const response = await fetch("https://sajyatra.sajpe.in/admin/api/user-detail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ user_id }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Full API response:', data.transaction.transaction_num); // Log the full response for debugging
+     
+    // Check if the expected fields are present in the response
+    if (data.transaction.transaction_num) {
+      localStorage.setItem("transactionId", data.transaction.transaction_num);
+
+      return true;
+    } else {
+      throw new Error("User details fetch failed: Missing transaction_id or success flag.");
+    }
+  } catch (error) {
+    console.error("Error fetching user login details:", error);
+    return false;
+  }
+};
+
+
   // -----------API start --------------------
 
   const fetchHotelInfo = async (index) => {
+
+    const isLoggedIn = await checkUserLogin();
+    if (!isLoggedIn) return;
+
     const hotel = hotels[index];
     try {
       const requestData = {

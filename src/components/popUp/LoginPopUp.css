@@ -1,0 +1,156 @@
+
+
+.small-popup-modal .modal-dialog {
+    max-width: 400px; 
+    /* height: 200px; */
+  }
+  
+  .Login_container .login {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+.Login_container .login .logo {
+    width: 100%;
+    margin-top: 0;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}
+
+.Login_container .login .logo img {
+    width: 30%;
+}
+
+.Login_container .login h5 {
+    width: 100%;
+    font-weight: 700;
+    display: flex;
+    color: rgba(27, 27, 27, 0.806);
+    font-size: 1.5vmax;
+    align-items: center;
+    justify-content: center;
+}
+
+.Login_container .login h5 span {
+    color: rgb(74, 74, 255);
+}
+
+.Login_container .login form {
+    width: 90%;
+    /* margin-top: 1vmax; */
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.Login_container .login .one {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    /* margin-top: 1vmax; */
+}
+
+.Login_container .login .one label {
+    color: rgba(27, 27, 27, 0.669);
+    font-weight: 600;
+    font-size: 1.1vmax;
+}
+
+.Login_container .login .one input {
+    width: 100%;
+    margin-top: 0.6vmax;
+    border: none;
+    background-color: none;
+    border: 0.2px solid #0000003d;
+    padding: 0.7vmax 1vmax;
+    border-radius: 5px;
+    outline: none;
+}
+
+/* Added styles for password input container and icon */
+.Login_container .login .one .password-container {
+    width: 100%;
+    position: relative;
+}
+
+.Login_container .login .one .password-container input {
+    width: 100%;
+}
+
+.Login_container .login .one .password-container .password-toggle-icon {
+    position: absolute;
+    right: 12px;
+    top: 52%;
+    font-size: 1.2vmax;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.Login_container .login .forgot {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1vmax;
+}
+
+.Login_container .login .lgin {
+    width: 100%;
+    margin-top: 1vmax;
+}
+
+.Login_container .login .lgin button {
+    width: 100%;
+    border: none;
+    background-color: #00b7eb;
+    border-radius: 5px;
+    color: #fff;
+    padding: 0.7vmax 0vmax;
+    transition: 0.5s;
+}
+
+.Login_container .login .lgin button:hover {
+    transform: translateY(-0.5vmax);
+}
+
+.Login_container .login p {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1vmax;
+    font-weight: 600;
+}
+
+.Login_container .login .regbtn {
+    width: 100%;
+    margin-top: 0.5vmax;
+}
+
+.Login_container .login .regbtn button {
+    width: 100%;
+    border: none;
+    background-color: #00b7eb;
+    border-radius: 5px;
+    color: #fff;
+    padding: 0.7vmax 0vmax;
+    transition: 0.5s;
+}
+
+.Login_container .login .regbtn button:hover {
+    transform: translateY(-0.5vmax);
+}
+
+@media (max-width: 600px) {
+    .Login_container .login .one label {
+        color: rgba(27, 27, 27, 0.669);
+        font-weight: 700;
+        font-size: 2.8vmax;
+    }
+}

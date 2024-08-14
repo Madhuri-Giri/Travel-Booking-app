@@ -37,7 +37,10 @@ import SeatMealBaggageTabs from './components/flight/SeatMealBaggageTabs';
 import Profile from './pages/Profile/Profile';
 import Loading from './pages/loading/Loading';
 import FlightTickect from './components/flight/DownloadTikit/FlightTickect';
-import SajyatraLogin from './components/SajyatraLogin';
+import SajyatraLogin from './components/popUp/LoginPopUp';
+import EnterOtp from '../src/components/popUp/EnterOtp'
+import RegisterModal from './components/popUp/RegisterPopup';
+import LoginPopUp from './components/popUp/LoginPopUp';
 
 const App = () => {
   const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number',  '/load'];
@@ -78,7 +81,9 @@ const App = () => {
           <Route path='/sajyatra-login' element={<SajyatraLogin />} />
           {/* <Route path="/seat-meal-baggage" element={<SeatMealBaggageTabs />} /> */}
           <Route path='load'  element={<Loading/>}/>
-
+          <Route path='/enterOtp'  element={<EnterOtp/>}/>
+          <Route path='/register'  element={<RegisterModal/>}/>
+          <Route path='/login-popup'  element={<LoginPopUp/>}/>
         </Routes>
         {/* {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />} */}
         <ToastContainer
