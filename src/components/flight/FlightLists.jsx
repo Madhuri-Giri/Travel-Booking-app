@@ -14,9 +14,12 @@ import { RiTimerLine } from "react-icons/ri";
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
 import Footer from "../../pages/footer/Footer";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
+import EnterOtp from '../popUp/EnterOtp';
 
 export default function FlightLists() {
     const [loading, setLoading] = useState(false); // Add loading state
+
+    const [showOtpOverlay, setShowOtpOverlay] = useState(false);
 
     const navigate = useNavigate();
 
@@ -318,6 +321,53 @@ export default function FlightLists() {
         }
     };
     // -------------------------------------------------fare-Quote-api----------------------------------------
+
+    // -------------------------------------user detailsss------------------------------------
+
+    const useridHandler = async () => {
+        const loginId = localStorage.getItem('loginId');
+          try {
+            const requestBody = {
+              user_id:loginId , 
+            };
+            const response = await fetch('https://sajyatra.sajpe.in/admin/api/user-detail', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(requestBody),
+            });
+        
+            if (!response.ok) {
+              throw new Error('Failed to fetch user details');
+            }
+        
+            const data = await response.json();
+            console.log('User details:', data);
+            if (data.result && data.transaction) {
+              localStorage.setItem('transactionId', data.transaction.id);
+              localStorage.setItem('transactionNum', data.transaction.transaction_num);
+            }
+          } catch (error) {
+            console.error('Error fetching user details:', error.message);
+          }
+        };
+
+
+    const handleSelectSeat = async (index) => {
+        const loginId = localStorage.getItem('loginId');
+        console.log('Current loginId:', loginId); 
+         await useridHandler();
+        if (!loginId) {
+            console.log('No loginId found, showing OTP overlay'); 
+            setShowOtpOverlay(true); 
+            return;
+        }
+        await fareQuoteHandler(); 
+    };
+
+   
+    // -------------------------------------user detailsss------------------------------------
 
     // -----------------mobile view filter side bar------------------------ 
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -663,7 +713,7 @@ export default function FlightLists() {
                                                                 <div className="row" key={`${index}-${segmentIndex}`}>
                                                                     <div className="pricebtnsmobil">
                                                                         <p>₹{flight?.OfferedFare || "Unknown Airline"}</p>
-                                                                        <button onClick={fareQuoteHandler}>SELECT</button>
+                                                                        <button onClick={handleSelectSeat}>SELECT</button>
                                                                     </div>
                                                                     <p className='regulrdeal'><span>Regular Deal</span></p>
                                                                     <p className="f-listAirlinesNameMOB">{option.Airline.AirlineName}</p><br></br>
@@ -693,7 +743,7 @@ export default function FlightLists() {
 
                                                                     <div className="col-md-3 pricebtns f-listCol3">
                                                                         <div><p>₹{flight?.OfferedFare}</p></div>
-                                                                        <div> <button onClick={fareQuoteHandler}>SELECT</button>     </div>
+                                                                        <div> <button onClick={handleSelectSeat}>SELECT</button>     </div>
                                                                     </div>
                                                                 </div>
                                                             )}
@@ -767,6 +817,8 @@ export default function FlightLists() {
                         </div>
                     </div>
                 </div>
+                <EnterOtp showModal={showOtpOverlay} onClose={() => setShowOtpOverlay(false)} />
+
             </div>
             <Footer />
         </>

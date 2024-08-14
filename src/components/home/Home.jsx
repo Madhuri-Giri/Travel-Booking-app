@@ -52,7 +52,6 @@ const Home = () => {
         setToSuggestions([]); // Clear suggestions if click is outside
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -135,7 +134,6 @@ const Home = () => {
     setToSuggestions([]);
   };
 
-
   // function for adult , child , infact dropdown list-------------------------------------------
   const [showDropdown, setShowDropdown] = useState(false);
   const handleShow = () => {
@@ -202,8 +200,6 @@ const Home = () => {
 
       const data = await response.json();
       console.log("hello", data);
-
-
       // Save TraceId to local storage with the key "FlightTraceId2"
       if (data.TraceId) {
         localStorage.setItem("FlightTraceId2", data.TraceId);
@@ -500,11 +496,8 @@ const Home = () => {
                                   id="PreferredDepartureTime"
                                   placeholderText="Select a date"
                                   ref={departureDatePickerRef}
+                                  minDate={new Date()} // This prevents selecting past dates
                                 />
-                                {/* <MdDateRange
-                                  className="date-picker-icon"
-                                  onClick={() => departureDatePickerRef.current.setOpen(true)}
-                                /> */}
                               </div>
                               <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
@@ -704,7 +697,9 @@ const Home = () => {
                                   id="PreferredDepartureTime"
                                   placeholderText="Select a date"
                                   ref={departureDatePickerRef}
+                                  minDate={new Date()}
                                 />
+                                
                                 {/* <MdDateRange
                                   className="date-picker-icon"
                                   onClick={() => departureDatePickerRef.current.setOpen(true)}
@@ -728,6 +723,7 @@ const Home = () => {
                                   id="PreferredArrivalTime"
                                   placeholderText="Select a date"
                                   ref={arrivalDatePickerRef}
+                                  minDate={new Date()}
                                 />
                               </div>
                               <label className="flight-input-labelRetDate" htmlFor="PreferredArrivalTime">Return</label>
