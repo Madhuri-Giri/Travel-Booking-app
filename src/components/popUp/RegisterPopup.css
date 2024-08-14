@@ -1,0 +1,184 @@
+/* General Container Styles */
+.Join_Container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-modal .modal-dialog {
+    width: 100%;
+    padding: 0;
+  }
+
+.Join_Container .Join {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+/* Join Left Section */
+.Join_Container .Join .JoinLeft {
+    width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Lottie Image Styling */
+.lottie-img {
+    width: 100%;
+    height: auto;
+}
+
+/* Join Right Section */
+.Join_Container .Join .JoinRight {
+    width: 55%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* Medium Section */
+.Join_Container .Join .JoinRight .Medium {
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.Join_Container .Join .JoinRight .Medium form {
+    width: 100%;
+}
+
+/* Input Fields */
+.Join_Container .Join .JoinRight .one {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-top: 0.5vmax;
+}
+
+.Join_Container .Join .JoinRight .one label {
+    color: rgba(27, 27, 27, 0.669);
+    font-weight: 600;
+    font-size: 1.1vmax;
+}
+
+.Join_Container .Join .JoinRight .one .int {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: row;
+    position: relative;
+}
+
+.Join_Container .Join .JoinRight .one .int input {
+    width: 100%;
+    margin-top: 0.1vmax;
+    border: none;
+    background-color: none;
+    border: 0.2px solid #0000003d;
+    padding: 0.5vmax 1vmax;
+    border-radius: 5px;
+    outline: none;
+}
+
+/* Password Field with Toggle */
+.password-container {
+    width: 100%;
+    position: relative;
+}
+
+.password-container input {
+    width: 100%;
+}
+
+.password-container .password-toggle-icon {
+    position: absolute;
+    right: 12px;
+    top: 52%;
+    font-size: 1.2vmax;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+/* Submit Button */
+.Join_Container .Join .JoinRight .one button {
+    width: 100%;
+    margin-top: 0.2vmax;
+    border: none;
+    background-color: #00b7eb;
+    border-radius: 5px;
+    color: #fff;
+    padding: 0.5vmax 0vmax;
+    transition: 0.5s;
+}
+
+.Join_Container .Join .JoinRight .one button:hover {
+    transform: translateY(-0.5vmax);
+}
+
+/* Line and Links */
+.Join_Container .Join .JoinRight .line {
+    margin-top: 1vmax;
+    text-align: center;
+}
+
+.Join_Container .Join .JoinRight p {
+    margin-top: 0.6vmax;
+}
+
+.Join_Container .Join .JoinRight p input {
+    margin-right: 0.3vmax;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    .Join_Container {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .Join_Container .Join {
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .Join_Container .Join .JoinLeft,
+    .Join_Container .Join .JoinRight {
+        width: 100%;
+        margin-top: 2vmax;
+    }
+
+    .Join_Container .Join .JoinRight .Medium form {
+        width: 100%;
+    }
+
+    .Join_Container .Join .JoinRight .one {
+        margin-top: 3vmax;
+    }
+
+    .Join_Container .Join .JoinRight .one label {
+        font-size: 2.5vmax;
+    }
+
+    .Join_Container .Join .JoinRight .one .int input {
+        padding: 2vmax 2vmax;
+    }
+
+    .Join_Container .Join .JoinRight .one button {
+        padding: 2vmax 0vmax;
+    }
+}
