@@ -1,3 +1,13 @@
+.offcanvasNavbar {
+    width: 250px; /* Adjust the width of the offcanvas menu */
+    background-color: #f8f9fa; /* Set a background color */
+    z-index: 1040; /* Ensures it is above other elements */
+}
+.offcanvas-body {
+   padding: 0px !important;
+}
+
+
 .navbarlogo img {
     height: 85px;
 }
@@ -47,7 +57,12 @@
     color: rgba(29, 27, 27, 0.849);
     padding: 10px 25px !important;
 }
-
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+    z-index: 10000;
+}
+.navmenuss svg {
+    color: #00b7eb;
+}
 .dropdown-menu svg {
     color: black;
 }
@@ -104,8 +119,8 @@
 .mobilehedrbookings {
     background: #00000023;
     /* padding: 8px 0px; */
-    border-top: 2px solid #007bff;
-
+    /* border-top: 2px solid #007bff; */
+    border-top: 2px solid #00e10070;
     position: sticky;
     top: 0;
     z-index: 1000; /* Ensures the header stays on top of other elements */
@@ -124,12 +139,12 @@
 }
 
 .mobilehedrbookings .row .col-4.active-link {
-    /* background-color: #f0f0f0; */
-    border-bottom: 3px solid #fd4f6e;
+    background-color: #eaffef1f;
+    border-bottom: 3px solid #478ecc;
 }
 
 .mobilehedrbookings .row .col-4.active-link a {
-    color: #fd4f6e !important;
+    color: #478ecc !important;
 }
 
 .mobilehedrbookings .row .col-4 {

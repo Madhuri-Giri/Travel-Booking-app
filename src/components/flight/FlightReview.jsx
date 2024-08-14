@@ -67,8 +67,6 @@ const FlightReview = () => {
   };
 
   // func for duration convert hpur minute---------------------
-
-
   console.log("fareDataDetails", fareDataDetails);
 
   //-----------------------------Payment apis--------------------------------------------------------------------------------------
@@ -160,7 +158,6 @@ const FlightReview = () => {
     }
   }
 
-
   const flightpayUpdate = async () => {
     try {
       const payment_id = localStorage.getItem('flight_payment_id');
@@ -209,6 +206,13 @@ const FlightReview = () => {
   const baseFare = localStorage.getItem('BaseFare');
   const tax = localStorage.getItem('Tax');
   const yqTax = localStorage.getItem('YQTax');
+  const passengerDetails = JSON.parse(localStorage.getItem('adultPassengerDetails'));
+  const title = passengerDetails[0].gender;
+  const firstName = passengerDetails[0].firstName;
+  const lastName = passengerDetails[0].lastName;
+  console.log("title", title);
+  console.log("firstName", firstName);
+  console.log("lastName", lastName);
 
   const bookLccApi = async () => {
     try {
@@ -217,9 +221,9 @@ const FlightReview = () => {
         "ResultIndex": resultIndex,
         "TraceId": parseInt(traceId),
         "SrdvType": srdvType,
-        "Title": "Mr",
-        "FirstName": "Manas",
-        "LastName": "Pal",
+        "Title": title,
+        "FirstName": firstName,
+        "LastName": lastName,
         "PaxType": 1,
         "DateOfBirth": "2001-12-12",
         "Gender": "1",
@@ -269,10 +273,10 @@ const FlightReview = () => {
         setTimeout(() => {
           navigate('/flight-ticket-download', { state: { flightbookingDetails: responseBody } });
         }, 2000);
-
       }
     } catch (error) {
-      console.error('Failed to book seats:', error.message);
+      // console.error('Failed to book seats:', error.message);
+      console.error('llc api error:', error.message);
       toast.error('An error occurred during booking. Please try again.');
     }
   };

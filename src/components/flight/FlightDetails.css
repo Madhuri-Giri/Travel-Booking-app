@@ -166,7 +166,7 @@
 }
 .flighttTabContentCol4{
     display: flex;
-    justify-content: end;
+    justify-content: center;
 }
 .flighttTabContentCol2{
     display: flex;
