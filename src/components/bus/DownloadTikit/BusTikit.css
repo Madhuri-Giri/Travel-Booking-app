@@ -103,5 +103,90 @@
      width: 95%;
 }
 .Bus-Tikit  .do-wn .btm button:hover {
-       background-color: #009bb5;     }
+       background-color: #009bb5;   
+  }
 
+@media (max-width:600px) {
+
+    .Bus-Tikit .b-hed h5{
+             font-size: 2.2vmax;
+    }
+    .Bus-Tikit  .do-wn{
+             width: 95%;
+    }
+    .Bus-Tikit  .do-wn .top{
+           width: 100%;
+           padding: 1vmax;
+    }
+    
+    .Bus-Tikit  .do-wn .top h5{
+          font-size: 2vmax;
+    }
+    .Bus-Tikit  .do-wn .mid{
+           justify-content: space-between;
+    }
+    .Bus-Tikit  .do-wn .mid .left{
+           width: 50%;
+           padding: 1vmax;
+    }
+    .Bus-Tikit  .do-wn .mid h6{
+           width: 90%;
+           font-size: 1.2vmax;
+    }
+    .Bus-Tikit  .do-wn .mid .right{
+           width: 50%;
+    }
+     .Bus-Tikit  .do-wn .btm{
+           gap: 1vmax;
+           padding: 0.2vmax;
+    }
+    .Bus-Tikit  .do-wn .btm button{
+         padding: 1vmax 2vmax;
+         text-transform: capitalize;
+    }
+         
+}
+
+
+@media (min-width:600px) and (max-width:1150px) {
+
+       .Bus-Tikit .b-hed h5{
+                font-size: 2.2vmax;
+       }
+       .Bus-Tikit  .do-wn{
+                width: 95%;
+       }
+       .Bus-Tikit  .do-wn .top{
+              width: 100%;
+              padding: 1vmax;
+       }
+       
+       .Bus-Tikit  .do-wn .top h5{
+             font-size: 2vmax;
+       }
+       .Bus-Tikit  .do-wn .mid{
+              justify-content: space-between;
+       }
+       .Bus-Tikit  .do-wn .mid .left{
+              width: 50%;
+              padding: 1vmax;
+       }
+       .Bus-Tikit  .do-wn .mid h6{
+              width: 90%;
+              font-size: 1.2vmax;
+       }
+       .Bus-Tikit  .do-wn .mid .right{
+              width: 50%;
+       }
+       
+       
+       .Bus-Tikit  .do-wn .btm{
+              gap: 1vmax;
+              padding: 0.2vmax;
+       }
+       .Bus-Tikit  .do-wn .btm button{
+            padding: 1vmax 2vmax;
+            text-transform: capitalize;
+       }
+            
+   }

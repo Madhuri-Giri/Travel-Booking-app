@@ -202,7 +202,7 @@ const toggleDropVisibility = () => {
             )}
           </span>
           <div className="search-functinality">
-            <button className='filter-bus'><i className="ri-equalizer-line"></i>Filter</button>
+            <button className='filter-bus'><i className="ri-equalizer-line"></i> Filter</button>
             <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
 
           </div>
