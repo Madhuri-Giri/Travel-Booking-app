@@ -59,7 +59,6 @@ const SignUp = () => {
     const closeLanguageDropdown = () => {
         setShowLanguageDropdown(false);
     };
-
     const selectLanguage = (language) => {
         setSelectedLanguage(language);
         setShowLanguageDropdown(false);

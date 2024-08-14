@@ -16,8 +16,23 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 2vmax;
-  background-color: #00b7eb;
+  padding: 2vmax; 
+
+
+  background: linear-gradient(135deg,#017fa9, #00b7eb) ;
+
+
+
+ 
+  /* background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: linear-gradient(
+    rgba(0, 0, 0, 0.5), 
+    rgba(0, 0, 0, 0.5) 
+  ),
+  url('https://imgak.mmtcdn.com/pwa_v3/pwa_commons_assets/desktop/bg1.jpg'); */
+
 
 }
 
@@ -31,7 +46,7 @@
 
 .BusSearch .bus-search .B-main .B-main-top img {
   width: 40%;
-
+  /* display: none; */
 }
 
 .BusSearch .bus-search .B-main .B-main-btm {
@@ -46,7 +61,7 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  box-shadow: 2px 2px 5px 2px gray;
+  /* box-shadow: 2px 2px 5px 2px gray; */
   flex-direction: row;
   margin-top: 2vmax;
   background: #fff;
