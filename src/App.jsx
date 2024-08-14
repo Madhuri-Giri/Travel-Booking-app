@@ -58,6 +58,9 @@ const App = () => {
           <Route path='/bus-list' element={<BusLists />} />
           <Route path='/bus-layout' element={<BusLayout />} />
           <Route path='/bord-drop' element={<BoardAndDrop />} />
+
+          <Route path='/layout' element={<BusLayout />} />
+
           <Route path='/bus-tikit-download' element={<BusTikit />} />
           <Route path='flight-ticket-download' element={<FlightTickect />} />
           <Route path='/signup' element={<SignUp />} />

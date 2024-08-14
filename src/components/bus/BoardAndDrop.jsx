@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Accordion from 'react-bootstrap/Accordion';
 import './BoardAndDrop.css';
 
 const BoardAndDrop = ({ onBoardingSelect, onDroppingSelect }) => {
-  const [showBoarding, setShowBoarding] = useState(false);
-  const [showDropping, setShowDropping] = useState(false);
   const [boardingPoints, setBoardingPoints] = useState([]);
   const [droppingPoints, setDroppingPoints] = useState([]);
-  const [selectedBoarding, setSelectedBoarding] = useState(null);
-  const [selectedDropping, setSelectedDropping] = useState(null);
+  const [selectedBoardingPoint, setSelectedBoardingPoint] = useState('');
+  const [selectedDroppingPoint, setSelectedDroppingPoint] = useState('');
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -50,56 +47,54 @@ const BoardAndDrop = ({ onBoardingSelect, onDroppingSelect }) => {
   }, []);
 
   const handleBoardingSelect = (point) => {
-    setSelectedBoarding(point);
-    onBoardingSelect(point);
+    if (point) {
+      setSelectedBoardingPoint(point.CityPointName);
+      onBoardingSelect(point); // Call the parent handler
+    }
   };
 
   const handleDroppingSelect = (point) => {
-    setSelectedDropping(point);
-    onDroppingSelect(point);
+    if (point) {
+      setSelectedDroppingPoint(point.CityPointName);
+      onDroppingSelect(point); // Call the parent handler
+    }
   };
 
   return (
     <div className="bording">
-      <Accordion className="accordian_space">
-        <Accordion.Item eventKey="0" className='bord'>
-          <Accordion.Header onClick={() => setShowBoarding(!showBoarding)}>
-            <h6>Boarding Points</h6>
-          </Accordion.Header>
-          <Accordion.Body>
-            {showBoarding && (
-              <div className="points-list">
-                {boardingPoints.map(point => (
-                  <div key={point.CityPointIndex} className="point-item" onClick={() => handleBoardingSelect(point)}>
-                    <p>{point.CityPointName}</p>
-                  </div>
-                ))}
-                {boardingPoints.length === 0 && <p>No Boarding Points Available</p>}
-              </div>
-            )}
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
+      <div className="container">
+        <div className="row">
+          <div className="select col-12">
+            <label htmlFor="boarding-select" className="form-label"></label>
+            <select
+              id="boarding-select"
+              className="form-select"
+              value={selectedBoardingPoint}
+              onChange={(e) => handleBoardingSelect(boardingPoints.find(point => point.CityPointName === e.target.value))}
+            >
+              <option value="" disabled>Select Boarding Point</option>
+              {boardingPoints.map(point => (
+                <option key={point.CityPointIndex} value={point.CityPointName}>{point.CityPointName}</option>
+              ))}
+            </select>
+          </div>
 
-      <Accordion className="accordian_space">
-        <Accordion.Item eventKey="1">
-          <Accordion.Header onClick={() => setShowDropping(!showDropping)}>
-            <h6>Dropping Points</h6>
-          </Accordion.Header>
-          <Accordion.Body>
-            {showDropping && (
-              <div className="points-list">
-                {droppingPoints.map(point => (
-                  <div key={point.CityPointIndex} className="point-item" onClick={() => handleDroppingSelect(point)}>
-                    <p>{point.CityPointName}</p>
-                  </div>
-                ))}
-                {droppingPoints.length === 0 && <p>No Dropping Points Available</p>}
-              </div>
-            )}
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
+          <div className="select col-12">
+            <label htmlFor="dropping-select" className="form-label"></label>
+            <select
+              id="dropping-select"
+              className="form-select"
+              value={selectedDroppingPoint}
+              onChange={(e) => handleDroppingSelect(droppingPoints.find(point => point.CityPointName === e.target.value))}
+            >
+              <option value="" disabled>Select Dropping Point</option>
+              {droppingPoints.map(point => (
+                <option key={point.CityPointIndex} value={point.CityPointName}>{point.CityPointName}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
 
       {error && <div className="error-message">{error}</div>}
     </div>

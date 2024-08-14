@@ -90,7 +90,7 @@ const ReviewBooking = () => {
   }, []);
 
   const back = () => {
-    navigate('/bord-drop');
+    navigate('/bus-list');
   };
 
   const fetchPaymentDetails = async () => {

@@ -25,8 +25,8 @@ export default function FlightLists() {
 
     useEffect(() => {
         const countdown = setInterval(() => {
-            setTimer((prev) => prev - 100);
-        }, 100);
+            setTimer((prev) => prev - 50);
+        }, 50);
 
         if (timer <= 0) {
             clearInterval(countdown);
@@ -83,7 +83,7 @@ export default function FlightLists() {
     const listData = location.state.data
     const formData = location.state.formData
     const PreferredDepartureTime = formData.Segments[0].PreferredDepartureTime
-    const PreferredArrivalTime = formData.Segments[0].PreferredArrivalTime
+    const PreferredArrivalTime = formData.Segments[0].PreferredArrivalTime   
 
     localStorage.setItem("FlightSrdvType", listData.SrdvType)
     localStorage.setItem("FlightTraceId", listData.TraceId)
