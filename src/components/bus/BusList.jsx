@@ -7,6 +7,7 @@ import { searchBuses } from '../../redux-toolkit/slices/busSlice';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../pages/footer/Footer';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
+import EnterOtp from '../popUp/EnterOtp';
 
 const BusLists = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,10 @@ const BusLists = () => {
   const [visibleLayout, setVisibleLayout] = useState(null);
   const [isTravelListVisible, setIsTravelListVisible] = useState(false);
   const [timer, setTimer] = useState(600000);
+
+
+  const [showOtpOverlay, setShowOtpOverlay] = useState(false);
+
 
   useEffect(() => {
     const countdown = setInterval(() => {
@@ -81,16 +86,63 @@ const BusLists = () => {
   
 
   const handleSelectSeat = async (index) => {
-    setVisibleLayout(index);
+    const loginId = localStorage.getItem('loginId');
+    console.log('Current loginId:', loginId); 
+
+     await useridHandler();
+
+    if (!loginId) {
+        console.log('No loginId found, showing OTP overlay'); 
+        setShowOtpOverlay(true); 
+        return;
+    }
+
+    setVisibleLayout(index); 
 
     const selectedBus = searchResults[index];
-  
-    // Store selected bus details in localStorage
     storeSelectedBusDetails(selectedBus);
 
-
     await addSeatLayout(); 
+};
+
+ 
+  const closeOtpOverlay = () => {
+    setShowOtpOverlay(false); 
   };
+
+  const useridHandler = async () => {
+
+  const loginId = localStorage.getItem('loginId');
+     
+    try {
+      const requestBody = {
+        user_id:loginId , 
+      };
+  
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/user-detail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch user details');
+      }
+  
+      const data = await response.json();
+      console.log('User details:', data);
+      if (data.result && data.transaction) {
+        localStorage.setItem('transactionId', data.transaction.id);
+        localStorage.setItem('transactionNum', data.transaction.transaction_num);
+      }
+    } catch (error) {
+      console.error('Error fetching user details:', error.message);
+    }
+  };
+  
+
 
   const toggleTravelList = () => {
     setIsTravelListVisible((prev) => !prev);
@@ -356,7 +408,8 @@ const toggleDropVisibility = () => {
         </div>
       </div>
     </div>
-  </div>
+    <EnterOtp showModal={showOtpOverlay} onClose={() => setShowOtpOverlay(false)} />
+    </div>
   <Footer />
 </>
 

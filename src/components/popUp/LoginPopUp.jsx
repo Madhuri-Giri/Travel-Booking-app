@@ -5,10 +5,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import loginLogo from "../../../src/assets/images/main logo.png";
 import "../popUp/LoginPopUp.css";
 
-const LoginPopUp = () => {
+const LoginPopUp = ({ showModal, onClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [showModal, setShowModal] = useState(false);
   const [otpShown, setOtpShown] = useState(false);
   const [formData, setFormData] = useState({
     mobile: '',
@@ -42,7 +41,7 @@ const LoginPopUp = () => {
         const redirectTo = state?.from || '/flight-search';
         navigate(redirectTo);
         
-        setShowModal(false);  // Close the modal on successful login
+        onClose();  // Close the modal on successful login
       } else {
         setError(data.message || 'Login failed. Please try again.');
       }
@@ -59,11 +58,9 @@ const LoginPopUp = () => {
 
   return (
     <>
-      <Button onClick={() => setShowModal(true)}>Open Login Modal</Button>
-
       <Modal 
         show={showModal} 
-        onHide={() => setShowModal(false)} 
+        onHide={onClose} 
         size="md" 
         centered 
         className="small-popup-modal"

@@ -3,89 +3,85 @@ import { Modal, Button } from 'react-bootstrap';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import "../popUp/RegisterPopup.css";
-
 import Lottie from 'lottie-react';
 import LottieImg from '../../assets/images/languageanimation.json';
 
-
-const RegisterModal = () => {
-
-  const [showModal, setShowModal] = useState(false);
-
+const RegisterModal = ({ showModal, onClose, mobile }) => {
   const navigate = useNavigate();
-
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('English');
   const [formData, setFormData] = useState({
-      name: '',
-      mobile: '',
-      email: '',
-      otp: '',
-      code: '',
-      agreeTerms: false
+    name: '',
+    mobile: mobile || '', // Pre-fill mobile number if available
+    email: '',
+    otp: '',
+    code: '',
+    agreeTerms: false
   });
   const [otpShown, setOtpShown] = useState(false); 
+  const [error, setError] = useState(""); // State for error messages
 
   const toggleOtpVisibility = () => {
-      setOtpShown(!otpShown);
+    setOtpShown(!otpShown);
   };
 
   const submitHandler = async (e) => {
-      e.preventDefault();
-      try {
-          const response = await fetch('https://sajyatra.sajpe.in/admin/api/login', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(formData)
-          });
+    e.preventDefault();
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/register', { // Use correct API endpoint for registration
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
 
-          const data = await response.json();
+      const data = await response.json();
 
-          if (response.ok) {
-              console.log('Registration successful:', data);
-              navigate('/login-popup');
-          } else {
-              console.log('Registration failed:', data);
-          }
-      } catch (error) {
-          console.error('Error:', error);
+      if (response.ok) {
+        console.log('Registration successful:', data);
+        navigate('/login-popup'); // Navigate to login page on successful registration
+      } else {
+        console.log('Registration failed:', data);
+        setError(data.message || "Registration failed. Please try again."); // Show error message
       }
+    } catch (error) {
+      console.error('Error:', error);
+      setError("An error occurred during registration. Please try again.");
+    }
   };                                    
 
   const loginHandler = () => {
-      navigate('/login-popup');
+    navigate('/login-popup');
   };
 
   const toggleLanguageDropdown = () => {
-      setShowLanguageDropdown(!showLanguageDropdown);
+    setShowLanguageDropdown(!showLanguageDropdown);
   };
 
   const closeLanguageDropdown = () => {
-      setShowLanguageDropdown(false);
+    setShowLanguageDropdown(false);
   };
 
   const selectLanguage = (language) => {
-      setSelectedLanguage(language);
-      setShowLanguageDropdown(false);
+    setSelectedLanguage(language);
+    setShowLanguageDropdown(false);
   };
 
   const handleInputChange = (e) => {
-      const { name, value, type, checked } = e.target;
-      setFormData({
-          ...formData,
-          [name]: type === 'checkbox' ? checked : value
-      });
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value
+    });
+    setError(""); // Clear error message on input change
   };
 
   return (
     <>
-      <Button onClick={() => setShowModal(true)}>Open Register Modal</Button>
-
       <Modal
         show={showModal}
-        onHide={() => setShowModal(false)}
+        onHide={onClose}
         size="lg"
         centered
         className="popup-modal"
@@ -135,6 +131,7 @@ const RegisterModal = () => {
                         </span>
                       </div>
                     </div>
+                    {error && <div className="error-message">{error}</div>} {/* Display error message */}
                     <p>
                       <input
                         type="checkbox"
