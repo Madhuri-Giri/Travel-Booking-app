@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Accordion from 'react-bootstrap/Accordion';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
-
+import { RiTimerLine } from "react-icons/ri";
 const GuestDetails = () => {
   const [hotelBlock, setHotelBlock] = useState([]);
   const [selectedRoomsData, setSelectedRoomsData] = useState(null);
@@ -34,6 +34,31 @@ const GuestDetails = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalPriceWithGST, setTotalPriceWithGST] = useState(0);
   const gstRate = 18; // GST rate in percentage
+  
+  const [timer, setTimer] = useState(600000);
+  useEffect(() => {
+    const countdown = setInterval(() => {
+      setTimer((prev) => prev - 50);
+    }, 50);
+
+    if (timer <= 0) {
+      clearInterval(countdown);
+      navigate('/hotel-room');
+    }
+
+    return () => clearInterval(countdown);
+  }, [timer, navigate]);
+
+  const formatTime = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes} min ${seconds} sec left`;
+  };
+
+  const navigateSearch = () => {
+    navigate('/hotel-room');
+  };
   
   // Function to calculate total price with GST
   const calculateTotalWithGST = (amount, gstRate) => {
@@ -462,7 +487,10 @@ const cleanHotelNorms = (hotelNorms) => {
 return (
   <>
               <CustomNavbar />
-
+              <div className="timer timer-FlightLists">
+          
+          <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
+        </div>
   <div className="guest_bg">
   <div className="guest-details-container">
   <h2 className="section-title">Guest <span style={{color:"#00b7eb"}}>Details</span> </h2>

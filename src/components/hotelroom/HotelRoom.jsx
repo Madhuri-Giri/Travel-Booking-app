@@ -4,6 +4,7 @@ import { Container, Card, Accordion } from 'react-bootstrap';
 import './HotelRoom.css';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
+import { RiTimerLine } from "react-icons/ri";
 
 const initialFormData = {
   firstName: '',
@@ -26,6 +27,31 @@ const HotelRoom = () => {
   const [totalPriceSingleDeluxe, setTotalPriceSingleDeluxe] = useState(0);
   const [totalPriceDoubleDeluxe, setTotalPriceDoubleDeluxe] = useState(0);
 
+  const [timer, setTimer] = useState(600000);
+  useEffect(() => {
+    const countdown = setInterval(() => {
+      setTimer((prev) => prev - 50);
+    }, 50);
+
+    if (timer <= 0) {
+      clearInterval(countdown);
+      navigate('/hotel-description');
+    }
+
+    return () => clearInterval(countdown);
+  }, [timer, navigate]);
+
+  const formatTime = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes} min ${seconds} sec left`;
+  };
+
+  const navigateSearch = () => {
+    navigate('/hotel-description');
+  };
+  
 
 
   useEffect(() => {
@@ -325,6 +351,10 @@ const HotelRoom = () => {
     <>
       <CustomNavbar />
 
+      <div className="timer timer-FlightLists">
+          
+          <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
+        </div>
       <section className='room_bg'>
         <Container className="hotelroom_container">
           <div className="room_container">
