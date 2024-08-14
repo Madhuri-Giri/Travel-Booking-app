@@ -23,7 +23,7 @@ function Footer() {
                             </div>
                         </div>
 
-                        <div className="col-lg-2 col-md-4 col-sm-6 footer-links">
+                        <div className="col-lg-2 col-md-4 col-6 footer-links">
                             <h5>Supports</h5>
                             <IoMdArrowDropright /> <Link to='/Faq'>Faq</Link> <br></br>
                             <IoMdArrowDropright /> <Link to='/help'>Help</Link> <br></br>
@@ -31,7 +31,7 @@ function Footer() {
                             <IoMdArrowDropright /> <Link to='/setting'>Settings</Link> <br></br>
                         </div>
 
-                        <div className="col-lg-2 col-md-4 col-sm-6 footer-links">
+                        <div className="col-lg-2 col-md-4 col-6 footer-links">
                             <h5>Quick Links</h5>
                             <IoMdArrowDropright /> <Link to='/flight-search'>Flights</Link> <br></br>
                             <IoMdArrowDropright /> <Link to='/bus-search'>Bus</Link> <br></br>
@@ -45,7 +45,7 @@ function Footer() {
                             <div> <span>Fax : </span> +1 (987)  793805</div>                            
                         </div>
 
-                        <div className="col-lg-2 col-sm-6 footer-links">
+                        <div className="col-lg-2 col-sm-6 footer-links f-linkPayment">
                             <h5>Payment Mode</h5>
                             <img src={paymentmode} className='img-fluid' alt="logo" />
                         </div>

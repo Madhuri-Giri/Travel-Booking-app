@@ -14,6 +14,9 @@ import MainLogo from "../../assets/images/main logo.png"
 import { FaDownload } from "react-icons/fa6";
 import { FaPlaneDeparture } from "react-icons/fa";
 import { FaBusAlt } from "react-icons/fa";
+import BusLogo from "../../assets/images/bus.png"
+import FlightLogo from "../../assets/images/plane.png"
+import HotelLogo from "../../assets/images/five-stars.png"
 
 
 const CustomNavbar = () => {
@@ -92,19 +95,22 @@ const CustomNavbar = () => {
                 <div className="row">
                     <div className={`col-4 ${location.pathname === '/flight-search' || location.pathname === '/' ? 'active-link' : ''}`}>
                         <NavLink to='/flight-search'>
-                            <FaPlaneDeparture className="icon" />
+                            {/* <FaPlaneDeparture className="icon" /> */}
+                            <img height={5} src={FlightLogo} className='img-fluid' alt="logo"></img><br></br>
                             Flight
                         </NavLink>
                     </div>
                     <div className={`col-4 ${location.pathname === '/bus-search' ? 'active-link' : ''}`}>
                         <NavLink to='/bus-search'>
-                            <FaBusAlt className="icon" />
+                            {/* <FaBusAlt className="icon" /> */}
+                            <img height={5} src={BusLogo} className='img-fluid' alt="logo"></img><br></br>
                             Bus
                         </NavLink>
                     </div>
                     <div className={`col-4 ${location.pathname === '/hotel-search' ? 'active-link' : ''}`}>
                         <NavLink to='/hotel-search'>
-                            <RiHotelBedFill className="icon" />
+                            {/* <RiHotelBedFill className="icon" /> */}
+                            <img height={5} src={HotelLogo} className='img-fluid' alt="logo"></img><br></br>
                             Hotel
                         </NavLink>
                     </div>

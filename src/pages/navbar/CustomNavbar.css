@@ -105,6 +105,16 @@
     background: #00000023;
     /* padding: 8px 0px; */
     border-top: 2px solid #007bff;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensures the header stays on top of other elements */
+    background-color: #fff; /* Background color for the header */
+    box-shadow: 0 4px 2px -2px gray; /* Adds a subtle shadow to the header */
+}
+
+.mobilehedrbookings img {
+    height: 30px;
 }
 
 .mobilehedrbookings .row {
@@ -112,14 +122,20 @@
     justify-content: space-around;
     text-align: center;
 }
+
 .mobilehedrbookings .row .col-4.active-link {
-    background-color: #f0f0f0; /* Light grey background when active */
-    border-bottom: 3px solid brown; /* Border bottom for the active state */
+    /* background-color: #f0f0f0; */
+    border-bottom: 3px solid #fd4f6e;
 }
-.mobilehedrbookings .row .col-4{
+
+.mobilehedrbookings .row .col-4.active-link a {
+    color: #fd4f6e !important;
+}
+
+.mobilehedrbookings .row .col-4 {
     background-color: white;
     border-radius: 3px;
-    padding: 10px 0px;
+    padding: 1px 0px;
     box-shadow: 2px 2px 5px 2px rgba(239, 234, 234, 0.491);
 }
 
@@ -130,7 +146,7 @@
     font-weight: bold;
     text-decoration: none;
     font-size: 14px;
-    color: brown;
+    color: gray;
 }
 
 .mobilehedrbookings .row .col-4 svg {

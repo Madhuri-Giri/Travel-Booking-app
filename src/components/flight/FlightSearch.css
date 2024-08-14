@@ -115,8 +115,9 @@
     border-top: 1px dashed brown;
     z-index: 2;
 }
+
 .flight-suggestions-listFrom li,
-.flight-suggestions-listTo li{
+.flight-suggestions-listTo li {
     padding: 5px 15px;
     font-size: 17px;
     font-weight: bold;
@@ -136,9 +137,10 @@
     border-top: 1px dashed brown;
     z-index: 2;
 }
-.suggestions-list li:hover{
-    color: #00b7eb ;  
-    background-color: #e6dede94 ;
+
+.suggestions-list li:hover {
+    color: #00b7eb;
+    background-color: #e6dede94;
 }
 
 .flightPageBanner {
@@ -193,6 +195,7 @@
     color: #00b7eb;
     text-transform: uppercase;
 }
+
 .travellerdropdowncol2 label {
     font-size: 15px;
     /* color: #00b7eb; */
@@ -648,16 +651,18 @@
 
 /* responsive css */
 @media screen and (max-width: 1200px) {
-    .flight-suggestions-listFrom{
+    .flight-suggestions-listFrom {
         top: 54px;
     }
 }
+
 @media screen and (max-width: 992px) {
-    .flight-suggestions-listFrom{
+    .flight-suggestions-listFrom {
         top: 53px;
     }
 
 }
+
 @media screen and (max-width: 768px) {
     .flightbooksec2 {
         display: none;
@@ -689,14 +694,22 @@
 
 /* responsive css */
 @media screen and (max-width: 576px) {
+    .flightsec6 {
+        height: 470px;
+        padding-top: 20px;
+    }
+
     .findFlightss button {
         margin-bottom: 10px;
         padding: 3px 10px;
         font-size: 15px;
     }
-    .onewaybutton label, .twowaybutton label {
+
+    .onewaybutton label,
+    .twowaybutton label {
         font-size: 13px !important;
     }
+
     .flight-suggestions-listFrom {
         width: 100% !important;
         display: flex;
@@ -732,22 +745,26 @@
         padding: 0 6px;
         margin: 0 6px;
     }
+
     .flight-input-labelTo {
         left: 18%;
         padding: 0 6px;
         margin: 0 6px;
     }
-    .flight-input-labelDepDate{
+
+    .flight-input-labelDepDate {
         left: 35%;
         padding: 0 6px;
         margin: 0 6px;
     }
-    .flight-input-labelTravel{
+
+    .flight-input-labelTravel {
         left: 26%;
         padding: 0 6px;
         margin: 0 6px;
     }
-    .flight-input-labelRetDate{
+
+    .flight-input-labelRetDate {
         left: 26%;
         padding: 0 6px;
         margin: 0 6px;
@@ -758,6 +775,7 @@
         border: 1px solid gray;
         padding: 7px 29px;
     }
+
     .plane-icon {
         left: 8px;
         font-size: 20px;
@@ -822,6 +840,7 @@
         padding-bottom: 20px;
         border-radius: 4px;
     }
+
     .flightTravellerclss span {
         color: #00b7eb;
         font-size: 13px;

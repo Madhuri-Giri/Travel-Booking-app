@@ -1,9 +1,8 @@
-
 /* ----------start side filter--------- */
- .hotelMainsec{
+.hotelMainsec {
   padding: 40px 0px;
   background-color: #dddddd;
- }
+}
 
 .listContainer {
   display: flex;
@@ -23,7 +22,7 @@
 .listSearch {
   flex: 1;
   box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
-  padding:45px;
+  padding: 45px;
   border-radius: 10px;
   position: sticky;
   top: 10px;
@@ -70,16 +69,18 @@
 .listOptions {
   padding: 10px;
 }
- .timer{
+
+.timer {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 1vmax;
-  color:rgba(255, 0, 0, 0.71);
+  color: rgba(255, 0, 0, 0.71);
   font-weight: 700;
   font-size: 1vmax;
 }
+
 .listOptionItem {
   display: flex;
   justify-content: space-between;
@@ -102,16 +103,19 @@
   font-weight: 500;
   cursor: pointer;
   font-family: sans-serif;
-  border-radius:10px
+  border-radius: 10px
 }
-.listFilterOption{
+
+.listFilterOption {
   margin-bottom: 8px;
 }
+
 .radioButton {
-  margin-right: 8px; 
+  margin-right: 8px;
 }
+
 .listFilterOption label {
-  font-weight: 600; 
+  font-weight: 600;
 }
 
 /* ---------------End ------------------- */
@@ -206,17 +210,19 @@
 
 .hotelRating {
   display: flex;
-  justify-content: flex-end; 
+  justify-content: flex-end;
 }
-.hotelRating{
+
+.hotelRating {
   font-size: 12px;
 }
+
 .hotelRating span {
   /* font-weight: 300; */
   font-size: 12px;
 }
 
-.hotelRating  button {
+.hotelRating button {
   background-color: #00b7eb;
   color: white;
   padding: 5px;
@@ -237,7 +243,8 @@
 .hotelPrice {
   font-size: 18px;
   font-family: sans-serif;
-
+  color: #00e100;
+  font-weight: bold;
 }
 
 .hotelTax {
@@ -256,6 +263,7 @@
   cursor: pointer;
   border-radius: 5px;
 }
+
 /* ------------End -------------- */
 
 
@@ -302,47 +310,65 @@
 .paginationContainer .pagination li a:hover {
   background-color: #ddd;
 }
+
 /* ---------------------End--------------------- */
 
 /* Responsive CSS */
 @media (max-width: 992px) {
-.listSearchcol{
-  display: none;
-}
-  
+  .listSearchcol {
+    display: none;
+  }
+
 }
 
 
 @media (max-width: 768px) {
   .listWrapper {
-      flex-direction: column;
+    flex-direction: column;
   }
-  
+
   .listSearch {
-      margin-bottom: 20px;
-      display: none;
+    margin-bottom: 20px;
+    display: none;
   }
-  
+
   .listResult {
-      flex: none;
+    flex: none;
   }
 
   .searchItem {
-      flex-direction: column;
+    flex-direction: column;
   }
 
   .hotelImg {
-      width: 100%;
-      height: auto;
+    width: 100%;
+    /* height: auto; */
   }
 
   .DetailTexts {
-      text-align: left;
+    text-align: left;
   }
+
   .paginationContainer .pagination li {
-    margin: 0 !important; 
+    margin: 0 !important;
   }
-  .timer{
+
+  .timer {
     font-size: 14px;
   }
+}
+
+@media (max-width: 576px) {
+  .hotelImg {
+    width: 100%;
+    /* height: unset; */
+  }
+  .hotelMainsec {
+    padding: 5px 0px;
+  }
+
+  .searchItem {
+    margin-bottom: 7px;
+  }
+
 }
