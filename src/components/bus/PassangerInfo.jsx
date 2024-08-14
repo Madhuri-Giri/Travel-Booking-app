@@ -38,6 +38,9 @@ const PassangerInfo = () => {
     event.preventDefault();
 
     if (passengerCount < selectedSeats.length) {
+
+      // const transactionNum = localStorage.getItem('transactionNum');
+
       const requestData = {
         ResultIndex: '1',
         TraceId: '1',
@@ -98,6 +101,7 @@ const PassangerInfo = () => {
             },
           },
         ],
+        // transactionNum: transactionNum,
       };
 
       try {
