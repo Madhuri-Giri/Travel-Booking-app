@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { isBrowser, isMobile } from "react-device-detect";
+import './EnterOtp.css'; 
 
 const EnterOtp = () => {
   const [showModal, setShowModal] = useState(false);
@@ -68,6 +69,8 @@ const EnterOtp = () => {
   return (
     <>
       <Button onClick={() => setShowModal(true)}>Enter Number</Button>
+
+      {showModal && <div className="modal-overlay" />} {/* Overlay div */}
 
       <Modal
         show={showModal}
