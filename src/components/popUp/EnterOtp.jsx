@@ -3,19 +3,18 @@ import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { isBrowser, isMobile } from "react-device-detect";
 import './EnterOtp.css'; 
+import RegisterModal from "./RegisterPopup";
+import LoginPopUp from "./LoginPopUp";
 
-const EnterOtp = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ mobile: "", otp: "" });
-  const [otpShown, setOtpShown] = useState(false);
+const EnterOtp = ({ showModal, onClose }) => {
+  const [formData, setFormData] = useState({ mobile: "" });
   const [error, setError] = useState("");
+  const [showRegisterModal, setShowRegisterModal] = useState(false); // State for RegisterModal
+  const [showLoginModal, setShowLoginModal] = useState(false); // State for LoginModal
   const navigate = useNavigate();
   const deviceId = isBrowser ? "browser" : isMobile ? "mobile" : "unknown";
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Validate mobile number
+  const handleOtpRequest = async () => {
     const mobilePattern = /^[0-9]{10}$/;
     if (!mobilePattern.test(formData.mobile)) {
       setError("Please enter a valid mobile number (10 digits).");
@@ -42,18 +41,22 @@ const EnterOtp = () => {
       }
 
       const data = await response.json();
-      console.log(data);
+      console.log('send otp', data);
 
       localStorage.setItem("otpResponse", JSON.stringify(data));
 
+      // Show the appropriate modal based on the user registration status
       if (data.user_registered) {
-        navigate("/register");
+        // If the user is already registered, navigate to the login modal
+        setShowLoginModal(true);
       } else {
-        navigate("/register");
+        // If the user is not registered, show the register modal
+        setShowRegisterModal(true);
       }
+
     } catch (error) {
       console.error("Error:", error);
-      setError("Failed to verify OTP. Please try again.");
+      setError("Failed to send OTP. Please try again.");
     }
   };
 
@@ -62,19 +65,13 @@ const EnterOtp = () => {
     setError("");
   };
 
-  const toggleOtpVisibility = () => {
-    setOtpShown(!otpShown);
-  };
-
   return (
     <>
-      <Button onClick={() => setShowModal(true)}>Enter Number</Button>
-
       {showModal && <div className="modal-overlay" />} {/* Overlay div */}
 
       <Modal
         show={showModal}
-        onHide={() => setShowModal(false)}
+        onHide={onClose} // Use the onClose prop to close the modal
         centered
         className="small-popup-modal"
       >
@@ -84,26 +81,32 @@ const EnterOtp = () => {
         <Modal.Body>
           <div className="Login_container">
             <div className="login">
-              <form onSubmit={handleSubmit}>
-                <div className="one">
-                  <input
-                    type="number"
-                    placeholder="Enter Your Mobile Number"
-                    name="mobile"
-                    value={formData.mobile}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="lgin">
-                  <button type="submit">Submit</button>
-                </div>
-                {error && <div className="error-message">{error}</div>}
-              </form>
+              <input
+                type="number"
+                placeholder="Enter Your Mobile Number"
+                name="mobile"
+                value={formData.mobile}
+                onChange={handleInputChange}
+                required
+              />
+              <div className="lgin">
+                <Button onClick={handleOtpRequest}>Submit</Button>
+              </div>
+              {error && <div className="error-message">{error}</div>}
             </div>
           </div>
         </Modal.Body>
       </Modal>
+
+      <RegisterModal
+        showModal={showRegisterModal}
+        onClose={() => setShowRegisterModal(false)} 
+      />
+
+        <LoginPopUp
+          showModal={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
+        />
     </>
   );
 };

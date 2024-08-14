@@ -200,7 +200,7 @@ const FlightReview = () => {
   }
 
 
-  // -----------------------flight LLC Api----------------------------------------------
+  // -----------------------flight LcC Api----------------------------------------------
 
   const traceId = localStorage.getItem('FlightTraceId2');
   const resultIndex = localStorage.getItem('FlightResultIndex2');
