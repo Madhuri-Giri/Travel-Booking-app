@@ -149,8 +149,8 @@ export default function FlightDetails() {
 
     const [seatData, setSeatData] = useState([]);
 
-    console.log("ssrData", ssrData);
-    console.log("seatData", seatData);
+    // console.log("ssrData", ssrData);
+    // console.log("seatData", seatData);
 
     useEffect(() => {
         const flightData = localStorage.getItem('FlightsitMap');
@@ -305,7 +305,7 @@ export default function FlightDetails() {
         const { gender, firstName, lastName } = details[index];
         if (gender && firstName && lastName) {
             setError('');
-            const newDetail = { ...details[index], selected: true };
+            const newDetail = { ...details[index], selected: false };
             if (type === 'adult') {
                 setConfirmedAdultDetails([...confirmedAdultDetails, newDetail]);
             } else if (type === 'child') {
@@ -317,6 +317,9 @@ export default function FlightDetails() {
         } else {
             setError(`Please fill out all fields for ${type} ${index + 1}.`);
         }
+
+        console.log("setConfirmedAdultDetails",setConfirmedAdultDetails);
+        
     };
 
     const handleDelete = (type, index) => {
@@ -438,9 +441,13 @@ export default function FlightDetails() {
     const toggleSelect = (index, type) => {
         if (type === 'adult') {
             const updatedDetails = confirmedAdultDetails.map((detail, i) =>
-                i === index ? { ...detail, selected: !detail.selected } : detail
+                i === index ? { ...detail, selected: !detail.selected } : detail            
             );
             setConfirmedAdultDetails(updatedDetails);
+            console.log("adultPassengerDetails",updatedDetails);
+            localStorage.setItem('adultPassengerDetails', JSON.stringify(updatedDetails));
+           
+
         } else if (type === 'child') {
             const updatedDetails = confirmedChildDetails.map((detail, i) =>
                 i === index ? { ...detail, selected: !detail.selected } : detail

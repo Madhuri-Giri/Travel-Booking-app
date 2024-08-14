@@ -1,4 +1,10 @@
 /* styles.css */
+.mobileAirlines {
+    display: block !important; /* Ensure it's visible */
+    /* Remove any potential display: none or visibility: hidden rules */
+}
+
+
 .slider-container {
     background-color: white;
     padding: 0px 25px;

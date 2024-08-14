@@ -83,13 +83,10 @@ export default function FlightLists() {
     const listData = location.state.data
     const formData = location.state.formData
     const PreferredDepartureTime = formData.Segments[0].PreferredDepartureTime
-    const PreferredArrivalTime = formData.Segments[0].PreferredArrivalTime   
+    const PreferredArrivalTime = formData.Segments[0].PreferredArrivalTime
 
     localStorage.setItem("FlightSrdvType", listData.SrdvType)
     localStorage.setItem("FlightTraceId", listData.TraceId)
-
-    const dd = listData?.Results
-    let originalAirlineList = [];
 
     // function for date convert into day month date--------------------------------------
     const formatDate = (dateString) => {
@@ -109,71 +106,61 @@ export default function FlightLists() {
     // func for duration convert hpur minute---------------------
 
     // Function to extract all AirlineName values
-  // -------------------------------------------------------------airline filters logic----------------
-const getAllAirlineNames = (data) => {
-    const airlineNames = [];
+    // -------------------------------------------------------------airline filters logic----------------
+      const dd = listData?.Results
+    let originalAirlineList = [];
+    const getAllAirlineNames = (data) => {
+        const airlineNames = [];
 
-    data.forEach(result => {
-        result.forEach(segmentArray => {
-            segmentArray.Segments.forEach(segment => {
-                segment.forEach(detail => {
-                    airlineNames.push(detail.Airline.AirlineName);
+        data.forEach(result => {
+            result.forEach(segmentArray => {
+                segmentArray.Segments.forEach(segment => {
+                    segment.forEach(detail => {
+                        airlineNames.push(detail.Airline.AirlineName);
+                    });
                 });
             });
         });
-    });
 
-    return airlineNames;
-};
-
-const airlineNames = getAllAirlineNames(dd);
-const uniqueAirlineNames = [...new Set(airlineNames)];
-
-const createSubjectCheckboxes = () => {
-    const airlinesContainers = document.querySelectorAll('.airlineFilters');
-
-    // Clear previous content in all elements with class "airlineFilters"
-    airlinesContainers.forEach(airlinesContainer => {
-        airlinesContainer.innerHTML = ''; 
-
-        uniqueAirlineNames.forEach(airlineName => {
-            const div = document.createElement('div');
-
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.classList.add('airlineFilter', 'largeCheckbox');
-            checkbox.value = airlineName;
-            checkbox.id = `airlineName${airlineName}`;
-            checkbox.addEventListener('change', applyFilters);
-
-            const label = document.createElement('label');
-            label.setAttribute('for', `airlineName${airlineName}`);
-            label.textContent = airlineName;
-            label.classList.add('largeLabel');
-
-            div.appendChild(label);
-            div.appendChild(checkbox);
-
-            airlinesContainer.appendChild(div);
-            airlinesContainer.appendChild(document.createElement('br'));
+        return airlineNames;
+    };
+    const airlineNames = getAllAirlineNames(dd);
+    const uniqueAirlineNames = [...new Set(airlineNames)];
+    const createSubjectCheckboxes = () => {
+        const airlinesContainers = document.querySelectorAll('.airlineFilters');
+        airlinesContainers.forEach(airlinesContainer => {
+            airlinesContainer.innerHTML = '';
+            uniqueAirlineNames.forEach(airlineName => {
+                const div = document.createElement('div');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.classList.add('airlineFilter', 'largeCheckbox');
+                checkbox.value = airlineName;
+                checkbox.id = `airlineName${airlineName}`;
+                checkbox.addEventListener('change', applyFilters);
+                const label = document.createElement('label');
+                label.setAttribute('for', `airlineName${airlineName}`);
+                label.textContent = airlineName;
+                label.classList.add('largeLabel');
+                div.appendChild(label);
+                div.appendChild(checkbox);
+                airlinesContainer.appendChild(div);
+                airlinesContainer.appendChild(document.createElement('br'));
+            });
         });
-    });
-};
+    };
+    const [selected, setSelected] = useState([]);
+    const applyFilters = () => {
+        const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
+        const selectedAirlines = Array.from(airlineFilters).map(filter => filter.value);
+        setSelected(selectedAirlines);
+        const originalAirlineList = listData?.Results || [];
+    };
+    useEffect(() => {
+        createSubjectCheckboxes();
+    }, []);
 
-const [selected, setSelected] = useState([]);
-
-const applyFilters = () => {
-    const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
-    const selectedAirlines = Array.from(airlineFilters).map(filter => filter.value);
-    setSelected(selectedAirlines);
-    const originalAirlineList = listData?.Results || [];
-};
-
-useEffect(() => {
-    createSubjectCheckboxes();
-}, []);
-
-// -------------------------------------------------------------airline filters logic----------------
+    // -------------------------------------------------------------airline filters logic----------------
 
 
 
@@ -424,7 +411,7 @@ useEffect(() => {
                         <div className="filterSidebarMain row">
                             <div className="col-12 flightlistsec2col1 flightlistsec2col1MobileView">
                                 <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
-                                    <Accordion.Item eventKey="0">
+                                    {/* <Accordion.Item eventKey="0">
                                         <Accordion.Header className="flightlistaccordian">Stops</Accordion.Header>
                                         <Accordion.Body>
                                             <div className="row">
@@ -445,7 +432,7 @@ useEffect(() => {
                                                 </div>
                                             </div>
                                         </Accordion.Body>
-                                    </Accordion.Item>
+                                    </Accordion.Item> */}
                                     <Accordion.Item eventKey="1">
                                         <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
                                         <Accordion.Body>
