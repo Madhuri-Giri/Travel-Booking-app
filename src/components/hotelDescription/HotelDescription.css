@@ -1,8 +1,6 @@
-
-
 /* -------------Image section-------- */
 
-.hotelDescriptionSection{
+.hotelDescriptionSection {
     background-color: #dddddd;
     padding: 30px 0px;
 }
@@ -10,7 +8,7 @@
 .search_Item {
     display: flex;
     flex-direction: column;
-    gap: 5px; 
+    gap: 5px;
     margin: 20px 0;
     padding: 20px;
     /* border: 1px solid #ccc; */
@@ -19,23 +17,24 @@
     background-color: #f9f9f9;
 }
 
-.ro{
+.ro {
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #f9f9f9;
+    border-radius: 10px;
 }
 
-.hotelName h3{
+.hotelName h3 {
     color: #007bff;
     margin-top: 5px;
 }
 
 
-.hotelName span{
-font-size: 14px;
-margin-left: 10px;
+.hotelName span {
+    font-size: 14px;
+    margin-left: 10px;
 }
 
 .hotelCarousel {
@@ -48,10 +47,11 @@ margin-left: 10px;
 
 .hotel_Img {
     width: 100%;
-    max-height:510px; 
-    object-fit: cover; 
+    max-height: 510px;
+    object-fit: cover;
 }
-.hotel_Img_single_above{
+
+.hotel_Img_single_above {
     width: 100%;
     height: 250px;
     object-fit: cover;
@@ -73,24 +73,25 @@ margin-left: 10px;
     border-radius: 8px;
     transition: transform 0.3s ease;
     margin-top: 20px;
-  }
+}
+
 /*   
   .hotel_Img_single:hover {
     transform: scale(1.05);
   } */
-  
-  /* Modal image styling */
-  .hotel_Img_modal {
+
+/* Modal image styling */
+.hotel_Img_modal {
     width: 100%;
     height: auto;
     object-fit: cover;
-  }
-  
-  /* Hotel description section */
+}
+
+/* Hotel description section */
 .search_Item {
     display: flex;
     flex-direction: column;
-    gap: 5px; 
+    gap: 5px;
     margin: 20px 0;
     padding: 20px;
     border: 1px solid #ccc;
@@ -101,21 +102,21 @@ margin-left: 10px;
 
 .Description_hotel h5 {
     margin-top: 10px;
-    margin-bottom: 0; 
-    font-size: 1.1em; 
+    margin-bottom: 0;
+    font-size: 1.1em;
     font-family: sans-serif;
     font-weight: bold;
 }
 
 .Description_hotel p {
-    margin-top: 0; 
-    margin-bottom: 10px; 
-    line-height: 1.4; 
+    margin-top: 0;
+    margin-bottom: 10px;
+    line-height: 1.4;
     font-family: sans-serif;
     /* height: 320px !important; */
     /* max-height:500px;  */
     /* object-fit: cover;  */
-    
+
 
 }
 
@@ -128,7 +129,7 @@ margin-left: 10px;
 .Title_hotel {
     font-size: 1.5em;
     font-weight: bold;
-    margin: 0; 
+    margin: 0;
 }
 
 .Distance_hotel {
@@ -151,16 +152,17 @@ margin-left: 10px;
     font-size: 12px;
     /* color: #ffc107; */
 }
+
 .Features_hotel h5 {
-    margin-top: 0; 
-    margin-bottom: 5px; 
+    margin-top: 0;
+    margin-bottom: 5px;
     font-family: sans-serif;
 }
 
 .Features_hotel {
     display: flex;
-    flex-wrap: wrap; 
-    gap: 5px; 
+    flex-wrap: wrap;
+    gap: 5px;
     padding: 10px 0;
     font-family: sans-serif;
 }
@@ -170,20 +172,20 @@ margin-left: 10px;
     border-radius: 5px;
     padding: 10px 11px;
     background-color: #f9f9f9;
-    flex: 1 0 auto; 
-    margin: 2px; 
+    flex: 1 0 auto;
+    margin: 2px;
 }
 
 .PriceButton {
     display: flex;
-    justify-content: space-between; 
-    align-items: center; 
+    justify-content: space-between;
+    align-items: center;
     gap: 10px;
-    padding-top: 10px; 
+    padding-top: 10px;
 }
 
 .Price_hotel {
-    margin: 0; 
+    margin: 0;
     font-size: 1.2em;
     font-weight: bold;
     color: #484646;
@@ -194,16 +196,27 @@ margin-left: 10px;
     background-color: #00b7eb;
     color: white;
     font-weight: bold;
-    padding: 10px 15px; 
+    padding: 10px 15px;
     border: none;
     cursor: pointer;
-    border-radius: 5px; 
-    margin: 0; 
+    border-radius: 5px;
+    margin: 0;
     font-family: sans-serif;
 }
+
 /* ----------End hotel discription------------- */
 @media (max-width: 768px) {
-    .Feature_item{
-font-size: 12px;
+    .Feature_item {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hotelDescriptionSection {
+        padding: 10px 0px;
+    }
+    .search_Item{
+        margin-top: 10px;
+        margin-bottom: 0px;
     }
 }

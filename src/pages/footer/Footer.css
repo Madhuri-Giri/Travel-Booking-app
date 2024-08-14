@@ -52,3 +52,15 @@
     color: #00b7eb;
     text-decoration: none;
 }
+
+@media (max-width: 576px) {
+    .f-linkPayment{
+        display: none;
+    }
+    .footer-sec {
+        padding-top: 10px;
+    }
+    .footer-links {
+        margin-top: 20px !important;
+    }
+  }

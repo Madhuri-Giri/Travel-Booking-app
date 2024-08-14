@@ -25,8 +25,8 @@ export default function FlightLists() {
 
     useEffect(() => {
         const countdown = setInterval(() => {
-            setTimer((prev) => prev - 100);
-        }, 100);
+            setTimer((prev) => prev - 50);
+        }, 50);
 
         if (timer <= 0) {
             clearInterval(countdown);
