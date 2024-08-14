@@ -3,7 +3,7 @@ import './BusLayout.css';
 import BusSeatImg from '../../assets/images/bussit.png';
 import { useNavigate } from 'react-router-dom';
 import { MdAirlineSeatReclineNormal } from "react-icons/md";
-import Loading from '../../pages/loading/Loading'; 
+import Loading from '../../pages/loading/Loading';
 import BoardAndDrop from "../bus/BoardAndDrop";
 
 const BusLayout = () => {
@@ -14,24 +14,32 @@ const BusLayout = () => {
   const [lowerSeatNames, setLowerSeatNames] = useState([]);
   const [upperBasePrices, setUpperBasePrices] = useState([]);
   const [upperSeatNames, setUpperSeatNames] = useState([]);
-  const [availableSeats, setAvailableSeats] = useState(0); 
-  const [loading, setLoading] = useState(false); 
+  const [availableSeats, setAvailableSeats] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [boardingSelected, setBoardingSelected] = useState(false);
   const [droppingSelected, setDroppingSelected] = useState(false);
 
+  // for seat tabs----------------------
+  const [activeTab, setActiveTab] = useState('lower');
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
+  // for seat tabs----------------------
+
   useEffect(() => {
     const busLayoutResponse = JSON.parse(localStorage.getItem('BuslayoutResponse')) || {};
-    
+
     const lowerSeats = (busLayoutResponse.Result || []).flat();
     const upperSeats = (busLayoutResponse.ResultUpperSeat || []).flat();
     const availableSeats = busLayoutResponse.AvailableSeats;
     setAvailableSeats(availableSeats);
-    
+
     const extractedLowerBasePrices = lowerSeats.map(seat => seat.Price.BasePrice);
     const extractedLowerSeatNames = lowerSeats.map(seat => seat.SeatName);
     const extractedUpperBasePrices = upperSeats.map(seat => seat.Price.BasePrice);
     const extractedUpperSeatNames = upperSeats.map(seat => seat.SeatName);
-  
+
     setLowerBasePrices(extractedLowerBasePrices);
     setLowerSeatNames(extractedLowerSeatNames);
     setUpperBasePrices(extractedUpperBasePrices);
@@ -47,7 +55,7 @@ const BusLayout = () => {
       const basePrice = lowerBasePrices[index];
       return basePrice - (basePrice * 0.18);
     }
-    return null; 
+    return null;
   };
 
   const getUpperBasePrice = (seatName) => {
@@ -56,7 +64,7 @@ const BusLayout = () => {
       const basePrice = upperBasePrices[index];
       return basePrice - (basePrice * 0.18);
     }
-    return null; 
+    return null;
   };
 
   const handleSeatSelect = (seatName) => {
@@ -143,7 +151,92 @@ const BusLayout = () => {
             <div className='sel'>please selct seats and boarding droping points before proceed.</div>
 
             <div className="left-btm">
-              <div className="lower">
+
+
+              <div className='busseatTabs'>
+                {/* Tab Buttons */}
+                <div className="tabs busseatTabsBTN">
+                  <button
+                    className={activeTab === 'lower' ? 'active' : ''}
+                    onClick={() => handleTabClick('lower')}
+                  >
+                    Lower Seats
+                  </button>
+                  <button
+                    className={activeTab === 'upper' ? 'active' : ''}
+                    onClick={() => handleTabClick('upper')}
+                  >
+                    Upper Seats
+                  </button>
+                </div>
+
+                {/* Tab Content */}
+                {activeTab === 'lower' && (
+                  <div className="lower">
+                    {/* <h6>Lower Seats</h6> */}
+                    <div className="sit">
+                      {lowerSeats.map((seat, index) => {
+                        const seatName = lowerSeatNames[index];
+                        const isLastRow = index >= lowerSeats.length - 5;
+                        const seatSelected = selectedSeats.includes(seatName);
+                        const basePrice = getLowerBasePrice(seatName);
+                        const isDisabled = basePrice === null;
+
+                        return (
+                          <div
+                            onClick={!isDisabled ? () => handleSeatSelect(seatName) : undefined}
+                            style={{
+                              backgroundColor: seatSelected ? '#ccc' : isDisabled ? '#f0f0f0' : 'transparent',
+                              pointerEvents: isDisabled ? 'none' : 'auto',
+                            }}
+                            className={`sit-img ${isLastRow ? 'last-row' : index % 4 === 2 ? 'aisle' : ''} ${isDisabled ? 'disabled' : ''}`}
+                            key={seatName}
+                          >
+                            <span>{seatName}</span>
+                            <img width={25} src={BusSeatImg} alt="seat" />
+                            <p>{basePrice !== null ? `${basePrice.toFixed(2)}` : 'N/A'}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'upper' && (
+                  <div className="upper">
+                    {/* <h6>Upper Seats</h6> */}
+                    <div className="sit">
+                      {upperSeats.map((seat, index) => {
+                        const seatName = upperSeatNames[index];
+                        const isLastRow = index >= upperSeats.length - 5;
+                        const seatSelected = selectedSeats.includes(seatName);
+                        const basePrice = getUpperBasePrice(seatName);
+                        const isDisabled = basePrice === null;
+
+                        return (
+                          <div
+                            onClick={!isDisabled ? () => handleSeatSelect(seatName) : undefined}
+                            style={{
+                              backgroundColor: seatSelected ? '#ccc' : isDisabled ? '#f0f0f0' : 'transparent',
+                              pointerEvents: isDisabled ? 'none' : 'auto',
+                            }}
+                            className={`sit-img ${isLastRow ? 'last-row' : index % 4 === 2 ? 'aisle' : ''} ${isDisabled ? 'disabled' : ''}`}
+                            key={seatName}
+                          >
+                            <span>{seatName}</span>
+                            <img width={25} src={BusSeatImg} alt="seat" />
+                            <p>{basePrice !== null ? `${basePrice.toFixed(2)}` : 'N/A'}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+
+
+              <div className="lower lowerSeatWEB">
                 <h6>Lower Seats</h6>
                 <div className="sit">
                   {lowerSeats.map((seat, index) => {
@@ -171,7 +264,7 @@ const BusLayout = () => {
                   })}
                 </div>
               </div>
-              <div className="upper">
+              <div className="upper upperSeatWEB">
                 <h6>Upper Seats</h6>
                 <div className="sit">
                   {upperSeats.map((seat, index) => {
@@ -199,23 +292,23 @@ const BusLayout = () => {
                   })}
                 </div>
               </div>
-            </div> 
-         
-             
-             {/* --------------------------------------------- */}
-                
-               <div className="responsive-tab">
-                
-               </div>
-         
-             {/* --------------------------------------------- */}
-             
+            </div>
+
+
+            {/* --------------------------------------------- */}
+
+            <div className="responsive-tab">
+
+            </div>
+
+            {/* --------------------------------------------- */}
+
           </div>
 
           <div className="bord-drop">
-            <BoardAndDrop 
-              onBoardingSelect={handleBoardingSelect} 
-              onDroppingSelect={handleDroppingSelect} 
+            <BoardAndDrop
+              onBoardingSelect={handleBoardingSelect}
+              onDroppingSelect={handleDroppingSelect}
             />
           </div>
 
