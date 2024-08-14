@@ -92,7 +92,6 @@ const BusLists = () => {
      await useridHandler();
 
 
-     
     if (!loginId) {
         console.log('No loginId found, showing OTP overlay'); 
         setShowOtpOverlay(true); 

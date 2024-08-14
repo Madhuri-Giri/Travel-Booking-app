@@ -21,8 +21,7 @@ const LoginPopUp = ({ showModal, onClose }) => {
 
   const loginHandler = async (e) => {
     e.preventDefault();
-    const { state } = location;
-
+  
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/login', {
         method: 'POST',
@@ -31,15 +30,13 @@ const LoginPopUp = ({ showModal, onClose }) => {
         },
         body: JSON.stringify(formData)
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         console.log('Login successful:', data);
         localStorage.setItem('loginId', data.data.id);
         localStorage.setItem('loginData', JSON.stringify(data.data));
-        const redirectTo = state?.from || '/flight-search';
-        navigate(redirectTo);
         
         onClose();  // Close the modal on successful login
       } else {
@@ -50,6 +47,7 @@ const LoginPopUp = ({ showModal, onClose }) => {
       setError('An unexpected error occurred. Please try again.');
     }
   };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
