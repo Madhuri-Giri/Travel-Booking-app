@@ -53,18 +53,20 @@
     align-items: flex-start;
     justify-content: flex-start;
     flex-direction: column;
-    /* margin-top: 1vmax; */
+    margin-top: 1vmax;
 }
 
 .Login_container .login .one label {
     color: rgba(27, 27, 27, 0.669);
     font-weight: 600;
     font-size: 1.1vmax;
+    padding-left: 10px;
+    /* padding-top: 10px; */
 }
 
 .Login_container .login .one input {
     width: 100%;
-    margin-top: 0.6vmax;
+    /* margin-top: 0.6vmax; */
     border: none;
     background-color: none;
     border: 0.2px solid #0000003d;

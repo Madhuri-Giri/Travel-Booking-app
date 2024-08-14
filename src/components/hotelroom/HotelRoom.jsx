@@ -20,6 +20,7 @@ const HotelRoom = () => {
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState(initialFormData);
 
+  
   // Single and Double delux element 
   const [selectedSingleDeluxeRooms, setSelectedSingleDeluxeRooms] = useState([]);
   const [selectedDoubleDeluxeRooms, setSelectedDoubleDeluxeRooms] = useState([]);
@@ -351,8 +352,7 @@ const HotelRoom = () => {
     <>
       <CustomNavbar />
 
-      <div className="timer timer-FlightLists">
-          
+      <div className="timer ">
           <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
         </div>
       <section className='room_bg'>
@@ -397,11 +397,22 @@ const HotelRoom = () => {
                                 <Accordion.Item eventKey="0">
                                   <Accordion.Header><b>Cancellation Policy</b></Accordion.Header>
                                   <Accordion.Body>
-                                    {room.CancellationPolicies.map((policy, idx) => (
+                                    {/* {room.CancellationPolicies.map((policy, idx) => (
                                       <p key={idx}>
                                         {policy.FromDate} to {policy.ToDate}: {policy.Charge}% will be charged.
                                       </p>
-                                    ))}
+                                    ))} */}
+                                    <div className="cancellation-container">
+                         {room.CancellationPolicies.map((policy, idx) => (
+                             <div key={idx} className="cancellation-policy">
+                                    <p>
+                                 <strong>{new Date(policy.FromDate).toLocaleDateString()}</strong> to{' '}
+                             <strong>{new Date(policy.ToDate).toLocaleDateString()}</strong>:{' '}
+                              <strong>{policy.Charge} ₹ </strong>  charges.
+                                    </p>
+                                  </div>
+                                      ))}
+                                  </div>
                                   </Accordion.Body>
                                 </Accordion.Item>
                               </Accordion>
@@ -468,11 +479,21 @@ const HotelRoom = () => {
                                 <Accordion.Item eventKey="0">
                                   <Accordion.Header><b>Cancellation Policy</b></Accordion.Header>
                                   <Accordion.Body>
-                                    {room.CancellationPolicies.map((policy, idx) => (
+                                    {/* {room.CancellationPolicies.map((policy, idx) => (
                                       <p key={idx}>
                                         {policy.FromDate} to {policy.ToDate}: {policy.Charge}% will be charged.
                                       </p>
-                                    ))}
+                                    ))} */} <div className="cancellation-container">
+    {room.CancellationPolicies.map((policy, idx) => (
+      <div key={idx} className="cancellation-policy">
+        <p>
+          <strong>{new Date(policy.FromDate).toLocaleDateString()}</strong> to{' '}
+          <strong>{new Date(policy.ToDate).toLocaleDateString()}</strong>:{' '}
+           <strong>{policy.Charge} ₹ </strong>  charges.
+        </p>
+      </div>
+    ))}
+  </div>
                                   </Accordion.Body>
                                 </Accordion.Item>
                               </Accordion>

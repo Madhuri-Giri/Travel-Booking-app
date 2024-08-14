@@ -28,10 +28,10 @@ const RegisterModal = ({ showModal, onClose, mobile }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/register', { // Use correct API endpoint for registration
+      const response = await fetch('https://new.sajpe.in/api/v1/user/login', { // Use correct API endpoint for registration
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json' 
         },
         body: JSON.stringify(formData)
       });

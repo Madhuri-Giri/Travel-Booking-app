@@ -471,7 +471,9 @@ const cleanHotelPolicyDetails = (policyDetails) => {
   cleanedDetails = cleanedDetails.replace(/["\s]+/g, ' ').trim();
   cleanedDetails = cleanedDetails.replace(/\/\/\s*\/\s*\/\s*\|\s*/g, '');
   cleanedDetails = cleanedDetails.replace(/india\s-\sland\s+of\s+mystries/g, 'India - Land of Mysteries');
-
+  cleanedDetails = cleanedDetails.replace(/Valid From (\d{4}-\d{2}-\d{2}) through (\d{4}-\d{2}-\d{2})/g, "Valid: $1 - $2")
+  cleanedDetails = cleanedDetails.replace(/(Check-in hour \d{2}:\d{2}) - /g, "$1")
+  cleanedDetails = cleanedDetails.replace(/\//g, " | ");
   return cleanedDetails;
 };
 
@@ -486,11 +488,12 @@ const cleanHotelNorms = (hotelNorms) => {
 
 return (
   <>
-              <CustomNavbar />
-              <div className="timer timer-FlightLists">
-          
+             
+           <CustomNavbar />
+            <div className="timer">
           <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
         </div>
+
   <div className="guest_bg">
   <div className="guest-details-container">
   <h2 className="section-title">Guest <span style={{color:"#00b7eb"}}>Details</span> </h2>
@@ -507,26 +510,7 @@ return (
       {HotelRoomsDetails && HotelRoomsDetails.length > 0 ? (
         HotelRoomsDetails.map((room, index) => (
           <div key={index} className="guest-details-card">
-            {/* <h3 className="card-title">Room Type: {room.RoomTypeName}</h3>
-            <p className="info-section">Price: {room.Price?.CurrencyCode} {room.Price?.RoomPrice?.toFixed(2)}</p>
-            <p className="info-section">
-              Day Rate: {room.DayRates?.map(dayRate => (
-                <span key={dayRate.Date}>
-                  {new Date(dayRate.Date).toLocaleDateString()} - {dayRate.Amount}
-                </span>
-              ))}
-            </p>
-            <p className="info-section">Smoking Preference: {room.SmokingPreference}</p> */}
-            {/* <h5 className="info-section">Cancellation Policies:</h5>
-            <ul>
-              {room.CancellationPolicies?.map((policy, index) => (
-                <li key={index}>
-                  {policy.ChargeType === 1 ? 'Fixed Charge' : 'Percentage Charge'}: 
-                  {policy.Currency} {policy.Charge} from {new Date(policy.FromDate).toLocaleDateString()} to {new Date(policy.ToDate).toLocaleDateString()}
-                </li>
-              ))}
-            </ul> */}
-            {/* <p className="info-section"><strong>Cancellation Policy:</strong> {room.CancellationPolicy}</p> */}
+           
             <div className="hotel-policies">
             <Accordion className="accordian_space">
               <Accordion.Item eventKey="0">
@@ -542,13 +526,7 @@ return (
                 </Accordion.Item>
               </Accordion>
 
-              {/* <h3>Hotel Policies</h3>
-              {HotelPolicyDetail ? (
-                <div className="hotel-policy">
-                  <h4>Policy Details</h4>
-                  <p>{cleanHotelPolicyDetails(HotelPolicyDetail)}</p>
-                </div>
-              ) : <p>No hotel policy details available.</p>} */}
+            
               <Accordion className="accordian_space">
               <Accordion.Item eventKey="0">
                   <Accordion.Header><b>Hotel Policies:</b></Accordion.Header>
@@ -673,7 +651,7 @@ return (
             <input
               type="text"
               className="form-control"
-              placeholder="PAN No."
+              placeholder="PAN No./Adhar Card No."
               name="number"
               value={formData.number}
               onChange={handleChange}
@@ -710,24 +688,24 @@ return (
             <input
               type="date"
               className="form-control"
-              placeholder="Passport Expiry Date"
-              name="passportExpDate"
-              value={formData.passportExpDate}
+              placeholderText="Passport Issue Date"
+              name="passportIssueDate"
+              value={formData.passportIssueDate}
               onChange={handleChange}
-              
             />
           </div>
+
           <div className="mb-3">
             <input
               type="date"
               className="form-control"
-              placeholder="Passport Issue Date"
-              name="passportIssueDate"
-              value={formData.passportIssueDate}
+              placeholderText="Passport Expiry Date"
+              name="passportExpDate"
+              value={formData.passportExpDate}
               onChange={handleChange}
-             
             />
           </div>
+         
           
           <div className="mb-3">
             <input
@@ -737,9 +715,9 @@ return (
               name="leadPassenger"
               value={formData.leadPassenger}
               onChange={handleChange}
-              
             />
           </div>
+          
           <div className="mb-3">
             <input
               type="number"
