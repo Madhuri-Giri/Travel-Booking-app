@@ -367,6 +367,10 @@ const FlightReview = () => {
                       <p>Add Ons</p>
                       <p>₹0</p>
                     </div>
+                    <div className="flightPayDivhed2">
+                      <p>Sajyatra Discount</p>
+                      <p>₹0</p>
+                    </div>
                     <div className="flightPayDivhed3">
                       <h5>Grand Total</h5>
                       <p>₹{totalFare.toFixed(2)}</p>
