@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Carousel,  Modal} from "react-bootstrap";
 import "./HotelDescription.css";
@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
+import { RiTimerLine } from "react-icons/ri";
 
 const renderStar = (rating) => {
   const totalStars = 5;
@@ -25,6 +26,32 @@ const HotelDescription = () => {
   const [error, setError] = useState(null); 
   const hotelDetails = location.state?.hotelDetails;
   const [showModal, setShowModal] = useState(false); // For modal visibility
+
+  const [timer, setTimer] = useState(600000);
+  useEffect(() => {
+    const countdown = setInterval(() => {
+      setTimer((prev) => prev - 50);
+    }, 50);
+
+    if (timer <= 0) {
+      clearInterval(countdown);
+      navigate('/hotel-list');
+    }
+
+    return () => clearInterval(countdown);
+  }, [timer, navigate]);
+
+  const formatTime = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes} min ${seconds} sec left`;
+  };
+
+  const navigateSearch = () => {
+    navigate('/hotel-list');
+  };
+  
 
   // ------------Start Api Integration--------------
   const fetchHotelRoom = async () => {
@@ -74,6 +101,10 @@ const HotelDescription = () => {
   return (
     <>
      <CustomNavbar />
+     <div className="timer timer-FlightLists">
+          
+          <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
+        </div>
     <section className="hotelDescriptionSection">
     <Container>
     {/* -----start new section---------- */}
