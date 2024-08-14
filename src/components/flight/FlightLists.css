@@ -1,9 +1,14 @@
+
+
 /* styles.css */
 .mobileAirlines {
     display: block !important; /* Ensure it's visible */
     /* Remove any potential display: none or visibility: hidden rules */
 }
-
+.flight-custom-checkbox{
+    display: flex !important;
+    justify-content: space-between !important;
+}
 
 .slider-container {
     background-color: white;

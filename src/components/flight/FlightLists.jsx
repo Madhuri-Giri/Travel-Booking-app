@@ -110,7 +110,7 @@ export default function FlightLists() {
 
     // Function to extract all AirlineName values
     // -------------------------------------------------------------airline filters logic----------------
-      const dd = listData?.Results
+    const dd = listData?.Results
     let originalAirlineList = [];
     const getAllAirlineNames = (data) => {
         const airlineNames = [];
@@ -326,47 +326,47 @@ export default function FlightLists() {
 
     const useridHandler = async () => {
         const loginId = localStorage.getItem('loginId');
-          try {
+        try {
             const requestBody = {
-              user_id:loginId , 
+                user_id: loginId,
             };
             const response = await fetch('https://sajyatra.sajpe.in/admin/api/user-detail', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(requestBody),
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
             });
-        
+
             if (!response.ok) {
-              throw new Error('Failed to fetch user details');
+                throw new Error('Failed to fetch user details');
             }
-        
+
             const data = await response.json();
             console.log('User details:', data);
             if (data.result && data.transaction) {
-              localStorage.setItem('transactionId', data.transaction.id);
-              localStorage.setItem('transactionNum', data.transaction.transaction_num);
+                localStorage.setItem('transactionId', data.transaction.id);
+                localStorage.setItem('transactionNum', data.transaction.transaction_num);
             }
-          } catch (error) {
+        } catch (error) {
             console.error('Error fetching user details:', error.message);
-          }
-        };
+        }
+    };
 
 
     const handleSelectSeat = async (index) => {
         const loginId = localStorage.getItem('loginId');
-        console.log('Current loginId:', loginId); 
-         await useridHandler();
+        console.log('Current loginId:', loginId);
+        await useridHandler();
         if (!loginId) {
-            console.log('No loginId found, showing OTP overlay'); 
-            setShowOtpOverlay(true); 
+            console.log('No loginId found, showing OTP overlay');
+            setShowOtpOverlay(true);
             return;
         }
-        await fareQuoteHandler(); 
+        await fareQuoteHandler();
     };
 
-   
+
     // -------------------------------------user detailsss------------------------------------
 
     // -----------------mobile view filter side bar------------------------ 
@@ -384,6 +384,13 @@ export default function FlightLists() {
         return <Loading />;
     }
 
+
+    const [selectedSort, setSelectedSort] = useState('');
+
+    const handleCheckboxChange = (event) => {
+        const { value } = event.target;
+        setSelectedSort(value);
+    };
 
     return (
         <>
@@ -483,6 +490,10 @@ export default function FlightLists() {
                                             </div>
                                         </Accordion.Body>
                                     </Accordion.Item> */}
+
+
+
+
                                     <Accordion.Item eventKey="1">
                                         <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
                                         <Accordion.Body>
@@ -563,27 +574,45 @@ export default function FlightLists() {
                     <div className="col-lg-3 flightlistsec2col1 flightlistsec2col1DeskView">
                         <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
                             <Accordion.Item eventKey="0">
-                                <Accordion.Header className="flightlistaccordian">Stops</Accordion.Header>
+                                <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
                                 <Accordion.Body>
-                                    <div className="row">
-                                        <div className="col-4 flightstopaccordian">
-                                            <div><span></span></div>
-                                            <p>Non Stop</p>
-                                            <h6>Rs.8541</h6>
+                                    <div className="row mb-3">
+                                        <div className="col-12">
+                                            <div className="form-check flight-custom-checkbox">
+                                            <label className="form-check-label" htmlFor="lowToHigh">
+                                                    Price: Low to High
+                                                </label>
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="lowToHigh"
+                                                    value="low-to-high"
+                                                    checked={selectedSort === 'low-to-high'}
+                                                    onChange={handleCheckboxChange}
+                                                />
+                                             
+                                            </div>
                                         </div>
-                                        <div className="col-4 flightstopaccordian">
-                                            <div><span></span></div>
-                                            <p>1 Stop</p>
-                                            <h6>Rs.8541</h6>
-                                        </div>
-                                        <div className="col-4 flightstopaccordian">
-                                            <div><span></span></div>
-                                            <p>2 Stop</p>
-                                            <h6>Rs.8541</h6>
+                                        <div className="col-12">
+                                            <div className="form-check flight-custom-checkbox">
+                                            <label className="form-check-label" htmlFor="highToLow">
+                                                    Price: High to Low
+                                                </label>
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id="highToLow"
+                                                    value="high-to-low"
+                                                    checked={selectedSort === 'high-to-low'}
+                                                    onChange={handleCheckboxChange}
+                                                />
+                                              
+                                            </div>
                                         </div>
                                     </div>
                                 </Accordion.Body>
                             </Accordion.Item>
+
                             <Accordion.Item eventKey="1">
                                 <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
                                 <Accordion.Body>
