@@ -354,7 +354,7 @@ export default function FlightLists() {
     };
 
 
-    const handleSelectSeat = async (index) => {
+    const handleSelectSeat = async () => {
         const loginId = localStorage.getItem('loginId');
         console.log('Current loginId:', loginId);
         await useridHandler();
@@ -795,7 +795,7 @@ export default function FlightLists() {
 
                                                                     <div className="col-md-3 pricebtns f-listCol3">
                                                                         <div><p>₹{flight?.OfferedFare}</p></div>
-                                                                        <div> <button onClick={handleSelectSeat}>SELECT</button>     </div>
+                                                                        <div> <button onClick={()=>handleSelectSeat(index)}>SELECT</button>     </div>
                                                                     </div>
                                                                 </div>
                                                             )}

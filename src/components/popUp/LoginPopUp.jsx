@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import loginLogo from "../../../src/assets/images/main logo.png";
 import "../popUp/LoginPopUp.css";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const LoginPopUp = ({ showModal, onClose }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [otpShown, setOtpShown] = useState(false);
   const [formData, setFormData] = useState({
     mobile: '',
@@ -21,7 +21,6 @@ const LoginPopUp = ({ showModal, onClose }) => {
 
   const loginHandler = async (e) => {
     e.preventDefault();
-  
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/login', {
         method: 'POST',
@@ -32,22 +31,29 @@ const LoginPopUp = ({ showModal, onClose }) => {
       });
   
       const data = await response.json();
-  
       if (response.ok) {
-        console.log('Login successful:', data);
         localStorage.setItem('loginId', data.data.id);
         localStorage.setItem('loginData', JSON.stringify(data.data));
-        
-        onClose();  // Close the modal on successful login
+
+
+        toast.success('Login successful!', {
+          position: "top-right",
+          autoClose: 3000, // Toast duration in ms
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
+        onClose();
       } else {
         setError(data.message || 'Login failed. Please try again.');
       }
     } catch (error) {
-      console.error('Error:', error);
       setError('An unexpected error occurred. Please try again.');
     }
   };
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -56,12 +62,14 @@ const LoginPopUp = ({ showModal, onClose }) => {
 
   return (
     <>
+      {showModal && <div className="custom-overlay"></div>}
       <Modal 
         show={showModal} 
         onHide={onClose} 
         size="md" 
         centered 
         className="small-popup-modal"
+        backdrop="static"  // Static backdrop
       >
         <Modal.Header closeButton>
           <Modal.Title>Login to Your Account</Modal.Title>
@@ -101,7 +109,6 @@ const LoginPopUp = ({ showModal, onClose }) => {
                   </div>
                 </div>
                 {error && <p className="error">{error}</p>}
-                
                 <div className="lgin">
                   <button type="submit">Login</button>
                 </div>
