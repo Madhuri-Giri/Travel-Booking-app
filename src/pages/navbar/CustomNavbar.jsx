@@ -1,8 +1,8 @@
 import "./CustomNavbar.css"
 import { Container, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
-import { FaPhoneAlt } from "react-icons/fa";
-import { FaCircleUser } from "react-icons/fa6";
+import { FaPhoneAlt , FaHistory } from "react-icons/fa";
+import { FaCircleUser , FaRegUser} from "react-icons/fa6";
 import { MdLogin } from "react-icons/md";
 import { LuUserPlus } from "react-icons/lu";
 import { RiBookmark3Fill, RiHotelBedFill } from "react-icons/ri";
@@ -18,6 +18,7 @@ import BusLogo from "../../assets/images/bus.png"
 import FlightLogo from "../../assets/images/plane.png"
 import HotelLogo from "../../assets/images/five-stars.png"
 import { LuBus } from "react-icons/lu";
+import { IoSettingsOutline } from "react-icons/io5";
 
 
 const CustomNavbar = () => {
@@ -81,10 +82,11 @@ const CustomNavbar = () => {
                                     <Nav.Link href="/signup" className='mobileSignupNavbar'> <span><LuUserPlus size={20} /> Signup</span> </Nav.Link>
                                 </div>
                                 <NavDropdown title={<> <FaCircleUser /> </>} id="basic-nav-dropdown" className="userDropdown">
+                                    <NavDropdown.Item href="/profile"> <FaRegUser size={20} /> Profile</NavDropdown.Item>
+                                    <NavDropdown.Item href="/setting"> <IoSettingsOutline size={20} /> Settings</NavDropdown.Item>
+                                    <NavDropdown.Item href="/payment-history"> <FaHistory size={20} /> Payment</NavDropdown.Item>
                                     <NavDropdown.Item href="/login"> <MdLogin size={20} /> Login</NavDropdown.Item>
                                     <NavDropdown.Item href="/signup"> <LuUserPlus size={20} /> Signup</NavDropdown.Item>
-                                    <NavDropdown.Item href="/profile"> <FaCircleUser size={20} /> Profile</NavDropdown.Item>
-                                    <NavDropdown.Item href="/setting"> <RiBookmark3Fill size={20} /> Settings</NavDropdown.Item>
                                 </NavDropdown>
                             </Nav>
                         </Offcanvas.Body>

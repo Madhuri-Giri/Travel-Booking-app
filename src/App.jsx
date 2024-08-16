@@ -41,6 +41,7 @@ import SajyatraLogin from './components/popUp/LoginPopUp';
 import EnterOtp from '../src/components/popUp/EnterOtp'
 import RegisterModal from './components/popUp/RegisterPopup';
 import LoginPopUp from './components/popUp/LoginPopUp';
+import PaymentHistory from './components/paymentHistory/PaymentHistory';
 
 const App = () => {
   const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number',  '/load'];
@@ -87,6 +88,7 @@ const App = () => {
           <Route path='/enterOtp'  element={<EnterOtp/>}/>
           <Route path='/register'  element={<RegisterModal/>}/>
           <Route path='/login-popup'  element={<LoginPopUp/>}/>
+          <Route path='payment-history' element={<PaymentHistory/>}/>
         </Routes>
         {/* {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />} */}
         <ToastContainer
