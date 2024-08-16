@@ -269,51 +269,100 @@
 }
 
 /* ------------End -------------- */
+/* Container for each list item (label + datepicker) */
+
+
+/* Styling for the labels */
+.listItem label {
+  font-size: 14px; 
+  color: #333; 
+  margin-bottom: 5px; 
+}
+
+.listItem .list_in {
+  padding: 10px; 
+  border: 1px solid #343232; 
+  border-radius: 4px; 
+  font-size: 14px; 
+  color: #333; 
+  width: 100%; 
+}
+
+.list_in {
+  background-color: #fff; 
+}
+
+.listItem .list_in:focus{
+  border-color: #58585a;
+  outline: none; 
+}
+
+.listItem .list_in::placeholder,
+.listItem .form_in::placeholder {
+  color: #888; 
+}
 
 
 /*----------------- Pagination Container--------------- */
 .paginationContainer {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-right: 20px;
+  margin: 20px 0;
+  padding: 0 10px;
+  flex-wrap: wrap; 
 }
 
-/* Pagination List */
 .paginationContainer .pagination {
   display: flex;
   list-style: none;
   padding: 0;
   margin: 0;
+  flex-wrap: wrap;
 }
 
-/* Pagination Items */
 .paginationContainer .pagination li {
-  margin: 0 5px;
+  margin: 5px; 
 }
 
-/* Pagination Links */
 .paginationContainer .pagination li a {
   display: block;
-  padding: 10px 15px;
+  padding: 8px 12px;
   border: 1px solid #ddd;
   cursor: pointer;
   text-decoration: none;
   color: #00b7eb;
+  font-size: 16px; 
 }
 
-/* Active Page */
 .paginationContainer .pagination li.active a {
   background-color: #00b7eb;
   color: white;
   border-color: #00b7eb;
 }
 
-/* Hover Effect */
 .paginationContainer .pagination li a:hover {
   background-color: #ddd;
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .paginationContainer {
+    padding: 0 5px;
+  }
+
+  .paginationContainer .pagination li a {
+    padding: 6px 10px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .paginationContainer .pagination li a {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+}
+
 
 /* ---------------------End--------------------- */
 
@@ -353,9 +402,6 @@
     text-align: left;
   }
 
-  .paginationContainer .pagination li {
-    margin: 0 !important;
-  }
 
   .timer {
     font-size: 14px;

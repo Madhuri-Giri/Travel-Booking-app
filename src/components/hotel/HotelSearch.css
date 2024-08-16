@@ -68,6 +68,18 @@
   width: 70%;
 }
 
+.btn-book {
+  padding: 10px;
+  background-color: #fc3a21;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 25px;
+  align-self: center;
+  letter-spacing: 1px;
+}
+
 /* ----------- End ---------- */
 
 /* ----------- Start Form--------- */
@@ -186,26 +198,32 @@
   /* margin-top: 5px; */
 }
 
-.form-field input::placeholder {
-  padding-left: 10px;
-}
-
 .close_icon {
   margin-left: 20px;
   margin-top: 10px;
   font-size: 20px;
 }
 
-.btn-book {
-  padding: 10px;
-  background-color: #fc3a21;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 25px;
-  align-self: center;
-  letter-spacing: 1px;
+.form-field label {
+  margin-right: 0;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.form-field .form_in,
+.guest-field .form_in {
+  padding: 5px 5px;
+  font-size: 14px;
+  width: 100%;
+  border: 1px solid #343232; 
+  border-radius: 4px; 
+  color: #333; 
+}
+
+.form-field .form_in,
+.guest-field .form_in:focus{
+  border-color: #58585a;
+  outline: none; 
 }
 
 .btn-sub {

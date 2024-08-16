@@ -149,11 +149,32 @@
 .room-details p:nth-child(5) {
   flex-basis: 20%; 
 }
+
+.form-control {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
 .form-content{
   margin-left: 15px;
   margin-right: 15px;
 }
 
+.date-picker-container{
+  position: relative;
+  width: 100%;
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2em;
+  color: #888;
+  pointer-events: none;
+}
 
 .timer {
   position: sticky;
@@ -169,6 +190,7 @@
   border-top: 1px solid #00e10070;
   transition: box-shadow 0.3s ease-in-out;
 }
+
 
 
 /* Media Queries for Responsiveness */

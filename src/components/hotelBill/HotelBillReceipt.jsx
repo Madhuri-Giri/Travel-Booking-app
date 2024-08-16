@@ -37,6 +37,54 @@ const BookingBill = () => {
     GeneratePdf(hotelName, roomQuantity, price, roomType, checkInDate, checkOutDate);
   };
 
+//-------Start Booking Cancel API Integration ----------
+
+
+const BookingCancel = async (event) => {
+  event.preventDefault();
+
+  const requestData = {
+    BookingId: 1554760,
+    RequestType: 4,
+    BookingMode: 5,
+    SrdvType: "SingleTB",
+    SrdvIndex: "SrdvTB",
+    Remarks: "Test",
+    transaction_num: 88965,
+    date: "2019-09-17T00:00:00",
+    hotelbooking_id: "143",
+  };
+
+  try {
+    const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-cancel', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const res = await response.json();
+    console.log('hotel-cancel API Response:', res);
+
+    const rooms = res.BlockRoomResult; 
+    const roomsJSON = JSON.stringify(rooms);
+    localStorage.setItem('hotelBlock', roomsJSON);
+
+    
+    if (selectedRoomsData) {
+      localStorage.setItem('selectedRoomsData', JSON.stringify(selectedRoomsData));
+    }
+
+    navigate('/hotel-guest');
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
   return (
     <>
     <CustomNavbar/>
