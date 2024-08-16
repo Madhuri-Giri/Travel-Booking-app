@@ -338,12 +338,17 @@ const HotelRoom = () => {
       localStorage.setItem('hotelBlock', roomsJSON);
       localStorage.setItem('selectedRoomsData', JSON.stringify(selectedRoomsData)); // Store updated room data
       navigate('/hotel-guest')
+
+ // Reload the page after navigation
+ window.location.reload();
+
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
   // --------------End API Integration-----------------
+
 
   const singleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'SINGLE DELUXE');
   const doubleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'DOUBLE Deluxe');

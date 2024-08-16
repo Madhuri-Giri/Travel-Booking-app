@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faStar} from "@fortawesome/free-solid-svg-icons";
 import useGeolocation from "./UseGeolocation";
 import haversineDistance from "./HaversineDistance";
 import ReactPaginate from 'react-paginate';
@@ -38,6 +38,8 @@ const HotelList = () => {
   const { position: userPosition, error: geoError } = useGeolocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [startDate, setStartDate] = useState(null);
+  const [destination, setDestination] = useState("");
 
   // IGST Rate
   const IGST_RATE = 0.18; // 18% IGST
@@ -190,7 +192,7 @@ const HandelHotelInfo = async (index) => {
     return;
   }
 
-  await fetchHotelInfo(index);
+  await fetchHotelInfo(destination, index);
 };
 
 
@@ -234,7 +236,7 @@ const HandelHotelInfo = async (index) => {
   // ----------------Api End------------------
   const handleSortOptionChange = (option) => {
     setSortOption(option);
-    setIsDropdownOpen(false); // Close the dropdown after selecting an option
+    setIsDropdownOpen(false); 
   };
 
   const handleClickOutside = (event) => {
@@ -254,11 +256,27 @@ const HandelHotelInfo = async (index) => {
   const calculateIGST = (price) => price * IGST_RATE;
   const calculateTotalPrice = (price) => price - calculateIGST(price);
 
+  const [inputs, setInputs] = useState({
+    
+    checkIn: null,
+    checkOut: null,
+   
+  });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setInputs((values) => ({ ...values, [name]: value }));
+  };
+
+  const handleDateChange = (date, name) => {
+    setInputs((values) => ({ ...values, [name]: date }));
+  };
+
+
   return (
     <>
       <CustomNavbar />
+
       <div className="timer">
-          {/* <p>Redirecting in {formatTime(timer)}...</p> */}
           <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
         </div>
 
@@ -270,35 +288,39 @@ const HandelHotelInfo = async (index) => {
               {/* New section start */}
               <Row>
                 <Col lg={3} className="listSearchcol">
-
                   <div className="listSearch">
-
                     <h1 className="listTitle">Search Your Hotels ....</h1>
                     <div className="listItem">
                       <label>Destination</label>
                       <input
-                        placeholder={location.state?.destination || ""}
-                        type="text"
-                      />
+                type="text"
+                className="destination-input"
+                placeholder="Enter hotel or city name"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+              />
                     </div>
+
                     <div className="listItem">
                       <label>Check-in Date</label>
-                      <DatePicker className="date_picker"
-                        selected={location.state?.date?.[0]?.startDate || new Date()}
-                        onChange={(date) => { }}
-                        minDate={new Date()}
-                        dateFormat="MM/dd/yyyy"
-                      />
+                      <DatePicker className="list_in" selected={inputs.checkIn} 
+                       onChange={(date) => handleDateChange(date, "checkIn")} 
+                       dateFormat="dd/MM/yyyy" 
+                         placeholderText="Select check-in date"
+                               minDate={new Date()} 
+                         />
                     </div>
+
                     <div className="listItem">
                       <label>Check-out Date</label>
-                      <DatePicker className="date_picker"
-                        selected={location.state?.date?.[0]?.endDate || new Date()}
-                        onChange={(date) => { }}
-                        minDate={new Date()}
-                        dateFormat="MM/dd/yyyy"
-                      />
+                      <DatePicker className="list_in" selected={inputs.checkOut} 
+                       onChange={(date) => handleDateChange(date, "checkOut")} 
+                          dateFormat="dd/MM/yyyy" 
+                         placeholderText="Select check-out date" 
+                           minDate={inputs.checkIn || new Date()} 
+                                 />
                     </div>
+
                     <div className="listFilter">
                       <h5>Sort by:</h5>
                       <div className="listFilterOptions">
@@ -369,7 +391,7 @@ const HandelHotelInfo = async (index) => {
                         </div>
                       </div>
                     </div>
-                    <button onClick={() => { /* Add your search functionality here */ }}>Search</button>
+                    <button onClick={HandelHotelInfo}>Search</button>
                   </div>
 
                 </Col>

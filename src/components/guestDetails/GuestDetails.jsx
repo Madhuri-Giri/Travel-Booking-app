@@ -8,6 +8,12 @@ import Accordion from 'react-bootstrap/Accordion';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import { RiTimerLine } from "react-icons/ri";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'; 
+import 'bootstrap-icons/font/bootstrap-icons.css'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+
 const GuestDetails = () => {
   const [hotelBlock, setHotelBlock] = useState([]);
   const [selectedRoomsData, setSelectedRoomsData] = useState(null);
@@ -124,13 +130,19 @@ const GuestDetails = () => {
     return <p>Loading...</p>;
   }
  
-  const handleFormChange = (e) => {
+  const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
+  const handleDateChange = (date, name) => {
+    setFormData({
+      ...formData,
+      [name]: date,
+    });
+  };
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setFormSubmitted(true);
@@ -142,6 +154,9 @@ const GuestDetails = () => {
     setCheckboxChecked(!checkboxChecked);
     
   };
+
+  
+  
 // ---------------- RozarPay Payment Gateway  Integration start -------------------
 
   const fetchPaymentDetails = async () => {
@@ -234,6 +249,7 @@ const GuestDetails = () => {
     }
   };
 
+// ---------------Update payment------------
   const updateHandlePayment = async () => {
     try {
       const payment_id = localStorage.getItem('payment_id');
@@ -270,13 +286,6 @@ const GuestDetails = () => {
 
   // ----------------Payment Integration End -------------------
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-  
 //  ----------------------------Start book api-----------------------------------
 const bookHandler = async () => {
   try {
@@ -464,6 +473,56 @@ const { singleDeluxe, doubleDeluxe, totalPriceSingleDeluxe, totalPriceDoubleDelu
 
 // -------------------------------End Book API--------------------------------------------
 
+
+//-------Start Booking Cancel API Integration ----------
+
+
+const BookingCancel = async (event) => {
+  event.preventDefault();
+
+  const requestData = {
+    BookingId: 1554760,
+    RequestType: 4,
+    BookingMode: 5,
+    SrdvType: "SingleTB",
+    SrdvIndex: "SrdvTB",
+    Remarks: "Test",
+    transaction_num: 88965,
+    date: "2019-09-17T00:00:00",
+    hotelbooking_id: "143",
+  };
+
+  try {
+    const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-cancel', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const res = await response.json();
+    console.log('hotel-cancel API Response:', res);
+
+    const rooms = res.BlockRoomResult; 
+    const roomsJSON = JSON.stringify(rooms);
+    localStorage.setItem('hotelBlock', roomsJSON);
+
+    
+    if (selectedRoomsData) {
+      localStorage.setItem('selectedRoomsData', JSON.stringify(selectedRoomsData));
+    }
+
+    navigate('/hotel-guest');
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+// -------------------------------End Book API----------------------------
 
 // for Handle html tag and symbol
 const cleanHotelPolicyDetails = (policyDetails) => {
@@ -684,27 +743,25 @@ return (
               
             />
           </div>
-          <div className="mb-3">
-            <input
-              type="date"
-              className="form-control"
-              placeholderText="Passport Issue Date"
-              name="passportIssueDate"
-              value={formData.passportIssueDate}
-              onChange={handleChange}
-            />
-          </div>
 
-          <div className="mb-3">
-            <input
-              type="date"
-              className="form-control"
-              placeholderText="Passport Expiry Date"
-              name="passportExpDate"
-              value={formData.passportExpDate}
-              onChange={handleChange}
-            />
-          </div>
+          <div className="mb-3 date-picker-container">
+        <DatePicker
+          selected={formData.passportIssueDate}
+          onChange={(date) => handleDateChange(date, 'passportIssueDate')}
+          placeholderText="Passport Issue Date"
+          className="form-control" 
+        />
+        <FontAwesomeIcon icon={faCalendarDays} className="calendar-icon" />
+      </div>
+      <div className="mb-3 date-picker-container">
+        <DatePicker
+          selected={formData.passportExpDate}
+          onChange={(date) => handleDateChange(date, 'passportExpDate')}
+          placeholderText="Passport Expiry Date"
+          className="form-control"
+        />
+        <FontAwesomeIcon icon={faCalendarDays} className="calendar-icon" />
+      </div>
          
           
           <div className="mb-3">

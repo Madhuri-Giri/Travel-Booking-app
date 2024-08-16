@@ -7,7 +7,6 @@ import offer_img1 from "../../../src/assets/images/offer_img6.jpg";
 import offer_img2 from "../../../src/assets/images/offer_img7.jfif";
 import offer_img3 from "../../../src/assets/images/offer_img8.jpg";
 import play_store_img from "../../../src/assets/images/play_store_img.png";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +14,6 @@ import { format } from "date-fns";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import Loading from '../../pages/loading/Loading';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays} from '@fortawesome/free-solid-svg-icons';
 import { faUser } from "@fortawesome/free-solid-svg-icons";
