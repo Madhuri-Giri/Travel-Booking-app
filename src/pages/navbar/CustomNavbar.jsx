@@ -1,4 +1,4 @@
-import "./CustomNavbar.css";
+import "./CustomNavbar.css"
 import { Container, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { FaPhoneAlt } from "react-icons/fa";
