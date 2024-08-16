@@ -332,8 +332,8 @@ const HotelRoom = () => {
       }
 
       const res = await response.json();
-      console.log('hotel-block API Response:', res.BlockRoomResult);
-      const rooms = res.BlockRoomResult;
+      console.log('hotel-block API Response:', res.data.BlockRoomResult);
+      const rooms = res.data.BlockRoomResult;
       const roomsJSON = JSON.stringify(rooms);
       localStorage.setItem('hotelBlock', roomsJSON);
       localStorage.setItem('selectedRoomsData', JSON.stringify(selectedRoomsData)); // Store updated room data
