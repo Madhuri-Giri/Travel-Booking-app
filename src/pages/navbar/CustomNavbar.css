@@ -73,6 +73,7 @@
     align-items: center;
     text-align: center;
     padding: 10px;
+    text-decoration: none;
 }
 
 .navmenuss .homnavbbookingicon.active {
@@ -84,7 +85,14 @@
 .homnavbbookingicon .textNav {
     margin-top: 5px;
 }
-
+.numNavbar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.navcornerr a{
+    text-decoration: none;
+}
 
 /* ----------------------------------------------- */
 
