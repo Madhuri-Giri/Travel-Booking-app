@@ -1,3 +1,9 @@
+.navcornerr{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .offcanvasNavbar {
     width: 250px; /* Adjust the width of the offcanvas menu */
     background-color: #f8f9fa; /* Set a background color */
@@ -73,7 +79,6 @@
     align-items: center;
     text-align: center;
     padding: 10px;
-    text-decoration: none;
 }
 
 .navmenuss .homnavbbookingicon.active {
@@ -85,14 +90,7 @@
 .homnavbbookingicon .textNav {
     margin-top: 5px;
 }
-.numNavbar{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.navcornerr a{
-    text-decoration: none;
-}
+
 
 /* ----------------------------------------------- */
 
