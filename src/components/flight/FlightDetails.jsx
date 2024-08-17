@@ -11,10 +11,12 @@ import { Link } from "react-router-dom";
 import { RiTimerLine } from "react-icons/ri";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
+import Loading from '../../pages/loading/Loading'; // Import the Loading component
 
 export default function FlightDetails() {
 
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false); // Add loading state
 
     //   ----------------------------------------------------
 
@@ -225,7 +227,10 @@ export default function FlightDetails() {
     const reviewHandler = () => {
         // Ensure fareDataDetails is defined before navigating
         if (fareDataDetails) {
-            navigate('/flight-review', { state: { fareDataDetails } });
+            setLoading(true);
+            setTimeout(() => {
+                navigate('/flight-review', { state: { fareDataDetails } });
+            }, 1000);
         } else {
             console.error('fareDataDetails is undefined');
         }
@@ -318,8 +323,8 @@ export default function FlightDetails() {
             setError(`Please fill out all fields for ${type} ${index + 1}.`);
         }
 
-        console.log("setConfirmedAdultDetails",setConfirmedAdultDetails);
-        
+        console.log("setConfirmedAdultDetails", setConfirmedAdultDetails);
+
     };
 
     const handleDelete = (type, index) => {
@@ -441,12 +446,12 @@ export default function FlightDetails() {
     const toggleSelect = (index, type) => {
         if (type === 'adult') {
             const updatedDetails = confirmedAdultDetails.map((detail, i) =>
-                i === index ? { ...detail, selected: !detail.selected } : detail            
+                i === index ? { ...detail, selected: !detail.selected } : detail
             );
             setConfirmedAdultDetails(updatedDetails);
-            console.log("adultPassengerDetails",updatedDetails);
+            console.log("adultPassengerDetails", updatedDetails);
             localStorage.setItem('adultPassengerDetails', JSON.stringify(updatedDetails));
-           
+
 
         } else if (type === 'child') {
             const updatedDetails = confirmedChildDetails.map((detail, i) =>
@@ -475,12 +480,12 @@ export default function FlightDetails() {
                             <p>{airline.AirlineName}</p>
                         </div>
                         <div className="col-md-4 col-3 flighttTabContentCol2">
-                           <div>
-                           <p className="flighttTabContentCol2p1">{origin.CityName}</p>
-                            <h5>{formatTime(depTime)}</h5>
-                            <p className="flighttTabContentCol2p2">{formatDate(depTime)}</p>
-                            <p className="flighttTabContentCol2p3">{origin.AirportName}</p>
-                           </div>
+                            <div>
+                                <p className="flighttTabContentCol2p1">{origin.CityName}</p>
+                                <h5>{formatTime(depTime)}</h5>
+                                <p className="flighttTabContentCol2p2">{formatDate(depTime)}</p>
+                                <p className="flighttTabContentCol2p3">{origin.AirportName}</p>
+                            </div>
                         </div>
                         <div className="col-md-1 col-3 flighttTabContentCol3">
                             <p className="flighttTabContentCol3p1">{convertMinutesToHoursAndMinutes(segment.Duration)}</p>
@@ -488,10 +493,10 @@ export default function FlightDetails() {
                         </div>
                         <div className="col-md-5 col-4 flighttTabContentCol4">
                             <div>
-                            <p className="flighttTabContentCol2p1">{destination.CityName}</p>
-                            <h5>{formatTime(arrTime)}</h5>
-                            <p className="flighttTabContentCol2p2">{formatDate(arrTime)}</p>
-                            <p className="flighttTabContentCol2p3">{destination.AirportName}</p>
+                                <p className="flighttTabContentCol2p1">{destination.CityName}</p>
+                                <h5>{formatTime(arrTime)}</h5>
+                                <p className="flighttTabContentCol2p2">{formatDate(arrTime)}</p>
+                                <p className="flighttTabContentCol2p3">{destination.AirportName}</p>
                             </div>
                         </div>
                     </div>
@@ -645,7 +650,10 @@ export default function FlightDetails() {
     // but seat meal is not selected only traveller form selected then goto review page-------------------------------
     const handleButtonClick = () => {
         if (showTabs) {
-            navigate('/seat-meal-baggage', { state: { seatData, ssrData, formData } });
+            setLoading(true);
+            setTimeout(() => {
+                navigate('/seat-meal-baggage', { state: { seatData, ssrData, formData } });
+            }, 1000);
         } else {
             reviewHandler();
         }
@@ -655,37 +663,41 @@ export default function FlightDetails() {
 
 
 
-     // for timerss----------------------------------
-     const [timer, setTimer] = useState(600000);
+    // for timerss----------------------------------
+    const [timer, setTimer] = useState(600000);
 
-     useEffect(() => {
-         const countdown = setInterval(() => {
-             setTimer((prev) => prev - 50); // Decrease timer by 50 milliseconds each tick
-         }, 50); // Interval of 50 milliseconds
- 
-         if (timer <= 0) {
-             clearInterval(countdown);
-             alert("Your Session is Expired");
-             navigate('/flight-search');
-         }
- 
-         return () => clearInterval(countdown);
-     }, [timer, navigate]);
- 
-     const formatTimers = (milliseconds) => {
-         const totalSeconds = Math.floor(milliseconds / 1000);
-         const minutes = Math.floor(totalSeconds / 60);
-         const seconds = totalSeconds % 60;
-         return `${minutes} min ${seconds} sec left`;
-     };
- 
-     // for timerss----------------------------------
+    useEffect(() => {
+        const countdown = setInterval(() => {
+            setTimer((prev) => prev - 50); // Decrease timer by 50 milliseconds each tick
+        }, 50); // Interval of 50 milliseconds
+
+        if (timer <= 0) {
+            clearInterval(countdown);
+            alert("Your Session is Expired");
+            navigate('/flight-search');
+        }
+
+        return () => clearInterval(countdown);
+    }, [timer, navigate]);
+
+    const formatTimers = (milliseconds) => {
+        const totalSeconds = Math.floor(milliseconds / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes} min ${seconds} sec left`;
+    };
+
+    // for timerss----------------------------------
+
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <>
-        <CustomNavbar/>
-         {/* timerrr-------------------  */}
-         <div className="timer-FlightLists">
+            <CustomNavbar />
+            {/* timerrr-------------------  */}
+            <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
             </div>
             {/* timerrr-------------------  */}
@@ -703,7 +715,7 @@ export default function FlightDetails() {
                             <div className="d-flex flightlistsec1col">
                                 <FaCalendarAlt className="mt-1" />
                                 <p><span>Departure on</span> {convertformattedDate}</p>
-                                </div>
+                            </div>
                             <div className="d-flex flightlistsec1col">
                                 <FaUser className="mt-1" />
                                 <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
@@ -887,7 +899,7 @@ export default function FlightDetails() {
                     </div>
                 </div>
             </section>
-            <Footer/>
+            <Footer />
         </>
     )
 }
