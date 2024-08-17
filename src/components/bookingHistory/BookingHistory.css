@@ -1,0 +1,94 @@
+.bookingHistorymaisec{
+    background-color: #dddddd;
+    padding: 20px 10px;
+}
+.bookingHistoryROW{
+    display: flex;
+    justify-content: center;
+}
+.bookingHistoryCOL1{
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 20px 30px;
+}
+.bookingHistoryCOL1 h4{
+    text-align: center;
+    color: #00b7eb;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.booking-tabs {
+    display: flex;
+    justify-content: space-between; 
+    width: 100%; 
+    margin-bottom: 20px; 
+    border-bottom: 2px solid #ddd;
+}
+
+.tab-button {
+    flex: 1; 
+    padding: 10px 15px; 
+    background-color: #f8f9fa;
+    color: white; 
+    border: none;
+    cursor: pointer;
+    text-align: center; 
+    border-bottom: 2px solid transparent; 
+    transition: background-color 0.3s, color 0.3s; 
+    background-color: #00b7eb;
+    border: 1px solid rgba(44, 43, 43, 0.212);
+    font-weight: bold;
+
+}
+
+.tab-button.active {
+    background-color: #0086e7;
+    /* background-color: #4e78af; */
+    color: white; 
+}
+
+.tab-button:hover {
+    background-color: #0086e7;
+    color: white; 
+}
+
+.hotelTabContentROW{
+    background-color: rgba(177, 175, 175, 0.144);
+    box-shadow: 2px 2px 2px 2px gray;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    padding: 15px 20px;
+}
+
+.hotelTabContent p{
+    margin: 5px 0px;
+}
+.hotelTabContent strong{
+    color: #04536b;
+}
+.hotelTabContenthedding{
+    font-weight: bold;
+    color: brown;
+    margin-bottom: 20px;
+}
+.viewbttn{
+    display: flex;
+    justify-content: end;
+}
+.viewbttn button{
+    border: none;
+    background-color: #00b7eb;
+    color: white;
+    padding: 5px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.hotelBookingstatus span{
+    color: #00e100;
+    font-weight: bold;
+}
+.hotelcancelstatus span{
+    color: red;
+}

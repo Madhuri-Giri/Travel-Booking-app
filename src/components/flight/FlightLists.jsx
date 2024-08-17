@@ -309,8 +309,10 @@ export default function FlightLists() {
 
 
             if (data.Results && formData) {
-                setLoading(false);
-                navigate('/flight-Farequote', { state: { fareData: data.Results, formData: formData } });
+                setLoading(true);
+                setTimeout(() => {
+                    navigate('/flight-Farequote', { state: { fareData: data.Results, formData: formData } });
+                }, 1000); 
             } else {
                 console.error('data.Results or formData is undefined');
             }

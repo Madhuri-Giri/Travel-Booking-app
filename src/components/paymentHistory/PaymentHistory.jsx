@@ -56,6 +56,14 @@ function PaymentHistory() {
             price: "410",
             status: "Successful"
         },
+        {
+            id: 1,
+            img: GpayLogo,  
+            method: "Paypal",
+            date: "Mar, 01 2023 at 08:26 PM",
+            price: "390",
+            status: "Successful"
+        },
     ];
 
     return (

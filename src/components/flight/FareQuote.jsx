@@ -8,11 +8,13 @@ import { LuDot } from "react-icons/lu";
 import { RiTimerLine } from "react-icons/ri";
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
+import Loading from '../../pages/loading/Loading'; // Import the Loading component
 
 
 
 const FareQuote = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false); // Add loading state
 
     const location = useLocation();
     const fareData = location.state?.fareData;
@@ -56,7 +58,7 @@ const FareQuote = () => {
     // Check if formData exists
     if (!formData) {
         console.error('formData is undefined');
-        return <div>Loading...</div>; // Or any other fallback UI
+        return <div>Loading...</div>; 
     }
 
     const publishedFare = fareData?.Fare?.BaseFare;
@@ -64,7 +66,10 @@ const FareQuote = () => {
     // console.log("publishedFare", publishedFare);
 
     const flightDeatilsFun = () => {
-        navigate('/flight-details', { state: { fareData: fareData, formData: formData } });
+        setLoading(true);
+        setTimeout(() => {
+            navigate('/flight-details', { state: { fareData: fareData, formData: formData } });
+        }, 1000); 
     }
 
     const navigateSearch = () => {
@@ -96,6 +101,10 @@ const FareQuote = () => {
     };
 
     // for timerss----------------------------------
+
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <>

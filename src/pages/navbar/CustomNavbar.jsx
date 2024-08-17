@@ -68,11 +68,11 @@ const CustomNavbar = () => {
                                     <span className="textNav">HOTELS</span>
                                 </Nav.Link>
                                 <Nav.Link
-                                    href="/my-trips"
-                                    className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/my-trips' ? 'active' : ''}`}
+                                    href="/booking-history"
+                                    className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/booking-history' ? 'active' : ''}`}
                                 >
                                     <BsBookmarkStarFill className="icon" size={20} />
-                                    <span className="textNav">MY TRIPS</span>
+                                    <span className="textNav">BOOKINGS</span>
                                 </Nav.Link>
                             </Nav>
                             <Nav className="navcornerr">

@@ -199,7 +199,7 @@ const FlightSearch = () => {
       });
 
       const data = await response.json();
-      console.log("hello", data);
+      console.log("Flight search api response: ", data);
       localStorage.setItem('Flight-search', data)
       // Save TraceId to local storage with the key "FlightTraceId2"
       if (data.TraceId) {
