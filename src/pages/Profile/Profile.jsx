@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import './Profile.css';
-import { Container, Row, Col, Alert, Button } from 'react-bootstrap';
+import { Container, Row, Col, Alert, Button, Tabs, Tab } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import CustomNavbar from '../navbar/CustomNavbar';
 import Footer from '../footer/Footer';
+import { AiOutlineLogout } from "react-icons/ai";
+// import { useHistory } from 'react-router-dom';
 
 const Profile = () => {
   const [editing, setEditing] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Default to false
+  // const history = useHistory();
 
-  // Updated initial values
   const initialValues = {
     name: '',
     email: '',
@@ -30,7 +33,6 @@ const Profile = () => {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      // Simulate a profile update
       setMessage('Profile updated successfully.');
       setMessageType('success');
       setEditing(false);
@@ -47,15 +49,67 @@ const Profile = () => {
     setEditing(false);
   };
 
-  // Fetch user profile data
+  const handleLogout = async () => {
+    const loginData = JSON.parse(localStorage.getItem('loginData'));
+    const token = loginData?.token;
+
+    if (!token) {
+      setMessage('No token found. Please log in again.');
+      setMessageType('danger');
+      return;
+    }
+
+    try {
+      const response = await fetch('https://new.sajpe.in/api/v1/user/logout', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'app-package': 'com.sajyatra',
+          'app-version': '1.0',
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to log out');
+      }
+
+      // Clear login data and token from local storage
+      localStorage.removeItem('loginData');
+
+      // Update state to reflect that the user is logged out
+      setIsLoggedIn(false);
+      setMessage('Logged out successfully.');
+      setMessageType('success');
+
+      // Redirect to login page
+      // history.push('/login');
+
+    } catch (error) {
+      setMessage(`Error logging out: ${error.message}`);
+      setMessageType('danger');
+    }
+  };
+
   useEffect(() => {
+    const checkLoginStatus = () => {
+      const loginData = JSON.parse(localStorage.getItem('loginData'));
+      const token = loginData?.token;
+
+      if (token) {
+        setIsLoggedIn(true);
+        fetchProfileData(); // Fetch profile data if logged in
+      } else {
+        setIsLoggedIn(false);
+      }
+    };
+
     const fetchProfileData = async () => {
-      console.log('Fetching profile data...');
       const loginData = JSON.parse(localStorage.getItem('loginData'));
       const token = loginData?.token;
 
       if (!token) {
-        console.error('No token found');
         setMessage('No token found. Please log in again.');
         setMessageType('danger');
         return;
@@ -74,26 +128,23 @@ const Profile = () => {
 
         if (!response.ok) {
           const errorData = await response.json();
-          console.error('Error details:', errorData);
           throw new Error(errorData.message || 'Failed to fetch profile data');
         }
 
-        const { data } = await response.json(); // Destructure to get the data
+        const { data } = await response.json();
         console.log('Profile data:', data);
 
-        // Set formik values from the response data
         formik.setFieldValue('name', data.name);
         formik.setFieldValue('email', data.email);
-        formik.setFieldValue('phone', data.mobile); // Use 'mobile' for phone
+        formik.setFieldValue('phone', data.mobile);
 
       } catch (error) {
-        console.error('Error fetching profile data:', error.message);
         setMessage(`Error fetching profile data: ${error.message}`);
         setMessageType('danger');
       }
     };
 
-    fetchProfileData();
+    checkLoginStatus();
   }, []);
 
   return (
@@ -105,81 +156,123 @@ const Profile = () => {
             {message}
           </Alert>
         )}
-        <Container className="d-flex justify-content-center align-items-center">
-          <Row>
-            <Col md={4}>
-              <div className="profile profile-sidebar box">
-                <img
-                  src="https://media.istockphoto.com/id/1320169761/photo/happy-young-30s-handsome-caucasian-man-holding-video-call.jpg?s=612x612&w=0&k=20&c=3bOrJG3eTucy2pv9ogs6gJKByHOy1GUzFjF_f5Isuaw="
-                  className="img-fluid"
-                  alt="Profile"
-                />
-                <div className="sidebar-options">
-                  {formik.values.name}
+        <Container>
+          <Row className='profileROW'>
+            <Col md={10} className='profilesboxx'>
+              <div className='profileheddbox'>
+                <div className='profileheddboxmain'>
+                  <div className='profileimgg'>
+                    <img
+                      src="https://via.placeholder.com/80"
+                      alt="Profile"
+                      className="profile-image"
+                    />
+                  </div>
+                  <div className='hedemailss'>
+                    <div>
+                      <h5 className="email-text">{formik.values.email}</h5>
+                      <p className="email-text">{formik.values.email}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </Col>
-            <Col md={8}>
-              <div className="profile-details box">
-                <div className="profile-header">
-                  <h2>Profile Details</h2>
-                  <button className="edit-button" onClick={() => setEditing(!editing)}>
-                    {editing ? 'Cancel' : 'Edit'}
-                  </button>
-                </div>
-                <div className="details">
-                  <div className="detail">
-                    <span className="detail-label">Name:</span>
-                    {editing ? (
-                      <input
-                        type="text"
-                        name="name"
-                        value={formik.values.name}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                      />
+
+              <div className='profileetabss'>
+                <div className='logoutbttnn'>
+                  <div>
+                    {isLoggedIn ? (
+                      <button onClick={handleLogout}>
+                        <AiOutlineLogout />
+                        Logout
+                      </button>
                     ) : (
-                      <span>{formik.values.name}</span>
+                      <button onClick={() => window.location.href = '/enter-number'}>
+                        Login
+                      </button>
                     )}
-                    {formik.touched.name && formik.errors.name ? <div className="error">{formik.errors.name}</div> : null}
-                  </div>
-                  <div className="detail">
-                    <span className="detail-label">Email:</span>
-                    {editing ? (
-                      <input
-                        type="email"
-                        name="email"
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                      />
-                    ) : (
-                      <span>{formik.values.email}</span>
-                    )}
-                    {formik.touched.email && formik.errors.email ? <div className="error">{formik.errors.email}</div> : null}
-                  </div>
-                  <div className="detail">
-                    <span className="detail-label">Phone:</span>
-                    {editing ? (
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formik.values.phone}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                      />
-                    ) : (
-                      <span>{formik.values.phone}</span>
-                    )}
-                    {formik.touched.phone && formik.errors.phone ? <div className="error">{formik.errors.phone}</div> : null}
                   </div>
                 </div>
-                {editing && (
-                  <div className='cancel-savebtnnss'>
-                    <Button className="edit_btn" variant="primary" onClick={handleSaveChanges}>Save Changes</Button>{' '}
-                    <Button variant="secondary" onClick={handleCancel}>Cancel</Button>
-                  </div>
-                )}
+                <div className='tabssborder'>
+                  <Tabs defaultActiveKey="view" id="profile-tabs" className="mb-3 ">
+                    <Tab eventKey="view" title="View Details">
+                      <div className="profile-details box profiledetailstabbcont">
+                        <div className="details">
+                          <div className="detail">
+                            <label className="detail-label">Name:</label>
+                            <span>{formik.values.name}</span>
+                          </div>
+                          <div className="detail">
+                            <label className="detail-label">Email:</label>
+                            <span>{formik.values.email}</span>
+                          </div>
+                          <div className="detail">
+                            <label className="detail-label">Phone:</label>
+                            <span>{formik.values.phone}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Tab>
+                    <Tab eventKey="edit" title="Edit Details">
+                      <div className="profile-details box profileeditBox">
+                        <div className="details">
+                          <div className="detail row form-group">
+                            <div className='col-lg-6'>
+                              <label className="" htmlFor="name">
+                                Name
+                              </label>
+                              <input
+                                type="text"
+                                name="name"
+                                id='name'
+                                className='form-control'
+                                value={formik.values.name}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                              />
+                              {formik.touched.name && formik.errors.name ? <div className="error">{formik.errors.name}</div> : null}
+                            </div>
+                          </div>
+                          <div className="detail row form-group">
+                            <div className='col-lg-6'>
+                              <label className="" htmlFor="name">
+                                Email
+                              </label>
+                              <input
+                                type="email"
+                                name="email"
+                                className='form-control'
+                                value={formik.values.email}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                              />
+                              {formik.touched.email && formik.errors.email ? <div className="error">{formik.errors.email}</div> : null}
+                            </div>
+                          </div>
+                          <div className="detail row form-group">
+                            <div className='col-lg-6'>
+                              <label className="" htmlFor="name">
+                                Phone
+                              </label>
+                              <input
+                                type="tel"
+                                name="phone"
+                                className='form-control'
+                                value={formik.values.phone}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                              />
+                              {formik.touched.phone && formik.errors.phone ? <div className="error">{formik.errors.phone}</div> : null}
+                            </div>
+                          </div>
+                        </div>
+                        <div className='cancel-savebtnnss'>
+                          <Button className="edit_btn editsavebtnn" variant="" onClick={handleSaveChanges}>Save Changes</Button>{' '}
+                          <Button className='editcancelbtnn' variant="" onClick={handleCancel}>Cancel</Button>
+                        </div>
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </div>
               </div>
             </Col>
           </Row>
