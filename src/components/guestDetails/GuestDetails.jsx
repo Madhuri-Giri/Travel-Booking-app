@@ -478,7 +478,7 @@ const bookHandler = async () => {
 // Retrieve guest details from localStorage
  const guestDetails = JSON.parse(localStorage.getItem('guestDetails'));
       setTimeout(() => {
-navigate('/hotel-bill', { state: { bookingDetails: responseBody.hotelBooking} });
+navigate('/booking-history', { state: { bookingDetails: responseBody.hotelBooking} });
 
       }, 2000);
     }
@@ -492,33 +492,6 @@ const { singleDeluxe, doubleDeluxe, totalPriceSingleDeluxe, totalPriceDoubleDelu
 
 // -------------------------------End Book API--------------------------------------------
 
-
-const BookingHistory = async () => {
-  try {
-    const transactionNum = localStorage.getItem('transactionNum');
-
-    // Ensure the URL and payload are correctly defined
-    const url = 'https://sajyatra.sajpe.in/admin/api/booking-history';
-    const payload = { transactionNum };
-
-    const response = await axios.post(url, payload, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.status === 200 && response.data.status === 'success') {
-      console.log('Fetch hotel history successful:', response.data);
-      return response.data; 
-    } else {
-      console.error('Failed to fetch hotel history. Status:', response.status);
-      throw new Error('Failed to fetch hotel history details');
-    }
-  } catch (error) {
-    console.error('Error fetching details:', error.message);
-    throw error; 
-  }
-};
 
 
 // for Handle html tag and symbol
