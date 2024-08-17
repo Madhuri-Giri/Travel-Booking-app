@@ -15,16 +15,29 @@ function BookingHistory() {
     useEffect(() => {
         const fetchBookingHistory = async () => {
             try {
+
+                 // Retrieve transactionNum from localStorage
+     const transactionNum = localStorage.getItem('transactionNum');
+
+     if (!transactionNum) {
+        throw new Error("Transaction number not found in local storage.");
+    }
                 const response = await fetch("https://sajyatra.sajpe.in/admin/api/booking-history", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ transaction_num: "SAJ9370" }),
+                    body: JSON.stringify({ transaction_num: transactionNum }),
                 });
 
                 const data = await response.json();
-                console.log('API Response:', data);
+                console.log('Hotel History API Response:', data);
+
+                // Store the API response in local storage
+                const dataToStore = {
+             hotelHistory: data.hotel_history,
+                        };
+                localStorage.setItem('hotelHistoryData', JSON.stringify(dataToStore));
 
                 if (data && Array.isArray(data.hotel_history)) {
                     setHotelBookings(data.hotel_history);
@@ -40,13 +53,78 @@ function BookingHistory() {
     }, []);
     // ----------------------hotel history API-------------------------------
 
-    const navigateHotelDetails = () => {
-        setLoading(true);
-        setTimeout(() => {
-            navigate('/hotel-bill');
-        }, 10000); 
-    };
+    // const navigateHotelDetails = () => {
+    //     setLoading(true);
+    //     setTimeout(() => {
+    //         navigate('/hotel-bill');
+    //     }, 10000); 
+    // };
     
+    
+    const navigateHotelDetails = async (event) => {
+        event.preventDefault();
+    
+        // Retrieve hotelHistoryData from local storage
+        const storedHotelHistoryData = localStorage.getItem('hotelHistoryData');
+        if (!storedHotelHistoryData) {
+            console.error('No hotel history data found in local storage');
+            return;
+        }
+    
+        try {
+            // Define requestData with the static hotel_booking_id
+            const requestData = {
+                
+                
+                    "BookingId": "1554760",
+                     "RequestType": "4",
+                     "BookingMode": "5",
+                     "SrdvType": "SingleTB",
+                     "SrdvIndex":"SrdvTB",
+                     "Remarks" : "Test",
+                     "transaction_num":"SAJ4790",
+                     "date": "2019-09-17T00:00:00",
+                     "hotel_booking_id":"192",
+                     "trace_id":"1"
+             
+            };
+    
+            // Fetch hotel ticket data
+            const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+    
+            const res = await response.json();
+            console.log('hotel-ticket API Response:', res);
+    
+            const ticketData = {
+                hotelBook: res.hotelBook,
+                hotelPassengerdetail: res.hotelPassengerdetail
+            };
+    
+            if (!ticketData.hotelBook.length || !ticketData.hotelPassengerdetail.length) {
+                throw new Error('No ticket data found in the response');
+            }
+    
+            // Save ticket data to local storage
+            const ticketDataJSON = JSON.stringify(ticketData);
+            localStorage.setItem('hotelTicket', ticketDataJSON);
+    
+            // Navigate to the hotel-bill page
+            navigate('/hotel-bill');
+    
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     // -----------bus---hotel-----flight----tabs content---------------------------------
     const renderTabContent = () => {
