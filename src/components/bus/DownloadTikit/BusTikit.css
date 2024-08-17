@@ -71,6 +71,8 @@
        align-items: flex-start;
        justify-content: space-between;
        padding-top: 0.5vmax;
+       color: #126181;
+       font-weight: bold;
 }
 .Bus-Tikit  .do-wn .mid .right{
        width: 50%;
@@ -189,4 +191,40 @@
             text-transform: capitalize;
        }
             
+   }
+
+
+
+
+
+
+
+   .buspssngerdetails span{
+       margin-left: 10px;
+       font-size: 15px;
+   }
+   .buspssngerdetails{
+       padding: 25px 0px;
+   }
+   .buspssngerdetails strong{
+       color: #0a325f;
+   }
+   .buspssngerdetails p{
+       margin: 0px;
+       margin-bottom: 4px !important;
+   }
+   .psngeramount{
+       color: green;
+       font-weight: bold;
+   }
+   .cancelbusticket{
+       display: flex;
+       justify-content: end;
+      
+   }
+   .cancelbusticket button{
+       border: none;
+       text-decoration: underline;
+       background-color: white;
+       color: red;
    }

@@ -25,130 +25,275 @@
     margin-left: 10px;
 } 
  */
- .cancel-savebtnnss{
-  display: flex;
+ .cancel-savebtnnss {
+   display: flex;
+   justify-content: space-between;
  }
- .cancel-savebtnnss button{
-  margin: 0px 50px;
+
+ .cancel-savebtnnss button {
+   margin: 0px 0px;
  }
- .profileSectionbg{
-  background-color: #dddddd;
-  padding: 50px 10px;
+
+ .profileSectionbg {
+   background-color: #dddddd;
+   padding: 30px 10px;
  }
+
  .profile {
-    /* margin-top: 40px; */
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 27px 30px;
-    margin-bottom: 20px;
-  }
-  
-  .profile img {
-    /* margin-top: 10px; */
-    border-radius: 50%;
-  }
-  .profile-header h2{
-    text-align: left;
-  }
-  .profile-details {
-    /* margin-top: 40px; */
+   /* margin-top: 40px; */
+   background-color: #ffffff;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 27px 30px;
+   margin-bottom: 20px;
+ }
+
+ .profile img {
+   /* margin-top: 10px; */
+   border-radius: 50%;
+ }
+
+ .profile-header h2 {
+   text-align: left;
+ }
+
+ /* .profile-details {
     background-color: #ffffff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 40px 20px;
-    /* margin-bottom: 10px; */
-  }
-  
-  .profile-sidebar {
-    border-right: 1px solid #ddd;
-  }
-  
-  .profile-details {
-    border-left: 1px solid #ddd;
-  }
-  
-  .sidebar-options {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .sidebar-option {
-    margin-bottom: 10px;
-    cursor: pointer;
-    color: #333;
-    font-size: 18px;
-    font-weight: 500;
-  }
-  
-  .edit-button{
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin-left: 350px;
-  }
-  .change-password-link {
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin-left: 150px;
-  }
-  
-  .details {
-    margin-bottom: 20px;
-  }
-  
-  .detail {
-    margin-bottom: 10px;
-  }
-  
-  .detail-label {
-    margin-right: 10px;
-    font-weight: bold;
-  }
-  
-  .modal-dialog {
-    max-width: 400px;
-  }
-  
-  .modal-content {
-    padding: 20px;
-  }
-  
-  .modal-body {
-    padding: 20px;
-  }
-  
-  .modal-title {
-    margin-bottom: 20px;
-  }
+  } */
 
-  .error {
-    color: red;
-    font-size: 0.875em;
-    margin-top: 0.25em; 
-  }
-  
+ .sidebar-options {
+   margin-top: 20px;
+   text-align: center;
+ }
 
-  @media(max-width:786px){
-    .change-password-link {
-      margin-left: auto;
-      margin: 20px 0 0 130px;
-    }
-    .edit-button{
-      margin-left: 230px;
-    }
-  }
+ .sidebar-option {
+   margin-bottom: 10px;
+   cursor: pointer;
+   color: #333;
+   font-size: 18px;
+   font-weight: 500;
+ }
+
+ .edit-button {
+   padding: 8px 12px;
+   background-color: #007bff;
+   color: #fff;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   text-decoration: none;
+   display: inline-block;
+   font-size: 14px;
+   margin-left: 350px;
+ }
+
+ .change-password-link {
+   padding: 8px 12px;
+   background-color: #007bff;
+   color: #fff;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   text-decoration: none;
+   display: inline-block;
+   font-size: 14px;
+   margin-left: 150px;
+ }
+
+ .details {
+   margin-bottom: 20px;
+ }
+
+ .detail {
+   margin-bottom: 10px;
+ }
+
+ .detail-label {
+   margin-right: 10px;
+   font-weight: bold;
+ }
+
+ .modal-dialog {
+   max-width: 400px;
+ }
+
+ .modal-content {
+   padding: 20px;
+ }
+
+ .modal-body {
+   padding: 20px;
+ }
+
+ .modal-title {
+   margin-bottom: 20px;
+ }
+
+ .error {
+   color: red;
+   font-size: 0.875em;
+   margin-top: 0.25em;
+ }
+
+
+ @media(max-width:786px) {
+   .change-password-link {
+     margin-left: auto;
+     margin: 20px 0 0 130px;
+   }
+
+   .edit-button {
+     margin-left: 230px;
+   }
+ }
+
+ @media(max-width:576px) {
+   .profileSectionbg {
+     padding: 15px 10px;
+   }
+
+   .profileheddboxmain {
+     padding: 75px 10px !important;
+   }
+
+   .hedemailss {
+     margin-left: 7px !important;
+   }
+   .profileimgg img {
+    height: 100px !important;
+}
+ }
+
+
+
+
+
+
+
+
+
+
+ .profilesboxx {
+   background-color: #ffffff;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+   /* padding: 40px 20px; */
+   padding: 0px !important;
+ }
+
+ .profileROW {
+   display: flex;
+   justify-content: center;
+ }
+
+ .profileheddbox {
+   background: linear-gradient(90deg, #00b7eb, #00c6fb, #007ea7, #00bfff);
+   /* padding-top: 10px; */
+   /* padding-bottom: -20px !important; */
+   height: 175px;
+ }
+
+ .profileheddboxmain {
+   padding: 30px 40px;
+   display: flex;
+ }
+
+ .profileimgg {
+   border: 5px solid white;
+   border-radius: 12px;
+   box-shadow: 2px 2px 2px 2px gray;
+ }
+
+ .profileimgg img {
+   height: 130px;
+   border-radius: 10px;
+ }
+
+ .profileetabss {
+   padding: 30px 20px;
+ }
+
+ .hedemailss {
+   display: flex;
+   justify-content: center;
+   align-items: end;
+   color: white;
+   margin-left: 20px;
+ }
+
+ .hedemailss h5 {
+   font-weight: bold;
+   margin-bottom: 1px;
+ }
+
+ .hedemailss p {
+   font-size: 14px;
+ }
+
+ .profileeditBox input {
+   border: 1px solid rgba(128, 128, 128, 0.342);
+   border-radius: 5px;
+ }
+
+ .profileeditBox label {
+   font-weight: 600;
+   color: #065569;
+   margin-bottom: 10px;
+ }
+
+ .profiledetailstabbcont label {
+   font-weight: 600;
+   color: #065569;
+   margin-bottom: 10px;
+ }
+
+ .tabssborder {
+   border: 1px solid rgba(128, 128, 128, 0.199);
+   padding: 10px 20px;
+   border-radius: 5px;
+ }
+
+ .cancel-savebtnnss .editsavebtnn {
+   background-color: #00b7eb;
+   border: 1px solid #00b7eb;
+   color: white;
+ }
+
+ .cancel-savebtnnss .editsavebtnn:hover {
+   border: 1px solid #00b7eb;
+   color: #00b7eb;
+   font-weight: bold;
+ }
+
+ .cancel-savebtnnss .editcancelbtnn {
+   background-color: #595e5fab;
+   border: 1px solid #595e5fab;
+   color: white;
+   font-weight: bold;
+ }
+
+ .cancel-savebtnnss .editcancelbtnn:hover {
+   border: 1px solid #595e5fab;
+   color: black;
+   font-weight: bold;
+ }
+ .logoutbttnn{
+  display: flex;
+  justify-content: end;
+  margin-bottom: 10px;
+ }
+ .logoutbttnn button{
+  background: linear-gradient(90deg, #00b7eb, #00c6fb, #11aadd, #00bfff);
+  border: 1px solid rgba(52, 134, 130, 0.267);
+  color: white;
+  padding: 6px 20px;
+  font-weight: 600;
+  border-radius: 4px;
+ }
+ .logoutbttnn svg{
+ font-size: 25px;
+ margin-right: 8px;
+ }

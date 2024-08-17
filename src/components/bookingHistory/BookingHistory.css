@@ -54,6 +54,20 @@
     color: white; 
 }
 
+.viewbttn{
+    display: flex;
+    justify-content: end;
+}
+.viewbttn button{
+    border: none;
+    background-color: #00b7eb;
+    color: white;
+    padding: 5px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+
 .hotelTabContentROW{
     background-color: rgba(177, 175, 175, 0.144);
     box-shadow: 2px 2px 2px 2px gray;
@@ -73,22 +87,39 @@
     color: brown;
     margin-bottom: 20px;
 }
-.viewbttn{
-    display: flex;
-    justify-content: end;
-}
-.viewbttn button{
-    border: none;
-    background-color: #00b7eb;
-    color: white;
-    padding: 5px 20px;
-    border-radius: 5px;
-    font-weight: bold;
-}
 .hotelBookingstatus span{
     color: #00e100;
     font-weight: bold;
 }
 .hotelcancelstatus span{
     color: red;
+}
+
+
+
+.busTabContentROW{
+    background-color: rgba(177, 175, 175, 0.144);
+    box-shadow: 2px 2px 2px 2px gray;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    padding: 15px 20px;
+}
+
+.busTabContent p{
+    margin: 5px 0px;
+}
+.busTabContent strong{
+    color: #04536b;
+}
+.busTabContenthedding{
+    font-weight: bold;
+    color: brown;
+    margin-bottom: 20px;
+}
+.busBookingsamount span{
+    color: #00e100;
+    font-weight: bold;
+}
+.busTabContent p{
+    margin: 5px 0px;
 }
