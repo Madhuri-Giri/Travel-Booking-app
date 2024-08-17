@@ -8,6 +8,9 @@ import Accordion from 'react-bootstrap/Accordion';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import { RiTimerLine } from "react-icons/ri";
+import he from 'he';
+
+
 const GuestDetails = () => {
   const [hotelBlock, setHotelBlock] = useState([]);
   const [selectedRoomsData, setSelectedRoomsData] = useState(null);
@@ -143,36 +146,53 @@ const GuestDetails = () => {
     
   };
 // ---------------- RozarPay Payment Gateway  Integration start -------------------
+const fetchPaymentDetails = async () => {
+  try {
+    const loginId = localStorage.getItem('loginId');
+    const transactionNum = localStorage.getItem('transactionNum');
 
-  const fetchPaymentDetails = async () => {
-
-    try {
-
-      const loginId = localStorage.getItem('loginId')
-
-      //for Handle Decimal digit of amount
-      const roundedAmount = Math.round(totalPriceWithGST * 100) / 100;
-      
-      const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-payment', {
-        
-        amount: roundedAmount, 
-        user_id: loginId,
-        
-      });
-
-      if (response.data.status === 'success') {
-        setPaymentDetails(response.data.payment_details);
-        console.log('Payment details fetched:', response.data);
-        return response.data;
-      } else {
-        throw new Error(response.data.message);
-      }
-    } catch (error) {
-      console.error('Error fetching payment details:', error);
-      alert('Failed to initiate payment. Please try again.');
-      return null;
+    if (!loginId || !transactionNum) {
+      throw new Error('Login ID or Transaction Number is missing.');
     }
-  };
+
+    // Handling decimal digits of the amount
+    const roundedAmount = Math.round(totalPriceWithGST * 100) / 100;
+
+    // Ensure roundedAmount is a valid number
+    if (isNaN(roundedAmount) || roundedAmount <= 0) {
+      throw new Error('Invalid amount value.');
+    }
+
+    // Construct the payload with necessary fields
+    const payload = {
+      amount: roundedAmount,
+      user_id: loginId,
+      transaction_num: transactionNum,
+    };
+
+    console.log('Sending payload:', payload);
+
+    // API call
+    const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-payment', payload);
+
+    if (response.data.status === 'success') {
+      setPaymentDetails(response.data.payment_details);
+      console.log('Payment details fetched:', response.data);
+      return response.data;
+    } else {
+      throw new Error(response.data.message || 'Failed to fetch payment details');
+    }
+  } catch (error) {
+    console.error('Error fetching payment details:', error);
+    if (error.response) {
+      console.error('Error response data:', error.response.data);
+    }
+    alert('Failed to initiate payment. Please try again.');
+    return null;
+  }
+};
+
+
 
   const handlePayment = async (e) => {
      const loginId = localStorage.getItem('loginId');
@@ -278,8 +298,15 @@ const GuestDetails = () => {
   };
   
 //  ----------------------------Start book api-----------------------------------
+
+
 const bookHandler = async () => {
   try {
+
+    
+     // Retrieve transactionNum from localStorage
+     const transactionNum = localStorage.getItem('transactionNum');
+
     const bookingPayload = {
       ResultIndex: "9",
       HotelCode: "92G|DEL",
@@ -288,6 +315,7 @@ const bookHandler = async () => {
       NoOfRooms: "1",
       ClientReferenceNo: 0,
       IsVoucherBooking: true,
+      transaction_num: transactionNum,
       HotelRoomsDetails: [
           {
               ChildCount: 0,
