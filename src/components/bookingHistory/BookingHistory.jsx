@@ -103,7 +103,7 @@ function BookingHistory() {
     useEffect(() => {
         const fetchFlightBookingHistory = async () => {
             try {
-                const response = await fetch("https://sajyatra.sajpe.in/admin/api/flight-payment-history", {
+                const response = await fetch("https://sajyatra.sajpe.in/admin/api/flight-history", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
