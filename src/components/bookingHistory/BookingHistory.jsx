@@ -13,7 +13,13 @@ function BookingHistory() {
     const [flightBookings, setFlightBookings] = useState([]);
     const [loading, setLoading] = useState(true); // Set loading to true initially
 
-    
+    const bustransaction_num = localStorage.getItem('transactionNumBus')
+    const flighttransaction_num = localStorage.getItem('transactionNumFlight')
+    const hoteltransaction_num = localStorage.getItem('transactionNumHotel')
+    // console.log("bustransaction_num",bustransaction_num);
+    // console.log("flighttransaction_num",flighttransaction_num);
+    // console.log("flighttransaction_num",flighttransaction_num);
+
     // ----------------------hotel history API-------------------------------
     useEffect(() => {
         const fetchHotelBookingHistory = async () => {
@@ -23,7 +29,7 @@ function BookingHistory() {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ transaction_num: "SAJ9370" }),
+                    body: JSON.stringify({ transaction_num: hoteltransaction_num }),
                 });
 
                 const data = await response.json();
@@ -52,7 +58,7 @@ function BookingHistory() {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ transaction_num: "SAJ9370" }),
+                    body: JSON.stringify({ transaction_num: bustransaction_num }),
                 });
 
                 const data = await response.json();
@@ -87,7 +93,7 @@ function BookingHistory() {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ transaction_num: "SAJ9370" }),
+                    body: JSON.stringify({ transaction_num: flighttransaction_num }),
                 });
 
                 const data = await response.json();
@@ -152,12 +158,12 @@ function BookingHistory() {
                                             <p className='busBookingsamount'><strong>Amount : </strong> <span>₹{booking.amount}</span></p>
                                         </div>
                                         <div className='viewbttn'>
-                                            <button onClick={navigateBusDetails(booking.bus_booking_id, booking.bus_trace_id)}>View Details</button>
+                                            <button onClick={() => navigateBusDetails(booking.bus_booking_id, booking.bus_trace_id)}>View Details</button>
                                         </div>
                                     </div>
                                 ))
                             ) : (
-                                <p>No bookings found.</p>
+                                <p>No bookings found please book ticket.</p>
                             )}
 
                         </div>
@@ -196,7 +202,7 @@ function BookingHistory() {
                                     </div>
                                 ))
                             ) : (
-                                <p>No booking history available.</p>
+                                <p>No bookings found please book ticket.</p>
                             )}
                         </div>
                     </div>
