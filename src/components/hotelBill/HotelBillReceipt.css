@@ -1,4 +1,4 @@
-.hotelTicketSec{
+.hotelTicketSec {
   background-color: #dddddd;
   padding: 10px 10px;
 }
@@ -31,7 +31,6 @@
   font-size: 1.8vmax;
   color: #007bff;
   margin-bottom: 1vmax;
-  
   padding-bottom: 0.5vmax;
 }
 
@@ -52,22 +51,42 @@
   font-weight: bold;
   color: #0a0b0b;
 }
+.button-container {
+  display: flex;
+  justify-content: space-between; 
+  margin-top: 2vmax; 
+}
 
-.download-pdf-button {
+.download-pdf-btn {
   display: block;
-  width: 100%;
-  padding: 1vmax;
-  margin-top: 2vmax;
+  padding: 0.8vmax;
   background-color: #00b7eb;
   color: white;
   text-align: center;
-  font-size: 1.8vmax;
+  font-size: 1.4vmax;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.download-pdf-button:hover {
+.download-pdf-btn:hover {
   background-color: #0099cc;
+}
+
+.cancel-button {
+  display: block;
+  padding: 0.8vmax;
+  background-color: #ff4d4d; 
+  color: white;
+  text-align: center;
+  font-size: 1.4vmax;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: #cc0000;
 }

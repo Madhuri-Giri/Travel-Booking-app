@@ -367,6 +367,9 @@ const HotelRoom = () => {
   };
   
 
+
+
+  
   const singleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'SINGLE DELUXE');
   const doubleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'DOUBLE Deluxe');
 
