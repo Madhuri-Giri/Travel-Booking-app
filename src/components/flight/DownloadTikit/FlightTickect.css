@@ -1,0 +1,65 @@
+.flightticktSec{
+    background-color: #dddddd;
+    padding: 10px 20px;
+}
+.flightticktROW{
+    display: flex;
+    justify-content: center;
+}
+.flightticktCOL{
+    background-color: white;
+    box-shadow: 2px 2px 5px 2px rgba(194, 194, 194, 0.479);
+    border-radius: 5px;
+    padding: 20px 10px;
+}
+.flighttikhed{
+    text-align: center;
+}
+.flighttikts .b-hed {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: #0a223d;
+    justify-content: center;
+    padding: 1vmax;
+}
+.flighttikts .b-hed h5 {
+    font-size: 1.5vmax;
+    font-weight: 600;
+    color: #fff;
+}
+
+.flighttikts .btm {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background: #efeaea82;
+    flex-direction: column;
+    border-radius: 10px;
+    gap: 0.6vmax;
+    padding: 0.5vmax;
+}
+
+.flighttikts .btm button {
+    border: none;
+    background: none;
+    padding: 0.5vmax 2vmax;
+    border-radius: 5px;
+    background-color: #00b7eb;
+    color: #fff;
+    font-weight: 600;
+    width: 95%;
+}
+
+.flighttikts strong {
+    color: #0a325f;
+}
+.flighttikts p {
+    margin: 0px;
+    margin-bottom: 4px;
+}
+.www{
+    padding: 0px 40px;
+    padding-top: 20px !important;
+}
