@@ -5,6 +5,7 @@ import './HotelRoom.css';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import { RiTimerLine } from "react-icons/ri";
+import he from 'he';
 
 const initialFormData = {
   firstName: '',
@@ -350,6 +351,21 @@ const HotelRoom = () => {
 
   // --------------End API Integration-----------------
 
+  const cleanUpDescription = (description) => {
+    if (!description) return '';
+  
+    let cleanedDescription = he.decode(description); // Decode HTML entities
+    cleanedDescription = cleanedDescription.replace(/<\/?(ul|li|b|i|strong|em|span)\b[^>]*>/gi, ''); // Remove specific tags
+    cleanedDescription = cleanedDescription.replace(/<br\s*\/?>|<p\s*\/?>|<\/p>/gi, '\n'); // Replace tags with newlines
+    cleanedDescription = cleanedDescription.replace(/\\|\|/g, ''); // Remove slashes and pipes
+    cleanedDescription = cleanedDescription.replace(/\s{2,}/g, ' '); // Replace multiple spaces
+    cleanedDescription = cleanedDescription.replace(/\n{2,}/g, '\n'); // Replace multiple newlines
+    cleanedDescription = cleanedDescription.replace(/\/\/+|\\|\|/g, '');
+    cleanedDescription = cleanedDescription.trim(); // Trim leading/trailing whitespace
+    cleanedDescription = cleanedDescription.replace(/"/g, ''); // Remove single quotes
+    return cleanedDescription;
+  };
+  
 
   const singleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'SINGLE DELUXE');
   const doubleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'DOUBLE Deluxe');

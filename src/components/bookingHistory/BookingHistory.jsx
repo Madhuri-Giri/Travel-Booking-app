@@ -127,12 +127,12 @@ function BookingHistory() {
     // ----------------------Flight history API-------------------------------
 
     // -----------------------navigate hotel ticket page--------------------------
-    const navigateHotelDetails = () => {
-        setLoading(true);
-        setTimeout(() => {
-            navigate('/hotel-bill');
-        }, 10000);
-    };
+    // const navigateHotelDetails = () => {
+    //     setLoading(true);
+    //     setTimeout(() => {
+    //         navigate('/hotel-bill');
+    //     }, 10000);
+    // };
     // -----------------------navigate hotel ticket page--------------------------
 
     // -----------------------navigate bus ticket page--------------------------
