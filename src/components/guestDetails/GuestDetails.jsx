@@ -492,27 +492,19 @@ const { singleDeluxe, doubleDeluxe, totalPriceSingleDeluxe, totalPriceDoubleDelu
 
 // -------------------------------End Book API--------------------------------------------
 
+const cleanUpDescription = (description) => {
+  if (!description) return '';
 
-
-// for Handle html tag and symbol
-const cleanHotelPolicyDetails = (policyDetails) => {
-  let cleanedDetails = policyDetails.replace(/<\/?[^>]+(>|$)/g, '');
-  cleanedDetails = cleanedDetails.replace(/["\s]+/g, ' ').trim();
-  cleanedDetails = cleanedDetails.replace(/\/\/\s*\/\s*\/\s*\|\s*/g, '');
-  cleanedDetails = cleanedDetails.replace(/india\s-\sland\s+of\s+mystries/g, 'India - Land of Mysteries');
-  cleanedDetails = cleanedDetails.replace(/Valid From (\d{4}-\d{2}-\d{2}) through (\d{4}-\d{2}-\d{2})/g, "Valid: $1 - $2")
-  cleanedDetails = cleanedDetails.replace(/(Check-in hour \d{2}:\d{2}) - /g, "$1")
-  cleanedDetails = cleanedDetails.replace(/\//g, " | ");
-  return cleanedDetails;
-};
-
-const cleanHotelNorms = (hotelNorms) => {
-  let cleanedNorms = hotelNorms.replace(/<\/?[^>]+(>|$)/g, '');
-  cleanedNorms = cleanedNorms.replace(/["\s]+/g, ' ').trim();
-  cleanedNorms = cleanedNorms.replace(/\/\/\s*\/\s*\/\s*\|\s*/g, '');
-  cleanedNorms = cleanedNorms.replace(/india\s-\sland\s+of\s+mystries/g, 'India - Land of Mysteries');
-
-  return cleanedNorms;
+  let cleanedDescription = he.decode(description); // Decode HTML entities
+  cleanedDescription = cleanedDescription.replace(/<\/?(ul|li|b|i|strong|em|span)\b[^>]*>/gi, ''); // Remove specific tags
+  cleanedDescription = cleanedDescription.replace(/<br\s*\/?>|<p\s*\/?>|<\/p>/gi, '\n'); // Replace tags with newlines
+  cleanedDescription = cleanedDescription.replace(/\\|\|/g, ''); // Remove slashes and pipes
+  cleanedDescription = cleanedDescription.replace(/\s{2,}/g, ' '); // Replace multiple spaces
+  cleanedDescription = cleanedDescription.replace(/\n{2,}/g, '\n'); // Replace multiple newlines
+  cleanedDescription = cleanedDescription.replace(/\/\/+|\\|\|/g, '');
+  cleanedDescription = cleanedDescription.trim(); // Trim leading/trailing whitespace
+  cleanedDescription = cleanedDescription.replace(/"/g, ''); // Remove single quotes
+  return cleanedDescription;
 };
 
 return (
@@ -548,7 +540,7 @@ return (
                   {HotelPolicyDetail ? (
                 <div className="hotel-policy">
                   <h4>Policy Details</h4>
-                  <p>{cleanHotelPolicyDetails(HotelPolicyDetail)}</p>
+                  <p>{cleanUpDescription(HotelPolicyDetail)}</p>
                 </div>
               ) : <p>No hotel policy details available.</p>}
                   </Accordion.Body>
@@ -563,7 +555,7 @@ return (
                   {HotelPolicyDetail ? (
                 <div className="hotel-policy">
                   <h4>Hotel Norms</h4>
-                  <p>{cleanHotelNorms(HotelNorms)}</p>
+                  <p>{cleanUpDescription(HotelNorms)}</p>
                 </div>
               ) : <p>No hotel norms available.</p>}
                   </Accordion.Body>

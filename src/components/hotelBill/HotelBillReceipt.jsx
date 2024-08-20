@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { GeneratePdf } from './GeneratePdf'; 
+import jsPDF from 'jspdf';
+import "jspdf-autotable";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './HotelBillReceipt.css';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
@@ -28,6 +31,7 @@ const BookingBill = () => {
   }, []);
 
   if (error) {
+    toast.error(error);
     return <div>Error: {error}</div>;
   }
 
@@ -38,10 +42,34 @@ const BookingBill = () => {
   // Handle PDF download
   const handleDownloadPDF = () => {
     if (bookingDetails) {
-      GeneratePdf(bookingDetails);
+      const doc = new jsPDF();
+
+      // Example data extraction
+      const { hotelBook, hotelPassengerdetail } = bookingDetails;
+      if (hotelBook && hotelBook.length > 0) {
+        const hotelInfo = hotelBook[0];
+        doc.setFontSize(18);
+        doc.text('Booking Bill', 14, 22);
+        doc.setFontSize(12);
+        doc.text(`Hotel Name: ${hotelInfo.hotelname}`, 14, 40);
+        doc.text(`Room Quantity: ${hotelInfo.noofrooms}`, 14, 50);
+        doc.text(`Price: ${hotelInfo.roomprice}`, 14, 60);
+        doc.text(`Room Type: ${hotelInfo.roomtype}`, 14, 70);
+        doc.text(`Check-In Date: ${hotelInfo.check_in_date}`, 14, 80);
+        doc.text(`Check-Out Date: ${hotelInfo.check_out_date}`, 14, 90);
+      }
+
+      // Add more details if necessary
+      
+      doc.save('booking-bill.pdf');
+    } else {
+      toast.error('No booking details available to generate PDF');
     }
   };
 
+
+
+  
   // Handle booking cancellation
   const bookingCancel = async (event) => {
     event.preventDefault();
@@ -80,24 +108,24 @@ const BookingBill = () => {
         // Save the response data to local storage and update state
         localStorage.setItem('hotelTicket', JSON.stringify(res.data));
         setBookingDetails(res.data);
+        toast.success('Booking cancelled successfully');
       } else {
         console.error('No data found in the API response:', res);
         setError('No data found in the API response');
+        toast.error('No data found in the API response');
       }
   
     } catch (error) {
       console.error('Error:', error);
       setError('Error occurred during cancellation');
+      toast.error('Error occurred during cancellation');
     }
   };
   
-
   return (
     <>
       <CustomNavbar />
       <div>
-       
-
         <div>
           <h3>Hotel Information</h3>
           {bookingDetails.hotelBook && bookingDetails.hotelBook.length > 0 && (
@@ -142,6 +170,7 @@ const BookingBill = () => {
         <button className="download-pdf-button" onClick={handleDownloadPDF}>Download PDF</button>
       </div>
       <Footer />
+      <ToastContainer />
     </>
   );
 };
