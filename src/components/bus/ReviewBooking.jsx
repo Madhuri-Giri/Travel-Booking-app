@@ -388,7 +388,7 @@ const ReviewBooking = () => {
         localStorage.setItem('busTikitDetails', JSON.stringify(responseBody));
 
         setTimeout(() => {
-          navigate('/bus-tikit-download', { state: { bookingDetails: responseBody } });
+          navigate('/booking-history', { state: { bookingDetails: responseBody } });
         }, 2000);
       }
     } catch (error) {

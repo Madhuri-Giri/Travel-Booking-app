@@ -136,8 +136,8 @@ const BusLists = () => {
       const data = await response.json();
       console.log('User details:', data);
       if (data.result && data.transaction) {
-        localStorage.setItem('transactionId', data.transaction.id);
-        localStorage.setItem('transactionNum', data.transaction.transaction_num);
+        localStorage.setItem('transactionIdBus', data.transaction.id);
+        localStorage.setItem('transactionNumBus', data.transaction.transaction_num);
       }
     } catch (error) {
       console.error('Error fetching user details:', error.message);
