@@ -353,7 +353,7 @@ const toggleDropVisibility = () => {
         <div className="btm-lists">
           <div className="bus-divs">
             {status === 'loading' && <p>Loading...</p>}
-            {status === 'failed' && <p>{error}</p>}
+            {status === 'failed' && <p className='text-danger'>{error}</p>}
             {status === 'succeeded' && (
               <>
                 {filteredResults.map((bus, index) => (
