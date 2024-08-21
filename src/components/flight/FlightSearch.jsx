@@ -32,8 +32,8 @@ const FlightSearch = () => {
   const [to, setTo] = useState('KWI');
   const [fromSuggestions, setFromSuggestions] = useState([]);
   const [toSuggestions, setToSuggestions] = useState([]);
-  const [preferredDepartureTime, setPreferredDepartureTime] = useState(new Date());
-  const [preferredArrivalTime, setPreferredArrivalTime] = useState(new Date());
+  const [preferredDepartureTime, setPreferredDepartureTime] = useState();
+  const [preferredArrivalTime, setPreferredArrivalTime] = useState();
   const fromInputRef = useRef(null);
   const toInputRef = useRef(null);
   const fromSuggestionsRef = useRef(null);
@@ -245,19 +245,30 @@ const FlightSearch = () => {
   const departureDatePickerRef = useRef(null);
   const arrivalDatePickerRef = useRef(null);
 
-  const handleChange = (date) => {
-    // Set the time part to "00:00:00" (AnyTime) for both PreferredDepartureTime and PreferredArrivalTime
-    const formattedDate = new Date(date).toISOString().split('T')[0] + 'T00:00:00';
+  const handleChange = (date, fieldName) => {
+    // Format the date to "YYYY-MM-DDT00:00:00" in local time
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}T00:00:00`;
+  
     console.log("formattedDate", formattedDate);
-
+  
+    if (fieldName === "PreferredDepartureTime") {
+      setPreferredDepartureTime(date);
+    } else if (fieldName === "PreferredArrivalTime") {
+      setPreferredArrivalTime(date);
+    }
+  
     setFormData((prev) => {
       let updatedSegments = [...prev.Segments];
-      updatedSegments[0]["PreferredDepartureTime"] = formattedDate;
-      updatedSegments[0]["PreferredArrivalTime"] = formattedDate;
+      updatedSegments[0][fieldName] = formattedDate;
       console.log("updatedSegments", updatedSegments);
       return { ...prev, Segments: updatedSegments };
     });
   };
+  
+
 
 
   // function for dynamic dep arr date----------------------------------------
@@ -505,8 +516,9 @@ const FlightSearch = () => {
                                   id="PreferredDepartureTime"
                                   placeholderText="Select a date"
                                   ref={departureDatePickerRef}
-                                  minDate={new Date()} // This prevents selecting past dates
+                                  minDate={new Date()}
                                 />
+
                               </div>
                               <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
@@ -708,7 +720,7 @@ const FlightSearch = () => {
                                   ref={departureDatePickerRef}
                                   minDate={new Date()}
                                 />
-                                
+
                                 {/* <MdDateRange
                                   className="date-picker-icon"
                                   onClick={() => departureDatePickerRef.current.setOpen(true)}
