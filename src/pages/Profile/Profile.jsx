@@ -53,6 +53,7 @@ const Profile = () => {
 
   const handleLogout = async () => {
     const loginData = JSON.parse(localStorage.getItem('loginData'));
+    const loginId = JSON.parse(localStorage.getItem('loginId'));
     const token = loginData?.token;
 
     if (!token) {
@@ -79,6 +80,7 @@ const Profile = () => {
 
       // Clear login data and token from local storage
       localStorage.removeItem('loginData');
+      localStorage.removeItem('loginId');
 
       // Update state to reflect that the user is logged out
       setIsLoggedIn(false);
