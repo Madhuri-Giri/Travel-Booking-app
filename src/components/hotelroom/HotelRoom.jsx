@@ -10,7 +10,8 @@ import he from 'he';
 const initialFormData = {
   firstName: '',
   lastName: '',
-  // Add other form fields as needed
+  mobile: '',
+  email: ''
 };
 
 const HotelRoom = () => {
@@ -243,8 +244,8 @@ const HotelRoom = () => {
               FirstName: formData.firstName,
               MiddleName: null,
               LastName: formData.lastName,
-              Phoneno: "9999999999",
-              Email: "test@email.com",
+              Phoneno: formData.mobile,
+              Email: formData.email,
               PaxType: "1",
               LeadPassenger: true,
               PassportNo: null,
@@ -254,11 +255,11 @@ const HotelRoom = () => {
             },
             {
               Title: "Mstr",
-              FirstName: "FirstName",
+              FirstName: formData.firstName,
               MiddleName: null,
-              LastName: "LastName",
-              Phoneno: "9999999999",
-              Email: "test@email.com",
+              LastName: formData.lastName,
+              Phoneno: formData.mobile,
+              Email: formData.email,
               PaxType: "2",
               LeadPassenger: false,
               Age: "8",
@@ -365,10 +366,6 @@ const HotelRoom = () => {
     cleanedDescription = cleanedDescription.replace(/"/g, ''); // Remove single quotes
     return cleanedDescription;
   };
-  
-
-
-
   
   const singleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'SINGLE DELUXE');
   const doubleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'DOUBLE Deluxe');

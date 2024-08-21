@@ -163,20 +163,30 @@
 .date-picker-container {
   position: relative;
   width: 100%;
-  max-width: 100%;
 }
 
-.calendar-icon {
+.full-width {
+  width: 100%;
+}
+
+.custom-placeholder {
   position: absolute;
-  right: 10px; 
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2em;
-  color: #888;
+  top: 0;
+  left: 0;
+  padding: 0.5rem;
+  color: #999;
   pointer-events: none;
-  z-index: 1; 
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
 }
 
+.date-picker-container input:focus + .custom-placeholder,
+.date-picker-container input:not(:placeholder-shown) + .custom-placeholder {
+  top: -1rem;
+  left: 0;
+  font-size: 0.75rem;
+  color: #333;
+}
 
 .timer {
   position: sticky;

@@ -61,22 +61,38 @@ const BookingBill = () => {
     }
   };
 
+  const transactionNum = localStorage.getItem('transactionNum');
+ 
   const bookingCancel = async (event) => {
     event.preventDefault();
-
+  
+    // Retrieve the stored booking IDs from localStorage
+    const hotelBookingIdsString = localStorage.getItem('hotel_booking_ids');
+    const hotelBookingIds = JSON.parse(hotelBookingIdsString); 
+  
+    
+    const hotelBookingId = hotelBookingIds ? hotelBookingIds[0] : null;
+  
+    if (!hotelBookingId) {
+      console.error('No hotel booking ID available');
+      setError('No hotel booking ID available');
+      toast.error('No hotel booking ID available');
+      return;
+    }
+  
     const requestData = {
-      BookingId: 1554760, 
+      BookingId: '1554760', 
       RequestType: 4,
       BookingMode: 5,
       SrdvType: "SingleTB",
       SrdvIndex: "SrdvTB",
       Remarks: "Test",
-      transaction_num: "SAJ4790",
-      date: "2019-09-17T00:00:00",
-      hotel_booking_id: "192",
+      transaction_num: transactionNum,
+      date: new Date().toISOString(),
+      hotel_booking_id: hotelBookingId, 
       trace_id: "1",
     };
-
+  
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-cancel', {
         method: 'POST',
@@ -85,14 +101,15 @@ const BookingBill = () => {
         },
         body: JSON.stringify(requestData),
       });
-
+  
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorDetails = await response.json();
+        throw new Error(`HTTP error! Status: ${response.status}, Details: ${JSON.stringify(errorDetails)}`);
       }
-
+  
       const res = await response.json();
       console.log('hotel-cancel API Response:', res);
-
+  
       if (res.data) {
         localStorage.setItem('hotelTicket', JSON.stringify(res.data));
         setBookingDetails(res.data);
@@ -102,14 +119,16 @@ const BookingBill = () => {
         setError('No data found in the API response');
         toast.error('No data found in the API response');
       }
-
+  
     } catch (error) {
       console.error('Error:', error);
       setError('Error occurred during cancellation');
       toast.error('Error occurred during cancellation');
     }
   };
-
+  
+  
+  
   return (
     <>
       <CustomNavbar />

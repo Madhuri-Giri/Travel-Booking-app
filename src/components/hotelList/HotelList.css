@@ -1,4 +1,22 @@
 /* ----------start side filter--------- */
+
+
+.timer {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 10px;
+  background-color: #eaffef;
+  color: rgba(255, 0, 0, 0.71);
+  font-weight: bold;
+  border-top: 1px solid #00e10070;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+
 .hotelMainsec {
   padding: 40px 0px;
   background-color: #dddddd;
@@ -70,20 +88,6 @@
   padding: 10px;
 }
 
-.timer {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 10px;
-  background-color: #eaffef;
-  color: rgba(255, 0, 0, 0.71);
-  font-weight: bold;
-  border-top: 1px solid #00e10070;
-  transition: box-shadow 0.3s ease-in-out;
-}
 
 .listOptionItem {
   display: flex;
@@ -347,6 +351,11 @@
 .paginationContainer .pagination li a:hover {
   background-color: #ddd;
 }
+/* 
+.noHotelsMessage p{
+color: rgba(255, 0, 0, 0.71);
+} */
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
