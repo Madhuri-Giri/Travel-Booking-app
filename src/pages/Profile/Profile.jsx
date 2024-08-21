@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import CustomNavbar from '../navbar/CustomNavbar';
 import Footer from '../footer/Footer';
 import { AiOutlineLogout } from "react-icons/ai";
+import { useNavigate } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 
 const Profile = () => {
@@ -14,6 +15,7 @@ const Profile = () => {
   const [messageType, setMessageType] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Default to false
   // const history = useHistory();
+  const navigate = useNavigate()
 
   const initialValues = {
     name: '',
@@ -82,6 +84,9 @@ const Profile = () => {
       setIsLoggedIn(false);
       setMessage('Logged out successfully.');
       setMessageType('success');
+     
+      navigate('/flight-search')
+      
 
       // Redirect to login page
       // history.push('/login');

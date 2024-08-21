@@ -93,11 +93,11 @@ const ReviewBooking = () => {
     navigate('/bus-list');
   };
 
+
   const fetchPaymentDetails = async () => {
     try {
       const loginId = localStorage.getItem('loginId');
       const roundedAmount = Math.round(totalPayment * 100) / 100;
-  
       console.log('Sending data to API:', { amount: roundedAmount, user_id: loginId });
   
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
@@ -240,6 +240,7 @@ const ReviewBooking = () => {
     }
   };
 
+
   //  ----------------------------book api-----------------------------------
 
   const bookHandler = async () => {
@@ -362,7 +363,6 @@ const ReviewBooking = () => {
           }
         ]
       };
-
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/seat-book', {
         method: 'POST',
         headers: {

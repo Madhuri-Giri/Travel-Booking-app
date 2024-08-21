@@ -101,7 +101,7 @@ const PassangerInfo = () => {
             },
           },
         ],
-        // transactionNum: transactionNum,
+        // transactionNum: transactionNum, 
       };
 
       try {
@@ -141,6 +141,7 @@ const PassangerInfo = () => {
         }
       } catch (error) {
         console.error('Error:', error);
+        
       }
     } else {
       alert("All selected seats must have corresponding passengers.");

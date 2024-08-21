@@ -93,6 +93,7 @@ function BookingHistory() {
 
 
     // ----------------------Flight history API-------------------------------
+    
     useEffect(() => {
         const fetchFlightBookingHistory = async () => {
             try {
@@ -135,7 +136,9 @@ function BookingHistory() {
     };
     // -----------------------navigate hotel ticket page--------------------------
 
+
     // -----------------------navigate bus ticket page--------------------------
+
     const navigateBusDetails = (busBookingId, busTraceId) => {
         localStorage.setItem("bus_booking_id", busBookingId);
         localStorage.setItem("bus_trace_id", busTraceId);
@@ -144,6 +147,9 @@ function BookingHistory() {
             navigate('/bus-tikit-download');
         }, 10000);
     };
+
+
+
     // -----------------------navigate bus ticket page--------------------------
     // const navigateHotelDetails = () => {
     //     setLoading(true);
@@ -152,71 +158,74 @@ function BookingHistory() {
     //     }, 10000); 
     // };
     
+
     
-    const navigateHotelDetails = async (event) => {
-        event.preventDefault();
+    // const navigateHotelDetails = async (event) => {
+    //     event.preventDefault();
     
-        // Retrieve hotelHistoryData from local storage
-        const storedHotelHistoryData = localStorage.getItem('hotelHistoryData');
-        if (!storedHotelHistoryData) {
-            console.error('No hotel history data found in local storage');
-            return;
-        }
+    //     // Retrieve hotelHistoryData from local storage
+    //     const storedHotelHistoryData = localStorage.getItem('hotelHistoryData');
+    //     if (!storedHotelHistoryData) {
+    //         console.error('No hotel history data found in local storage');
+    //         return;
+    //     }
     
-        try {
-            // Define requestData with the static hotel_booking_id
-            const requestData = {
+    //     try {
+    //         // Define requestData with the static hotel_booking_id
+    //         const requestData = {
                 
                 
-                    "BookingId": "1554760",
-                     "RequestType": "4",
-                     "BookingMode": "5",
-                     "SrdvType": "SingleTB",
-                     "SrdvIndex":"SrdvTB",
-                     "Remarks" : "Test",
-                     "transaction_num":"SAJ4790",
-                     "date": "2019-09-17T00:00:00",
-                     "hotel_booking_id":"192",
-                     "trace_id":"1"
+    //                 "BookingId": "1554760",
+    //                  "RequestType": "4",
+    //                  "BookingMode": "5",
+    //                  "SrdvType": "SingleTB",
+    //                  "SrdvIndex":"SrdvTB",
+    //                  "Remarks" : "Test",
+    //                  "transaction_num":"SAJ4790",
+    //                  "date": "2019-09-17T00:00:00",
+    //                  "hotel_booking_id":"192",
+    //                  "trace_id":"1"
              
-            };
+    //         };
     
-            // Fetch hotel ticket data
-            const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestData),
-            });
+    //         // Fetch hotel ticket data
+    //         const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(requestData),
+    //         });
     
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+    //         if (!response.ok) {
+    //             throw new Error(`HTTP error! Status: ${response.status}`);
+    //         }
     
-            const res = await response.json();
-            console.log('hotel-ticket API Response:', res);
+    //         const res = await response.json();
+    //         console.log('hotel-ticket API Response:', res);
     
-            const ticketData = {
-                hotelBook: res.hotelBook,
-                hotelPassengerdetail: res.hotelPassengerdetail
-            };
+    //         const ticketData = {
+    //             hotelBook: res.hotelBook,
+    //             hotelPassengerdetail: res.hotelPassengerdetail
+    //         };
     
-            if (!ticketData.hotelBook.length || !ticketData.hotelPassengerdetail.length) {
-                throw new Error('No ticket data found in the response');
-            }
+    //         if (!ticketData.hotelBook.length || !ticketData.hotelPassengerdetail.length) {
+    //             throw new Error('No ticket data found in the response');
+    //         }
     
-            // Save ticket data to local storage
-            const ticketDataJSON = JSON.stringify(ticketData);
-            localStorage.setItem('hotelTicket', ticketDataJSON);
+    //         // Save ticket data to local storage
+    //         const ticketDataJSON = JSON.stringify(ticketData);
+    //         localStorage.setItem('hotelTicket', ticketDataJSON);
     
-            // Navigate to the hotel-bill page
-            navigate('/hotel-bill');
+    //         // Navigate to the hotel-bill page
+    //         navigate('/hotel-bill');
     
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //     }
+    // };
+
+
 
     // -----------bus---hotel-----flight----tabs content---------------------------------
     const renderTabContent = () => {
