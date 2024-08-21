@@ -17,7 +17,8 @@ import { FaBusAlt } from "react-icons/fa";
 import BusLogo from "../../assets/images/bus.png"
 import FlightLogo from "../../assets/images/plane.png"
 import HotelLogo from "../../assets/images/five-stars.png"
-import { LuBus } from "react-icons/lu";
+import { IoBusOutline } from "react-icons/io5";
+import { RiHotelLine } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
 
 
@@ -57,14 +58,14 @@ const CustomNavbar = () => {
                                     href="/bus-search"
                                     className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/bus-search' || location.pathname === '/bus-list' || location.pathname === '/bus-layout' || location.pathname === '/bord-drop' || location.pathname === '/review-booking' || location.pathname === '/bus-tikit-download' ? 'active' : ''}`}
                                 >
-                                    <LuBus className="icon" size={22} />
+                                    <IoBusOutline  className="icon" size={22} />
                                     <span className="textNav">BUSES</span>
                                 </Nav.Link>
                                 <Nav.Link
                                     href="/hotel-search"
                                     className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/hotel-search' || location.pathname === '/hotel-list' || location.pathname === '/hotel-description' || location.pathname === '/hotel-room' || location.pathname === '/hotel-guest' ? 'active' : ''}`}
                                 >
-                                    <RiHotelBedFill className="icon" size={22} />
+                                    <RiHotelLine  className="icon" size={22} />
                                     <span className="textNav">HOTELS</span>
                                 </Nav.Link>
                                 <Nav.Link

@@ -96,7 +96,7 @@ const BoardAndDrop = ({ onBoardingSelect, onDroppingSelect }) => {
         </div>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && <div className="error-message text-danger">{error}</div>}
     </div>
   );
 };

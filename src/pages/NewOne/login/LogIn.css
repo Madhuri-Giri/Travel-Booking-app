@@ -119,9 +119,6 @@
           transition: 0.5s;
 }
 
-.Login .login .lgin button:hover {
-          transform: translateY(-0.5vmax);
-}
 
 .Login .login p {
           width: 100%;
@@ -147,9 +144,6 @@
           transition: 0.5s;
 }
 
-.Login .login .regbtn button:hover {
-          transform: translateY(-0.5vmax);
-}
 
 
 @media (max-width:600px) {
