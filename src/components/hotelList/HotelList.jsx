@@ -227,6 +227,7 @@ const HandelHotelInfo = async (index) => {
       if (data.result && data.transaction) {
         localStorage.setItem('transactionId', data.transaction.id);
         localStorage.setItem('transactionNum', data.transaction.transaction_num);
+        localStorage.setItem('transactionNumHotel', data.transaction.transaction_num);
       }
     } catch (error) {
       console.error('Error fetching user details:', error.message);
@@ -436,11 +437,12 @@ const HandelHotelInfo = async (index) => {
                               <span className="hotelPrice">
                                 ₹{calculateTotalPrice(hotel.Price?.OfferedPriceRoundedOff || 0).toFixed(2)}
                               </span>
-
-                              <span className="hotelTax">Includes taxes and fees</span>
+                                <div>
+                              <span className="hotelTax"> No Includes taxes and fees</span>
                               <button onClick={()=>HandelHotelInfo(index)} className="CheckButton">
                                 See Details
                               </button>
+                              </div>
                             </div>
                           </div>
                         </div>

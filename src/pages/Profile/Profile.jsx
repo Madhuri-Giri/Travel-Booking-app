@@ -100,6 +100,8 @@ const Profile = () => {
   useEffect(() => {
     const checkLoginStatus = () => {
       const loginData = JSON.parse(localStorage.getItem('loginData'));
+      console.log("loginData",loginData);
+      
       const token = loginData?.token;
 
       if (token) {

@@ -9,7 +9,9 @@ import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import { RiTimerLine } from "react-icons/ri";
 import he from 'he';
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const GuestDetails = () => {
   const [hotelBlock, setHotelBlock] = useState([]);
@@ -492,27 +494,19 @@ const { singleDeluxe, doubleDeluxe, totalPriceSingleDeluxe, totalPriceDoubleDelu
 
 // -------------------------------End Book API--------------------------------------------
 
+const cleanUpDescription = (description) => {
+  if (!description) return '';
 
-
-// for Handle html tag and symbol
-const cleanHotelPolicyDetails = (policyDetails) => {
-  let cleanedDetails = policyDetails.replace(/<\/?[^>]+(>|$)/g, '');
-  cleanedDetails = cleanedDetails.replace(/["\s]+/g, ' ').trim();
-  cleanedDetails = cleanedDetails.replace(/\/\/\s*\/\s*\/\s*\|\s*/g, '');
-  cleanedDetails = cleanedDetails.replace(/india\s-\sland\s+of\s+mystries/g, 'India - Land of Mysteries');
-  cleanedDetails = cleanedDetails.replace(/Valid From (\d{4}-\d{2}-\d{2}) through (\d{4}-\d{2}-\d{2})/g, "Valid: $1 - $2")
-  cleanedDetails = cleanedDetails.replace(/(Check-in hour \d{2}:\d{2}) - /g, "$1")
-  cleanedDetails = cleanedDetails.replace(/\//g, " | ");
-  return cleanedDetails;
-};
-
-const cleanHotelNorms = (hotelNorms) => {
-  let cleanedNorms = hotelNorms.replace(/<\/?[^>]+(>|$)/g, '');
-  cleanedNorms = cleanedNorms.replace(/["\s]+/g, ' ').trim();
-  cleanedNorms = cleanedNorms.replace(/\/\/\s*\/\s*\/\s*\|\s*/g, '');
-  cleanedNorms = cleanedNorms.replace(/india\s-\sland\s+of\s+mystries/g, 'India - Land of Mysteries');
-
-  return cleanedNorms;
+  let cleanedDescription = he.decode(description); // Decode HTML entities
+  cleanedDescription = cleanedDescription.replace(/<\/?(ul|li|b|i|strong|em|span)\b[^>]*>/gi, ''); // Remove specific tags
+  cleanedDescription = cleanedDescription.replace(/<br\s*\/?>|<p\s*\/?>|<\/p>/gi, '\n'); // Replace tags with newlines
+  cleanedDescription = cleanedDescription.replace(/\\|\|/g, ''); // Remove slashes and pipes
+  cleanedDescription = cleanedDescription.replace(/\s{2,}/g, ' '); // Replace multiple spaces
+  cleanedDescription = cleanedDescription.replace(/\n{2,}/g, '\n'); // Replace multiple newlines
+  cleanedDescription = cleanedDescription.replace(/\/\/+|\\|\|/g, '');
+  cleanedDescription = cleanedDescription.trim(); // Trim leading/trailing whitespace
+  cleanedDescription = cleanedDescription.replace(/"/g, ''); // Remove single quotes
+  return cleanedDescription;
 };
 
 return (
@@ -548,7 +542,7 @@ return (
                   {HotelPolicyDetail ? (
                 <div className="hotel-policy">
                   <h4>Policy Details</h4>
-                  <p>{cleanHotelPolicyDetails(HotelPolicyDetail)}</p>
+                  <p>{cleanUpDescription(HotelPolicyDetail)}</p>
                 </div>
               ) : <p>No hotel policy details available.</p>}
                   </Accordion.Body>
@@ -563,7 +557,7 @@ return (
                   {HotelPolicyDetail ? (
                 <div className="hotel-policy">
                   <h4>Hotel Norms</h4>
-                  <p>{cleanHotelNorms(HotelNorms)}</p>
+                  <p>{cleanUpDescription(HotelNorms)}</p>
                 </div>
               ) : <p>No hotel norms available.</p>}
                   </Accordion.Body>
@@ -616,154 +610,151 @@ return (
               
       /* ---------Start form----------- */
       <div className="form-container">
-  <div className="form-content">
-    <h2 className="text-center">Enter Your Details</h2>
-    <form onSubmit={handleFormSubmit}>
-      <div className="row">
-        
-        <div className="col-md-6">
-          <div className="mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="First Name"
-              name="fname"
-              value={formData.fname}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Middle Name (Optional)"
-              name="mname"
-              value={formData.mname}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Last Name"
-              name="lname"
-              value={formData.lname}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="tel"
-              className="form-control"
-              placeholder="Contact Number"
-              name="mobile"
-              value={formData.mobile}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="PAN No./Adhar Card No."
-              name="number"
-              value={formData.number}
-              onChange={handleChange}
-              
-            />
-          </div>
-        </div>
-        
-        <div className="col-md-6">
-          <div className="mb-3">
-            <input
-              type="number"
-              className="form-control"
-              placeholder="Age"
-              name="age"
-              value={formData.age}
-              onChange={handleChange}
-              
-            />
-          </div>
+      <div className="form-content">
+        <h2 className="text-center">Enter Your Details</h2>
+        <form onSubmit={handleFormSubmit}>
+          <div className="row">
+            <div className="col-md-6">
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="First Name"
+                  name="fname"
+                  value={formData.fname}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Middle Name (Optional)"
+                  name="mname"
+                  value={formData.mname}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Last Name"
+                  name="lname"
+                  value={formData.lname}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="tel"
+                  className="form-control"
+                  placeholder="Contact Number"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="PAN No./Aadhaar Card No."
+                  name="number"
+                  value={formData.number}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
 
-          <div className="mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Passport No."
-              name="passportNo"
-              value={formData.passportNo}
-              onChange={handleChange}
-              
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="date"
-              className="form-control"
-              placeholderText="Passport Issue Date"
-              name="passportIssueDate"
-              value={formData.passportIssueDate}
-              onChange={handleChange}
-            />
-          </div>
+            <div className="col-md-6">
+              <div className="mb-3">
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder="Age"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleChange}
+                />
+              </div>
 
-          <div className="mb-3">
-            <input
-              type="date"
-              className="form-control"
-              placeholderText="Passport Expiry Date"
-              name="passportExpDate"
-              value={formData.passportExpDate}
-              onChange={handleChange}
-            />
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Passport No."
+                  name="passportNo"
+                  value={formData.passportNo}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="mb-3  date-picker-container">
+                <DatePicker 
+                  selected={formData.passportIssueDate}
+                  onChange={(date) => handleChange(date, 'passportIssueDate')}
+                  placeholderText="Passport Issue Date"
+                  dateFormat="yyyy/MM/dd"
+                  minDate={new Date()}
+                  className="form-control"
+                />
+                <i className="fas fa-calendar calendar-icon"></i>
+              </div>
+
+              <div className="mb-3 date-picker-container">
+                <DatePicker
+                  selected={formData.passportExpDate}
+                  onChange={(date) => handleChange(date, 'passportExpDate')}
+                  placeholderText="Passport Expiry Date"
+                  dateFormat="yyyy/MM/dd"
+                  minDate={new Date()}
+                  className="form-control"
+                />
+                <i className="fas fa-calendar calendar-icon"></i>
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Lead Passenger (Yes/No)"
+                  name="leadPassenger"
+                  value={formData.leadPassenger}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder="Pax Type"
+                  name="paxType"
+                  value={formData.paxType}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
           </div>
-         
-          
-          <div className="mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Lead Passenger (Yes/No)"
-              name="leadPassenger"
-              value={formData.leadPassenger}
-              onChange={handleChange}
-            />
-          </div>
-          
-          <div className="mb-3">
-            <input
-              type="number"
-              className="form-control"
-              placeholder="Pax Type"
-              name="paxType"
-              value={formData.paxType}
-              onChange={handleChange}
-              
-            />
-          </div>
-        </div>
+          <button className='submit-btn' type="submit">Save</button>
+        </form>
       </div>
-      <button className='submit-btn' type="submit">Save</button>
-    </form>
-  </div>
-</div>
+    </div>
 
               )}
 
@@ -775,7 +766,7 @@ return (
                   <p><strong>Last Name:</strong> {formData.lname}</p>
                   <p><strong>Email:</strong> {formData.email}</p>
                   <p><strong>Mobile:</strong> {formData.mobile}</p> */}
-                  <label>
+                  <label  className='check_btn'>
                     <input
                       type="checkbox" 
                       checked={checkboxChecked}

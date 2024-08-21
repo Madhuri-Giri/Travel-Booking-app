@@ -19,6 +19,11 @@ const FlightReview = () => {
   const location = useLocation();
   const { fareDataDetails } = location.state || {}; // Use optional chaining
 
+
+  const IsLCC = localStorage.getItem('IsLCC')
+  console.log("IsLCC", IsLCC);
+
+
   if (!fareDataDetails) {
     console.error('fareDataDetails is undefined in FlightReview component');
   }
@@ -183,19 +188,18 @@ const FlightReview = () => {
         handler: async function (response) {
           console.log('Payment successful', response);
 
-          localStorage.setItem('flight_payment_id', response.razorpay_payment_id
-          );
+          localStorage.setItem('flight_payment_id', response.razorpay_payment_id);
           localStorage.setItem('flight_transaction_id', options.transaction_id);
+          alert('Flight Payment successful!');
 
-          alert('flight Payment successful!');
           try {
-            const isLCC = localStorage.getItem('IsLCC') === 'true';
-  
-            if (isLCC) {
-              await flightpayUpdate();
+            await flightpayUpdate();
+
+            const IsLCC = localStorage.getItem('IsLCC') === 'true'; // Convert to boolean
+
+            if (IsLCC) {
               await bookLccApi();
             } else {
-              await flightpayUpdate();
               await bookHoldApi();
             }
           } catch (error) {
@@ -226,7 +230,8 @@ const FlightReview = () => {
       console.error('Error during payment setup:', error.message);
       alert('An error occurred during payment setup. Please try again.');
     }
-  }
+  };
+
 
 
   
@@ -238,6 +243,7 @@ const FlightReview = () => {
     try {
       const payment_id = localStorage.getItem('flight_payment_id');
       const transaction_id = localStorage.getItem('flight_transaction_id');
+      const transaction_num = localStorage.getItem('transactionNum');
 
       if (!payment_id || !transaction_id) {
         throw new Error('Missing payment details');
@@ -247,6 +253,7 @@ const FlightReview = () => {
       const payload = {
         payment_id,
         transaction_id,
+        transaction_num,
       };
 
       const response = await fetch(url, {
@@ -286,24 +293,30 @@ const FlightReview = () => {
   const title = passengerDetails[0].gender;
   const firstName = passengerDetails[0].firstName;
   const lastName = passengerDetails[0].lastName;
-  // console.log("title", title);
-  // console.log("firstName", firstName);
-  // console.log("lastName", lastName);
+
+  const transactionNum = localStorage.getItem('transactionNum')
+  console.log("traceId", traceId);
+  console.log("transactionNum", transactionNum);
+  console.log("title", title);
+  console.log("firstName", firstName);
+  console.log("lastName", lastName);
+
 
   const bookLccApi = async () => {
     try {
       const llcPayload = {
-        "SrdvIndex": srdvIndex,
-        "ResultIndex": resultIndex,
-        "TraceId": parseInt(traceId),
         "SrdvType": srdvType,
-        "Title": title,
+        "transaction_num": transactionNum,
+        "SrdvIndex": srdvIndex,
+        "TraceId": parseInt(traceId),
+        "ResultIndex": resultIndex,
+        "Title": "Mr",
         "FirstName": firstName,
         "LastName": lastName,
         "PaxType": 1,
         "DateOfBirth": "2001-12-12",
         "Gender": "1",
-        "PassportNo": "",
+        "PassportNo": "null",
         "PassportExpiry": "",
         "PassportIssueDate": "",
         "AddressLine1": "A152 Ashok Nagar",

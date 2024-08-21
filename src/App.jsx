@@ -36,13 +36,13 @@ import FlightReview from './components/flight/FlightReview';
 import SeatMealBaggageTabs from './components/flight/SeatMealBaggageTabs';
 import Profile from './pages/Profile/Profile';
 import Loading from './pages/loading/Loading';
-import FlightTickect from './components/flight/DownloadTikit/FlightTickect';
 import SajyatraLogin from './components/popUp/LoginPopUp';
 import EnterOtp from '../src/components/popUp/EnterOtp'
 import RegisterModal from './components/popUp/RegisterPopup';
 import LoginPopUp from './components/popUp/LoginPopUp';
 import PaymentHistory from './components/paymentHistory/PaymentHistory';
 import BookingHistory from './components/bookingHistory/BookingHistory';
+import FlightTickect from './components/flight/DownloadTikit/FlightTickect';
 
 const App = () => {
   const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number',  '/load'];
@@ -64,7 +64,7 @@ const App = () => {
           <Route path='/layout' element={<BusLayout />} />
 
           <Route path='/bus-tikit-download' element={<BusTikit />} />
-          <Route path='flight-ticket-download' element={<FlightTickect />} />
+          <Route path='/flight-ticket' element={<FlightTickect />} /> 
           <Route path='/signup' element={<SignUp />} />
           <Route path='/faq' element={<Faq />} />
           <Route path='/setting' element={<Setting />} />
