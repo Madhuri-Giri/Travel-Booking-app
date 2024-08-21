@@ -195,7 +195,7 @@ const FlightReview = () => {
           try {
             await flightpayUpdate();
 
-            const IsLCC = localStorage.getItem('IsLCC') === 'true'; // Convert to boolean
+            const IsLCC = localStorage.getItem('IsLCC') === 'true'; 
 
             if (IsLCC) {
               await bookLccApi();

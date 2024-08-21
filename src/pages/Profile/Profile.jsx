@@ -73,6 +73,8 @@ const Profile = () => {
         },
       });
 
+      console.log('Logout response:', response);
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to log out');
@@ -89,7 +91,6 @@ const Profile = () => {
      
       navigate('/flight-search')
       
-
       // Redirect to login page
       // history.push('/login');
 

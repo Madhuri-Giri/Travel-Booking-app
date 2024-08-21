@@ -80,7 +80,7 @@ const BusLists = () => {
       droppingPoints: bus.DroppingPoints,
 
     };
-  
+
     localStorage.setItem('selectedBusDetails', JSON.stringify(selectedBusDetails));
   };
   

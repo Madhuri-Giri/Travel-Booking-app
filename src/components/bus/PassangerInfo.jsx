@@ -102,7 +102,6 @@ const PassangerInfo = () => {
             },
           },
         ],
-        // transactionNum: transactionNum, 
       };
 
       try {
