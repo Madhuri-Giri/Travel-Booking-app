@@ -17,7 +17,7 @@ const ReviewBooking = () => {
   const from = useSelector((state) => state.bus.from);
   const to = useSelector((state) => state.bus.to);
 
-  const transactionNum = localStorage.getItem('transactionNum');
+  const transactionNumBus = localStorage.getItem('transactionNumBus');
 
 
   const [paymentDetails, setPaymentDetails] = useState(null);
@@ -249,6 +249,7 @@ const ReviewBooking = () => {
   const bookHandler = async () => {
     try {
 
+      // const transactionNumBus = localStorage.getItem('transactionNumBus')
 
       const bookingPayload = {
         ResultIndex: "1",
@@ -256,7 +257,7 @@ const ReviewBooking = () => {
         BoardingPointId: 1,
         DroppingPointId: 1,
         RefID: "1",
-        transactionNum: transactionNum,
+        transactionNum: 'SAJ9370',
         Passenger: [
           {
             LeadPassenger: true,

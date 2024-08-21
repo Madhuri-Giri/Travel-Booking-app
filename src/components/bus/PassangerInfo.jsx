@@ -39,7 +39,7 @@ const PassangerInfo = () => {
 
     if (passengerCount < selectedSeats.length) {
 
-      const transactionNum = localStorage.getItem('transactionNum');
+      // const transactionNumBus = localStorage.getItem('transactionNumBus');
 
       const requestData = {
         ResultIndex: '1',
@@ -47,7 +47,7 @@ const PassangerInfo = () => {
         BoardingPointId: 1,
         DroppingPointId: 1,
         RefID: '1',
-        transactionNum: transactionNum,
+        transactionNum: 'SAJ9370',
         Passenger: [
           {
             LeadPassenger: true,

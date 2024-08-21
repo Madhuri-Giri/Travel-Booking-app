@@ -53,7 +53,6 @@ const Profile = () => {
 
   const handleLogout = async () => {
     const loginData = JSON.parse(localStorage.getItem('loginData'));
-    const loginId = JSON.parse(localStorage.getItem('loginId'));
     const token = loginData?.token;
 
     if (!token) {
@@ -61,6 +60,14 @@ const Profile = () => {
       setMessageType('danger');
       return;
     }
+
+    const loginId = localStorage.getItem('loginId');
+
+    if (!loginId) {
+      navigate('/enter-number', { state: { from: location } });
+      return;
+    }
+
 
     try {
       const response = await fetch('https://new.sajpe.in/api/v1/user/logout', {

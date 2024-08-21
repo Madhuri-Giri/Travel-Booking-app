@@ -67,17 +67,20 @@ function BookingHistory() {
     // ----------------------Bus history API-------------------------------
     useEffect(() => {
         const fetchBusBookingHistory = async () => {
+
+              const transactionNumBus = localStorage.getItem('transactionNumBus')
             try {
                 const response = await fetch("https://sajyatra.sajpe.in/admin/api/bus-booking-history", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ transaction_num: bustransaction_num }),
+                    // body: JSON.stringify({ transaction_num: transactionNumBus }),
+                    body: JSON.stringify({ transaction_num: 'SAJ9370' }),
                 });
 
                 const data = await response.json();
-                console.log('Bus Booking API Response:', data);
+                console.log('Bus booking history:', data);
 
                 // Check for data in both keys
                 if (data && Array.isArray(data.result) && data.result.length > 0) {
