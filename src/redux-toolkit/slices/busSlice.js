@@ -6,7 +6,12 @@ export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ source_city: from, destination_city: to, depart_date: departDate }),
+    body: JSON.stringify({ 
+     source_city: from,
+     destination_city: to,
+     depart_date: departDate,
+    
+    }),
   });
   const data = await response.json();
 

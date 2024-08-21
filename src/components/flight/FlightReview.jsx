@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,7 +8,7 @@ import { FaEquals } from "react-icons/fa6";
 import { MdOutlineFlightTakeoff } from "react-icons/md";
 import { IoTimeOutline } from "react-icons/io5";
 import { PiTrolleySuitcaseFill } from "react-icons/pi";
-import { json, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 
@@ -101,6 +101,71 @@ const FlightReview = () => {
     }
   };
 
+  // const flightpayHandler = async () => {
+  //   const loginId = localStorage.getItem('loginId');
+  //   if (!loginId) {
+  //     navigate('/enter-number', { state: { from: location } });
+  //     return;
+  //   }
+
+  //   try {
+  //     const paymentData = await flightPayCreate();
+  //     if (!paymentData) return;
+
+  //     const options = {
+  //       key: paymentData.razorpay_key,
+  //       amount: paymentData.payment_details.amount * 100,
+  //       currency: 'INR',
+  //       transaction_id: paymentData.payment_details.id,
+  //       name: 'SRN Infotech',
+  //       description: 'Test Transaction',
+  //       image: 'https://your-logo-url.com/logo.png',
+  //       handler: async function (response) {
+  //         console.log('Payment successful', response);
+
+  //         localStorage.setItem('flight_payment_id', response.razorpay_payment_id
+  //         );
+  //         localStorage.setItem('flight_transaction_id', options.transaction_id);
+
+  //         alert('flight Payment successful!');
+
+  //         try {
+  //           await flightpayUpdate();
+  //           await bookLccApi();
+  //           await bookHoldApi()
+  //         } catch (error) {
+  //           console.error('Error during updateHandlePayment or bookHandler:', error.message);
+  //           alert('An error occurred during processing. Please try again.');
+  //         }
+  //       },
+  //       prefill: {
+  //         username: 'tanisha',
+  //         email: 'tanisha@gmail.com',
+  //         mobile: '7777777777',
+  //       },
+  //       notes: {
+  //         address: 'Bhopal',
+  //       },
+  //       theme: {
+  //         color: '#3399cc',
+  //       },
+  //     };
+
+  //     const rzp1 = new window.Razorpay(options);
+  //     rzp1.on('payment.failed', function (response) {
+  //       alert(`Payment failed: ${response.error.description}`);
+  //     });
+
+  //     rzp1.open();
+  //   } catch (error) {
+  //     console.error('Error during payment setup:', error.message);
+  //     alert('An error occurred during payment setup. Please try again.');
+  //   }
+  // }
+
+
+
+
   const flightpayHandler = async () => {
     const loginId = localStorage.getItem('loginId');
     if (!loginId) {
@@ -168,6 +233,12 @@ const FlightReview = () => {
   };
 
 
+
+  
+
+
+
+
   const flightpayUpdate = async () => {
     try {
       const payment_id = localStorage.getItem('flight_payment_id');
@@ -222,12 +293,14 @@ const FlightReview = () => {
   const title = passengerDetails[0].gender;
   const firstName = passengerDetails[0].firstName;
   const lastName = passengerDetails[0].lastName;
+
   const transactionNum = localStorage.getItem('transactionNum')
   console.log("traceId", traceId);
   console.log("transactionNum", transactionNum);
   console.log("title", title);
   console.log("firstName", firstName);
   console.log("lastName", lastName);
+
 
   const bookLccApi = async () => {
     try {

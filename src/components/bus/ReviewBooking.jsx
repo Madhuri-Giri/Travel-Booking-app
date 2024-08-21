@@ -95,6 +95,7 @@ const ReviewBooking = () => {
     navigate('/bus-list');
   };
 
+
   const fetchPaymentDetails = async () => {
     try {
       const loginId = localStorage.getItem('loginId');
@@ -242,6 +243,7 @@ const ReviewBooking = () => {
     }
   };
 
+
   //  ----------------------------book api-----------------------------------
 
   const bookHandler = async () => {
@@ -364,7 +366,6 @@ const ReviewBooking = () => {
           }
         ]
       };
-
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/seat-book', {
         method: 'POST',
         headers: {
