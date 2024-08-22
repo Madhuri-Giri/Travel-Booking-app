@@ -10,9 +10,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { CiSaveDown1 } from "react-icons/ci";
 import Lottie from 'lottie-react';
 import LootiAnim from '../../../assets/images/Anim.json';
+import { FaArrowRightLong } from "react-icons/fa6";
+import Barcode from 'react-barcode';
+
+
+const generatePasscode = () => {
+  return Math.random().toString(36).substr(2, 8).toUpperCase();
+};
 
 
 const BusTikit = () => {
+  const passcode = generatePasscode();
+ 
+
   const [busticketPassengerDetails, setbusticketPassengerDetails] = useState(null);
 
   const from = useSelector((state) => state.bus.from);
@@ -114,7 +124,23 @@ const BusTikit = () => {
       console.log("Ticket cancellation aborted");
     }
   };
-  
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+    });
+  };
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+ 
   return (
     <>
       <CustomNavbar />
@@ -124,14 +150,115 @@ const BusTikit = () => {
           <h5>Download Ticket Status</h5>
         </div> */}
 
+        <div className="lottie container">
+          <div className="row">
+            <div className=" col-lg-3">
+              <Lottie animationData={LootiAnim} />
+              {/* <Lottie animationData={LootiAnim} style={{ height: '70%', width: '60%' }} /> */}
+            </div>
+            <div className="col-lg-9">
+              <div className='busticktbox'>
+                <div className='bustickthed'>
+                  <h5>Bus Ticket</h5>
+                </div>
+                <div className="top">
+                  {/* <h6>Download Your Boardign Pass</h6> */}
+                  {/* <h5>BHopal{from}-{to}Indore</h5> */}
+                </div>
+                <div className="row buspssngerdetails">
+                  {busticketPassengerDetails && (
+                    <div className="col-12">
+                      {busticketPassengerDetails.bus_details.map((busDetail, index) => (
+                        <div key={index}>
+                          <div className="row">
+                          <div className='fromtoMOB'>
+                                <div>
+                                  <strong>Bhopal{from}</strong>
+                                  <p>{formatTime(busDetail.departure_time)}</p>
+                                </div>
+                                <div>
+                                  <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
+                                </div>
+                                <div>
+                                  <strong>{to}Indore</strong>
+                                  <p>{formatTime(busDetail.arrival_time)}</p>
+                                </div>
+                              </div>
+                            <div className="col-md-4 col-6">
+                              <p><strong>Name -: </strong><span>{busDetail.name}</span></p>
+                              <p><strong>Age -: </strong><span>{busDetail.age}</span></p>
+                              <p><strong>Gender -: </strong><span>{busDetail.gender}</span></p>
+                              <p><strong>Number -: </strong><span>{busDetail.number}</span></p>
+                              <p><strong>Date -: </strong><span>{formatDate(busDetail.departure_time)}</span></p>
+                              {/* <strong>ROUTE -:</strong> <br></br> */}
+                              <div className='fromtoWEB'>
+                                <div>
+                                  <strong>Bhopal{from}</strong>
+                                  <p>{formatTime(busDetail.departure_time)}</p>
+                                </div>
+                                <div>
+                                  <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
+                                </div>
+                                <div>
+                                  <strong>{to}Indore</strong>
+                                  <p>{formatTime(busDetail.arrival_time)}</p>
+                                </div>
+                              </div>
 
-       <div className="lottie">
-  
 
+                            </div>
+                            <div className="col-md-4 col-6">
+                            <p><strong>Address -: </strong><span>{busDetail.address}</span></p>
+
+                              <p><strong>Bus Type -: </strong><span>{busDetail.bus_type}</span></p>
+                              {/* <p><strong>Dep Time -: </strong><span>{formatTime(busDetail.departure_time)}</span></p> */}
+                              {/* <p><strong>Arr Time -: </strong><span>{formatTime(busDetail.arrival_time)}</span></p> */}
+
+                              <p><strong>Traveller -: </strong><span>{busDetail.travel_name}</span></p>
+                              {/* <p><strong>City Point Name -: </strong><span>{busDetail.city_point_name}</span></p> */}
+                              <p><strong>Seat No -: </strong><span>{busDetail.seat_no}</span></p>
+                            </div>
+
+                            <div className="col-md-4 ticktbordr">
+                              {busticketPassengerDetails.booking_Status && busticketPassengerDetails.booking_Status.length > 0 && (
+                                <div>
+                                  <p><strong>Ticket Number -: </strong><span>{busticketPassengerDetails.booking_Status[0].ticket_no}</span></p>
+                                  {/* <p><strong>Bus ID -: </strong><span>{busticketPassengerDetails.booking_Status[0].bus_id}</span></p> */}
+                                  <p><strong>Status -: </strong><span>{busticketPassengerDetails.booking_Status[0].bus_status}</span></p>
+                                  <p className="psngeramount"><strong>Amount -: </strong><span>{busticketPassengerDetails.booking_Status[0].amount}</span></p>
+                                  <p><strong>Passcode: </strong></p>
+                                  <Barcode className="buspasscode" value={passcode} format="CODE128" /> {/* Barcode Display */}
+                                </div>
+                              )}
+                            </div>
+
+                          </div>
+                        </div>
+                      ))}
+
+                    </div>
+                  )}
+
+                </div>
+
+                <div className="btm">
+                  <button className='busdonload' onClick={downloadTicket}>
+                    Download
+                    <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
+                  </button>
+                  <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        {/* <div className="lottie">
              <div className="anim">
                 <Lottie animationData={LootiAnim} style={{ height: '70%', width: '60%' }} />
              </div>
-
        <div className="do-wn">
           <div className="top">
                <h6>Download Your Boardign Pass</h6>
@@ -164,8 +291,6 @@ const BusTikit = () => {
                     </div>
                   )}
                 </div>
-                {/* <div className="cancelbusticket">
-                </div> */}
               </div>
             )}
 
@@ -180,8 +305,8 @@ const BusTikit = () => {
       </button>          </div>
         </div>
 
-       </div>
-        
+       </div> */}
+
       </div>
 
       <Footer />
