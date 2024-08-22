@@ -259,8 +259,6 @@ const ReviewBooking = () => {
         default:
           toast.warn('Unknown payment status. Please contact support.');
       }
-
-
     } catch (error) {
       console.error('Error updating payment details:', error.message);
       throw error;
