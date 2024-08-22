@@ -14,7 +14,6 @@ const LoginPopUp = ({ showModal, onClose }) => {
     otp: ''  
   });
   const [error, setError] = useState('');
-
   const toggleOtpVisibility = () => {
     setOtpShown(prev => !prev);
   };
@@ -34,7 +33,6 @@ const LoginPopUp = ({ showModal, onClose }) => {
       if (response.ok) {
         localStorage.setItem('loginId', data.data.id);
         localStorage.setItem('loginData', JSON.stringify(data.data));
-
 
         toast.success('Login successful!', {
           position: "top-right",

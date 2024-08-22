@@ -13,11 +13,26 @@ function BookingHistory() {
     const [flightBookings, setFlightBookings] = useState([]);
     const [loading, setLoading] = useState(true); // Set loading to true initially
 
-    
+    const bustransaction_num = localStorage.getItem('transactionNumBus')
+    const flighttransaction_num = localStorage.getItem('transactionNumFlight')
+    const hoteltransaction_num = localStorage.getItem('transactionNumHotel')
+    // console.log("bustransaction_num",bustransaction_num);
+    // console.log("flighttransaction_num",flighttransaction_num);
+    // console.log("flighttransaction_num",flighttransaction_num);
+
     // ----------------------hotel history API-------------------------------
     useEffect(() => {
         const fetchHotelBookingHistory = async () => {
             try {
+                // Retrieve transactionNum from localStorage
+                const transactionNum = localStorage.getItem('transactionNum');
+
+
+                if (!transactionNum) {
+                    throw new Error("Transaction number not found in local storage.");
+                }
+
+
                 // Retrieve transactionNum from localStorage
                 const transactionNum = localStorage.getItem('transactionNum');
 
@@ -30,6 +45,7 @@ function BookingHistory() {
                     headers: {
                         "Content-Type": "application/json",
                     },
+                    body: JSON.stringify({ transaction_num: hoteltransaction_num }),
                     body: JSON.stringify({ transaction_num: transactionNum }),
                 });
 
@@ -40,7 +56,16 @@ function BookingHistory() {
                 const data = await response.json();
                 console.log('Hotel History API Response:', data);
 
+
                 // Ensure data is valid and store in local storage
+
+                // Store the API response in local storage
+                const dataToStore = {
+                    hotelHistory: data.hotel_history,
+                };
+                localStorage.setItem('hotelHistoryData', JSON.stringify(dataToStore));
+
+
                 if (data && Array.isArray(data.hotel_history)) {
                     // Store full hotel history data
                     localStorage.setItem('hotelHistoryData', JSON.stringify({ hotelHistory: data.hotel_history }));
@@ -196,17 +221,20 @@ function BookingHistory() {
     // ----------------------Bus history API-------------------------------
     useEffect(() => {
         const fetchBusBookingHistory = async () => {
+
+              const transactionNumBus = localStorage.getItem('transactionNumBus')
             try {
                 const response = await fetch("https://sajyatra.sajpe.in/admin/api/bus-booking-history", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ transaction_num: "SAJ9370" }),
+                    // body: JSON.stringify({ transaction_num: transactionNumBus }),
+                    body: JSON.stringify({ transaction_num: 'SAJ9370' }),
                 });
 
                 const data = await response.json();
-                console.log('Bus Booking API Response:', data);
+                console.log('Bus booking history:', data);
 
                 // Check for data in both keys
                 if (data && Array.isArray(data.result) && data.result.length > 0) {
@@ -229,15 +257,17 @@ function BookingHistory() {
 
 
     // ----------------------Flight history API-------------------------------
+    
     useEffect(() => {
         const fetchFlightBookingHistory = async () => {
             try {
-                const response = await fetch("https://sajyatra.sajpe.in/admin/api/flight-payment-history", {
+                const response = await fetch("https://sajyatra.sajpe.in/admin/api/flight-history", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ transaction_num: "SAJ9370" }),
+                    body: JSON.stringify({ transaction_num: flighttransaction_num }),
+                    // body: JSON.stringify({ transaction_num: "SAJ9370" }),
                 });
 
                 const data = await response.json();
@@ -262,6 +292,7 @@ function BookingHistory() {
     }, []);
     // ----------------------Flight history API-------------------------------
 
+
     // -----------------------navigate hotel ticket page--------------------------
     // const navigateHotelDetails = () => {
         // localStorage.setItem("hotel_booking_id", hotelBookingId);
@@ -270,9 +301,12 @@ function BookingHistory() {
     //         navigate('/hotel-bill');
     //     }, 10000);
     // };
-    // -----------------------navigate hotel ticket page--------------------------
+    // -----------------------navigate hotel ticket page-------------------------
+
+
 
     // -----------------------navigate bus ticket page--------------------------
+
     const navigateBusDetails = (busBookingId, busTraceId) => {
         localStorage.setItem("bus_booking_id", busBookingId);
         localStorage.setItem("bus_trace_id", busTraceId);
@@ -281,8 +315,164 @@ function BookingHistory() {
             navigate('/bus-tikit-download');
         }, 10000);
     };
+
+
+
+
     // -----------------------navigate bus ticket page--------------------------
-   
+
+
+    // const navigateHotelDetails = () => {
+    //     setLoading(true);
+    //     setTimeout(() => {
+    //         navigate('/hotel-bill');
+    //     }, 10000); 
+    // };
+    
+
+    
+    // const navigateHotelDetails = async (event) => {
+    //     event.preventDefault();
+    
+    //     // Retrieve hotelHistoryData from local storage
+    //     const storedHotelHistoryData = localStorage.getItem('hotelHistoryData');
+    //     if (!storedHotelHistoryData) {
+    //         console.error('No hotel history data found in local storage');
+    //         return;
+    //     }
+    
+    //     try {
+    //         // Define requestData with the static hotel_booking_id
+    //         const requestData = {
+                
+                
+    //                 "BookingId": "1554760",
+    //                  "RequestType": "4",
+    //                  "BookingMode": "5",
+    //                  "SrdvType": "SingleTB",
+    //                  "SrdvIndex":"SrdvTB",
+    //                  "Remarks" : "Test",
+    //                  "transaction_num":"SAJ4790",
+    //                  "date": "2019-09-17T00:00:00",
+    //                  "hotel_booking_id":"192",
+    //                  "trace_id":"1"
+             
+    //         };
+    
+    //         // Fetch hotel ticket data
+    //         const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(requestData),
+    //         });
+    
+    //         if (!response.ok) {
+    //             throw new Error(`HTTP error! Status: ${response.status}`);
+    //         }
+    
+    //         const res = await response.json();
+    //         console.log('hotel-ticket API Response:', res);
+    
+    //         const ticketData = {
+    //             hotelBook: res.hotelBook,
+    //             hotelPassengerdetail: res.hotelPassengerdetail
+    //         };
+    
+    //         if (!ticketData.hotelBook.length || !ticketData.hotelPassengerdetail.length) {
+    //             throw new Error('No ticket data found in the response');
+    //         }
+    
+    //         // Save ticket data to local storage
+    //         const ticketDataJSON = JSON.stringify(ticketData);
+    //         localStorage.setItem('hotelTicket', ticketDataJSON);
+    
+    //         // Navigate to the hotel-bill page
+    //         navigate('/hotel-bill');
+    
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //     }
+    // };
+
+    // -----------------------navigate flight ticket page--------------------------
+    const navigateFlightDetails = (transactionNum) => {
+        localStorage.setItem("flight_transaction_num", transactionNum);
+        console.log("Flight details clicked");
+        setLoading(true);
+        setTimeout(() => {
+            navigate('/flight-ticket');
+        }, 10000);
+    };
+    // -----------------------navigate flight ticket page--------------------------
+
+
+    // -----------------------navigate Hotel ticket page--------------------------
+    const navigateHotelDetails = async (event) => {
+        event.preventDefault();
+        // Retrieve hotelHistoryData from local storage
+        const storedHotelHistoryData = localStorage.getItem('hotelHistoryData');
+        if (!storedHotelHistoryData) {
+            console.error('No hotel history data found in local storage');
+            return;
+        }
+
+        try {
+            // Define requestData with the static hotel_booking_id
+            const requestData = {
+                "BookingId": "1554760",
+                "RequestType": "4",
+                "BookingMode": "5",
+                "SrdvType": "SingleTB",
+                "SrdvIndex": "SrdvTB",
+                "Remarks": "Test",
+                "transaction_num": "SAJ4790",
+                "date": "2019-09-17T00:00:00",
+                "hotel_booking_id": "192",
+                "trace_id": "1"
+
+            };
+
+            // Fetch hotel ticket data
+            const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const res = await response.json();
+            console.log('hotel-ticket API Response:', res);
+
+            const ticketData = {
+                hotelBook: res.hotelBook,
+                hotelPassengerdetail: res.hotelPassengerdetail
+            };
+
+            if (!ticketData.hotelBook.length || !ticketData.hotelPassengerdetail.length) {
+                throw new Error('No ticket data found in the response');
+            }
+
+            // Save ticket data to local storage
+            const ticketDataJSON = JSON.stringify(ticketData);
+            localStorage.setItem('hotelTicket', ticketDataJSON);
+
+            // Navigate to the hotel-bill page
+            navigate('/hotel-bill');
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    // -----------------------navigate Hotel ticket page-------------------------
+
+
 
     // -----------bus---hotel-----flight----tabs content---------------------------------
     const renderTabContent = () => {
@@ -304,12 +494,12 @@ function BookingHistory() {
                                             <p className='busBookingsamount'><strong>Amount : </strong> <span>₹{booking.amount}</span></p>
                                         </div>
                                         <div className='viewbttn'>
-                                            <button onClick={navigateBusDetails(booking.bus_booking_id, booking.bus_trace_id)}>View Details</button>
+                                            <button onClick={() => navigateBusDetails(booking.bus_booking_id, booking.bus_trace_id)}>View Details</button>
                                         </div>
                                     </div>
                                 ))
                             ) : (
-                                <p>No bookings found.</p>
+                                <p>No bookings found please book ticket.</p>
                             )}
 
                         </div>
@@ -317,10 +507,41 @@ function BookingHistory() {
                 );
             case 'flight':
                 return (
-                    <div>
+                    <div className='flightTabContent'>
                         <div className="container">
-                            <h6 className='hotelTabContenthedding'>Flight Ticket Status</h6>
-
+                            <h6 className='flightTabContentHeading'>Flight Ticket Status</h6>
+                            <div className="row flightTabContentROW">
+                                <div className="col-md-6">
+                                    <p><strong>PNR : </strong>35</p>
+                                    <p><strong>Booking ID : </strong> 205496 </p>
+                                </div>
+                                <div className="col-md-6">
+                                    <p><strong>Status : </strong> 1 </p>
+                                    <p className='flightcancelstatus'><strong>Cancel Status : </strong> <span>pending</span> </p>
+                                </div>
+                                <div className='viewbttn'>
+                                    <button onClick={() => navigateFlightDetails(booking.transaction_num)}>View Details</button>
+                                </div>
+                            </div>
+                            {flightBookings.length > 0 ? (
+                                flightBookings.map((booking, index) => (
+                                    <div key={index} className="row flightTabContentROW">
+                                        <div className="col-md-6">
+                                            <p><strong>PNR : </strong> <span>{booking.pnr}</span> </p>
+                                            <p><strong>Booking ID : </strong> <span> {booking.booking_id}</span> </p>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <p className='flightcancelstatus'><strong>Status : </strong> <span>{booking.status === "1" ? "Confirmed" : "Pending"}</span> </p>
+                                            <p><strong>Cancel Status : </strong> <span>{booking.cancel_status}</span> </p>
+                                        </div>
+                                        <div className='viewbttn'>
+                                            <button onClick={() => navigateFlightDetails(booking.transaction_num)}>View Details</button>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No flight bookings found. Please book a flight ticket.</p>
+                            )}
                         </div>
                     </div>
                 );
@@ -350,7 +571,7 @@ function BookingHistory() {
                                     </div>
                                 ))
                             ) : (
-                                <p>No booking history available.</p>
+                                <p>No bookings found please book ticket.</p>
                             )}
                         </div>
                     </div>

@@ -193,9 +193,7 @@ color: rgb(74, 74, 255);
           transition: 0.5s;
 
 }
-.Joinnow .Join .JoinRight .one button:hover{
-          transform: translateY(-0.5vmax);
-}
+
 .Joinnow .Join .JoinRight .line{
           margin-top: 1vmax;
           text-align: center;

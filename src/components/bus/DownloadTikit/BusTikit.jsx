@@ -7,6 +7,10 @@ import Footer from '../../../pages/footer/Footer';
 import { useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CiSaveDown1 } from "react-icons/ci";
+import Lottie from 'lottie-react';
+import LootiAnim from '../../../assets/images/Anim.json';
+
 
 const BusTikit = () => {
   const [busticketPassengerDetails, setbusticketPassengerDetails] = useState(null);
@@ -116,10 +120,19 @@ const BusTikit = () => {
       <CustomNavbar />
 
       <div className="Bus-Tikit">
-        <div className="b-hed">
+        {/* <div className="b-hed">
           <h5>Download Ticket Status</h5>
-        </div>
-        <div className="do-wn">
+        </div> */}
+
+
+       <div className="lottie">
+  
+
+             <div className="anim">
+                <Lottie animationData={LootiAnim} style={{ height: '70%', width: '60%' }} />
+             </div>
+
+       <div className="do-wn">
           <div className="top">
             <h5>{from}-{to}</h5>
           </div>
@@ -150,18 +163,24 @@ const BusTikit = () => {
                     </div>
                   )}
                 </div>
-                <div className="cancelbusticket">
-                <button onClick={handleCancelTicket}>Cancel Ticket</button>
-                </div>
+                {/* <div className="cancelbusticket">
+                </div> */}
               </div>
             )}
 
           </div>
 
           <div className="btm">
-            <button onClick={downloadTicket}>DOWNLOAD <i className="ri-download-line"></i></button>
-          </div>
+          <button style={{backgroundColor:'red'}} onClick={handleCancelTicket}>Cancel Ticket</button>
+          <button  onClick={downloadTicket}>
+        Download 
+        <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }}  />
+
+      </button>          </div>
         </div>
+
+       </div>
+        
       </div>
 
       <Footer />

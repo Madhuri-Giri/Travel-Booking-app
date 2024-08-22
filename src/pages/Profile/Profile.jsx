@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import CustomNavbar from '../navbar/CustomNavbar';
 import Footer from '../footer/Footer';
 import { AiOutlineLogout } from "react-icons/ai";
+import { useNavigate } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 
 const Profile = () => {
@@ -14,6 +15,7 @@ const Profile = () => {
   const [messageType, setMessageType] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Default to false
   // const history = useHistory();
+  const navigate = useNavigate()
 
   const initialValues = {
     name: '',
@@ -59,6 +61,14 @@ const Profile = () => {
       return;
     }
 
+    const loginId = localStorage.getItem('loginId');
+
+    if (!loginId) {
+      navigate('/enter-number', { state: { from: location } });
+      return;
+    }
+
+
     try {
       const response = await fetch('https://new.sajpe.in/api/v1/user/logout', {
         method: 'POST',
@@ -70,6 +80,8 @@ const Profile = () => {
         },
       });
 
+      console.log('Logout response:', response);
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to log out');
@@ -77,12 +89,15 @@ const Profile = () => {
 
       // Clear login data and token from local storage
       localStorage.removeItem('loginData');
+      localStorage.removeItem('loginId');
 
       // Update state to reflect that the user is logged out
       setIsLoggedIn(false);
       setMessage('Logged out successfully.');
       setMessageType('success');
-
+     
+      navigate('/flight-search')
+      
       // Redirect to login page
       // history.push('/login');
 
@@ -95,6 +110,8 @@ const Profile = () => {
   useEffect(() => {
     const checkLoginStatus = () => {
       const loginData = JSON.parse(localStorage.getItem('loginData'));
+      console.log("loginData",loginData);
+      
       const token = loginData?.token;
 
       if (token) {

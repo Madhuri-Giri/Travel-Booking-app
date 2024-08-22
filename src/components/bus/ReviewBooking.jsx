@@ -17,6 +17,8 @@ const ReviewBooking = () => {
   const from = useSelector((state) => state.bus.from);
   const to = useSelector((state) => state.bus.to);
 
+  const transactionNumBus = localStorage.getItem('transactionNumBus');
+
 
   const [paymentDetails, setPaymentDetails] = useState(null);
   // const [email, setEmail] = useState('');
@@ -93,20 +95,21 @@ const ReviewBooking = () => {
     navigate('/bus-list');
   };
 
+
   const fetchPaymentDetails = async () => {
     try {
       const loginId = localStorage.getItem('loginId');
       const roundedAmount = Math.round(totalPayment * 100) / 100;
-  
+
       console.log('Sending data to API:', { amount: roundedAmount, user_id: loginId });
-  
+
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
         amount: roundedAmount,
         user_id: loginId,
       });
-  
+
       console.log('API response:', response.data);
-  
+
       if (response.data.status === 'success') {
         setPaymentDetails(response.data.payment_details);
         return response.data;
@@ -114,14 +117,14 @@ const ReviewBooking = () => {
         console.error('API returned an error:', response.data.message);
         throw new Error(response.data.message);
       }
-  
+
     } catch (error) {
       console.error('Error during payment initiation:', error);
       alert('Failed to initiate payment. Please try again.');
       return null;
     }
   };
-  
+
 
 
 
@@ -129,7 +132,7 @@ const ReviewBooking = () => {
 
 
   const handlePayment = async () => {
-     
+
     if (!newContactData.name || !newContactData.email || !newContactData.contact) {
       alert('Please fill in your contact details before proceeding to payment.');
       return;
@@ -240,12 +243,13 @@ const ReviewBooking = () => {
     }
   };
 
+
   //  ----------------------------book api-----------------------------------
 
   const bookHandler = async () => {
     try {
 
-      // const transactionNum = localStorage.getItem('transactionNum');
+      // const transactionNumBus = localStorage.getItem('transactionNumBus')
 
       const bookingPayload = {
         ResultIndex: "1",
@@ -253,6 +257,7 @@ const ReviewBooking = () => {
         BoardingPointId: 1,
         DroppingPointId: 1,
         RefID: "1",
+        transactionNum: 'SAJ9370',
         Passenger: [
           {
             LeadPassenger: true,
@@ -362,7 +367,6 @@ const ReviewBooking = () => {
           }
         ]
       };
-
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/seat-book', {
         method: 'POST',
         headers: {
@@ -388,7 +392,7 @@ const ReviewBooking = () => {
         localStorage.setItem('busTikitDetails', JSON.stringify(responseBody));
 
         setTimeout(() => {
-          navigate('/bus-tikit-download', { state: { bookingDetails: responseBody } });
+          navigate('/booking-history', { state: { bookingDetails: responseBody } });
         }, 2000);
       }
     } catch (error) {
@@ -448,192 +452,192 @@ const ReviewBooking = () => {
   // -------------------------------------------------------------------------------------------------
 
 
-  
+
   return (
-   <>
-    <CustomNavbar />
-   
-    <div className='ReviewBooking'>
-      <div className="review-book">
-        <h5><i onClick={back} className="ri-arrow-left-s-line"></i> Review Details</h5>
+    <>
+      <CustomNavbar />
+
+      <div className='ReviewBooking'>
+        <div className="review-book">
+          <h5><i onClick={back} className="ri-arrow-left-s-line"></i> Review Details</h5>
 
 
-        <div className="main-branch">
+          <div className="main-branch">
 
-          <div className="r-left">
-            <div className="left-main">
-
-
-              <div className="l-top">
-                <div className="line">
-                  <i className="ri-bus-line"> {from} - {to}</i>
-                </div>
-
-                <div className="line-btm">
-      <p>Travel Name <br /> <span> {selectedBusDetails ? selectedBusDetails.busName : 'N/A'}</span></p>
-      <p>Selected Seats <br /> <span> ({selectedSeats})</span></p>
-
-      <div>
-        <p>Boarding Points <br /> <span>{selectedBusDetails && selectedBusDetails.boardingPoints.length > 0 ? (
-          selectedBusDetails.boardingPoints.map((point) => (
-            <span key={point.CityPointIndex}>{point.CityPointName}</span>
-          ))
-        ) : (
-          <p>No Boarding Points Available</p>
-        )}</span></p>
-        
-      </div>
-
-      <div>
-        <p>Dropping Points <br /> <span>{selectedBusDetails && selectedBusDetails.droppingPoints.length > 0 ? (
-          selectedBusDetails.droppingPoints.map((point) => (
-            <span key={point.CityPointIndex}>{point.CityPointName}</span>
-          ))
-        ) : (
-          <p>No Dropping Points Available</p>
-        )}</span></p>
-        
-      </div>
-    </div>
-
-              </div>
-
-            
-              <div className="passnger-Info-page">
-                <PassangerInfo />
-              </div>
-
-              
-
-              <div className="new-contact">
-                <h6><i className="ri-user-add-line"></i> Contact Details </h6>
-                <p>Your booking details will be sent to this email address and mobile number.</p>
-                <form onSubmit={newcontactHandler}>
-                  <div className="c-detail">
-                    <div className="cont">
-                      <input
-                        type="text"
-                        name="name"
-                        value={newContactData.name}
-                        onChange={handleInputChange}
-                        placeholder="Enter Your Name"
-                        required
-                      />
-                    </div>
-                    <div className="cont">
-                      <input
-                        type="email"
-                        name="email"
-                        value={newContactData.email}
-                        onChange={handleInputChange}
-                        placeholder="Enter Your Email"
-                        required
-                      />
-                    </div>
-                    <div className="cont">
-                      <input
-                        type="number"
-                        name="contact"
-                        value={newContactData.contact}
-                        onChange={handleInputChange}
-                        placeholder="Enter Your Contact"
-                        required
-                      />
-                    </div>
-                    
+            <div className="r-left">
+              <div className="left-main">
 
 
+                <div className="l-top">
+                  <div className="line">
+                    <i className="ri-bus-line"> {from} - {to}</i>
                   </div>
-                   
 
-                  <div className="last-pay">
-                <div className="fare">
-                  <h6><i className="ri-price-tag-2-line"></i>Total Ticket Amount</h6>
-                  <small >{totalPayment.toFixed(2)}</small>
+                  <div className="line-btm">
+                    <p>Travel Name <br /> <span> {selectedBusDetails ? selectedBusDetails.busName : 'N/A'}</span></p>
+                    <p>Selected Seats <br /> <span> ({selectedSeats})</span></p>
+
+                    <div>
+                      <p>Boarding Points <br /> <span>{selectedBusDetails && selectedBusDetails.boardingPoints.length > 0 ? (
+                        selectedBusDetails.boardingPoints.map((point) => (
+                          <span key={point.CityPointIndex}>{point.CityPointName}</span>
+                        ))
+                      ) : (
+                        <p>No Boarding Points Available</p>
+                      )}</span></p>
+
+                    </div>
+
+                    <div>
+                      <p>Dropping Points <br /> <span>{selectedBusDetails && selectedBusDetails.droppingPoints.length > 0 ? (
+                        selectedBusDetails.droppingPoints.map((point) => (
+                          <span key={point.CityPointIndex}>{point.CityPointName}</span>
+                        ))
+                      ) : (
+                        <p>No Dropping Points Available</p>
+                      )}</span></p>
+
+                    </div>
+                  </div>
+
                 </div>
-                <div className="review-pay">
-                <button 
-                          style={{ backgroundColor: (!newContactData.name || !newContactData.email || !newContactData.contact) ? '#ccc' : '' }} 
-                          onClick={handlePayment} 
+
+
+                <div className="passnger-Info-page">
+                  <PassangerInfo />
+                </div>
+
+
+
+                <div className="new-contact">
+                  <h6><i className="ri-user-add-line"></i> Contact Details </h6>
+                  <p>Your booking details will be sent to this email address and mobile number.</p>
+                  <form onSubmit={newcontactHandler}>
+                    <div className="c-detail">
+                      <div className="cont">
+                        <input
+                          type="text"
+                          name="name"
+                          value={newContactData.name}
+                          onChange={handleInputChange}
+                          placeholder="Enter Your Name"
+                          required
+                        />
+                      </div>
+                      <div className="cont">
+                        <input
+                          type="email"
+                          name="email"
+                          value={newContactData.email}
+                          onChange={handleInputChange}
+                          placeholder="Enter Your Email"
+                          required
+                        />
+                      </div>
+                      <div className="cont">
+                        <input
+                          type="number"
+                          name="contact"
+                          value={newContactData.contact}
+                          onChange={handleInputChange}
+                          placeholder="Enter Your Contact"
+                          required
+                        />
+                      </div>
+
+
+
+                    </div>
+
+
+                    <div className="last-pay">
+                      <div className="fare">
+                        <h6><i className="ri-price-tag-2-line"></i>Total Ticket Amount</h6>
+                        <small >{totalPayment.toFixed(2)}</small>
+                      </div>
+                      <div className="review-pay">
+                        <button
+                          style={{ backgroundColor: (!newContactData.name || !newContactData.email || !newContactData.contact) ? '#ccc' : '' }}
+                          onClick={handlePayment}
                           disabled={!newContactData.name || !newContactData.email || !newContactData.contact}
                         >
                           Proceed To Pay
                         </button>
-                </div>
-              </div>
+                      </div>
+                    </div>
 
 
 
-                </form>
-              </div>
+                  </form>
+                </div>
 
 
-             
 
 
-            </div>
-          </div>
 
-          <div className="r-right">
-            <div className="price-page">
-              <h6><i className="ri-price-tag-2-line"></i> <span>Price Details</span></h6>
-              <div className="price">
-                <div className="p-line">
-                  <span>Base Fare</span>
-                  <small>{totalFare.toFixed(2)}</small>
-                </div>
-                <div className="p-line">
-                  <span>Taxes</span>
-                  <small>{taxes}</small>
-                </div>
-                <div className="total-fare">
-                  <span>Total Price</span>
-                  <small>{totalFare.toFixed(2)}</small>
-                </div>
-                <div className="p-line">
-                  <span>Convenience Fee</span>
-                  <small>0</small>
-                </div>
-                <div className="p-line">
-                  <span>Sajpe Discount</span>
-                  <small>0</small>
-                </div>
-                <div className="p-line">
-                  <span>IGST (18%)</span>
-                  <small>{(totalFare * 0.18).toFixed(2)}</small>
-                </div>
-                <div className="coupen">
-                  <span>Offered Price</span>
-                  <small>{offeredPrice}</small>
-                </div>
-                <div className="final-pay">
-                  <span>Total Payment</span>
-                  <small>{totalPayment.toFixed(2)}</small>
-                </div>
               </div>
             </div>
+
+            <div className="r-right">
+              <div className="price-page">
+                <h6><i className="ri-price-tag-2-line"></i> <span>Price Details</span></h6>
+                <div className="price">
+                  <div className="p-line">
+                    <span>Base Fare</span>
+                    <small>{totalFare.toFixed(2)}</small>
+                  </div>
+                  <div className="p-line">
+                    <span>Taxes</span>
+                    <small>{taxes}</small>
+                  </div>
+                  <div className="total-fare">
+                    <span>Total Price</span>
+                    <small>{totalFare.toFixed(2)}</small>
+                  </div>
+                  <div className="p-line">
+                    <span>Convenience Fee</span>
+                    <small>0</small>
+                  </div>
+                  <div className="p-line">
+                    <span>Sajpe Discount</span>
+                    <small>0</small>
+                  </div>
+                  <div className="p-line">
+                    <span>IGST (18%)</span>
+                    <small>{(totalFare * 0.18).toFixed(2)}</small>
+                  </div>
+                  <div className="coupen">
+                    <span>Offered Price</span>
+                    <small>{offeredPrice}</small>
+                  </div>
+                  <div className="final-pay">
+                    <span>Total Payment</span>
+                    <small>{totalPayment.toFixed(2)}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
+
+          {/* ------------------------------------------------------------------------------------------------------------------------------- */}
+
+
+
+
+
+
+
+
+
+
+
+
 
         </div>
-
-        {/* ------------------------------------------------------------------------------------------------------------------------------- */}
-
-       
-
-
-
-
-
-
-
-
-
-
-
       </div>
-    </div>
-    <Footer />
-   </>
+      <Footer />
+    </>
   );
 };
 

@@ -227,6 +227,7 @@ const HandelHotelInfo = async (index) => {
       if (data.result && data.transaction) {
         localStorage.setItem('transactionId', data.transaction.id);
         localStorage.setItem('transactionNum', data.transaction.transaction_num);
+        localStorage.setItem('transactionNumHotel', data.transaction.transaction_num);
       }
     } catch (error) {
       console.error('Error fetching user details:', error.message);
