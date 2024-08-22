@@ -100,12 +100,14 @@ const ReviewBooking = () => {
     try {
       const loginId = localStorage.getItem('loginId');
       const roundedAmount = Math.round(totalPayment * 100) / 100;
+      const transactionNoBus = localStorage.getItem('transactionNum-bus');
 
       console.log('Sending data to API:', { amount: roundedAmount, user_id: loginId });
 
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
         amount: roundedAmount,
         user_id: loginId,
+        transaction_num: transactionNoBus
       });
 
       console.log('API response:', response.data);
@@ -133,6 +135,7 @@ const ReviewBooking = () => {
 
   const handlePayment = async () => {
 
+
     if (!newContactData.name || !newContactData.email || !newContactData.contact) {
       alert('Please fill in your contact details before proceeding to payment.');
       return;
@@ -140,6 +143,7 @@ const ReviewBooking = () => {
 
 
     const loginId = localStorage.getItem('loginId');
+
 
     if (!loginId) {
       navigate('/enter-number', { state: { from: location } });
@@ -249,7 +253,7 @@ const ReviewBooking = () => {
   const bookHandler = async () => {
     try {
 
-      // const transactionNumBus = localStorage.getItem('transactionNumBus')
+      const transactionNoBus = localStorage.getItem('transactionNum-bus');
 
       const bookingPayload = {
         ResultIndex: "1",
@@ -257,7 +261,7 @@ const ReviewBooking = () => {
         BoardingPointId: 1,
         DroppingPointId: 1,
         RefID: "1",
-        transactionNum: 'SAJ9370',
+        transaction_num: transactionNoBus ,
         Passenger: [
           {
             LeadPassenger: true,
@@ -376,7 +380,7 @@ const ReviewBooking = () => {
       });
 
       const responseBody = await response.json();
-      console.log('Booking Confirmation Response:', responseBody);
+      console.log('Bus Book Response:', responseBody);
 
       if (!response.ok) {
         console.error('Failed to book seats. Status:', response.status, 'Response:', responseBody);

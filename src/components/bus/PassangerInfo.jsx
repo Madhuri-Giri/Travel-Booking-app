@@ -39,7 +39,8 @@ const PassangerInfo = () => {
 
     if (passengerCount < selectedSeats.length) {
 
-      // const transactionNumBus = localStorage.getItem('transactionNumBus');
+      const transactionNoBus = localStorage.getItem('transactionNum-bus');
+
 
       const requestData = {
         ResultIndex: '1',
@@ -47,7 +48,7 @@ const PassangerInfo = () => {
         BoardingPointId: 1,
         DroppingPointId: 1,
         RefID: '1',
-        transactionNum: 'SAJ9370',
+        transaction_num: transactionNoBus,
         Passenger: [
           {
             LeadPassenger: true,
@@ -136,8 +137,8 @@ const PassangerInfo = () => {
         if (passengerCount + 1 >= selectedSeats.length) {
           const passengersJSON = JSON.stringify(updatedPassengers);
           localStorage.setItem('passengerData', passengersJSON);
-          const transactionNum = data.result.saved_bookings[0].transaction_num;
-          localStorage.setItem('transactionNum', transactionNum);
+          // const transactionNum = data.result.saved_bookings[0].transaction_num;
+          // localStorage.setItem('transactionNum', transactionNum);
         }
       } catch (error) {
         console.error('Error:', error);
