@@ -6,11 +6,7 @@
   flex-direction: column;
   margin-bottom: 2vmax;
 }
-.bording .accordian_space{
-  width: 95%;
- border: none;
 
-}
  .bording h6{
   font-weight: 450;
            letter-spacing: 0.4px

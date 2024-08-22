@@ -32,6 +32,7 @@ const GuestDetails = () => {
     passportExpDate:"",
     PAN:"",
   });
+
   const navigate = useNavigate(); 
   const [showForm, setShowForm] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -308,6 +309,7 @@ const bookHandler = async () => {
     
      // Retrieve transactionNum from localStorage
      const transactionNum = localStorage.getItem('transactionNum');
+     const transaction_id = localStorage.getItem('transaction_id');
 
     const bookingPayload = {
       ResultIndex: "9",
@@ -318,6 +320,7 @@ const bookHandler = async () => {
       ClientReferenceNo: 0,
       IsVoucherBooking: true,
       transaction_num: transactionNum,
+      transaction_id:transaction_id,
       HotelRoomsDetails: [
           {
               ChildCount: 0,
@@ -371,11 +374,11 @@ const bookHandler = async () => {
               HotelPassenger: [
                   {
                       Title: "Mr",
-                      FirstName: "FirstName",
-                      MiddleName: null,
-                      LastName: "LastName",
-                      Phoneno: "9999999999",
-                      Email: "test@email.com",
+                      FirstName: formData.fname,
+                      MiddleName: formData.mname,
+                      LastName: formData.lname,
+                      Phoneno: formData.mobile,
+                      Email: formData.email,
                       PaxType: "1",
                       LeadPassenger: true,
                       PassportNo: null,
@@ -385,11 +388,11 @@ const bookHandler = async () => {
                   },
                   {
                       Title: "Mstr",
-                      FirstName: "FirstName",
-                      MiddleName: null,
-                      LastName: "LastName",
-                      Phoneno: "9999999999",
-                      Email: "test@email.com",
+                      FirstName: formData.fname,
+                      MiddleName: formData.mname,
+                      LastName: formData.lname,
+                      Phoneno: formData.mobile,
+                      Email: formData.email,
                       PaxType: "2",
                       LeadPassenger: false,
                       Age: "8",
@@ -704,29 +707,29 @@ return (
                 />
               </div>
 
-              <div className="mb-3  date-picker-container">
-                <DatePicker 
-                  selected={formData.passportIssueDate}
-                  onChange={(date) => handleChange(date, 'passportIssueDate')}
-                  placeholderText="Passport Issue Date"
-                  dateFormat="yyyy/MM/dd"
-                  minDate={new Date()}
-                  className="form-control"
-                />
-                <i className="fas fa-calendar calendar-icon"></i>
-              </div>
-
               <div className="mb-3 date-picker-container">
-                <DatePicker
-                  selected={formData.passportExpDate}
-                  onChange={(date) => handleChange(date, 'passportExpDate')}
-                  placeholderText="Passport Expiry Date"
-                  dateFormat="yyyy/MM/dd"
-                  minDate={new Date()}
-                  className="form-control"
+         <input
+          type="date"
+          value={formData.passportIssueDate ? formData.passportIssueDate.toISOString().split('T')[0] : ''}
+           onChange={(e) => handleChange(e.target.value, 'passportIssueDate')}
+          min={new Date().toISOString().split('T')[0]}  
+            className="form-control full-width"  
                 />
-                <i className="fas fa-calendar calendar-icon"></i>
-              </div>
+                  <label className="custom-placeholder">Passport Issue Date</label> 
+                      </div>
+
+                  <div className="mb-3 date-picker-container">
+                 <input
+          type="date"
+                   value={formData.passportExpDate ? formData.passportExpDate.toISOString().split('T')[0] : ''}
+                       onChange={(e) => handleChange(e.target.value, 'passportExpDate')}
+             min={new Date().toISOString().split('T')[0]}  
+                  className="form-control full-width" 
+                     />
+                <label className="custom-placeholder">Passport Expiry Date</label> 
+                    </div>
+
+
 
               <div className="mb-3">
                 <input
