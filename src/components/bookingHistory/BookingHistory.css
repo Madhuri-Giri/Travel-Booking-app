@@ -69,8 +69,8 @@
 
 
 .hotelTabContentROW{
-    background-color: #fff;
-    box-shadow: 2px 2px 5px 2px rgb(226, 216, 216);
+    background-color: #ede8e8;
+    box-shadow: 2px 2px 5px 2px rgb(119, 115, 115);
     border-radius: 4px;
     margin-bottom: 12px;
     padding: 15px 20px;
@@ -98,8 +98,8 @@
 
 
 .busTabContentROW{
-    background-color: #fff;
-    box-shadow: 2px 2px 5px 2px rgb(226, 216, 216);
+    background-color: #ede8e8;
+    box-shadow: 2px 2px 5px 2px rgb(119, 115, 115);
     border-radius: 4px;
     margin-bottom: 12px;
     padding: 15px 20px;
@@ -133,15 +133,18 @@
     color: #04536b;
 }
 .flightTabContentROW{
-    background-color: #fff;
-
-    box-shadow: 2px 2px 5px 2px rgb(226, 216, 216);
+    background-color: #ede8e8;
+    box-shadow: 2px 2px 5px 2px rgb(119, 115, 115);
     border-radius: 4px;
     margin-bottom: 12px;
     padding: 15px 20px;
 }
 .flightTabContent p {
     margin: 5px 0px;
+}
+.flightbookingstatus span {
+    color: #00e100;
+    font-weight: 700;
 }
 .flightcancelstatus span {
     color: red;

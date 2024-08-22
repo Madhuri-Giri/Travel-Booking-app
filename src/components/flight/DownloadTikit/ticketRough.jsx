@@ -1,175 +1,83 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import "./BusTikit.css";
-import busTikitImg from "../../../assets/images/bus-tikit.png";
+import './FlightTickect.css';
+import CustomNavbar from '../../../pages/navbar/CustomNavbar';
+import Footer from '../../../pages/footer/Footer';
 
-const BusTikit = () => {
-  const [bookingDetails, setBookingDetails] = useState(null);
-  const [passengerData, setPassengerData] = useState([]);
-
-  // Accessing Redux state
-  const { from, to} = useSelector((state) => state.bus);
-
-  const boardingPoints = useSelector((state) => state.bus.boardingPoints);
-  const droppingPoints = useSelector((state) => state.bus.droppingPoints);
+const FlightTickect = () => {
 
 
-  useEffect(() => {
-    const storedBookingDetails = localStorage.getItem('busTikitDetails');
-    if (storedBookingDetails) {
-      setBookingDetails(JSON.parse(storedBookingDetails));
+
+
+  const handleCancelTicket = async () => {
+    const confirmation = window.confirm("Are you sure you want to cancel?");
+    if (confirmation) {
+      try {
+        const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-cancel", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            BusId: "11836",
+            SeatId: "25SYK4ET",
+            Remarks: "test",
+            transaction_num: "null"
+          }),
+        });
+
+        if (response.ok) {
+          toast.success("Your ticket is canceled");
+          console.log("Your ticket is canceled");
+        } else {
+          toast.error("Failed to cancel the ticket");
+        }
+      } catch (error) {
+        console.error("Error canceling the ticket:", error);
+        toast.error("An error occurred while canceling the ticket");
+      }
+    } else {
+      console.log("Ticket cancellation aborted");
     }
-
-    const storedPassengerData = localStorage.getItem('passengerData');
-    if (storedPassengerData) {
-      setPassengerData(JSON.parse(storedPassengerData));
-    }
-  }, []);
+  };
 
   return (
-    <div className="BusTikit">
-      <div className="hed">
-        <h5>Download Ticket Status</h5>
-      </div>
-      <div className="down">
-        <div className="tikit-status">
-          <div className="download-tikit">
-            <div className="dest">
-              <h4>{from}</h4>
-              <i className="ri-arrow-left-right-line"></i>
-              <h4>{to}</h4>
-            </div>
-            <div className="sdxfcvghb">
-              <p>(CBCE-106-654)</p>
-            </div>
+    <>
+      <CustomNavbar />
 
-            {/* Passenger Details */}
-            <div className="tikit-details">
-              <div className="t-left">
-                <img src={busTikitImg} alt="" />
-              </div>
-              <div className="t-right">
-                {passengerData.length > 0 ? (
-                  <div className="details-top">
-                    <div className="left">
-                      <p>Passenger Name</p>
-                      <p>Seat No.</p>
-                      <p>Age</p>
-                    </div>
-                    <div className="right">
-                      {passengerData.map((passenger, index) => (
-                        <div key={index} className="passenger-info">
-                          <p>{`${index + 1}. ${passenger.FirstName}`}</p>
-                          <p>{passenger.Seat.SeatName}</p>
-                          <p>{passenger.Age}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <div>Loading passenger data...</div>
-                )}
-
-                {/* Booking Details */}
-                {bookingDetails ? (
-                  <div className="details-top">
-                    <div className="left">
-                      <p>Ticket No.</p>
-                      <p>Bus ID</p>
-                      <p>Ticket Price</p>
-                    </div>
-                    <div className="right">
-                      <p>{bookingDetails.result.data.Result.TicketNo}</p>
-                      <p>{bookingDetails.result.data.Result.BusId}</p>
-                      <p>{bookingDetails.result.data.Result.InvoiceAmount} INR</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div>Loading booking details...</div>
-                )}
-
-                {/* Boarding Points */}
-                {boardingPoints.length > 0 && (
-                  <div className="details-top">
-                    <div className="left">
-                      <p>Boarding Point</p>
-                    </div>
-                    <div className="right">
-                      {boardingPoints.map((point, index) => (
-                        <p key={index}>{`${index + 1}. ${point.CityPointName}`}</p>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Dropping Points */}
-                {droppingPoints.length > 0 && (
-                  <div className="details-top">
-                    <div className="left">
-                      <p>Dropping Point</p>
-                    </div>
-                    <div className="right">
-                      {droppingPoints.map((point, index) => (
-                        <p key={index}>{`${index + 1}. ${point.CityPointName}`}</p>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div className="detils-dowm">
-                  <button>Download Ticket</button>
-                  <button>Cancel Download</button>
+      <div className='flighttikts'>
+        <div class="b-hed"><h5>Download Ticket Status</h5></div>
+        <section className="flightticktSec">
+          <div className="container">
+            <div className="row flightticktROW">
+              <div className="col-md-6 flightticktCOL">
+                <div>
+                  <h5 className='flighttikhed'>Flight Ticket</h5>
+                </div>
+                <div className='wwww'>
+                  <p><strong>Passenger Name -: </strong><span></span></p>
+                  <p><strong>Age -: </strong><span></span></p>
+                  <p><strong>Gender -: </strong><span></span></p>
+                  <p><strong>Number -: </strong><span></span></p>
+                  <p><strong>Address -: </strong><span></span></p>
+                  <p><strong>Departure Time -: </strong><span></span></p>
+                  <p><strong>Arrival Time -: </strong><span></span></p>
+                  <p><strong>Airline Name -: </strong><span></span></p>
+                </div>
+                <div className="cancelbusticket">
+                  <button onClick={handleCancelTicket}>Cancel Ticket</button>
+                </div>
+                <div className="btm">
+                  <button>DOWNLOAD <i className="ri-download-line"></i></button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
+
       </div>
 
-      {/* --------------------------------------  */}
-{/* 
-      <div className="download-ticket-code">
-        <div className="downloaded">
-          <h6>Download Ticket</h6>
-          <div className="down-pass">
-            {passengerData.length > 0 ? (
-              passengerData.map((passenger, index) => (
-                <div key={index}>
-                  <p>Passenger Name - <small style={{fontWeight:'lighter'}}>{passenger.FirstName}</small></p>
-                  <p>Age - <small style={{fontWeight:'lighter'}}>{passenger.Age}</small></p>
-                  <p>Seat No. - <small style={{fontWeight:'lighter'}}>{passenger.Seat.SeatName}</small></p>
-                </div>
-              ))
-            ) : (
-              <p>Loading passenger data...</p>
-            )}
-          </div>
-          <h6>Ticket Details</h6>
-          <div className="tik">
-            {bookingDetails ? (
-              <>
-                <p>Ticket Number - <small style={{fontWeight:'lighter'}}>{bookingDetails.result.data.Result.TicketNo}</small></p>
-                <p>Bus ID - <small style={{fontWeight:'lighter'}}>{bookingDetails.result.data.Result.BusId}</small></p>
-                <p>Ticket Price - <small style={{fontWeight:'lighter'}}>{bookingDetails.result.data.Result.InvoiceAmount} INR</small></p>
-              </>
-            ) : (
-              <p>Loading booking details...</p>
-            )}
-          </div>
-          <h6>Bus Details</h6>
-          <div className="bustik">
-            {bookingDetails ? (
-              <p>Bus ID - <small style={{fontWeight:'lighter'}}>{bookingDetails.result.data.Result.BusId}</small></p>
-            ) : (
-              <p>Loading bus details...</p>
-            )}
-          </div>
-        </div>
-      </div> */}
-
-      
-    </div>
+      <Footer />
+    </>
   );
 };
 
-export default BusTikit;
+export default FlightTickect;
