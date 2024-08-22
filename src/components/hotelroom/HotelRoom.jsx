@@ -179,6 +179,8 @@ const HotelRoom = () => {
   const roomblockHandler = async (event) => {
     event.preventDefault();
 
+    const transactionNum = localStorage.getItem('transactionNum');
+
     const requestData = {
       // payload/parameter here
       ResultIndex: "9",
@@ -188,6 +190,7 @@ const HotelRoom = () => {
       NoOfRooms: "1",
       ClientReferenceNo: 0,
       IsVoucherBooking: true,
+      transaction_num: transactionNum,
       HotelRoomsDetails: [
         {
           ChildCount: 0,
@@ -335,10 +338,24 @@ const HotelRoom = () => {
 
       const res = await response.json();
       const data=res.data;
+      const bookingStatus = res.booking_status;
+
+      
+
+      if (!bookingStatus) {
+        throw new Error('Booking status is undefined in the response.');
+      }
+
       console.log('hotel-block API Response:',data);
+      console.log('hotel-block id:', bookingStatus.id);
+
       const rooms = data.BlockRoomResult;
       const roomsJSON = JSON.stringify(rooms);
+      const hotelId = bookingStatus.id;
+     
+      const hotelIdJSON = JSON.stringify(hotelId);
       localStorage.setItem('hotelBlock', roomsJSON);
+      localStorage.setItem('hotelBlockId', hotelIdJSON);
       localStorage.setItem('selectedRoomsData', JSON.stringify(selectedRoomsData)); // Store updated room data
       navigate('/hotel-guest')
 

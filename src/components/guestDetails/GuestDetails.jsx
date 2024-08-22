@@ -310,6 +310,7 @@ const bookHandler = async () => {
      // Retrieve transactionNum from localStorage
      const transactionNum = localStorage.getItem('transactionNum');
      const transaction_id = localStorage.getItem('transaction_id');
+    const hotel_booking_id = localStorage.getItem('hotelBlockId')
 
     const bookingPayload = {
       ResultIndex: "9",
@@ -321,6 +322,7 @@ const bookHandler = async () => {
       IsVoucherBooking: true,
       transaction_num: transactionNum,
       transaction_id:transaction_id,
+      hotel_booking_id:hotel_booking_id,
       HotelRoomsDetails: [
           {
               ChildCount: 0,
