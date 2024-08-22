@@ -90,6 +90,14 @@
 .homnavbbookingicon .textNav {
     margin-top: 5px;
 }
+.mobtextNav{
+    margin-left: 10px;
+    font-weight: 500;
+    color: rgba(29, 27, 27, 0.849);
+}
+.mobilesetpro{
+    display: none;
+}
 
 
 /* ----------------------------------------------- */
@@ -197,6 +205,14 @@
 }
 
 @media screen and (max-width: 992px) {
+    .mobilesetpro{
+        display: block;
+    }   
+    .navcornerr {
+        display: flex;
+        justify-content: center;
+        align-items: start;
+    } 
     .findFlightss button {
         margin-bottom: 20px;
         padding: 3px 14px;
@@ -239,6 +255,7 @@
 
 
 @media screen and (max-width: 576px) {
+     
     .navbarlogo img {
         /* height: 60px !important; */
         width: 180px !important;

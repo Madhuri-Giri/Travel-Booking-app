@@ -1,8 +1,8 @@
 import "./CustomNavbar.css"
 import { Container, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
-import { FaPhoneAlt , FaHistory } from "react-icons/fa";
-import { FaCircleUser , FaRegUser} from "react-icons/fa6";
+import { FaPhoneAlt, FaHistory } from "react-icons/fa";
+import { FaCircleUser, FaRegUser } from "react-icons/fa6";
 import { MdLogin } from "react-icons/md";
 import { LuUserPlus } from "react-icons/lu";
 import { RiBookmark3Fill, RiHotelBedFill } from "react-icons/ri";
@@ -23,6 +23,16 @@ import { IoSettingsOutline } from "react-icons/io5";
 
 
 const CustomNavbar = () => {
+    const navigate = useNavigate()
+
+    const handleLogout = async () => {
+        navigate('/');
+        localStorage.removeItem('loginId');
+        localStorage.removeItem('loginData');
+    };
+
+    const loginId = localStorage.getItem("loginId")
+    const loginData = localStorage.getItem("loginData")
     return (
         <>
             <Navbar expand="lg" className="mainNavbar">
@@ -58,14 +68,14 @@ const CustomNavbar = () => {
                                     href="/bus-search"
                                     className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/bus-search' || location.pathname === '/bus-list' || location.pathname === '/bus-layout' || location.pathname === '/bord-drop' || location.pathname === '/review-booking' || location.pathname === '/bus-tikit-download' ? 'active' : ''}`}
                                 >
-                                    <IoBusOutline  className="icon" size={22} />
+                                    <IoBusOutline className="icon" size={22} />
                                     <span className="textNav">BUSES</span>
                                 </Nav.Link>
                                 <Nav.Link
                                     href="/hotel-search"
                                     className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/hotel-search' || location.pathname === '/hotel-list' || location.pathname === '/hotel-description' || location.pathname === '/hotel-room' || location.pathname === '/hotel-guest' ? 'active' : ''}`}
                                 >
-                                    <RiHotelLine  className="icon" size={22} />
+                                    <RiHotelLine className="icon" size={22} />
                                     <span className="textNav">HOTELS</span>
                                 </Nav.Link>
                                 <Nav.Link
@@ -77,17 +87,56 @@ const CustomNavbar = () => {
                                 </Nav.Link>
                             </Nav>
                             <Nav className="navcornerr">
-                                <Nav.Link href="" className='numNavbar'> <FaPhoneAlt /> <span>+91 9876543210</span> </Nav.Link>
-                                <div className="mobileLoginSignup">
-                                    <Nav.Link href="/login" className='mobileLoginNavbar'> <span><MdLogin size={20} /> Login</span> </Nav.Link>
-                                    <Nav.Link href="/signup" className='mobileSignupNavbar'> <span><LuUserPlus size={20} /> Signup</span> </Nav.Link>
+                                <div className="mobilesetpro">
+                                    <Nav.Link href="/profile">
+                                        <FaRegUser className="icon" size={20} />
+                                        <span className="mobtextNav">Profile</span>
+                                    </Nav.Link>
+                                    <Nav.Link href="/setting">
+                                        <IoSettingsOutline className="icon" size={20} />
+                                        <span className="mobtextNav">Settings</span>
+                                    </Nav.Link>
                                 </div>
-                                <NavDropdown title={<> <FaCircleUser /> </>} id="basic-nav-dropdown" className="userDropdown">
-                                    <NavDropdown.Item href="/profile"> <FaRegUser size={20} /> Profile</NavDropdown.Item>
-                                    <NavDropdown.Item href="/setting"> <IoSettingsOutline size={20} /> Settings</NavDropdown.Item>
-                                    <NavDropdown.Item href="/payment-history"> <FaHistory size={20} /> Payment</NavDropdown.Item>
-                                    <NavDropdown.Item href="/login"> <MdLogin size={20} /> Login</NavDropdown.Item>
-                                    <NavDropdown.Item href="/signup"> <LuUserPlus size={20} /> Signup</NavDropdown.Item>
+                                <Nav.Link href="" className="numNavbar">
+                                    <FaPhoneAlt /> <span>+91 9876543210</span>
+                                </Nav.Link>
+                                <div className="mobileLoginSignup">
+                                    {loginId ? (
+                                        <Nav.Link onClick={handleLogout} className="mobileLoginNavbar">
+                                            <span><MdLogin size={20} /> Logout</span>
+                                        </Nav.Link>
+                                    ) : (
+                                        <>
+                                            <Nav.Link href="/enter-number" className="mobileLoginNavbar">
+                                                <span><MdLogin size={20} /> Login</span>
+                                            </Nav.Link>
+                                        </>
+                                    )}
+                                            <Nav.Link href="/signup" className="mobileSignupNavbar">
+                                                <span><LuUserPlus size={20} /> Signup</span>
+                                            </Nav.Link>
+                                </div>
+                                <NavDropdown title={<FaCircleUser />} id="basic-nav-dropdown" className="userDropdown">
+                                    <NavDropdown.Item href="/profile">
+                                        <FaRegUser size={20} /> Profile
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item href="/setting">
+                                        <IoSettingsOutline size={20} /> Settings
+                                    </NavDropdown.Item>
+                                    {loginId ? (
+                                        <NavDropdown.Item onClick={handleLogout}>
+                                            <MdLogin size={20} /> Logout
+                                        </NavDropdown.Item>
+                                    ) : (
+                                        <>
+                                            <NavDropdown.Item href="/enter-number">
+                                                <MdLogin size={20} /> Login
+                                            </NavDropdown.Item>
+                                        </>
+                                    )}
+                                            <NavDropdown.Item href="/signup">
+                                                <LuUserPlus size={20} /> Signup
+                                            </NavDropdown.Item>
                                 </NavDropdown>
                             </Nav>
                         </Offcanvas.Body>
