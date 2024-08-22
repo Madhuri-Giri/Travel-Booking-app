@@ -134,7 +134,8 @@ const BusTikit = () => {
 
        <div className="do-wn">
           <div className="top">
-            <h5>{from}-{to}</h5>
+               <h6>Download Your Boardign Pass</h6>
+            <h5>BHopal{from}-{to}Indore</h5>
           </div>
           <div className="row buspssngerdetails">
             {busticketPassengerDetails && (
