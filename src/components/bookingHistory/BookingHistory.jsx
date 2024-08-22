@@ -33,12 +33,7 @@ function BookingHistory() {
                 }
 
 
-                // Retrieve transactionNum from localStorage
-                const transactionNum = localStorage.getItem('transactionNum');
-
-                if (!transactionNum) {
-                    throw new Error("Transaction number not found in local storage.");
-                }
+              
 
                 const response = await fetch("https://sajyatra.sajpe.in/admin/api/booking-history", {
                     method: "POST",
