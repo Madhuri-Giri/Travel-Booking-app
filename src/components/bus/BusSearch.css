@@ -41,13 +41,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2vmax;
+  /* padding: 2vmax; */
+  /* background: #000; */
 }
 
-.BusSearch .bus-search .B-main .B-main-top img {
-  width: 40%;
-  /* display: none; */
-}
+/* .BusSearch .bus-search .B-main .B-main-top img {
+  width: 20%;
+} */
 
 .BusSearch .bus-search .B-main .B-main-btm {
   width: 100%;
@@ -174,12 +174,17 @@ background: none;
   list-style: none;
 }
 
-
+.lotti-bus{
+  width: 40%;
+}
 
 @media (max-width:600px) {
 
-  .BusSearch .bus-search .B-main .B-main-top img {
+  /* .BusSearch .bus-search .B-main .B-main-top img {
     width: 100%;
+  } */
+  .lotti-bus{
+    width: 90%;
   }
 
   .BusSearch .bus-search .B-main .B-main-btm .sarch-tab {
@@ -242,8 +247,11 @@ background: none;
 
 @media (min-width:600px) and (max-width:1150px) {
 
-  .BusSearch .bus-search .B-main .B-main-top img {
+  /* .BusSearch .bus-search .B-main .B-main-top img {
     width: 100%;
+  } */
+  .lotti-bus{
+    width: 90%;
   }
 
   .BusSearch .bus-search .B-main .B-main-btm .sarch-tab {
