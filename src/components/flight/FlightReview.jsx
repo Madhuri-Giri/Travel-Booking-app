@@ -101,68 +101,7 @@ const FlightReview = () => {
     }
   };
 
-  // const flightpayHandler = async () => {
-  //   const loginId = localStorage.getItem('loginId');
-  //   if (!loginId) {
-  //     navigate('/enter-number', { state: { from: location } });
-  //     return;
-  //   }
-
-  //   try {
-  //     const paymentData = await flightPayCreate();
-  //     if (!paymentData) return;
-
-  //     const options = {
-  //       key: paymentData.razorpay_key,
-  //       amount: paymentData.payment_details.amount * 100,
-  //       currency: 'INR',
-  //       transaction_id: paymentData.payment_details.id,
-  //       name: 'SRN Infotech',
-  //       description: 'Test Transaction',
-  //       image: 'https://your-logo-url.com/logo.png',
-  //       handler: async function (response) {
-  //         console.log('Payment successful', response);
-
-  //         localStorage.setItem('flight_payment_id', response.razorpay_payment_id
-  //         );
-  //         localStorage.setItem('flight_transaction_id', options.transaction_id);
-
-  //         alert('flight Payment successful!');
-
-  //         try {
-  //           await flightpayUpdate();
-  //           await bookLccApi();
-  //           await bookHoldApi()
-  //         } catch (error) {
-  //           console.error('Error during updateHandlePayment or bookHandler:', error.message);
-  //           alert('An error occurred during processing. Please try again.');
-  //         }
-  //       },
-  //       prefill: {
-  //         username: 'tanisha',
-  //         email: 'tanisha@gmail.com',
-  //         mobile: '7777777777',
-  //       },
-  //       notes: {
-  //         address: 'Bhopal',
-  //       },
-  //       theme: {
-  //         color: '#3399cc',
-  //       },
-  //     };
-
-  //     const rzp1 = new window.Razorpay(options);
-  //     rzp1.on('payment.failed', function (response) {
-  //       alert(`Payment failed: ${response.error.description}`);
-  //     });
-
-  //     rzp1.open();
-  //   } catch (error) {
-  //     console.error('Error during payment setup:', error.message);
-  //     alert('An error occurred during payment setup. Please try again.');
-  //   }
-  // }
-
+  
 
 
 
@@ -294,19 +233,21 @@ const FlightReview = () => {
   const firstName = passengerDetails[0].firstName;
   const lastName = passengerDetails[0].lastName;
 
-  const transactionNum = localStorage.getItem('transactionNum')
-  console.log("traceId", traceId);
-  console.log("transactionNum", transactionNum);
-  console.log("title", title);
-  console.log("firstName", firstName);
-  console.log("lastName", lastName);
+  // console.log("traceId", traceId);
+  // console.log("transactionNum", transactionNum);
+  // console.log("title", title);
+  // console.log("firstName", firstName);
+  // console.log("lastName", lastName);
 
 
   const bookLccApi = async () => {
     try {
+  const transactionFlightNo = localStorage.getItem('transactionNum-Flight')
+
+
       const llcPayload = {
         "SrdvType": srdvType,
-        "transaction_num": transactionNum,
+        "transaction_num": transactionFlightNo,
         "SrdvIndex": srdvIndex,
         "TraceId": parseInt(traceId),
         "ResultIndex": resultIndex,
@@ -360,7 +301,7 @@ const FlightReview = () => {
         localStorage.setItem('flightTikitDetails', JSON.stringify(responseBody));
 
         setTimeout(() => {
-          navigate('/flight-ticket-download', { state: { flightbookingDetails: responseBody } });
+          navigate('/booking-history', { state: { flightbookingDetails: responseBody } });
         }, 2000);
       }
     } catch (error) {
@@ -369,6 +310,8 @@ const FlightReview = () => {
       toast.error('An error occurred during booking. Please try again.');
     }
   };
+
+
 
   const bookHoldApi = async () => {
     const holdPayload = {

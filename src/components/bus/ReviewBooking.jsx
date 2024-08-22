@@ -254,6 +254,9 @@ const ReviewBooking = () => {
     try {
 
       const transactionNoBus = localStorage.getItem('transactionNum-bus');
+      const busSavedId = localStorage.getItem('busSavedId');
+      const transaction_id = localStorage.getItem('transaction_id');
+       
 
       const bookingPayload = {
         ResultIndex: "1",
@@ -262,6 +265,8 @@ const ReviewBooking = () => {
         DroppingPointId: 1,
         RefID: "1",
         transaction_num: transactionNoBus ,
+        bus_booking_id: busSavedId,
+        transaction_id: transaction_id,
         Passenger: [
           {
             LeadPassenger: true,

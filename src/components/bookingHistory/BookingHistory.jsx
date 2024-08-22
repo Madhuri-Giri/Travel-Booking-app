@@ -13,8 +13,6 @@ function BookingHistory() {
     const [flightBookings, setFlightBookings] = useState([]);
     const [loading, setLoading] = useState(true); // Set loading to true initially
 
-    const bustransaction_num = localStorage.getItem('transactionNumBus')
-    const flighttransaction_num = localStorage.getItem('transactionNumFlight')
     const hoteltransaction_num = localStorage.getItem('transactionNumHotel')
     // console.log("bustransaction_num",bustransaction_num);
     // console.log("flighttransaction_num",flighttransaction_num);
@@ -253,17 +251,28 @@ function BookingHistory() {
 
 
     // ----------------------Flight history API-------------------------------
+    const [error, setError] = useState(null);
     
     useEffect(() => {
         const fetchFlightBookingHistory = async () => {
             try {
+
+                const transactionFlightNo = localStorage.getItem('transactionNum-Flight');
+                // console.log('transactionFlightNo', transactionFlightNo)
+                if (!transactionFlightNo) {
+                    setError('No transaction number found');
+                    setLoading(false);
+                    return;
+                }
+
                 const response = await fetch("https://sajyatra.sajpe.in/admin/api/flight-history", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ transaction_num: flighttransaction_num }),
-                    // body: JSON.stringify({ transaction_num: "SAJ9370" }),
+                    body: JSON.stringify({
+                         transaction_num: transactionFlightNo
+                         }),
                 });
 
                 const data = await response.json();
@@ -490,7 +499,7 @@ function BookingHistory() {
                                             <p className='busBookingsamount'><strong>Amount : </strong> <span>₹{booking.amount}</span></p>
                                         </div>
                                         <div className='viewbttn'>
-                                            <button onClick={() => navigateBusDetails(booking.bus_booking_id, booking.bus_trace_id)}>View Details</button>
+                                            <button onClick={() => navigateBusDetails(booking.bus_booking_id, booking.bus_trace_id)}>View Ticket</button>
                                         </div>
                                     </div>
                                 ))
@@ -506,7 +515,7 @@ function BookingHistory() {
                     <div className='flightTabContent'>
                         <div className="container">
                             <h6 className='flightTabContentHeading'>Flight Ticket Status</h6>
-                            <div className="row flightTabContentROW">
+                            {/* <div className="row flightTabContentROW">
                                 <div className="col-md-6">
                                     <p><strong>PNR : </strong>35</p>
                                     <p><strong>Booking ID : </strong> 205496 </p>
@@ -516,9 +525,9 @@ function BookingHistory() {
                                     <p className='flightcancelstatus'><strong>Cancel Status : </strong> <span>pending</span> </p>
                                 </div>
                                 <div className='viewbttn'>
-                                    <button onClick={() => navigateFlightDetails(booking.transaction_num)}>View Details</button>
+                                    <button onClick={() => navigateFlightDetails(booking.transaction_num)}>View Ticket</button>
                                 </div>
-                            </div>
+                            </div> */}
                             {flightBookings.length > 0 ? (
                                 flightBookings.map((booking, index) => (
                                     <div key={index} className="row flightTabContentROW">
@@ -561,7 +570,7 @@ function BookingHistory() {
                                         </div>
                                         <div className='viewbttn'>
                                             {/* <button onClick={handleBookingClick}>View Details</button> */}
-                                            <button onClick={() => handleBookingClick(booking.hotel_booking_id)}>View Details</button>
+                                            <button onClick={() => handleBookingClick(booking.hotel_booking_id)}>View Ticket</button>
 
                                         </div>
                                     </div>
@@ -589,7 +598,7 @@ function BookingHistory() {
                 <div className="container">
                     <div className="row bookingHistoryROW">
                         <div className="col-md-10 bookingHistoryCOL1">
-                            <h4>Booking History</h4>
+                            <h4>Booking  <span style={{color:"#00b7eb"}}>History</span> </h4>
                             <div className="booking-tabs">
                                 <button
                                     className={`tab-button ${activeTab === 'bus' ? 'active' : ''}`}

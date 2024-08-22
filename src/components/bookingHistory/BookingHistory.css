@@ -14,9 +14,9 @@
 }
 .bookingHistoryCOL1 h4{
     text-align: center;
-    color: #00b7eb;
+    color: #000;
     margin-bottom: 20px;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .booking-tabs {
@@ -69,8 +69,8 @@
 
 
 .hotelTabContentROW{
-    background-color: rgba(177, 175, 175, 0.144);
-    box-shadow: 2px 2px 2px 2px gray;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px 2px rgb(226, 216, 216);
     border-radius: 4px;
     margin-bottom: 12px;
     padding: 15px 20px;
@@ -98,8 +98,8 @@
 
 
 .busTabContentROW{
-    background-color: rgba(177, 175, 175, 0.144);
-    box-shadow: 2px 2px 2px 2px gray;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px 2px rgb(226, 216, 216);
     border-radius: 4px;
     margin-bottom: 12px;
     padding: 15px 20px;
@@ -133,8 +133,9 @@
     color: #04536b;
 }
 .flightTabContentROW{
-    background-color: rgba(177, 175, 175, 0.144);
-    box-shadow: 2px 2px 2px 2px gray;
+    background-color: #fff;
+
+    box-shadow: 2px 2px 5px 2px rgb(226, 216, 216);
     border-radius: 4px;
     margin-bottom: 12px;
     padding: 15px 20px;
