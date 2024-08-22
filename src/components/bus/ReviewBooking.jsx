@@ -11,6 +11,7 @@ import PassangerInfo from './PassangerInfo';
 import { useSelector } from 'react-redux';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
+import updateGif from "../../assets/images/payloader.gif"
 
 const ReviewBooking = () => {
 
@@ -241,6 +242,25 @@ const ReviewBooking = () => {
 
       const data = await response.json();
       console.log('Update successful:', data);
+      const status = data.data.status;
+      console.log('statusBus', status);
+
+      switch (status) {
+        case 'pending':
+          toast.info('Payment is pending. Please wait.');
+          break;
+        case 'failed':
+          toast.error('Payment failed. Redirecting to bus search page.');
+          navigate('/bus-search');
+          break;
+        case 'success':
+          toast.success('Payment updated successfully!');
+          break;
+        default:
+          toast.warn('Unknown payment status. Please contact support.');
+      }
+
+
     } catch (error) {
       console.error('Error updating payment details:', error.message);
       throw error;
