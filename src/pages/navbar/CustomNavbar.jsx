@@ -110,11 +110,11 @@ const CustomNavbar = () => {
                                             <Nav.Link href="/enter-number" className="mobileLoginNavbar">
                                                 <span><MdLogin size={20} /> Login</span>
                                             </Nav.Link>
-                                        </>
-                                    )}
                                             <Nav.Link href="/signup" className="mobileSignupNavbar">
                                                 <span><LuUserPlus size={20} /> Signup</span>
                                             </Nav.Link>
+                                        </>
+                                    )}
                                 </div>
                                 <NavDropdown title={<FaCircleUser />} id="basic-nav-dropdown" className="userDropdown">
                                     <NavDropdown.Item href="/profile">
@@ -132,11 +132,11 @@ const CustomNavbar = () => {
                                             <NavDropdown.Item href="/enter-number">
                                                 <MdLogin size={20} /> Login
                                             </NavDropdown.Item>
-                                        </>
-                                    )}
                                             <NavDropdown.Item href="/signup">
                                                 <LuUserPlus size={20} /> Signup
                                             </NavDropdown.Item>
+                                        </>
+                                    )}
                                 </NavDropdown>
                             </Nav>
                         </Offcanvas.Body>
