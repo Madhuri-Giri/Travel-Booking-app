@@ -430,3 +430,9 @@
               display: none;
        }
 }
+
+.buslottieCOL{
+       display: flex;
+       justify-content: center;
+       align-items: center;
+}
