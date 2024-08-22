@@ -166,7 +166,7 @@ const Profile = () => {
 
   return (
     <>
-      <CustomNavbar />
+      <CustomNavbar isLoggedIn={isLoggedIn} /> {/* Pass isLoggedIn as a prop */}
       <section className='profileSectionbg'>
         {message && (
           <Alert variant={messageType} onClose={() => setMessage('')} dismissible>
