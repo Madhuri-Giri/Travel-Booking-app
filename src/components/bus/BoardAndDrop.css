@@ -1,4 +1,4 @@
-.bording{
+.bording {
   width: 100%;
   display: flex;
   align-items: center;
@@ -7,13 +7,10 @@
   margin-bottom: 2vmax;
 }
 
- .bording h6{
+.bording h6 {
   font-weight: 450;
-           letter-spacing: 0.4px
- }
-
-
-
-
-
-
+  letter-spacing: 0.4px
+}
+.bording .select .form-select{
+  width: unset !important;
+}

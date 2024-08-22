@@ -9,6 +9,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CiSaveDown1 } from "react-icons/ci";
 import Lottie from 'lottie-react';
+import busAnim from "../../../assets/images/mainBus.json"
 import LootiAnim from '../../../assets/images/Anim.json';
 import { FaArrowRightLong } from "react-icons/fa6";
 import Barcode from 'react-barcode';
@@ -153,7 +154,9 @@ const BusTikit = () => {
         <div className="lottie container">
           <div className="row">
             <div className=" col-lg-3">
-              <Lottie animationData={LootiAnim} />
+              {/* <Lottie animationData={LootiAnim} /> */}
+              <Lottie className='lotti-bus' animationData={busAnim} />
+
               {/* <Lottie animationData={LootiAnim} style={{ height: '70%', width: '60%' }} /> */}
             </div>
             <div className="col-lg-9">
