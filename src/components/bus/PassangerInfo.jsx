@@ -120,6 +120,10 @@ const PassangerInfo = () => {
 
         const data = await response.json();
         console.log('Block Response:', data);
+        console.log('busSavedId:', data.result.saved_bookings.id);
+
+    const busSavedId = data.result.saved_bookings.id;
+    localStorage.setItem('busSavedId', busSavedId);
 
         const newPassenger = {
           FirstName: formData.firstName,
@@ -137,12 +141,9 @@ const PassangerInfo = () => {
         if (passengerCount + 1 >= selectedSeats.length) {
           const passengersJSON = JSON.stringify(updatedPassengers);
           localStorage.setItem('passengerData', passengersJSON);
-          // const transactionNum = data.result.saved_bookings[0].transaction_num;
-          // localStorage.setItem('transactionNum', transactionNum);
         }
       } catch (error) {
         console.error('Error:', error);
-        
       }
     } else {
       alert("All selected seats must have corresponding passengers.");
