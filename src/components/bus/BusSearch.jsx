@@ -135,7 +135,7 @@ const BusSearch = () => {
                     />
                   </div>
                   {fromSuggestions.length > 0 && (
-                    <ul className="suggestions-list">
+                    <ul className="suggestions-list-from">
                       {fromSuggestions.map((suggestion, index) => (
                         <li key={index} onClick={() => handleFromSelect(suggestion)}>
                           {suggestion.busodma_destination_name}
