@@ -43,7 +43,7 @@ import LoginPopUp from './components/popUp/LoginPopUp';
 import PaymentHistory from './components/paymentHistory/PaymentHistory';
 import BookingHistory from './components/bookingHistory/BookingHistory';
 import FlightTickect from './components/flight/DownloadTikit/FlightTickect';
-
+import HotelTicket from './components/hotelBill/HotelTicket'
 const App = () => {
   const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number',  '/load'];
 
@@ -77,6 +77,7 @@ const App = () => {
           <Route path='/hotel-room' element={<HotelRoom />} />
           <Route path='/hotel-guest' element={<GuestDetails />} />
           <Route path='/hotel-description' element={<HotelDescription />} />
+          <Route path='/hotel-ticket' element={<HotelTicket/>} />
           <Route path='/help' element={<Help />} />
           <Route path='/review' element={<Reviews />} />
           <Route path='/hotel-bill' element={<HotelBillReceipt />} />

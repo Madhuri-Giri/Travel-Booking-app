@@ -64,7 +64,7 @@
     }
     
     .pessanger-main form .travelller .p-top .pas {
-      width: 30%;
+      width: 22%;
       display: flex;
       justify-content: space-between;
       flex-direction: row;
@@ -72,10 +72,11 @@
     }
     
     .pessanger-main form .travelller .p-top .pas .ipt {
-      width: 40%;
+      width:40%;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 0.5vmax;
     }
     
     .pessanger-main form .p-mid {

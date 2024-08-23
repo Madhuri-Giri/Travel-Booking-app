@@ -21,6 +21,8 @@ function BookingHistory() {
             try {
                 // Retrieve transactionNum from localStorage
                 const transactionNum = localStorage.getItem('transactionNum');
+
+
                 if (!transactionNum) {
                     throw new Error("Transaction number not found in local storage.");
                 }
@@ -41,6 +43,13 @@ function BookingHistory() {
                 console.log('Hotel History API Response:', data);
 
                 if (data && data.hotel_booking_id) {
+                // Store the API response in local storage
+                const dataToStore = {
+                    hotelHistory: data.hotel_history,
+                };
+                localStorage.setItem('hotelHistoryData', JSON.stringify(dataToStore));
+
+                if (data && Array.isArray(data.hotel_history)) {
                     // Store full hotel history data
                     localStorage.setItem('hotelHistoryData', JSON.stringify(data));
 
@@ -140,6 +149,9 @@ function BookingHistory() {
     // };
 
 
+   
+// ----------------------hotel ticket API-------------------------------
+   
     const handleBookingClick = async (hotelBookingId) => {
         console.log('handleBookingClick called with:', hotelBookingId);
     
@@ -194,6 +206,16 @@ function BookingHistory() {
         }
     };
     
+  // ----------------------hotel ticket API End-------------------------------
+  // -----------------------navigate hotel ticket page--------------------------
+    // const navigateHotelDetails = () => {
+    // localStorage.setItem("hotel_booking_id", hotelBookingId);
+    //     setLoading(true);
+    //     setTimeout(() => {
+    //         navigate('/hotel-bill');
+    //     }, 10000);
+    // };
+    // -----------------------navigate hotel ticket page-------------------------
 
 
     // ----------------------Bus history API-------------------------------
@@ -241,6 +263,8 @@ function BookingHistory() {
         const fetchFlightBookingHistory = async () => {
             try {
                 const transactionFlightNo = localStorage.getItem('transactionNum-Flight');
+                
+
                 if (!transactionFlightNo) {
                     setError('No transaction number found');
                     setLoading(false);
@@ -262,7 +286,7 @@ function BookingHistory() {
                 if (data && Array.isArray(data.flight_history) && data.flight_history.length > 0) {
                     setFlightBookings(data.flight_history);
                 } else {
-                    setFlightBookings([]); // Set empty if no data found
+                    setFlightBookings([]); 
                 }
             } catch (error) {
                 console.error("Error fetching API of flight bookings history:", error);
@@ -284,6 +308,20 @@ function BookingHistory() {
             navigate('/bus-tikit-download');
         }, 10000);
     };
+
+
+
+
+
+    // -----------------------navigate bus ticket page--------------------------
+
+
+    // const navigateHotelDetails = () => {
+    //     setLoading(true);
+    //     setTimeout(() => {
+    //         navigate('/hotel-bill');
+    //     }, 10000); 
+    // };
 
     // -----------------------navigate flight ticket page--------------------------
     const navigateFlightDetails = (transactionNum, booking_id) => {
@@ -358,6 +396,7 @@ function BookingHistory() {
             console.error('Error:', error);
         }
     };
+
 
     // -----------bus---hotel-----flight----tabs content---------------------------------
     const renderTabContent = () => {

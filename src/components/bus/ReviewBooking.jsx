@@ -102,13 +102,17 @@ const ReviewBooking = () => {
       const loginId = localStorage.getItem('loginId');
       const roundedAmount = Math.round(totalPayment * 100) / 100;
       const transactionNoBus = localStorage.getItem('transactionNum-bus');
+      const busSavedId = localStorage.getItem('busSavedId');
+
 
       console.log('Sending data to API:', { amount: roundedAmount, user_id: loginId });
 
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
         amount: roundedAmount,
         user_id: loginId,
-        transaction_num: transactionNoBus
+        transaction_num: transactionNoBus,
+        bus_booking_id: busSavedId,
+
       });
 
       console.log('API response:', response.data);
@@ -438,6 +442,7 @@ const ReviewBooking = () => {
   const [taxes, setTaxes] = useState(0);
   const [igst, setIgst] = useState(0);
   const [offeredPrice, setOfferedPrice] = useState(0);
+  const [discount, setDiscount] = useState(0)
 
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [selectedBusDetails, setSelectedBusDetails] = useState(null);
@@ -450,7 +455,7 @@ const ReviewBooking = () => {
 
   useEffect(() => {
     const storedBusDetails = localStorage.getItem('selectedBusDetails');
-    console.log('Stored Bus Details:', storedBusDetails); // Check if data is retrieved
+    // console.log('Stored Bus Details:', storedBusDetails);
     if (storedBusDetails) {
       setSelectedBusDetails(JSON.parse(storedBusDetails));
     }
@@ -467,14 +472,15 @@ const ReviewBooking = () => {
           offeredPrice: seat.Price.OfferedPrice,
           tax: seat.Price.Tax,
           igstRate: seat.Price.GST.IGSTRate,
+          discount: seat.Price.Discount,
         }));
         setSeatPrices(prices);
       }
     }
   }, []);
-
-
-  const totalPayment = totalFare + taxes + (totalFare * 0.18);
+  
+  const totalPayment = totalFare + taxes + (totalFare * 0.18) - discount;
+  
 
   // -------------------------------------------------------------------------------------------------
 
@@ -606,43 +612,44 @@ const ReviewBooking = () => {
             </div>
 
             <div className="r-right">
-              <div className="price-page">
-                <h6><i className="ri-price-tag-2-line"></i> <span>Price Details</span></h6>
-                <div className="price">
-                  <div className="p-line">
-                    <span>Base Fare</span>
-                    <small>{totalFare.toFixed(2)}</small>
-                  </div>
-                  <div className="p-line">
-                    <span>Taxes</span>
-                    <small>{taxes}</small>
-                  </div>
-                  <div className="total-fare">
-                    <span>Total Price</span>
-                    <small>{totalFare.toFixed(2)}</small>
-                  </div>
-                  <div className="p-line">
-                    <span>Convenience Fee</span>
-                    <small>0</small>
-                  </div>
-                  <div className="p-line">
-                    <span>Sajpe Discount</span>
-                    <small>0</small>
-                  </div>
-                  <div className="p-line">
-                    <span>IGST (18%)</span>
-                    <small>{(totalFare * 0.18).toFixed(2)}</small>
-                  </div>
-                  <div className="coupen">
-                    <span>Offered Price</span>
-                    <small>{offeredPrice}</small>
-                  </div>
-                  <div className="final-pay">
-                    <span>Total Payment</span>
-                    <small>{totalPayment.toFixed(2)}</small>
-                  </div>
-                </div>
-              </div>
+            <div className="price-page">
+  <h6><i className="ri-price-tag-2-line"></i> <span>Price Details</span></h6>
+  <div className="price">
+    <div className="p-line">
+      <span>Base Fare</span>
+      <small>{totalFare.toFixed(2)}</small>
+    </div>
+    <div className="p-line">
+      <span>Taxes</span>
+      <small>{taxes.toFixed(2)}</small>
+    </div>
+    <div className="total-fare">
+      <span>Total Price</span>
+      <small>{totalFare.toFixed(2)}</small>
+    </div>
+    <div className="p-line">
+      <span>Convenience Fee</span>
+      <small>0</small>
+    </div>
+    <div className="p-line">
+      <span>Discount</span>
+      <small>{discount.toFixed(2)}</small>
+    </div>
+    <div className="p-line">
+      <span>IGST (18%)</span>
+      <small>{(totalFare * 0.18).toFixed(2)}</small>
+    </div>
+    <div className="coupen">
+      <span>Offered Price</span>
+      <small>{offeredPrice.toFixed(2)}</small>
+    </div>
+    <div className="final-pay">
+      <span>Total Payment</span>
+      <small>{totalPayment.toFixed(2)}</small>
+    </div>
+  </div>
+</div>
+
             </div>
 
           </div>

@@ -239,11 +239,13 @@ const FlightReview = () => {
   const bookLccApi = async () => {
     try {
   const transactionFlightNo = localStorage.getItem('transactionNum-Flight')
+  const transaction_id = localStorage.getItem('flight_transaction_id');
 
 
       const llcPayload = {
         "SrdvType": srdvType,
         "transaction_num": transactionFlightNo,
+         "transaction_id" : transaction_id,         
         "SrdvIndex": srdvIndex,
         "TraceId": parseInt(traceId),
         "ResultIndex": resultIndex,

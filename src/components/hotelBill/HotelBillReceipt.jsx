@@ -134,7 +134,7 @@ const BookingBill = () => {
 
 
   return (
-    <>
+   <>
       <CustomNavbar />
       <section className='hotelBillsec'>
         <div className="booking-bill-container">
@@ -176,6 +176,29 @@ const BookingBill = () => {
                   </div>
                 )}
               </div>
+
+       <div className="booking-bill-container">
+        <div className="header">
+          <h2>Hotel Booking Details</h2>
+        </div>
+
+        <div className="details-section">
+          <h3>Hotel Information</h3>
+          {bookingDetails.hotelBook && bookingDetails.hotelBook.length > 0 && (
+            <div className="detail-card">
+              {bookingDetails.hotelBook.map((item, index) => (
+                <div key={index}>
+                  <p><span>Hotel Name:</span> {item.hotelname}</p>
+                  <p><span>Booking ID:</span> {item.hotelcode}</p>
+                  <p><span>Transaction Number:</span> {item.transaction_num}</p>
+                  <p><span>Number of Rooms:</span> {item.noofrooms}</p>
+                  <p><span>Check-in Date:</span> {item.check_in_date || 'N/A'}</p>
+                  <p><span>Room Price:</span> {item.roomprice}</p>
+                  <p><span>Tax:</span> {item.tax}</p>
+                  <p><span>Discount:</span> {item.discount}</p>
+                  <p><span>Published Price:</span> {item.publishedprice}</p>
+                </div>
+              ))}
             </div>
             <div className="btm">
               <button className='busdonload' onClick={handleDownloadPDF}>
@@ -187,9 +210,21 @@ const BookingBill = () => {
           </div>
         </div>
       </section>
+          )}
+        </div>
+
+        <div className="button-container">
+          <button className="download-pdf-btn" onClick={handleDownloadPDF}>Download PDF</button>
+          <button className="cancel-button" onClick={bookingCancel}>Cancel Booking</button> 
+         </div>
+      </div> 
+     
+                        
+                           
+               
       <Footer />
       <ToastContainer />
-    </>
+    </> 
   );
 };
 

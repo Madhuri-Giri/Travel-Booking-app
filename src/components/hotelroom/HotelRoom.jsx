@@ -166,6 +166,8 @@ const HotelRoom = () => {
   };
 
   // ----------Start API Integration---------
+  
+
   const selectedRoomsData = {
     singleDeluxe: selectedSingleDeluxeRooms,
     doubleDeluxe: selectedDoubleDeluxeRooms,
@@ -338,9 +340,8 @@ const HotelRoom = () => {
 
       const res = await response.json();
       const data=res.data;
-      const bookingStatus = res.booking_status;
 
-      
+      const bookingStatus = res.booking_status;
 
       if (!bookingStatus) {
         throw new Error('Booking status is undefined in the response.');
@@ -348,14 +349,25 @@ const HotelRoom = () => {
 
       console.log('hotel-block API Response:',data);
       console.log('hotel-block id:', bookingStatus.id);
+      console.log('hotel-igst:',bookingStatus.igst);
+      console.log('hotel-discount:',bookingStatus.discount);
 
       const rooms = data.BlockRoomResult;
       const roomsJSON = JSON.stringify(rooms);
+
       const hotelId = bookingStatus.id;
-     
       const hotelIdJSON = JSON.stringify(hotelId);
+
+      const hotelIgst = bookingStatus.igst;
+      const hotelIgstJSON = JSON.stringify(hotelIgst);
+
+      const hotelDiscount = bookingStatus.discount;
+      const hotelDiscountJSON = JSON.stringify(hotelDiscount);
+
       localStorage.setItem('hotelBlock', roomsJSON);
       localStorage.setItem('hotelBlockId', hotelIdJSON);
+      localStorage.setItem('hotelIgst', hotelIgstJSON);
+      localStorage.setItem('hotelDiscount ', hotelDiscountJSON);
       localStorage.setItem('selectedRoomsData', JSON.stringify(selectedRoomsData)); // Store updated room data
       navigate('/hotel-guest')
 

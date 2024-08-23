@@ -21,10 +21,11 @@ import { faHotel} from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const HotelSearch = () => {
-  //--- Navigate Other Page ---
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Add loading state
   const [startDate, setStartDate] = useState(null);
+  // const [inputs, setInputs] = useState({ cityOrHotel: '' });
+
   //------------------- Start  carousel code ---------------------
   const slideRef = useRef(null);
   const intervalRef = useRef(null);
@@ -71,10 +72,10 @@ const HotelSearch = () => {
   const [showGuestOptions, setShowGuestOptions] = useState(false);
   const guestRef = useRef(null);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setInputs((values) => ({ ...values, [name]: value }));
-  };
+  // const handleChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setInputs((values) => ({ ...values, [name]: value }));
+  // };
 
   const handleDateChange = (date, name) => {
     setInputs((values) => ({ ...values, [name]: date }));
@@ -183,13 +184,60 @@ const HotelSearch = () => {
     }
   };
 
-  // --------------- End API Code ---------------------
+  // --------------- End API Code -------------------------------------------------------------------------
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [isSuggestionVisible, setIsSuggestionVisible] = useState(true);
 
-  const handleClickOutside = (event) => {
-    if (guestRef.current && !guestRef.current.contains(event.target)) {
-      setShowGuestOptions(false);
+  const fetchSuggestions = async (query) => {
+    if (!query) {
+      setSuggestions([]);
+      return;
+    }
+
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      });
+      const data = await response.json();
+
+      console.log('list hostel Response:', data);
+
+      // Limit the number of suggestions to 7
+      const limitedSuggestions = data.data.slice(0, 7);
+      setSuggestions(limitedSuggestions);
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
     }
   };
+
+  useEffect(() => {
+    if (query) {
+      fetchSuggestions(query);
+    } else {
+      setSuggestions([]);
+    }
+  }, [query]);
+
+  const handleInputChange = (e) => {
+    setQuery(e.target.value);
+    setIsSuggestionVisible(true); 
+  };
+
+  const handleSuggestionClick = (name) => {
+    setQuery(name);
+    setSuggestions([]); 
+    setIsSuggestionVisible(false); 
+  };
+
+
+  // ---------------------------------------------------------------------------------------------------
+  
+  
 
   if (loading) {
     return <Loading />;
@@ -247,15 +295,41 @@ const HotelSearch = () => {
           <div className="hotel_booking">
           <form onSubmit={handleSubmit}>
   <div className="form-row">
+
+    {/* --------------------------------------------------------------------------------------------------------------- */}
+
     <div className="form-field">
       <label className="form_label" htmlFor="cityOrHotel">City or Hotel Name:</label>
       <div className="input-with-icon">
-      <input className="form_in" type="text" id="cityOrHotel" name="cityOrHotel"
-        placeholder="Enter city or hotel name" value={inputs.cityOrHotel} onChange={handleChange} />
+        <input
+          className="form_in"
+          type="text"
+          id="cityOrHotel"
+          name="cityOrHotel"
+          placeholder="Enter city or hotel name"
+          value={query}
+          onChange={handleInputChange}
+        />
         <FontAwesomeIcon icon={faHotel} className="calendar-icon" />
+      </div>
+      {isSuggestionVisible && suggestions.length > 0 && (
+        <ul className="suggestions-list">
+          {suggestions.map((suggestion) => (
+            <li
+              key={suggestion.busodma_id}
+              onClick={() => handleSuggestionClick(suggestion.busodma_destination_name)}
+              style={{ cursor: 'pointer' }} 
+            >
+              {suggestion.busodma_destination_name}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
-    
-</div>
+
+    {/* --------------------------------------------------------------------------------------------------------------- */}
+     
+
     <div className="form-field date-picker-field">
       <label className="form_label" htmlFor="checkIn">Check-In Date:</label>
       <div className="input-with-icon">
