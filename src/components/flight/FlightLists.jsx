@@ -312,7 +312,7 @@ export default function FlightLists() {
                 setLoading(true);
                 setTimeout(() => {
                     navigate('/flight-Farequote', { state: { fareData: data.Results, formData: formData } });
-                }, 1000); 
+                }, 1000);
             } else {
                 console.error('data.Results or formData is undefined');
             }
@@ -576,28 +576,32 @@ export default function FlightLists() {
                 <div className="row">
                     <div className="col-lg-3 flightlistsec2col1 flightlistsec2col1DeskView">
                         <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
-                        <Accordion.Item eventKey="0">
-                                        <Accordion.Header className="flightlistaccordian">Stops</Accordion.Header>
-                                        <Accordion.Body>
-                                            <div className="row">
-                                                <div className="col-4 flightstopaccordian">
-                                                    <div><span></span></div>
-                                                    <p>Non Stop</p>
-                                                    <h6>Rs.8541</h6>
-                                                </div>
-                                                <div className="col-4 flightstopaccordian">
-                                                    <div><span></span></div>
-                                                    <p>1 Stop</p>
-                                                    <h6>Rs.8541</h6>
-                                                </div>
-                                                <div className="col-4 flightstopaccordian">
-                                                    <div><span></span></div>
-                                                    <p>2 Stop</p>
-                                                    <h6>Rs.8541</h6>
-                                                </div>
+                            <Accordion.Item eventKey="0">
+                                <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
+                                <Accordion.Body className="flightpriceaccordian">
+                                    <div className="row">
+                                        <div className="col-5 flightstopaccordian">
+                                            <div>
+                                                <span className="custom-checkbox">
+                                                    <input type="checkbox" id="checkbox1" />
+                                                    <label htmlFor="checkbox1"></label>
+                                                </span>
                                             </div>
-                                        </Accordion.Body>
-                                    </Accordion.Item>
+                                            <h6>Low to High</h6>
+                                        </div>
+                                        <div className="col-5 flightstopaccordian">
+                                            <div>
+                                                <span className="custom-checkbox">
+                                                    <input type="checkbox" id="checkbox2" />
+                                                    <label htmlFor="checkbox2"></label>
+                                                </span>
+                                            </div>
+                                            <h6>High to Low</h6>
+                                        </div>
+                                    </div>
+                                </Accordion.Body>
+
+                            </Accordion.Item>
 
                             {/* <Accordion.Item eventKey="0">
                                 <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
@@ -798,7 +802,7 @@ export default function FlightLists() {
 
                                                                     <div className="col-md-3 pricebtns f-listCol3">
                                                                         <div><p>₹{flight?.OfferedFare}</p></div>
-                                                                        <div> <button onClick={()=>handleSelectSeat(index)}>SELECT</button>     </div>
+                                                                        <div> <button onClick={() => handleSelectSeat(index)}>SELECT</button>     </div>
                                                                     </div>
                                                                 </div>
                                                             )}

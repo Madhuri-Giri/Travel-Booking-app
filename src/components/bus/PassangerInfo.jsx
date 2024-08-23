@@ -325,7 +325,7 @@ const PassangerInfo = () => {
     event.preventDefault();
 
     if (passengerCount < selectedSeats.length) {
-      const transactionNoBus = localStorage.getItem('transactionNum-bus');
+      // const transactionNoBus = localStorage.getItem('transactionNum-bus');
 
       const requestData = {
         ResultIndex: '1',
@@ -333,7 +333,7 @@ const PassangerInfo = () => {
         BoardingPointId: 1,
         DroppingPointId: 1,
         RefID: '1',
-        transaction_num: transactionNoBus,
+        // transaction_num: transactionNoBus,
         Passenger: [
           {
             LeadPassenger: true,
@@ -405,7 +405,7 @@ const PassangerInfo = () => {
 
         const data = await response.json();
         console.log('Block Response:', data);
-        console.log('busSavedId:', data.result.saved_bookings.id);
+        // console.log('busSavedId:', data.result.saved_bookings.id);
 
         const busSavedId = data.result.saved_bookings.id;
         localStorage.setItem('busSavedId', busSavedId);

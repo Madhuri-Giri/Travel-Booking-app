@@ -88,7 +88,7 @@ const BusLists = () => {
   const handleSelectSeat = async (index) => {
     
     const loginId = localStorage.getItem('loginId');
-    console.log('Current loginId:', loginId); 
+    // console.log('Current loginId:', loginId); 
 
      await useridHandler();
 

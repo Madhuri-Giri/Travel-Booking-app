@@ -154,6 +154,26 @@ border:1px solid  #00b7eb;
 background: none;
 }
 
+.suggestions-list-from {
+  width: 19%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  position: absolute;
+  top: 7vmax;
+  background: #fff;
+  box-shadow: 2px 2px 5px 2px rgb(149, 149, 149);
+}
+
+.suggestions-list-from li {
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 0.2vmax;
+  list-style: none;
+}
+
+
 
 .suggestions-list {
   width: 19%;
@@ -227,8 +247,16 @@ background: none;
     padding: 1.7vmax 1vmax;
   }
 
+  .suggestions-list-from{
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    top: 15vmax;
+  }
 
-
+  .suggestions-list-from li {
+    width: 100%;
+  }
 
   .suggestions-list {
     width: 95%;
@@ -301,6 +329,17 @@ background: none;
   }
   
   .suggestions-list li {
+    width: 100%;
+  }
+  
+  .suggestions-list-from{
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    top: 15vmax;
+  }
+
+  .suggestions-list-from li {
     width: 100%;
   }
   
