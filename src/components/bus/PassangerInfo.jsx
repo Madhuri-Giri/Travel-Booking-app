@@ -35,7 +35,12 @@ const PassangerInfo = () => {
     });
   };
 
-  const blockHandler = async (event) => {
+
+
+
+
+
+ const blockHandler = async (event) => {
     event.preventDefault();
 
     if (passengerCount < selectedSeats.length) {
@@ -144,6 +149,11 @@ const PassangerInfo = () => {
       alert("All selected seats must have corresponding passengers.");
     }
   };
+
+
+
+
+
 
   const deletePassenger = (index) => {
     const updatedPassengers = passengers.filter((_, i) => i !== index);

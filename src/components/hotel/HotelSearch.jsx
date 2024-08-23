@@ -25,7 +25,6 @@ const HotelSearch = () => {
   const [loading, setLoading] = useState(false); // Add loading state
   const [startDate, setStartDate] = useState(null);
   // const [inputs, setInputs] = useState({ cityOrHotel: '' });
-  const [suggestions, setSuggestions] = useState([]);
 
   //------------------- Start  carousel code ---------------------
   const slideRef = useRef(null);
@@ -185,14 +184,13 @@ const HotelSearch = () => {
     }
   };
 
-  // --------------- End API Code ---------------------
+  // --------------- End API Code -------------------------------------------------------------------------
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [isSuggestionVisible, setIsSuggestionVisible] = useState(true);
 
-   // Handle city or hotel input change
-   const handleChange = async (event) => {
-    const { value } = event.target;
-    setInputs((prev) => ({ ...prev, cityOrHotel: value }));
-
-    if (value.trim() === '') {
+  const fetchSuggestions = async (query) => {
+    if (!query) {
       setSuggestions([]);
       return;
     }
@@ -203,35 +201,43 @@ const HotelSearch = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: value }),
+        body: JSON.stringify({ query }),
       });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
       const data = await response.json();
-      setSuggestions(data); 
+
+      console.log('list hostel Response:', data);
+
+      // Limit the number of suggestions to 7
+      const limitedSuggestions = data.data.slice(0, 7);
+      setSuggestions(limitedSuggestions);
     } catch (error) {
       console.error('Error fetching suggestions:', error);
-      setSuggestions([]);
     }
   };
-
-  
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-  
-  const handleClickOutside = (event) => {
-    if (guestRef.current && !guestRef.current.contains(event.target)) {
-      setShowGuestOptions(false);
+    if (query) {
+      fetchSuggestions(query);
+    } else {
+      setSuggestions([]);
     }
+  }, [query]);
+
+  const handleInputChange = (e) => {
+    setQuery(e.target.value);
+    setIsSuggestionVisible(true); 
   };
+
+  const handleSuggestionClick = (name) => {
+    setQuery(name);
+    setSuggestions([]); 
+    setIsSuggestionVisible(false); 
+  };
+
+
+  // ---------------------------------------------------------------------------------------------------
+  
+  
 
   if (loading) {
     return <Loading />;
@@ -289,30 +295,41 @@ const HotelSearch = () => {
           <div className="hotel_booking">
           <form onSubmit={handleSubmit}>
   <div className="form-row">
+
+    {/* --------------------------------------------------------------------------------------------------------------- */}
+
     <div className="form-field">
       <label className="form_label" htmlFor="cityOrHotel">City or Hotel Name:</label>
       <div className="input-with-icon">
-      <input
+        <input
           className="form_in"
           type="text"
           id="cityOrHotel"
           name="cityOrHotel"
           placeholder="Enter city or hotel name"
-          value={inputs.cityOrHotel}
-          onChange={handleChange}
+          value={query}
+          onChange={handleInputChange}
         />
         <FontAwesomeIcon icon={faHotel} className="calendar-icon" />
-    </div>
-    {suggestions.length > 0 && (
+      </div>
+      {isSuggestionVisible && suggestions.length > 0 && (
         <ul className="suggestions-list">
-          {suggestions.map((suggestion, index) => (
-            <li key={index} onClick={() => setInputs({ ...inputs, cityOrHotel: suggestion.name })}>
-              {suggestion.name} {/* Adjust the key and display based on your API response */}
+          {suggestions.map((suggestion) => (
+            <li
+              key={suggestion.busodma_id}
+              onClick={() => handleSuggestionClick(suggestion.busodma_destination_name)}
+              style={{ cursor: 'pointer' }} 
+            >
+              {suggestion.busodma_destination_name}
             </li>
           ))}
         </ul>
       )}
-</div>
+    </div>
+
+    {/* --------------------------------------------------------------------------------------------------------------- */}
+     
+
     <div className="form-field date-picker-field">
       <label className="form_label" htmlFor="checkIn">Check-In Date:</label>
       <div className="input-with-icon">

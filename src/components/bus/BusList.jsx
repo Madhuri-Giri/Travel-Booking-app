@@ -189,6 +189,7 @@ const toggleDropVisibility = () => {
       }
 
       const data = await response.json();
+       console.log('seat layoout', data)
 
       localStorage.setItem('BuslayoutResponse', JSON.stringify(data));
       setLayoutResponse(data);

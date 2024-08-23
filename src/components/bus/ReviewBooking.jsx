@@ -102,13 +102,17 @@ const ReviewBooking = () => {
       const loginId = localStorage.getItem('loginId');
       const roundedAmount = Math.round(totalPayment * 100) / 100;
       const transactionNoBus = localStorage.getItem('transactionNum-bus');
+      const busSavedId = localStorage.getItem('busSavedId');
+
 
       console.log('Sending data to API:', { amount: roundedAmount, user_id: loginId });
 
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
         amount: roundedAmount,
         user_id: loginId,
-        transaction_num: transactionNoBus
+        transaction_num: transactionNoBus,
+        bus_booking_id: busSavedId,
+
       });
 
       console.log('API response:', response.data);
