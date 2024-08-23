@@ -42,7 +42,7 @@ const HotelList = () => {
   const [destination, setDestination] = useState("");
 
   // IGST Rate
-  const IGST_RATE = 0.18; // 18% IGST
+  // const IGST_RATE = 0.18; // 18% IGST
 
   // Pagination State
   const [currentPage, setCurrentPage] = useState(0);
@@ -254,8 +254,8 @@ const HandelHotelInfo = async (index) => {
   }, []);
 
   // Function to calculate IGST
-  const calculateIGST = (price) => price * IGST_RATE;
-  const calculateTotalPrice = (price) => price - calculateIGST(price);
+  // const calculateIGST = (price) => price * IGST_RATE;
+  // const calculateTotalPrice = (price) => price - calculateIGST(price);
 
   const [inputs, setInputs] = useState({
     
@@ -435,7 +435,8 @@ const HandelHotelInfo = async (index) => {
                             <span className="hotelRating">{renderStar(hotel.StarRating)}</span>
                             <div className="DetailTexts">
                               <span className="hotelPrice">
-                                ₹{calculateTotalPrice(hotel.Price?.OfferedPriceRoundedOff || 0).toFixed(2)}
+                                {/* ₹{calculateTotalPrice(hotel.Price?.OfferedPriceRoundedOff || 0).toFixed(2)} */}
+                                ₹{(hotel.Price?.OfferedPriceRoundedOff || 0).toFixed(2)}
                               </span>
                                 <div>
                               <span className="hotelTax"> No Includes taxes and fees</span>

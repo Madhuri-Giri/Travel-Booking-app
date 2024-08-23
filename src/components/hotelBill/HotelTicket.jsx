@@ -100,11 +100,7 @@ const BookingBill = () => {
       <CustomNavbar />
 
       <div className="booking-bill-container">
-        <div className="lottie container">
-          <div className="row">
-            <div className="col-lg-3">
-              <Lottie animationData={LootiAnim} />
-            </div>
+        
 
             <div className="col-lg-9">
               <div className='busticktbox'>
@@ -166,10 +162,6 @@ const BookingBill = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-       
         <ToastContainer />
       </div>
       <Footer />
