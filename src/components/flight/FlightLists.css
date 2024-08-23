@@ -421,7 +421,7 @@
 }
 
 .flistname p {
-    margin: 0px 10px;
+    margin: 0px 7px;
 }
 
 .flistnamep1,
@@ -437,14 +437,14 @@
 
 .flistnamep4 {
     font-weight: 500;
-    font-size: 19px;
+    font-size: 16px;
     color: gray;
 }
 
 .flistnamep3 {
     border-bottom: 1px solid rgba(128, 128, 128, 0.301);
     color: gray;
-    padding: 13px 22px;
+    padding: 6px 12px;
 }
 
 .pricebtns {

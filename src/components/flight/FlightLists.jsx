@@ -18,6 +18,7 @@ import EnterOtp from '../popUp/EnterOtp';
 
 export default function FlightLists() {
     const [loading, setLoading] = useState(false); // Add loading state
+    const [sortOrder, setSortOrder] = useState(''); // State to manage sorting order
 
     const [showOtpOverlay, setShowOtpOverlay] = useState(false);
 
@@ -395,6 +396,17 @@ export default function FlightLists() {
     //     setSelectedSort(value);
     // };
 
+
+    const sortFlights = (flights) => {
+        if (sortOrder === 'lowToHigh') {
+            return flights.sort((a, b) => a.OfferedFare - b.OfferedFare);
+        } else if (sortOrder === 'highToLow') {
+            return flights.sort((a, b) => b.OfferedFare - a.OfferedFare);
+        }
+        return flights;
+    };
+
+
     return (
         <>
             <CustomNavbar />
@@ -472,99 +484,47 @@ export default function FlightLists() {
                             <div className="col-12 flightlistsec2col1 flightlistsec2col1MobileView">
                                 <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
                                     <Accordion.Item eventKey="0">
-                                        <Accordion.Header className="flightlistaccordian">Stops</Accordion.Header>
-                                        <Accordion.Body>
+                                        <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
+                                        <Accordion.Body className="flightpriceaccordian">
                                             <div className="row">
-                                                <div className="col-4 flightstopaccordian">
-                                                    <div><span></span></div>
-                                                    <p>Non Stop</p>
-                                                    <h6>Rs.8541</h6>
+                                                <div className="col-5 flightstopaccordian">
+                                                    <div>
+                                                        <span className="custom-checkbox">
+                                                            <input
+                                                                type="checkbox"
+                                                                id="checkbox1"
+                                                                checked={sortOrder === 'lowToHigh'}
+                                                                onChange={() => setSortOrder('lowToHigh')}
+                                                            />
+                                                            <label htmlFor="checkbox1"></label>
+                                                        </span>
+                                                    </div>
+                                                    <h6>Low to High</h6>
                                                 </div>
-                                                <div className="col-4 flightstopaccordian">
-                                                    <div><span></span></div>
-                                                    <p>1 Stop</p>
-                                                    <h6>Rs.8541</h6>
-                                                </div>
-                                                <div className="col-4 flightstopaccordian">
-                                                    <div><span></span></div>
-                                                    <p>2 Stop</p>
-                                                    <h6>Rs.8541</h6>
+                                                <div className="col-5 flightstopaccordian">
+                                                    <div>
+                                                        <span className="custom-checkbox">
+                                                            <input
+                                                                type="checkbox"
+                                                                id="checkbox2"
+                                                                checked={sortOrder === 'highToLow'}
+                                                                onChange={() => setSortOrder('highToLow')}
+                                                            />
+                                                            <label htmlFor="checkbox2"></label>
+                                                        </span>
+                                                    </div>
+                                                    <h6>High to Low</h6>
                                                 </div>
                                             </div>
                                         </Accordion.Body>
                                     </Accordion.Item>
-
-
-
-
                                     <Accordion.Item eventKey="1">
                                         <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
                                         <Accordion.Body>
                                             <div className="airlineFilters mobileAirlines" > </div>
                                         </Accordion.Body>
                                     </Accordion.Item>
-                                    <Accordion.Item eventKey="2">
-                                        <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
-                                        <Accordion.Body>
-                                            {/* <ProgressBar now={(price / maxPrice) * 100} label={`${(price / maxPrice) * 100}%`} /> */}
-                                            <div className="flightlistaccordianprice">
-
-                                                <div className="flightlistaccordianpricehed">
-                                                    <p>Rs.{price}</p><p>Rs.{maxPrice}</p>
-                                                </div>
-                                                <input
-                                                    type="range"
-                                                    min="0"
-                                                    max={maxaccordiandepartime}
-                                                    value={price}
-                                                    onChange={handleSliderChange}
-                                                    className="form-range"
-                                                />
-                                            </div>
-                                        </Accordion.Body>
-                                    </Accordion.Item>
-                                    <Accordion.Item eventKey="3">
-                                        <Accordion.Header>Time</Accordion.Header>
-                                        <Accordion.Body>
-                                            <div className="flightlistaccordianprice mb-5">
-                                                <ul>
-                                                    <li>
-                                                        <h6>Departure from New Delhi (DEL) </h6>
-                                                    </li>
-                                                </ul>
-                                                <div className="flightlistaccordianpricehed">
-                                                    <p>Rs.{accordiandepartime}</p><p>Rs.{maxaccordiandepartime}</p>
-                                                </div>
-                                                <input
-                                                    type="range"
-                                                    min="0"
-                                                    max={maxPrice}
-                                                    value={price}
-                                                    onChange={handledeparttimeSliderChange}
-                                                    className="form-range"
-                                                />
-                                            </div>
-
-                                            <div className="flightlistaccordianprice">
-                                                <ul>
-                                                    <li>
-                                                        <h6>Arrived at Banglore (BLR) </h6>
-                                                    </li>
-                                                </ul>
-                                                <div className="flightlistaccordianpricehed">
-                                                    <p>Rs.{accordianArrivedtime}</p><p>Rs.{maxaccordianArrivedtime}</p>
-                                                </div>
-                                                <input
-                                                    type="range"
-                                                    min="0"
-                                                    max={maxaccordianArrivedtime}
-                                                    value={accordianArrivedtime}
-                                                    onChange={handleArrivedtimeSliderChange}
-                                                    className="form-range"
-                                                />
-                                            </div>
-                                        </Accordion.Body>
-                                    </Accordion.Item>
+                                   
                                 </Accordion>
                             </div>
                         </div>
@@ -583,7 +543,12 @@ export default function FlightLists() {
                                         <div className="col-5 flightstopaccordian">
                                             <div>
                                                 <span className="custom-checkbox">
-                                                    <input type="checkbox" id="checkbox1" />
+                                                    <input
+                                                        type="checkbox"
+                                                        id="checkbox1"
+                                                        checked={sortOrder === 'lowToHigh'}
+                                                        onChange={() => setSortOrder('lowToHigh')}
+                                                    />
                                                     <label htmlFor="checkbox1"></label>
                                                 </span>
                                             </div>
@@ -592,7 +557,12 @@ export default function FlightLists() {
                                         <div className="col-5 flightstopaccordian">
                                             <div>
                                                 <span className="custom-checkbox">
-                                                    <input type="checkbox" id="checkbox2" />
+                                                    <input
+                                                        type="checkbox"
+                                                        id="checkbox2"
+                                                        checked={sortOrder === 'highToLow'}
+                                                        onChange={() => setSortOrder('highToLow')}
+                                                    />
                                                     <label htmlFor="checkbox2"></label>
                                                 </span>
                                             </div>
@@ -600,115 +570,11 @@ export default function FlightLists() {
                                         </div>
                                     </div>
                                 </Accordion.Body>
-
                             </Accordion.Item>
-
-                            {/* <Accordion.Item eventKey="0">
-                                <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
-                                <Accordion.Body>
-                                    <div className="row mb-3">
-                                        <div className="col-12">
-                                            <div className="form-check flight-custom-checkbox">
-                                            <label className="form-check-label" htmlFor="lowToHigh">
-                                                    Price: Low to High
-                                                </label>
-                                                <input
-                                                    className="form-check-input"
-                                                    type="checkbox"
-                                                    id="lowToHigh"
-                                                    value="low-to-high"
-                                                    checked={selectedSort === 'low-to-high'}
-                                                    onChange={handleCheckboxChange}
-                                                />
-                                             
-                                            </div>
-                                        </div>
-                                        <div className="col-12">
-                                            <div className="form-check flight-custom-checkbox">
-                                            <label className="form-check-label" htmlFor="highToLow">
-                                                    Price: High to Low
-                                                </label>
-                                                <input
-                                                    className="form-check-input"
-                                                    type="checkbox"
-                                                    id="highToLow"
-                                                    value="high-to-low"
-                                                    checked={selectedSort === 'high-to-low'}
-                                                    onChange={handleCheckboxChange}
-                                                />
-                                              
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Accordion.Body>
-                            </Accordion.Item> */}
-
                             <Accordion.Item eventKey="1">
                                 <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
                                 <Accordion.Body>
                                     <div className="airlineFilters desktopAirlines"> </div>
-                                </Accordion.Body>
-                            </Accordion.Item>
-                            <Accordion.Item eventKey="2">
-                                <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
-                                <Accordion.Body>
-                                    {/* <ProgressBar now={(price / maxPrice) * 100} label={`${(price / maxPrice) * 100}%`} /> */}
-                                    <div className="flightlistaccordianprice">
-
-                                        <div className="flightlistaccordianpricehed">
-                                            <p>Rs.{price}</p><p>Rs.{maxPrice}</p>
-                                        </div>
-                                        <input
-                                            type="range"
-                                            min="0"
-                                            max={maxaccordiandepartime}
-                                            value={price}
-                                            onChange={handleSliderChange}
-                                            className="form-range"
-                                        />
-                                    </div>
-                                </Accordion.Body>
-                            </Accordion.Item>
-                            <Accordion.Item eventKey="3">
-                                <Accordion.Header>Time</Accordion.Header>
-                                <Accordion.Body>
-                                    <div className="flightlistaccordianprice mb-5">
-                                        <ul>
-                                            <li>
-                                                <h6>Departure from New Delhi (DEL) </h6>
-                                            </li>
-                                        </ul>
-                                        <div className="flightlistaccordianpricehed">
-                                            <p>Rs.{accordiandepartime}</p><p>Rs.{maxaccordiandepartime}</p>
-                                        </div>
-                                        <input
-                                            type="range"
-                                            min="0"
-                                            max={maxPrice}
-                                            value={price}
-                                            onChange={handledeparttimeSliderChange}
-                                            className="form-range"
-                                        />
-                                    </div>
-
-                                    <div className="flightlistaccordianprice">
-                                        <ul>
-                                            <li>
-                                                <h6>Arrived at Banglore (BLR) </h6>
-                                            </li>
-                                        </ul>
-                                        <div className="flightlistaccordianpricehed">
-                                            <p>Rs.{accordianArrivedtime}</p><p>Rs.{maxaccordianArrivedtime}</p>
-                                        </div>
-                                        <input
-                                            type="range"
-                                            min="0"
-                                            max={maxaccordianArrivedtime}
-                                            value={accordianArrivedtime}
-                                            onChange={handleArrivedtimeSliderChange}
-                                            className="form-range"
-                                        />
-                                    </div>
                                 </Accordion.Body>
                             </Accordion.Item>
                         </Accordion>
@@ -731,44 +597,17 @@ export default function FlightLists() {
                             </Slider>
                         </div>
 
-
-
-
-
-                        {/* <div className="flight-date-slider">
-                            <div className="flight-d-slide">
-                                <div className="date-left" onClick={scrollLeftClick}>
-                                    <i className="ri-arrow-left-s-line"></i>
-                                </div>
-                                <div className="date-mid" >
-                                    <Slider ref={sliderRef} {...settings}>
-                                        {flightData.map((flight, index) => (
-                                            <div style={{ margin: '1vmax' }} className="d-one" key={index}>
-                                                <h6>{new Date(flight.DepartureDate).toLocaleDateString()}</h6>
-                                                <p>{flight.BaseFare}</p>
-                                            </div>
-                                        ))}
-                                    </Slider>                                
-
-                                </div>
-                                <div className="date-right" onClick={scrollRightClick}>
-                                    <i className="ri-arrow-right-s-line"></i>
-                                </div>
-                            </div>
-                        </div> */}
-
                         <div className="f-lists">
                             <div className="flight-content">
                                 {dd && dd.length > 0 ? (
                                     dd.map((flightSegments, index) => {
-                                        return flightSegments.map((flight, segmentIndex) => {
+                                        const sortedFlights = sortFlights([...flightSegments]);
+                                        return sortedFlights.map((flight, segmentIndex) => {
                                             return flight?.Segments?.[0].map((option, index) => {
                                                 return (
                                                     <>
-                                                        {(selected.includes(
-                                                            option.Airline.AirlineName
-                                                        ) ||
-                                                            selected.length == 0) && (
+                                                        {(selected.includes(option.Airline.AirlineName) ||
+                                                            selected.length === 0) && (
                                                                 <div className="row" key={`${index}-${segmentIndex}`}>
                                                                     <div className="pricebtnsmobil">
                                                                         <p>₹{flight?.OfferedFare || "Unknown Airline"}</p>
