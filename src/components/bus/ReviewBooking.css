@@ -18,6 +18,8 @@
           align-items: center;
           justify-content: flex-start;
           padding: 0.5vmax;
+          padding-left: 4vmax;
+
           font-weight: 700;
           background: #00b7eb;
         color: #ffff;

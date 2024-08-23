@@ -185,6 +185,8 @@ function BookingHistory() {
         const fetchFlightBookingHistory = async () => {
             try {
                 const transactionFlightNo = localStorage.getItem('transactionNum-Flight');
+                
+
                 if (!transactionFlightNo) {
                     setError('No transaction number found');
                     setLoading(false);
@@ -206,7 +208,7 @@ function BookingHistory() {
                 if (data && Array.isArray(data.flight_history) && data.flight_history.length > 0) {
                     setFlightBookings(data.flight_history);
                 } else {
-                    setFlightBookings([]); // Set empty if no data found
+                    setFlightBookings([]); 
                 }
             } catch (error) {
                 console.error("Error fetching API of flight bookings history:", error);
