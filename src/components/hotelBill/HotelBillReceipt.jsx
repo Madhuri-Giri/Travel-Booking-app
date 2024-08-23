@@ -130,9 +130,10 @@ const BookingBill = () => {
   
   
   return (
-    <>
+   <>
       <CustomNavbar />
-      <div className="booking-bill-container">
+
+       <div className="booking-bill-container">
         <div className="header">
           <h2>Hotel Booking Details</h2>
         </div>
@@ -178,12 +179,16 @@ const BookingBill = () => {
 
         <div className="button-container">
           <button className="download-pdf-btn" onClick={handleDownloadPDF}>Download PDF</button>
-          <button className="cancel-button" onClick={bookingCancel}>Cancel Booking</button>
-        </div>
-      </div>
+          <button className="cancel-button" onClick={bookingCancel}>Cancel Booking</button> 
+         </div>
+      </div> 
+     
+                        
+                           
+               
       <Footer />
       <ToastContainer />
-    </>
+    </> 
   );
 };
 

@@ -257,6 +257,7 @@ const fetchPaymentDetails = async () => {
     }
   };
 
+  
   const updateHandlePayment = async () => {
     try {
       const payment_id = localStorage.getItem('payment_id');
@@ -268,23 +269,45 @@ const fetchPaymentDetails = async () => {
 
       const url = 'https://sajyatra.sajpe.in/admin/api/update-payment';
       const payload = {
+        payment_id,
         transaction_id,
-        payment_id
       };
 
-      const response = await axios.post(url, payload, {
+      const response = await fetch(url, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify(payload),
       });
 
-      if (response.status !== 200) {
-        console.error('Failed to update payment details. Status:', response.status);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Failed to update payment details. Status:', response.status, 'Response:', errorText);
         throw new Error('Failed to update payment details');
       }
 
-      const data = await response.data;
+      const data = await response.json();
       console.log('Update successful:', data);
+      const status = data.data.status;
+      console.log('statusBus', status);
+
+      switch (status) {
+        case 'pending':
+          toast.info('Payment is pending. Please wait.');
+          break;
+        case 'failed':
+          toast.error('Payment failed. Redirecting to bus search page.');
+          navigate('/hotel-search');
+          break;
+        case 'success':
+          toast.success('Payment updated successfully!');
+          break;
+        default:
+          toast.warn('Unknown payment status. Please contact support.');
+      }
+
+
     } catch (error) {
       console.error('Error updating payment details:', error.message);
       throw error;
@@ -485,8 +508,9 @@ const bookHandler = async () => {
 // Retrieve guest details from localStorage
  const guestDetails = JSON.parse(localStorage.getItem('guestDetails'));
       setTimeout(() => {
-navigate('/booking-history', { state: { bookingDetails: responseBody.hotelBooking} });
 
+navigate('/booking-history', { state: { bookingDetails: responseBody.hotelBooking} });
+// navigate('/hotel-ticket', { state: { bookingDetails: responseBody.hotelBooking} });
       }, 2000);
     }
   } catch (error) {
