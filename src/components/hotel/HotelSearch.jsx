@@ -21,10 +21,12 @@ import { faHotel} from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const HotelSearch = () => {
-  //--- Navigate Other Page ---
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Add loading state
   const [startDate, setStartDate] = useState(null);
+  // const [inputs, setInputs] = useState({ cityOrHotel: '' });
+  const [suggestions, setSuggestions] = useState([]);
+
   //------------------- Start  carousel code ---------------------
   const slideRef = useRef(null);
   const intervalRef = useRef(null);
@@ -71,10 +73,10 @@ const HotelSearch = () => {
   const [showGuestOptions, setShowGuestOptions] = useState(false);
   const guestRef = useRef(null);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setInputs((values) => ({ ...values, [name]: value }));
-  };
+  // const handleChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setInputs((values) => ({ ...values, [name]: value }));
+  // };
 
   const handleDateChange = (date, name) => {
     setInputs((values) => ({ ...values, [name]: date }));
@@ -185,6 +187,46 @@ const HotelSearch = () => {
 
   // --------------- End API Code ---------------------
 
+   // Handle city or hotel input change
+   const handleChange = async (event) => {
+    const { value } = event.target;
+    setInputs((prev) => ({ ...prev, cityOrHotel: value }));
+
+    if (value.trim() === '') {
+      setSuggestions([]);
+      return;
+    }
+
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: value }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setSuggestions(data); 
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+      setSuggestions([]);
+    }
+  };
+
+  
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  
   const handleClickOutside = (event) => {
     if (guestRef.current && !guestRef.current.contains(event.target)) {
       setShowGuestOptions(false);
@@ -250,11 +292,26 @@ const HotelSearch = () => {
     <div className="form-field">
       <label className="form_label" htmlFor="cityOrHotel">City or Hotel Name:</label>
       <div className="input-with-icon">
-      <input className="form_in" type="text" id="cityOrHotel" name="cityOrHotel"
-        placeholder="Enter city or hotel name" value={inputs.cityOrHotel} onChange={handleChange} />
+      <input
+          className="form_in"
+          type="text"
+          id="cityOrHotel"
+          name="cityOrHotel"
+          placeholder="Enter city or hotel name"
+          value={inputs.cityOrHotel}
+          onChange={handleChange}
+        />
         <FontAwesomeIcon icon={faHotel} className="calendar-icon" />
     </div>
-    
+    {suggestions.length > 0 && (
+        <ul className="suggestions-list">
+          {suggestions.map((suggestion, index) => (
+            <li key={index} onClick={() => setInputs({ ...inputs, cityOrHotel: suggestion.name })}>
+              {suggestion.name} {/* Adjust the key and display based on your API response */}
+            </li>
+          ))}
+        </ul>
+      )}
 </div>
     <div className="form-field date-picker-field">
       <label className="form_label" htmlFor="checkIn">Check-In Date:</label>

@@ -338,6 +338,7 @@ const HotelRoom = () => {
 
       const res = await response.json();
       const data=res.data;
+      
       const bookingStatus = res.booking_status;
 
       

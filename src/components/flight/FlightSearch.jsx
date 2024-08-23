@@ -91,6 +91,7 @@ const FlightSearch = () => {
   const handleFromInputFocus = () => {
     fetchSuggestions('', setFromSuggestions, true);
   };
+  
   const handleToInputFocus = () => {
     fetchSuggestions('', setToSuggestions, true);
   };

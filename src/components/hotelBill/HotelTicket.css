@@ -24,23 +24,6 @@
     color: #fff;
   }
   
-  /* Lottie animation container */
-  .lottie {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3vmax;
-    margin: 1vmax;
-    background: #fff;
-    border: none;
-    box-shadow: 2px 2px 5px 2px rgba(229, 220, 220, 0.68);
-  }
-  
-  .lottie .anim {
-    width: 100%;
-  }
-  
   /* Download and cancel button container */
   .btm {
     width: 100%;
