@@ -146,6 +146,10 @@
     color: #00e100;
     font-weight: 700;
 }
+.hotlamount span {
+    color: #00e100;
+    font-weight: 700;
+}
 .flightcancelstatus span {
     color: red;
 }

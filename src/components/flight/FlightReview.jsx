@@ -101,10 +101,6 @@ const FlightReview = () => {
     }
   };
 
-  
-
-
-
   const flightpayHandler = async () => {
     const loginId = localStorage.getItem('loginId');
     if (!loginId) {

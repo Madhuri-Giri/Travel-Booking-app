@@ -42,15 +42,12 @@
 }
 
 .detail-card p {
-  font-size: 1.2vmax;
+  /* font-size: 1.2vmax; */
   color: #333;
   margin: 0.5vmax 0;
 }
 
-.detail-card p span {
-  font-weight: bold;
-  color: #0a0b0b;
-}
+
 .button-container {
   display: flex;
   justify-content: space-between; 
@@ -89,4 +86,51 @@
 
 .cancel-button:hover {
   background-color: #cc0000;
+}
+
+.hotelBillsec{
+  background-color: #dddddd;
+  padding: 10px 10px;
+}
+.btm {
+  padding: 10px 5px !important;
+  display: flex;
+  justify-content: space-between;
+}
+
+.detail-card strong {
+  color: #04536b;
+}
+.detail-card p span {
+  margin-left: 4px;
+}
+.bustikthed {
+  text-align: center;
+  margin-bottom: 2vmax;
+  background-color: #00b7eb;
+  color: white;
+  padding: 7px 0px;
+}
+.hoteldetailhed{
+  color: brown;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 5px;
+}
+.hotelbookingdetailhed{
+  color: brown;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 5px;
+}
+.hotlbooingstatus span{
+  color: #00e100;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 576px) {
+  .hotelbookingdetailhed{
+    margin-top: 10px;
+    }
+
 }
