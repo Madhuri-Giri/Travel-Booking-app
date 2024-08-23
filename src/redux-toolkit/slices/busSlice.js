@@ -70,6 +70,14 @@ const busSlice = createSlice({
           localStorage.setItem('traceId', data.TraceId);
           localStorage.setItem('resultIndex', data.Result[0].ResultIndex);
           console.log('Search API Response :', data);
+         
+          const saveDataToLocalStorage = (data) => {
+            const jsonData = JSON.stringify(data);
+        
+            localStorage.setItem('busSearchStore', jsonData);
+        };
+
+        saveDataToLocalStorage(data);
 
           // Process BoardingPoints with CityPointIndex
           const boardingPoints = data.Result.flatMap(bus =>

@@ -134,6 +134,7 @@ const BusSearch = () => {
                       onFocus={handleFromFocus}
                     />
                   </div>
+                  
                   {fromSuggestions.length > 0 && (
                     <ul className="suggestions-list-from">
                       {fromSuggestions.map((suggestion, index) => (
