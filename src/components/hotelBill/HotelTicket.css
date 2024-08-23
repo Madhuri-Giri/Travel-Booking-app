@@ -1,0 +1,207 @@
+/* Container for the booking bill */
+.booking-bill-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    background: #dddddd;
+  }
+  
+  /* Header style */
+  .header {
+    width: 100%;
+       display: flex;
+       align-items: center;
+       background: #0a223d;
+       justify-content: center;
+       padding: 1vmax;
+  }
+  
+  .header h2 {
+    font-size: 1.5vmax;
+    font-weight: 600;
+    color: #fff;
+  }
+  
+  /* Lottie animation container */
+  .lottie {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3vmax;
+    margin: 1vmax;
+    background: #fff;
+    border: none;
+    box-shadow: 2px 2px 5px 2px rgba(229, 220, 220, 0.68);
+  }
+  
+  .lottie .anim {
+    width: 100%;
+  }
+  
+  /* Download and cancel button container */
+  .btm {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background: #efeaea82;
+    flex-direction: column;
+    border-radius: 10px;
+    gap: 0.6vmax;
+    padding: 0.5vmax;
+  }
+  
+  .btm button {
+    border: none;
+    background: none;
+    padding: 0.5vmax 2vmax;
+    border-radius: 5px;
+    background-color: #00b7eb;
+    color: #fff;
+    width: 95%;
+  }
+  
+  .btm button:hover {
+    background-color: #009bb5;
+  }
+  
+  .icon-down {
+    font-size: 1.3vmax;
+    font-weight: 700;
+  }
+  
+  /* Passcode style */
+  .buspasscode {
+    height: 90px;
+    width: 140px;
+  }
+  
+  /* Detail card styles */
+  .detail-card {
+    margin: 10px 0;
+  }
+  
+  .detail-card p {
+    margin: 0;
+    margin-bottom: 4px !important;
+    color: gray;
+    font-size: 15px;
+  }
+  
+  .detail-card span {
+    color: #0a325f;
+    font-weight: bold;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 600px) {
+    .header h2 {
+      font-size: 2.2vmax;
+    }
+  
+    .lottie {
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .lottie .anim {
+      width: 90%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .btm {
+      gap: 1vmax;
+      padding: 0.2vmax;
+    }
+  
+    .btm button {
+      padding: 1vmax 2vmax;
+      text-transform: capitalize;
+    }
+  }
+  
+  @media (min-width: 600px) and (max-width: 1150px) {
+    .header h2 {
+      font-size: 2.2vmax;
+    }
+  
+    .btm {
+      gap: 1vmax;
+      padding: 0.2vmax;
+    }
+  
+    .btm button {
+      padding: 1vmax 2vmax;
+      text-transform: capitalize;
+    }
+  }
+  
+  /* Box shadow and border styles for tickets */
+  .busticktbox {
+    position: relative;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #99dbd72b;
+    padding-bottom: 10px;
+  }
+  
+  .busticktbox::before,
+  .busticktbox::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 45px;
+    height: 100px;
+    background-color: #fff;
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .busticktbox::before {
+    left: -20px;
+    border-right: none;
+  }
+  
+  .busticktbox::after {
+    right: -20px;
+    border-left: none;
+  }
+  
+  /* Mobile and web-specific display styles */
+  .fromtoMOB {
+    display: none;
+  }
+  
+  .fromtoWEB {
+    display: flex;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .ticktbordr {
+      border-left: none;
+    }
+  }
+  
+  @media screen and (max-width: 576px) {
+    .buspssngerdetails span {
+      margin-left: unset;
+      font-size: 13px;
+      color: gray;
+    }
+  
+    .fromtoMOB {
+      display: flex;
+    }
+  
+    .fromtoWEB {
+      display: none;
+    }
+  }
+  
