@@ -20,8 +20,6 @@ const generatePasscode = () => {
 const BusTikit = () => {
   const passcode = generatePasscode();
   const [busticketPassengerDetails, setBusticketPassengerDetails] = useState(null);
-  console.log("busticketPassengerDetails",busticketPassengerDetails.seat_details);
-  
 
   const from = useSelector((state) => state.bus.from);
   const to = useSelector((state) => state.bus.to);
@@ -52,53 +50,53 @@ const BusTikit = () => {
   }, [bus_booking_id, bus_trace_id]);
 
   const downloadTicket = () => {
-  if (!busticketPassengerDetails || !busticketPassengerDetails.bus_details || busticketPassengerDetails.bus_details.length === 0) {
-    console.error("Missing ticket details or passenger data");
-    return;
-  }
+    if (!busticketPassengerDetails || !busticketPassengerDetails.bus_details || busticketPassengerDetails.bus_details.length === 0) {
+      console.error("Missing ticket details or passenger data");
+      return;
+    }
 
-  const doc = new jsPDF();
+    const doc = new jsPDF();
 
-  const busDetail = busticketPassengerDetails.bus_details[0];
-  const bookingStatus = busticketPassengerDetails.booking_Status?.[0] || {};
+    const busDetail = busticketPassengerDetails.bus_details[0];
+    const bookingStatus = busticketPassengerDetails.booking_Status?.[0] || {};
 
-  // Debugging: Log data being used
-  console.log('Generating PDF with data:', {
-    from,
-    to,
-    ticketNo: bookingStatus.ticket_no,
-    busId: bookingStatus.bus_id,
-    status: bookingStatus.bus_status,
-    amount: bookingStatus.amount,
-    busType: busDetail.bus_type,
-    departureTime: busDetail.departure_time,
-    arrivalTime: busDetail.arrival_time,
-    travelerName: busDetail.travel_name,
-    cityPointLocation: busDetail.city_point_location
-  });
+    // Debugging: Log data being used
+    console.log('Generating PDF with data:', {
+      from,
+      to,
+      ticketNo: bookingStatus.ticket_no,
+      busId: bookingStatus.bus_id,
+      status: bookingStatus.bus_status,
+      amount: bookingStatus.amount,
+      busType: busDetail.bus_type,
+      departureTime: busDetail.departure_time,
+      arrivalTime: busDetail.arrival_time,
+      travelerName: busDetail.travel_name,
+      cityPointLocation: busDetail.city_point_location
+    });
 
-  doc.text("Bus Ticket", 20, 20);
+    doc.text("Bus Ticket", 20, 20);
 
-  doc.autoTable({
-    startY: 30,
-    head: [['Detail', 'Information']],
-    body: [
-      ['From:', from || 'N/A'],
-      ['To:', to || 'N/A'],
-      ['Ticket No:', bookingStatus.ticket_no || 'N/A'],
-      ['Bus ID:', bookingStatus.bus_id || 'N/A'],
-      ['Status:', bookingStatus.bus_status || 'N/A'],
-      ['Ticket Price:', `${bookingStatus.amount || 'N/A'} INR`],
-      ['Bus Type:', busDetail.bus_type || 'N/A'],
-      ['Departure Time:', formatTime(busDetail.departure_time) || 'N/A'],
-      ['Arrival Time:', formatTime(busDetail.arrival_time) || 'N/A'],
-      ['Traveler Name:', busDetail.travel_name || 'N/A'],
-      ['City Point Location:', busDetail.city_point_location || 'N/A'],
-    ],
-  });
+    doc.autoTable({
+      startY: 30,
+      head: [['Detail', 'Information']],
+      body: [
+        ['From:', from || 'N/A'],
+        ['To:', to || 'N/A'],
+        ['Ticket No:', bookingStatus.ticket_no || 'N/A'],
+        ['Bus ID:', bookingStatus.bus_id || 'N/A'],
+        ['Status:', bookingStatus.bus_status || 'N/A'],
+        ['Ticket Price:', `${bookingStatus.amount || 'N/A'} INR`],
+        ['Bus Type:', busDetail.bus_type || 'N/A'],
+        ['Departure Time:', formatTime(busDetail.departure_time) || 'N/A'],
+        ['Arrival Time:', formatTime(busDetail.arrival_time) || 'N/A'],
+        ['Traveler Name:', busDetail.travel_name || 'N/A'],
+        ['City Point Location:', busDetail.city_point_location || 'N/A'],
+      ],
+    });
 
-  doc.save('bus_ticket.pdf');
-};
+    doc.save('bus_ticket.pdf');
+  };
 
 
   const handleCancelTicket = async () => {
@@ -159,9 +157,13 @@ const BusTikit = () => {
 
       <div className="Bus-Tikit">
         <div className="lottie container">
-          {busticketPassengerDetails.bus_details.map((busDetail, index) => (
-            <>
-              <div className="row busticketROW">
+          {busticketPassengerDetails.bus_details.map((busDetail, index) => {
+            const seatDetail = busticketPassengerDetails.seat_details.find(
+              (seat) => seat.bus_book_id === busDetail.id.toString()
+            );
+
+            return (
+              <div key={index} className="row busticketROW">
                 <div className="col-lg-3 buslottieCOL">
                   <Lottie className='buslott' animationData={busAnim} />
                 </div>
@@ -172,7 +174,7 @@ const BusTikit = () => {
                     </div>
                     <div className="top"></div>
                     <div className="row buspssngerdetails">
-                      <div key={index} className="col-12">
+                      <div className="col-12">
                         <div className="row">
                           <div className='fromtoMOB'>
                             <div>
@@ -214,9 +216,9 @@ const BusTikit = () => {
                           </div>
                           <div className="col-md-4 ticktbordr">
                             <div>
-                              <p><strong>Seat No -: </strong><span>{busDetail.seat_no}</span></p>
-                              <p><strong>Ticket Number -: </strong><span>{busDetail.seat_no}</span></p>
-                              <p className="psngeramount"><strong>Amount -: </strong><span>{busDetail.price}</span></p>
+                              <p><strong>Seat No -: </strong><span>{seatDetail ? seatDetail.seat_name : 'N/A'}</span></p>
+                              <p><strong>Booking Id -: </strong><span>{seatDetail ? seatDetail.bus_book_id : 'N/A'}</span></p>
+                              <p className="psngeramount"><strong>Amount -: </strong><span>{seatDetail ? seatDetail.offered_price : 'N/A'}</span></p>
                               <p><strong>Passcode: </strong></p>
                               <Barcode className="buspasscode" value={passcode} format="CODE128" />
                             </div>
@@ -235,8 +237,9 @@ const BusTikit = () => {
                   </div>
                 </div>
               </div>
-            </>
-          ))}
+            );
+          })}
+
         </div>
 
         <Footer />

@@ -131,23 +131,38 @@ const FlightTickect = () => {
 
       <div className="Bus-Tikit">
         <div className="lottie container">
-          <div className="row">
-            <div className=" col-lg-3">
-              <Lottie animationData={LootiAnim} />
-            </div>
-            <div className="col-lg-9">
-              <div className='busticktbox'>
-                <div className='bustickthed'>
-                  <h5>Flight Ticket</h5>
+          {flightticketPassengerDetails && flightticketPassengerDetails.user_details && (
+            flightticketPassengerDetails.user_details.map((userDetail, index) => (
+              <div key={index} className="row">
+                <div className="col-lg-3">
+                  <Lottie animationData={LootiAnim} />
                 </div>
-                <div className="top"></div>
-                <div className="row buspssngerdetails">
-                  {flightticketPassengerDetails && flightticketPassengerDetails.user_details && (
-                    <div className="col-12">
-                      {flightticketPassengerDetails.user_details.map((userDetail, index) => (
-                        <div key={index}>
-                          <div className="row">
-                            <div className='fromtoMOB'>
+                <div className="col-lg-9">
+                  <div className='busticktbox'>
+                    <div className='bustickthed'>
+                      <h5>Flight Ticket</h5>
+                    </div>
+                    <div className="top"></div>
+                    <div className="row buspssngerdetails">
+                      <div className="col-12">
+                        <div className="row">
+                          <div className='fromtoMOB'>
+                            <div>
+                              <strong>{from}</strong>
+                              <p>{formatTime(userDetail.updated_at)}</p>
+                            </div>
+                            <div>
+                              <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
+                            </div>
+                            <div>
+                              <strong>{to}</strong>
+                              <p>{formatTime(userDetail.created_at)}</p>
+                            </div>
+                          </div>
+                          <div className="col-md-4 col-6">
+                            <p><strong>Name -: </strong><span>{userDetail.name}</span></p>
+                            <p><strong>Email -: </strong><span>{userDetail.email}</span></p>
+                            <div className='fromtoWEB'>
                               <div>
                                 <strong>{from}</strong>
                                 <p>{formatTime(userDetail.updated_at)}</p>
@@ -160,53 +175,34 @@ const FlightTickect = () => {
                                 <p>{formatTime(userDetail.created_at)}</p>
                               </div>
                             </div>
-                            <div className="col-md-4 col-6">
-                              <p><strong>Name -: </strong><span>{userDetail.name}</span></p>
-                              <p><strong>Email -: </strong><span>{userDetail.email}</span></p>
-                              {/* <p><strong>Date -: </strong><span>{formatDate(userDetail.created_at)}</span></p> */}
-                              <div className='fromtoWEB'>
-                                <div>
-                                  <strong>{from}</strong>
-                                  <p>{formatTime(userDetail.updated_at)}</p>
-                                </div>
-                                <div>
-                                  <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
-                                </div>
-                                <div>
-                                  <strong>{to}</strong>
-                                  <p>{formatTime(userDetail.created_at)}</p>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-md-4 col-6">
+                          </div>
+                          <div className="col-md-4 col-6">
                             <p><strong>Mobile -: </strong><span>{userDetail.mobile}</span></p>
-
-                              <p className='psngerstatus'><strong>Status -: </strong><span>{flightticketPassengerDetails.status === 200 ? 'Confirmed' : 'Pending'}</span></p>
-                            </div>
-                            <div className="col-md-4 ticktbordr">
-                              <div>
+                            <p className='psngerstatus'><strong>Status -: </strong><span>{flightticketPassengerDetails.status === 200 ? 'Confirmed' : 'Pending'}</span></p>
+                          </div>
+                          <div className="col-md-4 ticktbordr">
+                            <div>
                               <p><strong>Registration No -: </strong><span>{userDetail.registration_number}</span></p>
-
-                                <p><strong>Passcode: </strong></p>
-                                <Barcode className="buspasscode" value={passcode} format="CODE128" />
-                              </div>
+                              <p><strong>Passcode: </strong></p>
+                              <Barcode className="buspasscode" value={passcode} format="CODE128" />
                             </div>
                           </div>
                         </div>
-                      ))}
+                      </div>
                     </div>
-                  )}
-                </div>
-                <div className="btm">
-                  <button className='busdonload' onClick={downloadTicket}>
-                    Download
-                    <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
-                  </button>
-                  <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
+                    <div className="btm">
+                      <button className='busdonload' onClick={downloadTicket}>
+                        Download
+                        <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
+                      </button>
+                      <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            ))
+          )}
+
         </div>
       </div>
 
