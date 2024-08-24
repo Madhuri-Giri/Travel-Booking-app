@@ -260,25 +260,30 @@
    background-color: #00b7eb;
    border: 1px solid #00b7eb;
    color: white;
+   padding: 6px 12px;
+   border-radius: 4px;
+   font-weight: bold;
+
  }
 
  .cancel-savebtnnss .editsavebtnn:hover {
-   border: 1px solid #00b7eb;
    color: #00b7eb;
-   font-weight: bold;
+   background-color: transparent;
  }
 
  .cancel-savebtnnss .editcancelbtnn {
    background-color: #595e5fab;
    border: 1px solid #595e5fab;
    color: white;
+   padding: 6px 12px;
+   border-radius: 4px;
    font-weight: bold;
+
  }
 
  .cancel-savebtnnss .editcancelbtnn:hover {
-   border: 1px solid #595e5fab;
-   color: black;
-   font-weight: bold;
+   color: #595e5fab;
+   background-color: transparent;
  }
  .logoutbttnn{
   display: flex;
@@ -297,3 +302,6 @@
  font-size: 25px;
  margin-right: 8px;
  }
+
+
+ 

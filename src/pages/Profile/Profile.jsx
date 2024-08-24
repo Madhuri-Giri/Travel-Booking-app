@@ -7,15 +7,20 @@ import CustomNavbar from '../navbar/CustomNavbar';
 import Footer from '../footer/Footer';
 import { AiOutlineLogout } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
-// import { useHistory } from 'react-router-dom';
 
 const Profile = () => {
   const [editing, setEditing] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Default to false
-  // const history = useHistory();
-  const navigate = useNavigate()
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [originalValues, setOriginalValues] = useState({
+    name: '',
+    email: '',
+    phone: '',
+  }); // Store original form values to revert on cancel
+  const [activeTab, setActiveTab] = useState('view'); // Manage active tab state
+
+  const navigate = useNavigate();
 
   const initialValues = {
     name: '',
@@ -34,11 +39,46 @@ const Profile = () => {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
-      setMessage('Profile updated successfully.');
-      setMessageType('success');
-      setEditing(false);
-      formik.resetForm({ values: initialValues });
+    onSubmit: async (values) => {
+      try {
+        const loginData = JSON.parse(localStorage.getItem('loginData'));
+        const token = loginData?.token;
+
+        if (!token) {
+          setMessage('No token found. Please log in again.');
+          setMessageType('danger');
+          return;
+        }
+
+        const response = await fetch('https://new.sajpe.in/api/v1/user/profile', {
+          method: 'PUT',
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'app-package': 'com.sajyatra',
+            'app-version': '1.0',
+          },
+          body: JSON.stringify(values),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to update profile');
+        }
+
+        const data = await response.json();
+        console.log('Updated profile data:', data);
+
+        setMessage('Profile updated successfully.');
+        setMessageType('success');
+        setEditing(false);
+        setOriginalValues(values); // Update original values after successful save
+        setActiveTab('view'); // Switch back to the "View Details" tab
+      } catch (error) {
+        setMessage(`Error updating profile: ${error.message}`);
+        setMessageType('danger');
+      }
     },
   });
 
@@ -47,8 +87,9 @@ const Profile = () => {
   };
 
   const handleCancel = () => {
-    formik.resetForm();
+    formik.resetForm({ values: originalValues }); // Revert to original values
     setEditing(false);
+    setActiveTab('view'); // Switch back to the "View Details" tab
   };
 
   const handleLogout = async () => {
@@ -68,7 +109,6 @@ const Profile = () => {
       return;
     }
 
-
     try {
       const response = await fetch('https://new.sajpe.in/api/v1/user/logout', {
         method: 'POST',
@@ -87,20 +127,14 @@ const Profile = () => {
         throw new Error(errorData.message || 'Failed to log out');
       }
 
-      // Clear login data and token from local storage
       localStorage.removeItem('loginData');
       localStorage.removeItem('loginId');
 
-      // Update state to reflect that the user is logged out
       setIsLoggedIn(false);
       setMessage('Logged out successfully.');
       setMessageType('success');
-     
-      navigate('/flight-search')
-      
-      // Redirect to login page
-      // history.push('/login');
 
+      navigate('/flight-search');
     } catch (error) {
       setMessage(`Error logging out: ${error.message}`);
       setMessageType('danger');
@@ -110,8 +144,8 @@ const Profile = () => {
   useEffect(() => {
     const checkLoginStatus = () => {
       const loginData = JSON.parse(localStorage.getItem('loginData'));
-      console.log("loginData",loginData);
-      
+      console.log("loginData", loginData);
+
       const token = loginData?.token;
 
       if (token) {
@@ -154,7 +188,7 @@ const Profile = () => {
         formik.setFieldValue('name', data.name);
         formik.setFieldValue('email', data.email);
         formik.setFieldValue('phone', data.mobile);
-
+        setOriginalValues({ name: data.name, email: data.email, phone: data.mobile }); // Set original values
       } catch (error) {
         setMessage(`Error fetching profile data: ${error.message}`);
         setMessageType('danger');
@@ -166,7 +200,7 @@ const Profile = () => {
 
   return (
     <>
-      <CustomNavbar isLoggedIn={isLoggedIn} /> {/* Pass isLoggedIn as a prop */}
+      <CustomNavbar isLoggedIn={isLoggedIn} />
       <section className='profileSectionbg'>
         {message && (
           <Alert variant={messageType} onClose={() => setMessage('')} dismissible>
@@ -210,7 +244,12 @@ const Profile = () => {
                   </div>
                 </div>
                 <div className='tabssborder'>
-                  <Tabs defaultActiveKey="view" id="profile-tabs" className="mb-3 ">
+                  <Tabs
+                    activeKey={activeTab}
+                    onSelect={(k) => setActiveTab(k)}
+                    id="profile-tabs"
+                    className="mb-3"
+                  >
                     <Tab eventKey="view" title="View Details">
                       <div className="profile-details box profiledetailstabbcont">
                         <div className="details">
@@ -246,45 +285,69 @@ const Profile = () => {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                               />
-                              {formik.touched.name && formik.errors.name ? <div className="error">{formik.errors.name}</div> : null}
+                              {formik.errors.name && formik.touched.name && (
+                                <div className="text-danger">{formik.errors.name}</div>
+                              )}
                             </div>
+                          
                           </div>
                           <div className="detail row form-group">
-                            <div className='col-lg-6'>
-                              <label className="" htmlFor="name">
+                          <div className='col-lg-6'>
+                              <label className="" htmlFor="email">
                                 Email
                               </label>
                               <input
                                 type="email"
                                 name="email"
+                                id='email'
                                 className='form-control'
                                 value={formik.values.email}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                               />
-                              {formik.touched.email && formik.errors.email ? <div className="error">{formik.errors.email}</div> : null}
+                              {formik.errors.email && formik.touched.email && (
+                                <div className="text-danger">{formik.errors.email}</div>
+                              )}
                             </div>
                           </div>
                           <div className="detail row form-group">
                             <div className='col-lg-6'>
-                              <label className="" htmlFor="name">
+                              <label className="" htmlFor="phone">
                                 Phone
                               </label>
                               <input
-                                type="tel"
+                                type="text"
                                 name="phone"
+                                id='phone'
                                 className='form-control'
                                 value={formik.values.phone}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                               />
-                              {formik.touched.phone && formik.errors.phone ? <div className="error">{formik.errors.phone}</div> : null}
+                              {formik.errors.phone && formik.touched.phone && (
+                                <div className="text-danger">{formik.errors.phone}</div>
+                              )}
                             </div>
                           </div>
-                        </div>
-                        <div className='cancel-savebtnnss'>
-                          <Button className="edit_btn editsavebtnn" variant="" onClick={handleSaveChanges}>Save Changes</Button>{' '}
-                          <Button className='editcancelbtnn' variant="" onClick={handleCancel}>Cancel</Button>
+                          <div className="detail row form-group">
+                            <div className='col-lg-12 cancel-savebtnnss'>
+                              <button
+                                type="button"
+                                className="edit_btn editsavebtnn"
+                                onClick={handleSaveChanges}
+                                disabled={!(formik.dirty && formik.isValid)}
+                              >
+                                Save Changes
+                              </button>
+                              <button
+                                type="button"
+                                className="editcancelbtnn"
+                                onClick={handleCancel}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </Tab>
