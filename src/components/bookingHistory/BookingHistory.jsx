@@ -19,10 +19,7 @@ function BookingHistory() {
     useEffect(() => {
         const fetchHotelBookingHistory = async () => {
             try {
-                // Retrieve transactionNum from localStorage
                 const transactionNum = localStorage.getItem('transactionNum');
-
-
                 if (!transactionNum) {
                     throw new Error("Transaction number not found in local storage.");
                 }
@@ -42,19 +39,12 @@ function BookingHistory() {
                 const data = await response.json();
                 console.log('Hotel History API Response:', data);
 
-                if (data && data.hotel_booking_id) {
-                // Store the API response in local storage
-                const dataToStore = {
-                    hotelHistory: data.hotel_history,
-                };
-                localStorage.setItem('hotelHistoryData', JSON.stringify(dataToStore));
-
-                if (data && Array.isArray(data.hotel_history)) {
-                    // Store full hotel history data
+                if (data) {
+                    // Store the API response in local storage
                     localStorage.setItem('hotelHistoryData', JSON.stringify(data));
 
                     // Update state with fetched data
-                    setHotelBookings([data]); // Since the response is a single object, wrap it in an array
+                    setHotelBookings(data);
                 } else {
                     console.error("Unexpected data format or empty hotel history.");
                     setError("No hotel history data found.");
@@ -149,24 +139,24 @@ function BookingHistory() {
     // };
 
 
-   
-// ----------------------hotel ticket API-------------------------------
-   
+
+    // ----------------------hotel ticket API-------------------------------
+
     const handleBookingClick = async (hotelBookingId) => {
         console.log('handleBookingClick called with:', hotelBookingId);
-    
+
         try {
             // Check if hotelBookingId is valid
             if (typeof hotelBookingId !== 'string' && typeof hotelBookingId !== 'number') {
                 console.error('Invalid hotel booking ID:', hotelBookingId);
                 throw new Error('Invalid hotel booking ID.');
             }
-    
+
             // Define request data with the selected hotel_booking_id
             const requestData = {
                 hotel_booking_id: hotelBookingId
             };
-    
+
             const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
                 method: 'POST',
                 headers: {
@@ -174,40 +164,40 @@ function BookingHistory() {
                 },
                 body: JSON.stringify(requestData),
             });
-    
+
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-    
+
             const res = await response.json();
             console.log('Hotel Ticket API Response:', res);
-    
+
             // Define ticketData with default empty arrays
             const ticketData = {
                 hotelBook: res.hotelBook || [],
                 bookingStatus: res.booking_status || []  // Renamed to match the response field
             };
-    
+
             // Check if the required data is present
             if (!ticketData.hotelBook.length && !ticketData.bookingStatus.length) {
                 console.error('No relevant ticket data found in the response:', ticketData);
                 throw new Error('No relevant ticket data found in the response.');
             }
-    
+
             // Save ticket data to local storage
             localStorage.setItem('hotelTicket', JSON.stringify(ticketData));
-    
+
             // Navigate to the hotel-bill page
             navigate('/hotel-bill');
-    
+
         } catch (error) {
             console.error('Error fetching hotel ticket:', error);
             // Optionally, set an error state or show an error message to the user
         }
     };
-    
-  // ----------------------hotel ticket API End-------------------------------
-  // -----------------------navigate hotel ticket page--------------------------
+
+    // ----------------------hotel ticket API End-------------------------------
+    // -----------------------navigate hotel ticket page--------------------------
     // const navigateHotelDetails = () => {
     // localStorage.setItem("hotel_booking_id", hotelBookingId);
     //     setLoading(true);
@@ -263,7 +253,7 @@ function BookingHistory() {
         const fetchFlightBookingHistory = async () => {
             try {
                 const transactionFlightNo = localStorage.getItem('transactionNum-Flight');
-                
+
 
                 if (!transactionFlightNo) {
                     setError('No transaction number found');
@@ -286,7 +276,7 @@ function BookingHistory() {
                 if (data && Array.isArray(data.flight_history) && data.flight_history.length > 0) {
                     setFlightBookings(data.flight_history);
                 } else {
-                    setFlightBookings([]); 
+                    setFlightBookings([]);
                 }
             } catch (error) {
                 console.error("Error fetching API of flight bookings history:", error);
@@ -470,36 +460,33 @@ function BookingHistory() {
                     <div className='hotelTabContent'>
                     <div className="container">
                         <h6 className='hotelTabContenthedding'>Hotel Ticket Status</h6>
-                        {hotelBookings.length > 0 ? (
-                            hotelBookings.map((booking, index) => (
-                                <div key={index} className="row hotelTabContentROW">
-                                    <div className="col-md-6">
-                                        <p><strong>Hotel Name : </strong> {booking.hotel_name || "N/A"}</p>
-                                        <p><strong>Hotel Id : </strong> {booking.hotel_booking_id}</p>
-                                        <p><strong>Transaction Number : </strong> {booking.transaction_num}</p>
+                        {hotelBookings ? (
+                            hotelBookings.userdetails && Array.isArray(hotelBookings.userdetails) ? (
+                                hotelBookings.userdetails.map((user, userIndex) => (
+                                    <div key={userIndex} className="row hotelTabContentROW">
+                                        <div className="col-md-6">
+                                            <p><strong>Hotel Name : </strong> {hotelBookings.hotel_name || "N/A"}</p>
+                                            <p><strong>Hotel Id : </strong> {hotelBookings.hotel_booking_id}</p>
+                                            <p><strong>Transaction Number : </strong> {hotelBookings.transaction_num}</p>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <p><strong>Name : </strong> {user.name || "N/A"}</p>
+                                            <p><strong>Email : </strong> {user.email || "N/A"}</p>
+                                            <p className='hotlamount'><strong>Amount : </strong> <span>₹{hotelBookings.amount}</span></p>
+                                        </div>
+                                        <div className='viewbttn'>
+                                            <button onClick={() => handleBookingClick(hotelBookings.hotel_booking_id)}>View Ticket</button>
+                                        </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        {booking.userdetails.map((user, userIndex) => (
-                                            <div key={userIndex} className="userDetailROW">
-                                                <p><strong>Name : </strong> {user.name || "N/A"}</p>
-                                                <p><strong>Email : </strong> {user.email || "N/A"}</p>
-                                            </div>
-                                        ))}
-                                        <p className='hotlamount'><strong>Amount : </strong> <span>₹{booking.amount}</span></p>
-                                    </div>
-                                    <div className='viewbttn'>
-                                        <button onClick={() => handleBookingClick(booking.hotel_booking_id)}>View Ticket</button>
-                                    </div>
-                                </div>
-                            ))
+                                ))
+                            ) : (
+                                <p>No user details found.</p>
+                            )
                         ) : (
                             <p>No bookings found. Please book a ticket.</p>
                         )}
                     </div>
                 </div>
-                
-
-
                 );
             default:
                 return null;
@@ -549,6 +536,6 @@ function BookingHistory() {
             <Footer />
         </>
     );
-}
+};
 
 export default BookingHistory;

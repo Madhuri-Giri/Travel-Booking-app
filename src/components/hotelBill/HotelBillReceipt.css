@@ -5,7 +5,7 @@
 
 .booking-bill-container {
   max-width: 800px;
-  margin: 2vmax auto;
+  margin: 1vmax auto;
   padding: 2vmax;
   background-color: #f9f9f9;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -92,10 +92,22 @@
   background-color: #dddddd;
   padding: 10px 10px;
 }
-.btm {
-  padding: 10px 5px !important;
+.busbtm {
+  padding: 10px 12px !important;
   display: flex;
   justify-content: space-between;
+}
+.busbtm .busdonload {
+  background-color: #00b7eb;
+  border-radius: 5px;
+  border: none;
+  color: white;
+}
+.busbtm .buscncl {
+  background-color: red;
+  border-radius: 5px;
+  border: none;
+  color: white;
 }
 
 .detail-card strong {
