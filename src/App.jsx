@@ -60,9 +60,7 @@ const App = () => {
           <Route path='/bus-list' element={<BusLists />} />
           <Route path='/bus-layout' element={<BusLayout />} />
           <Route path='/bord-drop' element={<BoardAndDrop />} />
-
           <Route path='/layout' element={<BusLayout />} />
-
           <Route path='/bus-tikit-download' element={<BusTikit />} />
           <Route path='/flight-ticket' element={<FlightTickect />} /> 
           <Route path='/signup' element={<SignUp />} />
@@ -85,7 +83,6 @@ const App = () => {
           <Route path='/flight-review' element={<FlightReview />} />
           <Route path='seat-meal-baggage' element={<SeatMealBaggageTabs />} />
           <Route path='/sajyatra-login' element={<SajyatraLogin />} />
-          {/* <Route path="/seat-meal-baggage" element={<SeatMealBaggageTabs />} /> */}
           <Route path='load'  element={<Loading/>}/>
           <Route path='/enterOtp'  element={<EnterOtp/>}/>
           <Route path='/register'  element={<RegisterModal/>}/>
@@ -93,7 +90,6 @@ const App = () => {
           <Route path='/payment-history' element={<PaymentHistory/>}/>
           <Route path='/booking-history' element={<BookingHistory/>}/>
         </Routes>
-        {/* {!noNavbarFooterRoutes.includes(window.location.pathname) && <Footer />} */}
         <ToastContainer
           position="top-right"
           autoClose={5000}

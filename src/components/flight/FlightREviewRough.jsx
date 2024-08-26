@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,7 +8,7 @@ import { FaEquals } from "react-icons/fa6";
 import { MdOutlineFlightTakeoff } from "react-icons/md";
 import { IoTimeOutline } from "react-icons/io5";
 import { PiTrolleySuitcaseFill } from "react-icons/pi";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { json, useLocation, useNavigate } from 'react-router-dom';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 
@@ -18,11 +18,6 @@ const FlightReview = () => {
 
   const location = useLocation();
   const { fareDataDetails } = location.state || {}; // Use optional chaining
-
-
-  const IsLCC = localStorage.getItem('IsLCC')
-  console.log("IsLCC", IsLCC);
-
 
   if (!fareDataDetails) {
     console.error('fareDataDetails is undefined in FlightReview component');
@@ -123,20 +118,15 @@ const FlightReview = () => {
         handler: async function (response) {
           console.log('Payment successful', response);
 
-          localStorage.setItem('flight_payment_id', response.razorpay_payment_id);
+          localStorage.setItem('flight_payment_id', response.razorpay_payment_id
+          );
           localStorage.setItem('flight_transaction_id', options.transaction_id);
-          alert('Flight Payment successful!');
+          alert('flight Payment successful!');
 
           try {
             await flightpayUpdate();
-
-            const IsLCC = localStorage.getItem('IsLCC') === 'true'; 
-
-            if (IsLCC) {
-              await bookLccApi();
-            } else {
-              await bookHoldApi();
-            }
+            await bookLccApi();
+            await bookHoldApi()
           } catch (error) {
             console.error('Error during updateHandlePayment or bookHandler:', error.message);
             alert('An error occurred during processing. Please try again.');
@@ -165,20 +155,12 @@ const FlightReview = () => {
       console.error('Error during payment setup:', error.message);
       alert('An error occurred during payment setup. Please try again.');
     }
-  };
-
-
-
-  
-
-
-
+  }
 
   const flightpayUpdate = async () => {
     try {
       const payment_id = localStorage.getItem('flight_payment_id');
       const transaction_id = localStorage.getItem('flight_transaction_id');
-      const transaction_num = localStorage.getItem('transactionNum');
 
       if (!payment_id || !transaction_id) {
         throw new Error('Missing payment details');
@@ -188,7 +170,6 @@ const FlightReview = () => {
       const payload = {
         payment_id,
         transaction_id,
-        transaction_num,
       };
 
       const response = await fetch(url, {
@@ -228,34 +209,24 @@ const FlightReview = () => {
   const title = passengerDetails[0].gender;
   const firstName = passengerDetails[0].firstName;
   const lastName = passengerDetails[0].lastName;
-
-  // console.log("traceId", traceId);
-  // console.log("transactionNum", transactionNum);
   // console.log("title", title);
   // console.log("firstName", firstName);
   // console.log("lastName", lastName);
 
-
   const bookLccApi = async () => {
     try {
-  const transactionFlightNo = localStorage.getItem('transactionNum-Flight')
-  const transaction_id = localStorage.getItem('flight_transaction_id');
-
-
       const llcPayload = {
-        "SrdvType": srdvType,
-        "transaction_num": transactionFlightNo,
-         "transaction_id" : transaction_id,         
         "SrdvIndex": srdvIndex,
-        "TraceId": parseInt(traceId),
         "ResultIndex": resultIndex,
-        "Title": "Mr",
+        "TraceId": parseInt(traceId),
+        "SrdvType": srdvType,
+        "Title": title,
         "FirstName": firstName,
         "LastName": lastName,
         "PaxType": 1,
         "DateOfBirth": "2001-12-12",
         "Gender": "1",
-        "PassportNo": "null",
+        "PassportNo": "",
         "PassportExpiry": "",
         "PassportIssueDate": "",
         "AddressLine1": "A152 Ashok Nagar",
@@ -299,7 +270,7 @@ const FlightReview = () => {
         localStorage.setItem('flightTikitDetails', JSON.stringify(responseBody));
 
         setTimeout(() => {
-          navigate('/booking-history', { state: { flightbookingDetails: responseBody } });
+          navigate('/flight-ticket-download', { state: { flightbookingDetails: responseBody } });
         }, 2000);
       }
     } catch (error) {
@@ -308,6 +279,7 @@ const FlightReview = () => {
       toast.error('An error occurred during booking. Please try again.');
     }
   };
+  bookLccApi()
 
 
 

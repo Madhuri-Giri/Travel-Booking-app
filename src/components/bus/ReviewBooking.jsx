@@ -111,7 +111,7 @@ const ReviewBooking = () => {
         amount: roundedAmount,
         user_id: loginId,
         transaction_num: transactionNoBus,
-        bus_booking_id: busSavedId,
+        bus_booking_id: [busSavedId] ,
 
       });
 
@@ -287,7 +287,7 @@ const ReviewBooking = () => {
         DroppingPointId: 1,
         RefID: "1",
         transaction_num: transactionNoBus ,
-        bus_booking_id: busSavedId,
+        bus_booking_id: [busSavedId] ,
         transaction_id: transaction_id,
         Passenger: [
           {
