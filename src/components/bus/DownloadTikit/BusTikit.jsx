@@ -22,7 +22,7 @@ const generatePasscode = () => {
 
 const BusTikit = () => {
   const passcode = generatePasscode();
-
+ 
 
   const [busticketPassengerDetails, setbusticketPassengerDetails] = useState(null);
 
@@ -141,7 +141,7 @@ const BusTikit = () => {
     });
   };
 
-
+ 
   return (
     <>
       <CustomNavbar />
@@ -153,9 +153,9 @@ const BusTikit = () => {
 
         <div className="lottie container">
           <div className="row">
-            <div className=" col-lg-3 buslottieCOL">
+            <div className=" col-lg-3">
               {/* <Lottie animationData={LootiAnim} /> */}
-              <Lottie className='buslott' animationData={busAnim} />
+              <Lottie className='lotti-bus' animationData={busAnim} />
 
               {/* <Lottie animationData={LootiAnim} style={{ height: '70%', width: '60%' }} /> */}
             </div>
@@ -169,74 +169,80 @@ const BusTikit = () => {
                   {/* <h5>BHopal{from}-{to}Indore</h5> */}
                 </div>
                 <div className="row buspssngerdetails">
-                  {busticketPassengerDetails && busticketPassengerDetails.bus_details && (
+                  {busticketPassengerDetails && (
                     <div className="col-12">
-                      <div>
-                        <div className="row">
+                      {busticketPassengerDetails.bus_details.map((busDetail, index) => (
+                        <div key={index}>
+                          <div className="row">
                           <div className='fromtoMOB'>
-                            <div>
-                              <strong>Bhopal{from}</strong>
-                              <p>{formatTime(busticketPassengerDetails.bus_details.departure_time)}</p>
-                            </div>
-                            <div>
-                              <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
-                            </div>
-                            <div>
-                              <strong>{to}Indore</strong>
-                              <p>{formatTime(busticketPassengerDetails.bus_details.arrival_time)}</p>
-                            </div>
-                          </div>
-                          <div className="col-md-4 col-6">
-                            <p><strong>Name -: </strong><span>{busticketPassengerDetails.bus_details.name}</span></p>
-                            <p><strong>Age -: </strong><span>{busticketPassengerDetails.bus_details.age}</span></p>
-                            <p><strong>Gender -: </strong><span>{busticketPassengerDetails.bus_details.gender}</span></p>
-                            <p><strong>Date -: </strong><span>{formatDate(busticketPassengerDetails.bus_details.departure_time)}</span></p>
-                            <div className='fromtoWEB'>
-                              <div>
-                                <strong>Bhopal{from}</strong>
-                                <p>{formatTime(busticketPassengerDetails.bus_details.departure_time)}</p>
+                                <div>
+                                  <strong>Bhopal{from}</strong>
+                                  <p>{formatTime(busDetail.departure_time)}</p>
+                                </div>
+                                <div>
+                                  <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
+                                </div>
+                                <div>
+                                  <strong>{to}Indore</strong>
+                                  <p>{formatTime(busDetail.arrival_time)}</p>
+                                </div>
                               </div>
-                              <div>
-                                <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
+                            <div className="col-md-4 col-6">
+                              <p><strong>Name -: </strong><span>{busDetail.name}</span></p>
+                              <p><strong>Age -: </strong><span>{busDetail.age}</span></p>
+                              <p><strong>Gender -: </strong><span>{busDetail.gender}</span></p>
+                              <p><strong>Number -: </strong><span>{busDetail.number}</span></p>
+                              <p><strong>Date -: </strong><span>{formatDate(busDetail.departure_time)}</span></p>
+                              {/* <strong>ROUTE -:</strong> <br></br> */}
+                              <div className='fromtoWEB'>
+                                <div>
+                                  <strong>Bhopal{from}</strong>
+                                  <p>{formatTime(busDetail.departure_time)}</p>
+                                </div>
+                                <div>
+                                  <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
+                                </div>
+                                <div>
+                                  <strong>{to}Indore</strong>
+                                  <p>{formatTime(busDetail.arrival_time)}</p>
+                                </div>
                               </div>
-                              <div>
-                                <strong>{to}Indore</strong>
-                                <p>{formatTime(busticketPassengerDetails.bus_details.arrival_time)}</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-md-4 col-6">
-                            <p><strong>Number -: </strong><span>{busticketPassengerDetails.bus_details.number}</span></p>
 
-                            <p><strong>Address -: </strong><span>{busticketPassengerDetails.bus_details.address}</span></p>
-                            <p><strong>Bus Type -: </strong><span>{busticketPassengerDetails.bus_details.bus_type}</span></p>
-                            <p><strong>Traveller -: </strong><span>{busticketPassengerDetails.bus_details.travel_name}</span></p>
-                          </div>
-                          <div className="col-md-4 ticktbordr">
-                            <div>
-                              <p><strong>Seat No -: </strong><span>{busticketPassengerDetails.bus_details.seat_no}</span></p>
-                              <p><strong>Ticket Number -: </strong><span>{busticketPassengerDetails.bus_details.seat_no}</span></p>
-                              <p className="psngeramount"><strong>Amount -: </strong><span>{busticketPassengerDetails.bus_details.price}</span></p>
 
-                              {/* <p><strong>Status -: </strong><span>{busticketPassengerDetails.booking_Status[0].bus_status}</span></p> */}
-                              {/* <p className="psngeramount"><strong>Amount -: </strong><span>{busticketPassengerDetails.booking_Status[0].amount}</span></p> */}
-                              <p><strong>Passcode: </strong></p>
-                              <Barcode className="buspasscode" value={passcode} format="CODE128" />
                             </div>
-                            {/* <div>
-                                <p><strong>Ticket Number -: </strong><span>{busticketPassengerDetails.booking_Status[0].ticket_no}</span></p>
-                                <p><strong>Status -: </strong><span>{busticketPassengerDetails.booking_Status[0].bus_status}</span></p>
-                                <p className="psngeramount"><strong>Amount -: </strong><span>{busticketPassengerDetails.booking_Status[0].amount}</span></p>
-                                <p><strong>Passcode: </strong></p>
-                                <Barcode className="buspasscode" value={passcode} format="CODE128" />
-                              </div> */}
+                            <div className="col-md-4 col-6">
+                            <p><strong>Address -: </strong><span>{busDetail.address}</span></p>
+
+                              <p><strong>Bus Type -: </strong><span>{busDetail.bus_type}</span></p>
+                              {/* <p><strong>Dep Time -: </strong><span>{formatTime(busDetail.departure_time)}</span></p> */}
+                              {/* <p><strong>Arr Time -: </strong><span>{formatTime(busDetail.arrival_time)}</span></p> */}
+
+                              <p><strong>Traveller -: </strong><span>{busDetail.travel_name}</span></p>
+                              {/* <p><strong>City Point Name -: </strong><span>{busDetail.city_point_name}</span></p> */}
+                              <p><strong>Seat No -: </strong><span>{busDetail.seat_no}</span></p>
+                            </div>
+
+                            <div className="col-md-4 ticktbordr">
+                              {busticketPassengerDetails.booking_Status && busticketPassengerDetails.booking_Status.length > 0 && (
+                                <div>
+                                  <p><strong>Ticket Number -: </strong><span>{busticketPassengerDetails.booking_Status[0].ticket_no}</span></p>
+                                  {/* <p><strong>Bus ID -: </strong><span>{busticketPassengerDetails.booking_Status[0].bus_id}</span></p> */}
+                                  <p><strong>Status -: </strong><span>{busticketPassengerDetails.booking_Status[0].bus_status}</span></p>
+                                  <p className="psngeramount"><strong>Amount -: </strong><span>{busticketPassengerDetails.booking_Status[0].amount}</span></p>
+                                  <p><strong>Passcode: </strong></p>
+                                  <Barcode className="buspasscode" value={passcode} format="CODE128" /> {/* Barcode Display */}
+                                </div>
+                              )}
+                            </div>
+
                           </div>
                         </div>
-                      </div>
+                      ))}
+
                     </div>
                   )}
-                </div>
 
+                </div>
 
                 <div className="btm">
                   <button className='busdonload' onClick={downloadTicket}>
