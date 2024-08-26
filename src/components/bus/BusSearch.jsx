@@ -10,7 +10,7 @@ import {
   searchBuses
 } from '../../redux-toolkit/slices/busSlice';
 // import BusMainImg from "../../assets/images/busMainImg.png";
-// import busAnim from "../../assets/images/mainBus.json"
+import busAnim from "../../assets/images/mainBus.json"
 import Lottie from 'lottie-react';
 import "./BusSearch.css";
 import BusGurantee from './BusGurantee';
@@ -117,7 +117,7 @@ const BusSearch = () => {
         <div className="B-main">
           <div className="B-main-top">
             {/* <img src={BusMainImg} alt="" /> */}
-            {/* <Lottie className='lotti-bus' animationData={busAnim} style={{ marginTop:"-4vmax"}}  /> */}
+            <Lottie className='lotti-bus' animationData={busAnim} style={{ marginTop:"-4vmax"}}  />
           </div>
           <div className="B-main-btm">
             <div className="sarch-tab">

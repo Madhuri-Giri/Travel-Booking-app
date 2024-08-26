@@ -531,7 +531,7 @@ margin-top: 1vmax;
                font-weight: 600;
       }
       .filter-bus{
-        display: initial;
+        display: none;
       }
       .BusLists .search-functinality button i{
         font-weight: lighter;
