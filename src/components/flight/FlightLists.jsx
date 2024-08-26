@@ -601,6 +601,7 @@ export default function FlightLists() {
                             <div className="flight-content">
                                 {dd && dd.length > 0 ? (
                                     dd.map((flightSegments, index) => {
+                                        // Sort the flight segments based on the selected sort order
                                         const sortedFlights = sortFlights([...flightSegments]);
                                         return sortedFlights.map((flight, segmentIndex) => {
                                             return flight?.Segments?.[0].map((option, index) => {
