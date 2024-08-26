@@ -5,7 +5,7 @@
 
 .booking-bill-container {
   max-width: 800px;
-  margin: 2vmax auto;
+  margin: 1vmax auto;
   padding: 2vmax;
   background-color: #f9f9f9;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -42,15 +42,12 @@
 }
 
 .detail-card p {
-  font-size: 1.2vmax;
+  /* font-size: 1.2vmax; */
   color: #333;
   margin: 0.5vmax 0;
 }
 
-.detail-card p span {
-  font-weight: bold;
-  color: #0a0b0b;
-}
+
 .button-container {
   display: flex;
   justify-content: space-between; 
@@ -89,4 +86,63 @@
 
 .cancel-button:hover {
   background-color: #cc0000;
+}
+
+.hotelBillsec{
+  background-color: #dddddd;
+  padding: 10px 10px;
+}
+.busbtm {
+  padding: 10px 12px !important;
+  display: flex;
+  justify-content: space-between;
+}
+.busbtm .busdonload {
+  background-color: #00b7eb;
+  border-radius: 5px;
+  border: none;
+  color: white;
+}
+.busbtm .buscncl {
+  background-color: red;
+  border-radius: 5px;
+  border: none;
+  color: white;
+}
+
+.detail-card strong {
+  color: #04536b;
+}
+.detail-card p span {
+  margin-left: 4px;
+}
+.bustikthed {
+  text-align: center;
+  margin-bottom: 2vmax;
+  background-color: #00b7eb;
+  color: white;
+  padding: 7px 0px;
+}
+.hoteldetailhed{
+  color: brown;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 5px;
+}
+.hotelbookingdetailhed{
+  color: brown;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 5px;
+}
+.hotlbooingstatus span{
+  color: #00e100;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 576px) {
+  .hotelbookingdetailhed{
+    margin-top: 10px;
+    }
+
 }

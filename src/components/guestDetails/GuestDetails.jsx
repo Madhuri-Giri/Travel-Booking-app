@@ -37,10 +37,13 @@ const GuestDetails = () => {
   const [showForm, setShowForm] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
+
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalPriceWithGST, setTotalPriceWithGST] = useState(0);
-  const gstRate = 18; // GST rate in percentage
-  
+
+  const gstRate = parseFloat(localStorage.getItem('hotel-igst')) || 18; 
+  const discount = parseFloat(localStorage.getItem('hotel-discount')) || 0;
+
   const [timer, setTimer] = useState(600000);
   useEffect(() => {
     const countdown = setInterval(() => {
@@ -66,9 +69,14 @@ const GuestDetails = () => {
     navigate('/hotel-room');
   };
   
-  // Function to calculate total price with GST
-  const calculateTotalWithGST = (amount, gstRate) => {
+   // Function to calculate total price with GST
+   const calculateTotalWithGST = (amount, gstRate) => {
     return amount + (amount * gstRate / 100);
+  };
+
+  // Function to apply discount
+  const applyDiscount = (amount, discount) => {
+    return amount - (amount * discount / 100);
   };
 
   useEffect(() => {
@@ -87,12 +95,16 @@ const GuestDetails = () => {
         const total = totalPriceDoubleDeluxe + totalPriceSingleDeluxe;
         setTotalPrice(total);
         
+        // Apply discount
+        const discountedPrice = applyDiscount(total, discount);
+
         // Calculate total price with GST
-        const totalWithGST = calculateTotalWithGST(total, gstRate);
+        const totalWithGST = calculateTotalWithGST(discountedPrice, gstRate);
         setTotalPriceWithGST(totalWithGST);
-        
+
         // Optionally store total price with GST in localStorage
         localStorage.setItem('totalPriceWithGST', totalWithGST.toFixed(2));
+
       } catch (error) {
         console.error('Error parsing selectedRoomsData:', error);
       }
@@ -153,9 +165,10 @@ const fetchPaymentDetails = async () => {
   try {
     const loginId = localStorage.getItem('loginId');
     const transactionNum = localStorage.getItem('transactionNum');
+    const hotel_booking_id = localStorage.getItem('hotelBlockId');
 
-    if (!loginId || !transactionNum) {
-      throw new Error('Login ID or Transaction Number is missing.');
+    if (!loginId || !transactionNum || !hotel_booking_id ) {
+      throw new Error('Login ID or Transaction Number or Hotel booking Id is missing.');
     }
 
     // Handling decimal digits of the amount
@@ -171,6 +184,7 @@ const fetchPaymentDetails = async () => {
       amount: roundedAmount,
       user_id: loginId,
       transaction_num: transactionNum,
+      hotel_booking_id: hotel_booking_id
     };
 
     console.log('Sending payload:', payload);
@@ -607,10 +621,16 @@ return (
                 <div key={index}>
                   <p>Room Type: {room.RoomTypeName}</p>
                   <p>Quantity: {room.guestCounts.room}</p>
-                  <p>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</p>
+                  <p> Price:  ₹{totalPriceSingleDeluxe.toFixed(2)}</p>
+
                   <div className="payment-summary">
-        <p><strong>Total Price:</strong> {totalPriceWithGST.toFixed(2)}</p>
-        <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p>
+
+        {/* <p><strong>Total Price:</strong> {totalPriceWithGST.toFixed(2)}</p> */}
+        {/* <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p> */}
+        <p>GST ({gstRate}%): ₹{((applyDiscount(totalPrice, discount) * gstRate) / 100).toFixed(2)}</p>
+        <p>Total Price with GST: ₹{totalPriceWithGST.toFixed(2)}</p>
+        <p>Discount: -₹{(totalPrice * discount / 100).toFixed(2)}</p>
+        <p>Price After Discount: ₹{applyDiscount(totalPrice, discount).toFixed(2)}</p>
       </div>
                 </div>
 
@@ -623,8 +643,10 @@ return (
                   <p>Quantity: {room.guestCounts.room}</p>
                   <p>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</p>
                   <div className="payment-summary">
-        <p><strong>Total Price:</strong> {totalPriceWithGST.toFixed(2)}</p>
-        <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p>
+                  <p>GST ({gstRate}%): ₹{((applyDiscount(totalPrice, discount) * gstRate) / 100).toFixed(2)}</p>
+        <p>Total Price with GST: ₹{totalPriceWithGST.toFixed(2)}</p>
+        <p>Discount: -₹{(totalPrice * discount / 100).toFixed(2)}</p>
+        <p>Price After Discount: ₹{applyDiscount(totalPrice, discount).toFixed(2)}</p>
       </div>
                 </div>
               ))}

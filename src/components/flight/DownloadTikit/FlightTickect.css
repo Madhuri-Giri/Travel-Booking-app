@@ -373,7 +373,6 @@
 
 
 .buspssngerdetails span {
-    margin-left: 10px;
     font-size: 15px;
     color: gray;
 }
@@ -394,7 +393,11 @@
 }
 
 .psngeramount span {
-    color: green !important;
+    color: #00e100;
+    font-weight: bold;
+}
+.psngerstatus span {
+    color: #00e100;
     font-weight: bold;
 }
 
@@ -435,7 +438,7 @@
 }
 
 .btm {
-    padding: 10px 30px;
+    padding: 10px 30px !important;
     display: flex;
     justify-content: space-between;
 }
