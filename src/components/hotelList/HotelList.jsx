@@ -90,8 +90,20 @@ const HotelList = () => {
   };
 
   // ----------------for filter----------------
+
+  const filterHotelsByDestination = (hotels, destination) => {
+    if (!destination) return hotels;
+    return hotels.filter(hotel =>
+      hotel.HotelName.toLowerCase().includes(destination.toLowerCase())
+    );
+  };
+  
+
   useEffect(() => {
-    const sortedHotels = [...hotels];
+    let filteredHotels = filterHotelsByDestination(searchResults || [], destination);
+    
+    // Sort the filtered hotels based on the selected option
+    const sortedHotels = [...filteredHotels];
     switch (sortOption) {
       case 'name':
         sortedHotels.sort((a, b) => a.HotelName.localeCompare(b.HotelName));
@@ -124,7 +136,8 @@ const HotelList = () => {
         break;
     }
     setHotels(sortedHotels);
-  }, [sortOption, userPosition]);
+  }, [searchResults, destination, sortOption, userPosition]);
+  
 
   useEffect(() => {
     if (searchResults && searchResults.length > 0) {
@@ -294,12 +307,13 @@ const HandelHotelInfo = async (index) => {
                     <div className="listItem">
                       <label>Destination</label>
                       <input
-                type="text"
-                className="destination-input"
-                placeholder="Enter hotel or city name"
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-              />
+  type="text"
+  className="destination-input"
+  placeholder="Enter hotel or city name"
+  value={destination}
+  onChange={(e) => setDestination(e.target.value)}
+/>
+
                     </div>
 
                     <div className="listItem">
