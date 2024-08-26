@@ -58,7 +58,118 @@ function BookingHistory() {
         };
 
         fetchHotelBookingHistory();
+    }, []);useEffect(() => {
+        const fetchHotelBookingHistory = async () => {
+            try {
+                // Retrieve transactionNum from localStorage
+                const transactionNum = localStorage.getItem('transactionNum');
+    
+                if (!transactionNum) {
+                    throw new Error("Transaction number not found in local storage.");
+                }
+    
+                const response = await fetch("https://sajyatra.sajpe.in/admin/api/booking-history", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ transaction_num: transactionNum }),
+                });
+    
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+    
+                const data = await response.json();
+                console.log('Hotel History API Response:', data);
+    
+                if (data && data.hotel_booking_id) {
+                    // Store the booking data
+                    localStorage.setItem('hotelHistoryData', JSON.stringify(data));
+    
+                    // Extract hotel_booking_id
+                    const hotelBookingId = data.hotel_booking_id;
+                    localStorage.setItem('hotel_booking_id', hotelBookingId);
+    
+                    // Update state with fetched data
+                    setHotelBookings([data]);  // Wrap data in array to match the expected state structure
+                } else {
+                    console.error("Unexpected data format or empty booking data.");
+                    setError("No hotel booking data found.");
+                }
+            } catch (error) {
+                console.error("Error fetching API of hotel bookings history:", error);
+                setError("Failed to fetch booking history");
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchHotelBookingHistory();
     }, []);
+
+    
+    // ----------------------hotel history API-------------------------------
+   
+// ----------------------hotel ticket API-------------------------------
+   
+const handleBookingClick = async (hotelBookingId) => {
+    console.log('handleBookingClick called with:', hotelBookingId);
+
+    try {
+        // Check if hotelBookingId is valid
+        if (typeof hotelBookingId !== 'string' && typeof hotelBookingId !== 'number') {
+            console.error('Invalid hotel booking ID:', hotelBookingId);
+            throw new Error('Invalid hotel booking ID.');
+        }
+
+        // Define request data with the selected hotel_booking_id
+        const requestData = {
+            hotel_booking_id: hotelBookingId
+        };
+
+        const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const res = await response.json();
+        console.log('Hotel Ticket API Response:', res);
+
+        // Define ticketData with default empty arrays
+        const ticketData = {
+            hotelBook: res.hotelBook || [],
+            bookingStatus: res.booking_status || []  
+        };
+
+        // Check if the required data is present
+        if (!ticketData.hotelBook.length && !ticketData.bookingStatus.length) {
+            console.error('No relevant ticket data found in the response:', ticketData);
+            throw new Error('No relevant ticket data found in the response.');
+        }
+
+        // Save ticket data to local storage
+        localStorage.setItem('hotelTicket', JSON.stringify(ticketData));
+
+        // Navigate to the hotel-bill page
+        navigate('/hotel-bill');
+
+    } catch (error) {
+        console.error('Error fetching hotel ticket:', error);
+        
+    }
+};
+
+  // ----------------------hotel ticket API End-------------------------------
+  // -----------------------navigate hotel ticket page--------------------------
+
 
     // ----------------------hotel history API-------------------------------
 
@@ -142,62 +253,63 @@ function BookingHistory() {
 
     // ----------------------hotel ticket API-------------------------------
 
-    const handleBookingClick = async (hotelBookingId) => {
-        console.log('handleBookingClick called with:', hotelBookingId);
+    // const handleBookingClick = async (hotelBookingId) => {
+    //     console.log('handleBookingClick called with:', hotelBookingId);
 
-        try {
-            // Check if hotelBookingId is valid
-            if (typeof hotelBookingId !== 'string' && typeof hotelBookingId !== 'number') {
-                console.error('Invalid hotel booking ID:', hotelBookingId);
-                throw new Error('Invalid hotel booking ID.');
-            }
+    //     try {
+    //         // Check if hotelBookingId is valid
+    //         if (typeof hotelBookingId !== 'string' && typeof hotelBookingId !== 'number') {
+    //             console.error('Invalid hotel booking ID:', hotelBookingId);
+    //             throw new Error('Invalid hotel booking ID.');
+    //         }
 
-            // Define request data with the selected hotel_booking_id
-            const requestData = {
-                hotel_booking_id: hotelBookingId
-            };
+    //         // Define request data with the selected hotel_booking_id
+    //         const requestData = {
+    //             hotel_booking_id: hotelBookingId
+    //         };
 
-            const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestData),
-            });
+    //         const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(requestData),
+    //         });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+    //         if (!response.ok) {
+    //             throw new Error(`HTTP error! Status: ${response.status}`);
+    //         }
 
-            const res = await response.json();
-            console.log('Hotel Ticket API Response:', res);
+    //         const res = await response.json();
+    //         console.log('Hotel Ticket API Response:', res);
 
-            // Define ticketData with default empty arrays
-            const ticketData = {
-                hotelBook: res.hotelBook || [],
-                bookingStatus: res.booking_status || []  // Renamed to match the response field
-            };
+    //         // Define ticketData with default empty arrays
+    //         const ticketData = {
+    //             hotelBook: res.hotelBook || [],
+    //             bookingStatus: res.booking_status || []  // Renamed to match the response field
+    //         };
 
-            // Check if the required data is present
-            if (!ticketData.hotelBook.length && !ticketData.bookingStatus.length) {
-                console.error('No relevant ticket data found in the response:', ticketData);
-                throw new Error('No relevant ticket data found in the response.');
-            }
+    //         // Check if the required data is present
+    //         if (!ticketData.hotelBook.length && !ticketData.bookingStatus.length) {
+    //             console.error('No relevant ticket data found in the response:', ticketData);
+    //             throw new Error('No relevant ticket data found in the response.');
+    //         }
 
-            // Save ticket data to local storage
-            localStorage.setItem('hotelTicket', JSON.stringify(ticketData));
+    //         // Save ticket data to local storage
+    //         localStorage.setItem('hotelTicket', JSON.stringify(ticketData));
 
-            // Navigate to the hotel-bill page
-            navigate('/hotel-bill');
+    //         // Navigate to the hotel-bill page
+    //         navigate('/hotel-bill');
 
-        } catch (error) {
-            console.error('Error fetching hotel ticket:', error);
-            // Optionally, set an error state or show an error message to the user
-        }
-    };
+    //     } catch (error) {
+    //         console.error('Error fetching hotel ticket:', error);
+    //         // Optionally, set an error state or show an error message to the user
+    //     }
+    // };
 
     // ----------------------hotel ticket API End-------------------------------
     // -----------------------navigate hotel ticket page--------------------------
+
     // const navigateHotelDetails = () => {
     // localStorage.setItem("hotel_booking_id", hotelBookingId);
     //     setLoading(true);

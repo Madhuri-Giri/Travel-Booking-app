@@ -535,16 +535,16 @@ const HotelRoom = () => {
                                         {policy.FromDate} to {policy.ToDate}: {policy.Charge}% will be charged.
                                       </p>
                                     ))} */} <div className="cancellation-container">
-    {room.CancellationPolicies.map((policy, idx) => (
-      <div key={idx} className="cancellation-policy">
-        <p>
-          <strong>{new Date(policy.FromDate).toLocaleDateString()}</strong> to{' '}
-          <strong>{new Date(policy.ToDate).toLocaleDateString()}</strong>:{' '}
-           <strong>{policy.Charge} ₹ </strong>  charges.
-        </p>
-      </div>
-    ))}
-  </div>
+                           {room.CancellationPolicies.map((policy, idx) => (
+                            <div key={idx} className="cancellation-policy">
+                            <p>
+                      <strong>{new Date(policy.FromDate).toLocaleDateString()}</strong> to{' '}
+                      <strong>{new Date(policy.ToDate).toLocaleDateString()}</strong>:{' '}
+                      <strong>{policy.Charge} ₹ </strong>  charges.
+                      </p>
+                         </div>
+                            ))}
+                            </div>
                                   </Accordion.Body>
                                 </Accordion.Item>
                               </Accordion>
@@ -573,7 +573,6 @@ const HotelRoom = () => {
                                 </div>
                                 <div className="selected_rooms_summary">
                                   <span>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</span>
-
                                   <button onClick={roomblockHandler} className="reserve_button">Continue</button>
                                 </div>
                               </div>

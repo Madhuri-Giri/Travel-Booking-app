@@ -163,10 +163,18 @@ const HotelSearch = () => {
       console.log("hotel-search API Response:", data);
 
       if (data && data.Results) {
+
+        // Extract the number of adults from the response
+        const numberOfAdults = data.NoOfRooms[0].NoOfAdults;
+        
+        // Save the number of adults in localStorage
+        localStorage.setItem("numberOfAdults", numberOfAdults.toString());
+
         localStorage.setItem("traceId", "1");
         localStorage.setItem("resultIndex", "1");
         localStorage.setItem("srdvType", "SingleTB");
         localStorage.setItem("srdvIndex", "SrdvTB");
+        
         // Save hotel details in local storage
         localStorage.setItem("hotelSearchDetails", JSON.stringify(data.Results));
         // Navigate Holel List
@@ -243,11 +251,9 @@ const HotelSearch = () => {
     return <Loading />;
   }
 
-
   return (
     <>    
       <CustomNavbar />
-
 
       {/* New section start */}
       <div className="hotel_container">
@@ -327,7 +333,7 @@ const HotelSearch = () => {
       )}
     </div>
 
-    {/* --------------------------------------------------------------------------------------------------------------- */}
+    {/* -----------------------------------------------------------------------------------------*/}
      
 
     <div className="form-field date-picker-field">
@@ -367,14 +373,13 @@ const HotelSearch = () => {
     {showGuestOptions && isVisible && (
       
       <div ref={guestRef} className="guest_options">
-        < FontAwesomeIcon 
+        <FontAwesomeIcon 
           icon={faXmark} 
           className="close_icon" 
           onClick={handleClose}
         />
       {/* <div ref={guestRef} className="guest_options"> */}
         <div className="guest_option">
-        
           <label htmlFor="adults">Adults:</label>
           <button type="button" onClick={() => handleGuestChange("adults", "decrement")}>-</button>
           <span>{inputs.adults}</span>

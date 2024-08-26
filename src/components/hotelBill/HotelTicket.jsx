@@ -90,9 +90,9 @@ const BookingBill = () => {
   };
 
   const handleCancelTicket = () => {
-    // Implement ticket cancellation logic
+    
     toast.info('Ticket canceled.');
-    navigate('/'); // Navigate to another page or update state accordingly
+    navigate('/'); 
   };
 
   return (
