@@ -30,11 +30,6 @@ const BusLayout = () => {
   useEffect(() => {
     const busLayoutResponse = JSON.parse(localStorage.getItem('BuslayoutResponse')) || {};
 
-    console.log("BuslayoutResponse",busLayoutResponse);
-    console.log("UpperSeat",busLayoutResponse.ResultUpperSeat);
-    console.log("LowerSeat",busLayoutResponse.Result);
-    
-
     const lowerSeats = (busLayoutResponse.Result || []).flat();
     const upperSeats = (busLayoutResponse.ResultUpperSeat || []).flat();
     const availableSeats = busLayoutResponse.AvailableSeats;
