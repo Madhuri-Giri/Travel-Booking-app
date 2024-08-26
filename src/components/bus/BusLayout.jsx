@@ -76,18 +76,28 @@ const BusLayout = () => {
   const handleSeatSelect = (seatName) => {
     // Find the seat object based on the seatName
     const seatObject = [...lowerSeatsBus, ...upperSeatsBus].find(seat => seat.SeatName === seatName);
-
+  
     if (seatObject) {
-      const selectedBusSeatData = JSON.stringify(seatObject);
-      localStorage.setItem('selectedBusSeatData', selectedBusSeatData);
-      console.log("Selected seat object:", seatObject);
+      let selectedSeatsData = JSON.parse(localStorage.getItem('selectedBusSeatData')) || [];
+  
+      if (selectedSeats.includes(seatName)) {
+        // If seat is already selected, remove it from selectedSeatsData
+        selectedSeatsData = selectedSeatsData.filter(seat => seat.SeatName !== seatName);
+      } else {
+        // If seat is not selected, add it to selectedSeatsData
+        selectedSeatsData.push(seatObject);
+      }
+  
+      // Save the updated array to localStorage
+      localStorage.setItem('selectedBusSeatData', JSON.stringify(selectedSeatsData));
+      console.log("Updated selected seat objects:", selectedSeatsData);
     } else {
       console.log("Seat object not found");
     }
-
+  
     const isSelected = selectedSeats.includes(seatName);
     const price = getLowerBasePrice(seatName) || getUpperBasePrice(seatName) || 0;
-
+  
     setSelectedSeats((prevSeats) => {
       if (isSelected) {
         return prevSeats.filter((seat) => seat !== seatName);
@@ -95,12 +105,12 @@ const BusLayout = () => {
         return [...prevSeats, seatName];
       }
     });
-
+  
     setTotalPrice((prevTotal) => {
       return isSelected ? prevTotal - price : prevTotal + price;
     });
   };
-
+  
 
 
   const handleProceed = async () => {
@@ -254,8 +264,6 @@ const BusLayout = () => {
                 )}
               </div>
 
-
-
               <div className="lower lowerSeatWEB">
                 <h6>Lower Seats</h6>
                 <div className="sit">
@@ -285,6 +293,7 @@ const BusLayout = () => {
                   })}
                 </div>
               </div>
+              
               <div className="upper upperSeatWEB">
                 <h6>Upper Seats</h6>
                 <div className="sit">
