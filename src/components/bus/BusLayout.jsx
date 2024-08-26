@@ -84,6 +84,8 @@ const BusLayout = () => {
     });
   };
 
+
+
   const handleProceed = async () => {
     if (!boardingSelected || !droppingSelected) {
       alert('Please select both boarding and dropping points before proceeding.');

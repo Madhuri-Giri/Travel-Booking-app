@@ -1,0 +1,41 @@
+.bus-layout {
+          display: flex;
+          flex-direction: column;
+        }
+        
+        .bus-row {
+          display: flex;
+          justify-content: space-around;
+          margin-bottom: 10px;
+        }
+        
+        .bus-seat {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 5px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          text-align: center;
+        }
+        
+        .bus-seat.available {
+          background-color: #d4edda;
+          color: #155724;
+        }
+        
+        .bus-seat.unavailable {
+          background-color: #f8d7da;
+          color: #721c24;
+        }
+        
+        .seat-name {
+          display: block;
+        }
+        
+        .seat-price {
+          display: block;
+          margin-top: 5px;
+        }
