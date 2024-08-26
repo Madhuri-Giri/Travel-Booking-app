@@ -14,12 +14,12 @@ import Footer from "../../pages/footer/Footer";
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
 
 export default function FlightDetails() {
-
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false); // Add loading state
 
     //   ----------------------------------------------------
 
+    
     const location = useLocation();
     const fareData = location.state?.fareData;
     const formData = location.state?.formData;
