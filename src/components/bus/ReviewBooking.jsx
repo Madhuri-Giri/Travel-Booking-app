@@ -274,164 +274,122 @@ const ReviewBooking = () => {
 
   const bookHandler = async () => {
     try {
-
       const transactionNoBus = localStorage.getItem('transactionNum-bus');
       const busSavedId = localStorage.getItem('busSavedId');
       const transaction_id = localStorage.getItem('transaction_id');
-       
-
-      const bookingPayload = {
-        ResultIndex: "1",
-        TraceId: "1",
-        BoardingPointId: 1,
-        DroppingPointId: 1,
-        RefID: "1",
-        transaction_num: transactionNoBus ,
-        bus_booking_id: [busSavedId] ,
-        transaction_id: transaction_id,
-        Passenger: [
-          {
-            LeadPassenger: true,
-            PassengerId: 0,
-            Title: "Mr",
-            FirstName: "Amit",
-            LastName: "Singh",
-            Email: "amit@srdvtechnologies.com",
-            Phoneno: "9643737502",
-            Gender: "1",
-            IdType: null,
-            IdNumber: null,
-            Address: "Modinagar",
-            Age: "22",
-            Seat: {
-              ColumnNo: "001",
-              Height: 1,
-              IsLadiesSeat: false,
-              IsMalesSeat: false,
-              IsUpper: false,
-              RowNo: "000",
-              SeatFare: 400,
-              SeatIndex: 2,
-              SeatName: "2",
-              SeatStatus: true,
-              SeatType: 1,
-              Width: 1,
-              Price: {
-                CurrencyCode: "INR",
-                BasePrice: 400,
-                Tax: 0,
-                OtherCharges: 0,
-                Discount: 0,
-                PublishedPrice: 400,
-                PublishedPriceRoundedOff: 400,
-                OfferedPrice: 380,
-                OfferedPriceRoundedOff: 380,
-                AgentCommission: 20,
-                AgentMarkUp: 0,
-                TDS: 8,
-                GST: {
-                  CGSTAmount: 0,
-                  CGSTRate: 0,
-                  CessAmount: 0,
-                  CessRate: 0,
-                  IGSTAmount: 0,
-                  IGSTRate: 18,
-                  SGSTAmount: 0,
-                  SGSTRate: 0,
-                  TaxableAmount: 0
-                }
+      const selectedBusSeatData = JSON.parse(localStorage.getItem('selectedBusSeatData')) || [];
+      const busPassengerData = JSON.parse(localStorage.getItem('busPassengerData')) || [];
+  
+      const seatDataMap = new Map();
+      selectedBusSeatData.forEach(seat => {
+        seatDataMap.set(seat.ColumnNo, seat);
+      });
+  
+      const passengersData = busPassengerData.map(passenger => {
+        const seat = seatDataMap.get(passenger.Seat.ColumnNo) || {};
+        return {
+          LeadPassenger: passenger.LeadPassenger,
+          PassengerId: 0, 
+          Title: passenger.Title,
+          FirstName: passenger.FirstName,
+          LastName: passenger.LastName,
+          Email: passenger.Email,
+          Phoneno: passenger.Phoneno,
+          Gender: passenger.Gender,
+          IdType: passenger.IdType,
+          IdNumber: passenger.Idnumber,
+          Address: passenger.Address,
+          Age: passenger.Age,
+          Seat: {
+            ColumnNo: seat.ColumnNo ,
+            Height: seat.Height ,
+            IsLadiesSeat: seat.IsLadiesSeat ,
+            IsMalesSeat: seat.IsMalesSeat ,
+            IsUpper: seat.IsUpper ,
+            RowNo: seat.RowNo ,
+            SeatFare: seat.SeatFare ,
+            SeatIndex: seat.SeatIndex ,
+            SeatName: seat.SeatName ,
+            SeatStatus: seat.SeatStatus ,
+            SeatType: seat.SeatType ,
+            Width: seat.Width ,
+            Price: {
+              CurrencyCode: seat.Price?.CurrencyCode ,
+              BasePrice: seat.Price?.BasePrice,
+              Tax: seat.Price?.Tax ,
+              OtherCharges: seat.Price?.OtherCharges,
+              Discount: seat.Price?.Discount,
+              PublishedPrice: seat.Price?.PublishedPrice ,
+              PublishedPriceRoundedOff: seat.Price?.PublishedPriceRoundedOff ,
+              OfferedPrice: seat.Price?.OfferedPrice,
+              OfferedPriceRoundedOff: seat.Price?.OfferedPriceRoundedOff ,
+              AgentCommission: seat.Price?.AgentCommission,
+              AgentMarkUp: seat.Price?.AgentMarkUp,
+              TDS: seat.Price?.TDS,
+              GST: seat.Price?.GST ||  {
+                CGSTAmount: 0,
+                CGSTRate: 0,
+                CessAmount: 0,
+                CessRate: 0,
+                IGSTAmount: 0,
+                IGSTRate: 18,
+                SGSTAmount: 0,
+                SGSTRate: 0,
+                TaxableAmount: 0
               }
-            }
+            },
           },
-          {
-            LeadPassenger: false,
-            PassengerId: 0,
-            Title: "Mr",
-            FirstName: "ramesh",
-            LastName: "Tomar",
-            Email: "ramesh@srdvtechnologies.com",
-            Phoneno: "1234567890",
-            Gender: "1",
-            IdType: null,
-            IdNumber: null,
-            Address: "Modinagar",
-            Age: "28",
-            Seat: {
-              ColumnNo: "002",
-              Height: 1,
-              IsLadiesSeat: false,
-              IsMalesSeat: false,
-              IsUpper: false,
-              RowNo: "000",
-              SeatFare: 400,
-              SeatIndex: 3,
-              SeatName: "3",
-              SeatStatus: true,
-              SeatType: 1,
-              Width: 1,
-              Price: {
-                CurrencyCode: "INR",
-                BasePrice: 400,
-                Tax: 0,
-                OtherCharges: 0,
-                Discount: 0,
-                PublishedPrice: 400,
-                PublishedPriceRoundedOff: 400,
-                OfferedPrice: 380,
-                OfferedPriceRoundedOff: 380,
-                AgentCommission: 20,
-                AgentMarkUp: 0,
-                TDS: 8,
-                GST: {
-                  CGSTAmount: 0,
-                  CGSTRate: 0,
-                  CessAmount: 0,
-                  CessRate: 0,
-                  IGSTAmount: 0,
-                  IGSTRate: 18,
-                  SGSTAmount: 0,
-                  SGSTRate: 0,
-                  TaxableAmount: 0
-                }
-              }
-            }
-          }
-        ]
+        };
+      });
+  
+      const requestData = {
+        ResultIndex: "1", 
+        TraceId: "1", 
+        BoardingPointId: 1, 
+        DroppingPointId: 1, 
+        RefID: "1", 
+        transaction_num: transactionNoBus,
+        bus_booking_id: [busSavedId],
+        transaction_id: transaction_id,
+        Passenger: passengersData,
       };
+  
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/seat-book', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(bookingPayload),
+        body: JSON.stringify(requestData),
       });
-
+  
       const responseBody = await response.json();
       console.log('Bus Book Response:', responseBody);
-
+  
       if (!response.ok) {
         console.error('Failed to book seats. Status:', response.status, 'Response:', responseBody);
         throw new Error(`Failed to book seats. Status: ${response.status}`);
       }
-
+  
       if (responseBody.Error && responseBody.Error.ErrorCode !== 0) {
         console.error('Booking failed:', responseBody.Error.ErrorMessage);
         toast.error(`Booking failed: ${responseBody.Error.ErrorMessage}`);
       } else {
         toast.success('Booking successful!');
-
         localStorage.setItem('busTikitDetails', JSON.stringify(responseBody));
-
+  
         setTimeout(() => {
           navigate('/booking-history', { state: { bookingDetails: responseBody } });
         }, 2000);
       }
+  
     } catch (error) {
       console.error('Error during booking:', error.message);
       toast.error('An error occurred during booking. Please try again.');
     }
   };
+  
 
+  
 
 
   // ------------------------------block api-------------------------------------------------------------------

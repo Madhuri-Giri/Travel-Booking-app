@@ -10,7 +10,7 @@ export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to
      source_city: from,
      destination_city: to,
      depart_date: departDate,
-    
+      
     }),
   });
   const data = await response.json();
