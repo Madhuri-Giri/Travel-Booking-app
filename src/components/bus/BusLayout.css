@@ -93,7 +93,7 @@
   width: 50%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   flex-direction: column;
   margin-bottom: 1vmax;
   border-radius: 15px;
