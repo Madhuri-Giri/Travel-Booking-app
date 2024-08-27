@@ -397,20 +397,17 @@ const ReviewBooking = () => {
 
   const busPaymentStatus = async () => {
     try {
-
       const transaction_id = localStorage.getItem('transaction_id');
       if (!transaction_id) {
         throw new Error('Transaction ID is missing.');
-      }  
-
+      }
+  
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus-payment-status', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          transaction_id
-           }), 
+        body: JSON.stringify({ transaction_id }),
       });
   
       const responseBody = await response.json();
@@ -421,13 +418,18 @@ const ReviewBooking = () => {
         throw new Error(`Failed to fetch payment status. Status: ${response.status}`);
       }
   
-      navigate('/booking-history'); 
+      // Save to localStorage
+      localStorage.setItem("buspaymentStatusRes", JSON.stringify(responseBody));
+  
+      // Navigate with state
+      navigate('/busBookTicket', { state: { buspaymentStatus: responseBody } });
+  
       return responseBody;
   
     } catch (error) {
       console.error('Error during fetching payment status:', error.message);
       toast.error('An error occurred while checking payment status. Please try again.');
-      return null; 
+      return null;
     }
   };
   
