@@ -91,7 +91,7 @@ const FlightSearch = () => {
   const handleFromInputFocus = () => {
     fetchSuggestions('', setFromSuggestions, true);
   };
-  
+
   const handleToInputFocus = () => {
     fetchSuggestions('', setToSuggestions, true);
   };
@@ -252,15 +252,15 @@ const FlightSearch = () => {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}T00:00:00`;
-  
+
     console.log("formattedDate", formattedDate);
-  
+
     if (fieldName === "PreferredDepartureTime") {
       setPreferredDepartureTime(date);
     } else if (fieldName === "PreferredArrivalTime") {
       setPreferredArrivalTime(date);
     }
-  
+
     setFormData((prev) => {
       let updatedSegments = [...prev.Segments];
       updatedSegments[0][fieldName] = formattedDate;
@@ -268,7 +268,7 @@ const FlightSearch = () => {
       return { ...prev, Segments: updatedSegments };
     });
   };
-  
+
 
 
 
@@ -658,14 +658,19 @@ const FlightSearch = () => {
                                 id="flightSatrtingPoint"
                                 placeholder="Starting Point"
                                 value={from}
+                                // onChange={(e) => setFrom(e.target.value)}
                                 onChange={handleFromChange}
                                 onFocus={handleFromInputFocus}
                                 ref={fromInputRef}
                               />
                               {fromSuggestions.length > 0 && (
-                                <ul className="suggestions-list flight-suggestions-listFrom">
+                                <ul className="suggestions-list flight-suggestions-listFrom" ref={fromSuggestionsRef}>
                                   {fromSuggestions.map((suggestion, index) => (
-                                    <li className="text-red" key={index} onClick={() => handleFromSelect(suggestion, setFrom)}>
+                                    <li
+                                      className="text-red"
+                                      key={index}
+                                      onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions)}
+                                    >
                                       {suggestion.busodma_destination_name}
                                     </li>
                                   ))}
@@ -681,22 +686,22 @@ const FlightSearch = () => {
                               <span className="plane-icon">
                                 <BiSolidPlaneLand />
                               </span>
-                              <input type="text"
+                              <input
+                                type="text"
                                 className="form-control"
                                 id="flightDestinationPoint"
                                 placeholder='Destination'
                                 value={to}
-                                onChange={handleToChange}
+                                // onChange={(e) => setTo(e.target.value)}
                                 onFocus={handleToInputFocus}
+                                onChange={handleToChange}
                                 ref={toInputRef}
-
                               />
                               {toSuggestions.length > 0 && (
-                                <ul className="suggestions-list flight-suggestions-listTo">
+                                <ul className="suggestions-list flight-suggestions-listTo" ref={toSuggestionsRef}>
                                   {toSuggestions.map((suggestion, index) => (
-                                    <li key={index} onClick={() => handleToSelect(suggestion, setTo)}>
-                                      {suggestion.busodma_destination_name
-                                      }
+                                    <li key={index} onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions)}>
+                                      {suggestion.busodma_destination_name}
                                     </li>
                                   ))}
                                 </ul>

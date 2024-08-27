@@ -794,3 +794,24 @@
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }
+
+
+.slick-slide {
+    transform: none !important;
+}
+.flight-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.slick-slide {
+    display: inline-block;
+}
+
+
+
+
+
