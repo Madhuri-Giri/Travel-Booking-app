@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import BusSearch from './components/bus/BusSearch';
 import HotelSearch from './components/hotel/HotelSearch';
 import FlightSearch from './components/flight/FlightSearch';
@@ -13,14 +12,10 @@ import BusLayout from './components/bus/BusLayout';
 import Home from './components/home/Home';
 import FlightLists from './components/flight/FlightLists';
 import BoardAndDrop from './components/bus/BoardAndDrop';
-
-
-
 import Faq from './pages/Faq/Faq';
 import Setting from './pages/setting/Setting ';
 import LogIn from './pages/NewOne/login/LogIn';
 import ReviewBooking from './components/bus/ReviewBooking';
-
 import HotelRoom from './components/hotelroom/HotelRoom';
 import GuestDetails from './components/guestDetails/GuestDetails';
 import HotelDescription from './components/hotelDescription/HotelDescription';
@@ -44,6 +39,8 @@ import PaymentHistory from './components/paymentHistory/PaymentHistory';
 import BookingHistory from './components/bookingHistory/BookingHistory';
 import FlightTickect from './components/flight/DownloadTikit/FlightTickect';
 import HotelTicket from './components/hotelBill/HotelTicket'
+import TicketBookBus from './components/bus/DownloadTikit/TicketBookBus';
+
 const App = () => {
   const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number',  '/load'];
 
@@ -89,6 +86,7 @@ const App = () => {
           <Route path='/login-popup'  element={<LoginPopUp/>}/>
           <Route path='/payment-history' element={<PaymentHistory/>}/>
           <Route path='/booking-history' element={<BookingHistory/>}/>
+          <Route path='busBookTicket' element={<TicketBookBus/>} />
         </Routes>
         <ToastContainer
           position="top-right"
