@@ -13,6 +13,11 @@ function BookingHistory() {
     const [flightBookings, setFlightBookings] = useState([]);
     const [loading, setLoading] = useState(true); // Set loading to true initially
 
+    console.log("flightBookings",flightBookings);
+    console.log("busBookings",busBookings);
+    console.log("hotelBookings",hotelBookings);
+    
+
     const hoteltransaction_num = localStorage.getItem('transactionNumHotel')
 
     // ----------------------hotel history API-------------------------------
