@@ -170,11 +170,10 @@ const BusLayout = () => {
     return <Loading />;
   }
 
-  const [seatType, setSeatType] = useState('Sitting'); // Default value
+  const [seatType, setSeatType] = useState('Sitting'); 
 
   const handleSeatTypeChange = (event) => {
     setSeatType(event.target.value);
-    // You can add additional logic here if needed when the seat type changes
   };
 
 

@@ -83,7 +83,7 @@ const PassangerInfo = () => {
 
       const passengersData = selectedBusSeatData.map(seat => ({
         LeadPassenger: true,
-        Title: 'Mr',
+        Title: null,
         FirstName: formData.firstName,
         LastName: formData.lastName,
         Email: 'tani@gmail.com',
