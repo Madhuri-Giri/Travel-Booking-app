@@ -18,7 +18,7 @@
   color: white;
   font-weight: bold;
   border: 2px solid #80808040;
-  font-size: 17px !important;
+  font-size: 14px !important;
   padding: 2px 35px !important;
   text-transform: uppercase !important;
 
@@ -77,12 +77,13 @@
  .BusLayout .sel{
   width: 98%;
   margin-bottom: 1vmax;
+  font-size: 13px;
  }
 
 .BusLayout .Seat-layout .seats .left-btm {
   width: 100%;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: space-evenly;
   flex-direction: row;
    /* background: #fafafa; */
@@ -134,7 +135,7 @@
 
 .BusLayout .Seat-layout .seats .left-btm .upper {
   width: 50%;
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -145,7 +146,7 @@
 .BusLayout .Seat-layout .seats .left-btm .upper h6 {
   width: 100%;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   text-transform: uppercase;
   font-weight: 700;
@@ -379,6 +380,9 @@
 
 
 @media (min-width:600px) and (max-width:1150px) {
+  .BusLayout .Seat-layout .seats .left-btm .upper{
+    display: flex;
+  }
   .BusLayout {
     width: 100%;
   }
@@ -438,7 +442,7 @@
 }
 
 .BusLayout .Seat-layout .seats .left-btm .upper .sit p {
-  font-size: 1.3vmax;
+  font-size: 1.5vmax;
 }
 
 .BusLayout .Seat-layout .seats .left-btm .upper .sit span {
@@ -489,4 +493,39 @@
 .busseatpricee span{
   color: #00e100;
   font-weight: bold;
+}
+
+.seat-type-dropdown {
+  display: flex;
+  align-items: center;
+  margin: 10px 5px;
+}
+
+.seat-type-dropdown label {
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 10px;
+  color: #00b7eb
+}
+
+.seat-type-dropdown select {
+  padding: 0px 6px;
+  font-size: 14px;
+  font-weight: 400;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.seat-type-select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.seat-type-select option {
+  font-size: 16px;
+  padding: 10px;
 }
