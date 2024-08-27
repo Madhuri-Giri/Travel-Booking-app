@@ -18,33 +18,114 @@ const PassangerInfo = () => {
   const [passengerCount, setPassengerCount] = useState(0);
 
   useEffect(() => {
-    // Initialize selectedSeats state
     const seats = JSON.parse(localStorage.getItem('selectedSeats')) || [];
     setSelectedSeats(seats);
 
-    // Do not fetch passenger data from localStorage
-    // setPassengers([]);
-    // setPassengerCount(0);
   }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({
-      ...formData,
+    setFormData(prevData => ({
+      ...prevData,
       [name]: value,
-    });
+    }));
   };
 
+// ----------------------------------------------------------------------------------------------------
 
 
-
-
-
- const blockHandler = async (event) => {
+  const blockHandler = async (event) => {
     event.preventDefault();
 
+    const selectedBusSeatData = JSON.parse(localStorage.getItem('selectedBusSeatData')) || [];
+
+    // console.log('Selected Bus Seat Data:', selectedBusSeatData);
+
     if (passengerCount < selectedSeats.length) {
-      // const transactionNoBus = localStorage.getItem('transactionNum-bus');
+      // Prepare GST data
+      const gstData = {
+        CGSTAmount: 0,
+        CGSTRate: 0,
+        CessAmount: 0,
+        CessRate: 0,
+        IGSTAmount: 0,
+        IGSTRate: 18,
+        SGSTAmount: 0,
+        SGSTRate: 0,
+        TaxableAmount: 0
+      };
+
+      selectedBusSeatData.forEach((seat) => {
+        // console.log(`Seat: ${seat.SeatName || ''}`);
+        // console.log('ColumnNo:', seat.ColumnNo);
+        // console.log('Height:', seat.Height);
+        // console.log('IsLadiesSeat:', seat.IsLadiesSeat);
+        // console.log('IsMalesSeat:', seat.IsMalesSeat);
+        // console.log('IsUpper:', seat.IsUpper);
+        // console.log('RowNo:', seat.RowNo);
+    
+        // Update GST data dynamically from seat pricing
+        if (seat.Price) {
+          gstData.CGSTAmount += parseFloat(seat.Price.CGSTAmount) || 0;
+          gstData.CGSTRate = Math.max(gstData.CGSTRate, parseFloat(seat.Price.CGSTRate) || 0);
+          gstData.CessAmount += parseFloat(seat.Price.CessAmount) || 0;
+          gstData.CessRate = Math.max(gstData.CessRate, parseFloat(seat.Price.CessRate) || 0);
+          gstData.IGSTAmount += parseFloat(seat.Price.IGSTAmount) || 0;
+          gstData.IGSTRate = Math.max(gstData.IGSTRate, parseFloat(seat.Price.IGSTRate) || 0);
+          gstData.SGSTAmount += parseFloat(seat.Price.SGSTAmount) || 0;
+          gstData.SGSTRate = Math.max(gstData.SGSTRate, parseFloat(seat.Price.SGSTRate) || 0);
+          gstData.TaxableAmount += parseFloat(seat.Price.TaxableAmount) || 0;
+        }
+    
+        // Update seat Price object with GST data
+        seat.Price.GST = gstData;
+      });
+
+      const passengersData = selectedBusSeatData.map(seat => ({
+        LeadPassenger: true,
+        Title: 'Mr',
+        FirstName: formData.firstName,
+        LastName: formData.lastName,
+        Email: 'tani@gmail.com',
+        Phoneno: '9999999999',
+        Gender: formData.gender,
+        IdType: null,
+        Idnumber: null,
+        Address: formData.address,
+        Age: formData.age,
+        Seat: {
+          ColumnNo: seat.ColumnNo,
+          Height: seat.Height,
+          IsLadiesSeat: seat.IsLadiesSeat,
+          IsMalesSeat: seat.IsMalesSeat,
+          IsUpper: seat.IsUpper,
+          RowNo: seat.RowNo,
+          SeatFare: seat.Price?.BasePrice || 0,
+          SeatIndex: seat.SeatIndex || 0,
+          SeatName: seat.SeatName || '',
+          SeatStatus: seat.SeatStatus || false,
+          SeatType: seat.SeatType || 1,
+          Width: seat.Width || 0,
+          Price: {
+            CurrencyCode: seat.Price?.CurrencyCode || "INR",
+            BasePrice: seat.Price?.BasePrice || 400,
+            Tax: seat.Price?.Tax || 0,
+            OtherCharges: seat.Price?.OtherCharges || 0,
+            Discount: seat.Price?.Discount || 0,
+            PublishedPrice: seat.Price?.PublishedPrice || 400,
+            PublishedPriceRoundedOff: seat.Price?.PublishedPriceRoundedOff || 400,
+            OfferedPrice: seat.Price?.OfferedPrice || 380,
+            OfferedPriceRoundedOff: seat.Price?.OfferedPriceRoundedOff || 380,
+            AgentCommission: seat.Price?.AgentCommission || 20,
+            AgentMarkUp: seat.Price?.AgentMarkUp || 0,
+            TDS: seat.Price?.TDS || 8,
+            GST: seat.Price?.GST || gstData
+          },
+        },
+      }));
+
+      localStorage.setItem('busPassengerData', JSON.stringify(passengersData));
+      console.log('busPassengerData', passengersData)
 
       const requestData = {
         ResultIndex: '1',
@@ -52,61 +133,7 @@ const PassangerInfo = () => {
         BoardingPointId: 1,
         DroppingPointId: 1,
         RefID: '1',
-        // transaction_num: transactionNoBus,
-        Passenger: [
-          {
-            LeadPassenger: true,
-            Title: 'Mr',
-            FirstName: formData.firstName,
-            LastName: formData.lastName,
-            Email: 'tani@gmail.com',
-            Phoneno: '9999999999',
-            Gender: formData.gender,
-            IdType: null,
-            Idnumber: null,
-            Address: formData.address,
-            Age: formData.age,
-            Seat: {
-              ColumnNo: "001",
-              Height: 1,
-              IsLadiesSeat: false,
-              IsMalesSeat: false,
-              IsUpper: false,
-              RowNo: "000",
-              SeatFare: 400,
-              SeatIndex: 2,
-              SeatName: "2",
-              SeatStatus: true,
-              SeatType: 1,
-              Width: 1,
-              Price: {
-                CurrencyCode: "INR",
-                BasePrice: 400,
-                Tax: 0,
-                OtherCharges: 0,
-                Discount: 0,
-                PublishedPrice: 300,
-                PublishedPriceRoundedOff: 400,
-                OfferedPrice: 380,
-                OfferedPriceRoundedOff: 380,
-                AgentCommission: 20,
-                AgentMarkUp: 0,
-                TDS: 8,
-                GST: {
-                  CGSTRate: 0,
-                  CGSTAmount: 0,
-                  SGSTRate: 0,
-                  SGSTAmount: 0,
-                  IGSTRate: 18,
-                  IGSTAmount: 0,
-                  CessRate: 0,
-                  CessAmount: 0,
-                  TaxableAmount: 0,
-                },
-              },
-            },
-          },
-        ],
+        Passenger: passengersData,
       };
 
       try {
@@ -124,9 +151,8 @@ const PassangerInfo = () => {
 
         const data = await response.json();
         console.log('Block Response:', data);
-        // console.log('busSavedId:', data.result.saved_bookings.id);
 
-        const busSavedId = data.result.saved_bookings.id;
+        const busSavedId = data.result.saved_bookings[0]?.id;
         localStorage.setItem('busSavedId', busSavedId);
 
         const newPassenger = {
@@ -140,7 +166,7 @@ const PassangerInfo = () => {
         const updatedPassengers = [...passengers, newPassenger];
         setPassengers(updatedPassengers);
         setPassengerCount(updatedPassengers.length);
-        setFormData(initialFormData);
+        setFormData(initialFormData);       
 
       } catch (error) {
         console.error('Error:', error);
@@ -148,17 +174,19 @@ const PassangerInfo = () => {
     } else {
       alert("All selected seats must have corresponding passengers.");
     }
+
   };
 
 
 
-
-
+  // -----------------------------------------------------------------------------------------------------
 
   const deletePassenger = (index) => {
     const updatedPassengers = passengers.filter((_, i) => i !== index);
     setPassengers(updatedPassengers);
     setPassengerCount(updatedPassengers.length);
+    // Optionally, update localStorage
+    // localStorage.setItem('passengers', JSON.stringify(updatedPassengers));
   };
 
   return (
@@ -239,6 +267,7 @@ const PassangerInfo = () => {
                       onChange={handleInputChange}
                       placeholder='Enter Age'
                       required
+                      pattern="\d*"
                     />
                   </div>
                 </p>

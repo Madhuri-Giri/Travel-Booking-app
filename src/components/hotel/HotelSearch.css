@@ -4,7 +4,7 @@
   position: relative; 
 }
 
-.suggestions-list {
+/* .suggestions-list {
   position: absolute; 
   top: 100%; 
   left: 0; 
@@ -26,7 +26,7 @@
 
 .suggestions-list li:hover {
   background-color: #f0f0f0; 
-}
+} */
 
 
 .hotel_container {
