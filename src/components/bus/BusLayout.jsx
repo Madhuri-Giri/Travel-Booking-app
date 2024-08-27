@@ -166,12 +166,17 @@ const BusLayout = () => {
     setDroppingSelected(true);
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
+  const [seatType, setSeatType] = useState('Sitting'); 
+
   
-  const [seatType, setSeatType] = useState('Sitting'); // Default value
+  
 
   const handleSeatTypeChange = (event) => {
     setSeatType(event.target.value);
-    // You can add additional logic here if needed when the seat type changes
   };
 
   if (loading) {

@@ -78,6 +78,7 @@
       justify-content: center;
       gap: 0.5vmax;
     }
+  
     
     .pessanger-main form .p-mid {
       width: 100%;
@@ -165,6 +166,10 @@
     @media (max-width: 600px) {
       .PassangerInfo {
         width: 100%;
+      }
+      .pessanger-main form .travelller .p-top .pas .ipt input {
+        margin-top: 0.5vmax;
+        margin-left: 0.5vmax;
       }
     
       .PassangerInfo .p-upr {

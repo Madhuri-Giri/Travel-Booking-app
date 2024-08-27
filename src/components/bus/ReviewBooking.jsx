@@ -18,7 +18,7 @@ const ReviewBooking = () => {
   const from = useSelector((state) => state.bus.from);
   const to = useSelector((state) => state.bus.to);
 
-  const transactionNumBus = localStorage.getItem('transactionNumBus');
+  // const transactionNumBus = localStorage.getItem('transactionNumBus');
 
 
   const [paymentDetails, setPaymentDetails] = useState(null);
@@ -290,7 +290,7 @@ const ReviewBooking = () => {
         return {
           LeadPassenger: passenger.LeadPassenger,
           PassengerId: 0, 
-          Title: passenger.Title,
+          Title: null,
           FirstName: passenger.FirstName,
           LastName: passenger.LastName,
           Email: passenger.Email,
