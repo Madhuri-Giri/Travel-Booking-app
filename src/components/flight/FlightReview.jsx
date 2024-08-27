@@ -134,6 +134,7 @@ const FlightReview = () => {
 
             if (IsLCC) {
               await bookLccApi();
+              await flightPaymentStatus()
             } else {
               await bookHoldApi();
             }
@@ -380,6 +381,43 @@ const FlightReview = () => {
   };
    
   
+  const flightPaymentStatus = async () => {
+    try {
+
+      const transaction_id = localStorage.getItem('flight_transaction_id');
+
+
+      if (!transaction_id) {
+        throw new Error('Transaction ID is missing.');
+      }  
+
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-payment-history', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          transaction_id
+           }), 
+      });
+  
+      const responseBody = await response.json();
+      console.log('Flight Payment Status :', responseBody);
+  
+      if (!response.ok) {
+        console.error('Failed to fetch payment status. Status:', response.status, 'Response:', responseBody);
+        throw new Error(`Failed to fetch payment status. Status: ${response.status}`);
+      }
+  
+      navigate('/booking-history'); 
+      return responseBody;
+  
+    } catch (error) {
+      console.error('Error during fetching payment status:', error.message);
+      toast.error('An error occurred while checking payment status. Please try again.');
+      return null; 
+    }
+  }
 
 
   // -------------------------------------------------------------------------------------------
