@@ -24,7 +24,6 @@ const BusLayout = () => {
   const [boardingSelected, setBoardingSelected] = useState(false);
   const [droppingSelected, setDroppingSelected] = useState(false);
 
-  // for seat tabs
   const [activeTab, setActiveTab] = useState('lower');
 
   const handleTabClick = (tab) => {
@@ -34,7 +33,7 @@ const BusLayout = () => {
   useEffect(() => {
     const busLayoutResponse = JSON.parse(localStorage.getItem('BuslayoutResponse')) || {};
 
-    console.log("BuslayoutResponse", busLayoutResponse);
+    // console.log("BuslayoutResponse", busLayoutResponse);
 
     const lowerSeats = (busLayoutResponse.Result || []).flat();
     const upperSeats = (busLayoutResponse.ResultUpperSeat || []).flat();
@@ -43,8 +42,8 @@ const BusLayout = () => {
     setlowerSeatsBus(lowerSeats);
     setupperSeatsBus(upperSeats);
 
-    console.log("UpperSeat", upperSeats);
-    console.log("LowerSeat", lowerSeats);
+    // console.log("UpperSeat", upperSeats);
+    // console.log("LowerSeat", lowerSeats);
 
     const extractedLowerBasePrices = lowerSeats.map(seat => seat.Price.BasePrice);
     const extractedLowerSeatNames = lowerSeats.map(seat => seat.SeatName);
@@ -76,23 +75,19 @@ const BusLayout = () => {
   };
 
   const handleSeatSelect = (seatName) => {
-    // Find the seat object based on the seatName
     const seatObject = [...lowerSeatsBus, ...upperSeatsBus].find(seat => seat.SeatName === seatName);
 
     if (seatObject) {
       let selectedSeatsData = JSON.parse(localStorage.getItem('selectedBusSeatData')) || [];
 
       if (selectedSeats.includes(seatName)) {
-        // If seat is already selected, remove it from selectedSeatsData
         selectedSeatsData = selectedSeatsData.filter(seat => seat.SeatName !== seatName);
       } else {
-        // If seat is not selected, add it to selectedSeatsData
         selectedSeatsData.push(seatObject);
       }
 
-      // Save the updated array to localStorage
       localStorage.setItem('selectedBusSeatData', JSON.stringify(selectedSeatsData));
-      console.log("Updated selected seat objects:", selectedSeatsData);
+      // console.log("Updated selected seat objects:", selectedSeatsData);
     } else {
       console.log("Seat object not found");
     }
@@ -167,11 +162,39 @@ const BusLayout = () => {
   };
 
   
-  const [seatType, setSeatType] = useState('Sitting'); 
 
-  const handleSeatTypeChange = (event) => {
-    setSeatType(event.target.value);
+  // ------------------seat Type condition---------------
+  const [seatType, setSeatType] = useState('Sitting');
+  const [seatTypeAvailable, setSeatTypeAvailable] = useState(1);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    const selectedSeatsData = JSON.parse(localStorage.getItem('selectedBusSeatData'));
+    
+    if (selectedSeatsData && selectedSeatsData.length > 0) {
+      const seat = selectedSeatsData[0];
+      setSeatTypeAvailable(seat.SeatType);
+      
+      if (seat.SeatType === 1) {
+        setSeatType('Sitting');
+      } else if (seat.SeatType === 2) {
+        setSeatType('Sleeper');
+      }
+    }
+  }, []);
+
+  const handleSeatTypeChange = (e) => {
+    const selectedValue = e.target.value;
+
+    if (selectedValue === 'Sleeper' && seatTypeAvailable !== 2) {
+      setErrorMessage('Sleeper seats are not available.');
+    } else {
+      setErrorMessage('');
+      setSeatType(selectedValue);
+    }
   };
+
+  // ---------------------------------------------------------------
 
   if (loading) {
     return <Loading />;
@@ -182,11 +205,26 @@ const BusLayout = () => {
       <div className="Seat-layout">
         <div className="seats">
           <div className="seat-type-dropdown">
-            <label htmlFor="seatType">Seat Type: </label>
-            <select id="seatType" value={seatType} onChange={handleSeatTypeChange}>
-              <option value="Sitting">Sitting</option>
-              <option value="Sleeper">Sleeper</option>
-            </select>
+          <label htmlFor="seatType">Seat Type: </label>
+      <select id="seatType" value={seatType} onChange={handleSeatTypeChange}>
+        <option value="Sitting">Sitting</option>
+        <option value="Sleeper">Sleeper</option>
+      </select>
+
+      {/* ------------------------- */}
+      {errorMessage && (
+        <p style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</p>
+      )}
+
+      {seatType === 'Sleeper' && seatTypeAvailable !== 2 && (
+        <>
+          <p style={{ color: 'red', marginTop: '10px' }}>
+            Sleeper seats are not available.
+          </p>
+        </>
+      )}
+      {/* --------------------------- */}
+
           </div>
           <div className="left">
             <div className="left-top">

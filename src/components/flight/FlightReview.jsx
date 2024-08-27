@@ -137,6 +137,8 @@ const FlightReview = () => {
             } else {
               await bookHoldApi();
             }
+            await sendTicketGDSRequest();
+
           } catch (error) {
             console.error('Error during updateHandlePayment or bookHandler:', error.message);
             alert('An error occurred during processing. Please try again.');
@@ -161,7 +163,8 @@ const FlightReview = () => {
       });
 
       rzp1.open();
-    } catch (error) {
+    }
+     catch (error) {
       console.error('Error during payment setup:', error.message);
       alert('An error occurred during payment setup. Please try again.');
     }
@@ -381,7 +384,30 @@ const FlightReview = () => {
 
   // -------------------------------------------------------------------------------------------
 
-    
+  const sendTicketGDSRequest = async () => {
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/ticketgds', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          PNR: '',
+          BookingId: '',
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to send request');
+      }
+  
+      const data = await response.json();
+      console.log('GDS Api:', data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
 
   // -------------------------------------------------------------------------------------------
 
