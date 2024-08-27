@@ -191,53 +191,53 @@ const HotelRoom = () => {
     event.preventDefault();
     const transactionNum = localStorage.getItem('transactionNum');
 
+    // Function to create Bed Types with default fallback
     const createBedTypes = (bedTypes) => {
         return bedTypes && bedTypes.length > 0
             ? bedTypes.map(bedType => ({
                 BedTypeCode: bedType.BedTypeCode,
                 BedTypeDescription: bedType.BedTypeDescription 
             }))
-            : [
-                {
-                    BedTypeCode: 'DefaultCode',
-                    BedTypeDescription: 'DefaultDescription'
-                }
-            ];
+            : [{
+                BedTypeCode: 'DefaultCode',
+                BedTypeDescription: 'DefaultDescription'
+            }];
     };
 
+    // Assuming selectedSingleDeluxeRooms and selectedDoubleDeluxeRooms are arrays of room data
     const hotelRoomsDetails = [
         ...selectedSingleDeluxeRooms.map((room) => ({
-            ChildCount: room.ChildCount ,
-            RequireAllPaxDetails: room.RequireAllPaxDetails ,
-            RoomId: room.RoomId ,
-            RoomStatus: room.RoomStatus ,
-            RoomIndex: room.RoomIndex ,
-            RoomTypeCode: room.RoomTypeCode ,
-            RoomTypeName: room.RoomTypeName ,
-            RatePlanCode: room.RatePlanCode ,
-            RatePlan: room.RatePlan ,
-            InfoSource: room.InfoSource ,
-            SequenceNo: room.SequenceNo ,
+            ChildCount: room.ChildCount,
+            RequireAllPaxDetails: room.RequireAllPaxDetails,
+            RoomId: room.RoomId,
+            RoomStatus: room.RoomStatus,
+            RoomIndex: room.RoomIndex,
+            RoomTypeCode: room.RoomTypeCode,
+            RoomTypeName: room.RoomTypeName,
+            RatePlanCode: room.RatePlanCode,
+            RatePlan: room.RatePlan,
+            InfoSource: room.InfoSource,
+            SequenceNo: room.SequenceNo,
             DayRates: room.DayRates,
-            SupplierPrice: room.SupplierPrice ,
+            SupplierPrice: room.SupplierPrice,
             Price: {
-                CurrencyCode: room.Price?.CurrencyCode ,
-                RoomPrice: room.Price?.RoomPrice ,
-                Tax: room.Price?.Tax ,
-                ExtraGuestCharge: room.Price?.ExtraGuestCharge ,
-                ChildCharge: room.Price?.ChildCharge ,
-                OtherCharges: room.Price?.OtherCharges ,
-                Discount: room.Price?.Discount ,
-                PublishedPrice: room.Price?.PublishedPrice ,
-                PublishedPriceRoundedOff: room.Price?.PublishedPriceRoundedOff ,
-                OfferedPrice: room.Price?.OfferedPrice ,
-                OfferedPriceRoundedOff: room.Price?.OfferedPriceRoundedOff ,
-                AgentCommission: room.Price?.AgentCommission ,
-                AgentMarkUp: room.Price?.AgentMarkUp ,
-                ServiceTax: room.Price?.ServiceTax ,
-                TDS: room.Price?.TDS ,
-                ServiceCharge: room.Price?.ServiceCharge ,
-                TotalGSTAmount: room.Price?.TotalGSTAmount ,
+                CurrencyCode: room.Price?.CurrencyCode,
+                RoomPrice: room.Price?.RoomPrice,
+                Tax: room.Price?.Tax,
+                ExtraGuestCharge: room.Price?.ExtraGuestCharge,
+                ChildCharge: room.Price?.ChildCharge,
+                OtherCharges: room.Price?.OtherCharges,
+                Discount: room.Price?.Discount,
+                PublishedPrice: room.Price?.PublishedPrice,
+                PublishedPriceRoundedOff: room.Price?.PublishedPriceRoundedOff,
+                OfferedPrice: room.Price?.OfferedPrice,
+                OfferedPriceRoundedOff: room.Price?.OfferedPriceRoundedOff,
+                AgentCommission: room.Price?.AgentCommission,
+                AgentMarkUp: room.Price?.AgentMarkUp,
+                ServiceTax: room.Price?.ServiceTax,
+                TDS: room.Price?.TDS,
+                ServiceCharge: room.Price?.ServiceCharge,
+                TotalGSTAmount: room.Price?.TotalGSTAmount,
                 GST: room.Price?.GST || {
                     CGSTAmount: 0,
                     CGSTRate: 0,
@@ -250,50 +250,50 @@ const HotelRoom = () => {
                     TaxableAmount: 0
                 }
             },
-            RoomPromotion: "Member’s exclusive price",
-            Amenities: room.Amenities,
-            SmokingPreference: room.SmokingPreference ,
+            RoomPromotion: room.RoomPromotion || "Member’s exclusive price",
+            Amenities: room.Amenities || ["Breakfast Buffet"],
+            SmokingPreference: room.SmokingPreference || "0",
             BedTypes: createBedTypes(room.BedTypes),
-            HotelSupplements: room.HotelSupplements ,
-            LastCancellationDate: room.LastCancellationDate ,
-            CancellationPolicies: room.CancellationPolicies ,
-            CancellationPolicy: room.CancellationPolicy ,
-            Inclusion: room.Inclusion ,
-            BedTypeCode: room.BedTypeCode ,
-            Supplements: room.Supplements 
+            HotelSupplements: room.HotelSupplements || [],
+            LastCancellationDate: room.LastCancellationDate,
+            CancellationPolicies: room.CancellationPolicies,
+            CancellationPolicy: room.CancellationPolicy,
+            Inclusion: room.Inclusion || ["Breakfast Buffet"],
+            BedTypeCode: "'DefaultCode'",
+            Supplements: room.Supplements || null
         })),
         ...selectedDoubleDeluxeRooms.map((room) => ({
-            ChildCount: room.ChildCount ,
-            RequireAllPaxDetails: room.RequireAllPaxDetails ,
-            RoomId: room.RoomId ,
-            RoomStatus: room.RoomStatus ,
-            RoomIndex: room.RoomIndex ,
-            RoomTypeCode: room.RoomTypeCode ,
-            RoomTypeName: room.RoomTypeName ,
-            RatePlanCode: room.RatePlanCode ,
-            RatePlan: room.RatePlan ,
-            InfoSource: room.InfoSource ,
-            SequenceNo: room.SequenceNo ,
-            DayRates: room.DayRates ,
-            SupplierPrice: room.SupplierPrice ,
+            ChildCount: room.ChildCount,
+            RequireAllPaxDetails: room.RequireAllPaxDetails,
+            RoomId: room.RoomId,
+            RoomStatus: room.RoomStatus,
+            RoomIndex: room.RoomIndex,
+            RoomTypeCode: room.RoomTypeCode,
+            RoomTypeName: room.RoomTypeName,
+            RatePlanCode: room.RatePlanCode,
+            RatePlan: room.RatePlan,
+            InfoSource: room.InfoSource,
+            SequenceNo: room.SequenceNo,
+            DayRates: room.DayRates,
+            SupplierPrice: room.SupplierPrice,
             Price: {
-                CurrencyCode: room.Price?.CurrencyCode ,
-                RoomPrice: room.Price?.RoomPrice ,
-                Tax: room.Price?.Tax ,
-                ExtraGuestCharge: room.Price?.ExtraGuestCharge ,
-                ChildCharge: room.Price?.ChildCharge ,
-                OtherCharges: room.Price?.OtherCharges ,
-                Discount: room.Price?.Discount ,
-                PublishedPrice: room.Price?.PublishedPrice ,
-                PublishedPriceRoundedOff: room.Price?.PublishedPriceRoundedOff ,
-                OfferedPrice: room.Price?.OfferedPrice ,
-                OfferedPriceRoundedOff: room.Price?.OfferedPriceRoundedOff ,
-                AgentCommission: room.Price?.AgentCommission ,
-                AgentMarkUp: room.Price?.AgentMarkUp ,
+                CurrencyCode: room.Price?.CurrencyCode,
+                RoomPrice: room.Price?.RoomPrice,
+                Tax: room.Price?.Tax,
+                ExtraGuestCharge: room.Price?.ExtraGuestCharge,
+                ChildCharge: room.Price?.ChildCharge,
+                OtherCharges: room.Price?.OtherCharges,
+                Discount: room.Price?.Discount,
+                PublishedPrice: room.Price?.PublishedPrice,
+                PublishedPriceRoundedOff: room.Price?.PublishedPriceRoundedOff,
+                OfferedPrice: room.Price?.OfferedPrice,
+                OfferedPriceRoundedOff: room.Price?.OfferedPriceRoundedOff,
+                AgentCommission: room.Price?.AgentCommission,
+                AgentMarkUp: room.Price?.AgentMarkUp,
                 ServiceTax: room.Price?.ServiceTax,
-                TDS: room.Price?.TDS ,
-                ServiceCharge: room.Price?.ServiceCharge ,
-                TotalGSTAmount: room.Price?.TotalGSTAmount ,
+                TDS: room.Price?.TDS,
+                ServiceCharge: room.Price?.ServiceCharge,
+                TotalGSTAmount: room.Price?.TotalGSTAmount,
                 GST: room.Price?.GST || {
                     CGSTAmount: 0,
                     CGSTRate: 0,
@@ -306,22 +306,21 @@ const HotelRoom = () => {
                     TaxableAmount: 0
                 }
             },
-            RoomPromotion: "Member’s exclusive price",
-            Amenities: room.Amenities ,
-            SmokingPreference: room.SmokingPreference ,
+            RoomPromotion: room.RoomPromotion || "Member’s exclusive price",
+            Amenities: room.Amenities || ["Breakfast Buffet"],
+            SmokingPreference: room.SmokingPreference || "0",
             BedTypes: createBedTypes(room.BedTypes),
-            HotelSupplements: room.HotelSupplements ,
-            LastCancellationDate: room.LastCancellationDate ,
-            CancellationPolicies: room.CancellationPolicies ,
-            CancellationPolicy: room.CancellationPolicy ,
-            Inclusion: room.Inclusion ,
-            BedTypeCode: room.BedTypeCode ,
-            Supplements: room.Supplements 
-        })),
+            HotelSupplements: room.HotelSupplements || [],
+            LastCancellationDate: room.LastCancellationDate,
+            CancellationPolicies: room.CancellationPolicies,
+            CancellationPolicy: room.CancellationPolicy,
+            Inclusion: room.Inclusion || ["Breakfast Buffet"],
+            BedTypeCode: "DefaultCode",
+            Supplements: room.Supplements || null
+        }))
     ];
-
-    console.log('Booking Payload:', hotelRoomsDetails);
-
+console.log('payload',hotelRoomsDetails)
+    // Construct request data
     const requestData = {
         ResultIndex: "9",
         HotelCode: "92G|DEL",
@@ -336,58 +335,53 @@ const HotelRoom = () => {
         IsPackageFare: true,
         SrdvType: "SingleTB",
         SrdvIndex: "SrdvTB",
-        TraceId: "1"
+        TraceId: "1",
+        
     };
 
+    // Sending the request
     try {
-            const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-block', {
-              method: 'POST',
-              headers: {
+        const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-block', {
+            method: 'POST',
+            headers: {
                 'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(requestData),
-            });
-      
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-      
-            const res = await response.json();
-            const data=res.data;
-      
-            const bookingStatus = res.booking_status;
-      
-            if (!bookingStatus) {
-              throw new Error('Booking status is undefined in the response.');
-            }
-      
-            console.log('hotel-block API Response:',data);
-            console.log('hotel-block id:', bookingStatus.id);
-            console.log('hotel-igst:',bookingStatus.igst);
-            console.log('hotel-discount:',bookingStatus.discount);
-      
-            const rooms = data.BlockRoomResult;
-            const roomsJSON = JSON.stringify(rooms);
-      
-            const hotelId = bookingStatus.id;
-            const hotelIdJSON = JSON.stringify(hotelId);
-      
-            const hotelIgst = bookingStatus.igst;
-            const hotelIgstJSON = JSON.stringify(hotelIgst);
-      
-            const hotelDiscount = bookingStatus.discount;
-            const hotelDiscountJSON = JSON.stringify(hotelDiscount);
-      
-            localStorage.setItem('hotelBlock', roomsJSON);
-             localStorage.setItem('hotelBlockId', hotelIdJSON);
-             localStorage.setItem('hotelIgst', hotelIgstJSON);
-            localStorage.setItem('hotelDiscount ', hotelDiscountJSON);
-            localStorage.setItem('selectedRoomsData', JSON.stringify(selectedRoomsData)); // Store updated room data
-             navigate('/hotel-guest')
-         } catch (error) {
-            console.error('Error:', error);
-          }
-         };
+            },
+            body: JSON.stringify(requestData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const res = await response.json();
+        const data = res.data;
+        const bookingStatus = res.booking_status;
+
+        if (!bookingStatus) {
+            throw new Error('Booking status is undefined in the response.');
+        }
+
+        console.log('hotel-block API Response:', data);
+        console.log('hotel-block id:', bookingStatus.id);
+        console.log('hotel-igst:', bookingStatus.igst);
+        console.log('hotel-discount:', bookingStatus.discount);
+
+        const rooms = data.BlockRoomResult;
+        const hotelId = bookingStatus.id;
+        const hotelIgst = bookingStatus.igst;
+        const hotelDiscount = bookingStatus.discount;
+
+        localStorage.setItem('hotelBlock', JSON.stringify(rooms));
+        localStorage.setItem('hotelBlockId', JSON.stringify(hotelId));
+        localStorage.setItem('hotelIgst', JSON.stringify(hotelIgst));
+        localStorage.setItem('hotelDiscount', JSON.stringify(hotelDiscount));
+        localStorage.setItem('selectedRoomsData', JSON.stringify(selectedRoomsData)); // Store updated room data
+        navigate('/hotel-guest');
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
 
 //   const roomblockHandler = async (event) => {
 //     event.preventDefault();
