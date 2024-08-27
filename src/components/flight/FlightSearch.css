@@ -933,3 +933,13 @@
     }
 
 }
+
+.travellerplane-icon {
+    position: absolute;
+    top: 45%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+    font-size: 30px;
+}

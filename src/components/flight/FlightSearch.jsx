@@ -531,7 +531,7 @@ const FlightSearch = () => {
                           </div>
                           <div className="col-sm-8 flightformCol form-group " onClick={handleShow}>
                             <div className="form-control flightTravellerclssFormControl  flight-input-container">
-                              <span className="plane-icon">
+                              <span className="travellerplane-icon">
                                 <FaCircleUser />
                               </span>
                               <div className="flightTravellerclss">
@@ -754,7 +754,7 @@ const FlightSearch = () => {
 
                           <div className="col-sm-8 flightformCol form-group " onClick={handleShow}>
                             <div className="form-control flightTravellerclssFormControl  flight-input-container">
-                              <span className="plane-icon">
+                              <span className="travellerplane-icon">
                                 <FaCircleUser />
                               </span>
                               <div className="flightTravellerclss">
