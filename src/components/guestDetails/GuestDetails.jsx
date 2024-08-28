@@ -15,6 +15,16 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import parse from 'html-react-parser';
 
 const GuestDetails = () => {
+  const DatePicker = ({ formData, handleDateChange, index }) => {
+    const passportExpDateInputRef = useRef(null);
+  
+    const handleContainerClick = () => {
+      if (passportExpDateInputRef.current) {
+        passportExpDateInputRef.current.focus();
+      }
+    }
+  }
+
   const [hotelBlock, setHotelBlock] = useState([]);
   const [selectedRoomsData, setSelectedRoomsData] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
@@ -381,14 +391,14 @@ const GuestDetails = () => {
       const data = await response.json();
       console.log('Update successful:', data);
       const status = data.data.status;
-      console.log('statusBus', status);
+      console.log('statusHotel', status);
 
       switch (status) {
         case 'pending':
           toast.info('Payment is pending. Please wait.');
           break;
         case 'failed':
-          toast.error('Payment failed. Redirecting to bus search page.');
+          toast.error('Payment failed. Redirecting to hotel search page.');
           navigate('/hotel-search');
           break;
         case 'success':
@@ -1030,26 +1040,27 @@ const GuestDetails = () => {
                                   />
                                 </div>
                                 <div className="mb-3 date-picker-container">
-                                  <input
-                                    type="date"
-                                    value={formData.passportIssueDate ? formData.passportIssueDate.toISOString().split('T')[0] : ''}
-                                    onChange={(e) => handleDateChange(index, e.target.value, 'passportIssueDate')}
-                                    min={new Date().toISOString().split('T')[0]}
-                                    className="form-control full-width"
-                                  />
-                                  <label className="custom-placeholder">Passport Issue Date</label>
-                                </div>
+  <input
+    type="date"
+    value={formData.passportIssueDate ? new Date(formData.passportIssueDate).toISOString().split('T')[0] : ''}
+    onChange={(e) => handleDateChange(index, e.target.value, 'passportIssueDate')}
+    min={new Date().toISOString().split('T')[0]}
+    className="form-control full-width"
+  />
+  <label className="custom-placeholder">Passport Issue Date</label>
+</div>
 
-                                <div className="mb-3 date-picker-container">
-                                  <input
-                                    type="date"
-                                    value={formData.passportExpDate ? formData.passportExpDate.toISOString().split('T')[0] : ''}
-                                    onChange={(e) => handleDateChange(index, e.target.value, 'passportExpDate')}
-                                    min={new Date().toISOString().split('T')[0]}
-                                    className="form-control full-width"
-                                  />
-                                  <label className="custom-placeholder">Passport Expiry Date</label>
-                                </div>
+<div className="mb-3 date-picker-container">
+  <input
+    type="date"
+    value={formData.passportExpDate ? new Date(formData.passportExpDate).toISOString().split('T')[0] : ''}
+    onChange={(e) => handleDateChange(index, e.target.value, 'passportExpDate')}
+    min={new Date().toISOString().split('T')[0]}
+    className="form-control full-width"
+  />
+  <label className="custom-placeholder">Passport Expiry Date</label>
+</div>
+
 
                                 <div className="mb-3">
                                   <input
