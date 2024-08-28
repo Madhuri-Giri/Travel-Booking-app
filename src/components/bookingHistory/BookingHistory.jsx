@@ -343,6 +343,8 @@ const handleBookingClick = async (hotelBookingId) => {
 
                 const data = await response.json();
                 console.log('Bus booking history:', data);
+                localStorage.setItem('BusBookingAmount', data.booking_Status[0].amount);
+
 
                 // Check for data in both keys
                 if (data && Array.isArray(data.result) && data.result.length > 0) {
@@ -361,6 +363,7 @@ const handleBookingClick = async (hotelBookingId) => {
         };
         fetchBusBookingHistory();
     }, []);
+
     // ----------------------Bus history API-------------------------------
 
 

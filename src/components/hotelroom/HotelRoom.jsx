@@ -13,11 +13,9 @@ const HotelRoom = () => {
   const [hotelRooms, setHotelRooms] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  
   // Single and Double delux element 
   const [selectedSingleDeluxeRooms, setSelectedSingleDeluxeRooms] = useState([]);
   const [selectedDoubleDeluxeRooms, setSelectedDoubleDeluxeRooms] = useState([]);
-
   const [totalPriceSingleDeluxe, setTotalPriceSingleDeluxe] = useState(0);
   const [totalPriceDoubleDeluxe, setTotalPriceDoubleDeluxe] = useState(0);
 
@@ -46,8 +44,6 @@ const HotelRoom = () => {
     navigate('/hotel-description');
   };
   
-
-
   useEffect(() => {
     if (location.state && Array.isArray(location.state.hotelRooms)) {
       setHotelRooms(location.state.hotelRooms);
@@ -65,7 +61,6 @@ const HotelRoom = () => {
     if (Array.isArray(singleDeluxeRooms) && Array.isArray(doubleDeluxeRooms)) {
       setSelectedSingleDeluxeRooms(singleDeluxeRooms);
       setSelectedDoubleDeluxeRooms(doubleDeluxeRooms);
-
       updateTotalPrice(singleDeluxeRooms, 'single');
       updateTotalPrice(doubleDeluxeRooms, 'double');
 
@@ -78,7 +73,6 @@ const HotelRoom = () => {
     const newTotalPrice = rooms.reduce((sum, room) => {
       const roomPrice = room.Price?.RoomPrice || 0;
       const roomCount = room.guestCounts?.room || 1;
-
       return sum + (roomPrice * roomCount);
     }, 0);
 
@@ -155,8 +149,6 @@ const HotelRoom = () => {
   };
 
   // ----------Start API Integration---------
-  
-
   const selectedRoomsData = {
     singleDeluxe: selectedSingleDeluxeRooms,
     doubleDeluxe: selectedDoubleDeluxeRooms,
@@ -315,7 +307,6 @@ console.log('payload',hotelRoomsDetails)
         SrdvType: "SingleTB",
         SrdvIndex: "SrdvTB",
         TraceId: "1",
-        
     };
 
     // Sending the request
@@ -360,209 +351,6 @@ console.log('payload',hotelRoomsDetails)
         console.error('Error:', error);
     }
 };
-
-
-//   const roomblockHandler = async (event) => {
-//     event.preventDefault();
-
-//     const transactionNum = localStorage.getItem('transactionNum');
-
-//     const requestData = {
-//       // payload/parameter here
-//       ResultIndex: "9",
-//       HotelCode: "92G|DEL",
-//       HotelName: "The Manor",
-//       GuestNationality: "IN",
-//       NoOfRooms: "1",
-//       ClientReferenceNo: 0,
-//       IsVoucherBooking: true,
-//       transaction_num: transactionNum,
-//       HotelRoomsDetails: [
-//         {
-//           ChildCount: 0,
-//           RequireAllPaxDetails: false,
-//           RoomId: 0,
-//           RoomStatus: 0,
-//           RoomIndex: 4,
-//           RoomTypeCode: "211504640|4|1",
-//           RoomTypeName: "Deluxe Room",
-//           RatePlanCode: "230104963",
-//           RatePlan: 13,
-//           InfoSource: "FixedCombination",
-//           SequenceNo: "EA~~341089~4",
-//           DayRates: [
-//             {
-//               Amount: 12325,
-//               Date: "2019-09-28T00:00:00"
-//             }
-//           ],
-//           SupplierPrice: null,
-//           Price: {
-//             CurrencyCode: "INR",
-//             RoomPrice: 12325,
-//             Tax: 3113.3,
-//             ExtraGuestCharge: 0,
-//             ChildCharge: 0,
-//             OtherCharges: 26,
-//             Discount: 2175,
-//             PublishedPrice: 15464.3,
-//             PublishedPriceRoundedOff: 15464,
-//             OfferedPrice: 15464.3,
-//             OfferedPriceRoundedOff: 15464,
-//             AgentCommission: 0,
-//             AgentMarkUp: 0,
-//             ServiceTax: 4.68,
-//             TDS: 0,
-//             ServiceCharge: 0,
-//             TotalGSTAmount: 4.68,
-//             GST: {
-//               CGSTAmount: 0,
-//               CGSTRate: 0,
-//               CessAmount: 0,
-//               CessRate: 0,
-//               IGSTAmount: 4.68,
-//               IGSTRate: 18,
-//               SGSTAmount: 0,
-//               SGSTRate: 0,
-//               TaxableAmount: 26
-//             }
-//           },
-//           HotelPassenger: [
-//             {
-//               Title: "Mr",
-//               FirstName: formData.firstName,
-//               MiddleName: null,
-//               LastName: formData.lastName,
-//               Phoneno: formData.mobile,
-//               Email: formData.email,
-//               PaxType: "1",
-//               LeadPassenger: true,
-//               PassportNo: null,
-//               PassportIssueDate: null,
-//               PassportExpDate: null,
-//               PAN: "XXXXXXXXXX"
-//             },
-//             {
-//               Title: "Mstr",
-//               FirstName: formData.firstName,
-//               MiddleName: null,
-//               LastName: formData.lastName,
-//               Phoneno: formData.mobile,
-//               Email: formData.email,
-//               PaxType: "2",
-//               LeadPassenger: false,
-//               Age: "8",
-//               PassportNo: null,
-//               PassportIssueDate: null,
-//               PassportExpDate: null,
-//               PAN: "XXXXXXXXXX"
-//             }
-//           ],
-//           RoomPromotion: "Member’s exclusive price",
-//           Amenities: [
-//             "Breakfast Buffet"
-//           ],
-//           SmokingPreference: "0",
-//           BedTypes: [
-//             {
-//               BedTypeCode: "13",
-//               BedTypeDescription: "1 double bed"
-//             }
-//           ],
-//           HotelSupplements: [],
-//           LastCancellationDate: "2019-09-17T00:00:00",
-//           CancellationPolicies: [
-//             {
-//               Charge: 100,
-//               ChargeType: 2,
-//               Currency: "INR",
-//               FromDate: "2019-09-18T00:00:00",
-//               ToDate: "2019-09-26T23:59:59"
-//             },
-//             {
-//               Charge: 100,
-//               ChargeType: 2,
-//               Currency: "INR",
-//               FromDate: "2019-09-27T00:00:00",
-//               ToDate: "2019-09-29T23:59:59"
-//             },
-//             {
-//               Charge: 100,
-//               ChargeType: 2,
-//               Currency: "INR",
-//               FromDate: "2019-09-28T00:00:00",
-//               ToDate: "2019-09-29T00:00:00"
-//             }
-//           ],
-//           CancellationPolicy: "Deluxe Room#^#100.00% of total amount will be charged, If cancelled between 18-Sep-2019 00:00:00 and 26-Sep-2019 23:59:59.|100.00% of total amount will be charged, If cancelled between 27-Sep-2019 00:00:00 and 29-Sep-2019 23:59:59.|100.00% of total amount will be charged, If cancelled between 28-Sep-2019 00:00:00 and 29-Sep-2019 00:00:00.|#!#",
-//           Inclusion: [
-//             "Breakfast Buffet"
-//           ],
-//           BedTypeCode: "13",
-//           Supplements: null
-//         }
-//       ],
-//       ArrivalTime: "2019-09-28T00:00:00",
-//       IsPackageFare: true,
-//       SrdvType: "SingleTB",
-//       SrdvIndex: "SrdvTB",
-//       TraceId: "1"
-//     };
-
-//     try {
-//       const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-block', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(requestData),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//       }
-
-//       const res = await response.json();
-//       const data=res.data;
-
-//       const bookingStatus = res.booking_status;
-
-//       if (!bookingStatus) {
-//         throw new Error('Booking status is undefined in the response.');
-//       }
-
-//       console.log('hotel-block API Response:',data);
-//       console.log('hotel-block id:', bookingStatus.id);
-//       console.log('hotel-igst:',bookingStatus.igst);
-//       console.log('hotel-discount:',bookingStatus.discount);
-
-//       const rooms = data.BlockRoomResult;
-//       const roomsJSON = JSON.stringify(rooms);
-
-//       const hotelId = bookingStatus.id;
-//       const hotelIdJSON = JSON.stringify(hotelId);
-
-//       const hotelIgst = bookingStatus.igst;
-//       const hotelIgstJSON = JSON.stringify(hotelIgst);
-
-//       const hotelDiscount = bookingStatus.discount;
-//       const hotelDiscountJSON = JSON.stringify(hotelDiscount);
-
-//       localStorage.setItem('hotelBlock', roomsJSON);
-//       localStorage.setItem('hotelBlockId', hotelIdJSON);
-//       localStorage.setItem('hotelIgst', hotelIgstJSON);
-//       localStorage.setItem('hotelDiscount ', hotelDiscountJSON);
-//       localStorage.setItem('selectedRoomsData', JSON.stringify(selectedRoomsData)); // Store updated room data
-//       navigate('/hotel-guest')
-
-//  // Reload the page after navigation
-// //  window.location.reload();
-
-//     } catch (error) {
-//       console.error('Error:', error);
-//     }
-//   };
-
   // --------------End API Integration-----------------
 
   const cleanUpDescription = (description) => {
@@ -586,7 +374,6 @@ console.log('payload',hotelRoomsDetails)
   return (
     <>
       <CustomNavbar />
-
       <div className="timer ">
           <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
         </div>
@@ -602,7 +389,6 @@ console.log('payload',hotelRoomsDetails)
                 {!loading && !error && hotelRooms.length === 0 && <p>No hotel room data available.</p>}
                 {hotelRooms.length > 0 && !error && (
                   <>
-
                     {/* -------Start Single Deluxe ----------- */}
                     <div className="col-lg-6 room_heading">
                       {singleDeluxeRooms.map((room, index) => (
@@ -613,7 +399,6 @@ console.log('payload',hotelRoomsDetails)
                               <div className="room_type_container">
                                 <div className="room_type_box">
                                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQChoqyNKN6YKMcxWCLOmy21prYOB9b9dYApg&s" alt="single_delux1" />
-
                                 </div>
                               </div>
                             </div>
@@ -776,9 +561,7 @@ console.log('payload',hotelRoomsDetails)
         </Container>
       </section>
       <Footer />
-
     </>
   );
 };
-
 export default HotelRoom;

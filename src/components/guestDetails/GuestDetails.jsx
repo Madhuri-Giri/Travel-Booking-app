@@ -13,6 +13,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import parse from 'html-react-parser';
+import Payloader from '../../pages/loading/Payloader';
 
 const GuestDetails = () => {
  
@@ -46,6 +47,8 @@ const GuestDetails = () => {
 
   const gstRate = parseFloat(localStorage.getItem('hotel-igst')) || 18;
   const discount = parseFloat(localStorage.getItem('hotel-discount')) || 0;
+
+  const [payLoading, setPayLoading] = useState(false);
 
   const [timer, setTimer] = useState(600000);
   useEffect(() => {
@@ -257,13 +260,17 @@ const GuestDetails = () => {
         image: 'https://your-logo-url.com/logo.png',
         handler: async function (response) {
           console.log('Payment successful', response);
+
           localStorage.setItem('payment_id', response.razorpay_payment_id);
           localStorage.setItem('transaction_id', options.transaction_id);
 
-          alert('Payment successful!');
+          setPayLoading(true);
 
           try {
             await updateHandlePayment();
+
+            setPayLoading(false);
+
             await bookHandler();
           } catch (error) {
             console.error('Error during updateHandlePayment or bookHandler:', error.message);
@@ -294,7 +301,7 @@ const GuestDetails = () => {
       alert('An error occurred during payment setup. Please try again.');
     }
   };
-
+      // --------------Update payment------------
   const updateHandlePayment = async () => {
     try {
       const payment_id = localStorage.getItem('payment_id');
@@ -343,7 +350,6 @@ const GuestDetails = () => {
         default:
           toast.warn('Unknown payment status. Please contact support.');
       }
-
 
     } catch (error) {
       console.error('Error updating payment details:', error.message);
@@ -527,7 +533,7 @@ const GuestDetails = () => {
             const guestDetails = JSON.parse(localStorage.getItem('guestDetails'));
     
             setTimeout(() => {
-              navigate('/booking-history', { state: { bookingDetails: responseBody.hotelBooking } });
+              navigate('/hotel-ticket', { state: { bookingDetails: responseBody.hotelBooking } });
             }, 2000);
           }
         } catch (error) {
@@ -568,6 +574,10 @@ const GuestDetails = () => {
     });
     return cleanedDescription;
   };
+
+if (payLoading) {
+    return <Payloader />;
+  }
 
   return (
     <>

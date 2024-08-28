@@ -114,7 +114,6 @@ const ReviewBooking = () => {
         user_id: loginId,
         transaction_num: transactionNoBus,
         bus_booking_id: [busSavedId] ,
-
       });
 
       console.log('API response:', response.data);
