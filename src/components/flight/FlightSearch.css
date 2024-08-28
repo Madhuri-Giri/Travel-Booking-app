@@ -261,9 +261,9 @@
     outline: none !important;
 }
 
-.flightDateDiv .react-datepicker {
+/* .flightDateDiv .react-datepicker {
     margin-left: 35px !important;
-}
+} */
 
 
 .home-flight-search {
@@ -887,9 +887,9 @@
         background-color: #f8f9fa;
     }
 
-    .flightDateDiv .react-datepicker {
+    /* .flightDateDiv .react-datepicker {
         margin-left: 100px !important;
-    }
+    } */
 
     .exictingOffers h5 {
         margin-bottom: 0px;

@@ -164,9 +164,7 @@ margin-top: 1vmax;
           justify-content: center;
           margin-top: 1vmax;
  }
- .filter-responsive   {
-        display: none;
-       }
+ 
  .bus-sidebar .busSide{
           width: 90%;
           display: flex;
@@ -460,7 +458,14 @@ margin-top: 1vmax;
         }
         .filter-bus{
                 display: none;
-              }
+}
+
+
+/* ----------------------------responsive siebar----------------------------------*/
+.response-sidebar{
+        display: none;
+}
+/* --------------------------------------------------------------------------------- */
 
 
 @media (max-width:600px) {
@@ -531,7 +536,7 @@ margin-top: 1vmax;
                font-weight: 600;
       }
       .filter-bus{
-        display: none;
+        display: initial;
       }
       .BusLists .search-functinality button i{
         font-weight: lighter;
@@ -619,6 +624,237 @@ font-weight: 700;
         background-color: #00b7eb;
         transition:  0.3s ease; 
  }
+
+
+ 
+/* ----------------------------responsive siebar----------------------------------*/
+.response-sidebar{
+        display: initial;
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        position: absolute;
+        z-index: 11111;
+        background: #fff;
+        top: 0vmax;
+}
+.response-sidebar .bus-sidebar-responsive{
+        width: 85%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1vmax;
+        flex-direction: column;
+        box-shadow: 2px 2px 5px 2px gray;
+        padding: 1vmax;
+}
+.response-sidebar .bus-sidebar-responsive .c-filter{
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+}
+.response-sidebar .bus-sidebar-responsive .c-filter i{
+      font-size: 3.5vmax;
+}
+.bus-sidebar-responsive .busSide{
+        width: 100%;
+
+}
+.bus-sidebar-responsive .busSide h5{
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: row;
+        font-weight: 700;
+        padding: 1vmax;
+        color: #00040898;
+        border-bottom: 1px solid #00000022;
+}
+.bus-sidebar-responsive .busSide .seat-type{
+        width: 100%;
+         padding: 1vmax;
+         border-bottom: 1px solid #00000022;
+
+}
+.bus-sidebar-responsive .busSide .seat-type h6{
+       font-weight: 700;
+}
+.bus-sidebar-responsive .busSide .seat-type .filter-seat{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        color: #000000b9;
+        margin-top: 1vmax;
+}
+.bus-sidebar-responsive .busSide .seat-type .filter-seat .sleeper{
+      width: 45%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 0.4px solid #00000022;
+}
+.bus-sidebar-responsive .busSide .seat-type .filter-seat .sleeper:hover{  
+    color: rgba(0, 0, 255, 0.628);
+    border-color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar-responsive .busSide .seat-type .filter-seat .sleeper p{  
+      margin-top: 0.8vmax;
+}
+
+.bus-sidebar-responsive .busSide .seat-type .filter-seat .seater{
+      width: 45%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 0.4px solid #00000022;
+}
+.bus-sidebar-responsive .busSide .seat-type .filter-seat .seater:hover{  
+      color: rgba(0, 0, 255, 0.628);
+      border-color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar-responsive .busSide .seat-type .filter-seat .seater p{   
+      margin-top: 0.8vmax;
+}
+.bus-sidebar-responsive .busSide .Travel-operator{
+        width: 100%;
+         padding: 1vmax;
+         border-bottom: 1px solid #00000022;
+}
+.bus-sidebar-responsive .busSide .Travel-operator h6{
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 3vmax;
+}
+.bus-sidebar-responsive .busSide .Travel-operator h6:hover{
+      width: 100%;
+      cursor: pointer;
+      color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar-responsive .busSide .Travel-operator h6 .down-aro{
+      font-size: 4vmax;
+}
+.bus-sidebar-responsive .busSide .Travel-operator .travel-list{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: #000000b9; 
+        margin-top: 1vmax;
+}
+.bus-sidebar-responsive .busSide .Travel-operator .travel-list p{
+      cursor: pointer;
+      border: 1px solid #00000022;
+      border-radius: 5px;
+      padding: 1vmax;
+      font-size: 2vmax;
+}
+.bus-sidebar-responsive .busSide .Travel-operator .travel-list p:hover{
+      color: rgba(0, 0, 255, 0.628);
+      border-color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar-responsive .busSide .pick-up{
+      width: 100%;
+       padding: 1vmax;
+       border-bottom: 1px solid #00000022;
+}
+.bus-sidebar-responsive .busSide .pick-up h6{
+    font-size:3vmax;
+    width: 100%;
+    margin-bottom: 1vmax;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    cursor: pointer;
+}
+.bus-sidebar-responsive .busSide .pick-up h6 i{
+      font-size: 4vmax;
+}
+.bus-sidebar-responsive .busSide .pick-up h6:hover{
+      color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar-responsive .busSide .pick-up .pick-list{
+      width: 100%;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: center;
+}
+.bus-sidebar-responsive .busSide .pick-up .pick-list p{
+      width: 100%;
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+     align-items: flex-start;
+     padding-bottom: 0.5vmax;
+     border-radius: 5px;
+     border: 0.4px solid #00000022;
+     padding: 1vmax;
+}
+.bus-sidebar-responsive .busSide .pick-up .pick-list p h3{
+        font-size: 2vmax;
+        font-weight: lighter;
+   }
+
+.bus-sidebar-responsive .busSide .drop-up{
+      width: 100%;
+       padding: 1vmax;
+       border-bottom: 1px solid #00000022;
+}
+.bus-sidebar-responsive .busSide .drop-up h6{
+      font-size: 3vmax;
+      width: 100%;
+      margin-bottom: 1vmax;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      cursor: pointer;
+}
+.bus-sidebar-responsive .busSide .drop-up h6:hover{
+      color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar-responsive .busSide .drop-up h6 i{
+        font-size: 4vmax;
+  }
+.bus-sidebar-responsive .busSide .drop-up .drop-list{
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+}
+.bus-sidebar-responsive .busSide .drop-up .drop-list p{
+      width: 100%;
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+     align-items: flex-start;
+     border-radius: 5px;
+     border: 0.4px solid #00000022;
+     padding: 1vmax;
+     padding-bottom: 0.5vmax;
+}
+.bus-sidebar-responsive .busSide .drop-up .drop-list p h3{
+       font-size: 2vmax;
+       font-weight: lighter;
+  }
+
+/* --------------------------------------------------------------------------------- */
+
+
+
 
 }
 
@@ -778,6 +1014,229 @@ font-weight: 700;
         background-color: #00b7eb;
         transition:  0.3s ease; 
  }
+
+ 
+ 
+/* ----------------------------responsive siebar----------------------------------*/
+.response-sidebar{
+        display: initial;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1vmax;
+}
+.response-sidebar .bus-sidebar-responsive{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1vmax;
+        flex-direction: column;
+}
+.response-sidebar .bus-sidebar-responsive .c-filter{
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+}
+.response-sidebar .bus-sidebar-responsive .c-filter i{
+      font-size: 3.5vmax;
+}
+.bus-sidebar-responsive .busSide{
+        width: 100%;
+
+}
+.bus-sidebar-responsive .busSide h5{
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: row;
+        font-weight: 700;
+        padding: 1vmax;
+        color: #00040898;
+        border-bottom: 1px solid #00000022;
+}
+.bus-sidebar-responsive .busSide .seat-type{
+        width: 100%;
+         padding: 1vmax;
+         border-bottom: 1px solid #00000022;
+
+}
+.bus-sidebar-responsive .busSide .seat-type h6{
+       font-weight: 700;
+}
+.bus-sidebar-responsive .busSide .seat-type .filter-seat{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        color: #000000b9;
+        margin-top: 1vmax;
+}
+.bus-sidebar-responsive .busSide .seat-type .filter-seat .sleeper{
+      width: 45%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 0.4px solid #00000022;
+}
+.bus-sidebar-responsive .busSide .seat-type .filter-seat .sleeper:hover{  
+    color: rgba(0, 0, 255, 0.628);
+    border-color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar-responsive .busSide .seat-type .filter-seat .sleeper p{  
+      margin-top: 0.8vmax;
+}
+
+.bus-sidebar-responsive .busSide .seat-type .filter-seat .seater{
+      width: 45%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 0.4px solid #00000022;
+}
+.bus-sidebar-responsive .busSide .seat-type .filter-seat .seater:hover{  
+      color: rgba(0, 0, 255, 0.628);
+      border-color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar-responsive .busSide .seat-type .filter-seat .seater p{   
+      margin-top: 0.8vmax;
+}
+.bus-sidebar-responsive .busSide .Travel-operator{
+        width: 100%;
+         padding: 1vmax;
+         border-bottom: 1px solid #00000022;
+}
+.bus-sidebar-responsive .busSide .Travel-operator h6{
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 3vmax;
+}
+.bus-sidebar-responsive .busSide .Travel-operator h6:hover{
+      width: 100%;
+      cursor: pointer;
+      color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar-responsive .busSide .Travel-operator h6 .down-aro{
+      font-size: 4vmax;
+}
+.bus-sidebar-responsive .busSide .Travel-operator .travel-list{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: #000000b9; 
+        margin-top: 1vmax;
+}
+.bus-sidebar-responsive .busSide .Travel-operator .travel-list p{
+      cursor: pointer;
+      border: 1px solid #00000022;
+      border-radius: 5px;
+      padding: 1vmax;
+      font-size: 2vmax;
+}
+.bus-sidebar-responsive .busSide .Travel-operator .travel-list p:hover{
+      color: rgba(0, 0, 255, 0.628);
+      border-color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar-responsive .busSide .pick-up{
+      width: 100%;
+       padding: 1vmax;
+       border-bottom: 1px solid #00000022;
+}
+.bus-sidebar-responsive .busSide .pick-up h6{
+    font-size:3vmax;
+    width: 100%;
+    margin-bottom: 1vmax;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    cursor: pointer;
+}
+.bus-sidebar-responsive .busSide .pick-up h6 i{
+      font-size: 4vmax;
+}
+.bus-sidebar-responsive .busSide .pick-up h6:hover{
+      color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar-responsive .busSide .pick-up .pick-list{
+      width: 100%;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: center;
+}
+.bus-sidebar-responsive .busSide .pick-up .pick-list p{
+      width: 100%;
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+     align-items: flex-start;
+     padding-bottom: 0.5vmax;
+     border-radius: 5px;
+     border: 0.4px solid #00000022;
+     padding: 1vmax;
+}
+.bus-sidebar-responsive .busSide .pick-up .pick-list p h3{
+        font-size: 2vmax;
+        font-weight: lighter;
+   }
+
+.bus-sidebar-responsive .busSide .drop-up{
+      width: 100%;
+       padding: 1vmax;
+       border-bottom: 1px solid #00000022;
+}
+.bus-sidebar-responsive .busSide .drop-up h6{
+      font-size: 3vmax;
+      width: 100%;
+      margin-bottom: 1vmax;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      cursor: pointer;
+}
+.bus-sidebar-responsive .busSide .drop-up h6:hover{
+      color: rgba(0, 0, 255, 0.628);
+}
+.bus-sidebar-responsive .busSide .drop-up h6 i{
+        font-size: 4vmax;
+  }
+.bus-sidebar-responsive .busSide .drop-up .drop-list{
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+}
+.bus-sidebar-responsive .busSide .drop-up .drop-list p{
+      width: 100%;
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+     align-items: flex-start;
+     border-radius: 5px;
+     border: 0.4px solid #00000022;
+     padding: 1vmax;
+     padding-bottom: 0.5vmax;
+}
+.bus-sidebar-responsive .busSide .drop-up .drop-list p h3{
+       font-size: 2vmax;
+       font-weight: lighter;
+  }
+
+/* --------------------------------------------------------------------------------- */
 
   
   }

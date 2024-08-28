@@ -15,8 +15,22 @@ import Loading from '../../pages/loading/Loading'; // Import the Loading compone
 import Footer from "../../pages/footer/Footer";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import EnterOtp from '../popUp/EnterOtp';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
+import { Navigation } from 'swiper/modules'; // Note the updated import path in newer versions
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 export default function FlightLists() {
+    const swiperRef = useRef(null);
+
+    useEffect(() => {
+        if (swiperRef.current) {
+            swiperRef.current.swiper.navigation.update();
+        }
+    }, []);
+
+
     const [loading, setLoading] = useState(false); // Add loading state
     const [sortOrder, setSortOrder] = useState(''); // State to manage sorting order
 
@@ -77,7 +91,9 @@ export default function FlightLists() {
 
     const [flightData, setFlightData] = useState([]);
 
-    const sliderRef = useRef(null);
+    // const sliderRef = useRef(null);
+    const [sliderRef, setSliderRef] = useState(null);
+
     useEffect(() => {
         if (location.state) {
             setFlightListData(location.state);
@@ -220,8 +236,6 @@ export default function FlightLists() {
             }
         }
     }, []);
-
-
     const sliderSettings = {
         dots: false,
         infinite: true,
@@ -247,7 +261,29 @@ export default function FlightLists() {
             }
         ]
     };
-
+    const settings = {
+        dots: true,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 6,
+        slidesToScroll: 1,
+        nextArrow: <div className="slick-next">Next</div>,
+        prevArrow: <div className="slick-prev">Prev</div>,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 5,
+                },
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 4,
+                },
+            },
+        ],
+    };
     // for callender slider-----------------------------------------------------------------------
 
 
@@ -524,7 +560,7 @@ export default function FlightLists() {
                                             <div className="airlineFilters mobileAirlines" > </div>
                                         </Accordion.Body>
                                     </Accordion.Item>
-                                   
+
                                 </Accordion>
                             </div>
                         </div>
@@ -581,9 +617,9 @@ export default function FlightLists() {
                     </div>
                     <div className="col-lg-8">
                         <div className="slider-container">
-                            <Slider {...sliderSettings}>
+                            <Slider {...settings}>
                                 {flightData.map((flight, index) => (
-                                    <div key={index} className="flight-slide">
+                                    <div key={flight.FlightId || index} className="flight-slide">
                                         <h6>
                                             {new Date(flight.DepartureDate).toLocaleDateString('en-US', {
                                                 weekday: 'short',
@@ -595,6 +631,7 @@ export default function FlightLists() {
                                     </div>
                                 ))}
                             </Slider>
+
                         </div>
 
                         <div className="f-lists">

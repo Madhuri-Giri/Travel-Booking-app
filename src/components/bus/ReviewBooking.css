@@ -156,6 +156,8 @@
        font-size: 1.2vmax;
         font-weight: 700;
         font-size: 1.3vmax;
+        color: #00e100;
+
 }
 
 .ReviewBooking .main-branch .r-left{
@@ -386,6 +388,8 @@
  .ReviewBooking .review-book .r-left .left-main  .last-pay .fare small{
      font-weight: 700;
      font-size: 1.2vmax;
+     color: #00e100;
+
  }
  .ReviewBooking .review-book  .r-left .left-main .last-pay .review-pay{
        width: 50%;

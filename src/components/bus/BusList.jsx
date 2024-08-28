@@ -230,6 +230,16 @@ const toggleDropVisibility = () => {
     navigate('/bus-search')
   }
 
+    // ----------------------------------// responsivesidebar----------------------------------
+    const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+
+    const responsiveFilter = () => {
+      setIsSidebarVisible(!isSidebarVisible);
+    };
+
+    // ----------------------------------// responsivesidebar----------------------------------
+
+
 
   return (
     <>
@@ -246,7 +256,7 @@ const toggleDropVisibility = () => {
           </div>
           <h5>
             <div className="destination">
-              <h6>{from}-{to}</h6>
+              <h6>{from} - {to}</h6>
             </div>
           </h5>
           <span>
@@ -258,7 +268,7 @@ const toggleDropVisibility = () => {
             )}
           </span>
           <div className="search-functinality">
-            <button className='filter-bus'><i className="ri-equalizer-line"></i> Filter</button>
+            <button onClick={responsiveFilter} className='filter-bus'><i className="ri-equalizer-line"></i> Filter</button>
             <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
 
           </div>
@@ -347,8 +357,94 @@ const toggleDropVisibility = () => {
           </div>
         </div>
 
+           {/* -----------------------responsive sidebar--------------- */}
 
+           {isSidebarVisible && (
+        <div className="response-sidebar">
+          <div className="bus-sidebar-responsive">
+            <div className="c-filter">
+              <i className="ri-close-circle-line" onClick={responsiveFilter}></i>
+            </div>
+            <div className="busSide">
+              <h5>Filters</h5>
+              <div className="seat-type">
+                <h6>Price</h6>
+                <div className="filter-seat">
+                  <input
+                    type="range"
+                    className="form-range"
+                    id="customRange1"
+                    min="10"
+                    max="10000"
+                    step="1"
+                    value={price}
+                    onChange={handlePriceChange}
+                  />
+                </div>
+                <div className="price-display">
+                  <span>{price} INR</span>
+                </div>
+              </div>
+              <div className="Travel-operator">
+                <h6 onClick={toggleTravelList}>
+                  <span>Travel Operators</span>
+                  <i className={`ri-arrow-${isTravelListVisible ? 'up' : 'down'}-s-line down-aro`}></i>
+                </h6>
+                {isTravelListVisible && (
+                  <div className="travel-list">
+                    {searchResults.map((bus, index) => (
+                      <p key={index} onClick={() => setOperatorFilter(bus.TravelName)}>{bus.TravelName}</p>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="pick-up">
+                <h6 onClick={togglePickupVisibility}>
+                  <span>Pick-Up Point</span>
+                  <i className={`ri-arrow-${isPickupVisible ? 'up' : 'down'}-s-line down-aro`}></i>
+                </h6>
+                {isPickupVisible && searchResults.map((bus, index) => (
+                  <div key={index} className="pick-list">
+                    <p>
+                      <span style={{ fontWeight: "600" }}>Pick-Up Point & Time:</span>
+                      <small style={{ fontSize: '0.8vmax' }}>{bus.BoardingPoints.map((point, i) => (
+                        <div key={i}>
+                          <h3>{point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})</h3>
+                        </div>
+                      ))}</small>
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="drop-up">
+                <h6 onClick={toggleDropVisibility}>
+                  <span>Drop Points</span>
+                  <i className={`ri-arrow-${isDropVisible ? 'up' : 'down'}-s-line down-aro`}></i>
+                </h6>
+                {isDropVisible && searchResults.map((bus, index) => (
+                  <div key={index} className="drop-list">
+                    <p>
+                      <span style={{ fontWeight: "500" }}>Drop Points & Time:</span>
+                      <small style={{ fontSize: '0.8vmax' }}>{bus.DroppingPoints.map((point, i) => (
+                        <div key={i}>
+                          <h3>{point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})</h3>
+                        </div>
+                      ))}</small>
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      )}
+           {/* -----------------------responsive sidebar--------------- */}
+            
         
+
 
 
         {/* Bus lists */}

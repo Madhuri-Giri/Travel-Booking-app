@@ -180,6 +180,7 @@ const ReviewBooking = () => {
           try {
             await updateHandlePayment();
             await bookHandler();
+            await busPaymentStatus();
           } catch (error) {
             console.error('Error during updateHandlePayment or bookHandler:', error.message);
             alert('An error occurred during processing. Please try again.');
@@ -377,9 +378,9 @@ const ReviewBooking = () => {
         toast.success('Booking successful!');
         localStorage.setItem('busTikitDetails', JSON.stringify(responseBody));
   
-        setTimeout(() => {
-          navigate('/booking-history', { state: { bookingDetails: responseBody } });
-        }, 2000);
+        // setTimeout(() => {
+        //   navigate('/booking-history', { state: { bookingDetails: responseBody } });
+        // }, 2000);
       }
   
     } catch (error) {
@@ -392,7 +393,49 @@ const ReviewBooking = () => {
   
 
 
-  // ------------------------------block api-------------------------------------------------------------------
+  // ------------------------------status api--------------------------------------------------------
+
+  const busPaymentStatus = async () => {
+    try {
+      const transaction_id = localStorage.getItem('transaction_id');
+      if (!transaction_id) {
+        throw new Error('Transaction ID is missing.');
+      }
+  
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus-payment-status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ transaction_id }),
+      });
+  
+      const responseBody = await response.json();
+      console.log('Bus Payment Status Response:', responseBody);
+  
+      if (!response.ok) {
+        console.error('Failed to fetch payment status. Status:', response.status, 'Response:', responseBody);
+        throw new Error(`Failed to fetch payment status. Status: ${response.status}`);
+      }
+  
+      // Save to localStorage
+      localStorage.setItem("buspaymentStatusRes", JSON.stringify(responseBody));
+  
+      // Navigate with state
+      navigate('/busBookTicket', { state: { buspaymentStatus: responseBody } });
+  
+      return responseBody;
+  
+    } catch (error) {
+      console.error('Error during fetching payment status:', error.message);
+      toast.error('An error occurred while checking payment status. Please try again.');
+      return null;
+    }
+  };
+  
+  // -------------------------------------------------------------------------------------------------
+
+ 
 
   // --------------------------------------------------------------------------------------------------
 
@@ -544,7 +587,7 @@ const ReviewBooking = () => {
                     <div className="last-pay">
                       <div className="fare">
                         <h6><i className="ri-price-tag-2-line"></i>Total Ticket Amount</h6>
-                        <small >{totalPayment.toFixed(2)}</small>
+                        <small >₹{Math.round(totalPayment)}</small>
                       </div>
                       <div className="review-pay">
                         <button
@@ -603,7 +646,7 @@ const ReviewBooking = () => {
     </div>
     <div className="final-pay">
       <span>Total Payment</span>
-      <small>{totalPayment.toFixed(2)}</small>
+      <small>₹{Math.round(totalPayment)}</small>
     </div>
   </div>
 </div>

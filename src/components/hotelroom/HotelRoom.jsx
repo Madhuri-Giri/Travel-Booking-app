@@ -7,31 +7,12 @@ import Footer from "../../pages/footer/Footer";
 import { RiTimerLine } from "react-icons/ri";
 import he from 'he';
 
-const initialFormData = {
-  firstName: '',
-  lastName: '',
-  middleName:'',
-  mobile: '',
-  email: '',
-  mobile: "",
-    age: "",
-    paxType: "",
-    leadPassenger: "",
-    passportNo: "",
-    passportIssueDate: "",
-    passportExpDate: "",
-    PAN: "",
-
-};
-
 const HotelRoom = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [hotelRooms, setHotelRooms] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState(initialFormData);
-
   
   // Single and Double delux element 
   const [selectedSingleDeluxeRooms, setSelectedSingleDeluxeRooms] = useState([]);
@@ -88,7 +69,6 @@ const HotelRoom = () => {
       updateTotalPrice(singleDeluxeRooms, 'single');
       updateTotalPrice(doubleDeluxeRooms, 'double');
 
-
     } else {
       console.error('Selected hotel data is not an array:', singleDeluxeRooms, doubleDeluxeRooms);
     }
@@ -98,7 +78,6 @@ const HotelRoom = () => {
     const newTotalPrice = rooms.reduce((sum, room) => {
       const roomPrice = room.Price?.RoomPrice || 0;
       const roomCount = room.guestCounts?.room || 1;
-
 
       return sum + (roomPrice * roomCount);
     }, 0);
