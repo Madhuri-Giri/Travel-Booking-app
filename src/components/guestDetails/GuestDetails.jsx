@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './GuestDetails.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -13,12 +13,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import parse from 'html-react-parser';
+import Payloader from '../../pages/loading/Payloader';
 
 const GuestDetails = () => {
+ 
   const [hotelBlock, setHotelBlock] = useState([]);
   const [selectedRoomsData, setSelectedRoomsData] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
-
   const NoOfAdults = parseInt(localStorage.getItem('numberOfAdults'), 10) || 1;
 
   const [guestForms, setGuestForms] = useState(Array(NoOfAdults).fill({
@@ -46,6 +47,8 @@ const GuestDetails = () => {
 
   const gstRate = parseFloat(localStorage.getItem('hotel-igst')) || 18;
   const discount = parseFloat(localStorage.getItem('hotel-discount')) || 0;
+
+  const [payLoading, setPayLoading] = useState(false);
 
   const [timer, setTimer] = useState(600000);
   useEffect(() => {
@@ -144,6 +147,14 @@ const GuestDetails = () => {
   if (!selectedRoomsData) {
     return <p>Loading...</p>;
   }
+  const handleDateChange = (index, date, field) => {
+    const newGuestForms = [...guestForms];
+    newGuestForms[index] = {
+      ...newGuestForms[index],
+      [field]: date,
+    };
+    setGuestForms(newGuestForms);
+  };
 
   const handleFormChange = (index, e) => {
     const { name, value } = e.target;
@@ -166,14 +177,14 @@ const GuestDetails = () => {
     setCheckboxChecked(!checkboxChecked);
   };
 
-  const handleDateChange = (index, date, field) => {
-    const newGuestForms = [...guestForms];
-    newGuestForms[index] = {
-      ...newGuestForms[index],
-      [field]: date,
-    };
-    setGuestForms(newGuestForms);
-  };
+  // const handleDateChange = (index, date, field) => {
+  //   const newGuestForms = [...guestForms];
+  //   newGuestForms[index] = {
+  //     ...newGuestForms[index],
+  //     [field]: date,
+  //   };
+  //   setGuestForms(newGuestForms);
+  // };
   // ---------------- RozarPay Payment Gateway  Integration start -------------------
   const fetchPaymentDetails = async () => {
     try {
@@ -249,13 +260,17 @@ const GuestDetails = () => {
         image: 'https://your-logo-url.com/logo.png',
         handler: async function (response) {
           console.log('Payment successful', response);
+
           localStorage.setItem('payment_id', response.razorpay_payment_id);
           localStorage.setItem('transaction_id', options.transaction_id);
 
-          alert('Payment successful!');
+          setPayLoading(true);
 
           try {
             await updateHandlePayment();
+
+            setPayLoading(false);
+
             await bookHandler();
           } catch (error) {
             console.error('Error during updateHandlePayment or bookHandler:', error.message);
@@ -286,69 +301,7 @@ const GuestDetails = () => {
       alert('An error occurred during payment setup. Please try again.');
     }
   };
-
-
-  // const handlePayment = async (e) => {
-  //    const loginId = localStorage.getItem('loginId');
-  //   if (!loginId) {
-  //     navigate('/enter-number'); 
-  //     return;
-  //   }
-
-  //   e.preventDefault();
-  //   try {
-  //     const paymentData = await fetchPaymentDetails();
-  //     if (!paymentData) return;
-
-  //     const options = {
-  //       key: paymentData.razorpay_key,
-  //       amount: paymentData.payment_details.amount * 100,
-  //       currency: 'INR',
-  //       transaction_id: paymentData.payment_details.id,
-  //       name: 'SRN Infotech',
-  //       description: 'Test Transaction',
-  //       image: 'https://your-logo-url.com/logo.png',
-  //       handler: async function (response) {
-  //         console.log('Payment successful', response);
-  //         localStorage.setItem('payment_id', response.razorpay_payment_id);
-  //         localStorage.setItem('transaction_id', options.transaction_id);
-
-  //         alert('Payment successful!');
-
-  //         try {
-  //           await updateHandlePayment();
-  //           await bookHandler();
-  //         } catch (error) {
-  //           console.error('Error during updateHandlePayment or bookHandler:', error.message);
-  //           alert('An error occurred during processing. Please try again.');
-  //         }
-  //       },
-  //       prefill: {
-  //         name: `${formData.fname} ${formData.mname} ${formData.lname}`,
-  //         email: formData.email,
-  //         contact: formData.mobile,
-  //       },
-  //       notes: {
-  //         address: 'Some Address',
-  //       },
-  //       theme: {
-  //         color: '#3399cc',
-  //       },
-  //     };
-
-  //     const rzp1 = new window.Razorpay(options);
-  //     rzp1.on('payment.failed', function (response) {
-  //       alert(`Payment failed: ${response.error.description}`);
-  //     });
-
-  //     rzp1.open();
-  //   } catch (error) {
-  //     console.error('Error during payment setup:', error.message);
-  //     alert('An error occurred during payment setup. Please try again.');
-  //   }
-  // };
-
-
+      // --------------Update payment------------
   const updateHandlePayment = async () => {
     try {
       const payment_id = localStorage.getItem('payment_id');
@@ -381,14 +334,14 @@ const GuestDetails = () => {
       const data = await response.json();
       console.log('Update successful:', data);
       const status = data.data.status;
-      console.log('statusBus', status);
+      console.log('statusHotel', status);
 
       switch (status) {
         case 'pending':
           toast.info('Payment is pending. Please wait.');
           break;
         case 'failed':
-          toast.error('Payment failed. Redirecting to bus search page.');
+          toast.error('Payment failed. Redirecting to hotel search page.');
           navigate('/hotel-search');
           break;
         case 'success':
@@ -397,7 +350,6 @@ const GuestDetails = () => {
         default:
           toast.warn('Unknown payment status. Please contact support.');
       }
-
 
     } catch (error) {
       console.error('Error updating payment details:', error.message);
@@ -415,9 +367,6 @@ const GuestDetails = () => {
   };
 
   //  ----------------------------Start book api-----------------------------------
-
- 
-  
       // Construct the booking payload
       const bookHandler = async () => {
         try {
@@ -584,7 +533,7 @@ const GuestDetails = () => {
             const guestDetails = JSON.parse(localStorage.getItem('guestDetails'));
     
             setTimeout(() => {
-              navigate('/booking-history', { state: { bookingDetails: responseBody.hotelBooking } });
+              navigate('/hotel-ticket', { state: { bookingDetails: responseBody.hotelBooking } });
             }, 2000);
           }
         } catch (error) {
@@ -593,208 +542,13 @@ const GuestDetails = () => {
         }
       };
     
-
-  // const bookHandler = async () => {
-  //   try {
-
-  //      // Retrieve transactionNum from localStorage
-  //      const transactionNum = localStorage.getItem('transactionNum');
-  //      const transaction_id = localStorage.getItem('transaction_id');
-  //     const hotel_booking_id = localStorage.getItem('hotelBlockId')
-
-  //     const bookingPayload = {
-  //       ResultIndex: "9",
-  //       HotelCode: "92G|DEL",
-  //       HotelName: "The Manor",
-  //       GuestNationality: "IN",
-  //       NoOfRooms: "1",
-  //       ClientReferenceNo: 0,
-  //       IsVoucherBooking: true,
-  //       transaction_num: transactionNum,
-  //       transaction_id:transaction_id,
-  //       hotel_booking_id:hotel_booking_id,
-  //       HotelRoomsDetails: [
-  //           {
-  //               ChildCount: 0,
-  //               RequireAllPaxDetails: false,
-  //               RoomId: 0,
-  //               RoomStatus: 0,
-  //               RoomIndex: 4,
-  //               RoomTypeCode: "211504640|4|1",
-  //               RoomTypeName: "Deluxe Room",
-  //               RatePlanCode: "230104963",
-  //               RatePlan: 13,
-  //               InfoSource: "FixedCombination",
-  //               SequenceNo: "EA~~341089~4",
-  //               DayRates: [
-  //                   {
-  //                       Amount: 12325,
-  //                       Date: "2019-09-28T00:00:00"
-  //                   }
-  //               ],
-  //               SupplierPrice: null,
-  //               Price: {
-  //                   CurrencyCode: "INR",
-  //                   RoomPrice: 12325,
-  //                   Tax: 3113.3,
-  //                   ExtraGuestCharge: 0,
-  //                   ChildCharge: 0,
-  //                   OtherCharges: 26,
-  //                   Discount: 2175,
-  //                   PublishedPrice: 15464.3,
-  //                   PublishedPriceRoundedOff: 15464,
-  //                   OfferedPrice: 15464.3,
-  //                   OfferedPriceRoundedOff: 15464,
-  //                   AgentCommission: 0,
-  //                   AgentMarkUp: 0,
-  //                   ServiceTax: 4.68,
-  //                   TDS: 0,
-  //                   ServiceCharge: 0,
-  //                   TotalGSTAmount: 4.68,
-  //                   GST: {
-  //                       CGSTAmount: 0,
-  //                       CGSTRate: 0,
-  //                       CessAmount: 0,
-  //                       CessRate: 0,
-  //                       IGSTAmount: 4.68,
-  //                       IGSTRate: 18,
-  //                       SGSTAmount: 0,
-  //                       SGSTRate: 0,
-  //                       TaxableAmount: 26
-  //                   }
-  //               },
-  //               HotelPassenger: [
-  //                   {
-  //                       Title: "Mr",
-  //                       FirstName: formData.fname,
-  //                       MiddleName: formData.mname,
-  //                       LastName: formData.lname,
-  //                       Phoneno: formData.mobile,
-  //                       Email: formData.email,
-  //                       PaxType: "1",
-  //                       LeadPassenger: true,
-  //                       PassportNo: null,
-  //                       PassportIssueDate: null,
-  //                       PassportExpDate: null,
-  //                       PAN: "XXXXXXXXXX"
-  //                   },
-  //                   {
-  //                       Title: "Mstr",
-  //                       FirstName: formData.fname,
-  //                       MiddleName: formData.mname,
-  //                       LastName: formData.lname,
-  //                       Phoneno: formData.mobile,
-  //                       Email: formData.email,
-  //                       PaxType: "2",
-  //                       LeadPassenger: false,
-  //                       Age: "8",
-  //                       PassportNo: null,
-  //                       PassportIssueDate: null,
-  //                       PassportExpDate: null,
-  //                       PAN: "XXXXXXXXXX"
-  //                   }
-  //               ],
-  //               RoomPromotion: "Member’s exclusive price",
-  //               Amenities: [
-  //                   "Breakfast Buffet"
-  //               ],
-  //               SmokingPreference: "0",
-  //               BedTypes: [
-  //                   {
-  //                       BedTypeCode: "13",
-  //                       BedTypeDescription: "1 double bed"
-  //                   }
-  //               ],
-  //               HotelSupplements: [],
-  //               LastCancellationDate: "2019-09-17T00:00:00",
-  //               CancellationPolicies: [
-  //                   {
-  //                       Charge: 100,
-  //                       ChargeType: 2,
-  //                       Currency: "INR",
-  //                       FromDate: "2019-09-18T00:00:00",
-  //                       ToDate: "2019-09-26T23:59:59"
-  //                   },
-  //                   {
-  //                       Charge: 100,
-  //                       ChargeType: 2,
-  //                       Currency: "INR",
-  //                       FromDate: "2019-09-27T00:00:00",
-  //                       ToDate: "2019-09-29T23:59:59"
-  //                   },
-  //                   {
-  //                       Charge: 100,
-  //                       ChargeType: 2,
-  //                       Currency: "INR",
-  //                       FromDate: "2019-09-28T00:00:00",
-  //                       ToDate: "2019-09-29T00:00:00"
-  //                   }
-  //               ],
-  //               CancellationPolicy: "Deluxe Room#^#100.00% of total amount will be charged, If cancelled between 18-Sep-2019 00:00:00 and 26-Sep-2019 23:59:59.|100.00% of total amount will be charged, If cancelled between 27-Sep-2019 00:00:00 and 29-Sep-2019 23:59:59.|100.00% of total amount will be charged, If cancelled between 28-Sep-2019 00:00:00 and 29-Sep-2019 00:00:00.|#!#",
-  //               Inclusion: [
-  //                   "Breakfast Buffet"
-  //               ],
-  //               BedTypeCode: "13",
-  //               Supplements: null
-  //           }
-  //       ],
-  //       ArrivalTime: "2019-09-28T00:00:00",
-  //       IsPackageFare: true,
-  //       SrdvType: "SingleTB",
-  //       SrdvIndex: "SrdvTB",
-  //       TraceId: "1",
-  //       EndUserIp: "1.1.1.1",
-  //       ClientId: "XXXX",
-  //       UserName: "XXXX",
-  //       Password: "XXXX"
-  //   };
-
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-book', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(bookingPayload),
-  //     });
-
-  //     const responseBody = await response.json();
-  //     console.log('Hotel Booking Confirmation Response:', responseBody);
-
-  //     if (!response.ok) {
-  //       console.error('Failed to hotel booking . Status:', response.status, 'Response:', responseBody);
-  //       throw new Error(`Failed to Hotel booking . Status: ${response.status}`);
-  //     }
-
-  //     if (responseBody.Error && responseBody.Error.ErrorCode !== 0) {
-  //       console.error('Booking failed:', responseBody.Error.ErrorMessage);
-  //       toast.error(`Booking failed: ${responseBody.Error.ErrorMessage}`);
-  //     } else {
-  //       toast.success('Hotel Booking successful!');
-
-  //       localStorage.setItem('HotelBookingDetails', JSON.stringify(responseBody));
-  // // Retrieve guest details from localStorage
-  //  const guestDetails = JSON.parse(localStorage.getItem('guestDetails'));
-  //       setTimeout(() => {
-
-  // navigate('/booking-history', { state: { bookingDetails: responseBody.hotelBooking} });
-  // // navigate('/hotel-ticket', { state: { bookingDetails: responseBody.hotelBooking} });
-  //       }, 2000);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error during hotel booking:', error.message);
-  //     toast.error('An error occurred during hotel booking. Please try again.');
-  //   }
-  // };
-
   const { AddressLine1, HotelName, HotelRoomsDetails, HotelPolicyDetail, HotelNorms } = hotelBlock;
   const { singleDeluxe, doubleDeluxe, totalPriceSingleDeluxe, totalPriceDoubleDeluxe, checkInDate, checkOutDate } = selectedRoomsData;
 
   // -------------------------------End Book API--------------------------------------------
 
-
   const cleanUpDescription = (description) => {
     if (!description) return '';
-
     let cleanedDescription = he.decode(description);
     cleanedDescription = cleanedDescription.replace(/<\/?(ul|li|b|i|strong|em|span)\b[^>]*>/gi, '');
     cleanedDescription = cleanedDescription.replace(/<br\s*\/?>|<p\s*\/?>|<\/p>/gi, '\n');
@@ -818,14 +572,15 @@ const GuestDetails = () => {
       const index = listItems.indexOf(match);
       return `${index + 1}. `;
     });
-
     return cleanedDescription;
   };
 
+if (payLoading) {
+    return <Payloader />;
+  }
 
   return (
     <>
-
       <CustomNavbar />
       <div className="timer">
         <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
@@ -862,10 +617,8 @@ const GuestDetails = () => {
                           <p>No hotel policy details available.</p>
                         )}
                       </Accordion.Body>
-
                     </Accordion.Item>
                   </Accordion>
-
 
                   <Accordion className="accordian_space">
                     <Accordion.Item eventKey="0">
@@ -880,13 +633,6 @@ const GuestDetails = () => {
                       </Accordion.Body>
                     </Accordion.Item>
                   </Accordion>
-
-                  {/* {HotelNorms ? (
-                <div className="hotel-norms">
-                  <h4>Hotel Norms</h4>
-                  <p>{cleanHotelNorms(HotelNorms)}</p>
-                </div>
-              ) : <p>No hotel norms available.</p>} */}
                 </div>
 
                 <div className="room-details-container">
@@ -898,7 +644,6 @@ const GuestDetails = () => {
                       <p> Price:  ₹{totalPriceSingleDeluxe.toFixed(2)}</p>
 
                       <div className="payment-summary">
-
                         {/* <p><strong>Total Price:</strong> {totalPriceWithGST.toFixed(2)}</p> */}
                         {/* <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p> */}
                         <p>GST ({gstRate}%): ₹{((applyDiscount(totalPrice, discount) * gstRate) / 100).toFixed(2)}</p>
@@ -907,7 +652,6 @@ const GuestDetails = () => {
                         <p>Price After Discount: ₹{applyDiscount(totalPrice, discount).toFixed(2)}</p>
                       </div>
                     </div>
-
                   ))}
 
                   {/* <h4>Selected Double Deluxe Rooms</h4> */}
@@ -924,7 +668,6 @@ const GuestDetails = () => {
                       </div>
                     </div>
                   ))}
-
                 </div>
 
                 {!showForm && (
@@ -1029,27 +772,28 @@ const GuestDetails = () => {
                                     onChange={(e) => handleFormChange(index, e)}
                                   />
                                 </div>
-                                <div className="mb-3 date-picker-container">
-                                  <input
-                                    type="date"
-                                    value={formData.passportIssueDate ? formData.passportIssueDate.toISOString().split('T')[0] : ''}
-                                    onChange={(e) => handleDateChange(index, e.target.value, 'passportIssueDate')}
-                                    min={new Date().toISOString().split('T')[0]}
-                                    className="form-control full-width"
-                                  />
-                                  <label className="custom-placeholder">Passport Issue Date</label>
-                                </div>
 
-                                <div className="mb-3 date-picker-container">
-                                  <input
-                                    type="date"
-                                    value={formData.passportExpDate ? formData.passportExpDate.toISOString().split('T')[0] : ''}
-                                    onChange={(e) => handleDateChange(index, e.target.value, 'passportExpDate')}
-                                    min={new Date().toISOString().split('T')[0]}
-                                    className="form-control full-width"
-                                  />
-                                  <label className="custom-placeholder">Passport Expiry Date</label>
-                                </div>
+                                <div className="mb-3">
+                        <DatePicker
+                          selected={formData.passportIssueDate}
+                          onChange={(date) => handleDateChange(index, date, 'passportIssueDate')}
+                          placeholderText="Passport Issue Date"
+                          className="form-control full-width"
+                          minDate={new Date()}
+                        />
+                        <label className="custom-placeholder">Passport Issue Date</label>
+                      </div>
+
+                      <div className="mb-3">
+                        <DatePicker
+                          selected={formData.passportExpDate}
+                          onChange={(date) => handleDateChange(index, date, 'passportExpDate')}
+                          placeholderText="Passport Expiry Date"
+                          className="form-control full-width"
+                          minDate={new Date()}
+                        />
+                        <label className="custom-placeholder">Passport Expiry Date</label>
+                      </div>
 
                                 <div className="mb-3">
                                   <input
@@ -1061,7 +805,6 @@ const GuestDetails = () => {
                                     onChange={(e) => handleFormChange(index, e)}
                                   />
                                 </div>
-
                                 <div className="mb-3">
                                   <input
                                     type="number"
@@ -1081,8 +824,6 @@ const GuestDetails = () => {
                     </div>
                   </div>
                 )}
-
-
                 {formSubmitted && (
                   <div>
                     {/* <h2>Guest Details</h2>
@@ -1109,13 +850,10 @@ const GuestDetails = () => {
           ) : (
             <p className="submit-btn">No room details available.</p>
           )}
-
         </div>
       </div>
       <Footer />
-
     </>
   );
 };
-
 export default GuestDetails;

@@ -4,7 +4,7 @@
   position: relative; 
 }
 
-/* .suggestions-list {
+.suggestions_hotel{
   position: absolute; 
   top: 100%; 
   left: 0; 
@@ -19,14 +19,14 @@
   margin: 0; 
 }
 
-.suggestions-list li {
+.suggestions_hotel li {
   padding: 8px; 
   cursor: pointer; 
 }
 
-.suggestions-list li:hover {
+.suggestions_hotel li:hover {
   background-color: #f0f0f0; 
-} */
+} 
 
 
 .hotel_container {

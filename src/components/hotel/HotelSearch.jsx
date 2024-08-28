@@ -319,7 +319,7 @@ const HotelSearch = () => {
         <FontAwesomeIcon icon={faHotel} className="calendar-icon" />
       </div>
       {isSuggestionVisible && suggestions.length > 0 && (
-        <ul className="suggestions">
+        <ul className="suggestions_hotel">
           {suggestions.map((suggestion) => (
             <li
               key={suggestion.busodma_id}
