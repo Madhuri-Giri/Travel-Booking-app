@@ -11,10 +11,15 @@ import { PiTrolleySuitcaseFill } from "react-icons/pi";
 import { useLocation, useNavigate } from 'react-router-dom';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
+import Payloader from '../../pages/loading/Payloader';
+
 
 
 const FlightReview = () => {
   const navigate = useNavigate();
+
+  const [payLoading, setPayLoading] = useState(false);
+
 
   const location = useLocation();
   const { fareDataDetails } = location.state || {}; // Use optional chaining
@@ -125,14 +130,18 @@ const FlightReview = () => {
 
           localStorage.setItem('flight_payment_id', response.razorpay_payment_id);
           localStorage.setItem('flight_transaction_id', options.transaction_id);
-          alert('Flight Payment successful!');
+          // alert('Flight Payment successful!');
+          setPayLoading(true);
+
 
           try {
             await flightpayUpdate();
 
             const IsLCC = localStorage.getItem('IsLCC') === 'true'; 
+          setPayLoading(false);
 
             if (IsLCC) {
+
               await bookLccApi();
               await flightPaymentStatus()
             } else {
@@ -210,7 +219,7 @@ const FlightReview = () => {
       }
 
       const data = await response.json();
-      console.log('flight Update successful:', data);
+      // console.log('flight Update successful:', data);
     } catch (error) {
       console.error('Error updating payment details:', error.message);
       throw error;
@@ -449,7 +458,9 @@ const FlightReview = () => {
 
   // -------------------------------------------------------------------------------------------
 
-
+  if (payLoading) {
+    return <Payloader />;
+  }
 
 
   return (

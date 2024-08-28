@@ -27,6 +27,10 @@ const BusTikit = () => {
   const bus_booking_id = localStorage.getItem('bus_booking_id');
   const bus_trace_id = localStorage.getItem('bus_trace_id');
 
+  const storedAmount = localStorage.getItem('BusBookingAmount');
+console.log('Stored Booking Amount:', storedAmount);
+
+
   useEffect(() => {
     const fetchBusTicketApiData = async () => {
       try {
@@ -218,7 +222,7 @@ const BusTikit = () => {
                             <div>
                               <p><strong>Seat No -: </strong><span>{seatDetail ? seatDetail.seat_name : 'N/A'}</span></p>
                               <p><strong>Booking Id -: </strong><span>{seatDetail ? seatDetail.bus_book_id : 'N/A'}</span></p>
-                              <p className="psngeramount"><strong>Amount -: </strong><span>{seatDetail ? seatDetail.offered_price : 'N/A'}</span></p>
+                              <p className="psngeramount"><strong>Amount -: </strong><span>{storedAmount}</span></p>
                               <p><strong>Passcode: </strong></p>
                               <Barcode className="buspasscode" value={passcode} format="CODE128" />
                             </div>
