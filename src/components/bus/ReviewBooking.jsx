@@ -11,14 +11,16 @@ import PassangerInfo from './PassangerInfo';
 import { useSelector } from 'react-redux';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
-import updateGif from "../../assets/images/payloader.gif"
+// import updateGif from "../../assets/images/payloader.gif"
+import Payloader from '../../pages/loading/Payloader';
 
 const ReviewBooking = () => {
 
   const from = useSelector((state) => state.bus.from);
   const to = useSelector((state) => state.bus.to);
 
-  // const transactionNumBus = localStorage.getItem('transactionNumBus');
+  const [payLoading, setPayLoading] = useState(false);
+
 
 
   const [paymentDetails, setPaymentDetails] = useState(null);
@@ -80,7 +82,7 @@ const ReviewBooking = () => {
 
     setNewContactData(newContactInitialData);
     setIsContactSubmitted(true);
-    toast.success("Contact details submitted successfully!");
+    // toast.success("Contact details submitted successfully!");
   }
 
   //  ------------------------------------------------------------------
@@ -100,12 +102,12 @@ const ReviewBooking = () => {
   const fetchPaymentDetails = async () => {
     try {
       const loginId = localStorage.getItem('loginId');
-      const roundedAmount = Math.round(totalPayment * 100) / 100;
+      const roundedAmount = Math.round(totalPayment);
       const transactionNoBus = localStorage.getItem('transactionNum-bus');
       const busSavedId = localStorage.getItem('busSavedId');
 
 
-      console.log('Sending data to API:', { amount: roundedAmount, user_id: loginId });
+      // console.log('Sending data to API:', { amount: roundedAmount, user_id: loginId });
 
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
         amount: roundedAmount,
@@ -175,18 +177,20 @@ const ReviewBooking = () => {
           );
           localStorage.setItem('transaction_id', options.transaction_id);
 
-          alert('Payment successful!');
+        setPayLoading(true);
 
-          try {
-            await updateHandlePayment();
-            await bookHandler();
-            await busPaymentStatus();
-          } catch (error) {
-            console.error('Error during updateHandlePayment or bookHandler:', error.message);
-            alert('An error occurred during processing. Please try again.');
-          }
+        try {
+          await updateHandlePayment();
 
-        },
+          setPayLoading(false);
+
+          await bookHandler();
+          await busPaymentStatus();
+        } catch (error) {
+          console.error('Error during updateHandlePayment or bookHandler:', error.message);
+          alert('An error occurred during processing. Please try again.');
+        }
+      },
 
         prefill: {
           username: 'pallavi',
@@ -217,6 +221,7 @@ const ReviewBooking = () => {
   // ---------------------------update payment api------------------------------
 
   const updateHandlePayment = async () => {
+
     try {
       const payment_id = localStorage.getItem('payment_id');
       const transaction_id = localStorage.getItem('transaction_id');
@@ -250,20 +255,7 @@ const ReviewBooking = () => {
       const status = data.data.status;
       console.log('statusBus', status);
 
-      switch (status) {
-        case 'pending':
-          toast.info('Payment is pending. Please wait.');
-          break;
-        case 'failed':
-          toast.error('Payment failed. Redirecting to bus search page.');
-          navigate('/bus-search');
-          break;
-        case 'success':
-          toast.success('Payment updated successfully!');
-          break;
-        default:
-          toast.warn('Unknown payment status. Please contact support.');
-      }
+    
     } catch (error) {
       console.error('Error updating payment details:', error.message);
       throw error;
@@ -378,9 +370,6 @@ const ReviewBooking = () => {
         toast.success('Booking successful!');
         localStorage.setItem('busTikitDetails', JSON.stringify(responseBody));
   
-        // setTimeout(() => {
-        //   navigate('/booking-history', { state: { bookingDetails: responseBody } });
-        // }, 2000);
       }
   
     } catch (error) {
@@ -422,7 +411,7 @@ const ReviewBooking = () => {
       localStorage.setItem("buspaymentStatusRes", JSON.stringify(responseBody));
   
       // Navigate with state
-      navigate('/busBookTicket', { state: { buspaymentStatus: responseBody } });
+      navigate('/booking-history', { state: { buspaymentStatus: responseBody } });
   
       return responseBody;
   
@@ -480,16 +469,23 @@ const ReviewBooking = () => {
     }
   }, []);
   
-  const totalPayment = totalFare + taxes + (totalFare * 0.18) - discount;
+  
+  const totalPayment = Math.round(totalFare + taxes + (totalFare * 0.18) - discount);
+
   
 
   // -------------------------------------------------------------------------------------------------
 
+  if (payLoading) {
+    return <Payloader />;
+  }
 
-
+ 
   return (
     <>
+
       <CustomNavbar />
+
 
       <div className='ReviewBooking'>
         <div className="review-book">
@@ -587,7 +583,7 @@ const ReviewBooking = () => {
                     <div className="last-pay">
                       <div className="fare">
                         <h6><i className="ri-price-tag-2-line"></i>Total Ticket Amount</h6>
-                        <small >₹{Math.round(totalPayment)}</small>
+                        <small >₹{totalPayment}</small>
                       </div>
                       <div className="review-pay">
                         <button
@@ -646,7 +642,7 @@ const ReviewBooking = () => {
     </div>
     <div className="final-pay">
       <span>Total Payment</span>
-      <small>₹{Math.round(totalPayment)}</small>
+      <small>₹{totalPayment}</small>
     </div>
   </div>
 </div>
