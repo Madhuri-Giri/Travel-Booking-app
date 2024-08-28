@@ -40,6 +40,7 @@ import BookingHistory from './components/bookingHistory/BookingHistory';
 import FlightTickect from './components/flight/DownloadTikit/FlightTickect';
 import HotelTicket from './components/hotelBill/HotelTicket'
 import TicketBookBus from './components/bus/DownloadTikit/TicketBookBus';
+import Payloader from "./pages/loading/Payloader"
 
 const App = () => {
   const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number',  '/load'];
@@ -87,6 +88,8 @@ const App = () => {
           <Route path='/payment-history' element={<PaymentHistory/>}/>
           <Route path='/booking-history' element={<BookingHistory/>}/>
           <Route path='busBookTicket' element={<TicketBookBus/>} />
+          <Route path='/payload' element={<Payloader/>} />
+
         </Routes>
         <ToastContainer
           position="top-right"
