@@ -1,18 +1,18 @@
-
-
-
 .BusLayout {
   width: 100%;
 }
-.busseatTabs{
+
+.busseatTabs {
   display: none;
 }
-.busseatTabsBTN{
+
+.busseatTabsBTN {
   display: flex;
-    justify-content: center;
-    font-size: 17px;
-    background: #9daaab3b;
+  justify-content: center;
+  font-size: 17px;
+  background: #9daaab3b;
 }
+
 .busseatTabsBTN button.active {
   background-color: skyblue !important;
   color: white;
@@ -23,6 +23,7 @@
   text-transform: uppercase !important;
 
 }
+
 .busseatTabsBTN button {
   font-size: 13px !important;
   background-color: #ccc !important;
@@ -66,19 +67,22 @@
   margin-bottom: -1vmax;
   /* background: linear-gradient(90deg, #f2f2f2, hsla(0, 0%, 94.9%, 0)); */
 }
-.BusLayout .Seat-layout .seats .left-top h6{
- font-size: 1vmax;
- letter-spacing: 1px;
+
+.BusLayout .Seat-layout .seats .left-top h6 {
+  font-size: 1vmax;
+  letter-spacing: 1px;
 }
-.BusLayout .Seat-layout .seats .left-top p{
+
+.BusLayout .Seat-layout .seats .left-top p {
   letter-spacing: 1px;
   color: green;
- }
- .BusLayout .sel{
+}
+
+.BusLayout .sel {
   width: 98%;
   margin-bottom: 1vmax;
   font-size: 13px;
- }
+}
 
 .BusLayout .Seat-layout .seats .left-btm {
   width: 100%;
@@ -86,7 +90,7 @@
   align-items: flex-start;
   justify-content: space-evenly;
   flex-direction: row;
-   /* background: #fafafa; */
+  /* background: #fafafa; */
 }
 
 .BusLayout .Seat-layout .seats .left-btm .lower {
@@ -104,8 +108,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  /* font-weight: 700; */
   text-transform: uppercase;
+  color: gray;
 }
 
 .BusLayout .Seat-layout .seats .left-btm .lower .sit {
@@ -119,18 +124,7 @@
   flex-wrap: wrap;
   /* gap: 0.5vmax; */
   background: #fff;
-  padding-top: 1vmax;
 
-}
-
-.BusLayout .Seat-layout .seats .left-btm .lower .sit p {
-  font-size: 0.8vmax;
-  color: green;
-  font-weight: bold;
-}
-
-.BusLayout .Seat-layout .seats .left-btm .lower .sit span {
-  font-size: 0.7vmax;
 }
 
 .BusLayout .Seat-layout .seats .left-btm .upper {
@@ -149,7 +143,8 @@
   /* align-items: center; */
   justify-content: center;
   text-transform: uppercase;
-  font-weight: 700;
+  /* font-weight: 700; */
+  color: gray;
 }
 
 .BusLayout .Seat-layout .seats .left-btm .upper .sit {
@@ -162,19 +157,11 @@
   box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.582);
   flex-wrap: wrap;
   /* gap: 0.5vmax; */
-  padding-top: 1vmax;
+  padding: 10px 0px;
 }
 
-.BusLayout .Seat-layout .seats .left-btm .upper .sit p {
-  font-size: 0.8vmax;
-  color: green;
-  font-weight: bold;
-}
-
-.BusLayout .Seat-layout .seats .left-btm .upper .sit span {
-  font-size: 0.7vmax;
-}
-.lower, .upper {
+.lower,
+.upper {
   margin-bottom: 20px;
 }
 
@@ -203,6 +190,7 @@
 .sit-img.aisle {
   margin-left: 6vmax;
 }
+
 .sit-img.last-row {
   flex: 1 1 16%;
 }
@@ -251,7 +239,7 @@
   border-radius: 10px;
 }
 
-.BusLayout .bord-drop{
+.BusLayout .bord-drop {
   width: 100%;
   display: flex;
   align-items: center;
@@ -261,236 +249,218 @@
 
 
 @media (max-width:600px) {
-  .busseatTabs{
+  .busseatTabs {
     display: block;
     margin-bottom: -15px;
   }
+
   .lowerSeatWEB,
-  .upperSeatWEB{
+  .upperSeatWEB {
     display: none !important;
   }
+
   .BusLayout {
     width: 100%;
   }
+
   .BusLayout .Seat-layout {
     width: 100%;
   }
+
   .BusLayout .Seat-layout .seats {
     width: 100%;
   }
-  
+
   .BusLayout .Seat-layout .seats .left {
     width: 100%;
   }
-  
+
   .BusLayout .Seat-layout .seats .left-top {
     width: 100%;
   }
-  .BusLayout .Seat-layout .seats .left-top h6{
-   font-size: 2vmax;
-   text-transform: capitalize;
+
+  .BusLayout .Seat-layout .seats .left-top h6 {
+    font-size: 2vmax;
+    text-transform: capitalize;
   }
 
-  
-.BusLayout .Seat-layout .seats .left-btm {
-  width: 100%;
-  /* display: flex;
+
+  .BusLayout .Seat-layout .seats .left-btm {
+    width: 100%;
+    /* display: flex;
   align-items: center;
   justify-content: space-evenly; */
-  flex-direction: column;
-}
+    flex-direction: column;
+  }
 
-.BusLayout .Seat-layout .seats .left-btm .lower {
-  width: 100%;
-}
+  .BusLayout .Seat-layout .seats .left-btm .lower {
+    width: 100%;
+  }
 
-.BusLayout .Seat-layout .seats .left-btm .lower .sit {
-  width: 95%;
-  flex-wrap: wrap;
-  gap: 0.3vmax;
-  flex-direction: row;
-  display: flex;
-}
+  .BusLayout .Seat-layout .seats .left-btm .lower .sit {
+    width: 95%;
+    flex-wrap: wrap;
+    gap: 0.3vmax;
+    flex-direction: row;
+    display: flex;
+  }
 
-.BusLayout .Seat-layout .seats .left-btm .lower .sit p {
-  font-size: 1.5vmax;
-}
+  .BusLayout .Seat-layout .seats .left-btm .upper {
+    width: 100%;
+  }
 
-.BusLayout .Seat-layout .seats .left-btm .lower .sit span {
-  font-size: 1.2vmax;
-}
+  .BusLayout .Seat-layout .seats .left-btm .upper .sit {
+    width: 95%;
+    flex-wrap: wrap;
+    gap: 0.3vmax;
+  }
 
-.BusLayout .Seat-layout .seats .left-btm .upper {
-  width: 100%;
-}
-.BusLayout .Seat-layout .seats .left-btm .upper .sit {
-  width: 95%;
-  flex-wrap: wrap;
-  gap: 0.3vmax;
-}
+  .lower,
+  .upper {
+    margin-bottom: 20px;
+  }
 
-.BusLayout .Seat-layout .seats .left-btm .upper .sit p {
-  font-size: 1.3vmax;
-}
+  .seat {
+    width: 30px;
+    height: 40px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.BusLayout .Seat-layout .seats .left-btm .upper .sit span {
-  font-size: 1.2vmax;
-}
-.lower, .upper {
-  margin-bottom: 20px;
-}
+  .sit-img {
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.4vmax;
+    cursor: pointer;
+  }
 
+  .sit-img.aisle {
+    margin-left: 9vmax;
+  }
 
-.seat {
-  width: 30px;
-  height: 40px;
-  margin: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .sit-img.last-row {
+    flex: 1 1 16%;
+  }
 
-.sit-img {
-  height: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2.4vmax;
-  cursor: pointer;
-}
+  /* ------------------------ */
 
-.sit-img.aisle {
-  margin-left: 9vmax;
-}
+  .BusLayout .Seat-layout .seats .right .right-btm .proceed button {
+    width: 100%;
+    padding: 2vmax 1vmax;
+  }
 
-.sit-img.last-row {
-  flex: 1 1 16%;
-}
-
-/* ------------------------ */
-
-.BusLayout .Seat-layout .seats .right .right-btm .proceed button {
-  width: 100%;
-  padding: 2vmax 1vmax;
-}
-  
 }
 
 
 
 @media (min-width:600px) and (max-width:1150px) {
-  .BusLayout .Seat-layout .seats .left-btm .upper{
+  .BusLayout .Seat-layout .seats .left-btm .upper {
     display: flex;
   }
+
   .BusLayout {
     width: 100%;
   }
+
   .BusLayout .Seat-layout {
     width: 100%;
   }
+
   .BusLayout .Seat-layout .seats {
     width: 100%;
   }
-  
+
   .BusLayout .Seat-layout .seats .left {
     width: 100%;
   }
-  
+
   .BusLayout .Seat-layout .seats .left-top {
     width: 100%;
   }
-  .BusLayout .Seat-layout .seats .left-top h6{
-   font-size: 2vmax;
-   text-transform: capitalize;
+
+  .BusLayout .Seat-layout .seats .left-top h6 {
+    font-size: 2vmax;
+    text-transform: capitalize;
   }
 
-  
-.BusLayout .Seat-layout .seats .left-btm {
-  width: 100%;
 
-  flex-direction: column;
-}
+  .BusLayout .Seat-layout .seats .left-btm {
+    width: 100%;
 
-.BusLayout .Seat-layout .seats .left-btm .lower {
-  width: 100%;
-}
+    flex-direction: column;
+  }
 
-.BusLayout .Seat-layout .seats .left-btm .lower .sit {
-  width: 95%;
-  flex-wrap: wrap;
-  gap: 0.3vmax;
-  flex-direction: row;
-  display: flex;
-}
+  .BusLayout .Seat-layout .seats .left-btm .lower {
+    width: 100%;
+  }
 
-.BusLayout .Seat-layout .seats .left-btm .lower .sit p {
-  font-size: 1.5vmax;
-}
+  .BusLayout .Seat-layout .seats .left-btm .lower .sit {
+    width: 95%;
+    flex-wrap: wrap;
+    gap: 0.3vmax;
+    flex-direction: row;
+    display: flex;
+  }
 
-.BusLayout .Seat-layout .seats .left-btm .lower .sit span {
-  font-size: 1.2vmax;
-}
+  .BusLayout .Seat-layout .seats .left-btm .upper {
+    width: 100%;
+  }
 
-.BusLayout .Seat-layout .seats .left-btm .upper {
-  width: 100%;
-}
-.BusLayout .Seat-layout .seats .left-btm .upper .sit {
-  width: 95%;
-  flex-wrap: wrap;
-  gap: 0.3vmax;
-}
+  .BusLayout .Seat-layout .seats .left-btm .upper .sit {
+    width: 95%;
+    flex-wrap: wrap;
+    gap: 0.3vmax;
+  }
 
-.BusLayout .Seat-layout .seats .left-btm .upper .sit p {
-  font-size: 1.5vmax;
-}
-
-.BusLayout .Seat-layout .seats .left-btm .upper .sit span {
-  font-size: 1.2vmax;
-}
-.lower, .upper {
-  margin-bottom: 20px;
-}
+  .lower,
+  .upper {
+    margin-bottom: 20px;
+  }
 
 
-.seat {
-  width: 40px;
-  height: 50px;
-  margin: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .seat {
+    width: 40px;
+    height: 50px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.sit-img {
-  height: 90px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2.1vmax;
-}
+  .sit-img {
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.1vmax;
+  }
 
-.sit-img.aisle {
-  margin-left: 31vmax;
-}
+  .sit-img.aisle {
+    margin-left: 31vmax;
+  }
 
-.sit-img.last-row {
-  flex: 1 1 10%;
-}
+  .sit-img.last-row {
+    flex: 1 1 10%;
+  }
 
-/* ------------------------ */
+  /* ------------------------ */
 
-.BusLayout .Seat-layout .seats .right .right-btm .proceed button {
-  width: 100%;
-  padding: 2vmax 1vmax;
-}
-  
+  .BusLayout .Seat-layout .seats .right .right-btm .proceed button {
+    width: 100%;
+    padding: 2vmax 1vmax;
+  }
+
 }
 
 
 
-.busseatpricee span{
+.busseatpricee span {
   color: #00e100;
   font-weight: bold;
 }
@@ -528,4 +498,176 @@
 .seat-type-select option {
   font-size: 16px;
   padding: 10px;
+}
+
+.seat-image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.seat-details {
+  position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 5px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+    z-index: 10;
+    display: flex;
+    font-weight: bold;
+    box-shadow: 2px 2px 3px 4px #f0ededa6;
+    border: 1px solid rgba(0, 0, 0, 0.493);
+}
+
+
+
+.seat-details span {
+  font-size: 19px;
+  color: black;
+  font-size: 12px !important;
+}
+
+.seat-details p {
+  margin: 0px;
+  font-size: 12px !important;
+}
+
+/* Show seat details on hover */
+.seat-image-container:hover .seat-details {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+.upperSeatWEB .sit-img {
+  width: 50px; /* Adjust seat width */
+  height: 30px; /* Adjust seat height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: white; /* Background color for the seat */
+  position: relative;
+  margin: 4px 0px;
+  border-radius: 4px;
+}
+
+
+
+
+
+/* Lower Bus Layout CSS */
+.bus-layout {
+  display: grid;
+  grid-template-columns: repeat(6, 25px); /* Number of columns for lower layout */
+  gap: 10px; /* Spacing between seats in the lower layout */
+  align-items: center; /* Center-align seats vertically */
+  justify-content: center; /* Center-align the whole grid horizontally */
+  padding: 15px 10px;
+  background-color: white; /* Background color for the lower bus layout */
+  margin-bottom: 20px; /* Additional space below to prevent overlap */
+  position: relative; /* Positions it relative to its normal flow */
+}
+
+/* Upper Bus Layout CSS */
+.bus-upperlayout {
+  display: grid;
+  grid-template-columns: repeat(6, 20px); /* Number of columns for upper layout */
+  gap: 5px; /* Spacing between seats in the upper layout */
+  align-items: center; /* Center-align seats vertically */
+  justify-content: center; /* Center-align the whole grid horizontally */
+  padding: 15px 10px;
+  background-color: white; /* Background color for the upper bus layout */
+  margin-top: 20px; /* Additional space above to prevent overlap */
+  position: relative; /* Positions it relative to its normal flow */
+}
+
+/* Common Seat Styles */
+.sit-img {
+  width: 50px; /* Seat width */
+  height: 30px; /* Seat height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: white; /* Background color for the seat */
+  position: relative;
+  margin: 0px 1px;
+  border-radius: 4px;
+}
+
+/* Styles for Disabled Seats */
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Styles for Aisle Seats */
+.aisle {
+  margin-right: 20px; /* Create space for the aisle */
+}
+
+/* Empty Space for Seat Gaps */
+.empty-space {
+  width: 50px; /* Width matches the seat size */
+  height: 30px; /* Height matches the seat size */
+  background-color: transparent; /* Transparent for empty spaces */
+}
+
+/* Specific Styling for Upper Seats */
+.bus-upperlayout .sit-img {
+  width: 40px; /* Adjusted seat width for upper layout */
+  height: 35px; /* Adjusted seat height for upper layout */
+  margin: 2px 1px; /* Slightly different margins for upper layout */
+}
+
+/* Specific Styling for Lower Seats */
+.bus-layout .sit-img {
+  width: 50px; /* Adjusted seat width for lower layout */
+  height: 30px; /* Adjusted seat height for lower layout */
+  margin: 5px 2px; /* Slightly different margins for lower layout */
+}
+
+
+.sit-img {
+  width: 50px; /* Adjust seat width */
+  height: 30px; /* Adjust seat height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: white; /* Background color for the seat */
+  position: relative;
+  margin: 0px 1px;
+  border-radius: 4px;
+}
+
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.aisle {
+  margin-right: 20px; /* Create space for the aisle */
+}
+
+.empty-space {
+  width: 50px; /* Adjust width to match seat size */
+  height: 30px; /* Adjust height to match seat size */
+  background-color: transparent; /* Transparent for empty spaces */
+}
+
+
+.vertical-seat {
+  transform: rotate(90deg);
+  margin-left: 25px;
 }
