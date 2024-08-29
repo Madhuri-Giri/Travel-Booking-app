@@ -32,13 +32,18 @@ const FlightSearch = () => {
   const [to, setTo] = useState('KWI');
   const [fromSuggestions, setFromSuggestions] = useState([]);
   const [toSuggestions, setToSuggestions] = useState([]);
-  const [preferredDepartureTime, setPreferredDepartureTime] = useState();
-  const [preferredArrivalTime, setPreferredArrivalTime] = useState();
+  // const [preferredDepartureTime, setPreferredDepartureTime] = useState();
+  // const [preferredArrivalTime, setPreferredArrivalTime] = useState();
   const fromInputRef = useRef(null);
   const toInputRef = useRef(null);
   const fromSuggestionsRef = useRef(null);
   const toSuggestionsRef = useRef(null);
   const mainCityNames = ['Delhi', 'Mumbai', 'Bangalore', 'Kolkata', 'Goa', 'Hyderabad'];
+
+  // const [departureDateDep, setDepartureDateDep] = useState();
+  const [departureDate, setDepartureDate] = useState();
+  const [returnDateDep, setReturnDateDep] = useState();
+  // const [returnDateArr, setReturnDateArr] = useState();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -91,7 +96,6 @@ const FlightSearch = () => {
   const handleFromInputFocus = () => {
     fetchSuggestions('', setFromSuggestions, true);
   };
-
   const handleToInputFocus = () => {
     fetchSuggestions('', setToSuggestions, true);
   };
@@ -120,20 +124,7 @@ const FlightSearch = () => {
     fieldSetter(suggestion.busodma_destination_name);
     setSuggestions([]);
   };
-  // Function to handle "From" selection
-  const handleFromSelect = (suggestion) => {
-    handleSuggestionClick(suggestion, setFrom);
-    setFromSuggestions([]);
 
-    let updatedSegments = formData.Segments;
-    updatedSegments[0]["Origin"] = suggestion.busodma_destination_name;
-    setFormData((prev) => ({ ...prev, Segments: updatedSegments }));
-  };
-  // Function to handle "To" selection
-  const handleToSelect = (suggestion) => {
-    handleSuggestionClick(suggestion, setTo);
-    setToSuggestions([]);
-  };
 
   // function for adult , child , infact dropdown list-------------------------------------------
   const [showDropdown, setShowDropdown] = useState(false);
@@ -143,49 +134,162 @@ const FlightSearch = () => {
   const handleClose = () => {
     setShowDropdown(false);
   };
-  // function for adult , child , infact dropdown list-------------------------------------------
+  // function for adult , child , infact dropdown list------------------------------------------ 
 
+  const departureDatePickerRef = useRef(null);
+  const arrivalDatePickerRef = useRef(null);
 
-  // func for Origin & Destination----------------------------------------------------------------
-  // const handleFromChange = (event) => {
-  //   const value = event.target.value;
-  //   console.log("vvvvvvalue", value)
-  //   setFrom(value);
-  //   if (value.length > 2) {
-  //     fetchSuggestions(value, setFromSuggestions);
-  //   } else {
-  //     setFromSuggestions([]);
+  const handleDateChangeDeparture = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}T00:00:00`;
+    setDepartureDate(formattedDate);
+  };
+  const handleDateChangeReturn = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}T00:00:00`;
+    setReturnDateDep(formattedDate);
+  };
+
+  // const handleDateChangeReturn = (date, fieldName) => {
+  //   const year = date.getFullYear();
+  //   const month = String(date.getMonth() + 1).padStart(2, '0');
+  //   const day = String(date.getDate()).padStart(2, '0');
+  //   const formattedDate = `${year}-${month}-${day}T00:00:00`;
+
+  //   if (fieldName === "returnDateDep") {
+  //     setReturnDateDep(formattedDate);
+  //   } else if (fieldName === "returnDateArr") {
+  //     setReturnDateArr(formattedDate);
   //   }
   // };
-  // const handleToChange = (event) => {
-  //   const value = event.target.value;
-  //   setTo(value);
-  //   if (value.length > 2) {
-  //     fetchSuggestions(value, setToSuggestions);
-  //   } else {
-  //     setToSuggestions([]);
-  //   }
-  // };
-  // func for Origin & Destination--------------------------------------------------------------- 
 
-  // Static formData------------------------------------------------------------
+  // fun for increase decrease adult , child , infant count------------------------------------------------
+  // State variables for counts
+  const [adultCount, setAdultCount] = useState(0);
+  const [childCount, setChildCount] = useState(0);
+  const [infantCount, setInfantCount] = useState(0);
+  console.log("adultCount", adultCount);
+  console.log("childCount", childCount);
+  console.log("infantCount", infantCount);
+  // Handle count change
+  const handleCount = (action, type) => {
+    switch (type) {
+      case 'AdultCount':
+        setAdultCount(prevCount => (action === 'increment' ? prevCount + 1 : Math.max(prevCount - 1, 0)));
+        break;
+      case 'ChildCount':
+        setChildCount(prevCount => (action === 'increment' ? prevCount + 1 : Math.max(prevCount - 1, 0)));
+        break;
+      case 'InfantCount':
+        setInfantCount(prevCount => (action === 'increment' ? prevCount + 1 : Math.max(prevCount - 1, 0)));
+        break;
+      default:
+        break;
+    }
+  };
+
+  // const handleCount = (key, name) => {
+  //   console.log("called", key, name)
+  //   if (key == "increment") {
+  //     setFormData((prev) => ({ ...prev, [name]: formData[name] + 1 }));
+  //   } else if (key == "decrement") {
+  //     if (formData[name] > 0) {
+  //       setFormData((prev) => ({ ...prev, [name]: formData[name] - 1 }));
+  //     }
+  //   }
+  // }
+  // fun for increase decrease adult , child , infant count------------------------------------------------
+
+
+  // func for select flight class----------------------------------------------
+  const [selectedflightClass, setSelectedflightClass] = useState('Economy');
+  const handleflightClassChange = (event) => {
+    setSelectedflightClass(event.target.value);
+    setFormData((prev) => ({ ...prev, FlightCabinClass: event.target.value }))
+  };
+  // func for select flight class----------------------------------------------
+
+
+
+  // for one way & two way tabs-----------------------------------------
+  const [activeTab, setActiveTab] = useState('oneway');
+  const [tabValue, setTabValue] = useState(1); // State for tab value: 1 for oneway, 2 for twoway
+  console.log("tabValue", tabValue);
+  const [segments, setSegments] = useState([
+    {
+      Origin: "LKO",
+      Destination: "KWI",
+      FlightCabinClass: 1,
+      PreferredDepartureTime: departureDate,
+      PreferredArrivalTime: departureDate
+    }
+  ]);
+
+  // State for formData, which includes segments
   const [formData, setFormData] = useState({
     AdultCount: 1,
     ChildCount: 0,
     InfantCount: 0,
     JourneyType: "1",
     FareType: 1,
-    Segments: [
-      {
-        Origin: "LKO",
-        Destination: "KWI",
-        FlightCabinClass: 1,
-        PreferredDepartureTime: "2024-08-20T00:00:00",
-        PreferredArrivalTime: "2024-09-30T00:00:00"
-      }
-    ]
+    Segments: segments // Initially set to segments state
   });
-  // Static formData------------------------------------------------------------
+
+  // Handle tab change
+  const handleTabChange = (event) => {
+    const selectedTab = event.target.value;
+    setActiveTab(selectedTab);
+    const newValue = selectedTab === 'oneway' ? 1 : 2;
+    setTabValue(newValue); // Update tab value based on selected tab
+  };
+
+  // Effect to update segments based on tab value
+  useEffect(() => {
+    if (tabValue === 1) {
+      // One-Way: Keep only one segment
+      setSegments([
+        {
+          Origin: "LKO",
+          Destination: "KWI",
+          FlightCabinClass: 1,
+          PreferredDepartureTime: departureDate,
+          PreferredArrivalTime: departureDate
+        }
+      ]);
+    } else if (tabValue === 2) {
+      // Two-Way: Add a second segment
+      setSegments([
+        {
+          Origin: "LKO",
+          Destination: "KWI",
+          FlightCabinClass: 1,
+          PreferredDepartureTime: departureDate,
+          PreferredArrivalTime: departureDate
+        },
+        {
+          Origin: "KWI",
+          Destination: "LKO",
+          FlightCabinClass: 1,
+          PreferredDepartureTime: returnDateDep,
+          PreferredArrivalTime: returnDateDep
+        }
+      ]);
+    }
+  }, [tabValue, departureDate, returnDateDep]); // Dependency on tabValue, departureDate, and return dates
+
+  // Effect to sync formData with the segments state
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      Segments: segments
+    }));
+  }, [segments]); // Dependency on segments state
+
+  console.log("formData", formData);
 
   // search API integration function----------------------------------------------
   const getFlightList = async () => {
@@ -196,6 +300,7 @@ const FlightSearch = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        // body: JSON.stringify(payload),
         body: JSON.stringify(formData),
       });
 
@@ -243,70 +348,6 @@ const FlightSearch = () => {
     }
   }
 
-  const departureDatePickerRef = useRef(null);
-  const arrivalDatePickerRef = useRef(null);
-
-  const handleChange = (date, fieldName) => {
-    // Format the date to "YYYY-MM-DDT00:00:00" in local time
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}T00:00:00`;
-
-    console.log("formattedDate", formattedDate);
-
-    if (fieldName === "PreferredDepartureTime") {
-      setPreferredDepartureTime(date);
-    } else if (fieldName === "PreferredArrivalTime") {
-      setPreferredArrivalTime(date);
-    }
-
-    setFormData((prev) => {
-      let updatedSegments = [...prev.Segments];
-      updatedSegments[0][fieldName] = formattedDate;
-      console.log("updatedSegments", updatedSegments);
-      return { ...prev, Segments: updatedSegments };
-    });
-  };
-
-
-
-
-  // function for dynamic dep arr date----------------------------------------
-
-  // fun for increase decrease adult , child , infant count------------------------------------------------
-  const handleCount = (key, name) => {
-    console.log("called", key, name)
-    if (key == "increment") {
-      setFormData((prev) => ({ ...prev, [name]: formData[name] + 1 }));
-    } else if (key == "decrement") {
-      if (formData[name] > 0) {
-        setFormData((prev) => ({ ...prev, [name]: formData[name] - 1 }));
-      }
-    }
-  }
-  // fun for increase decrease adult , child , infant count------------------------------------------------
-
-
-  // func for select flight class----------------------------------------------
-  const [selectedflightClass, setSelectedflightClass] = useState('Economy');
-  const handleflightClassChange = (event) => {
-    setSelectedflightClass(event.target.value);
-    setFormData((prev) => ({ ...prev, JourneyType: event.target.value }))
-  };
-  // func for select flight class----------------------------------------------
-
-
-
-  // for one way & two way tabs-----------------------------------------
-  const [activeTab, setActiveTab] = useState('oneway');
-
-  const handleTabChange = (event) => {
-    setActiveTab(event.target.value);
-  };
-  // for one way & two way tabs-----------------------------------------
-
-
   // ----------  Api integration start for slider image  ----------
   const [offerSliderImages, setOfferSliderImages] = useState([]);
   useEffect(() => {
@@ -319,9 +360,6 @@ const FlightSearch = () => {
       });
   }, []);
   // ----------  Api integration end for slider image  ----------
-
-
-
   // slider logics------------------------------------------------------
   const SamplePrevArrow = (props) => {
     const { className, style, onClick } = props;
@@ -405,7 +443,6 @@ const FlightSearch = () => {
 
       <section className='flightPageBanner'>
         <div className="container-fluid ">
-          {/* <div className="findFlightss"><button>Find Flights</button></div> */}
           <div className="row">
             <div className="col-lg-5 ">
               <div className="flightmainBooking">
@@ -509,7 +546,7 @@ const FlightSearch = () => {
                                 <MdDateRange />
                               </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
-                                <DatePicker
+                                {/* <DatePicker
                                   name="PreferredDepartureTime"
                                   selected={preferredDepartureTime}
                                   onChange={(date) => handleChange(date, "PreferredDepartureTime")}
@@ -517,6 +554,15 @@ const FlightSearch = () => {
                                   id="PreferredDepartureTime"
                                   placeholderText="Select a date"
                                   ref={departureDatePickerRef}
+                                  minDate={new Date()}
+                                /> */}
+                                <DatePicker
+                                  name="PreferredDepartureTime"
+                                  selected={departureDate}
+                                  onChange={handleDateChangeDeparture}
+                                  className="departureCallender"
+                                  id="PreferredDepartureTime"
+                                  placeholderText="Select a date"
                                   minDate={new Date()}
                                 />
 
@@ -536,8 +582,9 @@ const FlightSearch = () => {
                               </span>
                               <div className="flightTravellerclss">
                                 {/* <FaCircleUser /> */}
-                                <p> Traveller - <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> , </p>
-                                <p> Class - <span>{formData.JourneyType}</span>  </p>
+                                <p> Traveller - <span>{adultCount + childCount + infantCount}</span> , </p>
+                                {/* <p> Traveller - <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> , </p> */}
+                                <p> Class - <span>{selectedflightClass}</span>  </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
                               <label className="flight-input-labelTravel" htmlFor="text">Travellers $ Cabin</label>
@@ -561,40 +608,43 @@ const FlightSearch = () => {
                                     <div className='adultIcons'>
                                       <FiMinusCircle
                                         className='adultMinusicon'
-                                        values=""
-                                        onClick={() => handleCount("decrement", "AdultCount")}
+                                        onClick={() => handleCount('decrement', 'AdultCount')}
                                       />
-                                      <span>{formData.AdultCount}</span>
+                                      <span>{adultCount}</span>
                                       <FiPlusCircle
                                         className='adultPlusicon'
-                                        onClick={() => handleCount("increment", "AdultCount")}
+                                        onClick={() => handleCount('increment', 'AdultCount')}
                                       />
                                     </div>
                                   </div>
+
                                   <div className='flightpageagebox'>
                                     <h6 style={{ color: '#222' }}>Children</h6>
                                     <div className='childIcons'>
                                       <FiMinusCircle
                                         className='childMinusicon'
-                                        onClick={() => handleCount("decrement", "ChildCount")}
+                                        onClick={() => handleCount('decrement', 'ChildCount')}
                                       />
-                                      <span>{formData.ChildCount}</span>
+                                      <span>{childCount}</span>
                                       <FiPlusCircle
                                         className='childPlusicon'
-                                        onClick={() => handleCount("increment", "ChildCount")}
+                                        onClick={() => handleCount('increment', 'ChildCount')}
                                       />
                                     </div>
                                   </div>
+
                                   <div className='flightpageagebox'>
                                     <h6 style={{ color: '#222' }}>Infants</h6>
                                     <div className='infantIcons'>
                                       <FiMinusCircle
                                         className='infantsMinusicon'
-                                        onClick={() => handleCount("decrement", "InfantCount")} />
-                                      <span>{formData.InfantCount}</span>
+                                        onClick={() => handleCount('decrement', 'InfantCount')}
+                                      />
+                                      <span>{infantCount}</span>
                                       <FiPlusCircle
                                         className='infantsPlusicon'
-                                        onClick={() => handleCount("increment", "InfantCount")} />
+                                        onClick={() => handleCount('increment', 'InfantCount')}
+                                      />
                                     </div>
                                   </div>
                                 </div>
@@ -717,6 +767,13 @@ const FlightSearch = () => {
                               </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
                                 <DatePicker
+                                  selected={departureDate}
+                                  onChange={handleDateChangeDeparture}
+                                  className="departureCallender"
+                                  placeholderText="Select a departure date"
+                                  minDate={new Date()} // Departure date cannot be in the past
+                                />
+                                {/* <DatePicker
                                   name="PreferredDepartureTime"
                                   selected={preferredDepartureTime}
                                   onChange={(date) => handleChange(date, "PreferredDepartureTime")}
@@ -725,7 +782,7 @@ const FlightSearch = () => {
                                   placeholderText="Select a date"
                                   ref={departureDatePickerRef}
                                   minDate={new Date()}
-                                />
+                                /> */}
 
                                 {/* <MdDateRange
                                   className="date-picker-icon"
@@ -742,7 +799,7 @@ const FlightSearch = () => {
                                 <MdDateRange />
                               </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
-                                <DatePicker
+                                {/* <DatePicker
                                   name="PreferredArrivalTime"
                                   selected={preferredArrivalTime}
                                   onChange={(date) => handleChange(date, "PreferredArrivalTime")}
@@ -751,6 +808,13 @@ const FlightSearch = () => {
                                   placeholderText="Select a date"
                                   ref={arrivalDatePickerRef}
                                   minDate={new Date()}
+                                /> */}
+                                <DatePicker
+                                  selected={returnDateDep}
+                                  onChange={handleDateChangeReturn}
+                                  className="returnCallender"
+                                  placeholderText="Select a return date"
+                                  minDate={departureDate} // Return date cannot be before the departure date
                                 />
                               </div>
                               <label className="flight-input-labelRetDate" htmlFor="PreferredArrivalTime">Return</label>
@@ -763,9 +827,9 @@ const FlightSearch = () => {
                                 <FaCircleUser />
                               </span>
                               <div className="flightTravellerclss">
-                                {/* <FaCircleUser /> */}
-                                <p> Traveller - <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> , </p>
-                                <p> Class - <span>{formData.JourneyType}</span>  </p>
+                                <p> Traveller - <span>{adultCount + childCount + infantCount}</span> , </p>
+                                {/* <p> Traveller - <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> , </p> */}
+                                <p> Class - <span>{selectedflightClass}</span>  </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
                               <label className="flight-input-labelTravel" htmlFor="text">Travellers $ Cabin</label>
@@ -789,39 +853,43 @@ const FlightSearch = () => {
                                     <div className='adultIcons'>
                                       <FiMinusCircle
                                         className='adultMinusicon'
-                                        onClick={() => handleCount("decrement", "AdultCount")}
+                                        onClick={() => handleCount('decrement', 'AdultCount')}
                                       />
-                                      <span>{formData.AdultCount}</span>
+                                      <span>{adultCount}</span>
                                       <FiPlusCircle
                                         className='adultPlusicon'
-                                        onClick={() => handleCount("increment", "AdultCount")}
+                                        onClick={() => handleCount('increment', 'AdultCount')}
                                       />
                                     </div>
                                   </div>
+
                                   <div className='flightpageagebox'>
                                     <h6 style={{ color: '#222' }}>Children</h6>
                                     <div className='childIcons'>
                                       <FiMinusCircle
                                         className='childMinusicon'
-                                        onClick={() => handleCount("decrement", "ChildCount")}
+                                        onClick={() => handleCount('decrement', 'ChildCount')}
                                       />
-                                      <span>{formData.ChildCount}</span>
+                                      <span>{childCount}</span>
                                       <FiPlusCircle
                                         className='childPlusicon'
-                                        onClick={() => handleCount("increment", "ChildCount")}
+                                        onClick={() => handleCount('increment', 'ChildCount')}
                                       />
                                     </div>
                                   </div>
+
                                   <div className='flightpageagebox'>
                                     <h6 style={{ color: '#222' }}>Infants</h6>
                                     <div className='infantIcons'>
                                       <FiMinusCircle
                                         className='infantsMinusicon'
-                                        onClick={() => handleCount("decrement", "InfantCount")} />
-                                      <span>{formData.InfantCount}</span>
+                                        onClick={() => handleCount('decrement', 'InfantCount')}
+                                      />
+                                      <span>{infantCount}</span>
                                       <FiPlusCircle
                                         className='infantsPlusicon'
-                                        onClick={() => handleCount("increment", "InfantCount")} />
+                                        onClick={() => handleCount('increment', 'InfantCount')}
+                                      />
                                     </div>
                                   </div>
                                 </div>
