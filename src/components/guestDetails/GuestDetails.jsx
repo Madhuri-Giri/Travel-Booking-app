@@ -172,19 +172,9 @@ const GuestDetails = () => {
     localStorage.setItem('guestDetails', JSON.stringify(guestForms));
   };
 
-
   const handleCheckboxChange = () => {
     setCheckboxChecked(!checkboxChecked);
   };
-
-  // const handleDateChange = (index, date, field) => {
-  //   const newGuestForms = [...guestForms];
-  //   newGuestForms[index] = {
-  //     ...newGuestForms[index],
-  //     [field]: date,
-  //   };
-  //   setGuestForms(newGuestForms);
-  // };
   // ---------------- RozarPay Payment Gateway  Integration start -------------------
   const fetchPaymentDetails = async () => {
     try {
@@ -209,7 +199,7 @@ const GuestDetails = () => {
         amount: roundedAmount,
         user_id: loginId,
         transaction_num: transactionNum,
-        hotel_booking_id: hotel_booking_id
+        hotel_booking_id: [hotel_booking_id]
       };
 
       console.log('Sending payload:', payload);
@@ -358,7 +348,6 @@ const GuestDetails = () => {
   };
 
   // ----------------Payment Integration End -------------------
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -368,8 +357,23 @@ const GuestDetails = () => {
 
   //  ----------------------------Start book api-----------------------------------
       // Construct the booking payload
+      let isProcessing = false;
+
       const bookHandler = async () => {
+
+        if (isProcessing) return;
+        isProcessing = true;
+
+        const formatDate = (date) => {
+          const d = new Date(date);
+          if (isNaN(d.getTime())) {
+              return new Date().toISOString().slice(0, 19); 
+          }
+          return d.toISOString().slice(0, 19); 
+      };
+
         try {
+          const storedHotelRoomData = localStorage.getItem('hotelRooms');
           const transactionNum = localStorage.getItem('transactionNum');
           const transaction_id = localStorage.getItem('transaction_id');
           const hotel_booking_id = localStorage.getItem('hotelBlockId');
@@ -378,6 +382,8 @@ const GuestDetails = () => {
             throw new Error('Required data missing for booking.');
           }
     
+          const guestDetails = guestForms;
+          
           const bookingPayload = {
             ResultIndex: "9",
             HotelCode: "92G|DEL",
@@ -388,123 +394,122 @@ const GuestDetails = () => {
             IsVoucherBooking: true,
             transaction_num: transactionNum,
             transaction_id: transaction_id,
-            hotel_booking_id: hotel_booking_id,
+            hotel_booking_id:[ hotel_booking_id],
+
             HotelRoomsDetails: [
               {
-                ChildCount: 0,
-                RequireAllPaxDetails: false,
-                RoomId: 0,
-                RoomStatus: 0,
-                RoomIndex: 4,
-                RoomTypeCode: "211504640|4|1",
-                RoomTypeName: "Deluxe Room",
-                RatePlanCode: "230104963",
-                RatePlan: 13,
-                InfoSource: "FixedCombination",
-                SequenceNo: "EA~~341089~4",
-                DayRates: [
-                  {
-                    Amount: 12325,
-                    Date: "2019-09-28T00:00:00"
-                  }
-                ],
-                Price: {
-                  CurrencyCode: "INR",
-                  RoomPrice: 12325,
-                  Tax: 3113.3,
-                  ExtraGuestCharge: 0,
-                  ChildCharge: 0,
-                  OtherCharges: 26,
-                  Discount: 2175,
-                  PublishedPrice: 15464.3,
-                  PublishedPriceRoundedOff: 15464,
-                  OfferedPrice: 15464.3,
-                  OfferedPriceRoundedOff: 15464,
-                  AgentCommission: 0,
-                  AgentMarkUp: 0,
-                  ServiceTax: 4.68,
-                  TDS: 0,
-                  ServiceCharge: 0,
-                  TotalGSTAmount: 4.68,
-                  GST: {
-                    CGSTAmount: 0,
-                    CGSTRate: 0,
-                    CessAmount: 0,
-                    CessRate: 0,
-                    IGSTAmount: 4.68,
-                    IGSTRate: 18,
-                    SGSTAmount: 0,
-                    SGSTRate: 0,
-                    TaxableAmount: 26
-                  }
-                },
-                HotelPassenger: guestForms.map((guest, index) => ({
-                  Title: index === 0 ? "Mr" : "Mstr", // Adjust as needed
-                  FirstName: guest.fname,
-                  MiddleName: guest.mname,
-                  LastName: guest.lname,
-                  Phoneno: guest.mobile,
-                  Email: guest.email,
-                  PaxType: index === 0 ? "1" : "2", // Adjust as needed
-                  LeadPassenger: index === 0,
-                  PassportNo: guest.passportNo || null,
-                  PassportIssueDate: guest.passportIssueDate || null,
-                  PassportExpDate: guest.passportExpDate || null,
-                  PAN: guest.PAN || "XXXXXXXXXX"
+                  ChildCount: storedHotelRoomData.ChildCount || 0,
+                  RequireAllPaxDetails: storedHotelRoomData.RequireAllPaxDetails || false,
+                  RoomId: storedHotelRoomData.RoomId || 0,
+                  RoomStatus: storedHotelRoomData.RoomStatus || 0,
+                  RoomIndex: storedHotelRoomData.RoomIndex || 0,
+                  RoomTypeCode: storedHotelRoomData.RoomTypeCode || '',
+                  RoomTypeName: storedHotelRoomData.RoomTypeName || 'Unknown',
+                  RatePlanCode: storedHotelRoomData.RatePlanCode || '',
+                  RatePlan: storedHotelRoomData.RatePlan || 0,
+                  InfoSource: storedHotelRoomData.InfoSource || 'Unknown',
+                  SequenceNo: storedHotelRoomData.SequenceNo || '0',
+                  DayRates: (storedHotelRoomData.DayRates && storedHotelRoomData.DayRates.length > 0
+                      ? storedHotelRoomData.DayRates.map(dayRate => ({
+                          Amount: dayRate.Amount || 0,
+                          Date: dayRate.Date || 'Unknown'
+                      }))
+                      : [{ Amount: 0, Date: 'Unknown' }]
+                  ),
+                  HotelPassenger: guestDetails.map(guest => ({
+                    Title: guest.title || "Mr",
+                    FirstName: guest.fname || "",
+                    MiddleName: guest.mname || "",
+                    LastName: guest.lname || "",
+                    Phoneno: guest.mobile || "",
+                    Email: guest.email || "",
+                    PaxType: guest.paxType || "",
+                    LeadPassenger: guest.leadPassenger === "true",
+                    PassportNo: guest.passportNo || "",
+                    PassportIssueDate: guest.passportIssueDate || "",
+                    PassportExpDate: guest.passportExpDate || "",
+                    PAN: guest.PAN || "",
                 })),
-                RoomPromotion: "Member’s exclusive price",
-                Amenities: [
-                  "Breakfast Buffet"
-                ],
-                SmokingPreference: "0",
-                BedTypes: [
-                  {
-                    BedTypeCode: "13",
-                    BedTypeDescription: "1 double bed"
-                  }
-                ],
-                HotelSupplements: [],
-                LastCancellationDate: "2019-09-17T00:00:00",
-                CancellationPolicies: [
-                  {
-                    Charge: 100,
-                    ChargeType: 2,
-                    Currency: "INR",
-                    FromDate: "2019-09-18T00:00:00",
-                    ToDate: "2019-09-26T23:59:59"
+
+
+                
+                  SupplierPrice: storedHotelRoomData.SupplierPrice || null,
+                  Price: {
+                      CurrencyCode: storedHotelRoomData.Price?.CurrencyCode || 'INR',
+                      RoomPrice: storedHotelRoomData.Price?.RoomPrice || 0,
+                      Tax: storedHotelRoomData.Price?.Tax || 0,
+                      ExtraGuestCharge: storedHotelRoomData.Price?.ExtraGuestCharge || 0,
+                      ChildCharge: storedHotelRoomData.Price?.ChildCharge || 0,
+                      OtherCharges: storedHotelRoomData.Price?.OtherCharges || 0,
+                      Discount: storedHotelRoomData.Price?.Discount || 0,
+                      PublishedPrice: storedHotelRoomData.Price?.PublishedPrice || 0,
+                      PublishedPriceRoundedOff: storedHotelRoomData.Price?.PublishedPriceRoundedOff || 0,
+                      OfferedPrice: storedHotelRoomData.Price?.OfferedPrice || 0,
+                      OfferedPriceRoundedOff: storedHotelRoomData.Price?.OfferedPriceRoundedOff || 0,
+                      AgentCommission: storedHotelRoomData.Price?.AgentCommission || 0,
+                      AgentMarkUp: storedHotelRoomData.Price?.AgentMarkUp || 0,
+                      ServiceTax: storedHotelRoomData.Price?.ServiceTax || 0,
+                      TDS: storedHotelRoomData.Price?.TDS || 0,
+                      ServiceCharge: storedHotelRoomData.Price?.ServiceCharge || 0,
+                      TotalGSTAmount: storedHotelRoomData.Price?.TotalGSTAmount || 0,
+                      GST: {
+                          CGSTAmount: storedHotelRoomData.Price?.GST?.CGSTAmount || 0,
+                          CGSTRate: storedHotelRoomData.Price?.GST?.CGSTRate || 0,
+                          CessAmount: storedHotelRoomData.Price?.GST?.CessAmount || 0,
+                          CessRate: storedHotelRoomData.Price?.GST?.CessRate || 0,
+                          IGSTAmount: storedHotelRoomData.Price?.GST?.IGSTAmount || 0,
+                          IGSTRate: storedHotelRoomData.Price?.GST?.IGSTRate || 0,
+                          SGSTAmount: storedHotelRoomData.Price?.GST?.SGSTAmount || 0,
+                          SGSTRate: storedHotelRoomData.Price?.GST?.SGSTRate || 0,
+                          TaxableAmount: storedHotelRoomData.Price?.GST?.TaxableAmount || 0
+                      }
                   },
-                  {
-                    Charge: 100,
-                    ChargeType: 2,
-                    Currency: "INR",
-                    FromDate: "2019-09-27T00:00:00",
-                    ToDate: "2019-09-29T23:59:59"
-                  },
-                  {
-                    Charge: 100,
-                    ChargeType: 2,
-                    Currency: "INR",
-                    FromDate: "2019-09-28T00:00:00",
-                    ToDate: "2019-09-29T00:00:00"
-                  }
-                ],
-                CancellationPolicy: "Deluxe Room#^#100.00% of total amount will be charged, If cancelled between 18-Sep-2019 00:00:00 and 26-Sep-2019 23:59:59.|100.00% of total amount will be charged, If cancelled between 27-Sep-2019 00:00:00 and 29-Sep-2019 23:59:59.|100.00% of total amount will be charged, If cancelled between 28-Sep-2019 00:00:00 and 29-Sep-2019 00:00:00.|#!#",
-                Inclusion: [
-                  "Breakfast Buffet"
-                ],
-                BedTypeCode: "13",
-                Supplements: null
+                  RoomPromotion: storedHotelRoomData.RoomPromotion || '',
+                  Amenities: (storedHotelRoomData.Amenities && storedHotelRoomData.Amenities.length > 0
+                      ? storedHotelRoomData.Amenities
+                      : ['Unknown']
+                  ),
+                  SmokingPreference: storedHotelRoomData.SmokingPreference || 'NoPreference',
+                  BedTypes: (storedHotelRoomData.BedTypes && storedHotelRoomData.BedTypes.length > 0
+                      ? storedHotelRoomData.BedTypes.map(bedType => ({
+                          BedTypeCode: bedType.BedTypeCode || '0',
+                          BedTypeDescription: bedType.BedTypeDescription || 'Unknown'
+                      }))
+                      : [{ BedTypeCode: '0', BedTypeDescription: 'Unknown' }]
+                  ),
+                  HotelSupplements: (storedHotelRoomData.HotelSupplements && storedHotelRoomData.HotelSupplements.length > 0
+                      ? storedHotelRoomData.HotelSupplements
+                      : [{ Supplement: 'None' }]
+                  ),
+                  LastCancellationDate: storedHotelRoomData.LastCancellationDate || 'Unknown',
+                  CancellationPolicies: (storedHotelRoomData.CancellationPolicies && storedHotelRoomData.CancellationPolicies.length > 0
+                      ? storedHotelRoomData.CancellationPolicies.map(policy => ({
+                          Charge: policy.Charge || 0,
+                          ChargeType: policy.ChargeType || 0,
+                          Currency: policy.Currency || 'INR',
+                          FromDate: formatDate(policy.FromDate || new Date()), 
+                          ToDate: formatDate(policy.ToDate || new Date()) 
+                      }))
+                      : [{ Charge: 0, ChargeType: 0, Currency: 'INR', FromDate: formatDate(new Date()), ToDate: formatDate(new Date()) }]
+                  ),
+                  CancellationPolicy: storedHotelRoomData.CancellationPolicy || 'No Policy',
+                  Inclusion: (storedHotelRoomData.Inclusion && storedHotelRoomData.Inclusion.length > 0
+                      ? storedHotelRoomData.Inclusion
+                      : ['None']
+                  ),
+                  BedTypeCode: storedHotelRoomData.BedTypeCode || 'NA',
+                  Supplements: (storedHotelRoomData.Supplements && storedHotelRoomData.Supplements.length > 0
+                      ? storedHotelRoomData.Supplements
+                      : ['None']
+                  )
               }
-            ],
+          ],
             ArrivalTime: "2019-09-28T00:00:00",
             IsPackageFare: true,
             SrdvType: "SingleTB",
             SrdvIndex: "SrdvTB",
             TraceId: "1",
-            EndUserIp: "1.1.1.1",
-            ClientId: "XXXX",
-            UserName: "XXXX",
-            Password: "XXXX"
+            
           };
     
           const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-book', {
@@ -540,6 +545,8 @@ const GuestDetails = () => {
           console.error('Error during hotel booking:', error.message);
           toast.error('An error occurred during hotel booking. Please try again.');
         }
+        
+        isProcessing = false;
       };
     
   const { AddressLine1, HotelName, HotelRoomsDetails, HotelPolicyDetail, HotelNorms } = hotelBlock;
@@ -779,7 +786,7 @@ if (payLoading) {
                           onChange={(date) => handleDateChange(index, date, 'passportIssueDate')}
                           placeholderText="Passport Issue Date"
                           className="form-control full-width"
-                          minDate={new Date()}
+                          minDate={null}
                         />
                         <label className="custom-placeholder">Passport Issue Date</label>
                       </div>
@@ -790,7 +797,7 @@ if (payLoading) {
                           onChange={(date) => handleDateChange(index, date, 'passportExpDate')}
                           placeholderText="Passport Expiry Date"
                           className="form-control full-width"
-                          minDate={new Date()}
+                          minDate={null}
                         />
                         <label className="custom-placeholder">Passport Expiry Date</label>
                       </div>

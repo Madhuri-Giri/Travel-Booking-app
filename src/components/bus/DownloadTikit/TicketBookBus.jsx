@@ -9,7 +9,7 @@ import { CiSaveDown1 } from "react-icons/ci";
 import Lottie from 'lottie-react';
 import busAnim from "../../../assets/images/mainBus.json";
 import Barcode from 'react-barcode';
-// import { FaArrowRightLong } from "react-icons/fa";
+import { FaArrowRightLong } from "react-icons/fa";
 
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
