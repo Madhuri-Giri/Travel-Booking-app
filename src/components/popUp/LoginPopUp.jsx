@@ -13,6 +13,9 @@ const LoginPopUp = ({ showModal, onClose }) => {
     mobile: '',
     otp: ''  
   });
+
+
+  
   const [error, setError] = useState('');
   const toggleOtpVisibility = () => {
     setOtpShown(prev => !prev);

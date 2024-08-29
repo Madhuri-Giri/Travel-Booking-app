@@ -8,6 +8,7 @@ import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import { useNavigate } from 'react-router-dom';
 import { CiSaveDown1 } from "react-icons/ci";
+import hotelImg from '../../../src/assets/images/hotel-ticket-img.png';
 
 const BookingBill = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
@@ -20,7 +21,7 @@ const BookingBill = () => {
     if (storedTicketData) {
       try {
         const parsedData = JSON.parse(storedTicketData);
-        console.log('Parsed Booking Details:', parsedData); // Add this line to debug
+        console.log('Parsed Booking Details:', parsedData); 
         setBookingDetails(parsedData);
       } catch (e) {
         console.error('Error parsing ticket data:', e);
@@ -94,15 +95,13 @@ const BookingBill = () => {
       toast.error('No booking details available to generate PDF');
     }
   };
-  const transactionNum = localStorage.getItem('transactionNum');
   const bookingCancel = async (event) => {
     event.preventDefault();
-  
-    // Retrieve the stored booking IDs from localStorage
-    const hotelBookingIdsString = localStorage.getItem('hotel_booking_ids');
-    const hotelBookingIds = JSON.parse(hotelBookingIdsString);
-    const hotelBookingId = hotelBookingIds ? hotelBookingIds[0] : null;
 
+    // Retrieve the stored booking IDs from localStorage
+    const hotelBookingId = localStorage.getItem('hotel_booking_id');
+    const transactionNum = localStorage.getItem('transactionNum');
+    
     if (!hotelBookingId) {
         console.error('No hotel booking ID available');
         setError('No hotel booking ID available');
@@ -110,8 +109,16 @@ const BookingBill = () => {
         return;
     }
 
+    // Additional validation for transactionNum
+    if (!transactionNum) {
+        console.error('No transaction number available');
+        setError('No transaction number available');
+        toast.error('No transaction number available');
+        return;
+    }
+
     const requestData = {
-      BookingId: '1554760', 
+      BookingId: '1554760',
       RequestType: 4,
       BookingMode: 5,
       SrdvType: "SingleTB",
@@ -155,69 +162,73 @@ const BookingBill = () => {
         setError('Error occurred during cancellation');
         toast.error('Error occurred during cancellation');
     }
-  };
-  
-  
-  
+};
+ 
   return (
     <>
       <CustomNavbar />
 
-       <div className="booking-bill-container">
-        <div className="header">
-          <h2>Hotel Booking Details</h2>
-        </div>
-
-        <div className="details-section">
-          <h3>Hotel Information</h3>
-          {bookingDetails.hotelBook && bookingDetails.hotelBook.length > 0 && (
-            <div className="detail-card">
-              {bookingDetails.hotelBook.map((item, index) => (
-                <div key={index}>
-                  <p><span>Hotel Name:</span> {item.hotelname}</p>
-                  <p><span>Booking ID:</span> {item.hotelcode}</p>
-                  <p><span>Transaction Number:</span> {item.transaction_num}</p>
-                  <p><span>Number of Rooms:</span> {item.noofrooms}</p>
-                  <p><span>Check-in Date:</span> {item.check_in_date || 'N/A'}</p>
-                  <p><span>Room Price:</span> {item.roomprice}</p>
-                  <p><span>Tax:</span> {item.tax}</p>
-                  <p><span>Discount:</span> {item.discount}</p>
-                  <p><span>Published Price:</span> {item.publishedprice}</p>
-                </div>
-              ))}
+      <div className="booking-bill-hotel">
+        <div className="col-lg-9 hotel_img">
+          <div className='hotelticktbox'>
+            <div className="header_hotel">
+              <h2>Hotel Booking Details</h2>
+              <img src={hotelImg} alt="Hotel" />
             </div>
-          )}
-        </div>
 
-        <div className="details-section">
-          <h3>Guest Details</h3>
-          {bookingDetails.hotelPassengerdetail && bookingDetails.hotelPassengerdetail.length > 0 && (
-            <div className="detail-card">
-              {bookingDetails.hotelPassengerdetail.map((item, index) => (
-                <div key={index}>
-                  <p><span>Title:</span> {item.title}</p>
-                  <p><span>First Name:</span> {item.firstname}</p>
-                  <p><span>Last Name:</span> {item.lastname}</p>
-                  <p><span>Phone Number:</span> {item.phoneno}</p>
-                  <p><span>Email:</span> {item.email}</p>
-                  <p><span>Age:</span> {item.age}</p>
-                </div>
-              ))}
+            <div className="details-section-wrapper">
+              <div className="details-section-hotel">
+                <h3>Hotel Information</h3>
+                {bookingDetails?.hotel_passengers?.length > 0 ? (
+                  <div className="detail-guest">
+                    {bookingDetails.hotel_passengers.map((item, index) => (
+                      <div key={index}>
+                        <p><span>Hotel Name:</span> {item.hotelname}</p>
+                        <p><span>Hotel Code:</span> {item.hotelcode}</p>
+                        <p><span>Transaction Number:</span> {item.transaction_num}</p>
+                        <p><span>Number of Rooms:</span> {item.noofrooms}</p>
+                        <p><span>Check-in Date:</span> {item.check_in_date}</p>
+                        <p><span>Room Price:</span> {item.roomprice}</p>
+                        <p><span>GST:</span> {item.tax}</p>
+                        <p><span>Discount:</span> {item.discount}</p>
+                        <p><span>Total Price:</span> {item.publishedprice}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p>No hotel information available.</p>
+                )}
+              </div>
+
+              <div className="details-section-guest">
+                <h3>Guest Details</h3>
+                {bookingDetails?.hotel_passengers?.length > 0 ? (
+                  <div className="detail-guest">
+                    {bookingDetails.hotel_passengers.map((item, index) => (
+                      <div key={index}>
+                        <p><span>Name:</span> {item.firstname}</p>
+                        <p><span>Phone Number:</span> {item.phoneno}</p>
+                        <p><span>Email:</span> {item.email}</p>
+                        <p><span>Age:</span> {item.age}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p>No guest details available.</p>
+                )}
+              </div>
             </div>
-          )}
-        </div>
 
-        <div className="button-container">
-          <button className="download-pdf-btn" onClick={handleDownloadPDF}>Download PDF</button>
-          <button className="cancel-button" onClick={bookingCancel}>Cancel Booking</button> 
-         </div>
-      </div> 
-     
-                        
-                           
-               
+            <div className='button-container'>
+              <button className='ticket_btn' onClick={handleDownloadPDF}>Download PDF</button>
+              <button className='ticket_btn_cancel' onClick={bookingCancel}>Cancel Ticket</button>
+            </div>
+            
+          </div>
+        </div>
+        <ToastContainer />
+      </div>               
       <Footer />
-      <ToastContainer />
     </>
   );
 };

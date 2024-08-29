@@ -7,7 +7,7 @@ import Footer from "../../pages/footer/Footer";
 import { RiTimerLine } from "react-icons/ri";
 import he from 'he';
 
-const HotelRoom = () => {
+  const HotelRoom = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [hotelRooms, setHotelRooms] = useState([]);
@@ -158,155 +158,122 @@ const HotelRoom = () => {
     checkOutDate: '2024-08-07'  
   };
 
+  let isProcessing = false;
+
   const roomblockHandler = async (event) => {
     event.preventDefault();
+
+    if (isProcessing) return;
+    isProcessing = true;
+
     const transactionNum = localStorage.getItem('transactionNum');
+    const storedHotelRoomData = localStorage.getItem('hotelRooms');
 
-    // Function to create Bed Types with default fallback
-    const createBedTypes = (bedTypes) => {
-        return bedTypes && bedTypes.length > 0
-            ? bedTypes.map(bedType => ({
-                BedTypeCode: bedType.BedTypeCode,
-                BedTypeDescription: bedType.BedTypeDescription 
-            }))
-            : [{
-                BedTypeCode: 'DefaultCode',
-                BedTypeDescription: 'DefaultDescription'
-            }];
-    };
-
-    // Assuming selectedSingleDeluxeRooms and selectedDoubleDeluxeRooms are arrays of room data
-    const hotelRoomsDetails = [
-        ...selectedSingleDeluxeRooms.map((room) => ({
-            ChildCount: room.ChildCount,
-            RequireAllPaxDetails: room.RequireAllPaxDetails,
-            RoomId: room.RoomId,
-            RoomStatus: room.RoomStatus,
-            RoomIndex: room.RoomIndex,
-            RoomTypeCode: room.RoomTypeCode,
-            RoomTypeName: room.RoomTypeName,
-            RatePlanCode: room.RatePlanCode,
-            RatePlan: room.RatePlan,
-            InfoSource: room.InfoSource,
-            SequenceNo: room.SequenceNo,
-            DayRates: room.DayRates,
-            SupplierPrice: room.SupplierPrice,
-            Price: {
-                CurrencyCode: room.Price?.CurrencyCode,
-                RoomPrice: room.Price?.RoomPrice,
-                Tax: room.Price?.Tax,
-                ExtraGuestCharge: room.Price?.ExtraGuestCharge,
-                ChildCharge: room.Price?.ChildCharge,
-                OtherCharges: room.Price?.OtherCharges,
-                Discount: room.Price?.Discount,
-                PublishedPrice: room.Price?.PublishedPrice,
-                PublishedPriceRoundedOff: room.Price?.PublishedPriceRoundedOff,
-                OfferedPrice: room.Price?.OfferedPrice,
-                OfferedPriceRoundedOff: room.Price?.OfferedPriceRoundedOff,
-                AgentCommission: room.Price?.AgentCommission,
-                AgentMarkUp: room.Price?.AgentMarkUp,
-                ServiceTax: room.Price?.ServiceTax,
-                TDS: room.Price?.TDS,
-                ServiceCharge: room.Price?.ServiceCharge,
-                TotalGSTAmount: room.Price?.TotalGSTAmount,
-                GST: room.Price?.GST || {
-                    CGSTAmount: 0,
-                    CGSTRate: 0,
-                    CessAmount: 0,
-                    CessRate: 0,
-                    IGSTAmount: 0,
-                    IGSTRate: 0,
-                    SGSTAmount: 0,
-                    SGSTRate: 0,
-                    TaxableAmount: 0
-                }
-            },
-            RoomPromotion: room.RoomPromotion || "Member’s exclusive price",
-            Amenities: room.Amenities || ["Breakfast Buffet"],
-            SmokingPreference: room.SmokingPreference || "0",
-            BedTypes: createBedTypes(room.BedTypes),
-            HotelSupplements: room.HotelSupplements || [],
-            LastCancellationDate: room.LastCancellationDate,
-            CancellationPolicies: room.CancellationPolicies,
-            CancellationPolicy: room.CancellationPolicy,
-            Inclusion: room.Inclusion || ["Breakfast Buffet"],
-            BedTypeCode: "'DefaultCode'",
-            Supplements: room.Supplements || null
-        })),
-        ...selectedDoubleDeluxeRooms.map((room) => ({
-            ChildCount: room.ChildCount,
-            RequireAllPaxDetails: room.RequireAllPaxDetails,
-            RoomId: room.RoomId,
-            RoomStatus: room.RoomStatus,
-            RoomIndex: room.RoomIndex,
-            RoomTypeCode: room.RoomTypeCode,
-            RoomTypeName: room.RoomTypeName,
-            RatePlanCode: room.RatePlanCode,
-            RatePlan: room.RatePlan,
-            InfoSource: room.InfoSource,
-            SequenceNo: room.SequenceNo,
-            DayRates: room.DayRates,
-            SupplierPrice: room.SupplierPrice,
-            Price: {
-                CurrencyCode: room.Price?.CurrencyCode,
-                RoomPrice: room.Price?.RoomPrice,
-                Tax: room.Price?.Tax,
-                ExtraGuestCharge: room.Price?.ExtraGuestCharge,
-                ChildCharge: room.Price?.ChildCharge,
-                OtherCharges: room.Price?.OtherCharges,
-                Discount: room.Price?.Discount,
-                PublishedPrice: room.Price?.PublishedPrice,
-                PublishedPriceRoundedOff: room.Price?.PublishedPriceRoundedOff,
-                OfferedPrice: room.Price?.OfferedPrice,
-                OfferedPriceRoundedOff: room.Price?.OfferedPriceRoundedOff,
-                AgentCommission: room.Price?.AgentCommission,
-                AgentMarkUp: room.Price?.AgentMarkUp,
-                ServiceTax: room.Price?.ServiceTax,
-                TDS: room.Price?.TDS,
-                ServiceCharge: room.Price?.ServiceCharge,
-                TotalGSTAmount: room.Price?.TotalGSTAmount,
-                GST: room.Price?.GST || {
-                    CGSTAmount: 0,
-                    CGSTRate: 0,
-                    CessAmount: 0,
-                    CessRate: 0,
-                    IGSTAmount: 0,
-                    IGSTRate: 0,
-                    SGSTAmount: 0,
-                    SGSTRate: 0,
-                    TaxableAmount: 0
-                }
-            },
-            RoomPromotion: room.RoomPromotion || "Member’s exclusive price",
-            Amenities: room.Amenities || ["Breakfast Buffet"],
-            SmokingPreference: room.SmokingPreference || "0",
-            BedTypes: createBedTypes(room.BedTypes),
-            HotelSupplements: room.HotelSupplements || [],
-            LastCancellationDate: room.LastCancellationDate,
-            CancellationPolicies: room.CancellationPolicies,
-            CancellationPolicy: room.CancellationPolicy,
-            Inclusion: room.Inclusion || ["Breakfast Buffet"],
-            BedTypeCode: "DefaultCode",
-            Supplements: room.Supplements || null
-        }))
-    ];
-console.log('payload',hotelRoomsDetails)
-    // Construct request data
-    const requestData = {
-        ResultIndex: "9",
-        HotelCode: "92G|DEL",
-        HotelName: "The Manor",
-        GuestNationality: "IN",
-        NoOfRooms: (selectedSingleDeluxeRooms.length + selectedDoubleDeluxeRooms.length).toString(),
-        ClientReferenceNo: 0,
-        IsVoucherBooking: true,
-        transaction_num: transactionNum,
-        HotelRoomsDetails: hotelRoomsDetails,
+    const hotelRoomsDetails = {
+        SrdvIndex: '65',
+        SrdvType: 'SingleTB',
+        ResultIndex: '9',
+        TraceId: '1',
+        HotelCode: '92G|DEL',
+        HotelName: 'The Manor',
+        NoOfRooms: '1',
+        // transactionNum: transactionNum,
+        HotelRoomsDetails: [
+            {
+                ChildCount: storedHotelRoomData.ChildCount || 0,
+                RequireAllPaxDetails: storedHotelRoomData.RequireAllPaxDetails || false,
+                RoomId: storedHotelRoomData.RoomId || 0,
+                RoomStatus: storedHotelRoomData.RoomStatus || 0,
+                RoomIndex: storedHotelRoomData.RoomIndex || 0,
+                RoomTypeCode: storedHotelRoomData.RoomTypeCode || 'DEFAULT_CODE',
+                RoomTypeName: storedHotelRoomData.RoomTypeName || 'Unknown',
+                RatePlanCode: storedHotelRoomData.RatePlanCode || '',
+                RatePlan: storedHotelRoomData.RatePlan || 0,
+                InfoSource: storedHotelRoomData.InfoSource || 'Unknown',
+                SequenceNo: storedHotelRoomData.SequenceNo || '0',
+                DayRates: (storedHotelRoomData.DayRates && storedHotelRoomData.DayRates.length > 0
+                    ? storedHotelRoomData.DayRates.map(dayRate => ({
+                        Amount: dayRate.Amount || 0,
+                        Date: dayRate.Date || 'Unknown'
+                    }))
+                    : [{ Amount: 0, Date: 'Unknown' }]
+                ),
+                SupplierPrice: storedHotelRoomData.SupplierPrice || null,
+                Price: {
+                    CurrencyCode: storedHotelRoomData.Price?.CurrencyCode || 'INR',
+                    RoomPrice: storedHotelRoomData.Price?.RoomPrice || 0,
+                    Tax: storedHotelRoomData.Price?.Tax || 0,
+                    ExtraGuestCharge: storedHotelRoomData.Price?.ExtraGuestCharge || 0,
+                    ChildCharge: storedHotelRoomData.Price?.ChildCharge || 0,
+                    OtherCharges: storedHotelRoomData.Price?.OtherCharges || 0,
+                    Discount: storedHotelRoomData.Price?.Discount || 0,
+                    PublishedPrice: storedHotelRoomData.Price?.PublishedPrice || 0,
+                    PublishedPriceRoundedOff: storedHotelRoomData.Price?.PublishedPriceRoundedOff || 0,
+                    OfferedPrice: storedHotelRoomData.Price?.OfferedPrice || 0,
+                    OfferedPriceRoundedOff: storedHotelRoomData.Price?.OfferedPriceRoundedOff || 0,
+                    AgentCommission: storedHotelRoomData.Price?.AgentCommission || 0,
+                    AgentMarkUp: storedHotelRoomData.Price?.AgentMarkUp || 0,
+                    ServiceTax: storedHotelRoomData.Price?.ServiceTax || 0,
+                    TDS: storedHotelRoomData.Price?.TDS || 0,
+                    ServiceCharge: storedHotelRoomData.Price?.ServiceCharge || 0,
+                    TotalGSTAmount: storedHotelRoomData.Price?.TotalGSTAmount || 0,
+                    GST: {
+                        CGSTAmount: storedHotelRoomData.Price?.GST?.CGSTAmount || 0,
+                        CGSTRate: storedHotelRoomData.Price?.GST?.CGSTRate || 0,
+                        CessAmount: storedHotelRoomData.Price?.GST?.CessAmount || 0,
+                        CessRate: storedHotelRoomData.Price?.GST?.CessRate || 0,
+                        IGSTAmount: storedHotelRoomData.Price?.GST?.IGSTAmount || 0,
+                        IGSTRate: storedHotelRoomData.Price?.GST?.IGSTRate || 0,
+                        SGSTAmount: storedHotelRoomData.Price?.GST?.SGSTAmount || 0,
+                        SGSTRate: storedHotelRoomData.Price?.GST?.SGSTRate || 0,
+                        TaxableAmount: storedHotelRoomData.Price?.GST?.TaxableAmount || 0
+                    }
+                },
+                RoomPromotion: storedHotelRoomData.RoomPromotion || '',
+                Amenities: (storedHotelRoomData.Amenities && storedHotelRoomData.Amenities.length > 0
+                    ? storedHotelRoomData.Amenities
+                    : ['Unknown']
+                ),
+                SmokingPreference: storedHotelRoomData.SmokingPreference || 'NoPreference',
+                BedTypes: (storedHotelRoomData.BedTypes && storedHotelRoomData.BedTypes.length > 0
+                    ? storedHotelRoomData.BedTypes.map(bedType => ({
+                        BedTypeCode: bedType.BedTypeCode || '0',
+                        BedTypeDescription: bedType.BedTypeDescription || 'Unknown'
+                    }))
+                    : [{ BedTypeCode: '0', BedTypeDescription: 'Unknown' }]
+                ),
+                HotelSupplements: (storedHotelRoomData.HotelSupplements && storedHotelRoomData.HotelSupplements.length > 0
+                    ? storedHotelRoomData.HotelSupplements
+                    : [{ Supplement: 'None' }]
+                ),
+                LastCancellationDate: storedHotelRoomData.LastCancellationDate || 'Unknown',
+                CancellationPolicies: (storedHotelRoomData.CancellationPolicies && storedHotelRoomData.CancellationPolicies.length > 0
+                    ? storedHotelRoomData.CancellationPolicies.map(policy => ({
+                        Charge: policy.Charge || 0,
+                        ChargeType: policy.ChargeType || 0,
+                        Currency: policy.Currency || 'INR',
+                        FromDate: policy.FromDate || 'Unknown',
+                        ToDate: policy.ToDate || 'Unknown'
+                    }))
+                    : [{ Charge: 0, ChargeType: 0, Currency: 'INR', FromDate: 'Unknown', ToDate: 'Unknown' }]
+                ),
+                CancellationPolicy: storedHotelRoomData.CancellationPolicy || 'No Policy',
+                Inclusion: (storedHotelRoomData.Inclusion && storedHotelRoomData.Inclusion.length > 0
+                    ? storedHotelRoomData.Inclusion
+                    : ['None']
+                ),
+                BedTypeCode: storedHotelRoomData.BedTypeCode || 'NA',
+                Supplements: (storedHotelRoomData.Supplements && storedHotelRoomData.Supplements.length > 0
+                    ? storedHotelRoomData.Supplements
+                    : ['None']
+                )
+            }
+        ],
         ArrivalTime: "2019-09-28T00:00:00",
         IsPackageFare: true,
         SrdvType: "SingleTB",
         SrdvIndex: "SrdvTB",
-        TraceId: "1",
+        TraceId: "1"
     };
 
     // Sending the request
@@ -316,7 +283,7 @@ console.log('payload',hotelRoomsDetails)
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(requestData),
+            body: JSON.stringify(hotelRoomsDetails),
         });
 
         if (!response.ok) {
@@ -326,7 +293,7 @@ console.log('payload',hotelRoomsDetails)
         const res = await response.json();
         const data = res.data;
         const bookingStatus = res.booking_status;
-
+        
         if (!bookingStatus) {
             throw new Error('Booking status is undefined in the response.');
         }
@@ -350,23 +317,31 @@ console.log('payload',hotelRoomsDetails)
     } catch (error) {
         console.error('Error:', error);
     }
+    isProcessing = false;
 };
   // --------------End API Integration-----------------
 
-  const cleanUpDescription = (description) => {
-    if (!description) return '';
+  const cleanCancellationPolicy = (text) => {
+    if (!text) return '';
   
-    let cleanedDescription = he.decode(description); // Decode HTML entities
-    cleanedDescription = cleanedDescription.replace(/<\/?(ul|li|b|i|strong|em|span)\b[^>]*>/gi, ''); // Remove specific tags
-    cleanedDescription = cleanedDescription.replace(/<br\s*\/?>|<p\s*\/?>|<\/p>/gi, '\n'); // Replace tags with newlines
-    cleanedDescription = cleanedDescription.replace(/\\|\|/g, ''); // Remove slashes and pipes
-    cleanedDescription = cleanedDescription.replace(/\s{2,}/g, ' '); // Replace multiple spaces
-    cleanedDescription = cleanedDescription.replace(/\n{2,}/g, '\n'); // Replace multiple newlines
-    cleanedDescription = cleanedDescription.replace(/\/\/+|\\|\|/g, '');
-    cleanedDescription = cleanedDescription.trim(); // Trim leading/trailing whitespace
-    cleanedDescription = cleanedDescription.replace(/"/g, ''); // Remove single quotes
-    return cleanedDescription;
+    let cleanedText = text
+    .replace(/#\^#|#!#|\s+/g, ' ') // Remove special sequences and extra spaces
+    .replace(/\|/g, '\n') // Replace pipe characters with new lines
+    .replace(/(\d{2}-\w{3}-\d{4}), (\d{2}:\d{2}:\d{2})/, '$1, $2') // Ensure proper date-time formatting
+    .replace(/INR (\d+\.\d{2})/, 'INR $1') // Ensure proper amount formatting
+    .replace(/(\d+)% of total amount/, '$1% of the total amount') // Clarify percentage text
+    .replace(/(\d{2}-\w{3}-\d{4})/, '$1'); // Ensure proper date formatting
+
+  // Clean up any redundant spaces or formatting issues
+  cleanedText = cleanedText
+    .replace(/\s{2,}/g, ' ') // Remove extra spaces
+    .trim(); // Remove leading and trailing spaces
+
+  return cleanedText;
   };
+  
+
+  
   
   const singleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'SINGLE DELUXE');
   const doubleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'DOUBLE Deluxe');
@@ -441,7 +416,7 @@ console.log('payload',hotelRoomsDetails)
                                 <Accordion.Item eventKey="0">
                                   <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
                                   <Accordion.Body>
-                                    {room.CancellationPolicy}
+                                 {cleanCancellationPolicy(room.CancellationPolicy)}
                                   </Accordion.Body>
                                 </Accordion.Item>
                               </Accordion>
@@ -466,7 +441,7 @@ console.log('payload',hotelRoomsDetails)
                                 <button onClick={roomblockHandler} className="reserve_button">Continue</button>
                               </div>
                             )}
-                          </Card.Body>
+                          </Card.Body>    
                         </Card>
                       ))}
                     </div>
@@ -521,7 +496,7 @@ console.log('payload',hotelRoomsDetails)
                                 <Accordion.Item eventKey="0">
                                   <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
                                   <Accordion.Body>
-                                    {room.CancellationPolicy}
+                                    {cleanCancellationPolicy(room.CancellationPolicy)}
 
                                   </Accordion.Body>
                                 </Accordion.Item>

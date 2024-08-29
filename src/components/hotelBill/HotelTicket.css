@@ -1,0 +1,139 @@
+.booking-bill-hotel {
+  margin: 30px auto;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hotelticktbox {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.header_hotel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: #00b7eb;
+}
+
+.header_hotel h2 {
+  text-align: left;
+  color: #444;
+  font-size: 36px;
+  font-weight: 600;
+  margin: 0;
+  margin-left: 30px;
+}
+
+.header_hotel img {
+  width: 200px;
+  height: auto;
+  border-radius: 5px;
+}
+
+.details-section-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.details-section-guest, .details-section-hotel {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  /* margin: 0 10px;  */
+}
+
+.details-section-guest h3, .details-section-hotel h3 {
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+  font-size: 20px;
+  font-weight: 500;
+  /* margin-bottom: 10px; */
+}
+
+.detail-guest p, .detail-hotel p {
+  margin: 12px 0;
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.detail-guest p span, .detail-hotel p span {
+  font-weight: 600;
+  color: #007bff;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 0;
+}
+
+.ticket_btn, .ticket_btn_cancel {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.ticket_btn {
+  color: #fff;
+  background-color: #00b7eb;
+  margin-left: 20px;
+}
+
+.ticket_btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.ticket_btn:active {
+  transform: translateY(0);
+}
+
+.ticket_btn_cancel {
+  color: #fff;
+  background-color: #ff3a3a;
+  margin-right: 20px;
+}
+
+.ticket_btn_cancel:hover {
+  background-color: #cc0000;
+  transform: translateY(-2px);
+}
+
+.ticket_btn_cancel:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .details-section-wrapper {
+    flex-direction: column;
+  }
+
+  .details-section-guest, .details-section-hotel {
+    margin: 0;
+    padding: 15px;
+  }
+
+  .ticket_btn, .ticket_btn_cancel {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    margin: 5px 0;
+  }
+}
