@@ -537,7 +537,6 @@
   font-size: 12px !important;
 }
 
-/* Show seat details on hover */
 .seat-image-container:hover .seat-details {
   opacity: 1;
   visibility: visible;
@@ -545,14 +544,14 @@
 
 
 .upperSeatWEB .sit-img {
-  width: 50px; /* Adjust seat width */
-  height: 30px; /* Adjust seat height */
+  width: 50px;
+  height: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background-color: white; /* Background color for the seat */
+  background-color: white;
   position: relative;
   margin: 4px 0px;
   border-radius: 4px;
@@ -562,89 +561,81 @@
 
 
 
-/* Lower Bus Layout CSS */
 .bus-layout {
   display: grid;
-  grid-template-columns: repeat(6, 25px); /* Number of columns for lower layout */
-  gap: 10px; /* Spacing between seats in the lower layout */
-  align-items: center; /* Center-align seats vertically */
-  justify-content: center; /* Center-align the whole grid horizontally */
+  grid-template-columns: repeat(6, 25px); 
+  gap: 10px; 
+  align-items: center; 
+  justify-content: center; 
   padding: 15px 10px;
-  background-color: white; /* Background color for the lower bus layout */
-  margin-bottom: 20px; /* Additional space below to prevent overlap */
-  position: relative; /* Positions it relative to its normal flow */
+  background-color: white; 
+  margin-bottom: 20px; 
+  position: relative; 
 }
 
-/* Upper Bus Layout CSS */
 .bus-upperlayout {
   display: grid;
-  grid-template-columns: repeat(6, 20px); /* Number of columns for upper layout */
-  gap: 5px; /* Spacing between seats in the upper layout */
-  align-items: center; /* Center-align seats vertically */
-  justify-content: center; /* Center-align the whole grid horizontally */
+  grid-template-columns: repeat(6, 20px); 
+  gap: 5px; 
+  align-items: center;
+  justify-content: center; 
   padding: 15px 10px;
-  background-color: white; /* Background color for the upper bus layout */
-  margin-top: 20px; /* Additional space above to prevent overlap */
-  position: relative; /* Positions it relative to its normal flow */
+  background-color: white;
+  margin-top: 20px; 
+  position: relative; 
 }
 
-/* Common Seat Styles */
 .sit-img {
-  width: 50px; /* Seat width */
-  height: 30px; /* Seat height */
+  width: 50px;
+  height: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background-color: white; /* Background color for the seat */
+  background-color: white; 
   position: relative;
   margin: 0px 1px;
   border-radius: 4px;
 }
 
-/* Styles for Disabled Seats */
 .disabled {
   opacity: 0.5;
   pointer-events: none;
 }
 
-/* Styles for Aisle Seats */
 .aisle {
-  margin-right: 20px; /* Create space for the aisle */
+  margin-right: 20px; 
 }
 
-/* Empty Space for Seat Gaps */
 .empty-space {
-  width: 50px; /* Width matches the seat size */
-  height: 30px; /* Height matches the seat size */
-  background-color: transparent; /* Transparent for empty spaces */
+  width: 50px; 
+  height: 30px; 
+  background-color: transparent; 
 }
 
-/* Specific Styling for Upper Seats */
 .bus-upperlayout .sit-img {
-  width: 40px; /* Adjusted seat width for upper layout */
-  height: 35px; /* Adjusted seat height for upper layout */
-  margin: 2px 1px; /* Slightly different margins for upper layout */
+  width: 40px; 
+  height: 35px; 
+  margin: 2px 1px; 
 }
 
-/* Specific Styling for Lower Seats */
 .bus-layout .sit-img {
-  width: 50px; /* Adjusted seat width for lower layout */
-  height: 30px; /* Adjusted seat height for lower layout */
-  margin: 5px 2px; /* Slightly different margins for lower layout */
+  width: 50px; 
+  height: 30px; 
+  margin: 5px 2px; 
 }
 
 
 .sit-img {
-  width: 50px; /* Adjust seat width */
-  height: 30px; /* Adjust seat height */
+  width: 50px; 
+  height: 30px; 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background-color: white; /* Background color for the seat */
+  background-color: white; 
   position: relative;
   margin: 0px 1px;
   border-radius: 4px;
@@ -657,17 +648,27 @@
 }
 
 .aisle {
-  margin-right: 20px; /* Create space for the aisle */
+  margin-right: 20px; 
 }
 
 .empty-space {
-  width: 50px; /* Adjust width to match seat size */
-  height: 30px; /* Adjust height to match seat size */
-  background-color: transparent; /* Transparent for empty spaces */
+  width: 50px; 
+  height: 30px;
+  background-color: transparent; 
 }
 
 
 .vertical-seat {
   transform: rotate(90deg);
   margin-left: 25px;
+}
+
+
+/* CSS styles for different seat states */
+.selected-seat {
+  background-color: #5cb85c; /* Green for selected seats */
+}
+
+.booked-seat {
+  background-color: #d9534f; /* Red for booked seats */
 }
