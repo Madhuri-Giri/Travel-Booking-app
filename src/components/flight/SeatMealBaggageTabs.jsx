@@ -294,8 +294,8 @@ const SeatMealBaggageTabs = () => {
         const url = 'https://sajyatra.sajpe.in/admin/api/seatmap';
         const payload = {
             "SrdvIndex": "2",
-            "ResultIndex": "4-4432183685_2DELBOMSG8269~11376695159292897",
-            "TraceId": 157650,
+            "ResultIndex": "4-0817082893_1DELBOMSG157~11439388390723715",
+            "TraceId": 157718,
             "SrdvType": "MixAPI"
         };
 
@@ -343,10 +343,10 @@ const handleSsrApi = async () => {
 const ssrApiHandler = async () => {
     const url = 'https://sajyatra.sajpe.in/admin/api/ssr';
     const payload = {
-        "SrdvIndex": "2",
-        "ResultIndex": "4-4432183685_2DELBOMSG8269~11376695159292897",
-        "TraceId": 157650,
-        "SrdvType": "MixAPI"
+      "SrdvIndex": "2",
+            "ResultIndex": "4-0817082893_1DELBOMSG157~11439388390723715",
+            "TraceId": 157718,
+            "SrdvType": "MixAPI"
     };
 
     try {
