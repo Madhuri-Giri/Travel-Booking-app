@@ -1,0 +1,35 @@
+
+      .f-seat.selected {
+          border: 2px solid #00ff00e7; /* Green border for selected seats */
+          background-color: #0dec0d; /* Light green background for selected seats */
+      }
+      
+      .f-seat.booked {
+          opacity: 0.2;
+          pointer-events: none;
+      }
+      .seaat-price{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: row;
+          padding: 1vmax;
+      }
+      .meal-last{
+          width: 100%;
+          margin-top: 2vmax;
+          display: flex;
+          align-items: flex-end;
+          justify-content: flex-end;
+      }
+      .meal-last button{
+        padding: 0.6vmax 3vmax;
+        border: none;
+        background-color: #00b7eb;
+        color: #ffff;
+        border-radius: 5px;
+        font-weight: 600;
+
+      }
+      

@@ -104,21 +104,21 @@ export default function FlightDetails() {
     }, []);
 
     const ssrHandler = async () => {
-        const traceId = localStorage.getItem('FlightTraceId2');
-        const resultIndex = localStorage.getItem('FlightResultIndex2');
-        const srdvType = localStorage.getItem('FlightSrdvType');
-        const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
+        // const traceId = localStorage.getItem('FlightTraceId2');
+        // const resultIndex = localStorage.getItem('FlightResultIndex2');
+        // const srdvType = localStorage.getItem('FlightSrdvType');
+        // const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
 
-        if (!traceId || !resultIndex) {
-            console.error('TraceId or ResultIndex not found in local storage');
-            return;
-        }
+        // if (!traceId || !resultIndex) {
+        //     console.error('TraceId or ResultIndex not found in local storage');
+        //     return;
+        // }
 
         const payload = {
-            SrdvIndex: srdvIndex,
-            ResultIndex: resultIndex,
-            TraceId: parseInt(traceId),
-            SrdvType: srdvType,
+            SrdvIndex: "2",
+            ResultIndex: "4-6779374091_3DELBOMSG8269~11368130584707711" ,
+            TraceId: "157631" ,
+            SrdvType:  "MixAPI",
         };
 
         try {
@@ -154,14 +154,14 @@ export default function FlightDetails() {
     // console.log("ssrData", ssrData);
     // console.log("seatData", seatData);
 
-    useEffect(() => {
-        const flightData = localStorage.getItem('FlightsitMap');
-        if (flightData) {
-            const parsedData = JSON.parse(flightData);
+  useEffect(() => {
+    const flightData = localStorage.getItem('FlightsitMap');
+    if (flightData) {
+        const parsedData = JSON.parse(flightData);
 
+        if (parsedData?.Results?.[0]?.Seats) {
             const seatsArray = [];
 
-            // Uncomment this section if your API data structure is correct
             for (const row in parsedData.Results[0].Seats) {
                 const rowData = parsedData.Results[0].Seats[row];
 
@@ -178,51 +178,57 @@ export default function FlightDetails() {
 
             setSeatData(seatsArray);
         } else {
-            console.warn('No flight data found in localStorage.');
+            console.warn('Seats data is undefined or missing.');
             setSeatData([]);
         }
-    }, []);
-
-    const seatmap = async () => {
-        const traceId = localStorage.getItem('FlightTraceId2');
-        const resultIndex = localStorage.getItem('FlightResultIndex2');
-        const srdvType = localStorage.getItem('FlightSrdvType');
-        const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
-
-        if (!traceId || !resultIndex) {
-            console.error('TraceId or ResultIndex not found in local storage');
-            return;
-        }
-
-        const payload = {
-            SrdvIndex: srdvIndex,
-            ResultIndex: resultIndex,
-            TraceId: parseInt(traceId),
-            SrdvType: srdvType,
-        };
-
-        try {
-            const response = await fetch('https://sajyatra.sajpe.in/admin/api/seatmap', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const seatData = await response.json();
-            console.log('Seat Map Respose:', seatData);
-
-            localStorage.setItem('FlightsitMap', JSON.stringify(seatData))
-
-        } catch (error) {
-            console.error('API call failed:', error);
-        }
+    } else {
+        console.warn('No flight data found in localStorage.');
+        setSeatData([]);
     }
+}, []);
+
+
+    // const seatmap = async () => {
+
+    //     // const traceId = localStorage.getItem('FlightTraceId2');
+    //     // const resultIndex = localStorage.getItem('FlightResultIndex2');
+    //     // const srdvType = localStorage.getItem('FlightSrdvType');
+    //     // const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
+
+    //     // if (!traceId || !resultIndex) {
+    //     //     console.error('TraceId or ResultIndex not found in local storage');
+    //     //     return;
+    //     // }
+
+    //     const payload = {
+    //         SrdvIndex: "2",
+    //         ResultIndex: "4-6779374091_3DELBOMSG8269~11368130584707711" ,
+    //         TraceId: "157631" ,
+    //         SrdvType:  "MixAPI",
+    //     };
+
+    //     try {
+    //         const response = await fetch('https://sajyatra.sajpe.in/admin/api/seatmap', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify(payload)
+    //         });
+
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
+
+    //         const seatData = await response.json();
+    //         console.log('Seat Map Respose:', seatData);
+
+    //         localStorage.setItem('FlightsitMap', JSON.stringify(seatData))
+
+    //     } catch (error) {
+    //         console.error('API call failed:', error);
+    //     }
+    // }
 
     const reviewHandler = () => {
         // Ensure fareDataDetails is defined before navigating
