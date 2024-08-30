@@ -25,7 +25,7 @@ export default function FlightDetails() {
     const formData = location.state?.formData;
 
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
-    // console.log("fareDataDetails", fareDataDetails);
+    console.log("fareDataDetails", fareDataDetails);
 
     // function for date convert into day month date--------------------------------------
     const convertformatDate = (dateString) => {
@@ -658,7 +658,7 @@ export default function FlightDetails() {
         if (showTabs) {
             setLoading(true);
             setTimeout(() => {
-                navigate('/seat-meal-baggage');
+                navigate('/seat-meal-baggage' , { state: { fareDataDetails } });
             }, 1000);
         } else {
             reviewHandler();

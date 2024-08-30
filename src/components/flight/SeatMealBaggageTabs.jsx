@@ -222,17 +222,22 @@
 
 import React, { useState, useEffect } from 'react';
 import "./FlightDetails.css";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { RiTimerLine } from "react-icons/ri";
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import "./SeatMealBaggage.css"
 
 const SeatMealBaggageTabs = () => {
+    const location = useLocation();
+    const { fareDataDetails } = location.state || {}; // Use optional chaining
+    // console.log("seatmealbaggage fareDataDetails", fareDataDetails);
+
+
     const navigate = useNavigate();
     const [seatData, setSeatData] = useState([]);
     const [activeTab, setActiveTab] = useState('Seats');
-    const [selectedSeats, setSelectedSeats] = useState([]); 
+    const [selectedSeats, setSelectedSeats] = useState([]);
 
     const ssrData = [
         { Weight: 15, Price: 1000 },
@@ -280,7 +285,19 @@ const SeatMealBaggageTabs = () => {
     };
 
 
-// -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    const reviewHandler = () => {
+        // Ensure fareDataDetails is defined before navigating
+        if (fareDataDetails) {
+            // setLoading(true);
+            setTimeout(() => {
+                navigate('/flight-review', { state: { fareDataDetails } });
+            }, 1000);
+        } else {
+            console.error('fareDataDetails is undefined');
+        }
+    }
 
 
     const handleSeatMapApi = async () => {
@@ -339,72 +356,72 @@ const SeatMealBaggageTabs = () => {
     };
 
 
-// -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-const handleSsrApi = async () => {
-    const result = await ssrApiHandler();
-    
-    if (result) {
-        console.log('SSR API Response:', result);
-        
-        // setSsrData(result);
-    }
-};
+    // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    const handleSsrApi = async () => {
+        const result = await ssrApiHandler();
+
+        if (result) {
+            console.log('SSR API Response:', result);
+
+            // setSsrData(result);
+        }
+    };
 
 
-const ssrApiHandler = async () => {
-   
-    const FtraceId = localStorage.getItem('F-TraceId');
-    const FresultIndex = localStorage.getItem('F-ResultIndex');
-    const FsrdvType = localStorage.getItem('F-SrdvType');
-    const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
+    const ssrApiHandler = async () => {
+
+        const FtraceId = localStorage.getItem('F-TraceId');
+        const FresultIndex = localStorage.getItem('F-ResultIndex');
+        const FsrdvType = localStorage.getItem('F-SrdvType');
+        const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
 
 
-    const url = 'https://sajyatra.sajpe.in/admin/api/ssr';
-    const payload = {
-        SrdvIndex: FsrdvIndex,
+        const url = 'https://sajyatra.sajpe.in/admin/api/ssr';
+        const payload = {
+            SrdvIndex: FsrdvIndex,
             ResultIndex: FresultIndex,
             TraceId: parseInt(FtraceId),
             SrdvType: FsrdvType,
+        };
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            localStorage.setItem('ssrApiData', JSON.stringify(data))
+            console.log('SSR API Response:', data);
+            return data;
+        } catch (error) {
+            console.error('Error fetching SSR API:', error);
+            return null;
+        }
     };
 
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+    const getSsrApiData = () => {
+        const ssrApiData = localStorage.getItem('ssrApiData');
+        if (ssrApiData) {
+            const parsedData = JSON.parse(ssrApiData);
+            // Extract Baggage information
+            if (parsedData.Baggage && parsedData.Baggage[0]) {
+                return parsedData.Baggage[0]; // Assuming first element is what you want
+            }
         }
+        console.log('No SSR API data found in localStorage');
+        return [];
+    };
 
-        const data = await response.json();
-        localStorage.setItem('ssrApiData', JSON.stringify(data))
-        console.log('SSR API Response:', data);
-        return data;  
-    } catch (error) {
-        console.error('Error fetching SSR API:', error);
-        return null;
-    }
-};
-
-
-const getSsrApiData = () => {
-    const ssrApiData = localStorage.getItem('ssrApiData');
-    if (ssrApiData) {
-        const parsedData = JSON.parse(ssrApiData);
-        // Extract Baggage information
-        if (parsedData.Baggage && parsedData.Baggage[0]) {
-            return parsedData.Baggage[0]; // Assuming first element is what you want
-        }
-    } 
-    console.log('No SSR API data found in localStorage');
-    return [];
-};
-
-// -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
     const parseSeatMapData = (data) => {
@@ -457,14 +474,14 @@ const getSsrApiData = () => {
     const renderSeatsTab = () => (
         <div className="seatsTabss">
             <h5>SELECT YOUR PREFERRED SEAT</h5>
-              {/* ------------------------ */}
-              <div className="seaat-price">
-                            <h6>Selected Seats: ({selectedSeats.map(seat => seat.seatNumber).join(', ')})</h6>
-                            <h6>Total Price: (₹{calculateTotalPrice()})</h6>
+            {/* ------------------------ */}
+            <div className="seaat-price">
+                <h6>Selected Seats: ({selectedSeats.map(seat => seat.seatNumber).join(', ')})</h6>
+                <h6>Total Price: (₹{calculateTotalPrice()})</h6>
 
-             </div>    
-             {/* ------------------------ */}
-           
+            </div>
+            {/* ------------------------ */}
+
             <div className="row seatsTabssRow">
                 <div className="col-lg-4 seatsTabssColImg">
                     <img
@@ -513,7 +530,7 @@ const getSsrApiData = () => {
 
     const renderBaggageTab = () => {
         const baggageData = getSsrApiData();
-    
+
         return (
             <div className="baggageTabbss">
                 <h5>Select Your Baggage Option</h5>
@@ -541,7 +558,7 @@ const getSsrApiData = () => {
         );
     };
 
-   
+
     return (
         <>
             <CustomNavbar />
@@ -562,7 +579,7 @@ const getSsrApiData = () => {
                                             className={`nav-link ${activeTab === 'Seats' ? 'active' : ''}`}
                                             onClick={() => setActiveTab('Seats')}
                                         >
-                                            <button style={{border:'none', backgroundColor:"none"}} onClick={handleSeatMapApi}>Seats</button>
+                                            <button style={{ border: 'none', backgroundColor: "none" }} onClick={handleSeatMapApi}>Seats</button>
                                         </a>
                                     </li>
                                     <li className="nav-item">
@@ -578,11 +595,11 @@ const getSsrApiData = () => {
                                             className={`nav-link ${activeTab === 'Baggage' ? 'active' : ''}`}
                                             onClick={() => setActiveTab('Baggage')}
                                         >
-                                           <button style={{border:'none', backgroundColor:"none"}} onClick={handleSsrApi}> Baggage</button>
+                                            <button style={{ border: 'none', backgroundColor: "none" }} onClick={handleSsrApi}> Baggage</button>
                                         </a>
                                     </li>
 
-                                      
+
 
 
                                 </ul>
@@ -591,7 +608,7 @@ const getSsrApiData = () => {
                         </div>
 
 
-                    
+
                         <div className="tab-content">
                             {activeTab === 'Seats' && renderSeatsTab()}
                             {activeTab === 'Meals' && renderMealsTab()}
@@ -600,12 +617,12 @@ const getSsrApiData = () => {
                     </div>
 
                     <div className="meal-last">
-                        <button >Continue</button>
-                        </div>
+                        <button onClick={reviewHandler}>Continue</button>
+                    </div>
 
                 </div>
 
-                       
+
             </div>
             <Footer />
         </>
