@@ -271,9 +271,7 @@ import he from 'he';
         ],
         ArrivalTime: "2019-09-28T00:00:00",
         IsPackageFare: true,
-        SrdvType: "SingleTB",
-        SrdvIndex: "SrdvTB",
-        TraceId: "1"
+       
     };
 
     // Sending the request
