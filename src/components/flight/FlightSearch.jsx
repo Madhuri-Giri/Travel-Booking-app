@@ -272,8 +272,8 @@ const handleToChange = (event) => {
       // One-Way: Keep only one segment
       setSegments([
         {
-          Origin: "LKO",
-          Destination: "KWI",
+          Origin: "DEL",
+          Destination: "BOM",
           FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: departureDate,
           PreferredArrivalTime: departureDate
@@ -283,15 +283,15 @@ const handleToChange = (event) => {
       // Two-Way: Add a second segment
       setSegments([
         {
-          Origin: "LKO",
-          Destination: "KWI",
+          Origin: "DEL",
+          Destination: "BOM",
           FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: departureDate,
           PreferredArrivalTime: departureDate
         },
         {
-          Origin: "KWI",
-          Destination: "LKO",
+          Origin: "BOM",
+          Destination: "DEL",
           FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: returnDateDep,
           PreferredArrivalTime: returnDateDep
@@ -319,53 +319,44 @@ const handleToChange = (event) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        // body: JSON.stringify(payload),
         body: JSON.stringify(formData),
       });
 
       const data = await response.json();
-      console.log("Flight search api response: ", data);
-      localStorage.setItem('Flight-search', data)
-      // Save TraceId to local storage with the key "FlightTraceId2"
-      if (data.TraceId) {
-        localStorage.setItem("FlightTraceId2", data.TraceId);
-        console.log("Saved TraceId to local storage:", data.TraceId); // Log TraceId
-      }
+      console.log("Flight search API response: ", data);
 
-      if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.ResultIndex) {
-        const resultIndex = data.Results[0][0].FareDataMultiple[0].ResultIndex;
-        localStorage.setItem("FlightResultIndex2", resultIndex);
+      // Save the entire response to localStorage
+      localStorage.setItem('Flight-search', JSON.stringify(data));
 
-        console.log("Saved ResultIndex to local storage:", resultIndex);
+      // Check if data exists at the expected path
+      const firstResult = data?.Results?.[0]?.[0];
+      if (firstResult && firstResult.FareDataMultiple?.[0]) {
+        const { SrdvIndex, ResultIndex } = firstResult.FareDataMultiple[0];
+        const { TraceId, SrdvType } = data;
+
+        // Save SrdvIndex and ResultIndex to localStorage
+        localStorage.setItem("F-SrdvIndex", SrdvIndex);
+        localStorage.setItem("F-ResultIndex", ResultIndex);
+        localStorage.setItem("F-TraceId", TraceId);
+        localStorage.setItem("F-SrdvType", SrdvType);
+
+        console.log("Saved SrdvIndex to local storage:", SrdvIndex);
+        console.log("Saved ResultIndex to local storage:", ResultIndex);
+        console.log("Saved TraceId to local storage:", TraceId);
+        console.log("Saved SrdvType to local storage:", SrdvType);
       } else {
-        console.log("ResultIndex not found");
-      }
-
-      if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.SrdvIndex) {
-        const srdvIndex = data.Results[0][0].FareDataMultiple[0].SrdvIndex;
-        localStorage.setItem("FlightSrdvIndex2", srdvIndex);
-        console.log("Saved SrdvIndex to local storage:", srdvIndex);
-      } else {
-        console.log("SrdvIndex not found");
-      }
-
-      if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.IsLCC) {
-        const IsLCC = data.Results[0][0].FareDataMultiple[0].IsLCC;
-        localStorage.setItem("IsLCC", IsLCC);
-        console.log("Saved IsLCC to local storage:", IsLCC);
-      } else {
-        console.log("IsLCC not found");
+        console.log("SrdvIndex or FareDataMultiple not found");
       }
 
       setLoading(false);
       navigate("/flight-list", { state: { data: data, formData: formData } });
-    }
-
-    catch (error) {
+    } catch (error) {
       setLoading(false);
       console.error('Error fetching suggestions:', error);
     }
-  }
+}
+
+
 
   // ----------  Api integration start for slider image  ----------
   const [offerSliderImages, setOfferSliderImages] = useState([]);

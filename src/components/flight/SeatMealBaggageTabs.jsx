@@ -232,7 +232,7 @@ const SeatMealBaggageTabs = () => {
     const navigate = useNavigate();
     const [seatData, setSeatData] = useState([]);
     const [activeTab, setActiveTab] = useState('Seats');
-    const [selectedSeats, setSelectedSeats] = useState([]); // State for selected seats
+    const [selectedSeats, setSelectedSeats] = useState([]); 
 
     const ssrData = [
         { Weight: 15, Price: 1000 },
@@ -291,12 +291,23 @@ const SeatMealBaggageTabs = () => {
     };
 
     const seatMapApi = async () => {
+
+
+        const FtraceId = localStorage.getItem('F-TraceId');
+        const FresultIndex = localStorage.getItem('F-ResultIndex');
+        const FsrdvType = localStorage.getItem('F-SrdvType');
+        const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
+
+
         const url = 'https://sajyatra.sajpe.in/admin/api/seatmap';
+
+
+
         const payload = {
-            "SrdvIndex": "2",
-            "ResultIndex": "4-0817082893_1DELBOMSG157~11439388390723715",
-            "TraceId": 157718,
-            "SrdvType": "MixAPI"
+            SrdvIndex: FsrdvIndex,
+            ResultIndex: FresultIndex,
+            TraceId: parseInt(FtraceId),
+            SrdvType: FsrdvType,
         };
 
         try {
@@ -341,12 +352,19 @@ const handleSsrApi = async () => {
 
 
 const ssrApiHandler = async () => {
+   
+    const FtraceId = localStorage.getItem('F-TraceId');
+    const FresultIndex = localStorage.getItem('F-ResultIndex');
+    const FsrdvType = localStorage.getItem('F-SrdvType');
+    const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
+
+
     const url = 'https://sajyatra.sajpe.in/admin/api/ssr';
     const payload = {
-      "SrdvIndex": "2",
-            "ResultIndex": "4-0817082893_1DELBOMSG157~11439388390723715",
-            "TraceId": 157718,
-            "SrdvType": "MixAPI"
+        SrdvIndex: FsrdvIndex,
+            ResultIndex: FresultIndex,
+            TraceId: parseInt(FtraceId),
+            SrdvType: FsrdvType,
     };
 
     try {
