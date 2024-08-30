@@ -438,6 +438,7 @@ export default function FlightDetails() {
     //         </div>
 
     //     );
+
     const toggleSelect = (index, type) => {
         if (type === 'adult') {
             const updatedDetails = confirmedAdultDetails.map((detail, i) =>
@@ -470,13 +471,10 @@ export default function FlightDetails() {
 
     // ----------------------logic for total traveller forms---------------------------------------
     const [activeTabFlightDetails, setActiveTabFlightDetails] = useState('flight');
-
     const [showTabs, setShowTabs] = useState(false);
-
     const [adultCount, setAdultCount] = useState(formData.AdultCount);
     const [childCount, setChildCount] = useState(formData.ChildCount);
     const [infantCount, setInfantCount] = useState(formData.InfantCount);
-
     const initialDetail = {
         gender: '',
         firstName: '',
@@ -492,15 +490,12 @@ export default function FlightDetails() {
         contactNo: '',
         email: ''
     };
-
     const [adultDetails, setAdultDetails] = useState(Array(adultCount).fill(initialDetail));
     const [childDetails, setChildDetails] = useState(Array(childCount).fill(initialDetail));
     const [infantDetails, setInfantDetails] = useState(Array(infantCount).fill(initialDetail));
-
     const [confirmedAdultDetails, setConfirmedAdultDetails] = useState([]);
     const [confirmedChildDetails, setConfirmedChildDetails] = useState([]);
     const [confirmedInfantDetails, setConfirmedInfantDetails] = useState([]);
-
     const [error, setError] = useState('');
 
     const [isContinueDisabled, setIsContinueDisabled] = useState(true);
@@ -509,7 +504,7 @@ export default function FlightDetails() {
         const allAdultsConfirmed = confirmedAdultDetails.every(detail => detail.selected);
         const allChildrenConfirmed = confirmedChildDetails.every(detail => detail.selected);
         const allInfantsConfirmed = confirmedInfantDetails.every(detail => detail.selected);
-        setIsContinueDisabled(!(allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
+        setIsContinueDisabled((allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
     };
 
     const handleInputChange = (e, index, type, field) => {
@@ -597,15 +592,15 @@ export default function FlightDetails() {
                                 <div><strong>Gender:</strong> <span>{detail.gender}</span></div>
                                 <div><strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span></div>
                                 <div><strong>Date of Birth:</strong> <span>{detail.dateOfBirth}</span></div>
-                                <div><strong>Passport No:</strong> <span>{detail.passportNo}</span></div>
-                                <div><strong>Passport Expiry:</strong> <span>{detail.passportExpiry}</span></div>
-                                <div><strong>Passport Issue Date:</strong> <span>{detail.passportIssueDate}</span></div>
-                                <div><strong>Address Line 1:</strong> <span>{detail.addressLine1}</span></div>
-                                <div><strong>City:</strong> <span>{detail.city}</span></div>
-                                <div><strong>Country Code:</strong> <span>{detail.countryCode}</span></div>
-                                <div><strong>Country Name:</strong> <span>{detail.countryName}</span></div>
-                                <div><strong>Contact No:</strong> <span>{detail.contactNo}</span></div>
-                                <div><strong>Email:</strong> <span>{detail.email}</span></div>
+                                {/* <div><strong>Passport No:</strong> <span>{detail.passportNo}</span></div> */}
+                                {/* <div><strong>Passport Expiry:</strong> <span>{detail.passportExpiry}</span></div> */}
+                                {/* <div><strong>Passport Issue Date:</strong> <span>{detail.passportIssueDate}</span></div> */}
+                                {/* <div><strong>Address Line 1:</strong> <span>{detail.addressLine1}</span></div> */}
+                                {/* <div><strong>City:</strong> <span>{detail.city}</span></div> */}
+                                {/* <div><strong>Country Code:</strong> <span>{detail.countryCode}</span></div> */}
+                                {/* <div><strong>Country Name:</strong> <span>{detail.countryName}</span></div> */}
+                                {/* <div><strong>Contact No:</strong> <span>{detail.contactNo}</span></div> */}
+                                {/* <div><strong>Email:</strong> <span>{detail.email}</span></div> */}
                             </div>
                             <div className="mt-2">
                                 <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete(type, index)} />
@@ -616,10 +611,9 @@ export default function FlightDetails() {
             </div>
         </div>
     );
-
     const renderFormFields = (count, type) => {
         const details = type === 'adult' ? adultDetails : type === 'child' ? childDetails : infantDetails;
-    
+
         return Array.from({ length: count }, (_, index) => (
             <div key={`${type}-${index}`} className="row userFormFill">
                 <div className="col-md-3">
@@ -822,17 +816,17 @@ export default function FlightDetails() {
                         />
                     </div>
                 </div>
-                <div className="col-md-3">
+                {/* <div className="col-md-3"> */}
                     <div className="form-group formConfbtn">
                         <button className="btn btn-primary mt-4" onClick={(e) => handleConfirm(e, index, type)}>
                             Confirm
                         </button>
                     </div>
-                </div>
+                {/* </div> */}
             </div>
         ));
     };
-    
+
 
     // Other parts of the code remain unchanged
 
@@ -1176,7 +1170,6 @@ export default function FlightDetails() {
                                                     </>
                                                 )}
                                             </div>
-
                                             {error && <div className="text-danger mt-2" aria-live="assertive">{error}</div>}
 
                                             {/* code for tabs seat meals--------- */}

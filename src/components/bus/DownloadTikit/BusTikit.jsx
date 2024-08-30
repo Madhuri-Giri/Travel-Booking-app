@@ -222,7 +222,7 @@ console.log('Stored Booking Amount:', storedAmount);
                             <div>
                               <p><strong>Seat No -: </strong><span>{seatDetail ? seatDetail.seat_name : 'N/A'}</span></p>
                               <p><strong>Booking Id -: </strong><span>{seatDetail ? seatDetail.bus_book_id : 'N/A'}</span></p>
-                              <p className="psngeramount"><strong>Amount -: </strong><span>{storedAmount}</span></p>
+                              <p className="psngeramount"><strong>Amount -: </strong><span>₹{storedAmount}</span></p>
                               <p><strong>Passcode: </strong></p>
                               <Barcode className="buspasscode" value={passcode} format="CODE128" />
                             </div>
