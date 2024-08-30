@@ -22,6 +22,7 @@ const EnterOtp = ({ showModal, onClose }) => {
     }
 
     try {
+      
       const response = await fetch(
         "https://sajyatra.sajpe.in/admin/api/send-otp",
         {
@@ -44,7 +45,7 @@ const EnterOtp = ({ showModal, onClose }) => {
       console.log('send otp', data);
 
       localStorage.setItem("otpResponse", JSON.stringify(data));
-
+      
       onClose(); 
 
 
