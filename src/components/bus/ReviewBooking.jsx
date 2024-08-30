@@ -410,7 +410,7 @@ const ReviewBooking = () => {
       localStorage.setItem("buspaymentStatusRes", JSON.stringify(responseBody));
   
       // Navigate with state
-      navigate('/booking-history', { state: { buspaymentStatus: responseBody } });
+      navigate('/busBookTicket', { state: { buspaymentStatus: responseBody } });
   
       return responseBody;
   
