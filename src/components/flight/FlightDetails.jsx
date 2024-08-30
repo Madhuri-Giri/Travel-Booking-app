@@ -19,13 +19,13 @@ export default function FlightDetails() {
 
     //   ----------------------------------------------------
 
-    
+
     const location = useLocation();
     const fareData = location.state?.fareData;
     const formData = location.state?.formData;
 
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
-    console.log("fareDataDetails", fareDataDetails);
+    // console.log("fareDataDetails", fareDataDetails);
 
     // function for date convert into day month date--------------------------------------
     const convertformatDate = (dateString) => {
@@ -154,38 +154,38 @@ export default function FlightDetails() {
     // console.log("ssrData", ssrData);
     // console.log("seatData", seatData);
 
-//   useEffect(() => {
-//     const flightData = localStorage.getItem('FlightsitMap');
-//     if (flightData) {
-//         const parsedData = JSON.parse(flightData);
+    //   useEffect(() => {
+    //     const flightData = localStorage.getItem('FlightsitMap');
+    //     if (flightData) {
+    //         const parsedData = JSON.parse(flightData);
 
-//         if (parsedData?.Results?.[0]?.Seats) {
-//             const seatsArray = [];
+    //         if (parsedData?.Results?.[0]?.Seats) {
+    //             const seatsArray = [];
 
-//             for (const row in parsedData.Results[0].Seats) {
-//                 const rowData = parsedData.Results[0].Seats[row];
+    //             for (const row in parsedData.Results[0].Seats) {
+    //                 const rowData = parsedData.Results[0].Seats[row];
 
-//                 for (const column in rowData) {
-//                     const seat = rowData[column];
-//                     seatsArray.push({
-//                         seatNumber: seat.SeatNumber,
-//                         price: seat.Amount,
-//                         isBooked: seat.IsBooked,
-//                         imgSrc: '/src/assets/images/seat-2-removebg-preview.png'
-//                     });
-//                 }
-//             }
+    //                 for (const column in rowData) {
+    //                     const seat = rowData[column];
+    //                     seatsArray.push({
+    //                         seatNumber: seat.SeatNumber,
+    //                         price: seat.Amount,
+    //                         isBooked: seat.IsBooked,
+    //                         imgSrc: '/src/assets/images/seat-2-removebg-preview.png'
+    //                     });
+    //                 }
+    //             }
 
-//             setSeatData(seatsArray);
-//         } else {
-//             console.warn('Seats data is undefined or missing.');
-//             setSeatData([]);
-//         }
-//     } else {
-//         console.warn('No flight data found in localStorage.');
-//         setSeatData([]);
-//     }
-// }, []);
+    //             setSeatData(seatsArray);
+    //         } else {
+    //             console.warn('Seats data is undefined or missing.');
+    //             setSeatData([]);
+    //         }
+    //     } else {
+    //         console.warn('No flight data found in localStorage.');
+    //         setSeatData([]);
+    //     }
+    // }, []);
 
 
     // const seatmap = async () => {
@@ -247,6 +247,228 @@ export default function FlightDetails() {
 
 
     // ----------------------logic for total traveller forms---------------------------------------
+    //     const [activeTabFlightDetails, setActiveTabFlightDetails] = useState('flight');
+    //     const [showTabs, setShowTabs] = useState(false);
+    //     const [adultCount, setAdultCount] = useState(formData.AdultCount);
+    //     const [childCount, setChildCount] = useState(formData.ChildCount);
+    //     const [infantCount, setInfantCount] = useState(formData.InfantCount);
+    //     const [adultDetails, setAdultDetails] = useState(Array(adultCount).fill({ gender: '', firstName: '', lastName: '' }));
+    //     const [childDetails, setChildDetails] = useState(Array(childCount).fill({ gender: '', firstName: '', lastName: '' }));
+    //     const [infantDetails, setInfantDetails] = useState(Array(infantCount).fill({ gender: '', firstName: '', lastName: '' }));
+    //     const [confirmedAdultDetails, setConfirmedAdultDetails] = useState([]);
+    //     const [confirmedChildDetails, setConfirmedChildDetails] = useState([]);
+    //     const [confirmedInfantDetails, setConfirmedInfantDetails] = useState([]);
+    //  const [error, setError] = useState('');
+    //     const [isContinueDisabled, setIsContinueDisabled] = useState(true);
+    //     const checkButtonDisabled = () => {
+    //         const allAdultsConfirmed = confirmedAdultDetails.every(detail => detail.selected);
+    //         const allChildrenConfirmed = confirmedChildDetails.every(detail => detail.selected);
+    //         const allInfantsConfirmed = confirmedInfantDetails.every(detail => detail.selected);
+    //         setIsContinueDisabled((allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
+    //     };
+    //     const handleInputChange = (e, index, type, field) => {
+    //         const { value } = e.target;
+    //         let details;
+
+    //         if (type === 'adult') {
+    //             details = [...adultDetails];
+    //         } else if (type === 'child') {
+    //             details = [...childDetails];
+    //         } else if (type === 'infant') {
+    //             details = [...infantDetails];
+    //         }
+
+
+    //         details[index] = {
+    //             ...details[index],
+    //             [field]: value
+    //         };
+
+    //         if (type === 'adult') {
+    //             setAdultDetails(details);
+    //         } else if (type === 'child') {
+    //             setChildDetails(details);
+    //         } else if (type === 'infant') {
+    //             setInfantDetails(details);
+    //         }
+
+    //     };
+    //     const handleConfirm = (e, index, type) => {
+    //         e.preventDefault();
+    //         let details;
+
+    //         if (type === 'adult') {
+    //             details = [...adultDetails];
+    //         } else if (type === 'child') {
+    //             details = [...childDetails];
+    //         } else if (type === 'infant') {
+    //             details = [...infantDetails];
+    //         }
+
+    //         const { gender, firstName, lastName } = details[index];
+    //         if (gender && firstName && lastName) {
+    //             setError('');
+    //             const newDetail = { ...details[index], selected: false };
+    //             if (type === 'adult') {
+    //                 setConfirmedAdultDetails([...confirmedAdultDetails, newDetail]);
+    //             } else if (type === 'child') {
+    //                 setConfirmedChildDetails([...confirmedChildDetails, newDetail]);
+    //             } else if (type === 'infant') {
+    //                 setConfirmedInfantDetails([...confirmedInfantDetails, newDetail]);
+    //             }
+    //             checkButtonDisabled();
+    //         } else {
+    //             setError(`Please fill out all fields for ${type} ${index + 1}.`);
+    //         }
+
+    //         console.log("setConfirmedAdultDetails", setConfirmedAdultDetails);
+
+    //     };
+    //     const handleDelete = (type, index) => {
+    //         if (type === 'adult') {
+    //             setConfirmedAdultDetails(confirmedAdultDetails.filter((_, i) => i !== index));
+    //         } else if (type === 'child') {
+    //             setConfirmedChildDetails(confirmedChildDetails.filter((_, i) => i !== index));
+    //         } else if (type === 'infant') {
+    //             setConfirmedInfantDetails(confirmedInfantDetails.filter((_, i) => i !== index));
+    //         }
+    //         checkButtonDisabled();
+    //     };
+    //     const renderFormFields = (count, type) => {
+    //         const details = type === 'adult' ? adultDetails : type === 'child' ? childDetails : infantDetails;
+
+    //         return Array.from({ length: count }, (_, index) => (
+    //             <div key={`${type}-${index}`} className="row userFormFill">
+    //                 <div className="col-md-3 ">
+    //                     <label>Gender:</label>
+    //                     <div className="form-group genderFormGrp">
+    //                         <div className="form-check form-check-inline">
+    //                             <input
+    //                                 type="radio"
+    //                                 id={`${type}-male-${index}`}
+    //                                 name={`gender-${type}-${index}`}
+    //                                 value="male"
+    //                                 className="form-check-input"
+    //                                 onChange={(e) => handleInputChange(e, index, type, 'gender')}
+    //                                 required
+    //                             />
+    //                             <label className="form-check-label" htmlFor={`${type}-male-${index}`}>Male</label>
+    //                         </div>
+    //                         <div className="form-check form-check-inline">
+    //                             <input
+    //                                 type="radio"
+    //                                 id={`${type}-female-${index}`}
+    //                                 name={`gender-${type}-${index}`}
+    //                                 value="female"
+    //                                 className="form-check-input"
+    //                                 onChange={(e) => handleInputChange(e, index, type, 'gender')}
+    //                                 required
+    //                             />
+    //                             <label className="form-check-label" htmlFor={`${type}-female-${index}`}>Female</label>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //                 <div className="col-md-3 ">
+    //                     <div className="form-group">
+    //                         <label htmlFor={`firstName-${type}-${index}`}>First Name</label>
+    //                         <input
+    //                             type="text"
+    //                             id={`firstName-${type}-${index}`}
+    //                             className="form-control"
+    //                             onChange={(e) => handleInputChange(e, index, type, 'firstName')}
+    //                             value={details[index]?.firstName || ''}
+    //                             required
+    //                             placeholder="First & Middle Name"
+    //                         />
+    //                     </div>
+    //                 </div>
+    //                 <div className="col-md-3 ">
+    //                     <div className="form-group">
+    //                         <label htmlFor={`lastName-${type}-${index}`}>Last Name</label>
+    //                         <input
+    //                             type="text"
+    //                             id={`lastName-${type}-${index}`}
+    //                             className="form-control"
+    //                             onChange={(e) => handleInputChange(e, index, type, 'lastName')}
+    //                             value={details[index]?.lastName || ''}
+    //                             required
+    //                             placeholder="Last Name"
+    //                         />
+    //                     </div>
+    //                 </div>
+    //                 <div className="col-md-3 ">
+    //                     <div className="form-group formConfbtn">
+    //                         <button className="btn btn-primary mt-4" onClick={(e) => handleConfirm(e, index, type)}>
+    //                             Confirm
+    //                         </button>
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         ));
+    //     };
+
+    //     const renderConfirmedDetails = (details, type) => (
+    //         <div className="row ">
+    //             <div className="mt-4 col-md-6 formdettlsDesk" style={{ display: details.length > 0 ? 'block' : 'none' }}>
+    //                 {details.map((detail, index) => (
+    //                     <div key={index} className="d-flex align-items-center mb-2">
+    //                         <div className="flex-grow-1 formdettlsDeskdiv ml-2">
+    //                             <input
+    //                                 type="checkbox"
+    //                                 className="form-check-input selectDetInp"
+    //                                 checked={detail.selected}
+    //                                 onChange={() => toggleSelect(index, type)}
+    //                             />
+    //                             <div className="formdettlsDeskdivnmGen">
+    //                                 <div>
+    //                                     <strong>Gender:</strong> <span>{detail.gender}</span>
+    //                                 </div>
+    //                                 <div>
+    //                                     <strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span>
+    //                                 </div>
+    //                             </div>
+    //                             <div>
+    //                                 <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete(type, index)} />
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 ))}
+    //             </div>
+
+    //         </div>
+
+    //     );
+    const toggleSelect = (index, type) => {
+        if (type === 'adult') {
+            const updatedDetails = confirmedAdultDetails.map((detail, i) =>
+                i === index ? { ...detail, selected: !detail.selected } : detail
+            );
+            setConfirmedAdultDetails(updatedDetails);
+            console.log("adultPassengerDetails", updatedDetails);
+            localStorage.setItem('adultPassengerDetails', JSON.stringify(updatedDetails));
+
+
+        } else if (type === 'child') {
+            const updatedDetails = confirmedChildDetails.map((detail, i) =>
+                i === index ? { ...detail, selected: !detail.selected } : detail
+            );
+            setConfirmedChildDetails(updatedDetails);
+            console.log("childPassengerDetails", updatedDetails);
+            localStorage.setItem('childPassengerDetails', JSON.stringify(updatedDetails));
+
+        } else if (type === 'infant') {
+            const updatedDetails = confirmedInfantDetails.map((detail, i) =>
+                i === index ? { ...detail, selected: !detail.selected } : detail
+            );
+            setConfirmedInfantDetails(updatedDetails);
+            console.log("infantPassengerDetails", updatedDetails);
+            localStorage.setItem('infantPassengerDetails', JSON.stringify(updatedDetails));
+        }
+        checkButtonDisabled();
+    };
+
+
+    // ----------------------logic for total traveller forms---------------------------------------
     const [activeTabFlightDetails, setActiveTabFlightDetails] = useState('flight');
 
     const [showTabs, setShowTabs] = useState(false);
@@ -255,9 +477,25 @@ export default function FlightDetails() {
     const [childCount, setChildCount] = useState(formData.ChildCount);
     const [infantCount, setInfantCount] = useState(formData.InfantCount);
 
-    const [adultDetails, setAdultDetails] = useState(Array(adultCount).fill({ gender: '', firstName: '', lastName: '' }));
-    const [childDetails, setChildDetails] = useState(Array(childCount).fill({ gender: '', firstName: '', lastName: '' }));
-    const [infantDetails, setInfantDetails] = useState(Array(infantCount).fill({ gender: '', firstName: '', lastName: '' }));
+    const initialDetail = {
+        gender: '',
+        firstName: '',
+        lastName: '',
+        dateOfBirth: '',
+        passportNo: '',
+        passportExpiry: '',
+        passportIssueDate: '',
+        addressLine1: '',
+        city: '',
+        countryCode: '',
+        countryName: '',
+        contactNo: '',
+        email: ''
+    };
+
+    const [adultDetails, setAdultDetails] = useState(Array(adultCount).fill(initialDetail));
+    const [childDetails, setChildDetails] = useState(Array(childCount).fill(initialDetail));
+    const [infantDetails, setInfantDetails] = useState(Array(infantCount).fill(initialDetail));
 
     const [confirmedAdultDetails, setConfirmedAdultDetails] = useState([]);
     const [confirmedChildDetails, setConfirmedChildDetails] = useState([]);
@@ -271,7 +509,7 @@ export default function FlightDetails() {
         const allAdultsConfirmed = confirmedAdultDetails.every(detail => detail.selected);
         const allChildrenConfirmed = confirmedChildDetails.every(detail => detail.selected);
         const allInfantsConfirmed = confirmedInfantDetails.every(detail => detail.selected);
-        setIsContinueDisabled((allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
+        setIsContinueDisabled(!(allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
     };
 
     const handleInputChange = (e, index, type, field) => {
@@ -286,7 +524,6 @@ export default function FlightDetails() {
             details = [...infantDetails];
         }
 
-
         details[index] = {
             ...details[index],
             [field]: value
@@ -299,7 +536,6 @@ export default function FlightDetails() {
         } else if (type === 'infant') {
             setInfantDetails(details);
         }
-
     };
 
     const handleConfirm = (e, index, type) => {
@@ -314,8 +550,10 @@ export default function FlightDetails() {
             details = [...infantDetails];
         }
 
-        const { gender, firstName, lastName } = details[index];
-        if (gender && firstName && lastName) {
+        const { gender, firstName, lastName, dateOfBirth, passportNo, passportExpiry, passportIssueDate, addressLine1, city, countryCode, countryName, contactNo, email } = details[index];
+
+        // Check for all fields
+        if (gender && firstName && lastName && dateOfBirth && passportNo && passportExpiry && passportIssueDate && addressLine1 && city && countryCode && countryName && contactNo && email) {
             setError('');
             const newDetail = { ...details[index], selected: false };
             if (type === 'adult') {
@@ -329,9 +567,6 @@ export default function FlightDetails() {
         } else {
             setError(`Please fill out all fields for ${type} ${index + 1}.`);
         }
-
-        console.log("setConfirmedAdultDetails", setConfirmedAdultDetails);
-
     };
 
     const handleDelete = (type, index) => {
@@ -345,12 +580,49 @@ export default function FlightDetails() {
         checkButtonDisabled();
     };
 
+    const renderConfirmedDetails = (details, type) => (
+        <div className="row">
+            <div className="mt-4 col-md-12 formdettlsDesk" style={{ display: details.length > 0 ? 'block' : 'none' }}>
+                {details.map((detail, index) => (
+                    <div key={index} className="d-flex align-items-start mb-3">
+                        <input
+                            type="checkbox"
+                            className="form-check-input selectDetInp"
+                            checked={detail.selected}
+                            onChange={() => toggleSelect(index, type)}
+                            style={{ marginTop: '10px' }}
+                        />
+                        <div className="flex-grow-1 formdettlsDeskdiv ml-2">
+                            <div className="formdettlsDeskdivnmGen">
+                                <div><strong>Gender:</strong> <span>{detail.gender}</span></div>
+                                <div><strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span></div>
+                                <div><strong>Date of Birth:</strong> <span>{detail.dateOfBirth}</span></div>
+                                <div><strong>Passport No:</strong> <span>{detail.passportNo}</span></div>
+                                <div><strong>Passport Expiry:</strong> <span>{detail.passportExpiry}</span></div>
+                                <div><strong>Passport Issue Date:</strong> <span>{detail.passportIssueDate}</span></div>
+                                <div><strong>Address Line 1:</strong> <span>{detail.addressLine1}</span></div>
+                                <div><strong>City:</strong> <span>{detail.city}</span></div>
+                                <div><strong>Country Code:</strong> <span>{detail.countryCode}</span></div>
+                                <div><strong>Country Name:</strong> <span>{detail.countryName}</span></div>
+                                <div><strong>Contact No:</strong> <span>{detail.contactNo}</span></div>
+                                <div><strong>Email:</strong> <span>{detail.email}</span></div>
+                            </div>
+                            <div className="mt-2">
+                                <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete(type, index)} />
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+
     const renderFormFields = (count, type) => {
         const details = type === 'adult' ? adultDetails : type === 'child' ? childDetails : infantDetails;
-
+    
         return Array.from({ length: count }, (_, index) => (
             <div key={`${type}-${index}`} className="row userFormFill">
-                <div className="col-md-3 ">
+                <div className="col-md-3">
                     <label>Gender:</label>
                     <div className="form-group genderFormGrp">
                         <div className="form-check form-check-inline">
@@ -379,7 +651,7 @@ export default function FlightDetails() {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-3 ">
+                <div className="col-md-3">
                     <div className="form-group">
                         <label htmlFor={`firstName-${type}-${index}`}>First Name</label>
                         <input
@@ -393,7 +665,7 @@ export default function FlightDetails() {
                         />
                     </div>
                 </div>
-                <div className="col-md-3 ">
+                <div className="col-md-3">
                     <div className="form-group">
                         <label htmlFor={`lastName-${type}-${index}`}>Last Name</label>
                         <input
@@ -407,7 +679,150 @@ export default function FlightDetails() {
                         />
                     </div>
                 </div>
-                <div className="col-md-3 ">
+                <div className="col-md-3">
+                    <div className="form-group">
+                        <label htmlFor={`dateOfBirth-${type}-${index}`}>Date of Birth</label>
+                        <input
+                            type="date"
+                            id={`dateOfBirth-${type}-${index}`}
+                            className="form-control"
+                            onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                            onChange={(e) => handleInputChange(e, index, type, 'dateOfBirth')}
+                            value={details[index]?.dateOfBirth || ''}
+                            max={new Date().toISOString().split("T")[0]} // Prevent future dates
+                            required
+                        />
+                    </div>
+                </div>
+                <div className="col-md-3">
+                    <div className="form-group">
+                        <label htmlFor={`passportNo-${type}-${index}`}>Passport No</label>
+                        <input
+                            type="text"
+                            id={`passportNo-${type}-${index}`}
+                            className="form-control"
+                            onChange={(e) => handleInputChange(e, index, type, 'passportNo')}
+                            value={details[index]?.passportNo || ''}
+                            required
+                            placeholder="Passport No"
+                        />
+                    </div>
+                </div>
+                <div className="col-md-3">
+                    <div className="form-group">
+                        <label htmlFor={`passportExpiry-${type}-${index}`}>Passport Expiry</label>
+                        <input
+                            type="date"
+                            id={`passportExpiry-${type}-${index}`}
+                            className="form-control"
+                            onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                            onChange={(e) => handleInputChange(e, index, type, 'passportExpiry')}
+                            value={details[index]?.passportExpiry || ''}
+                            min={new Date().toISOString().split("T")[0]} // Prevent past dates
+                            required
+                        />
+                    </div>
+                </div>
+                <div className="col-md-3">
+                    <div className="form-group">
+                        <label htmlFor={`passportIssueDate-${type}-${index}`}>Passport Issue Date</label>
+                        <input
+                            type="date"
+                            id={`passportIssueDate-${type}-${index}`}
+                            className="form-control"
+                            onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                            onChange={(e) => handleInputChange(e, index, type, 'passportIssueDate')}
+                            value={details[index]?.passportIssueDate || ''}
+                            max={new Date().toISOString().split("T")[0]} // Prevent future dates
+                            required
+                        />
+                    </div>
+                </div>
+                <div className="col-md-3">
+                    <div className="form-group">
+                        <label htmlFor={`addressLine1-${type}-${index}`}>Address Line 1</label>
+                        <input
+                            type="text"
+                            id={`addressLine1-${type}-${index}`}
+                            className="form-control"
+                            onChange={(e) => handleInputChange(e, index, type, 'addressLine1')}
+                            value={details[index]?.addressLine1 || ''}
+                            required
+                            placeholder="Address Line 1"
+                        />
+                    </div>
+                </div>
+                <div className="col-md-3">
+                    <div className="form-group">
+                        <label htmlFor={`city-${type}-${index}`}>City</label>
+                        <input
+                            type="text"
+                            id={`city-${type}-${index}`}
+                            className="form-control"
+                            onChange={(e) => handleInputChange(e, index, type, 'city')}
+                            value={details[index]?.city || ''}
+                            required
+                            placeholder="City"
+                        />
+                    </div>
+                </div>
+                <div className="col-md-3">
+                    <div className="form-group">
+                        <label htmlFor={`countryCode-${type}-${index}`}>Country Code</label>
+                        <input
+                            type="text"
+                            id={`countryCode-${type}-${index}`}
+                            className="form-control"
+                            onChange={(e) => handleInputChange(e, index, type, 'countryCode')}
+                            value={details[index]?.countryCode || ''}
+                            required
+                            placeholder="Country Code"
+                        />
+                    </div>
+                </div>
+                <div className="col-md-3">
+                    <div className="form-group">
+                        <label htmlFor={`countryName-${type}-${index}`}>Country Name</label>
+                        <input
+                            type="text"
+                            id={`countryName-${type}-${index}`}
+                            className="form-control"
+                            onChange={(e) => handleInputChange(e, index, type, 'countryName')}
+                            value={details[index]?.countryName || ''}
+                            required
+                            placeholder="Country Name"
+                        />
+                    </div>
+                </div>
+                <div className="col-md-3">
+                    <div className="form-group">
+                        <label htmlFor={`contactNo-${type}-${index}`}>Contact No</label>
+                        <input
+                            type="text"
+                            id={`contactNo-${type}-${index}`}
+                            className="form-control"
+                            onChange={(e) => handleInputChange(e, index, type, 'contactNo')}
+                            value={details[index]?.contactNo || ''}
+                            required
+                            placeholder="Contact No"
+                        />
+                    </div>
+                </div>
+                <div className="col-md-3">
+                    <div className="form-group">
+                        <label htmlFor={`email-${type}-${index}`}>Email</label>
+                        <input
+                            type="email"
+                            id={`email-${type}-${index}`}
+                            className="form-control"
+                            onChange={(e) => handleInputChange(e, index, type, 'email')}
+                            value={details[index]?.email || ''}
+                            required
+                            placeholder="Email"
+                        />
+                    </div>
+                </div>
+                <div className="col-md-3">
                     <div className="form-group formConfbtn">
                         <button className="btn btn-primary mt-4" onClick={(e) => handleConfirm(e, index, type)}>
                             Confirm
@@ -417,62 +832,12 @@ export default function FlightDetails() {
             </div>
         ));
     };
+    
 
-    const renderConfirmedDetails = (details, type) => (
-        <div className="row ">
-            <div className="mt-4 col-md-6 formdettlsDesk" style={{ display: details.length > 0 ? 'block' : 'none' }}>
-                {details.map((detail, index) => (
-                    <div key={index} className="d-flex align-items-center mb-2">
-                        <div className="flex-grow-1 formdettlsDeskdiv ml-2">
-                            <input
-                                type="checkbox"
-                                className="form-check-input selectDetInp"
-                                checked={detail.selected}
-                                onChange={() => toggleSelect(index, type)}
-                            />
-                            <div className="formdettlsDeskdivnmGen">
-                                <div>
-                                    <strong>Gender:</strong> <span>{detail.gender}</span>
-                                </div>
-                                <div>
-                                    <strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span>
-                                </div>
-                            </div>
-                            <div>
-                                <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete(type, index)} />
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-        </div>
-
-    );
-
-    const toggleSelect = (index, type) => {
-        if (type === 'adult') {
-            const updatedDetails = confirmedAdultDetails.map((detail, i) =>
-                i === index ? { ...detail, selected: !detail.selected } : detail
-            );
-            setConfirmedAdultDetails(updatedDetails);
-            console.log("adultPassengerDetails", updatedDetails);
-            localStorage.setItem('adultPassengerDetails', JSON.stringify(updatedDetails));
+    // Other parts of the code remain unchanged
 
 
-        } else if (type === 'child') {
-            const updatedDetails = confirmedChildDetails.map((detail, i) =>
-                i === index ? { ...detail, selected: !detail.selected } : detail
-            );
-            setConfirmedChildDetails(updatedDetails);
-        } else if (type === 'infant') {
-            const updatedDetails = confirmedInfantDetails.map((detail, i) =>
-                i === index ? { ...detail, selected: !detail.selected } : detail
-            );
-            setConfirmedInfantDetails(updatedDetails);
-        }
-        checkButtonDisabled();
-    };
+
     // ----------------------logic for total traveller forms---------------------------------------
 
 
@@ -659,7 +1024,7 @@ export default function FlightDetails() {
         if (showTabs) {
             setLoading(true);
             setTimeout(() => {
-                navigate('/seat-meal-baggage' , { state: { fareDataDetails } });
+                navigate('/seat-meal-baggage', { state: { fareDataDetails } });
             }, 1000);
         } else {
             reviewHandler();
