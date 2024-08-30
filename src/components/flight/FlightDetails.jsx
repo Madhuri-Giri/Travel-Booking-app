@@ -90,102 +90,102 @@ export default function FlightDetails() {
 
     // --------------------------------------seat and meal api--------------------------------------------
 
-    const [ssrData, setSsrData] = useState([]);
+    // const [ssrData, setSsrData] = useState([]);
 
-    useEffect(() => {
-        const storedData = localStorage.getItem('FlightssrResponse');
-        if (storedData) {
-            const parsedData = JSON.parse(storedData);
-            const flattenedBaggage = parsedData.Baggage.flat();
-            setSsrData(flattenedBaggage);
-        } else {
-            ssrHandler();
-        }
-    }, []);
+    // useEffect(() => {
+    //     const storedData = localStorage.getItem('FlightssrResponse');
+    //     if (storedData) {
+    //         const parsedData = JSON.parse(storedData);
+    //         const flattenedBaggage = parsedData.Baggage.flat();
+    //         setSsrData(flattenedBaggage);
+    //     } else {
+    //         ssrHandler();
+    //     }
+    // }, []);
 
-    const ssrHandler = async () => {
-        // const traceId = localStorage.getItem('FlightTraceId2');
-        // const resultIndex = localStorage.getItem('FlightResultIndex2');
-        // const srdvType = localStorage.getItem('FlightSrdvType');
-        // const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
+    // const ssrHandler = async () => {
+    //     // const traceId = localStorage.getItem('FlightTraceId2');
+    //     // const resultIndex = localStorage.getItem('FlightResultIndex2');
+    //     // const srdvType = localStorage.getItem('FlightSrdvType');
+    //     // const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
 
-        // if (!traceId || !resultIndex) {
-        //     console.error('TraceId or ResultIndex not found in local storage');
-        //     return;
-        // }
+    //     // if (!traceId || !resultIndex) {
+    //     //     console.error('TraceId or ResultIndex not found in local storage');
+    //     //     return;
+    //     // }
 
-        const payload = {
-            SrdvIndex: "2",
-            ResultIndex: "4-6779374091_3DELBOMSG8269~11368130584707711" ,
-            TraceId: "157631" ,
-            SrdvType:  "MixAPI",
-        };
+    //     const payload = {
+    //         SrdvIndex: "2",
+    //         ResultIndex: "4-6779374091_3DELBOMSG8269~11368130584707711" ,
+    //         TraceId: "157631" ,
+    //         SrdvType:  "MixAPI",
+    //     };
 
-        try {
-            const response = await fetch('https://sajyatra.sajpe.in/admin/api/ssr', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
+    //     try {
+    //         const response = await fetch('https://sajyatra.sajpe.in/admin/api/ssr', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify(payload)
+    //         });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
 
-            const ssrData = await response.json();
-            console.log('ssr Api:', ssrData);
+    //         const ssrData = await response.json();
+    //         console.log('ssr Api:', ssrData);
 
-            if (ssrData && ssrData.Baggage) {
-                localStorage.setItem('FlightssrResponse', JSON.stringify(ssrData));
-                const flattenedBaggage = ssrData.Baggage.flat();
-                setSsrData(flattenedBaggage);
-            } else {
-                console.error('No baggage data found in response');
-            }
-        } catch (error) {
-            console.error('SSr API call failed:', error);
-        }
-    };
+    //         if (ssrData && ssrData.Baggage) {
+    //             localStorage.setItem('FlightssrResponse', JSON.stringify(ssrData));
+    //             const flattenedBaggage = ssrData.Baggage.flat();
+    //             setSsrData(flattenedBaggage);
+    //         } else {
+    //             console.error('No baggage data found in response');
+    //         }
+    //     } catch (error) {
+    //         console.error('SSr API call failed:', error);
+    //     }
+    // };
 
-    const [seatData, setSeatData] = useState([]);
+    // const [seatData, setSeatData] = useState([]);
 
     // console.log("ssrData", ssrData);
     // console.log("seatData", seatData);
 
-  useEffect(() => {
-    const flightData = localStorage.getItem('FlightsitMap');
-    if (flightData) {
-        const parsedData = JSON.parse(flightData);
+//   useEffect(() => {
+//     const flightData = localStorage.getItem('FlightsitMap');
+//     if (flightData) {
+//         const parsedData = JSON.parse(flightData);
 
-        if (parsedData?.Results?.[0]?.Seats) {
-            const seatsArray = [];
+//         if (parsedData?.Results?.[0]?.Seats) {
+//             const seatsArray = [];
 
-            for (const row in parsedData.Results[0].Seats) {
-                const rowData = parsedData.Results[0].Seats[row];
+//             for (const row in parsedData.Results[0].Seats) {
+//                 const rowData = parsedData.Results[0].Seats[row];
 
-                for (const column in rowData) {
-                    const seat = rowData[column];
-                    seatsArray.push({
-                        seatNumber: seat.SeatNumber,
-                        price: seat.Amount,
-                        isBooked: seat.IsBooked,
-                        imgSrc: '/src/assets/images/seat-2-removebg-preview.png'
-                    });
-                }
-            }
+//                 for (const column in rowData) {
+//                     const seat = rowData[column];
+//                     seatsArray.push({
+//                         seatNumber: seat.SeatNumber,
+//                         price: seat.Amount,
+//                         isBooked: seat.IsBooked,
+//                         imgSrc: '/src/assets/images/seat-2-removebg-preview.png'
+//                     });
+//                 }
+//             }
 
-            setSeatData(seatsArray);
-        } else {
-            console.warn('Seats data is undefined or missing.');
-            setSeatData([]);
-        }
-    } else {
-        console.warn('No flight data found in localStorage.');
-        setSeatData([]);
-    }
-}, []);
+//             setSeatData(seatsArray);
+//         } else {
+//             console.warn('Seats data is undefined or missing.');
+//             setSeatData([]);
+//         }
+//     } else {
+//         console.warn('No flight data found in localStorage.');
+//         setSeatData([]);
+//     }
+// }, []);
 
 
     // const seatmap = async () => {
@@ -658,7 +658,7 @@ export default function FlightDetails() {
         if (showTabs) {
             setLoading(true);
             setTimeout(() => {
-                navigate('/seat-meal-baggage', { state: { seatData, ssrData, formData } });
+                navigate('/seat-meal-baggage');
             }, 1000);
         } else {
             reviewHandler();
