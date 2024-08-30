@@ -22,7 +22,7 @@ const FlightReview = () => {
 
 
   const location = useLocation();
-  const { fareDataDetails } = location.state || {}; // Use optional chaining
+  const { fareDataDetails } = location.state || {}; 
 
 
   const IsLCC = localStorage.getItem('IsLCC')
@@ -230,10 +230,11 @@ const FlightReview = () => {
 
   // -----------------------flight LcC Api----------------------------------------------
 
-  const traceId = localStorage.getItem('FlightTraceId2');
-  const resultIndex = localStorage.getItem('FlightResultIndex2');
-  const srdvType = localStorage.getItem('FlightSrdvType');
-  const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
+  const FtraceId = localStorage.getItem('F-TraceId');
+  const FresultIndex = localStorage.getItem('F-ResultIndex');
+  const FsrdvType = localStorage.getItem('F-SrdvType');
+  const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
+
   const baseFare = localStorage.getItem('BaseFare');
   const tax = localStorage.getItem('Tax');
   const yqTax = localStorage.getItem('YQTax');
@@ -256,12 +257,12 @@ const FlightReview = () => {
 
 
       const llcPayload = {
-        "SrdvType": srdvType,
+        "SrdvType": FsrdvType,
         "transaction_num": transactionFlightNo,
          "transaction_id" : transaction_id,         
-        "SrdvIndex": srdvIndex,
-        "TraceId": parseInt(traceId),
-        "ResultIndex": resultIndex,
+        "SrdvIndex": FsrdvIndex,
+        "TraceId": FtraceId,
+        "ResultIndex": FresultIndex,
         "Title": "Mr",
         "FirstName": firstName,
         "LastName": lastName,
@@ -330,10 +331,10 @@ const FlightReview = () => {
       "ClientId": "180112",
       "UserName": "Maneesh3",
       "Password": "Maneesh@36",
-      SrdvType: srdvType,
-      SrdvIndex: srdvIndex,
-      TraceId: parseInt(traceId),
-      ResultIndex: resultIndex,
+      "SrdvIndex": FsrdvIndex,
+        "TraceId": FtraceId,
+        "ResultIndex": FresultIndex,
+        "SrdvType": FsrdvType,
       "Passengers": [
         {
           "Title": "Mr",
