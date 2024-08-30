@@ -9,13 +9,17 @@ import Footer from '../../pages/footer/Footer';
 import { useNavigate } from 'react-router-dom';
 import '../hotelBill/HotelTicket.css';
 import hotelImg from '../../../src/assets/images/hotel-ticket-img.png';
-import 'react-toastify/dist/ReactToastify.css';
 
 const BookingBill = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
+  const [storedGuestDetails, setStoredGuestDetails] = useState([]);
+  const [storedHotelRoom, setStoredHotelRoom] = useState([]);
+  const [finalPriceSingleDeluxe, setFinalPriceSingleDeluxe] = useState(0);
+  const [finalPriceDoubleDeluxe, setFinalPriceDoubleDeluxe] = useState(0);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  
   useEffect(() => {
     const fetchBookingDetails = async () => {
       try {
@@ -44,6 +48,19 @@ const BookingBill = () => {
 
         const res = await response.json();
         setBookingDetails(res.data);
+
+        const storedGuestDetailsData = localStorage.getItem('guestDetails');
+        if (storedGuestDetailsData) {
+          const parsedGuestDetails = JSON.parse(storedGuestDetailsData);
+          setStoredGuestDetails(parsedGuestDetails);
+        }
+
+        const storedSelectedRoomData = localStorage.getItem('selectedRoomsData');
+        if (storedSelectedRoomData) {
+          const parsedSelectedRoom = JSON.parse(storedSelectedRoomData);
+          setStoredHotelRoom(parsedSelectedRoom);
+        }
+        
       } catch (error) {
         setError(error.message);
         toast.error(`Error: ${error.message}`);
@@ -60,9 +77,9 @@ const BookingBill = () => {
     }
 
     const doc = new jsPDF();
-    const { hotel_passengers, booking, user_details } = bookingDetails;
+    const { hotel_passengers, booking } = bookingDetails;
 
-    if (hotel_passengers.length > 0) {
+    if (hotel_passengers?.length > 0) {
       const hotelInfo = hotel_passengers[0];
       doc.setFontSize(18);
       doc.text('Booking Bill', 14, 22);
@@ -75,19 +92,19 @@ const BookingBill = () => {
       doc.text(`Check-Out Date: ${hotelInfo.check_out_date || 'N/A'}`, 14, 90);
     }
 
-    if (booking.length > 0) {
+    if (booking?.length > 0) {
       const bookingInfo = booking[0];
-      doc.text(`Booking ID: ${bookingInfo.booking_id}`, 14, 110);
-      doc.text(`Hotel Name: ${bookingInfo.hotel_name}`, 14, 120);
-      doc.text(`Transaction Number: ${bookingInfo.transaction_num}`, 14, 130);
-      doc.text(`Amount: ${bookingInfo.amount}`, 14, 140);
+      doc.text(`Booking ID: ${bookingInfo.booking_id}`, 14, 120);
+      doc.text(`Hotel Name: ${bookingInfo.hotel_name}`, 14, 130);
+      doc.text(`Transaction Number: ${bookingInfo.transaction_num}`, 14, 140);
+      doc.text(`Amount: ${bookingInfo.amount}`, 14, 150);
     }
 
-    if (user_details.length > 0) {
-      const userInfo = user_details[0];
-      doc.text(`User Name: ${userInfo.name}`, 14, 150);
-      doc.text(`Email: ${userInfo.email}`, 14, 160);
-      doc.text(`Mobile: ${userInfo.mobile}`, 14, 170);
+    if (storedGuestDetails.length > 0) {
+      const guestInfo = storedGuestDetails[0];
+      doc.text(`User Name: ${guestInfo.fname} ${guestInfo.lname}`, 14, 160);
+      doc.text(`Email: ${guestInfo.email}`, 14, 170);
+      doc.text(`Mobile: ${guestInfo.mobile}`, 14, 180);
     }
 
     doc.save('booking-bill.pdf');
@@ -96,7 +113,6 @@ const BookingBill = () => {
   const bookingCancel = async (event) => {
     event.preventDefault();
 
-    // Retrieve the stored booking IDs from localStorage
     const hotelBookingId = localStorage.getItem('hotel_booking_id');
     const transactionNum = localStorage.getItem('transactionNum');
      
@@ -107,7 +123,6 @@ const BookingBill = () => {
         return;
     }
 
-    // Additional validation for transactionNum
     if (!transactionNum) {
         console.error('No transaction number available');
         setError('No transaction number available');
@@ -116,7 +131,7 @@ const BookingBill = () => {
     }
 
     const requestData = {
-      BookingId: '1554760', 
+      BookingId: hotelBookingId, 
       RequestType: 4,
       BookingMode: 5,
       SrdvType: "SingleTB",
@@ -185,12 +200,22 @@ const BookingBill = () => {
                         <p><span>Transaction Number:</span> {item.transaction_num}</p>
                         <p><span>Number of Rooms:</span> {item.noofrooms}</p>
                         <p><span>Check-in Date:</span> {item.check_in_date}</p>
-                        <p><span>Room Price:</span> {item.roomprice}</p>
-                        <p><span>GST:</span> {item.tax}</p>
-                        <p><span>Discount:</span> {item.discount}</p>
-                        <p><span>Total Price:</span> {item.publishedprice}</p>
                       </div>
                     ))}
+
+                    {storedHotelRoom.length > 0 && (
+            <div>
+              {storedHotelRoom.map((item, index) => (
+                <div key={index}>
+                  <p><span>Room Price:</span> ₹{item.roomprice}</p>
+                  <p><span>GST:</span> {item.tax}</p>
+                  <p><span>Discount:</span> {item.discount}</p>
+                  <p><span>Total Price:</span> ₹{item.publishedprice}</p>
+                </div>
+              ))}
+             
+            </div>
+                    )}
                   </div>
                 ) : (
                   <p>No hotel information available.</p>
@@ -199,14 +224,18 @@ const BookingBill = () => {
 
               <div className="details-section-guest">
                 <h3>Guest Details</h3>
-                {bookingDetails?.hotel_passengers?.length > 0 ? (
+                {storedGuestDetails?.length > 0 ? (
                   <div className="detail-guest">
-                    {bookingDetails.hotel_passengers.map((item, index) => (
+                    {storedGuestDetails.map((item, index) => (
                       <div key={index}>
-                        <p><span>Name:</span> {item.firstname}</p>
-                        <p><span>Phone Number:</span> {item.phoneno}</p>
+                        <p><span>First Name:</span> {item.fname}</p>
+                        <p><span>Last Name:</span> {item.lname}</p>
+                        <p><span>Phone Number:</span> {item.mobile}</p>
                         <p><span>Email:</span> {item.email}</p>
                         <p><span>Age:</span> {item.age}</p>
+                        <p><span>Passport Number:</span> {item.passportNo}</p>
+                        <p><span>PaxType:</span> {item.paxType}</p>
+                        {/* <p><span>Govt. Id:</span> {item.number}</p> */}
                       </div>
                     ))}
                   </div>
@@ -220,7 +249,6 @@ const BookingBill = () => {
               <button className='ticket_btn' onClick={handleDownloadPDF}>Download PDF</button>
               <button className='ticket_btn_cancel' onClick={bookingCancel}>Cancel Ticket</button>
             </div>
-            
           </div>
         </div>
         <ToastContainer />

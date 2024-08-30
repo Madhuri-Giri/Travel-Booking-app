@@ -430,9 +430,6 @@ const GuestDetails = () => {
                     PassportExpDate: guest.passportExpDate || "",
                     PAN: guest.PAN || "",
                 })),
-
-
-                
                   SupplierPrice: storedHotelRoomData.SupplierPrice || null,
                   Price: {
                       CurrencyCode: storedHotelRoomData.Price?.CurrencyCode || 'INR',
@@ -657,6 +654,7 @@ if (payLoading) {
                         <p>Total Price with GST: ₹{totalPriceWithGST.toFixed(2)}</p>
                         <p>Discount: -₹{(totalPrice * discount / 100).toFixed(2)}</p>
                         <p>Price After Discount: ₹{applyDiscount(totalPrice, discount).toFixed(2)}</p>
+                        {/* <p>final price ₹{(totalPriceWithGST+applyDiscount)} </p> */}
                       </div>
                     </div>
                   ))}
@@ -671,7 +669,7 @@ if (payLoading) {
                         <p>GST ({gstRate}%): ₹ {((applyDiscount(totalPrice, discount) * gstRate) / 100).toFixed(2)}</p>
                         <p>Total Price with GST: ₹ {totalPriceWithGST.toFixed(2)}</p>
                         <p>Discount: ₹ {(totalPrice * discount / 100).toFixed(2)}</p>
-                        <p>Price After Discount: ₹ {applyDiscount(totalPrice, discount).toFixed(2)}</p>
+                        {/* <p>Price After Discount: ₹ {applyDiscount(totalPrice, discount).toFixed(2)}</p> */}
                       </div>
                     </div>
                   ))}
@@ -684,152 +682,162 @@ if (payLoading) {
                 {showForm && !formSubmitted && (
                   /* ---------Start form----------- */
                   <div className="form-container">
-                    <div className="form-content">
-                      <h2 className="text-center">Enter Your Details</h2>
-                      <form onSubmit={handleFormSubmit}>
-                        {guestForms.map((formData, index) => (
-                          <div key={index} className="guest-form">
-                            <div className="row">
-                              <div className="col-md-6">
-                                <div className="mb-3">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="First Name"
-                                    name="fname"
-                                    value={formData.fname}
-                                    onChange={(e) => handleFormChange(index, e)}
-                                    required
-                                  />
-                                </div>
-                                <div className="mb-3">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Middle Name (Optional)"
-                                    name="mname"
-                                    value={formData.mname}
-                                    onChange={(e) => handleFormChange(index, e)}
-                                  />
-                                </div>
-                                <div className="mb-3">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Last Name"
-                                    name="lname"
-                                    value={formData.lname}
-                                    onChange={(e) => handleFormChange(index, e)}
-                                    required
-                                  />
-                                </div>
-                                <div className="mb-3">
-                                  <input
-                                    type="email"
-                                    className="form-control"
-                                    placeholder="Email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={(e) => handleFormChange(index, e)}
-                                    required
-                                  />
-                                </div>
-                                <div className="mb-3">
-                                  <input
-                                    type="tel"
-                                    className="form-control"
-                                    placeholder="Contact Number"
-                                    name="mobile"
-                                    value={formData.mobile}
-                                    onChange={(e) => handleFormChange(index, e)}
-                                    required
-                                  />
-                                </div>
-                                <div className="mb-3">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="PAN No./Aadhaar Card No."
-                                    name="number"
-                                    value={formData.number}
-                                    onChange={(e) => handleFormChange(index, e)}
-                                  />
-                                </div>
-                              </div>
+  <div className="form-content">
+    <h2 className="text-center">Enter Your Details</h2>
+    <form onSubmit={handleFormSubmit}>
+      {guestForms.map((formData, index) => (
+        <div key={index} className="guest-form">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="First Name"
+                  name="fname"
+                  value={formData.fname}
+                  onChange={(e) => handleFormChange(index, e)}
+                  required
+                  minLength={2}
+                  maxLength={30}
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Middle Name (Optional)"
+                  name="mname"
+                  value={formData.mname}
+                  onChange={(e) => handleFormChange(index, e)}
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Last Name"
+                  name="lname"
+                  value={formData.lname}
+                  onChange={(e) => handleFormChange(index, e)}
+                  required
+                  minLength={2}
+                  maxLength={30}
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={(e) => handleFormChange(index, e)}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="tel"
+                  className="form-control"
+                  placeholder="Contact Number"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={(e) => handleFormChange(index, e)}
+                  required
+                  pattern="[0-9]{10}"
+                />
+                
+              </div>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="PAN No./Aadhaar Card No."
+                  name="PAN No"
+                  value={formData.number}
+                  onChange={(e) => handleFormChange(index, e)}
+                />
+              </div>
+            </div>
 
-                              <div className="col-md-6">
-                                <div className="mb-3">
-                                  <input
-                                    type="number"
-                                    className="form-control"
-                                    placeholder="Age"
-                                    name="age"
-                                    value={formData.age}
-                                    onChange={(e) => handleFormChange(index, e)}
-                                  />
-                                </div>
+            <div className="col-md-6">
+              <div className="mb-3">
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder="Age"
+                  name="age"
+                  value={formData.age}
+                  onChange={(e) => handleFormChange(index, e)}
+                  min={0}
+                />
+              </div>
 
-                                <div className="mb-3">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Passport No."
-                                    name="passportNo"
-                                    value={formData.passportNo}
-                                    onChange={(e) => handleFormChange(index, e)}
-                                  />
-                                </div>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Passport No."
+                  name="passportNo"
+                  value={formData.passportNo}
+                  onChange={(e) => handleFormChange(index, e)}
+                />
+              </div>
 
-                                <div className="mb-3">
-                        <DatePicker
-                          selected={formData.passportIssueDate}
-                          onChange={(date) => handleDateChange(index, date, 'passportIssueDate')}
-                          placeholderText="Passport Issue Date"
-                          className="form-control full-width"
-                          minDate={null}
-                        />
-                        <label className="custom-placeholder">Passport Issue Date</label>
-                      </div>
+              <div className="mb-3">
+                <DatePicker
+                  selected={formData.passportIssueDate}
+                  onChange={(date) => handleDateChange(index, date, 'passportIssueDate')}
+                  placeholderText="Passport Issue Date"
+                  className="form-control full-width"
+                  minDate={null}
+                />
+                <label className="custom-placeholder">Passport Issue Date</label>
+              </div>
 
-                      <div className="mb-3">
-                        <DatePicker
-                          selected={formData.passportExpDate}
-                          onChange={(date) => handleDateChange(index, date, 'passportExpDate')}
-                          placeholderText="Passport Expiry Date"
-                          className="form-control full-width"
-                          minDate={null}
-                        />
-                        <label className="custom-placeholder">Passport Expiry Date</label>
-                      </div>
+              <div className="mb-3">
+                <DatePicker
+                  selected={formData.passportExpDate}
+                  onChange={(date) => handleDateChange(index, date, 'passportExpDate')}
+                  placeholderText="Passport Expiry Date"
+                  className="form-control full-width"
+                  minDate={null}
+                />
+                <label className="custom-placeholder">Passport Expiry Date</label>
+              </div>
 
-                                <div className="mb-3">
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Lead Passenger (Yes/No)"
-                                    name="leadPassenger"
-                                    value={formData.leadPassenger}
-                                    onChange={(e) => handleFormChange(index, e)}
-                                  />
-                                </div>
-                                <div className="mb-3">
-                                  <input
-                                    type="number"
-                                    className="form-control"
-                                    placeholder="Pax Type"
-                                    name="paxType"
-                                    value={formData.paxType}
-                                    onChange={(e) => handleFormChange(index, e)}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <button className='submit-btn' type="submit">Save</button>
-                          </div>
-                        ))}
-                      </form>
-                    </div>
-                  </div>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Lead Passenger (Yes/No)"
+                  name="leadPassenger"
+                  value={formData.leadPassenger}
+                  onChange={(e) => handleFormChange(index, e)}
+                  pattern="^(Yes|No)$"
+                />
+               
+              </div>
+              <div className="mb-3">
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder="Pax Type"
+                  name="paxType"
+                  value={formData.paxType}
+                  onChange={(e) => handleFormChange(index, e)}
+                />
+              </div>
+            </div>
+          </div>
+          <button className='submit-btn' type="submit">Save</button>
+        </div>
+      ))}
+    </form>
+  </div>
+</div>
+
                 )}
                 {formSubmitted && (
                   <div>
