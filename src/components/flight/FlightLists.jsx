@@ -303,21 +303,21 @@ export default function FlightLists() {
     // ------------------------------------------------fare-Quote-api-----------------------------------------
     const fareQuoteHandler = async () => {
         setLoading(true);
-        const traceId = localStorage.getItem('FlightTraceId2');
-        const resultIndex = localStorage.getItem('FlightResultIndex2');
-        const srdvType = localStorage.getItem('FlightSrdvType');
-        const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
+        const FtraceId = localStorage.getItem('F-TraceId');
+        const FresultIndex = localStorage.getItem('F-ResultIndex');
+        const FsrdvType = localStorage.getItem('F-SrdvType');
+        const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
 
-        if (!traceId || !resultIndex) {
+        if (!FtraceId || !FresultIndex) {
             console.error('TraceId or ResultIndex not found in local storage');
             return;
         }
-
+    
         const payload = {
-            SrdvIndex: srdvIndex,
-            ResultIndex: resultIndex,
-            TraceId: parseInt(traceId),
-            SrdvType: srdvType,
+            SrdvIndex: FsrdvIndex,
+            ResultIndex: FresultIndex,
+            TraceId: parseInt(FtraceId),
+            SrdvType: FsrdvType,
         };
 
         try {
