@@ -339,10 +339,27 @@ export default function FlightLists() {
             const baseFare = data.Results.Fare.BaseFare;
             const yqTax = data.Results.Fare.YQTax;
             const tax = data.Results.Fare.Tax;
+            const AdditionalTxnFeeOfrd = data.Results.Fare.AdditionalTxnFeeOfrd;
+            const AdditionalTxnFeePub = data.Results.Fare.AdditionalTxnFeePub;
+            const AirTransFee = data.Results.Fare.AirTransFee;
+            const OtherCharges = data.Results.Fare.OtherCharges;
+            const TransactionFee = data.Results.Fare.TransactionFee;
+            const Currency = data.Results.Fare.Currency;
+
+
+
 
             localStorage.setItem('BaseFare', baseFare);
             localStorage.setItem('YQTax', yqTax);
             localStorage.setItem('Tax', tax);
+            localStorage.setItem('AdditionalTxnFeeOfrd',AdditionalTxnFeeOfrd)
+            localStorage.setItem('AdditionalTxnFeePub',AdditionalTxnFeePub)
+            localStorage.setItem('AirTransFee', AirTransFee)
+            localStorage.setItem('OtherCharges', OtherCharges)
+            localStorage.setItem('TransactionFee', TransactionFee)
+            localStorage.setItem('Currency', Currency)
+
+
 
 
             if (data.Results && formData) {

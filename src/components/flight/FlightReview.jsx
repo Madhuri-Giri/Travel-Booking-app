@@ -22,7 +22,7 @@ const FlightReview = () => {
 
 
   const location = useLocation();
-  const { fareDataDetails } = location.state || {}; // Use optional chaining
+  const { fareDataDetails } = location.state || {}; 
 
 
   const IsLCC = localStorage.getItem('IsLCC')
@@ -230,10 +230,20 @@ const FlightReview = () => {
 
   // -----------------------flight LcC Api----------------------------------------------
 
-  const traceId = localStorage.getItem('FlightTraceId2');
-  const resultIndex = localStorage.getItem('FlightResultIndex2');
-  const srdvType = localStorage.getItem('FlightSrdvType');
-  const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
+  const FtraceId = localStorage.getItem('F-TraceId');
+  const FresultIndex = localStorage.getItem('F-ResultIndex');
+  const FsrdvType = localStorage.getItem('F-SrdvType');
+  const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
+
+
+  const AdditionalTxnFeeOfrd = localStorage.getItem('AdditionalTxnFeeOfrd');
+  const AdditionalTxnFeePub = localStorage.getItem('AdditionalTxnFeePub');
+  const AirTransFee = localStorage.getItem('AirTransFee');
+  const OtherCharges = localStorage.getItem('OtherCharges');
+  const TransactionFee = localStorage.getItem('TransactionFee');
+  const Currency = localStorage.getItem('Currency');
+
+
   const baseFare = localStorage.getItem('BaseFare');
   const tax = localStorage.getItem('Tax');
   const yqTax = localStorage.getItem('YQTax');
@@ -242,11 +252,7 @@ const FlightReview = () => {
   const firstName = passengerDetails[0].firstName;
   const lastName = passengerDetails[0].lastName;
 
-  // console.log("traceId", traceId);
-  // console.log("transactionNum", transactionNum);
-  // console.log("title", title);
-  // console.log("firstName", firstName);
-  // console.log("lastName", lastName);
+ 
 
 
   const bookLccApi = async () => {
@@ -256,12 +262,12 @@ const FlightReview = () => {
 
 
       const llcPayload = {
-        "SrdvType": srdvType,
+        "SrdvType": FsrdvType,
         "transaction_num": transactionFlightNo,
          "transaction_id" : transaction_id,         
-        "SrdvIndex": srdvIndex,
-        "TraceId": parseInt(traceId),
-        "ResultIndex": resultIndex,
+        "SrdvIndex": FsrdvIndex,
+        "TraceId": FtraceId,
+        "ResultIndex": FresultIndex,
         "Title": "Mr",
         "FirstName": firstName,
         "LastName": lastName,
@@ -280,11 +286,11 @@ const FlightReview = () => {
         "IsLeadPax": 1,
         "BaseFare": parseFloat(baseFare),
         "Tax": parseFloat(tax),
-        "TransactionFee": "0",
+        "TransactionFee": TransactionFee,
         "YQTax": parseFloat(yqTax),
-        "AdditionalTxnFeeOfrd": "",
-        "AdditionalTxnFeePub": "",
-        "AirTransFee": "0"
+        "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+        "AdditionalTxnFeePub": AdditionalTxnFeePub,
+        "AirTransFee": AirTransFee
       };
 
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/bookllc', {
@@ -326,19 +332,15 @@ const FlightReview = () => {
 
   const bookHoldApi = async () => {
     const holdPayload = {
-      "EndUserIp": "1.1.1.1",
-      "ClientId": "180112",
-      "UserName": "Maneesh3",
-      "Password": "Maneesh@36",
-      SrdvType: srdvType,
-      SrdvIndex: srdvIndex,
-      TraceId: parseInt(traceId),
-      ResultIndex: resultIndex,
+      "SrdvIndex": FsrdvIndex,
+        "TraceId": FtraceId,
+        "ResultIndex": FresultIndex,
+        "SrdvType": FsrdvType,
       "Passengers": [
         {
           "Title": "Mr",
-          "FirstName": 'firstName',
-          "LastName": 'LastName',
+          "FirstName": firstName,
+          "LastName": lastName,
           "PaxType": 1,
           "DateOfBirth": "1997-03-12T00:00:00",
           "Gender": "1",
@@ -353,15 +355,15 @@ const FlightReview = () => {
           "IsLeadPax": 1,
           "Fare": [
             {
-              "Currency": "INR",
+              "Currency": Currency,
               "BaseFare": parseFloat(baseFare),
               "Tax": parseFloat(tax),
               "YQTax": parseFloat(yqTax),
-              "OtherCharges": 0,
-              "TransactionFee": "0",
-              "AdditionalTxnFeeOfrd": 0,
-              "AdditionalTxnFeePub": 0,
-              "AirTransFee": "0"
+              "OtherCharges": OtherCharges,
+              "TransactionFee": TransactionFee,
+              "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+              "AdditionalTxnFeePub": AdditionalTxnFeePub,
+              "AirTransFee": AirTransFee
             }
           ]
         }

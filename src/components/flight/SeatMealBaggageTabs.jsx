@@ -448,25 +448,20 @@ const SeatMealBaggageTabs = () => {
     };
 
     const handleSeatClick = (seat) => {
-        // Check if the seat is already in the selectedSeats array
         const isAlreadySelected = selectedSeats.find(s => s.seatNumber === seat.seatNumber);
 
         let updatedSeats;
 
         if (isAlreadySelected) {
-            // If the seat is already selected, remove it
             updatedSeats = selectedSeats.filter(s => s.seatNumber !== seat.seatNumber);
         } else {
-            // If the seat is not selected, add it
             updatedSeats = [...selectedSeats, seat];
         }
 
-        // Update state and local storage
         setSelectedSeats(updatedSeats);
         localStorage.setItem('flightSelectedSeats', JSON.stringify(updatedSeats));
     };
 
-    // Function to calculate total price of selected seats
     const calculateTotalPrice = () => {
         return selectedSeats.reduce((total, seat) => total + seat.price, 0);
     };
@@ -513,6 +508,9 @@ const SeatMealBaggageTabs = () => {
                     </div>
                 </div>
             </div>
+
+           
+
         </div>
     );
 
@@ -527,6 +525,10 @@ const SeatMealBaggageTabs = () => {
     const handleBaggageClick = (baggage) => {
         setSelectedBaggage(baggage.Weight === selectedBaggage?.Weight ? null : baggage);
     };
+
+
+    
+
 
     const renderBaggageTab = () => {
         const baggageData = getSsrApiData();
@@ -554,6 +556,12 @@ const SeatMealBaggageTabs = () => {
                         </div>
                     </div>
                 ))}
+
+
+<div className="meal-last">
+                        <button onClick={reviewHandler}>Continue</button>
+                    </div>
+
             </div>
         );
     };
@@ -616,9 +624,7 @@ const SeatMealBaggageTabs = () => {
                         </div>
                     </div>
 
-                    <div className="meal-last">
-                        <button onClick={reviewHandler}>Continue</button>
-                    </div>
+                 
 
                 </div>
 
