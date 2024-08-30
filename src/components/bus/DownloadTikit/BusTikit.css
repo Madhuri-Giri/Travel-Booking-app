@@ -38,7 +38,7 @@
        border: none;
        box-shadow: 2px 2px 5px 2px rgba(229, 220, 220, 0.68);
 } */
- 
+
 .Bus-Tikit .lottie .anim {
        width: 50%;
 }
@@ -399,6 +399,7 @@
 .fromtoMOB {
        display: none;
 }
+
 .fromtoWEB {
        display: flex;
 }
@@ -411,26 +412,44 @@
 }
 
 @media screen and (max-width: 576px) {
+
+       .busticktbox::before,
+       .busticktbox::after {
+              width: 30px;
+       }
+
+       .busticktbox::after {
+              right: -10px;
+       }
+
+       .busticktbox::before {
+              left: -10px;
+       }
+
+       .Bus-Tikit .lottie {
+              padding: 1vmax;
+       }
+
        .buspssngerdetails span {
               margin-left: unset;
               font-size: 13px;
-              color: gray;
        }
 
        .fromtoMOB {
               display: flex;
        }
+
        .fromtoWEB {
               display: none;
        }
 }
 
-.buslottieCOL{
+.buslottieCOL {
        display: flex;
        justify-content: center;
        align-items: center;
 }
 
-.busticketROW{
+.busticketROW {
        margin: 20px 0px;
 }
