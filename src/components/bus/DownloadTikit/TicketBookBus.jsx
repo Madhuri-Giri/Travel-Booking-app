@@ -10,10 +10,14 @@ import Lottie from 'lottie-react';
 import busAnim from "../../../assets/images/mainBus.json";
 import Barcode from 'react-barcode';
 import { FaArrowRightLong } from "react-icons/fa6";
+import JsBarcode from 'jsbarcode';
+import { toast, ToastContainer } from 'react-toastify';
 
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
 };
+
+
 
 const TicketBookBus = () => {
   const passcode = generatePasscode();
@@ -23,7 +27,37 @@ const TicketBookBus = () => {
   // console.log("passengers", buspaymentStatusResState.passengers);
   // console.log("payment", buspaymentStatusResState.payment);
   // console.log("userdetails", buspaymentStatusResState.userdetails);
+  const handleCancelTicket = async () => {
+    const confirmation = window.confirm("Are you sure you want to cancel?");
+    if (confirmation) {
+      try {
+        const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-cancel", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            BusId: "11836",
+            SeatId: "25SYK4ET",
+            Remarks: "test",
+            transaction_num: "null"
+          }),
+        });
 
+        if (response.ok) {
+          toast.success("Your ticket is canceled");
+          console.log("Your ticket is canceled");
+        } else {
+          toast.error("Failed to cancel the ticket");
+        }
+      } catch (error) {
+        console.error("Error canceling the ticket:", error);
+        toast.error("An error occurred while canceling the ticket");
+      }
+    } else {
+      console.log("Ticket cancellation aborted");
+    }
+  };
 
   const from = useSelector((state) => state.bus.from);
   const to = useSelector((state) => state.bus.to);
@@ -44,54 +78,65 @@ const TicketBookBus = () => {
       console.error("Missing ticket details");
       return;
     }
-
+  
     const doc = new jsPDF();
-    const busDetail = buspaymentStatusResState.seatstatus[0];
-    const userDetails = buspaymentStatusResState.status[0];
-
-    const bookingStatus = {
-      ticket_no: 'N/A',
-      bus_status: 'N/A',
-      amount: busDetail.base_price
-    };
-
-    console.log('Generating PDF with data:', {
-      from,
-      to,
-      ticketNo: bookingStatus.ticket_no,
-      busId: busDetail.id,
-      status: bookingStatus.bus_status,
-      amount: bookingStatus.amount,
-      busType: busDetail.seat_type,
-      departureTime: formatTime(busDetail.created_at),
-      arrivalTime: 'N/A',
-      travelerName: 'N/A',
-      cityPointLocation: 'N/A'
+  
+    // Set initial Y position
+    let startY = 20;
+  
+    // Iterate over each ticket detail
+    buspaymentStatusResState.seatstatus.forEach((busDetail, busIndex) => {
+      buspaymentStatusResState.status.forEach((dd, ddIndex) => {
+  
+        // Add title and adjust Y position
+        doc.setFontSize(16);
+        doc.text(`Bus Ticket ${busIndex + 1}-${ddIndex + 1}`, 20, startY);
+        startY += 10;
+  
+        // Details of each ticket
+        const ticketDetails = [
+          ['From:', from || 'N/A'],
+          ['To:', to || 'N/A'],
+          ['PNR No:', busDetail.bus_book_id || 'N/A'],
+          ['Ticket No:', busDetail.id || 'N/A'],
+          ['Status:', busDetail.seat_status === 1 ? 'Booked' : 'Available'],
+          ['Seat No:', busDetail.seat_name || 'N/A'],
+          ['Ticket Price:', `${busDetail.base_price || 'N/A'} INR`],
+          ['Bus Type:', busDetail.seat_type || 'N/A'],
+          ['Departure Time:', formatTime(dd.departure_time) || 'N/A'],
+          ['Arrival Time:', formatTime(dd.city_point_time) || 'N/A'],
+          ['Name:', dd.name || 'N/A'],
+          ['Age:', dd.age || 'N/A'],
+          ['Gender:', dd.gender || 'N/A'],
+          ['Address:', dd.address || 'N/A'],
+          ['Phone Number:', dd.number || 'N/A'],
+        ];
+  
+        // Add the details to the table in the PDF
+        doc.autoTable({
+          startY: startY,
+          head: [['Detail', 'Information']],
+          body: ticketDetails,
+          theme: 'grid',
+          margin: { top: 10 },
+        });
+  
+        // Update startY for next element positioning
+        startY = doc.lastAutoTable.finalY + 10;
+  
+        // Add a page if the content overflows
+        if (startY > 270) {
+          doc.addPage();
+          startY = 20; // Reset to top of the new page
+        }
+      });
     });
-
-    doc.text("Bus Ticket", 20, 20);
-
-    doc.autoTable({
-      startY: 30,
-      head: [['Detail', 'Information']],
-      body: [
-        ['From:', from || 'N/A'],
-        ['To:', to || 'N/A'],
-        ['Ticket No:', bookingStatus.ticket_no || 'N/A'],
-        ['Bus ID:', busDetail.id || 'N/A'],
-        ['Status:', bookingStatus.bus_status || 'N/A'],
-        ['Ticket Price:', `${bookingStatus.amount || 'N/A'} INR`],
-        ['Bus Type:', busDetail.seat_type || 'N/A'],
-        ['Departure Time:', formatTime(busDetail.created_at) || 'N/A'],
-        ['Arrival Time:', 'N/A'],
-        ['Traveler Name:', 'N/A'],
-        ['City Point Location:', 'N/A'],
-      ],
-    });
-
+  
+    // Save the generated PDF
     doc.save('bus_ticket.pdf');
   };
-
+  
+  
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
@@ -108,9 +153,9 @@ const TicketBookBus = () => {
     });
   };
 
-  const handleCancelTicket = () => {
-    console.log('Cancel ticket functionality not implemented yet.');
-  };
+  // const handleCancelTicket = () => {
+  //   console.log('Cancel ticket functionality not implemented yet.');
+  // };
 
   if (!buspaymentStatusResState) {
     return <p>Loading...</p>;
