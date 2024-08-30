@@ -242,6 +242,7 @@ export default function FlightDetails() {
         }
     }
 
+
     // ----------------------------------------------seat and meal api------------------------------------
 
 
