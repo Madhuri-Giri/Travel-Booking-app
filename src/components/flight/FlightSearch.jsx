@@ -32,18 +32,14 @@ const FlightSearch = () => {
   const [to, setTo] = useState('KWI');
   const [fromSuggestions, setFromSuggestions] = useState([]);
   const [toSuggestions, setToSuggestions] = useState([]);
-  // const [preferredDepartureTime, setPreferredDepartureTime] = useState();
-  // const [preferredArrivalTime, setPreferredArrivalTime] = useState();
   const fromInputRef = useRef(null);
   const toInputRef = useRef(null);
   const fromSuggestionsRef = useRef(null);
   const toSuggestionsRef = useRef(null);
   const mainCityNames = ['Delhi', 'Mumbai', 'Bangalore', 'Kolkata', 'Goa', 'Hyderabad'];
 
-  // const [departureDateDep, setDepartureDateDep] = useState();
   const [departureDate, setDepartureDate] = useState();
   const [returnDateDep, setReturnDateDep] = useState();
-  // const [returnDateArr, setReturnDateArr] = useState();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -99,26 +95,31 @@ const FlightSearch = () => {
   const handleToInputFocus = () => {
     fetchSuggestions('', setToSuggestions, true);
   };
-  // Function to handle "From" input change
-  const handleFromChange = (event) => {
-    const value = event.target.value;
-    setFrom(value);
-    if (value.length > 2) {
-      fetchSuggestions(value, setFromSuggestions);
-    } else {
-      setFromSuggestions([]);
-    }
-  };
-  // Function to handle "To" input change
-  const handleToChange = (event) => {
-    const value = event.target.value;
-    setTo(value);
-    if (value.length > 2) {
-      fetchSuggestions(value, setToSuggestions);
-    } else {
-      setToSuggestions([]);
-    }
-  };
+ // Function to handle "From" input change
+const handleFromChange = (event) => {
+  const value = event.target.value;
+  setFrom(value);
+  if (value.length > 2) {
+    fetchSuggestions(value, setFromSuggestions);
+  } else {
+    setFromSuggestions([]);
+  }
+  console.log("OriginFrom",value);
+  localStorage.setItem('OriginFrom', value);
+};
+
+// Function to handle "To" input change
+const handleToChange = (event) => {
+  const value = event.target.value;
+  setTo(value);
+  if (value.length > 2) {
+    fetchSuggestions(value, setToSuggestions);
+  } else {
+    setToSuggestions([]);
+  }
+  localStorage.setItem('DestinationTo', value);
+};
+
   // Function for selecting a suggestion
   const handleSuggestionClick = (suggestion, fieldSetter, setSuggestions) => {
     fieldSetter(suggestion.busodma_destination_name);
@@ -134,11 +135,6 @@ const FlightSearch = () => {
   const handleClose = () => {
     setShowDropdown(false);
   };
-  // function for adult , child , infact dropdown list------------------------------------------ 
-
-  const departureDatePickerRef = useRef(null);
-  const arrivalDatePickerRef = useRef(null);
-
   const handleDateChangeDeparture = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -153,23 +149,8 @@ const FlightSearch = () => {
     const formattedDate = `${year}-${month}-${day}T00:00:00`;
     setReturnDateDep(formattedDate);
   };
-
-  // const handleDateChangeReturn = (date, fieldName) => {
-  //   const year = date.getFullYear();
-  //   const month = String(date.getMonth() + 1).padStart(2, '0');
-  //   const day = String(date.getDate()).padStart(2, '0');
-  //   const formattedDate = `${year}-${month}-${day}T00:00:00`;
-
-  //   if (fieldName === "returnDateDep") {
-  //     setReturnDateDep(formattedDate);
-  //   } else if (fieldName === "returnDateArr") {
-  //     setReturnDateArr(formattedDate);
-  //   }
-  // };
-
-  // fun for increase decrease adult , child , infant count------------------------------------------------
   // State variables for counts
-  const [adultCount, setAdultCount] = useState(0);
+  const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
   const [infantCount, setInfantCount] = useState(0);
   console.log("adultCount", adultCount);
@@ -177,16 +158,36 @@ const FlightSearch = () => {
   console.log("infantCount", infantCount);
   // Handle count change
   const handleCount = (action, type) => {
+    let newCount;
+    
     switch (type) {
       case 'AdultCount':
-        setAdultCount(prevCount => (action === 'increment' ? prevCount + 1 : Math.max(prevCount - 1, 0)));
+        newCount = action === 'increment' ? adultCount + 1 : Math.max(adultCount - 1, 0);
+        setAdultCount(newCount);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          AdultCount: newCount
+        }));
         break;
+  
       case 'ChildCount':
-        setChildCount(prevCount => (action === 'increment' ? prevCount + 1 : Math.max(prevCount - 1, 0)));
+        newCount = action === 'increment' ? childCount + 1 : Math.max(childCount - 1, 0);
+        setChildCount(newCount);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          ChildCount: newCount
+        }));
         break;
+  
       case 'InfantCount':
-        setInfantCount(prevCount => (action === 'increment' ? prevCount + 1 : Math.max(prevCount - 1, 0)));
+        newCount = action === 'increment' ? infantCount + 1 : Math.max(infantCount - 1, 0);
+        setInfantCount(newCount);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          InfantCount: newCount
+        }));
         break;
+  
       default:
         break;
     }
@@ -207,9 +208,24 @@ const FlightSearch = () => {
 
   // func for select flight class----------------------------------------------
   const [selectedflightClass, setSelectedflightClass] = useState('Economy');
+  // const handleflightClassChange = (event) => {
+  //   setSelectedflightClass(event.target.value);
+  //   setFormData((prev) => ({ ...prev, FlightCabinClass: event.target.value }))
+  // };
+
   const handleflightClassChange = (event) => {
-    setSelectedflightClass(event.target.value);
-    setFormData((prev) => ({ ...prev, FlightCabinClass: event.target.value }))
+    const newFlightClass = event.target.value;
+    setSelectedflightClass(newFlightClass);
+    // setFormData((prev) => ({ ...prev, FlightCabinClass: newFlightClass }));
+    updateSegmentsFlightClass(newFlightClass);
+  };
+  const updateSegmentsFlightClass = (newFlightClass) => {
+    setSegments((prevSegments) =>
+      prevSegments.map((segment) => ({
+        ...segment,
+        FlightCabinClass: newFlightClass
+      }))
+    );
   };
   // func for select flight class----------------------------------------------
 
@@ -221,9 +237,9 @@ const FlightSearch = () => {
   console.log("tabValue", tabValue);
   const [segments, setSegments] = useState([
     {
-      Origin: "LKO",
-      Destination: "KWI",
-      FlightCabinClass: 1,
+      Origin: from,
+      Destination: to,
+      FlightCabinClass: selectedflightClass,
       PreferredDepartureTime: departureDate,
       PreferredArrivalTime: departureDate
     }
@@ -231,23 +247,26 @@ const FlightSearch = () => {
 
   // State for formData, which includes segments
   const [formData, setFormData] = useState({
-    AdultCount: 1,
-    ChildCount: 0,
-    InfantCount: 0,
-    JourneyType: "1",
+    AdultCount: adultCount, // Initialize with dynamic count
+    ChildCount: childCount,
+    InfantCount: infantCount,
+    JourneyType: tabValue.toString(),
     FareType: 1,
-    Segments: segments // Initially set to segments state
+    Segments: segments
   });
 
   // Handle tab change
   const handleTabChange = (event) => {
     const selectedTab = event.target.value;
     setActiveTab(selectedTab);
-    const newValue = selectedTab === 'oneway' ? 1 : 2;
-    setTabValue(newValue); // Update tab value based on selected tab
+      const newValue = selectedTab === 'oneway' ? 1 : 2;
+    setTabValue(newValue);
+      setFormData((prevFormData) => ({
+      ...prevFormData,
+      JourneyType: newValue.toString()
+    }));
   };
 
-  // Effect to update segments based on tab value
   useEffect(() => {
     if (tabValue === 1) {
       // One-Way: Keep only one segment
@@ -255,7 +274,7 @@ const FlightSearch = () => {
         {
           Origin: "LKO",
           Destination: "KWI",
-          FlightCabinClass: 1,
+          FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: departureDate,
           PreferredArrivalTime: departureDate
         }
@@ -266,20 +285,20 @@ const FlightSearch = () => {
         {
           Origin: "LKO",
           Destination: "KWI",
-          FlightCabinClass: 1,
+          FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: departureDate,
           PreferredArrivalTime: departureDate
         },
         {
           Origin: "KWI",
           Destination: "LKO",
-          FlightCabinClass: 1,
+          FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: returnDateDep,
           PreferredArrivalTime: returnDateDep
         }
       ]);
     }
-  }, [tabValue, departureDate, returnDateDep]); // Dependency on tabValue, departureDate, and return dates
+  }, [tabValue, departureDate, returnDateDep , selectedflightClass]); 
 
   // Effect to sync formData with the segments state
   useEffect(() => {
