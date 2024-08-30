@@ -249,41 +249,47 @@ const FlightReview = () => {
   const yqTax = localStorage.getItem('YQTax');
   const passengerDetails = JSON.parse(localStorage.getItem('adultPassengerDetails'));
   const title = passengerDetails[0].gender;
-  const firstName = passengerDetails[0].firstName;
-  const lastName = passengerDetails[0].lastName;
+  
 
+  
  
 
 
   const bookLccApi = async () => {
     try {
-  const transactionFlightNo = localStorage.getItem('transactionNum-Flight')
-  const transaction_id = localStorage.getItem('flight_transaction_id');
-
-
-      const llcPayload = {
+      const transactionFlightNo = localStorage.getItem('transactionNum-Flight');
+      const transaction_id = localStorage.getItem('flight_transaction_id');
+      const adultPassengerDetails = localStorage.getItem('adultPassengerDetails');
+      const parsedAdultPassengerDetails = JSON.parse(adultPassengerDetails);
+  
+      if (!parsedAdultPassengerDetails || parsedAdultPassengerDetails.length === 0) {
+        console.error('No adult passenger details found in localStorage');
+        return;
+      }
+  
+      const passengers = parsedAdultPassengerDetails.map((passenger, index) => ({
         "SrdvType": FsrdvType,
         "transaction_num": transactionFlightNo,
-         "transaction_id" : transaction_id,         
+        "transaction_id": transaction_id,
         "SrdvIndex": FsrdvIndex,
         "TraceId": FtraceId,
         "ResultIndex": FresultIndex,
-        "Title": "Mr",
-        "FirstName": firstName,
-        "LastName": lastName,
+        "Title": passenger.gender === "male" ? "Mr" : "Ms",
+        "FirstName": passenger.firstName,
+        "LastName": passenger.lastName,
         "PaxType": 1,
-        "DateOfBirth": "2001-12-12",
-        "Gender": "1",
-        "PassportNo": "null",
-        "PassportExpiry": "",
-        "PassportIssueDate": "",
-        "AddressLine1": "A152 Ashok Nagar",
-        "City": "Delhi",
-        "CountryCode": "IN",
-        "CountryName": "INDIA",
-        "ContactNo": "9999999990",
-        "Email": "manivneet@srdvtechnologies.com",
-        "IsLeadPax": 1,
+        "DateOfBirth": passenger.dateOfBirth,
+        "Gender": passenger.gender === "male" ? "1" : "2",
+        "PassportNo": passenger.passportNo || "null",
+        "PassportExpiry": passenger.passportExpiry || "",
+        "PassportIssueDate": passenger.passportIssueDate || "",
+        "AddressLine1": passenger.addressLine1,
+        "City": passenger.city,
+        "CountryCode": passenger.countryCode,
+        "CountryName": passenger.countryName,
+        "ContactNo": passenger.contactNo,
+        "Email": passenger.email,
+        "IsLeadPax": index === 0 ? 1 : 0, 
         "BaseFare": parseFloat(baseFare),
         "Tax": parseFloat(tax),
         "TransactionFee": TransactionFee,
@@ -291,7 +297,12 @@ const FlightReview = () => {
         "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
         "AdditionalTxnFeePub": AdditionalTxnFeePub,
         "AirTransFee": AirTransFee
+      }));
+  
+      const llcPayload = {
+        "Passengers": passengers  
       };
+  
 
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/bookllc', {
         method: 'POST',
@@ -322,7 +333,6 @@ const FlightReview = () => {
         }, 2000);
       }
     } catch (error) {
-      // console.error('Failed to book seats:', error.message);
       console.error('llc api error:', error.message);
       toast.error('An error occurred during booking. Please try again.');
     }
@@ -331,43 +341,46 @@ const FlightReview = () => {
 
 
   const bookHoldApi = async () => {
-    const holdPayload = {
-      "SrdvIndex": FsrdvIndex,
-        "TraceId": FtraceId,
-        "ResultIndex": FresultIndex,
-        "SrdvType": FsrdvType,
-      "Passengers": [
+    const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
+
+    // Map over the stored data to create the passengers array
+    const passengers = storedPassengers.map(passenger => ({
+      "Title": passenger.gender === "male" ? "Mr" : "Ms", 
+      "FirstName": passenger.firstName,
+      "LastName": passenger.lastName,
+      "PaxType": 1, 
+      "DateOfBirth": passenger.dateOfBirth,
+      "Gender": passenger.gender === "male" ? "1" : "2", 
+      "PassportNo": passenger.passportNo,
+      "PassportExpiry": passenger.passportExpiry,
+      "AddressLine1": passenger.addressLine1,
+      "City": passenger.city,
+      "CountryCode": passenger.countryCode,
+      "CountryName": passenger.countryName,
+      "ContactNo": passenger.contactNo,
+      "Email": passenger.email,
+      "IsLeadPax": 1, 
+      "Fare": [
         {
-          "Title": "Mr",
-          "FirstName": firstName,
-          "LastName": lastName,
-          "PaxType": 1,
-          "DateOfBirth": "1997-03-12T00:00:00",
-          "Gender": "1",
-          "PassportNo": "abc123456",
-          "PassportExpiry": "2031-03-12T00:00:00",
-          "AddressLine1": 'address',
-          "City": "Noida",
-          "CountryCode": "IN",
-          "CountryName": "INDIA",
-          "ContactNo": 'Mobile',
-          "Email": 'Email',
-          "IsLeadPax": 1,
-          "Fare": [
-            {
-              "Currency": Currency,
-              "BaseFare": parseFloat(baseFare),
-              "Tax": parseFloat(tax),
-              "YQTax": parseFloat(yqTax),
-              "OtherCharges": OtherCharges,
-              "TransactionFee": TransactionFee,
-              "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
-              "AdditionalTxnFeePub": AdditionalTxnFeePub,
-              "AirTransFee": AirTransFee
-            }
-          ]
+          "Currency": Currency,
+          "BaseFare": parseFloat(baseFare),
+          "Tax": parseFloat(tax),
+          "YQTax": parseFloat(yqTax),
+          "OtherCharges": OtherCharges,
+          "TransactionFee": TransactionFee,
+          "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+          "AdditionalTxnFeePub": AdditionalTxnFeePub,
+          "AirTransFee": AirTransFee
         }
       ]
+    }));
+  
+    const holdPayload = {
+      "SrdvIndex": FsrdvIndex, 
+      "TraceId": FtraceId,
+      "ResultIndex": FresultIndex,
+      "SrdvType": FsrdvType,
+      "Passengers": passengers
     };
 
     try {
@@ -441,6 +454,10 @@ const FlightReview = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          "SrdvIndex": FsrdvIndex, 
+          "TraceId": FtraceId,
+          "ResultIndex": FresultIndex,
+          "SrdvType": FsrdvType,
           PNR: '',
           BookingId: '',
         }),

@@ -303,13 +303,15 @@ export default function FlightLists() {
     // ------------------------------------------------fare-Quote-api-----------------------------------------
     const fareQuoteHandler = async () => {
         setLoading(true);
+    
         const FtraceId = localStorage.getItem('F-TraceId');
         const FresultIndex = localStorage.getItem('F-ResultIndex');
         const FsrdvType = localStorage.getItem('F-SrdvType');
         const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
-
-        if (!FtraceId || !FresultIndex) {
-            console.error('TraceId or ResultIndex not found in local storage');
+    
+        if (!FtraceId || !FresultIndex || !FsrdvType || !FsrdvIndex) {
+            console.error('TraceId, ResultIndex, SrdvType, or SrdvIndex not found in local storage');
+            setLoading(false);
             return;
         }
     
@@ -319,7 +321,7 @@ export default function FlightLists() {
             TraceId: parseInt(FtraceId),
             SrdvType: FsrdvType,
         };
-
+    
         try {
             const response = await fetch('https://sajyatra.sajpe.in/admin/api/farequote', {
                 method: 'POST',
@@ -328,54 +330,42 @@ export default function FlightLists() {
                 },
                 body: JSON.stringify(payload),
             });
-
+    
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
-
+    
             const data = await response.json();
             console.log('FareQuote API Response:', data);
-
-            const baseFare = data.Results.Fare.BaseFare;
-            const yqTax = data.Results.Fare.YQTax;
-            const tax = data.Results.Fare.Tax;
-            const AdditionalTxnFeeOfrd = data.Results.Fare.AdditionalTxnFeeOfrd;
-            const AdditionalTxnFeePub = data.Results.Fare.AdditionalTxnFeePub;
-            const AirTransFee = data.Results.Fare.AirTransFee;
-            const OtherCharges = data.Results.Fare.OtherCharges;
-            const TransactionFee = data.Results.Fare.TransactionFee;
-            const Currency = data.Results.Fare.Currency;
-
-
-
-
-            localStorage.setItem('BaseFare', baseFare);
-            localStorage.setItem('YQTax', yqTax);
-            localStorage.setItem('Tax', tax);
-            localStorage.setItem('AdditionalTxnFeeOfrd',AdditionalTxnFeeOfrd)
-            localStorage.setItem('AdditionalTxnFeePub',AdditionalTxnFeePub)
-            localStorage.setItem('AirTransFee', AirTransFee)
-            localStorage.setItem('OtherCharges', OtherCharges)
-            localStorage.setItem('TransactionFee', TransactionFee)
-            localStorage.setItem('Currency', Currency)
-
-
-
-
+    
+            const fare = data.Results?.Fare || {};
+    
+            // Save all fare details in local storage
+            localStorage.setItem('BaseFare', fare.BaseFare || '');
+            localStorage.setItem('YQTax', fare.YQTax || '');
+            localStorage.setItem('Tax', fare.Tax || '');
+            localStorage.setItem('AdditionalTxnFeeOfrd', fare.AdditionalTxnFeeOfrd || '');
+            localStorage.setItem('AdditionalTxnFeePub', fare.AdditionalTxnFeePub || '');
+            localStorage.setItem('AirTransFee', fare.AirTransFee || '');
+            localStorage.setItem('OtherCharges', fare.OtherCharges || '');
+            localStorage.setItem('TransactionFee', fare.TransactionFee || '');
+            localStorage.setItem('Currency', fare.Currency || '');
+    
             if (data.Results && formData) {
-                setLoading(true);
+                setLoading(false);
                 setTimeout(() => {
                     navigate('/flight-Farequote', { state: { fareData: data.Results, formData: formData } });
                 }, 1000);
             } else {
                 console.error('data.Results or formData is undefined');
+                setLoading(false);
             }
-
         } catch (error) {
-            setLoading(false);
             console.error('Error calling the farequote API:', error);
+            setLoading(false);
         }
     };
+    
     // -------------------------------------------------fare-Quote-api----------------------------------------
 
     // -------------------------------------user detailsss------------------------------------
