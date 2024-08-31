@@ -377,12 +377,6 @@ const SeatMealBaggageTabs = () => {
                 ))}
 
 
-                <div className="meal-last">
-                    <button onClick={reviewHandler}>Continue</button>
-                </div>
-
-
-
             </div>
         );
     };
@@ -441,12 +435,25 @@ const SeatMealBaggageTabs = () => {
                             {activeTab === 'Meals' && renderMealsTab()}
                             {activeTab === 'Baggage' && renderBaggageTab()}
                         </div>
-                        <div className="f-fare">
-                            <p>Seat: ₹{selectedSeats.reduce((total, seat) => total + seat.price, 0).toFixed(2)}</p>
-                            <p>Meal:</p>
-                            <p>Baggage: ₹{selectedBaggage?.Price || '0'}</p>
-                            <p>Total Price (Seat, Meal, Baggage): ₹{finalTotalPrice.toFixed(2)}</p>
+                        <div className="f-fare row mt-3">
+                            <div className="col-md-3">
+                                <p>Seat: ₹{selectedSeats.reduce((total, seat) => total + seat.price, 0).toFixed(2)}</p>
+                            </div>
+                            <div className="col-md-3">
+                                <p>Meal:</p>
+                            </div>
+                            <div className="col-md-3">
+                                <p>Baggage: ₹{selectedBaggage?.Price || '0'}</p>
+                            </div>
+                            <div className="col-md-3">
+                                <p>Total Price (Seat, Meal, Baggage): ₹{finalTotalPrice.toFixed(2)}</p>
+                            </div>
+                            <div>
+                            <div className="meal-last">
                             <h5 className='totalPricee'>Total Fare : <span>₹{totalPrice.toFixed(2)}</span></h5>
+                                <button onClick={reviewHandler}>Continue</button>
+                            </div>
+                            </div>
                         </div>
                     </div>
 
