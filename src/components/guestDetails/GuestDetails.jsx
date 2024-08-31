@@ -351,7 +351,7 @@ const GuestDetails = () => {
           navigate('/hotel-search');
           break;
         case 'success':
-          toast.success('Payment updated successfully!');
+          toast.success('Payment updated successfully. please wait your hotel booking is processing.');
           break;
         default:
           toast.warn('Unknown payment status. Please contact support.');
@@ -596,7 +596,7 @@ const GuestDetails = () => {
   };
 
 if (payLoading) {
-    return <Payloader />;
+    return <hotel-payload/>;
   }
 
   return (

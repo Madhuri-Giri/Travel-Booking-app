@@ -126,7 +126,16 @@
 .flight-Tikit .do-wn .btm button:hover {
     background-color: #009bb5;
 }
-
+.flightdonload{
+    border: none;
+    background: none;
+    padding: 0.5vmax 2vmax;
+    border-radius: 5px;
+    background-color: #00b7eb;
+    color: #fff;
+    /* font-weight: 600; */
+    /* width: 95%;    */
+}
 .icon-down {
     font-size: 1.3vmax;
     font-weight: 700;
@@ -322,6 +331,7 @@
     border-radius: 5px;
     border: none;
     color: white;
+    
 }
 
 .flightbtm .flightdonload {

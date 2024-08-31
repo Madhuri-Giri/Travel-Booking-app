@@ -517,7 +517,7 @@ const ReviewBooking = () => {
   // -------------------------------------------------------------------------------------------------
 
   if (payLoading) {
-    return <Payloader />;
+    return <hotel-payload />;
   }
 
 
