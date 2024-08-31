@@ -12,21 +12,16 @@ import Barcode from 'react-barcode';
 import { FaArrowRightLong } from "react-icons/fa6";
 import JsBarcode from 'jsbarcode';
 import { toast, ToastContainer } from 'react-toastify';
+import html2canvas from 'html2canvas'; // Import html2canvas
 
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
 };
 
-
-
 const TicketBookBus = () => {
   const passcode = generatePasscode();
   const [buspaymentStatusResState, setBuspaymentStatusResState] = useState(null);
-  // console.log("status", buspaymentStatusResState.status);
-  // console.log("seatstatus", buspaymentStatusResState.seatstatus);
-  // console.log("passengers", buspaymentStatusResState.passengers);
-  // console.log("payment", buspaymentStatusResState.payment);
-  // console.log("userdetails", buspaymentStatusResState.userdetails);
+
   const handleCancelTicket = async () => {
     const confirmation = window.confirm("Are you sure you want to cancel?");
     if (confirmation) {
@@ -74,69 +69,36 @@ const TicketBookBus = () => {
   }, []);
 
   const downloadTicket = () => {
-    if (!buspaymentStatusResState) {
-      console.error("Missing ticket details");
+    const ticketElement = document.querySelector('.busticktbox'); // Select the busticktbox element
+    if (!ticketElement) {
+      console.error("Ticket box not found!");
       return;
     }
-  
-    const doc = new jsPDF();
-  
-    // Set initial Y position
-    let startY = 20;
-  
-    // Iterate over each ticket detail
-    buspaymentStatusResState.seatstatus.forEach((busDetail, busIndex) => {
-      buspaymentStatusResState.status.forEach((dd, ddIndex) => {
-  
-        // Add title and adjust Y position
-        doc.setFontSize(16);
-        doc.text(`Bus Ticket ${busIndex + 1}-${ddIndex + 1}`, 20, startY);
-        startY += 10;
-  
-        // Details of each ticket
-        const ticketDetails = [
-          ['From:', from || 'N/A'],
-          ['To:', to || 'N/A'],
-          ['PNR No:', busDetail.bus_book_id || 'N/A'],
-          ['Ticket No:', busDetail.id || 'N/A'],
-          ['Status:', busDetail.seat_status === 1 ? 'Booked' : 'Available'],
-          ['Seat No:', busDetail.seat_name || 'N/A'],
-          ['Ticket Price:', `${busDetail.base_price || 'N/A'} INR`],
-          ['Bus Type:', busDetail.seat_type || 'N/A'],
-          ['Departure Time:', formatTime(dd.departure_time) || 'N/A'],
-          ['Arrival Time:', formatTime(dd.city_point_time) || 'N/A'],
-          ['Name:', dd.name || 'N/A'],
-          ['Age:', dd.age || 'N/A'],
-          ['Gender:', dd.gender || 'N/A'],
-          ['Address:', dd.address || 'N/A'],
-          ['Phone Number:', dd.number || 'N/A'],
-        ];
-  
-        // Add the details to the table in the PDF
-        doc.autoTable({
-          startY: startY,
-          head: [['Detail', 'Information']],
-          body: ticketDetails,
-          theme: 'grid',
-          margin: { top: 10 },
-        });
-  
-        // Update startY for next element positioning
-        startY = doc.lastAutoTable.finalY + 10;
-  
-        // Add a page if the content overflows
-        if (startY > 270) {
-          doc.addPage();
-          startY = 20; // Reset to top of the new page
-        }
-      });
+
+    // Temporarily hide the .btm div
+    const btmDiv = ticketElement.querySelector('.btm');
+    if (btmDiv) {
+      btmDiv.style.display = 'none';
+    }
+
+    html2canvas(ticketElement, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('bus_ticket.pdf');
+    }).catch((error) => {
+      console.error('Error generating PDF:', error);
+    }).finally(() => {
+      // Restore the .btm div visibility
+      if (btmDiv) {
+        btmDiv.style.display = '';
+      }
     });
-  
-    // Save the generated PDF
-    doc.save('bus_ticket.pdf');
   };
-  
-  
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
@@ -152,10 +114,6 @@ const TicketBookBus = () => {
       minute: '2-digit',
     });
   };
-
-  // const handleCancelTicket = () => {
-  //   console.log('Cancel ticket functionality not implemented yet.');
-  // };
 
   if (!buspaymentStatusResState) {
     return <p>Loading...</p>;
@@ -182,18 +140,18 @@ const TicketBookBus = () => {
                     <div className="row buspssngerdetails">
                       <div className="col-12">
                         <div className="row">
-                        <div className='fromtoMOB'>
+                          <div className='fromtoMOB'>
                             <div>
                               <strong>{from}</strong>
                               <p>{formatTime(dd.departure_time)}</p>
-                              </div>
+                            </div>
                             <div>
                               <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
                             </div>
                             <div>
                               <strong>{to}</strong>
                               <p>{formatTime(dd.city_point_time)}</p>
-                              </div>
+                            </div>
                           </div>
                           <div className="col-md-4 col-6">
                             <p>
@@ -238,7 +196,6 @@ const TicketBookBus = () => {
                             <p>
                               <strong>Number -: </strong>
                               <span>{dd.number}</span>
-
                             </p>
                           </div>
                           <div className="col-md-4 ticktbordr">
@@ -246,37 +203,16 @@ const TicketBookBus = () => {
                               <strong>Seat No -: </strong>
                               <span>{busDetail.seat_name}</span>
                             </p>
+                            <p className='busbookconfrm'>
+                              <strong>Booking -: </strong>
+                              <span>{buspaymentStatusResState.passengers.bus_status}</span>
+                            </p>
                             <p className='psngeramount'>
                               <strong>Amount -: </strong>
                               <span>₹{busDetail.base_price}</span>
                             </p>
                             <Barcode className="buspasscode" value={passcode} format="CODE128" />
-
                           </div>
-                          {/* <div className="bustickstatus">
-                            <div className="top">
-                              <h5>Boarding point</h5>
-                              <p>{busDetail.seat_name}</p>
-                            </div>
-                            <div className="top">
-                              <h5>Status</h5>
-                              <p>{busDetail.seat_status === 1 ? 'Booked' : 'Available'}</p>
-                            </div>
-                            <div className="top">
-                              <h5>Seat No</h5>
-                              <p>{busDetail.seat_name}</p>
-                            </div>
-                            <div className="top">
-                              <h5>Ticket No</h5>
-                              <p>{busDetail.id}</p>
-                            </div>
-                          </div> */}
-                          {/* <div className="bustickstatusBTN">
-                            <button onClick={downloadTicket}>
-                              <CiSaveDown1 /> Download ticket
-                            </button>
-                            <button onClick={handleCancelTicket}>Cancel ticket</button>
-                          </div> */}
                           <div className="btm">
                             <button className='busdonload' onClick={downloadTicket}>
                               Download
