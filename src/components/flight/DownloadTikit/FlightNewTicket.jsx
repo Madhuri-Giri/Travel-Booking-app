@@ -12,7 +12,8 @@ import Lottie from 'lottie-react';
 import LootiAnim from '../../../assets/images/Anim.json';
 import { FaArrowRightLong } from "react-icons/fa6";
 import Barcode from 'react-barcode';
-
+import html2canvas from 'html2canvas';
+import { useRef } from 'react';
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
 };
@@ -22,7 +23,7 @@ const FlightNewTikit = () => {
   const [flightticketPassengerDetails, setFlightticketPassengerDetails] = useState(null);
   const [adultPassengerDetails, setAdultPassengerDetails] = useState([]);
   const [isDownloaded, setIsDownloaded] = useState(false); // State to track download
-
+  const ticketElementRef = useRef(null);
   const from = useSelector((state) => state.bus.from);
   const to = useSelector((state) => state.bus.to);
 
@@ -82,28 +83,38 @@ const FlightNewTikit = () => {
       console.error("No adult passenger details available for download");
       return;
     }
-
+  
+    if (!ticketElementRef.current) {
+      console.error("Ticket element reference is not set");
+      return;
+    }
+  
     const doc = new jsPDF();
-    const userDetail = adultPassengerDetails[0]; 
-
-    doc.autoTable({
-      startY: 30,
-      head: [['Detail', 'Information']],
-      body: [
-        ['First Name:', userDetail.firstName || 'N/A'],
-        ['Last Name:', userDetail.lastName || 'N/A'],
-        ['Email:', userDetail.email || 'N/A'],
-        ['Gender:',userDetail.gender || 'N/A'],
-        ['Mobile:', userDetail.contactNo || 'N/A'],
-        ['Passport:', userDetail.passportNo || 'N/A']
-        ['Registration Number:', userDetail.registration_number || 'N/A'],
-        ['Status:', flightticketPassengerDetails?.status === 'success' ? 'Confirmed' : 'Pending'],
-      ],
+  
+    // Temporarily hide the .btm div
+    const btmDiv = ticketElementRef.current.querySelector('.btm');
+    if (btmDiv) {
+      btmDiv.style.display = 'none';
+    }
+  
+    html2canvas(ticketElementRef.current, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('flight_ticket.pdf');
+    }).catch((error) => {
+      console.error('Error generating PDF:', error);
+    }).finally(() => {
+      // Restore the .btm div visibility
+      if (btmDiv) {
+        btmDiv.style.display = '';
+      }
     });
-
-    doc.save('flight_ticket.pdf');
-    setIsDownloaded(true); // Update state to indicate download is complete
   };
+  
 
   const handleCancelTicket = async () => {
     const confirmation = window.confirm("Are you sure you want to cancel?");
@@ -158,9 +169,8 @@ const FlightNewTikit = () => {
   return (
     <>
       <CustomNavbar />
-
       <div className="flight-Tikit">
-        <div className="lottie container">
+        <div className="lottie container" ref={ticketElementRef}>
           {flightticketPassengerDetails && flightticketPassengerDetails['user details'] && (
             flightticketPassengerDetails['user details'].map((userDetail, index) => (
               <div key={index} className="row">
@@ -247,6 +257,7 @@ const FlightNewTikit = () => {
       <ToastContainer />
     </>
   );
+  
 };
 
 export default FlightNewTikit;
