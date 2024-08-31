@@ -563,7 +563,7 @@ const bookHoldApi = async () => {
   // -------------------------------------------------------------------------------------------
 
   if (payLoading) {
-    return <Payloader />;
+    return <hotel-payload/>;
   }
 
 
