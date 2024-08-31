@@ -580,7 +580,7 @@ const GuestDetails = () => {
   };
 
 if (payLoading) {
-    return <Payloader />;
+    return <hotel-payload/>;
   }
 
   return (
