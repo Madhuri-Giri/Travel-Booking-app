@@ -216,7 +216,7 @@ const BusLayout = () => {
 
   const busLayoutUpper = [
     ['21', '22', '23', '22', '25'],
-    // ['27', '28', '29', '30', '21'],
+    ['27', '28', '29', '30', '21'],
     [null, null, null, null, '24'],
     ['27', '28', '29', '30', '21'],
   ];
@@ -269,13 +269,13 @@ const BusLayout = () => {
                     className={activeTab === 'lower' ? 'active' : ''}
                     onClick={() => handleTabClick('lower')}
                   >
-                    Lower Seats
+                    Lower Deck
                   </button>
                   <button
                     className={activeTab === 'upper' ? 'active' : ''}
                     onClick={() => handleTabClick('upper')}
                   >
-                    Upper Seats
+                    Upper Deck
                   </button>
                 </div>
 
@@ -369,6 +369,7 @@ const BusLayout = () => {
                 {activeTab === 'upper' && seatType === 'Sitting' && (
                   <div className="upper sittingSeat">
                    <div className="sit">
+                  <div className="bus-upperlayout">
                       {busLayoutUpper.map((row, rowIndex) => (
                         row.map((seatName, seatIndex) => {
                           if (!seatName) {
@@ -424,6 +425,7 @@ const BusLayout = () => {
                         })
                      ))}
                     </div>
+                    </div>
                   </div>
                 )}
 
@@ -468,7 +470,7 @@ const BusLayout = () => {
               {seatType === 'Sitting' && (
                 <>
                   <div className="lower lowerSeatWEB sittingSeat">
-                    <h6>Lower Seats</h6>
+                    <h6>Lower Deck</h6>
                     <div className="sit">
                       <div className="bus-layout">
                         {busLayout.map((row, rowIndex) => (
@@ -517,9 +519,9 @@ const BusLayout = () => {
                   </div>
 
                   <div className="upper upperSeatWEB sittingSeat">
-                    <h6>Upper Seats</h6>
+                    <h6>Upper Deck</h6>
                     <div className="sit">
-                    {/* <div className="bus-upperlayout"> */}
+                    <div className="bus-upperlayout">
                       {busLayoutUpper.map((row, rowIndex) => (
                         row.map((seatName, seatIndex) => {
                           if (!seatName) {
@@ -574,7 +576,7 @@ const BusLayout = () => {
                           );
                         })
                      ))}
-                    {/* </div> */}
+                    </div>
                     </div>
 
                   </div>
@@ -584,7 +586,7 @@ const BusLayout = () => {
               {seatType === 'Sleeper' && (
                 <>
                   <div className="lower lowerSeatWEB sleeperSeat">
-                    <h6>Lower Seats</h6>
+                    <h6>Lower Deck</h6>
                     <div className="sit">
                       {lowerSeatNames.map((seatName) => {
                         const seatObject = lowerSeatsBus.find(seat => seat.SeatName === seatName);
@@ -619,7 +621,7 @@ const BusLayout = () => {
                   </div>
 
                   <div className="upper upperSeatWEB sleeperSeat">
-                    <h6>Upper Seats</h6>
+                    <h6>Upper Deck</h6>
                     <div className="sit">
                       {upperSeatNames.map((seatName) => {
                         const seatObject = upperSeatsBus.find(seat => seat.SeatName === seatName);

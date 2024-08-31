@@ -18,7 +18,7 @@
   color: white;
   font-weight: bold;
   border: 2px solid #80808040;
-  font-size: 14px !important;
+  font-size: 13px !important;
   padding: 2px 35px !important;
   text-transform: uppercase !important;
 
@@ -86,7 +86,7 @@
 
 .BusLayout .Seat-layout .seats .left-btm {
   width: 100%;
-  display: flex;
+  /* display: flex; */
   align-items: flex-start;
   justify-content: space-evenly;
   flex-direction: row;
@@ -109,7 +109,7 @@
   align-items: center;
   justify-content: center;
   /* font-weight: 700; */
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   color: gray;
 }
 
@@ -119,17 +119,17 @@
   align-items: center;
   border-radius: 10px;
   justify-content: center;
-  /* border: 1px solid #eee; */
+  /* border: 1px solid #9999; */
   box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.582);
   flex-wrap: wrap;
   /* gap: 0.5vmax; */
-  background: #fff;
+  padding: 0px 0px;
 
 }
 
 .BusLayout .Seat-layout .seats .left-btm .upper {
   width: 50%;
-  /* display: flex; */
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -142,7 +142,7 @@
   display: flex;
   /* align-items: center; */
   justify-content: center;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   /* font-weight: 700; */
   color: gray;
 }
@@ -290,7 +290,7 @@
     /* display: flex;
   align-items: center;
   justify-content: space-evenly; */
-    flex-direction: column;
+    /* flex-direction: column; */
   }
 
   .BusLayout .Seat-layout .seats .left-btm .lower {
@@ -358,7 +358,7 @@
 
 
 
-@media (min-width:600px) and (max-width:1150px) {
+@media (min-width:600px) and (max-width:1500px) {
   .BusLayout .Seat-layout .seats .left-btm .upper {
     display: flex;
   }
@@ -384,7 +384,7 @@
   }
 
   .BusLayout .Seat-layout .seats .left-top h6 {
-    font-size: 2vmax;
+    font-size: 1vmax;
     text-transform: capitalize;
   }
 
@@ -400,7 +400,7 @@
   }
 
   .BusLayout .Seat-layout .seats .left-btm .lower .sit {
-    width: 95%;
+    /* width: 95%; */
     flex-wrap: wrap;
     gap: 0.3vmax;
     flex-direction: row;
@@ -412,7 +412,7 @@
   }
 
   .BusLayout .Seat-layout .seats .left-btm .upper .sit {
-    width: 95%;
+    /* width: 95%; */
     flex-wrap: wrap;
     gap: 0.3vmax;
   }
@@ -433,12 +433,12 @@
   }
 
   .sit-img {
-    height: 90px;
+    /* height: 90px; */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 2.1vmax;
+    /* padding: 2.1vmax; */
   }
 
   .sit-img.aisle {
@@ -453,7 +453,7 @@
 
   .BusLayout .Seat-layout .seats .right .right-btm .proceed button {
     width: 100%;
-    padding: 2vmax 1vmax;
+    /* padding: 1vmax 1vmax; */
   }
 
 }
@@ -564,10 +564,10 @@
 .bus-layout {
   display: grid;
   grid-template-columns: repeat(6, 25px); 
-  gap: 10px; 
+  gap: 0px 25px; 
   align-items: center; 
   justify-content: center; 
-  padding: 15px 10px;
+  padding: 5px 0px;
   background-color: white; 
   margin-bottom: 20px; 
   position: relative; 
@@ -575,13 +575,13 @@
 
 .bus-upperlayout {
   display: grid;
-  grid-template-columns: repeat(6, 20px); 
-  gap: 5px; 
-  align-items: center;
+  grid-template-columns: repeat(5, 45px); 
+  gap: 7px 25px; 
+  align-items: center; 
   justify-content: center; 
-  padding: 15px 10px;
-  background-color: white;
-  margin-top: 20px; 
+  padding: 5px 0px;
+  background-color: white; 
+  margin-bottom: 20px; 
   position: relative; 
 }
 
@@ -616,7 +616,7 @@
 
 .bus-upperlayout .sit-img {
   width: 40px; 
-  height: 35px; 
+  height: 20px !important; 
   margin: 2px 1px; 
 }
 
@@ -672,3 +672,5 @@
 .booked-seat {
   background-color: #d9534f; /* Red for booked seats */
 }
+
+
