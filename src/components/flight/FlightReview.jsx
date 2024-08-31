@@ -25,8 +25,8 @@ const FlightReview = () => {
   const { fareDataDetails } = location.state || {}; 
 
 
-  const IsLCC = localStorage.getItem('IsLCC')
-  console.log("IsLCC", IsLCC);
+  const IsLCC = localStorage.getItem('F-IsLcc')
+  console.log("F-IsLcc", IsLCC);
 
 
   if (!fareDataDetails) {
@@ -137,7 +137,7 @@ const FlightReview = () => {
           try {
             await flightpayUpdate();
         
-            const IsLCC = localStorage.getItem('F-IsLCC') === 'true'; 
+            const IsLCC = localStorage.getItem('F-IsLcc') === 'true'; 
             setPayLoading(false);
         
             if (IsLCC === true) {
@@ -252,25 +252,7 @@ const FlightReview = () => {
   const passengerDetails = JSON.parse(localStorage.getItem('adultPassengerDetails'));
   const title = passengerDetails[0].gender;
   
-  console.log({
-    AdditionalTxnFeeOfrd,
-    AdditionalTxnFeePub,
-    AirTransFee,
-    OtherCharges,
-    TransactionFee,
-    Currency,
-    baseFare,
-    tax,
-    yqTax,
-    passengerDetails,
-    title,
-    FtraceId,
-    FresultIndex,
-    FsrdvType,
-    FsrdvIndex
-  });
 
-  
  
 
 
@@ -286,83 +268,92 @@ const FlightReview = () => {
         return;
       }
   
-      const passengers = parsedAdultPassengerDetails.map((passenger, index) => ({
-        "SrdvType": FsrdvType,
-        "transaction_num": transactionFlightNo,
-        "transaction_id": transaction_id,
-        "SrdvIndex": FsrdvIndex,
-        "TraceId": FtraceId,
-        "ResultIndex": FresultIndex,
-        "Title": passenger.gender === "male" ? "Mr" : "Ms",
-        "FirstName": passenger.firstName,
-        "LastName": passenger.lastName,
-        "PaxType": 1,
-        "DateOfBirth": passenger.dateOfBirth,
-        "Gender": passenger.gender === "male" ? "1" : "2",
-        "PassportNo": passenger.passportNo || "null",
-        "PassportExpiry": passenger.passportExpiry || "",
-        "PassportIssueDate": passenger.passportIssueDate || "",
-        "AddressLine1": passenger.addressLine1,
-        "City": passenger.city,
-        "CountryCode": passenger.countryCode,
-        "CountryName": passenger.countryName,
-        "ContactNo": passenger.contactNo,
-        "Email": passenger.email,
-        "IsLeadPax": index === 0 ? 1 : 0, 
-        "BaseFare": parseFloat(baseFare),
-        "Tax": parseFloat(tax),
-        "TransactionFee": TransactionFee,
-        "YQTax": parseFloat(yqTax),
-        "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
-        "AdditionalTxnFeePub": AdditionalTxnFeePub,
-        "AirTransFee": AirTransFee
+      // Iterate over each passenger and make an API call
+      const bookingResponses = await Promise.all(parsedAdultPassengerDetails.map(async (passenger) => {
+        const llcPayload = {
+          "SrdvType": FsrdvType,
+          "transaction_num": transactionFlightNo,
+          "transaction_id": transaction_id,
+          "SrdvIndex": FsrdvIndex,
+          "TraceId": FtraceId,
+          "ResultIndex": FresultIndex,
+          "Title": passenger.gender === "male" ? "Mr" : "Ms",
+          "FirstName": passenger.firstName,
+          "LastName": passenger.lastName,
+          "PaxType": 1, // Assuming PaxType 1 is for adults
+          "DateOfBirth": passenger.dateOfBirth,
+          "Gender": passenger.gender === "male" ? "1" : "2",
+          "PassportNo": passenger.passportNo || "null",
+          "PassportExpiry": passenger.passportExpiry || "",
+          "PassportIssueDate": passenger.passportIssueDate || "",
+          "AddressLine1": passenger.addressLine1,
+          "City": passenger.city,
+          "CountryCode": passenger.countryCode,
+          "CountryName": passenger.countryName,
+          "ContactNo": passenger.contactNo,
+          "Email": passenger.email,
+          "IsLeadPax": passenger.isLeadPax || 0,
+          "BaseFare": parseFloat(baseFare),
+          "Tax": parseFloat(tax),
+          "TransactionFee": TransactionFee,
+          "YQTax": parseFloat(yqTax),
+          "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+          "AdditionalTxnFeePub": AdditionalTxnFeePub,
+          "AirTransFee": AirTransFee
+        };
+  
+        const response = await fetch('https://sajyatra.sajpe.in/admin/api/bookllc', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(llcPayload),
+        });
+  
+        const responseBody = await response.json();
+        return responseBody;
       }));
   
-      const llcPayload = {
-        "Passengers": passengers  
-      };
+      console.log('LLC Responses:', bookingResponses);
   
-
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/bookllc', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(llcPayload),
-      });
-
-      const responseBody = await response.json();
-      console.log(' LLC Response:', responseBody);
-
-      if (!response.ok) {
-        console.error('Failed to book seats. Status:', response.status, 'Response:', responseBody);
-        throw new Error(`Failed to book seats. Status: ${response.status}`);
-      }
-
-      if (responseBody.Error && responseBody.Error.ErrorCode !== 0) {
-        console.error('Booking failed:', responseBody.Error.ErrorMessage);
-        toast.error(`Booking failed: ${responseBody.Error.ErrorMessage}`);
-      } else {
-        toast.success(' flight Booking successful!');
-
-        localStorage.setItem('flightTikitDetails', JSON.stringify(responseBody));
-
+      // Check if all bookings were successful
+      const allBookingsSuccessful = bookingResponses.every(response => response && response.Error && response.Error.ErrorCode === 0);
+  
+      if (allBookingsSuccessful) {
+        toast.success('Flight booking successful!');
+  
+        // Save the flight ticket details in localStorage
+        localStorage.setItem('flightTikitDetails', JSON.stringify(bookingResponses));
+  
         setTimeout(() => {
-          navigate('/booking-history', { state: { flightbookingDetails: responseBody } });
+          navigate('/booking-history', { state: { flightbookingDetails: bookingResponses } });
         }, 2000);
+      } else {
+        bookingResponses.forEach(response => {
+          if (response.Error && response.Error.ErrorCode !== 0) {
+            console.error('Booking failed:', response.Error.ErrorMessage);
+            toast.error(`Booking failed: ${response.Error.ErrorMessage}`);
+          }
+        });
       }
+  
     } catch (error) {
-      console.error('llc api error:', error.message);
+      console.error('LLC API error:', error.message);
       toast.error('An error occurred during booking. Please try again.');
     }
   };
+  
+  
+
+// bookLccApi()
+
 
 
 
   const bookHoldApi = async () => {
     const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
 
-    // Map over the stored data to create the passengers array
+
     const passengers = storedPassengers.map(passenger => ({
       "Title": passenger.gender === "male" ? "Mr" : "Ms", 
       "FirstName": passenger.firstName,
@@ -389,7 +380,15 @@ const FlightReview = () => {
           "TransactionFee": TransactionFee,
           "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
           "AdditionalTxnFeePub": AdditionalTxnFeePub,
-          "AirTransFee": AirTransFee
+          "AirTransFee": AirTransFee,
+
+          // "Discount": Discount,
+          // "PublishedFare": PublishedFare,
+          // "OfferedFare": OfferedFare,
+          // "CommissionEarned": CommissionEarned,
+          // "TdsOnCommission": TdsOnCommission
+
+
         }
       ]
     }));

@@ -341,15 +341,17 @@ export default function FlightLists() {
             const fare = data.Results?.Fare || {};
     
             // Save all fare details in local storage
-            localStorage.setItem('BaseFare', fare.BaseFare || '');
-            localStorage.setItem('YQTax', fare.YQTax || '');
-            localStorage.setItem('Tax', fare.Tax || '');
-            localStorage.setItem('AdditionalTxnFeeOfrd', fare.AdditionalTxnFeeOfrd || '');
-            localStorage.setItem('AdditionalTxnFeePub', fare.AdditionalTxnFeePub || '');
-            localStorage.setItem('AirTransFee', fare.AirTransFee || '');
-            localStorage.setItem('OtherCharges', fare.OtherCharges || '');
-            localStorage.setItem('TransactionFee', fare.TransactionFee || '');
-            localStorage.setItem('Currency', fare.Currency || '');
+            localStorage.setItem('BaseFare', fare.BaseFare);
+            localStorage.setItem('YQTax', fare.YQTax);
+            localStorage.setItem('Tax', fare.Tax);
+            localStorage.setItem('AdditionalTxnFeeOfrd', fare.AdditionalTxnFeeOfrd);
+            localStorage.setItem('AdditionalTxnFeePub', fare.AdditionalTxnFeePub);
+            localStorage.setItem('AirTransFee', fare.AirTransFee);
+            localStorage.setItem('OtherCharges', fare.OtherCharges);
+            localStorage.setItem('TransactionFee', fare.TransactionFee);
+            localStorage.setItem('Currency', fare.Currency);
+
+            
     
             if (data.Results && formData) {
                 setLoading(false);
@@ -390,7 +392,7 @@ export default function FlightLists() {
 
             const data = await response.json();
             console.log('User details:', data);
-            console.log('flight transcNo', data.transaction.transaction_num)
+            // console.log('flight transcNo', data.transaction.transaction_num)
             if (data.result && data.transaction) {
                 localStorage.setItem('transactionId', data.transaction.id);
                 localStorage.setItem('transactionNum-Flight', data.transaction.transaction_num);
@@ -431,13 +433,6 @@ export default function FlightLists() {
         return <Loading />;
     }
 
-
-    // const [selectedSort, setSelectedSort] = useState('');
-
-    // const handleCheckboxChange = (event) => {
-    //     const { value } = event.target;
-    //     setSelectedSort(value);
-    // };
 
 
     const sortFlights = (flights) => {
