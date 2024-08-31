@@ -153,3 +153,7 @@
 .flightcancelstatus span {
     color: red;
 }
+.bookingStats span{
+    color: rgb(25, 179, 25);
+    font-weight: bold;
+}
