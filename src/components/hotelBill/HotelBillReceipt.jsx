@@ -13,23 +13,40 @@ import hotelImg from '../../../src/assets/images/hotel-ticket-img.png';
 const BookingBill = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [error, setError] = useState(null);
+  const [storedGuestDetails, setStoredGuestDetails] = useState([]);
+  const [storedHotelRoom, setstoredHotelRoom] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedTicketData = localStorage.getItem('hotelTicket');
-
-    if (storedTicketData) {
+    const hotelTicketData = async () => {
       try {
-        const parsedData = JSON.parse(storedTicketData);
-        console.log('Parsed Booking Details:', parsedData); 
-        setBookingDetails(parsedData);
+        const storedTicketData = localStorage.getItem('hotelTicket');
+        // console.log('Stored Ticket Data:', storedTicketData); 
+        if (storedTicketData) {
+          const parsedData = JSON.parse(storedTicketData);
+          setBookingDetails(parsedData);
+        } else {
+          throw new Error('No ticket data found');
+        }
+        
+        const storedGuestDetailsData = localStorage.getItem('guestDetails');
+        if (storedGuestDetailsData) {
+          const parsedGuestDetails = JSON.parse(storedGuestDetailsData);
+          setStoredGuestDetails(parsedGuestDetails);
+        }
+        
+        const storedSelectedRoomData = localStorage.getItem('selectedRoomsData');
+        if (storedSelectedRoomData) {
+          const parsedSelectedRoom = JSON.parse(storedSelectedRoomData);
+          setstoredHotelRoom(parsedSelectedRoom);
+        }
+  
       } catch (e) {
-        console.error('Error parsing ticket data:', e);
-        setError('Failed to parse ticket data');
+        setError(e.message);
       }
-    } else {
-      setError('No ticket data found');
-    }
+    };
+  
+    hotelTicketData();
   }, []);
   
 
@@ -41,77 +58,62 @@ const BookingBill = () => {
   if (!bookingDetails) {
     return <div>Loading...</div>;
   }
+
   const handleDownloadPDF = () => {
     if (bookingDetails) {
+      ;
+  
       const doc = new jsPDF();
-
-      // Set the title of the PDF
-      doc.setFontSize(18);
-      doc.text('Hotel Booking Bill', 14, 22);
-
-      // Add hotel details to the PDF
-      if (bookingDetails.hotelBook && bookingDetails.hotelBook.length > 0) {
-        const hotelInfo = bookingDetails.hotelBook[0];
-
-        const hotelData = [
-          { label: 'Hotel Name', value: hotelInfo.hotelname },
-          { label: 'Hotel Code', value: hotelInfo.hotelcode },
-          { label: 'Rooms', value: hotelInfo.noofrooms },
-          { label: 'Room Type', value: hotelInfo.room_type_name },
-          { label: 'Check-in Date', value: new Date(hotelInfo.check_in_date).toLocaleDateString() },
-          { label: 'Check-out Date', value: new Date(hotelInfo.check_out_date).toLocaleDateString() }
-        ];
-
-        // Create the hotel details table
-        doc.autoTable({
-          startY: 30,
-          head: [['Hotel Detail', 'Information']],
-          body: hotelData.map(item => [item.label, item.value])
-        });
+      const { hotel_passengers, booking } = bookingDetails;
+  
+      if (hotel_passengers?.length > 0) {
+        const hotelInfo = hotel_passengers[0];
+        doc.setFontSize(18);
+        doc.text('Booking Bill', 14, 22);
+        doc.setFontSize(12);
+        doc.text(`Hotel Name: ${hotelInfo.hotelname}`, 14, 40);
+        doc.text(`Room Quantity: ${hotelInfo.noofrooms}`, 14, 50);
+        doc.text(`Price: ${hotelInfo.roomprice}`, 14, 60);
+        doc.text(`Room Type: ${hotelInfo.room_type_name}`, 14, 70);
+        doc.text(`Check-In Date: ${hotelInfo.check_in_date}`, 14, 80);
+        doc.text(`Check-Out Date: ${hotelInfo.check_out_date || 'N/A'}`, 14, 90);
+  
+       
+      if (booking?.length > 0) {
+        const bookingInfo = booking[0];
+        doc.text(`Booking ID: ${bookingInfo.booking_id}`, 14, 140);
+        doc.text(`Hotel Name: ${bookingInfo.hotel_name}`, 14, 150);
+        doc.text(`Transaction Number: ${bookingInfo.transaction_num}`, 14, 160);
+        doc.text(`Amount: ${bookingInfo.amount}`, 14, 170);
       }
-
-      // Add booking status to the PDF
-      if (bookingDetails.bookingStatus && bookingDetails.bookingStatus.length > 0) {
-        const statusInfo = bookingDetails.bookingStatus[0];
-
-        const bookingData = [
-          { label: 'Status', value: statusInfo.booking_status },
-          { label: 'Invoice No.', value: statusInfo.InvoiceNumber },
-          { label: 'Confirmation No.', value: statusInfo.ConfirmationNo },
-          { label: 'Booking Ref No.', value: statusInfo.BookingRefNo },
-        ];
-
-        // Create the booking status table
+  
         doc.autoTable({
-          startY: doc.previousAutoTable.finalY + 10, // Start after the previous table
+          startY: doc.previousAutoTable.finalY + 10,
           head: [['Booking Detail', 'Information']],
           body: bookingData.map(item => [item.label, item.value])
         });
       }
-
-      // Save the PDF
+  
       doc.save('hotel-booking-bill.pdf');
     } else {
       toast.error('No booking details available to generate PDF');
     }
   };
+  
+
   const bookingCancel = async (event) => {
     event.preventDefault();
 
-    // Retrieve the stored booking IDs from localStorage
     const hotelBookingId = localStorage.getItem('hotel_booking_id');
     const transactionNum = localStorage.getItem('transactionNum');
     
     if (!hotelBookingId) {
-        console.error('No hotel booking ID available');
         setError('No hotel booking ID available');
         toast.error('No hotel booking ID available');
         return;
     }
 
-    // Additional validation for transactionNum
     if (!transactionNum) {
-        console.error('No transaction number available');
         setError('No transaction number available');
         toast.error('No transaction number available');
         return;
@@ -145,25 +147,22 @@ const BookingBill = () => {
       }
   
       const res = await response.json();
-      console.log('hotel-cancel API Response:', res);
   
       if (res.data) {
         localStorage.setItem('hotelTicket', JSON.stringify(res.data));
         setBookingDetails(res.data);
         toast.success('Booking cancelled successfully');
       } else {
-        console.error('No data found in the API response:', res);
         setError('No data found in the API response');
         toast.error('No data found in the API response');
       }
   
     } catch (error) {
-        console.error('Error:', error);
         setError('Error occurred during cancellation');
         toast.error('Error occurred during cancellation');
     }
-};
- 
+  };
+
   return (
     <>
       <CustomNavbar />
@@ -188,6 +187,10 @@ const BookingBill = () => {
                         <p><span>Transaction Number:</span> {item.transaction_num}</p>
                         <p><span>Number of Rooms:</span> {item.noofrooms}</p>
                         <p><span>Check-in Date:</span> {item.check_in_date}</p>
+                      </div>
+                    ))}
+                    {storedHotelRoom?.map((item, index) => (
+                      <div key={index}>
                         <p><span>Room Price:</span> {item.roomprice}</p>
                         <p><span>GST:</span> {item.tax}</p>
                         <p><span>Discount:</span> {item.discount}</p>
@@ -202,14 +205,18 @@ const BookingBill = () => {
 
               <div className="details-section-guest">
                 <h3>Guest Details</h3>
-                {bookingDetails?.hotel_passengers?.length > 0 ? (
+                {storedGuestDetails?.length > 0 ? (
                   <div className="detail-guest">
-                    {bookingDetails.hotel_passengers.map((item, index) => (
+                    {storedGuestDetails.map((item, index) => (
                       <div key={index}>
-                        <p><span>Name:</span> {item.firstname}</p>
-                        <p><span>Phone Number:</span> {item.phoneno}</p>
+                        <p><span>First Name:</span> {item.fname}</p>
+                        <p><span>Last Name:</span> {item.lname}</p>
+                        <p><span>Phone Number:</span> {item.mobile}</p>
                         <p><span>Email:</span> {item.email}</p>
                         <p><span>Age:</span> {item.age}</p>
+                        <p><span>Passport Number:</span> {item.passportNo}</p>
+                        <p><span>PaxType:</span> {item.paxType}</p>
+                        {/* <p><span>Govt. Id:</span> {item.govtId}</p> */}
                       </div>
                     ))}
                   </div>

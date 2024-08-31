@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import "../popUp/LoginPopUp.css";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 const LoginPopUp = ({ showModal, onClose }) => {
   const [otpShown, setOtpShown] = useState(false);
@@ -14,8 +13,7 @@ const LoginPopUp = ({ showModal, onClose }) => {
     otp: ''  
   });
 
-
-  
+ 
   const [error, setError] = useState('');
   const toggleOtpVisibility = () => {
     setOtpShown(prev => !prev);
@@ -23,6 +21,7 @@ const LoginPopUp = ({ showModal, onClose }) => {
 
   const loginHandler = async (e) => {
     e.preventDefault();
+
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/login', {
         method: 'POST',
@@ -85,7 +84,7 @@ const LoginPopUp = ({ showModal, onClose }) => {
                     type="tel" 
                     placeholder='Enter Your Mobile Number' 
                     name='mobile' 
-                    id="mobile"
+                    id="mobileNo"
                     value={formData.mobile} 
                     onChange={handleInputChange} 
                     required 

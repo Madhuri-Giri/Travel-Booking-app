@@ -321,40 +321,47 @@ const handleToChange = (event) => {
         },
         body: JSON.stringify(formData),
       });
-
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
       const data = await response.json();
       console.log("Flight search API response: ", data);
-
+  
       // Save the entire response to localStorage
       localStorage.setItem('Flight-search', JSON.stringify(data));
-
-      // Check if data exists at the expected path
+  
       const firstResult = data?.Results?.[0]?.[0];
       if (firstResult && firstResult.FareDataMultiple?.[0]) {
-        const { SrdvIndex, ResultIndex } = firstResult.FareDataMultiple[0];
+        const { SrdvIndex, ResultIndex , IsLCC } = firstResult.FareDataMultiple[0];
         const { TraceId, SrdvType } = data;
-
-        // Save SrdvIndex and ResultIndex to localStorage
+  
         localStorage.setItem("F-SrdvIndex", SrdvIndex);
         localStorage.setItem("F-ResultIndex", ResultIndex);
         localStorage.setItem("F-TraceId", TraceId);
         localStorage.setItem("F-SrdvType", SrdvType);
-
+        localStorage.setItem("F-IsLcc", IsLCC);
+  
         console.log("Saved SrdvIndex to local storage:", SrdvIndex);
         console.log("Saved ResultIndex to local storage:", ResultIndex);
         console.log("Saved TraceId to local storage:", TraceId);
         console.log("Saved SrdvType to local storage:", SrdvType);
+        console.log("Saved IsLCC to local storage:", IsLCC);
+  
       } else {
         console.log("SrdvIndex or FareDataMultiple not found");
       }
-
+  
       setLoading(false);
       navigate("/flight-list", { state: { data: data, formData: formData } });
     } catch (error) {
       setLoading(false);
       console.error('Error fetching suggestions:', error);
+      // Show user-friendly error message if needed
     }
-}
+  };
+  
 
 
 

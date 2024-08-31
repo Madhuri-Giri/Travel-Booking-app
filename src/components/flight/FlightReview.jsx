@@ -25,8 +25,22 @@ const FlightReview = () => {
   const { fareDataDetails } = location.state || {}; 
 
 
-  const IsLCC = localStorage.getItem('IsLCC')
-  console.log("IsLCC", IsLCC);
+  const IsLCC = localStorage.getItem('F-IsLcc')
+  console.log("F-IsLcc", IsLCC);
+
+
+  
+
+
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+      const savedFare = localStorage.getItem('selectedFlightBaseFare');
+      
+      if (savedFare) {
+          setTotalPrice(parseFloat(savedFare));
+      }
+  }, []);
 
 
   if (!fareDataDetails) {
@@ -78,6 +92,10 @@ const FlightReview = () => {
 
   // func for duration convert hpur minute---------------------
   console.log("fareDataDetails", fareDataDetails);
+
+
+  const finalTotalPrice = localStorage.getItem('finalTotalPrice') || '0';
+
 
   //-----------------------------Payment apis--------------------------------------------------------------------------------------
   const [flightpayDetails, setFlightpayDetails] = useState(null);
@@ -136,23 +154,26 @@ const FlightReview = () => {
 
           try {
             await flightpayUpdate();
-
-            const IsLCC = localStorage.getItem('IsLCC') === 'true'; 
-          setPayLoading(false);
-
-            if (IsLCC) {
-
-              await bookLccApi();
-              await flightPaymentStatus()
+        
+            const IsLCC = localStorage.getItem('F-IsLcc') === 'true'; 
+            setPayLoading(false);
+        
+            if (IsLCC === true) {
+                await bookLccApi();
+                await flightPaymentStatus();
+            } else if (IsLCC === false) {
+                await bookHoldApi();
             } else {
-              await bookHoldApi();
+                console.error('IsLCC value is not set correctly in localStorage');
             }
+        
             await sendTicketGDSRequest();
-
-          } catch (error) {
+        
+        } catch (error) {
             console.error('Error during updateHandlePayment or bookHandler:', error.message);
             alert('An error occurred during processing. Please try again.');
-          }
+        }
+        
         },
         prefill: {
           username: 'tanisha',
@@ -242,8 +263,7 @@ const FlightReview = () => {
   const OtherCharges = localStorage.getItem('OtherCharges');
   const TransactionFee = localStorage.getItem('TransactionFee');
   const Currency = localStorage.getItem('Currency');
-
-
+  
   const baseFare = localStorage.getItem('BaseFare');
   const tax = localStorage.getItem('Tax');
   const yqTax = localStorage.getItem('YQTax');
@@ -251,7 +271,6 @@ const FlightReview = () => {
   const title = passengerDetails[0].gender;
   
 
-  
  
 
 
@@ -267,144 +286,169 @@ const FlightReview = () => {
         return;
       }
   
-      const passengers = parsedAdultPassengerDetails.map((passenger, index) => ({
-        "SrdvType": FsrdvType,
-        "transaction_num": transactionFlightNo,
-        "transaction_id": transaction_id,
-        "SrdvIndex": FsrdvIndex,
-        "TraceId": FtraceId,
-        "ResultIndex": FresultIndex,
-        "Title": passenger.gender === "male" ? "Mr" : "Ms",
-        "FirstName": passenger.firstName,
-        "LastName": passenger.lastName,
-        "PaxType": 1,
-        "DateOfBirth": passenger.dateOfBirth,
-        "Gender": passenger.gender === "male" ? "1" : "2",
-        "PassportNo": passenger.passportNo || "null",
-        "PassportExpiry": passenger.passportExpiry || "",
-        "PassportIssueDate": passenger.passportIssueDate || "",
-        "AddressLine1": passenger.addressLine1,
-        "City": passenger.city,
-        "CountryCode": passenger.countryCode,
-        "CountryName": passenger.countryName,
-        "ContactNo": passenger.contactNo,
-        "Email": passenger.email,
-        "IsLeadPax": index === 0 ? 1 : 0, 
-        "BaseFare": parseFloat(baseFare),
-        "Tax": parseFloat(tax),
-        "TransactionFee": TransactionFee,
-        "YQTax": parseFloat(yqTax),
-        "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
-        "AdditionalTxnFeePub": AdditionalTxnFeePub,
-        "AirTransFee": AirTransFee
-      }));
-  
-      const llcPayload = {
-        "Passengers": passengers  
-      };
-  
-
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/bookllc', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(llcPayload),
-      });
-
-      const responseBody = await response.json();
-      console.log(' LLC Response:', responseBody);
-
-      if (!response.ok) {
-        console.error('Failed to book seats. Status:', response.status, 'Response:', responseBody);
-        throw new Error(`Failed to book seats. Status: ${response.status}`);
-      }
-
-      if (responseBody.Error && responseBody.Error.ErrorCode !== 0) {
-        console.error('Booking failed:', responseBody.Error.ErrorMessage);
-        toast.error(`Booking failed: ${responseBody.Error.ErrorMessage}`);
-      } else {
-        toast.success(' flight Booking successful!');
-
-        localStorage.setItem('flightTikitDetails', JSON.stringify(responseBody));
-
-        setTimeout(() => {
-          navigate('/booking-history', { state: { flightbookingDetails: responseBody } });
-        }, 2000);
-      }
-    } catch (error) {
-      console.error('llc api error:', error.message);
-      toast.error('An error occurred during booking. Please try again.');
-    }
-  };
-
-
-
-  const bookHoldApi = async () => {
-    const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
-
-    // Map over the stored data to create the passengers array
-    const passengers = storedPassengers.map(passenger => ({
-      "Title": passenger.gender === "male" ? "Mr" : "Ms", 
-      "FirstName": passenger.firstName,
-      "LastName": passenger.lastName,
-      "PaxType": 1, 
-      "DateOfBirth": passenger.dateOfBirth,
-      "Gender": passenger.gender === "male" ? "1" : "2", 
-      "PassportNo": passenger.passportNo,
-      "PassportExpiry": passenger.passportExpiry,
-      "AddressLine1": passenger.addressLine1,
-      "City": passenger.city,
-      "CountryCode": passenger.countryCode,
-      "CountryName": passenger.countryName,
-      "ContactNo": passenger.contactNo,
-      "Email": passenger.email,
-      "IsLeadPax": 1, 
-      "Fare": [
-        {
-          "Currency": Currency,
+      // Iterate over each passenger and make an API call
+      const bookingResponses = await Promise.all(parsedAdultPassengerDetails.map(async (passenger) => {
+        const llcPayload = {
+          "SrdvType": FsrdvType,
+          "transaction_num": transactionFlightNo,
+          "transaction_id": transaction_id,
+          "SrdvIndex": FsrdvIndex,
+          "TraceId": FtraceId,
+          "ResultIndex": FresultIndex,
+          "Title": passenger.gender === "male" ? "Mr" : "Ms",
+          "FirstName": passenger.firstName,
+          "LastName": passenger.lastName,
+          "PaxType": 1, // Assuming PaxType 1 is for adults
+          "DateOfBirth": passenger.dateOfBirth,
+          "Gender": passenger.gender === "male" ? "1" : "2",
+          "PassportNo": passenger.passportNo || "null",
+          "PassportExpiry": passenger.passportExpiry || "",
+          "PassportIssueDate": passenger.passportIssueDate || "",
+          "AddressLine1": passenger.addressLine1,
+          "City": passenger.city,
+          "CountryCode": passenger.countryCode,
+          "CountryName": passenger.countryName,
+          "ContactNo": passenger.contactNo,
+          "Email": passenger.email,
+          "IsLeadPax": passenger.isLeadPax || 0,
           "BaseFare": parseFloat(baseFare),
           "Tax": parseFloat(tax),
-          "YQTax": parseFloat(yqTax),
-          "OtherCharges": OtherCharges,
           "TransactionFee": TransactionFee,
+          "YQTax": parseFloat(yqTax),
           "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
           "AdditionalTxnFeePub": AdditionalTxnFeePub,
           "AirTransFee": AirTransFee
-        }
-      ]
-    }));
+        };
   
-    const holdPayload = {
-      "SrdvIndex": FsrdvIndex, 
-      "TraceId": FtraceId,
-      "ResultIndex": FresultIndex,
-      "SrdvType": FsrdvType,
-      "Passengers": passengers
-    };
-
-    try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/book-hold', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(holdPayload)
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+        const response = await fetch('https://sajyatra.sajpe.in/admin/api/bookllc', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(llcPayload),
+        });
+  
+        const responseBody = await response.json();
+        return responseBody;
+      }));
+  
+      console.log('LLC Responses:', bookingResponses);
+  
+      // Check if all bookings were successful
+      const allBookingsSuccessful = bookingResponses.every(response => response && response.Error && response.Error.ErrorCode === 0);
+  
+      if (allBookingsSuccessful) {
+        toast.success('Flight booking successful!');
+  
+        // Save the flight ticket details in localStorage
+        localStorage.setItem('flightTikitDetails', JSON.stringify(bookingResponses));
+  
+        setTimeout(() => {
+          navigate('/booking-history', { state: { flightbookingDetails: bookingResponses } });
+        }, 2000);
+      } else {
+        bookingResponses.forEach(response => {
+          if (response.Error && response.Error.ErrorCode !== 0) {
+            console.error('Booking failed:', response.Error.ErrorMessage);
+            toast.error(`Booking failed: ${response.Error.ErrorMessage}`);
+          }
+        });
       }
-
-      const holdData = await response.json();
-      console.log('Hold Response:', holdData);
-
+  
     } catch (error) {
-      console.error('API call failed:', error);
+      console.error('LLC API error:', error.message);
+      toast.error('An error occurred during booking. Please try again.');
     }
   };
+  
+  
+
+// bookLccApi()
+
+
+
+
+const bookHoldApi = async () => {
+  // Fetch and parse stored passenger details
+  const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
+
+  // Map the stored passengers to the required format
+  const passengers = storedPassengers.map(passenger => ({
+    "Title": passenger.gender === "male" ? "Mr" : "Ms",
+    "FirstName": passenger.firstName,
+    "LastName": passenger.lastName,
+    "PaxType": 1, // Assuming PaxType 1 is for adults
+    "DateOfBirth": passenger.dateOfBirth,
+    "Gender": passenger.gender === "male" ? "1" : "2",
+    "PassportNo": passenger.passportNo || "null",
+    "PassportExpiry": passenger.passportExpiry || "",
+    "PassportIssueDate": passenger.passportIssueDate || "", // Include if needed
+    "AddressLine1": passenger.addressLine1,
+    "City": passenger.city,
+    "CountryCode": passenger.countryCode,
+    "CountryName": passenger.countryName,
+    "ContactNo": passenger.contactNo,
+    "Email": passenger.email,
+    "IsLeadPax": passenger.isLeadPax || 0, // Adjust if needed
+    "Fare": [
+      {
+        "Currency": Currency, // Ensure Currency is defined
+        "BaseFare": parseFloat(baseFare),
+        "Tax": parseFloat(tax),
+        "YQTax": parseFloat(yqTax),
+        "OtherCharges": OtherCharges || 0,
+        "TransactionFee": TransactionFee,
+        "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+        "AdditionalTxnFeePub": AdditionalTxnFeePub,
+        "AirTransFee": AirTransFee,
+
+        // Uncomment and set these fields if needed
+        // "Discount": Discount,
+        // "PublishedFare": PublishedFare,
+        // "OfferedFare": OfferedFare,
+        // "CommissionEarned": CommissionEarned,
+        // "TdsOnCommission": TdsOnCommission
+      }
+    ]
+  }));
+
+  // Prepare the payload for the API call
+  const holdPayload = {
+    "SrdvIndex": FsrdvIndex,
+    "TraceId": FtraceId,
+    "ResultIndex": FresultIndex,
+    "SrdvType": FsrdvType,
+    "Passengers": passengers
+  };
+
+  try {
+    const response = await fetch('https://sajyatra.sajpe.in/admin/api/book-hold', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(holdPayload)
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const holdData = await response.json();
+    console.log('Hold Response:', holdData);
+
+    // Handle the holdData response as needed
+    // e.g., saving to localStorage or navigating to another page
+
+  } catch (error) {
+    console.error('API call failed:', error);
+  }
+};
+
    
   
+
+
   const flightPaymentStatus = async () => {
     try {
 
@@ -432,6 +476,8 @@ const FlightReview = () => {
         console.error('Failed to fetch payment status. Status:', response.status, 'Response:', responseBody);
         throw new Error(`Failed to fetch payment status. Status: ${response.status}`);
       }
+
+      localStorage.setItem('flight-status', JSON.stringify(responseBody));
   
       navigate('/booking-history'); 
       return responseBody;
@@ -495,11 +541,11 @@ const FlightReview = () => {
                   <div className="flightPayDivhed">
                     <div className="flightPayDivhed1">
                       <p>Air Fare</p>
-                      <p>₹{baseFaree.toFixed(2)}</p>
+                      <p>₹{totalPrice.toFixed(2)}</p>
                     </div>
                     <div className="flightPayDivhed2">
-                      <p>Add Ons</p>
-                      <p>₹0</p>
+                      <p>Add Ons(Seat, Meal,baggage)</p>
+                      <p>₹{finalTotalPrice}</p>
                     </div>
                     <div className="flightPayDivhed2">
                       <p>Sajyatra Discount</p>
@@ -507,7 +553,7 @@ const FlightReview = () => {
                     </div>
                     <div className="flightPayDivhed3">
                       <h5>Grand Total</h5>
-                      <p>₹{totalFare.toFixed(2)}</p>
+                      <p>₹{totalPrice.toFixed(2)}</p>
                     </div>
                   </div>
                   <div className="flightPayDivMain">
