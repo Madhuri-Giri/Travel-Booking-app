@@ -1,3 +1,16 @@
+.review-timer{
+       width: 100%;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       padding: 1vmax;
+}
+.review-timer h1{
+      font-size: 1.2vmax;
+      margin-top: 1vmax;
+      color: red;
+}
+
 .ReviewBooking{
           width: 100%;
        background: #f5f1f1;
