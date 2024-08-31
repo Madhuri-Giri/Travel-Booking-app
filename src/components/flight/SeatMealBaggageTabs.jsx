@@ -14,7 +14,7 @@ const SeatMealBaggageTabs = () => {
     const [activeTab, setActiveTab] = useState('Seats');
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [selectedBaggage, setSelectedBaggage] = useState(null);
-    const [timer, setTimer] = useState(600000);
+    // const [timer, setTimer] = useState(600000);
 
 
     const [totalPrice, setTotalPrice] = useState(0);
@@ -54,19 +54,19 @@ const SeatMealBaggageTabs = () => {
 
     const totalCount = formData.AdultCount + formData.ChildCount + formData.InfantCount;
 
-    useEffect(() => {
-        const countdown = setInterval(() => {
-            setTimer((prev) => prev - 50);
-        }, 50);
+    // useEffect(() => {
+    //     const countdown = setInterval(() => {
+    //         setTimer((prev) => prev - 50);
+    //     }, 50);
 
-        if (timer <= 0) {
-            clearInterval(countdown);
-            alert("Your Session is Expired");
-            navigate('/flight-search');
-        }
+    //     if (timer <= 0) {
+    //         clearInterval(countdown);
+    //         alert("Your Session is Expired");
+    //         navigate('/flight-search');
+    //     }
 
-        return () => clearInterval(countdown);
-    }, [timer, navigate]);
+    //     return () => clearInterval(countdown);
+    // }, [timer, navigate]);
 
     useEffect(() => {
         handleSeatMapApi();
@@ -82,12 +82,47 @@ const SeatMealBaggageTabs = () => {
         setSelectedBaggage(savedBaggage);
     }, []);
 
-    const formatTimers = (milliseconds) => {
-        const totalSeconds = Math.floor(milliseconds / 1000);
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        return `${minutes} min ${seconds} sec left`;
-    };
+//  ------------------------------------
+
+
+const [timer, setTimer] = useState(0);
+
+useEffect(() => {
+  const updateTimer = () => {
+    // Retrieve end time from localStorage
+    const endTime = localStorage.getItem('F-timerEndTime');
+    const now = Date.now();
+    
+    if (endTime) {
+      const remainingTime = endTime - now;
+      
+      if (remainingTime <= 0) {
+        localStorage.removeItem('F-timerEndTime');
+        navigate('/flight-search');
+      } else {
+        setTimer(remainingTime);
+      }
+    } else {
+      navigate('/flight-search');
+    }
+  };
+
+  updateTimer();
+
+  const interval = setInterval(updateTimer, 1000); 
+
+  return () => clearInterval(interval);
+}, [navigate]);
+
+const formatTimers = (milliseconds) => {
+  const totalSeconds = Math.floor(milliseconds / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes} min ${seconds} sec left`;
+};
+
+
+    // -------------------------------------
 
     const reviewHandler = () => {
         if (fareDataDetails) {
