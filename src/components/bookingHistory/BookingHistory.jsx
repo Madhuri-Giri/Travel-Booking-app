@@ -13,10 +13,10 @@ function BookingHistory() {
     const [flightBookings, setFlightBookings] = useState([]);
     const [loading, setLoading] = useState(true); // Set loading to true initially
 
-    console.log("flightBookings",flightBookings);
-    console.log("busBookings",busBookings);
-    console.log("hotelBookings",hotelBookings);
-    
+    console.log("flightBookings", flightBookings);
+    console.log("busBookings", busBookings);
+    console.log("hotelBookings", hotelBookings);
+
 
     const hoteltransaction_num = localStorage.getItem('transactionNumHotel')
 
@@ -51,17 +51,17 @@ function BookingHistory() {
                     // Update state with fetched data
                     setHotelBookings(data);
 
-                 // Extract and store hotel_booking_id
-                 const hotelBookingId = data.bookinghistory?.hotel_booking_id;
-                 if (hotelBookingId) {
-                     localStorage.setItem('hotel_booking_id', hotelBookingId);
-                 } else {
-                     console.error("hotel_booking_id not found in the response.");
-                 }
-             } else {
-                 console.error("Unexpected data format or empty hotel history.");
-                 setError("No hotel history data found.");
-             }
+                    // Extract and store hotel_booking_id
+                    const hotelBookingId = data.bookinghistory?.hotel_booking_id;
+                    if (hotelBookingId) {
+                        localStorage.setItem('hotel_booking_id', hotelBookingId);
+                    } else {
+                        console.error("hotel_booking_id not found in the response.");
+                    }
+                } else {
+                    console.error("Unexpected data format or empty hotel history.");
+                    setError("No hotel history data found.");
+                }
             } catch (error) {
                 console.error("Error fetching API of hotel bookings history:", error);
                 setError("Failed to fetch booking history");
@@ -73,65 +73,65 @@ function BookingHistory() {
         fetchHotelBookingHistory();
     }, []);
     // ----------------------hotel history API-------------------------------
-   
-// ----------------------hotel ticket API-------------------------------
-const handleBookingClick = async () => {
-    // Get hotelBookingId from local storage
-    const hotelBookingId = localStorage.getItem('hotel_booking_id');
-    console.log('handleBookingClick called with:', hotelBookingId);
 
-    try {
-        // Check if hotelBookingId is valid
-        if (typeof hotelBookingId !== 'string' && typeof hotelBookingId !== 'number') {
-            console.error('Invalid hotel booking ID:', hotelBookingId);
-            throw new Error('Invalid hotel booking ID.');
+    // ----------------------hotel ticket API-------------------------------
+    const handleBookingClick = async () => {
+        // Get hotelBookingId from local storage
+        const hotelBookingId = localStorage.getItem('hotel_booking_id');
+        console.log('handleBookingClick called with:', hotelBookingId);
+
+        try {
+            // Check if hotelBookingId is valid
+            if (typeof hotelBookingId !== 'string' && typeof hotelBookingId !== 'number') {
+                console.error('Invalid hotel booking ID:', hotelBookingId);
+                throw new Error('Invalid hotel booking ID.');
+            }
+
+            // Define request data with the hotel_booking_id
+            const requestData = {
+                hotel_booking_id: hotelBookingId
+            };
+
+            const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const res = await response.json();
+            console.log('Hotel Ticket API Response:', res);
+
+            // Define ticketData with default empty arrays
+            const ticketData = {
+                hotelBook: res.hotelBook || [],
+                bookingStatus: res.booking_status || []
+            };
+
+            // Check if the required data is present
+            if (!ticketData.hotelBook.length && !ticketData.bookingStatus.length) {
+                console.error('No relevant ticket data found in the response:', ticketData);
+                throw new Error('No relevant ticket data found in the response.');
+            }
+
+            // Save ticket data to local storage
+            localStorage.setItem('hotelTicket', JSON.stringify(ticketData));
+
+            // Navigate to the hotel-bill page
+            navigate('/hotel-bill');
+
+        } catch (error) {
+            console.error('Error fetching hotel ticket:', error);
         }
+    };
+    // ----------------------hotel ticket API End-------------------------------
 
-        // Define request data with the hotel_booking_id
-        const requestData = {
-            hotel_booking_id: hotelBookingId
-        };
 
-        const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const res = await response.json();
-        console.log('Hotel Ticket API Response:', res);
-
-        // Define ticketData with default empty arrays
-        const ticketData = {
-            hotelBook: res.hotelBook || [],
-            bookingStatus: res.booking_status || []  
-        };
-
-        // Check if the required data is present
-        if (!ticketData.hotelBook.length && !ticketData.bookingStatus.length) {
-            console.error('No relevant ticket data found in the response:', ticketData);
-            throw new Error('No relevant ticket data found in the response.');
-        }
-
-        // Save ticket data to local storage
-        localStorage.setItem('hotelTicket', JSON.stringify(ticketData));
-
-        // Navigate to the hotel-bill page
-        navigate('/hotel-bill');
-
-    } catch (error) {
-        console.error('Error fetching hotel ticket:', error);
-    }
-};
-  // ----------------------hotel ticket API End-------------------------------
-  
-  
     // -----------------------navigate hotel ticket page--------------------------
     // const navigateHotelDetails = () => {
     // localStorage.setItem("hotel_booking_id", hotelBookingId);
@@ -322,33 +322,40 @@ const handleBookingClick = async () => {
                     <div className='hotelTabContent'>
                     <div className="container">
                         <h6 className='hotelTabContenthedding'>Hotel Ticket Status</h6>
-                        {hotelBookings ? (
-                            hotelBookings.userdetails && Array.isArray(hotelBookings.userdetails) ? (
-                                hotelBookings.userdetails.map((user, userIndex) => (
-                                    <div key={userIndex} className="row hotelTabContentROW">
-                                        <div className="col-md-6">
-                                            <p><strong>Hotel Name : </strong> {hotelBookings.hotel_name || "N/A"}</p>
-                                            <p><strong>Hotel Id : </strong> {hotelBookings.hotel_booking_id}</p>
-                                            <p><strong>Transaction Number : </strong> {hotelBookings.transaction_num}</p>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p><strong>Name : </strong> {user.name || "N/A"}</p>
-                                            <p><strong>Email : </strong> {user.email || "N/A"}</p>
-                                            <p className='hotlamount'><strong>Amount : </strong> <span>₹{hotelBookings.amount}</span></p>
-                                        </div>
-                                        <div className='viewbttn'>
-                                            <button onClick={() => handleBookingClick(hotelBookings.hotel_booking_id)}>View Ticket</button>
-                                        </div>
-                                    </div>
+                        {hotelBookings && hotelBookings.data && Array.isArray(hotelBookings.data) ? (
+                            hotelBookings.data.length > 0 ? (
+                                hotelBookings.data.map((user, userIndex) => (
+                                    hotelBookings.userdetails && Array.isArray(hotelBookings.userdetails) ? (
+                                        hotelBookings.userdetails.map((userdetails, userDeatilsIndex) => (
+                                            <div key={`hotelTabContentROW-${userIndex}-${userDeatilsIndex}`} className="row hotelTabContentROW">
+                                                <div className="col-md-6">
+                                                    <p><strong>Hotel Name : </strong> {hotelBookings.hotel_name || "N/A"}</p>
+                                                    <p><strong>Transaction No : </strong> {user.transaction_num || "N/A"}</p>
+                                                    <p><strong>Mobile No : </strong> {userdetails.mobile|| "N/A"}</p>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <p><strong>Hotel Id : </strong> {user.booking_id}</p>
+                                                    <p className='bookingStats'><strong>Status : </strong> <span>{user.status}</span></p>
+                                                    <p className='hotlamount'><strong>Amount : </strong> <span>₹{Math.round(user.amount)}</span></p>
+                                                </div>
+                                                <div className='viewbttn'>
+                                                    <button onClick={() => handleBookingClick(hotelBookings.hotel_booking_id)}>View Ticket</button>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p key={`user-details-${userIndex}`}>No user details found.</p>
+                                    )
                                 ))
                             ) : (
-                                <p>No user details found.</p>
+                                <p>No bookings found. Please book a ticket.</p>
                             )
                         ) : (
                             <p>No bookings found. Please book a ticket.</p>
                         )}
                     </div>
                 </div>
+                
                 );
             default:
                 return null;
