@@ -29,6 +29,20 @@ const FlightReview = () => {
   console.log("F-IsLcc", IsLCC);
 
 
+  
+
+
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+      const savedFare = localStorage.getItem('selectedFlightBaseFare');
+      
+      if (savedFare) {
+          setTotalPrice(parseFloat(savedFare));
+      }
+  }, []);
+
+
   if (!fareDataDetails) {
     console.error('fareDataDetails is undefined in FlightReview component');
   }
@@ -78,6 +92,10 @@ const FlightReview = () => {
 
   // func for duration convert hpur minute---------------------
   console.log("fareDataDetails", fareDataDetails);
+
+
+  const finalTotalPrice = localStorage.getItem('finalTotalPrice') || '0';
+
 
   //-----------------------------Payment apis--------------------------------------------------------------------------------------
   const [flightpayDetails, setFlightpayDetails] = useState(null);
@@ -350,79 +368,87 @@ const FlightReview = () => {
 
 
 
-  const bookHoldApi = async () => {
-    const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
+const bookHoldApi = async () => {
+  // Fetch and parse stored passenger details
+  const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
 
+  // Map the stored passengers to the required format
+  const passengers = storedPassengers.map(passenger => ({
+    "Title": passenger.gender === "male" ? "Mr" : "Ms",
+    "FirstName": passenger.firstName,
+    "LastName": passenger.lastName,
+    "PaxType": 1, // Assuming PaxType 1 is for adults
+    "DateOfBirth": passenger.dateOfBirth,
+    "Gender": passenger.gender === "male" ? "1" : "2",
+    "PassportNo": passenger.passportNo || "null",
+    "PassportExpiry": passenger.passportExpiry || "",
+    "PassportIssueDate": passenger.passportIssueDate || "", // Include if needed
+    "AddressLine1": passenger.addressLine1,
+    "City": passenger.city,
+    "CountryCode": passenger.countryCode,
+    "CountryName": passenger.countryName,
+    "ContactNo": passenger.contactNo,
+    "Email": passenger.email,
+    "IsLeadPax": passenger.isLeadPax || 0, // Adjust if needed
+    "Fare": [
+      {
+        "Currency": Currency, // Ensure Currency is defined
+        "BaseFare": parseFloat(baseFare),
+        "Tax": parseFloat(tax),
+        "YQTax": parseFloat(yqTax),
+        "OtherCharges": OtherCharges || 0,
+        "TransactionFee": TransactionFee,
+        "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+        "AdditionalTxnFeePub": AdditionalTxnFeePub,
+        "AirTransFee": AirTransFee,
 
-    const passengers = storedPassengers.map(passenger => ({
-      "Title": passenger.gender === "male" ? "Mr" : "Ms", 
-      "FirstName": passenger.firstName,
-      "LastName": passenger.lastName,
-      "PaxType": 1, 
-      "DateOfBirth": passenger.dateOfBirth,
-      "Gender": passenger.gender === "male" ? "1" : "2", 
-      "PassportNo": passenger.passportNo,
-      "PassportExpiry": passenger.passportExpiry,
-      "AddressLine1": passenger.addressLine1,
-      "City": passenger.city,
-      "CountryCode": passenger.countryCode,
-      "CountryName": passenger.countryName,
-      "ContactNo": passenger.contactNo,
-      "Email": passenger.email,
-      "IsLeadPax": 1, 
-      "Fare": [
-        {
-          "Currency": Currency,
-          "BaseFare": parseFloat(baseFare),
-          "Tax": parseFloat(tax),
-          "YQTax": parseFloat(yqTax),
-          "OtherCharges": OtherCharges,
-          "TransactionFee": TransactionFee,
-          "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
-          "AdditionalTxnFeePub": AdditionalTxnFeePub,
-          "AirTransFee": AirTransFee,
-
-          // "Discount": Discount,
-          // "PublishedFare": PublishedFare,
-          // "OfferedFare": OfferedFare,
-          // "CommissionEarned": CommissionEarned,
-          // "TdsOnCommission": TdsOnCommission
-
-
-        }
-      ]
-    }));
-  
-    const holdPayload = {
-      "SrdvIndex": FsrdvIndex, 
-      "TraceId": FtraceId,
-      "ResultIndex": FresultIndex,
-      "SrdvType": FsrdvType,
-      "Passengers": passengers
-    };
-
-    try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/book-hold', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(holdPayload)
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+        // Uncomment and set these fields if needed
+        // "Discount": Discount,
+        // "PublishedFare": PublishedFare,
+        // "OfferedFare": OfferedFare,
+        // "CommissionEarned": CommissionEarned,
+        // "TdsOnCommission": TdsOnCommission
       }
+    ]
+  }));
 
-      const holdData = await response.json();
-      console.log('Hold Response:', holdData);
-
-    } catch (error) {
-      console.error('API call failed:', error);
-    }
+  // Prepare the payload for the API call
+  const holdPayload = {
+    "SrdvIndex": FsrdvIndex,
+    "TraceId": FtraceId,
+    "ResultIndex": FresultIndex,
+    "SrdvType": FsrdvType,
+    "Passengers": passengers
   };
+
+  try {
+    const response = await fetch('https://sajyatra.sajpe.in/admin/api/book-hold', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(holdPayload)
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const holdData = await response.json();
+    console.log('Hold Response:', holdData);
+
+    // Handle the holdData response as needed
+    // e.g., saving to localStorage or navigating to another page
+
+  } catch (error) {
+    console.error('API call failed:', error);
+  }
+};
+
    
   
+
+
   const flightPaymentStatus = async () => {
     try {
 
@@ -515,11 +541,11 @@ const FlightReview = () => {
                   <div className="flightPayDivhed">
                     <div className="flightPayDivhed1">
                       <p>Air Fare</p>
-                      <p>₹{baseFaree.toFixed(2)}</p>
+                      <p>₹{totalPrice.toFixed(2)}</p>
                     </div>
                     <div className="flightPayDivhed2">
-                      <p>Add Ons</p>
-                      <p>₹0</p>
+                      <p>Add Ons(Seat, Meal,baggage)</p>
+                      <p>₹{finalTotalPrice}</p>
                     </div>
                     <div className="flightPayDivhed2">
                       <p>Sajyatra Discount</p>
@@ -527,7 +553,7 @@ const FlightReview = () => {
                     </div>
                     <div className="flightPayDivhed3">
                       <h5>Grand Total</h5>
-                      <p>₹{totalFare.toFixed(2)}</p>
+                      <p>₹{totalPrice.toFixed(2)}</p>
                     </div>
                   </div>
                   <div className="flightPayDivMain">

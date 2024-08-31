@@ -12,6 +12,7 @@ import Lottie from 'lottie-react';
 import busAnim from "../../../assets/images/mainBus.json";
 import Barcode from 'react-barcode';
 import { FaArrowRightLong } from "react-icons/fa6";
+import html2canvas from 'html2canvas'; // Import html2canvas
 
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
@@ -28,8 +29,7 @@ const BusTikit = () => {
   const bus_trace_id = localStorage.getItem('bus_trace_id');
 
   const storedAmount = localStorage.getItem('BusBookingAmount');
-console.log('Stored Booking Amount:', storedAmount);
-
+  console.log('Stored Booking Amount:', storedAmount);
 
   useEffect(() => {
     const fetchBusTicketApiData = async () => {
@@ -53,55 +53,37 @@ console.log('Stored Booking Amount:', storedAmount);
     fetchBusTicketApiData();
   }, [bus_booking_id, bus_trace_id]);
 
+  // Modified downloadTicket function to capture the busticktbox design excluding the .btm div
   const downloadTicket = () => {
-    if (!busticketPassengerDetails || !busticketPassengerDetails.bus_details || busticketPassengerDetails.bus_details.length === 0) {
-      console.error("Missing ticket details or passenger data");
+    const ticketElement = document.querySelector('.busticktbox'); // Select the busticktbox element
+    if (!ticketElement) {
+      console.error("Ticket box not found!");
       return;
     }
 
-    const doc = new jsPDF();
+    // Temporarily hide the .btm div
+    const btmDiv = ticketElement.querySelector('.btm');
+    if (btmDiv) {
+      btmDiv.style.display = 'none';
+    }
 
-    const busDetail = busticketPassengerDetails.bus_details[0];
-    const bookingStatus = busticketPassengerDetails.booking_Status?.[0] || {};
+    html2canvas(ticketElement, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    // Debugging: Log data being used
-    console.log('Generating PDF with data:', {
-      from,
-      to,
-      ticketNo: bookingStatus.ticket_no,
-      busId: bookingStatus.bus_id,
-      status: bookingStatus.bus_status,
-      amount: bookingStatus.amount,
-      busType: busDetail.bus_type,
-      departureTime: busDetail.departure_time,
-      arrivalTime: busDetail.arrival_time,
-      travelerName: busDetail.travel_name,
-      cityPointLocation: busDetail.city_point_location
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('bus_ticket.pdf');
+    }).catch((error) => {
+      console.error('Error generating PDF:', error);
+    }).finally(() => {
+      // Restore the .btm div visibility
+      if (btmDiv) {
+        btmDiv.style.display = '';
+      }
     });
-
-    doc.text("Bus Ticket", 20, 20);
-
-    doc.autoTable({
-      startY: 30,
-      head: [['Detail', 'Information']],
-      body: [
-        ['From:', from || 'N/A'],
-        ['To:', to || 'N/A'],
-        ['Ticket No:', bookingStatus.ticket_no || 'N/A'],
-        ['Bus ID:', bookingStatus.bus_id || 'N/A'],
-        ['Status:', bookingStatus.bus_status || 'N/A'],
-        ['Ticket Price:', `${bookingStatus.amount || 'N/A'} INR`],
-        ['Bus Type:', busDetail.bus_type || 'N/A'],
-        ['Departure Time:', formatTime(busDetail.departure_time) || 'N/A'],
-        ['Arrival Time:', formatTime(busDetail.arrival_time) || 'N/A'],
-        ['Traveler Name:', busDetail.travel_name || 'N/A'],
-        ['City Point Location:', busDetail.city_point_location || 'N/A'],
-      ],
-    });
-
-    doc.save('bus_ticket.pdf');
   };
-
 
   const handleCancelTicket = async () => {
     const confirmation = window.confirm("Are you sure you want to cancel?");
@@ -246,8 +228,8 @@ console.log('Stored Booking Amount:', storedAmount);
 
         </div>
 
-        <Footer />
       </div>
+        <Footer />
     </>
   );
 };

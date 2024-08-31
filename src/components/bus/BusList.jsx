@@ -18,24 +18,47 @@ const BusLists = () => {
 
   const [visibleLayout, setVisibleLayout] = useState(null);
   const [isTravelListVisible, setIsTravelListVisible] = useState(false);
-  const [timer, setTimer] = useState(600000);
 
 
   const [showOtpOverlay, setShowOtpOverlay] = useState(false);
 
+  // ------------------------------------------------------------------------------------------------ -------
+
+
+  const [timer, setTimer] = useState(600000); 
 
   useEffect(() => {
-    const countdown = setInterval(() => {
-      setTimer((prev) => prev - 100);
-    }, 100);
+    const endTime = localStorage.getItem('timerEndTime');
+    const now = Date.now();
+    
+    let remainingTime = endTime ? endTime - now : 600000;
 
-    if (timer <= 0) {
-      clearInterval(countdown);
+    if (remainingTime <= 0) {
       navigate('/bus-search');
+      return;
     }
 
+    setTimer(remainingTime);
+
+    const countdown = setInterval(() => {
+      setTimer((prev) => {
+        const updatedTime = prev - 1000;
+        
+        localStorage.setItem('timerEndTime', Date.now() + updatedTime);
+        
+        if (updatedTime <= 0) {
+          clearInterval(countdown);
+          localStorage.removeItem('timerEndTime');
+          navigate('/bus-search');
+          return 0;
+        }
+        
+        return updatedTime;
+      });
+    }, 1000); 
+
     return () => clearInterval(countdown);
-  }, [timer, navigate]);
+  }, [navigate]);
 
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -43,6 +66,10 @@ const BusLists = () => {
     const seconds = totalSeconds % 60;
     return `${minutes} min ${seconds} sec left`;
   };
+
+
+
+  // --------------------------------------------------------------------------------------------------------
 
   const navigateSearch = () => {
     navigate('/bus-search');
@@ -72,6 +99,7 @@ const BusLists = () => {
       [index]: !prev[index],
     }));
   };
+
 
   const storeSelectedBusDetails = (bus) => {
     const selectedBusDetails = {

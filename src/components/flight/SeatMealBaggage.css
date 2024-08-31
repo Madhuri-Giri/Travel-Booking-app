@@ -18,10 +18,11 @@
       }
       .meal-last{
           width: 100%;
-          margin-top: 2vmax;
+          /* margin-top: 2vmax; */
           display: flex;
           align-items: flex-end;
-          justify-content: flex-end;
+          justify-content:space-between;
+          margin: 10px 0px;
       }
       .meal-last button{
         padding: 0.6vmax 3vmax;
@@ -33,3 +34,10 @@
 
       }
       
+      .totalPricee span{
+        color: #0dec0d;
+        font-weight: bold;
+      }
+      .totalPricee p{
+        margin: 3px 0px;
+      }
