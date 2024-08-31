@@ -19,19 +19,35 @@ import he from 'he';
   const [totalPriceSingleDeluxe, setTotalPriceSingleDeluxe] = useState(0);
   const [totalPriceDoubleDeluxe, setTotalPriceDoubleDeluxe] = useState(0);
 
-  const [timer, setTimer] = useState(600000);
+ 
+  const [timer, setTimer] = useState(0);
+
   useEffect(() => {
-    const countdown = setInterval(() => {
-      setTimer((prev) => prev - 50);
-    }, 50);
+    const updateTimer = () => {
+      // Retrieve end time from localStorage
+      const endTime = localStorage.getItem('h-timerEndTime');
+      const now = Date.now();
+      
+      if (endTime) {
+        const remainingTime = endTime - now;
+        
+        if (remainingTime <= 0) {
+          localStorage.removeItem('h-timerEndTime');
+          navigate('/hotel-search');
+        } else {
+          setTimer(remainingTime);
+        }
+      } else {
+        navigate('/hotel-search');
+      }
+    };
 
-    if (timer <= 0) {
-      clearInterval(countdown);
-      navigate('/hotel-description');
-    }
+    updateTimer();
 
-    return () => clearInterval(countdown);
-  }, [timer, navigate]);
+    const interval = setInterval(updateTimer, 1000); 
+
+    return () => clearInterval(interval);
+  }, [navigate]);
 
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);

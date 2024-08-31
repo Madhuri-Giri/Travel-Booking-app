@@ -12,6 +12,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import Payloader from '../../pages/loading/Payloader';
+import { RiTimerLine } from "react-icons/ri";
+
 
 
 
@@ -28,8 +30,45 @@ const FlightReview = () => {
   const IsLCC = localStorage.getItem('F-IsLcc')
   console.log("F-IsLcc", IsLCC);
 
+// -----------------------------------------------------------------------
 
+  const [timer, setTimer] = useState(0);
+
+  useEffect(() => {
+    const updateTimer = () => {
+      // Retrieve end time from localStorage
+      const endTime = localStorage.getItem('F-timerEndTime');
+      const now = Date.now();
+      
+      if (endTime) {
+        const remainingTime = endTime - now;
+        
+        if (remainingTime <= 0) {
+          localStorage.removeItem('F-timerEndTime');
+          navigate('/flight-search');
+        } else {
+          setTimer(remainingTime);
+        }
+      } else {
+        navigate('/flight-search');
+      }
+    };
+
+    updateTimer();
+
+    const interval = setInterval(updateTimer, 1000); 
+
+    return () => clearInterval(interval);
+  }, [navigate]);
+
+  const formatTimers = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes} min ${seconds} sec left`;
+  };
   
+// -----------------------------------------------------------------------
 
 
   const [totalPrice, setTotalPrice] = useState(0);
@@ -531,6 +570,10 @@ const bookHoldApi = async () => {
   return (
     <>
       <CustomNavbar />
+
+      <div className="timer-FlightLists">
+                <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
+            </div>
       <div className="container-fluid review-cont">
         <div className="row">
           <div className="col-md-6">

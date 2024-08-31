@@ -704,28 +704,41 @@ export default function FlightDetails() {
 
 
     // for timerss----------------------------------
-    const [timer, setTimer] = useState(600000);
+    const [timer, setTimer] = useState(0);
 
-    useEffect(() => {
-        const countdown = setInterval(() => {
-            setTimer((prev) => prev - 50); // Decrease timer by 50 milliseconds each tick
-        }, 50); // Interval of 50 milliseconds
-
-        if (timer <= 0) {
-            clearInterval(countdown);
-            alert("Your Session is Expired");
-            navigate('/flight-search');
+  useEffect(() => {
+    const updateTimer = () => {
+      // Retrieve end time from localStorage
+      const endTime = localStorage.getItem('F-timerEndTime');
+      const now = Date.now();
+      
+      if (endTime) {
+        const remainingTime = endTime - now;
+        
+        if (remainingTime <= 0) {
+          localStorage.removeItem('F-timerEndTime');
+          navigate('/flight-search');
+        } else {
+          setTimer(remainingTime);
         }
-
-        return () => clearInterval(countdown);
-    }, [timer, navigate]);
-
-    const formatTimers = (milliseconds) => {
-        const totalSeconds = Math.floor(milliseconds / 1000);
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        return `${minutes} min ${seconds} sec left`;
+      } else {
+        navigate('/flight-search');
+      }
     };
+
+    updateTimer();
+
+    const interval = setInterval(updateTimer, 1000); 
+
+    return () => clearInterval(interval);
+  }, [navigate]);
+
+  const formatTimers = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes} min ${seconds} sec left`;
+  };
 
     // for timerss----------------------------------
 
