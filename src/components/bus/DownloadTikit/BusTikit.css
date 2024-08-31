@@ -453,3 +453,7 @@
 .busticketROW {
        margin: 20px 0px;
 }
+.busbookconfrm span{
+       color: rgb(25, 179, 25);
+       font-weight: bold;
+   }
