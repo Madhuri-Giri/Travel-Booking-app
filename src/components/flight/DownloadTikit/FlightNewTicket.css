@@ -1,0 +1,444 @@
+.flight-Tikit {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    background: #dddddd;
+
+}
+
+.flight-hide-during-download {
+    display: none;
+}
+
+.flight-Tikit .b-hed {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: #0a223d;
+    justify-content: center;
+    padding: 1vmax;
+}
+
+.flight-Tikit .b-hed h5 {
+    font-size: 1.5vmax;
+    font-weight: 600;
+    color: #fff;
+}
+
+
+.flight-Tikit .lottie .anim {
+    width: 50%;
+}
+
+.flight-Tikit .do-wn {
+    width: 50%;
+    display: flex;
+    background: #ffff;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 5px 2px rgba(194, 194, 194, 0.479);
+    border-radius: 15px;
+    margin: 1vmax;
+    flex-direction: column;
+}
+
+.flight-Tikit .do-wn .top {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    background: #efeaea82;
+    border-radius: 15px;
+    padding: 0.5vmax;
+    flex-direction: column;
+}
+
+.flight-Tikit .do-wn .top h5 {
+    font-weight: 700;
+    font-size: 1vmax;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+}
+
+.flight-Tikit .do-wn .mid {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.Bus-Tikit .do-wn .mid .left {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 1vmax;
+}
+
+.flight-Tikit .do-wn .mid h6 {
+    width: 70%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-top: 0.5vmax;
+    color: #126181;
+    font-weight: bold;
+}
+
+.flight-Tikit .do-wn .mid .right {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+
+.flight-Tikit .do-wn .btm {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background: #efeaea82;
+    flex-direction: column;
+    border-radius: 10px;
+    gap: 0.6vmax;
+    padding: 0.5vmax;
+}
+
+.flight-Tikit .do-wn .btm button {
+    border: none;
+    background: none;
+    padding: 0.5vmax 2vmax;
+    border-radius: 5px;
+    background-color: #00b7eb;
+    color: #fff;
+    /* font-weight: 600; */
+    width: 95%;
+}
+
+.flight-Tikit .do-wn .btm button:hover {
+    background-color: #009bb5;
+}
+
+.icon-down {
+    font-size: 1.3vmax;
+    font-weight: 700;
+}
+
+@media (max-width:600px) {
+
+    .flight-Tikit .b-hed h5 {
+           font-size: 2.2vmax;
+    }
+
+    .flight-Tikit .lottie {
+           width: 100%;
+           flex-direction: column;
+           align-items: center;
+    }
+
+    .flight-Tikit .lottie .anim {
+           width: 90%;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+    }
+
+    .flight-Tikit .do-wn {
+           width: 95%;
+           margin-top: 2vmax;
+    }
+
+    .flight-Tikit .do-wn .top {
+           width: 100%;
+           padding: 1vmax;
+    }
+
+    .flight-Tikit .do-wn .top h5 {
+           font-size: 2vmax;
+    }
+
+    .flight-Tikit .do-wn .mid {
+           justify-content: space-between;
+    }
+
+    .flight-Tikit .do-wn .mid .left {
+           width: 50%;
+           padding: 1vmax;
+    }
+
+    .flight-Tikit .do-wn .mid h6 {
+           width: 90%;
+           font-size: 1.2vmax;
+    }
+
+    .flight-Tikit .do-wn .mid .right {
+           width: 50%;
+    }
+
+    .flight-Tikit .do-wn .btm {
+           gap: 1vmax;
+           padding: 0.2vmax;
+    }
+
+    .flight-Tikit .do-wn .btm button {
+           padding: 1vmax 2vmax;
+           text-transform: capitalize;
+    }
+
+}
+
+
+@media (min-width:600px) and (max-width:1150px) {
+
+    .flight-Tikit .b-hed h5 {
+           font-size: 2.2vmax;
+    }
+
+    .flight-Tikit .do-wn {
+           width: 95%;
+    }
+
+    .flight-Tikit .do-wn .top {
+           width: 100%;
+           padding: 1vmax;
+    }
+
+    .flight-Tikit .do-wn .top h5 {
+           font-size: 2vmax;
+    }
+
+    .flight-Tikit .do-wn .mid {
+           justify-content: space-between;
+    }
+
+    .flight-Tikit .do-wn .mid .left {
+           width: 50%;
+           padding: 1vmax;
+    }
+
+    .flight-Tikit .do-wn .mid h6 {
+           width: 90%;
+           font-size: 1.2vmax;
+    }
+
+    .flight-Tikit .do-wn .mid .right {
+           width: 50%;
+    }
+
+
+    .flight-Tikit .do-wn .btm {
+           gap: 1vmax;
+           padding: 0.2vmax;
+    }
+
+    .flight-Tikit .do-wn .btm button {
+           padding: 1vmax 2vmax;
+           text-transform: capitalize;
+    }
+
+}
+
+.flightpssngerdetails span {
+    font-size: 15px;
+    color: gray;
+}
+
+.flightpssngerdetails {
+    padding: 25px 0px;
+}
+
+.flightpssngerdetails strong {
+    color: #0a325f;
+}
+
+.flightpssngerdetails p {
+    margin: 0px;
+    margin-bottom: 4px !important;
+    color: gray;
+    font-size: 15px;
+}
+
+.psngeramount span {
+    color: #00e100;
+    font-weight: bold;
+}
+
+.cancelflightticket {
+    display: flex;
+    justify-content: end;
+
+}
+
+.cancelflightticket button {
+    border: none;
+    text-decoration: underline;
+    background-color: white;
+    color: red;
+}
+
+
+
+
+.flightticktbox {
+    /* background-color: #c6cfd15e; */
+    box-shadow: 2px 2px 2px 2px gray;
+    border-radius: 20px;
+    padding-bottom: 10px;
+}
+
+.flighttickthed {
+    background-color: #00b7eb;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+}
+
+.flightpssngerdetails {
+    padding: 10px 30px;
+}
+
+.btm {
+    padding: 10px 30px !important;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ticktbordr {
+    border-left: 2px dotted skyblue;
+}
+
+.flightbtm .flightcncl {
+    background-color: red;
+    border-radius: 5px;
+    border: none;
+    color: white;
+}
+
+.flightbtm .flightdonload {
+    background-color: #00b7eb;
+    border-radius: 5px;
+    border: none;
+    color: white;
+}
+
+.flight-Tikit .lottie {
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    padding: 3vmax;
+    margin: 1vmax;
+    background: #fff;
+    border: none;
+    box-shadow: 2px 2px 5px 2px rgba(229, 220, 220, 0.68);
+    border-radius: 4px;
+}
+
+.flightpasscode {
+    height: 90px;
+    width: 140px;
+}
+
+
+.flightticktbox {
+    position: relative;
+    background-color: #f8f9fa;
+    /* Adjust this to your desired background color */
+    border-radius: 10px;
+    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #99dbd72b;
+}
+
+.flightticktbox::before,
+.flightticktbox::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 45px;
+    /* Adjust the width to make the half-circle bigger or smaller */
+    height: 100px;
+    /* Adjust the height to match your container's height */
+    background-color: #fff;
+    /* Same as the background color of the parent container */
+    border-radius: 50%;
+    transform: translateY(-50%);
+}
+
+.flightticktbox::before {
+    left: -20px;
+    /* Half of the width of the pseudo-element */
+    border-right: none;
+}
+
+.flightticktbox::after {
+    right: -20px;
+    /* Half of the width of the pseudo-element */
+    border-left: none;
+}
+
+.fromtoMOB {
+    display: none;
+}
+
+.fromtoWEB {
+    display: flex;
+}
+
+
+@media screen and (max-width: 768px) {
+    .ticktbordr {
+           border-left: none;
+    }
+}
+
+@media screen and (max-width: 576px) {
+
+    .flightticktbox::before,
+    .flightticktbox::after {
+           width: 30px;
+    }
+
+    .flightticktbox::after {
+           right: -10px;
+    }
+
+    .flightticktbox::before {
+           left: -10px;
+    }
+
+    .flight-Tikit .lottie {
+           padding: 1vmax;
+    }
+
+    .flightpssngerdetails span {
+           margin-left: unset;
+           font-size: 13px;
+    }
+
+    .fromtoMOB {
+           display: flex;
+    }
+
+    .fromtoWEB {
+           display: none;
+    }
+}
+
+.flightlottieCOL {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flightticketROW {
+    margin: 20px 0px;
+}

@@ -41,7 +41,13 @@ import FlightTickect from './components/flight/DownloadTikit/FlightTickect';
 import HotelTicket from './components/hotelBill/HotelTicket'
 import TicketBookBus from './components/bus/DownloadTikit/TicketBookBus';
 import Payloader from "./pages/loading/Payloader"
+
+import PayloaderHotel from "./pages/loading/PayloaderHotel"
 // import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
+import FlightNewTicket from './components/flight/DownloadTikit/FlightNewTicket'
+
+// import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
+
 
 const App = () => {
   const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number',  '/load'];
@@ -91,8 +97,13 @@ const App = () => {
           <Route path='busBookTicket' element={<TicketBookBus/>} />
 
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
-          <Route path='/payload' element={<Payloader/>} />
+          <Route path='/flightNewTicket' element={<FlightNewTicket/>} />
 
+
+          {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
+
+          <Route path='/payload' element={<Payloader/>} />
+          <Route path='/hotel-payload' element={<PayloaderHotel/>}/>
         </Routes>
         <ToastContainer
           position="top-right"

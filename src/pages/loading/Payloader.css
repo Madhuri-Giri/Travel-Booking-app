@@ -6,20 +6,21 @@
           z-index: 1111;
           height: 720px;
           flex-direction: column;
-          background:#15a1fe;position: absolute;
+          /* background:#15a1fe;position: absolute; */
           z-index: 11111;
 }
 .payload h5{
 
-       color:#fff ;
+       color:#0da50d ;
        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+       font-size: 35px
 }
 .payload img{
-        width: 30%;
+        width: 20%;
         margin-top: 2vmax;
         border-radius: 50%;
         border: none;
-        background:#15a1fe;
+        /* background:#15a1fe; */
 
 }
 
@@ -27,11 +28,17 @@
           .payload img{
                     width: 100%;
             }
+            .payload h5{
+        font-size: 20px;
+            }
                  
 }
 @media (min-width: 600px) and (max-width:1150px) {
           .payload img{
                     width: 100%;
             }
+            .payload h5{
+                font-size: 20px;
+                    }
                  
 }
