@@ -242,11 +242,6 @@ const FlightReview = () => {
 
 
 
-  
-
-
-
-
   const flightpayUpdate = async () => {
     try {
       const payment_id = localStorage.getItem('flight_payment_id');
@@ -383,7 +378,7 @@ const FlightReview = () => {
         localStorage.setItem('flightTikitDetails', JSON.stringify(bookingResponses));
   
         setTimeout(() => {
-          navigate('/booking-history', { state: { flightbookingDetails: bookingResponses } });
+          navigate('/flightNewTicket', { state: { flightbookingDetails: bookingResponses } });
         }, 2000);
       } else {
         bookingResponses.forEach(response => {
