@@ -282,16 +282,17 @@
 
 
 .hotel-policy {
-  font-family: Arial, sans-serif; /* Use a clean, readable font */
-  line-height: 1.6; /* Improve readability with better line spacing */
+  font-family: Arial, sans-serif; 
+  line-height: 1.6; 
 }
 
 .hotel-policy h4 {
-  margin-bottom: 10px; /* Add space below the heading */
-  font-size: 1.2em; /* Make the heading slightly larger */
+  margin-bottom: 10px; 
+  font-size: 1.2em; 
 }
 
 .hotel-policy p {
-  white-space: pre-wrap; /* Preserve whitespace and newlines */
-  margin: 0; /* Remove default paragraph margins */
+  white-space: pre-wrap; 
+  margin: 0; 
+  letter-spacing: 0.6px;
 }

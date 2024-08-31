@@ -113,6 +113,7 @@
     margin-bottom: 10px;
     line-height: 1.4;
     font-family: sans-serif;
+    letter-spacing: 0.5px;
     /* height: 320px !important; */
     /* max-height:500px;  */
     /* object-fit: cover;  */
@@ -127,13 +128,15 @@
 }
 
 .Title_hotel {
-    font-size: 1.5em;
+    font-size: 1.8em;
     font-weight: bold;
-    margin: 0;
+    /* margin: 0; */
+    letter-spacing: 0.5px;
+    color: #007bff;
 }
 
 .Distance_hotel {
-    color: #007bff;
+    color: #767373;
     font-family: sans-serif;
 }
 
@@ -174,6 +177,7 @@
     background-color: #f9f9f9;
     flex: 1 0 auto;
     margin: 2px;
+    letter-spacing: 0.5px;
 }
 
 .PriceButton {

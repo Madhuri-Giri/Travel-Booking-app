@@ -303,7 +303,7 @@ const HandelHotelInfo = async (index) => {
               <Row>
                 <Col lg={3} className="listSearchcol">
                   <div className="listSearch">
-                    <h1 className="listTitle">Search Your Hotels ....</h1>
+                    <h1 className="listTitle">Search Your Hotels </h1>
                     <div className="listItem">
                       <label>Destination</label>
                       <input

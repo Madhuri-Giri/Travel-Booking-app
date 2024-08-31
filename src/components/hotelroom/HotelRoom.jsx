@@ -399,9 +399,9 @@ import he from 'he';
                          {room.CancellationPolicies.map((policy, idx) => (
                              <div key={idx} className="cancellation-policy">
                                     <p>
-                                 <strong>{new Date(policy.FromDate).toLocaleDateString()}</strong> to{' '}
-                             <strong>{new Date(policy.ToDate).toLocaleDateString()}</strong>:{' '}
-                              <strong>{policy.Charge} ₹ </strong>  charges.
+                                 <span>{new Date(policy.FromDate).toLocaleDateString()}</span> to{' '}
+                             <span>{new Date(policy.ToDate).toLocaleDateString()}</span>:{' '}
+                              <span> ₹{policy.Charge}</span>  charges.
                                     </p>
                                   </div>
                                       ))}
@@ -434,7 +434,6 @@ import he from 'he';
                                   <div className="selected_rooms_summary">
                                     <span>Total Price: INR {totalPriceSingleDeluxe.toFixed(2)}</span>
                                   </div>
-
                                 </div>
                                 <button onClick={roomblockHandler} className="reserve_button">Continue</button>
                               </div>
@@ -480,9 +479,9 @@ import he from 'he';
                            {room.CancellationPolicies.map((policy, idx) => (
                             <div key={idx} className="cancellation-policy">
                             <p>
-                      <strong>{new Date(policy.FromDate).toLocaleDateString()}</strong> to{' '}
-                      <strong>{new Date(policy.ToDate).toLocaleDateString()}</strong>:{' '}
-                      <strong>{policy.Charge} ₹ </strong>  charges.
+                      <span>{new Date(policy.FromDate).toLocaleDateString()}</span> to{' '}
+                      <span>{new Date(policy.ToDate).toLocaleDateString()}</span>:{' '}
+                      <span> ₹{policy.Charge} </span>  charges.
                       </p>
                          </div>
                             ))}
@@ -512,12 +511,15 @@ import he from 'he';
 
                                   <span>Room: {selectedDoubleDeluxeRooms.find(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode)?.guestCounts.room || 1}</span>
                                   <button onClick={() => handleGuestChange(selectedDoubleDeluxeRooms.findIndex(selectedRoom => selectedRoom.RoomTypeCode === room.RoomTypeCode), 'room', 1, 'double')}>+</button>
-                                </div>
-                                <div className="selected_rooms_summary">
+                                  <div className="selected_rooms_summary">
                                   <span>Total Price: INR {totalPriceDoubleDeluxe.toFixed(2)}</span>
-                                  <button onClick={roomblockHandler} className="reserve_button">Continue</button>
+                                  
                                 </div>
+                                </div>
+                               
+                                <button onClick={roomblockHandler} className="reserve_button">Continue</button>
                               </div>
+                              
                             )}
                           </Card.Body>
                         </Card>

@@ -32,9 +32,10 @@ const GuestDetails = () => {
     paxType: "",
     leadPassenger: "",
     passportNo: "",
-    passportIssueDate: "",
-    passportExpDate: "",
-    PAN: "",
+    // passportIssueDate: "",
+    // passportExpDate: "",
+    PanNo: "",
+    AadhaarNo: ""
   }));
 
   const navigate = useNavigate();
@@ -643,18 +644,18 @@ if (payLoading) {
                   {/* <h4>Selected Single Deluxe Rooms</h4> */}
                   {singleDeluxe.map((room, index) => (
                     <div key={index}>
-                      <p>Room Type: {room.RoomTypeName}</p>
-                      <p>Quantity: {room.guestCounts.room}</p>
-                      <p> Price:  ₹{totalPriceSingleDeluxe.toFixed(2)}</p>
+                      <p><strong>Room Type:</strong> {room.RoomTypeName}</p>
+                      <p><strong>Room Quantity:</strong> {room.guestCounts.room}</p>
+                      <p> <strong>Price:</strong>  ₹{totalPriceSingleDeluxe.toFixed(2)}</p>
 
                       <div className="payment-summary">
                         {/* <p><strong>Total Price:</strong> {totalPriceWithGST.toFixed(2)}</p> */}
                         {/* <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p> */}
-                        <p>GST ({gstRate}%): ₹{((applyDiscount(totalPrice, discount) * gstRate) / 100).toFixed(2)}</p>
-                        <p>Total Price with GST: ₹{totalPriceWithGST.toFixed(2)}</p>
-                        <p>Discount: -₹{(totalPrice * discount / 100).toFixed(2)}</p>
-                        <p>Price After Discount: ₹{applyDiscount(totalPrice, discount).toFixed(2)}</p>
-                        {/* <p>final price ₹{(totalPriceWithGST+applyDiscount)} </p> */}
+                        <p><strong>GST</strong> ({gstRate}%): ₹{((applyDiscount(totalPrice, discount) * gstRate) / 100).toFixed(2)}</p>
+                        <p><strong>Total Price with GST:</strong> ₹{totalPriceWithGST.toFixed(2)}</p>
+                        <p><strong>Discount:</strong>₹{(totalPrice * discount / 100).toFixed(2)}</p>
+                        <p><strong>Price After Discount:</strong> ₹{applyDiscount(totalPrice, discount).toFixed(2)}</p>
+                       
                       </div>
                     </div>
                   ))}
@@ -747,21 +748,11 @@ if (payLoading) {
                   required
                   pattern="[0-9]{10}"
                 />
-                
+                  </div>
               </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="PAN No./Aadhaar Card No."
-                  name="PAN No"
-                  value={formData.number}
-                  onChange={(e) => handleFormChange(index, e)}
-                />
-              </div>
-            </div>
 
-            <div className="col-md-6">
+              <div className="col-md-6">
+
               <div className="mb-3">
                 <input
                   type="number"
@@ -778,6 +769,28 @@ if (payLoading) {
                 <input
                   type="text"
                   className="form-control"
+                  placeholder="PAN No."
+                  name="PanNo"
+                  value={formData.number}
+                  onChange={(e) => handleFormChange(index, e)}
+                />
+              </div>
+          
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Aadhaar Card No."
+                  name="AadhaarNo"
+                  value={formData.number}
+                  onChange={(e) => handleFormChange(index, e)}
+                />
+              </div>
+           
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
                   placeholder="Passport No."
                   name="passportNo"
                   value={formData.passportNo}
@@ -785,7 +798,7 @@ if (payLoading) {
                 />
               </div>
 
-              <div className="mb-3">
+              {/* <div className="mb-3">
                 <DatePicker
                   selected={formData.passportIssueDate}
                   onChange={(date) => handleDateChange(index, date, 'passportIssueDate')}
@@ -794,9 +807,9 @@ if (payLoading) {
                   minDate={null}
                 />
                 <label className="custom-placeholder">Passport Issue Date</label>
-              </div>
+              </div> */}
 
-              <div className="mb-3">
+              {/* <div className="mb-3">
                 <DatePicker
                   selected={formData.passportExpDate}
                   onChange={(date) => handleDateChange(index, date, 'passportExpDate')}
@@ -805,9 +818,9 @@ if (payLoading) {
                   minDate={null}
                 />
                 <label className="custom-placeholder">Passport Expiry Date</label>
-              </div>
+              </div> */}
 
-              <div className="mb-3">
+              {/* <div className="mb-3">
                 <input
                   type="text"
                   className="form-control"
@@ -817,9 +830,9 @@ if (payLoading) {
                   onChange={(e) => handleFormChange(index, e)}
                   pattern="^(Yes|No)$"
                 />
-               
-              </div>
-              <div className="mb-3">
+              </div> */}
+
+              {/* <div className="mb-3">
                 <input
                   type="number"
                   className="form-control"
@@ -828,7 +841,8 @@ if (payLoading) {
                   value={formData.paxType}
                   onChange={(e) => handleFormChange(index, e)}
                 />
-              </div>
+              </div> */}
+
             </div>
           </div>
           <button className='submit-btn' type="submit">Save</button>
