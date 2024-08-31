@@ -30,14 +30,14 @@ const SeatMealBaggageTabs = () => {
     }, []);
 
     const seatPrice = selectedSeats.reduce((total, seat) => total + seat.price, 0);
-const mealPrice = 0; // Replace with actual meal price logic if applicable
-const baggagePrice = selectedBaggage?.Price || 0;
+    const mealPrice = 0; // Replace with actual meal price logic if applicable
+    const baggagePrice = selectedBaggage?.Price || 0;
 
-// Calculate the final total price
-const finalTotalPrice = seatPrice + mealPrice + baggagePrice;
+    // Calculate the final total price
+    const finalTotalPrice = seatPrice + mealPrice + baggagePrice;
 
-// Save the final total price to local storage
-localStorage.setItem('finalTotalPrice', finalTotalPrice.toFixed(2));
+    // Save the final total price to local storage
+    localStorage.setItem('finalTotalPrice', finalTotalPrice.toFixed(2));
 
 
 
@@ -253,18 +253,18 @@ localStorage.setItem('finalTotalPrice', finalTotalPrice.toFixed(2));
 
 
 
-  
+
 
 
     const renderSeatsTab = () => (
         <div className="seatsTabss">
             <h5>SELECT YOUR PREFERRED SEAT</h5>
-            
+
             <div className="seaat-price">
                 <h6>Selected Seats: ({selectedSeats.map(seat => seat.seatNumber).join(', ')})</h6>
                 <h6>Total Price: (₹{calculateTotalPrice()})</h6>
             </div>
-            
+
             <div className="row seatsTabssRow">
                 <div className="col-lg-4 seatsTabssColImg">
                     <img
@@ -298,7 +298,7 @@ localStorage.setItem('finalTotalPrice', finalTotalPrice.toFixed(2));
             </div>
         </div>
     );
-    
+
 
 
     const [mealData, setMealData] = useState([]);
@@ -436,25 +436,19 @@ localStorage.setItem('finalTotalPrice', finalTotalPrice.toFixed(2));
                             </div>
 
                         </div>
-
-
-
-
-
-
                         <div className="tab-content">
                             {activeTab === 'Seats' && renderSeatsTab()}
                             {activeTab === 'Meals' && renderMealsTab()}
                             {activeTab === 'Baggage' && renderBaggageTab()}
                         </div>
-                    </div>
-                    <div className="f-fare">
-                        <h5>Total Fare : ₹{totalPrice.toFixed(2)}</h5>
-                        <p>Seat: ₹{selectedSeats.reduce((total, seat) => total + seat.price, 0).toFixed(2)}</p>
-                        <p>Meal:</p>
-                        <p>Baggage: ₹{selectedBaggage?.Price || '0'}</p>
-                        <p>Total Price (Seat, Meal, Baggage): ₹{finalTotalPrice.toFixed(2)}</p>
+                        <div className="f-fare">
+                            <p>Seat: ₹{selectedSeats.reduce((total, seat) => total + seat.price, 0).toFixed(2)}</p>
+                            <p>Meal:</p>
+                            <p>Baggage: ₹{selectedBaggage?.Price || '0'}</p>
+                            <p>Total Price (Seat, Meal, Baggage): ₹{finalTotalPrice.toFixed(2)}</p>
+                            <h5 className='totalPricee'>Total Fare : <span>₹{totalPrice.toFixed(2)}</span></h5>
                         </div>
+                    </div>
 
 
                 </div>
