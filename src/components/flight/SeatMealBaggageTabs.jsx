@@ -16,6 +16,31 @@ const SeatMealBaggageTabs = () => {
     const [selectedBaggage, setSelectedBaggage] = useState(null);
     const [timer, setTimer] = useState(600000);
 
+
+    const [totalPrice, setTotalPrice] = useState(0);
+
+    useEffect(() => {
+        // Retrieve the base fare from local storage
+        const savedFare = localStorage.getItem('selectedFlightBaseFare');
+
+        // Set the totalFare state, converting it to a number
+        if (savedFare) {
+            setTotalPrice(parseFloat(savedFare));
+        }
+    }, []);
+
+    const seatPrice = selectedSeats.reduce((total, seat) => total + seat.price, 0);
+const mealPrice = 0; // Replace with actual meal price logic if applicable
+const baggagePrice = selectedBaggage?.Price || 0;
+
+// Calculate the final total price
+const finalTotalPrice = seatPrice + mealPrice + baggagePrice;
+
+// Save the final total price to local storage
+localStorage.setItem('finalTotalPrice', finalTotalPrice.toFixed(2));
+
+
+
     const ssrData = [
         { Weight: 15, Price: 100, AirlineCode: "SG", FlightNumber: "8269", WayType: 1, Code: "BOF1SeKey276", Currency: "INR", Description: "Bag Out First with 1 Bag", Destination: "BOM", Origin: "DEL" },
         { Weight: 20, Price: 200, AirlineCode: "SG", FlightNumber: "8269", WayType: 1, Code: "BOF2SeKey276", Currency: "INR", Description: "Bag Out First with 2 Bag", Destination: "BOM", Origin: "DEL" }
@@ -109,6 +134,7 @@ const SeatMealBaggageTabs = () => {
             }
 
             const data = await response.json();
+            console.log('Seat map Response', data)
             localStorage.setItem('seatMapData', JSON.stringify(data));
             return data;
         } catch (error) {
@@ -226,17 +252,19 @@ const SeatMealBaggageTabs = () => {
     };
 
 
+
+  
+
+
     const renderSeatsTab = () => (
         <div className="seatsTabss">
             <h5>SELECT YOUR PREFERRED SEAT</h5>
-            {/* ------------------------ */}
+            
             <div className="seaat-price">
                 <h6>Selected Seats: ({selectedSeats.map(seat => seat.seatNumber).join(', ')})</h6>
                 <h6>Total Price: (₹{calculateTotalPrice()})</h6>
-
             </div>
-            {/* ------------------------ */}
-
+            
             <div className="row seatsTabssRow">
                 <div className="col-lg-4 seatsTabssColImg">
                     <img
@@ -268,17 +296,54 @@ const SeatMealBaggageTabs = () => {
                     </div>
                 </div>
             </div>
-
-           
-
         </div>
     );
+    
+
+
+    const [mealData, setMealData] = useState([]);
+    const [selectedMeal, setSelectedMeal] = useState(null);
+
+
+    useEffect(() => {
+        const storedData = localStorage.getItem('ssrApiData');
+        if (storedData) {
+            const parsedData = JSON.parse(storedData);
+            const mealDynamic = parsedData?.MealDynamic?.[0] || [];
+            const formattedMealData = mealDynamic.map(meal => ({
+                Name: meal.Description,
+                Price: meal.Price
+            }));
+            setMealData(formattedMealData);
+        }
+    }, []);
+
+    const handleMealClick = (meal) => {
+        setSelectedMeal(meal);
+    };
 
 
     const renderMealsTab = () => (
-        <div className="MealsTabss">
-            <h5>Select Your Meal</h5>
-        </div>
+        mealData.map((meal, index) => (
+            <div key={index} className="meal-selection">
+                <div className="row">
+                    <div className="col-md-6">
+                        <p>{meal.Name}</p>
+                        <h6>₹{meal.Price}</h6>
+                    </div>
+                    <div className="col-md-6 meal-selectionbtn">
+                        <div>
+                            <button
+                                className={selectedMeal?.Name === meal.Name ? 'btn-added' : 'btn-add'}
+                                onClick={() => handleMealClick(meal)}
+                            >
+                                {selectedMeal?.Name === meal.Name ? '✓ Added' : '+ Add'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        ))
     );
 
 
@@ -294,7 +359,7 @@ const SeatMealBaggageTabs = () => {
                     <div key={index} className="baggage-selection">
                         <div className="row">
                             <div className="col-md-6">
-                                <p>{baggage.Weight} kg</p>  
+                                <p>{baggage.Weight} kg</p>
                                 <h6>₹{baggage.Price}</h6>
                             </div>
                             <div className="col-md-6 baggagge-selectionbtn">
@@ -312,9 +377,9 @@ const SeatMealBaggageTabs = () => {
                 ))}
 
 
-<div className="meal-last">
-                        <button onClick={reviewHandler}>Continue</button>
-                    </div>
+                <div className="meal-last">
+                    <button onClick={reviewHandler}>Continue</button>
+                </div>
 
 
 
@@ -374,14 +439,23 @@ const SeatMealBaggageTabs = () => {
 
 
 
+
+
+
                         <div className="tab-content">
                             {activeTab === 'Seats' && renderSeatsTab()}
                             {activeTab === 'Meals' && renderMealsTab()}
                             {activeTab === 'Baggage' && renderBaggageTab()}
                         </div>
                     </div>
+                    <div className="f-fare">
+                        <h5>Total Fare : ₹{totalPrice.toFixed(2)}</h5>
+                        <p>Seat: ₹{selectedSeats.reduce((total, seat) => total + seat.price, 0).toFixed(2)}</p>
+                        <p>Meal:</p>
+                        <p>Baggage: ₹{selectedBaggage?.Price || '0'}</p>
+                        <p>Total Price (Seat, Meal, Baggage): ₹{finalTotalPrice.toFixed(2)}</p>
+                        </div>
 
-                 
 
                 </div>
 

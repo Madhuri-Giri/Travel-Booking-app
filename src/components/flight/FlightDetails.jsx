@@ -1,7 +1,7 @@
 import "./FlightLists.css"
 import "./FlightDetails.css"
 import React from 'react'
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState , } from 'react';
 import { json, useLocation, useNavigate } from 'react-router-dom';
 import { TiPlane } from "react-icons/ti";
 import { FaCalendarAlt, FaUser } from 'react-icons/fa';
@@ -18,7 +18,17 @@ export default function FlightDetails() {
     const [loading, setLoading] = useState(false); // Add loading state
 
     //   ----------------------------------------------------
+    const [totalPrice, setTotalPrice] = useState(0);
 
+    useEffect(() => {
+        // Retrieve the base fare from local storage
+        const savedFare = localStorage.getItem('selectedFlightBaseFare');
+        
+        // Set the totalFare state, converting it to a number
+        if (savedFare) {
+            setTotalPrice(parseFloat(savedFare));
+        }
+    }, []);
 
     const location = useLocation();
     const fareData = location.state?.fareData;
@@ -88,148 +98,7 @@ export default function FlightDetails() {
     };
 
 
-    // --------------------------------------seat and meal api--------------------------------------------
-
-    // const [ssrData, setSsrData] = useState([]);
-
-    // useEffect(() => {
-    //     const storedData = localStorage.getItem('FlightssrResponse');
-    //     if (storedData) {
-    //         const parsedData = JSON.parse(storedData);
-    //         const flattenedBaggage = parsedData.Baggage.flat();
-    //         setSsrData(flattenedBaggage);
-    //     } else {
-    //         ssrHandler();
-    //     }
-    // }, []);
-
-    // const ssrHandler = async () => {
-    //     // const traceId = localStorage.getItem('FlightTraceId2');
-    //     // const resultIndex = localStorage.getItem('FlightResultIndex2');
-    //     // const srdvType = localStorage.getItem('FlightSrdvType');
-    //     // const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
-
-    //     // if (!traceId || !resultIndex) {
-    //     //     console.error('TraceId or ResultIndex not found in local storage');
-    //     //     return;
-    //     // }
-
-    //     const payload = {
-    //         SrdvIndex: "2",
-    //         ResultIndex: "4-6779374091_3DELBOMSG8269~11368130584707711" ,
-    //         TraceId: "157631" ,
-    //         SrdvType:  "MixAPI",
-    //     };
-
-    //     try {
-    //         const response = await fetch('https://sajyatra.sajpe.in/admin/api/ssr', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify(payload)
-    //         });
-
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-
-    //         const ssrData = await response.json();
-    //         console.log('ssr Api:', ssrData);
-
-    //         if (ssrData && ssrData.Baggage) {
-    //             localStorage.setItem('FlightssrResponse', JSON.stringify(ssrData));
-    //             const flattenedBaggage = ssrData.Baggage.flat();
-    //             setSsrData(flattenedBaggage);
-    //         } else {
-    //             console.error('No baggage data found in response');
-    //         }
-    //     } catch (error) {
-    //         console.error('SSr API call failed:', error);
-    //     }
-    // };
-
-    // const [seatData, setSeatData] = useState([]);
-
-    // console.log("ssrData", ssrData);
-    // console.log("seatData", seatData);
-
-    //   useEffect(() => {
-    //     const flightData = localStorage.getItem('FlightsitMap');
-    //     if (flightData) {
-    //         const parsedData = JSON.parse(flightData);
-
-    //         if (parsedData?.Results?.[0]?.Seats) {
-    //             const seatsArray = [];
-
-    //             for (const row in parsedData.Results[0].Seats) {
-    //                 const rowData = parsedData.Results[0].Seats[row];
-
-    //                 for (const column in rowData) {
-    //                     const seat = rowData[column];
-    //                     seatsArray.push({
-    //                         seatNumber: seat.SeatNumber,
-    //                         price: seat.Amount,
-    //                         isBooked: seat.IsBooked,
-    //                         imgSrc: '/src/assets/images/seat-2-removebg-preview.png'
-    //                     });
-    //                 }
-    //             }
-
-    //             setSeatData(seatsArray);
-    //         } else {
-    //             console.warn('Seats data is undefined or missing.');
-    //             setSeatData([]);
-    //         }
-    //     } else {
-    //         console.warn('No flight data found in localStorage.');
-    //         setSeatData([]);
-    //     }
-    // }, []);
-
-
-    // const seatmap = async () => {
-
-    //     // const traceId = localStorage.getItem('FlightTraceId2');
-    //     // const resultIndex = localStorage.getItem('FlightResultIndex2');
-    //     // const srdvType = localStorage.getItem('FlightSrdvType');
-    //     // const srdvIndex = localStorage.getItem('FlightSrdvIndex2');
-
-    //     // if (!traceId || !resultIndex) {
-    //     //     console.error('TraceId or ResultIndex not found in local storage');
-    //     //     return;
-    //     // }
-
-    //     const payload = {
-    //         SrdvIndex: "2",
-    //         ResultIndex: "4-6779374091_3DELBOMSG8269~11368130584707711" ,
-    //         TraceId: "157631" ,
-    //         SrdvType:  "MixAPI",
-    //     };
-
-    //     try {
-    //         const response = await fetch('https://sajyatra.sajpe.in/admin/api/seatmap', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify(payload)
-    //         });
-
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-
-    //         const seatData = await response.json();
-    //         console.log('Seat Map Respose:', seatData);
-
-    //         localStorage.setItem('FlightsitMap', JSON.stringify(seatData))
-
-    //     } catch (error) {
-    //         console.error('API call failed:', error);
-    //     }
-    // }
-
+  
     const reviewHandler = () => {
         // Ensure fareDataDetails is defined before navigating
         if (fareDataDetails) {
@@ -243,201 +112,6 @@ export default function FlightDetails() {
     }
 
 
-    // ----------------------------------------------seat and meal api------------------------------------
-
-
-    // ----------------------logic for total traveller forms---------------------------------------
-    //     const [activeTabFlightDetails, setActiveTabFlightDetails] = useState('flight');
-    //     const [showTabs, setShowTabs] = useState(false);
-    //     const [adultCount, setAdultCount] = useState(formData.AdultCount);
-    //     const [childCount, setChildCount] = useState(formData.ChildCount);
-    //     const [infantCount, setInfantCount] = useState(formData.InfantCount);
-    //     const [adultDetails, setAdultDetails] = useState(Array(adultCount).fill({ gender: '', firstName: '', lastName: '' }));
-    //     const [childDetails, setChildDetails] = useState(Array(childCount).fill({ gender: '', firstName: '', lastName: '' }));
-    //     const [infantDetails, setInfantDetails] = useState(Array(infantCount).fill({ gender: '', firstName: '', lastName: '' }));
-    //     const [confirmedAdultDetails, setConfirmedAdultDetails] = useState([]);
-    //     const [confirmedChildDetails, setConfirmedChildDetails] = useState([]);
-    //     const [confirmedInfantDetails, setConfirmedInfantDetails] = useState([]);
-    //  const [error, setError] = useState('');
-    //     const [isContinueDisabled, setIsContinueDisabled] = useState(true);
-    //     const checkButtonDisabled = () => {
-    //         const allAdultsConfirmed = confirmedAdultDetails.every(detail => detail.selected);
-    //         const allChildrenConfirmed = confirmedChildDetails.every(detail => detail.selected);
-    //         const allInfantsConfirmed = confirmedInfantDetails.every(detail => detail.selected);
-    //         setIsContinueDisabled((allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
-    //     };
-    //     const handleInputChange = (e, index, type, field) => {
-    //         const { value } = e.target;
-    //         let details;
-
-    //         if (type === 'adult') {
-    //             details = [...adultDetails];
-    //         } else if (type === 'child') {
-    //             details = [...childDetails];
-    //         } else if (type === 'infant') {
-    //             details = [...infantDetails];
-    //         }
-
-
-    //         details[index] = {
-    //             ...details[index],
-    //             [field]: value
-    //         };
-
-    //         if (type === 'adult') {
-    //             setAdultDetails(details);
-    //         } else if (type === 'child') {
-    //             setChildDetails(details);
-    //         } else if (type === 'infant') {
-    //             setInfantDetails(details);
-    //         }
-
-    //     };
-    //     const handleConfirm = (e, index, type) => {
-    //         e.preventDefault();
-    //         let details;
-
-    //         if (type === 'adult') {
-    //             details = [...adultDetails];
-    //         } else if (type === 'child') {
-    //             details = [...childDetails];
-    //         } else if (type === 'infant') {
-    //             details = [...infantDetails];
-    //         }
-
-    //         const { gender, firstName, lastName } = details[index];
-    //         if (gender && firstName && lastName) {
-    //             setError('');
-    //             const newDetail = { ...details[index], selected: false };
-    //             if (type === 'adult') {
-    //                 setConfirmedAdultDetails([...confirmedAdultDetails, newDetail]);
-    //             } else if (type === 'child') {
-    //                 setConfirmedChildDetails([...confirmedChildDetails, newDetail]);
-    //             } else if (type === 'infant') {
-    //                 setConfirmedInfantDetails([...confirmedInfantDetails, newDetail]);
-    //             }
-    //             checkButtonDisabled();
-    //         } else {
-    //             setError(`Please fill out all fields for ${type} ${index + 1}.`);
-    //         }
-
-    //         console.log("setConfirmedAdultDetails", setConfirmedAdultDetails);
-
-    //     };
-    //     const handleDelete = (type, index) => {
-    //         if (type === 'adult') {
-    //             setConfirmedAdultDetails(confirmedAdultDetails.filter((_, i) => i !== index));
-    //         } else if (type === 'child') {
-    //             setConfirmedChildDetails(confirmedChildDetails.filter((_, i) => i !== index));
-    //         } else if (type === 'infant') {
-    //             setConfirmedInfantDetails(confirmedInfantDetails.filter((_, i) => i !== index));
-    //         }
-    //         checkButtonDisabled();
-    //     };
-    //     const renderFormFields = (count, type) => {
-    //         const details = type === 'adult' ? adultDetails : type === 'child' ? childDetails : infantDetails;
-
-    //         return Array.from({ length: count }, (_, index) => (
-    //             <div key={`${type}-${index}`} className="row userFormFill">
-    //                 <div className="col-md-3 ">
-    //                     <label>Gender:</label>
-    //                     <div className="form-group genderFormGrp">
-    //                         <div className="form-check form-check-inline">
-    //                             <input
-    //                                 type="radio"
-    //                                 id={`${type}-male-${index}`}
-    //                                 name={`gender-${type}-${index}`}
-    //                                 value="male"
-    //                                 className="form-check-input"
-    //                                 onChange={(e) => handleInputChange(e, index, type, 'gender')}
-    //                                 required
-    //                             />
-    //                             <label className="form-check-label" htmlFor={`${type}-male-${index}`}>Male</label>
-    //                         </div>
-    //                         <div className="form-check form-check-inline">
-    //                             <input
-    //                                 type="radio"
-    //                                 id={`${type}-female-${index}`}
-    //                                 name={`gender-${type}-${index}`}
-    //                                 value="female"
-    //                                 className="form-check-input"
-    //                                 onChange={(e) => handleInputChange(e, index, type, 'gender')}
-    //                                 required
-    //                             />
-    //                             <label className="form-check-label" htmlFor={`${type}-female-${index}`}>Female</label>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //                 <div className="col-md-3 ">
-    //                     <div className="form-group">
-    //                         <label htmlFor={`firstName-${type}-${index}`}>First Name</label>
-    //                         <input
-    //                             type="text"
-    //                             id={`firstName-${type}-${index}`}
-    //                             className="form-control"
-    //                             onChange={(e) => handleInputChange(e, index, type, 'firstName')}
-    //                             value={details[index]?.firstName || ''}
-    //                             required
-    //                             placeholder="First & Middle Name"
-    //                         />
-    //                     </div>
-    //                 </div>
-    //                 <div className="col-md-3 ">
-    //                     <div className="form-group">
-    //                         <label htmlFor={`lastName-${type}-${index}`}>Last Name</label>
-    //                         <input
-    //                             type="text"
-    //                             id={`lastName-${type}-${index}`}
-    //                             className="form-control"
-    //                             onChange={(e) => handleInputChange(e, index, type, 'lastName')}
-    //                             value={details[index]?.lastName || ''}
-    //                             required
-    //                             placeholder="Last Name"
-    //                         />
-    //                     </div>
-    //                 </div>
-    //                 <div className="col-md-3 ">
-    //                     <div className="form-group formConfbtn">
-    //                         <button className="btn btn-primary mt-4" onClick={(e) => handleConfirm(e, index, type)}>
-    //                             Confirm
-    //                         </button>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         ));
-    //     };
-
-    //     const renderConfirmedDetails = (details, type) => (
-    //         <div className="row ">
-    //             <div className="mt-4 col-md-6 formdettlsDesk" style={{ display: details.length > 0 ? 'block' : 'none' }}>
-    //                 {details.map((detail, index) => (
-    //                     <div key={index} className="d-flex align-items-center mb-2">
-    //                         <div className="flex-grow-1 formdettlsDeskdiv ml-2">
-    //                             <input
-    //                                 type="checkbox"
-    //                                 className="form-check-input selectDetInp"
-    //                                 checked={detail.selected}
-    //                                 onChange={() => toggleSelect(index, type)}
-    //                             />
-    //                             <div className="formdettlsDeskdivnmGen">
-    //                                 <div>
-    //                                     <strong>Gender:</strong> <span>{detail.gender}</span>
-    //                                 </div>
-    //                                 <div>
-    //                                     <strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span>
-    //                                 </div>
-    //                             </div>
-    //                             <div>
-    //                                 <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete(type, index)} />
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 ))}
-    //             </div>
-
-    //         </div>
-
-    //     );
 
     const toggleSelect = (index, type) => {
         if (type === 'adult') {
@@ -1059,6 +733,11 @@ export default function FlightDetails() {
         return <Loading />;
     }
 
+
+    
+
+
+
     return (
         <>
             <CustomNavbar />
@@ -1188,8 +867,7 @@ export default function FlightDetails() {
                                             </div>
 
                                             <div className="col-12 lastBtnssContinue">
-                                                <h5>Fare Breakup <span>₹{totalFare.toFixed(2)}</span></h5>
-                                                <button
+                                            <h5>Fare Breakup <span>₹{totalPrice.toFixed(2)}</span></h5>                                                <button
                                                     onClick={handleButtonClick}
                                                     disabled={isContinueDisabled}
                                                     style={{
