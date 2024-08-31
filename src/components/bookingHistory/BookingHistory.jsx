@@ -161,7 +161,7 @@ function BookingHistory() {
 
                 const data = await response.json();
                 console.log('Bus booking history:', data);
-                localStorage.setItem('BusBookingAmount', data.booking_Status[0].amount);
+                // localStorage.setItem('BusBookingAmount', data.booking_Status[0].amount);
 
 
                 // Check for data in both keys
@@ -212,7 +212,7 @@ function BookingHistory() {
 
                 // Update to use the correct data structure
                 if (data && Array.isArray(data.flight_history) && data.flight_history.length > 0) {
-                    setFlightBookings(data.flight_history);
+                    setFlightBookings(data);
                 } else {
                     setFlightBookings([]);
                 }
@@ -263,7 +263,8 @@ function BookingHistory() {
                                     <div key={index} className="row busTabContentROW">
                                         <div className="col-md-6">
                                             <p><strong>Bus Booking ID : </strong> {booking.bus_booking_id}</p>
-                                            <p className=''><strong>Bus Trace ID : </strong> <span>{booking.bus_trace_id}</span></p>
+                                            <p className=''><strong>Bus Trace ID : </strong> <span>{booking.id
+                                            }</span></p>
                                         </div>
                                         <div className="col-md-6">
                                             <p className=''><strong>Transaction Number : </strong> <span>{booking.transaction_num}</span></p>
@@ -286,24 +287,19 @@ function BookingHistory() {
                     <div className='flightTabContent'>
                         <div className="container">
                             <h6 className='flightTabContentHeading'>Flight Ticket Status</h6>
-                            {loading ? (
-                                <p>Loading...</p>
-                            ) : error ? (
-                                <p>{error}</p>
-                            ) : flightBookings.length > 0 ? (
-                                flightBookings.map((booking, index) => (
+                            {flightBookings.flight_history.length > 0 ? (
+                                flightBookings.flight_history.map((booking, index) => (
                                     <div key={index} className="row flightTabContentROW">
                                         <div className="col-md-6">
-                                            <p><strong>PNR : </strong> <span>{booking.pnr}</span></p>
-                                            <p><strong>Origin : </strong> <span>{booking.origin}</span></p>
-                                            <p><strong>Destination : </strong> <span>{booking.destination}</span></p>
+                                            <p><strong>Name : </strong> <span>{booking.username || '/NA/'}</span></p>
+                                            <p><strong>PNR : </strong> <span>{booking.amount}</span></p>
+                                            <p><strong>Booking ID : </strong> <span>{booking.booking_id}</span></p>
                                         </div>
                                         <div className="col-md-6">
-                                            <p><strong>Booking ID : </strong> <span>{booking.booking_id}</span></p>
-                                            <p><strong>Airline_code : </strong> <span>{booking.airline_code}</span></p>
+                                            <p className=' '><strong>Transaction No : </strong> <span>{booking.transaction_num}</span></p>
+                                            <p className='bookingStats'><strong>Payment Status : </strong> <span>{booking.payment_status}</span></p>
+                                            <p className='hotlamount '><strong>Amount : </strong> <span>₹{Math.round(booking.amount)}</span></p>
 
-                                            <p className=' flightbookingstatus'><strong>Status : </strong> <span>{booking.status === "1" ? "Confirmed" : "Pending"}</span></p>
-                                            {/* <p><strong>Cancel Status : </strong> <span>{booking.cancel_status}</span></p> */}
                                         </div>
                                         <div className='viewbttn'>
                                             <button onClick={() => navigateFlightDetails(booking.transaction_num, booking.booking_id)}>View Ticket</button>

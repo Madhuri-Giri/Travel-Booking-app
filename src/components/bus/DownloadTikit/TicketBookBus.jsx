@@ -184,14 +184,14 @@ const TicketBookBus = () => {
                         <div className="row">
                         <div className='fromtoMOB'>
                             <div>
-                              <strong>Bhopal{from}</strong>
+                              <strong>{from}</strong>
                               <p>{formatTime(dd.departure_time)}</p>
                               </div>
                             <div>
                               <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
                             </div>
                             <div>
-                              <strong>{to}Indore</strong>
+                              <strong>{to}</strong>
                               <p>{formatTime(dd.city_point_time)}</p>
                               </div>
                           </div>
@@ -214,14 +214,14 @@ const TicketBookBus = () => {
                             </p>
                             <div className='fromtoWEB'>
                               <div>
-                                <strong>Bhopal{from}</strong>
+                                <strong>{from}</strong>
                                 <p>{formatTime(dd.departure_time)}</p>
                               </div>
                               <div>
                                 <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
                               </div>
                               <div>
-                                <strong>{to}Indore</strong>
+                                <strong>{to}</strong>
                                 <p>{formatTime(dd.city_point_time)}</p>
                               </div>
                             </div>
