@@ -39,28 +39,49 @@ export default function FlightLists() {
     const navigate = useNavigate();
 
     // for timerss----------------------------------
-    const [timer, setTimer] = useState(600000);
+    const [timer, setTimer] = useState(600000); 
 
-    useEffect(() => {
-        const countdown = setInterval(() => {
-            setTimer((prev) => prev - 50);
-        }, 50);
+  useEffect(() => {
+    const endTime = localStorage.getItem('F-timerEndTime');
+    const now = Date.now();
+    
+    let remainingTime = endTime ? endTime - now : 600000;
 
-        if (timer <= 0) {
-            clearInterval(countdown);
-            alert("Your Session is Expired")
-            navigate('/flight-search');
+    if (remainingTime <= 0) {
+      navigate('/flight-search');
+      return;
+    }
+
+    setTimer(remainingTime);
+
+    const countdown = setInterval(() => {
+      setTimer((prev) => {
+        const updatedTime = prev - 1000;
+        
+        localStorage.setItem('F-timerEndTime', Date.now() + updatedTime);
+        
+        if (updatedTime <= 0) {
+          clearInterval(countdown);
+          localStorage.removeItem('F-timerEndTime');
+          navigate('/bus-search');
+          return 0;
         }
+        
+        return updatedTime;
+      });
+    }, 1000); 
 
-        return () => clearInterval(countdown);
-    }, [timer, navigate]);
+    return () => clearInterval(countdown);
+  }, [navigate]);
 
-    const formatTimers = (milliseconds) => {
-        const totalSeconds = Math.floor(milliseconds / 1000);
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        return `${minutes} min ${seconds} sec left`;
-    };
+  const formatTimers = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes} min ${seconds} sec left`;
+  };
+
+
     // for timerss----------------------------------
 
     const [callenderListdata, setcallenderListdata] = useState(null);
