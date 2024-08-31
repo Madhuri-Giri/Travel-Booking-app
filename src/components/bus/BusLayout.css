@@ -94,7 +94,7 @@
 }
 
 .BusLayout .Seat-layout .seats .left-btm .lower {
-  width: 50%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,7 +128,7 @@
 }
 
 .BusLayout .Seat-layout .seats .left-btm .upper {
-  width: 50%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,6 +154,7 @@
   border-radius: 10px;
   justify-content: center;
   /* border: 1px solid #9999; */
+  /* background: #000; */
   box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.582);
   flex-wrap: wrap;
   /* gap: 0.5vmax; */
