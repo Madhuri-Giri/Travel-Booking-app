@@ -136,23 +136,26 @@ const FlightReview = () => {
 
           try {
             await flightpayUpdate();
-
-            const IsLCC = localStorage.getItem('IsLCC') === 'true'; 
-          setPayLoading(false);
-
-            if (IsLCC) {
-
-              await bookLccApi();
-              await flightPaymentStatus()
+        
+            const IsLCC = localStorage.getItem('F-IsLCC') === 'true'; 
+            setPayLoading(false);
+        
+            if (IsLCC === true) {
+                await bookLccApi();
+                await flightPaymentStatus();
+            } else if (IsLCC === false) {
+                await bookHoldApi();
             } else {
-              await bookHoldApi();
+                console.error('IsLCC value is not set correctly in localStorage');
             }
+        
             await sendTicketGDSRequest();
-
-          } catch (error) {
+        
+        } catch (error) {
             console.error('Error during updateHandlePayment or bookHandler:', error.message);
             alert('An error occurred during processing. Please try again.');
-          }
+        }
+        
         },
         prefill: {
           username: 'tanisha',
@@ -242,14 +245,30 @@ const FlightReview = () => {
   const OtherCharges = localStorage.getItem('OtherCharges');
   const TransactionFee = localStorage.getItem('TransactionFee');
   const Currency = localStorage.getItem('Currency');
-
-
+  
   const baseFare = localStorage.getItem('BaseFare');
   const tax = localStorage.getItem('Tax');
   const yqTax = localStorage.getItem('YQTax');
   const passengerDetails = JSON.parse(localStorage.getItem('adultPassengerDetails'));
   const title = passengerDetails[0].gender;
   
+  console.log({
+    AdditionalTxnFeeOfrd,
+    AdditionalTxnFeePub,
+    AirTransFee,
+    OtherCharges,
+    TransactionFee,
+    Currency,
+    baseFare,
+    tax,
+    yqTax,
+    passengerDetails,
+    title,
+    FtraceId,
+    FresultIndex,
+    FsrdvType,
+    FsrdvIndex
+  });
 
   
  
@@ -432,6 +451,8 @@ const FlightReview = () => {
         console.error('Failed to fetch payment status. Status:', response.status, 'Response:', responseBody);
         throw new Error(`Failed to fetch payment status. Status: ${response.status}`);
       }
+
+      localStorage.setItem('flight-status', JSON.stringify(responseBody));
   
       navigate('/booking-history'); 
       return responseBody;
