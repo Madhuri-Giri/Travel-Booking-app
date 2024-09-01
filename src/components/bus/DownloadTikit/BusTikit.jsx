@@ -226,11 +226,9 @@ const BusTikit = () => {
               </div>
             );
           })}
-
         </div>
-
       </div>
-        <Footer />
+      <Footer />
     </>
   );
 };
