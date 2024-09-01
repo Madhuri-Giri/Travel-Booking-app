@@ -8,7 +8,7 @@ import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import { MdOutlineFlightTakeoff } from "react-icons/md";
 import { FaTrash } from 'react-icons/fa';
 import { Link } from "react-router-dom";
-import { RiTimerLine } from "react-icons/ri";
+// import { RiTimerLine } from "react-icons/ri";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
@@ -704,41 +704,38 @@ export default function FlightDetails() {
 
 
     // for timerss----------------------------------
-    const [timer, setTimer] = useState(0);
-
-  useEffect(() => {
-    const updateTimer = () => {
-      // Retrieve end time from localStorage
-      const endTime = localStorage.getItem('F-timerEndTime');
-      const now = Date.now();
+//     const [timer, setTimer] = useState(0);
+//   useEffect(() => {
+//     const updateTimer = () => {
+//       const endTime = localStorage.getItem('F-timerEndTime');
+//       const now = Date.now();
       
-      if (endTime) {
-        const remainingTime = endTime - now;
+//       if (endTime) {
+//         const remainingTime = endTime - now;
         
-        if (remainingTime <= 0) {
-          localStorage.removeItem('F-timerEndTime');
-          navigate('/flight-search');
-        } else {
-          setTimer(remainingTime);
-        }
-      } else {
-        navigate('/flight-search');
-      }
-    };
+//         if (remainingTime <= 0) {
+//           localStorage.removeItem('F-timerEndTime');
+//           navigate('/flight-search');
+//         } else {
+//           setTimer(remainingTime);
+//         }
+//       } else {
+//         navigate('/flight-search');
+//       }
+//     };
 
-    updateTimer();
+//     updateTimer();
 
-    const interval = setInterval(updateTimer, 1000); 
+//     const interval = setInterval(updateTimer, 1000); 
 
-    return () => clearInterval(interval);
-  }, [navigate]);
-
-  const formatTimers = (milliseconds) => {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes} min ${seconds} sec left`;
-  };
+//     return () => clearInterval(interval);
+//   }, [navigate]);
+//   const formatTimers = (milliseconds) => {
+//     const totalSeconds = Math.floor(milliseconds / 1000);
+//     const minutes = Math.floor(totalSeconds / 60);
+//     const seconds = totalSeconds % 60;
+//     return `${minutes} min ${seconds} sec left`;
+//   };
 
     // for timerss----------------------------------
 
@@ -746,18 +743,13 @@ export default function FlightDetails() {
         return <Loading />;
     }
 
-
-    
-
-
-
     return (
         <>
             <CustomNavbar />
             {/* timerrr-------------------  */}
-            <div className="timer-FlightLists">
+            {/* <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
-            </div>
+            </div> */}
             {/* timerrr-------------------  */}
 
             <section className='flightlistsec1'>
