@@ -11,8 +11,9 @@ import { PiTrolleySuitcaseFill } from "react-icons/pi";
 import { useLocation, useNavigate } from 'react-router-dom';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
-import Payloader from '../../pages/loading/Payloader';
+// import Payloader from '../../pages/loading/Payloader';
 import { RiTimerLine } from "react-icons/ri";
+import PayloaderHotel from "../../pages/loading/PayloaderHotel";
 
 
 
@@ -558,7 +559,7 @@ const bookHoldApi = async () => {
   // -------------------------------------------------------------------------------------------
 
   if (payLoading) {
-    return <hotel-payload/>;
+    return <PayloaderHotel/>;
   }
 
 
