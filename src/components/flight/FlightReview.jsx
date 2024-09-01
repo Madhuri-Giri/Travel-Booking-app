@@ -556,14 +556,15 @@ const bookHoldApi = async () => {
   if (payLoading) {
     return <PayloaderHotel/>;
   }
+
+
   return (
     <>
       <CustomNavbar />
-
-      <div className="timer-FlightLists">
-
-
       {/* <div className="timer-FlightLists">
+
+
+
 
 
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
