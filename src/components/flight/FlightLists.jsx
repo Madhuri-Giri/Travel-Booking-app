@@ -10,7 +10,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { FaFilter } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
-import { RiTimerLine } from "react-icons/ri";
+// import { RiTimerLine } from "react-icons/ri";
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
 import Footer from "../../pages/footer/Footer";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
@@ -39,49 +39,39 @@ export default function FlightLists() {
     const navigate = useNavigate();
 
     // for timerss----------------------------------
-    const [timer, setTimer] = useState(600000); 
+    // const [timer, setTimer] = useState(600000);
+    // useEffect(() => {
+    //     const endTime = localStorage.getItem('F-timerEndTime');
+    //     const now = Date.now();
+    //     let remainingTime = endTime ? endTime - now : 600000;
+    //     if (remainingTime <= 0) {
+    //         navigate('/flight-search');
+    //         return;
+    //     }
+    //     setTimer(remainingTime);
+    //     const countdown = setInterval(() => {
+    //         setTimer((prev) => {
+    //             const updatedTime = prev - 1000;
+    //             localStorage.setItem('F-timerEndTime', Date.now() + updatedTime);
+    //             if (updatedTime <= 0) {
+    //                 clearInterval(countdown);
+    //                 localStorage.removeItem('F-timerEndTime');
+    //                 navigate('/bus-search');
+    //                 return 0;
+    //             }
 
-  useEffect(() => {
-    const endTime = localStorage.getItem('F-timerEndTime');
-    const now = Date.now();
-    
-    let remainingTime = endTime ? endTime - now : 600000;
+    //             return updatedTime;
+    //         });
+    //     }, 1000);
 
-    if (remainingTime <= 0) {
-      navigate('/flight-search');
-      return;
-    }
-
-    setTimer(remainingTime);
-
-    const countdown = setInterval(() => {
-      setTimer((prev) => {
-        const updatedTime = prev - 1000;
-        
-        localStorage.setItem('F-timerEndTime', Date.now() + updatedTime);
-        
-        if (updatedTime <= 0) {
-          clearInterval(countdown);
-          localStorage.removeItem('F-timerEndTime');
-          navigate('/bus-search');
-          return 0;
-        }
-        
-        return updatedTime;
-      });
-    }, 1000); 
-
-    return () => clearInterval(countdown);
-  }, [navigate]);
-
-  const formatTimers = (milliseconds) => {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes} min ${seconds} sec left`;
-  };
-
-
+    //     return () => clearInterval(countdown);
+    // }, [navigate]);
+    // const formatTimers = (milliseconds) => {
+    //     const totalSeconds = Math.floor(milliseconds / 1000);
+    //     const minutes = Math.floor(totalSeconds / 60);
+    //     const seconds = totalSeconds % 60;
+    //     return `${minutes} min ${seconds} sec left`;
+    // };
     // for timerss----------------------------------
 
     const [callenderListdata, setcallenderListdata] = useState(null);
@@ -324,25 +314,25 @@ export default function FlightLists() {
     // ------------------------------------------------fare-Quote-api-----------------------------------------
     const fareQuoteHandler = async () => {
         setLoading(true);
-    
+
         const FtraceId = localStorage.getItem('F-TraceId');
         const FresultIndex = localStorage.getItem('F-ResultIndex');
         const FsrdvType = localStorage.getItem('F-SrdvType');
         const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
-    
+
         if (!FtraceId || !FresultIndex || !FsrdvType || !FsrdvIndex) {
             console.error('TraceId, ResultIndex, SrdvType, or SrdvIndex not found in local storage');
             setLoading(false);
             return;
         }
-    
+
         const payload = {
             SrdvIndex: FsrdvIndex,
             ResultIndex: FresultIndex,
             TraceId: parseInt(FtraceId),
             SrdvType: FsrdvType,
         };
-    
+
         try {
             const response = await fetch('https://sajyatra.sajpe.in/admin/api/farequote', {
                 method: 'POST',
@@ -351,16 +341,16 @@ export default function FlightLists() {
                 },
                 body: JSON.stringify(payload),
             });
-    
+
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
-    
+
             const data = await response.json();
             console.log('FareQuote API Response:', data);
-    
+
             const fare = data.Results?.Fare || {};
-    
+
             // Save all fare details in local storage
             localStorage.setItem('BaseFare', fare.BaseFare);
             localStorage.setItem('YQTax', fare.YQTax);
@@ -373,7 +363,7 @@ export default function FlightLists() {
             localStorage.setItem('Currency', fare.Currency);
 
 
-    
+
             if (data.Results && formData) {
                 setLoading(false);
                 setTimeout(() => {
@@ -388,7 +378,7 @@ export default function FlightLists() {
             setLoading(false);
         }
     };
-    
+
     // -------------------------------------------------fare-Quote-api----------------------------------------
 
     // -------------------------------------user detailsss------------------------------------
@@ -427,16 +417,16 @@ export default function FlightLists() {
     const handleSelectSeat = async (flight) => {
         const loginId = localStorage.getItem('loginId');
         console.log('Current loginId:', loginId);
-    
+
         // Extract price from the flight data
         const baseFare = flight?.OfferedFare;
-    
+
         // Save the base fare to local storage
         if (baseFare !== undefined) {
             localStorage.setItem('selectedFlightBaseFare', baseFare);
             console.log('Saved base fare to local storage:', baseFare);
         }
-    
+
         await useridHandler();
         if (!loginId) {
             console.log('No loginId found, showing OTP overlay');
@@ -445,7 +435,7 @@ export default function FlightLists() {
         }
         await fareQuoteHandler();
     };
-    
+
 
 
     // -------------------------------------user detailsss------------------------------------
@@ -481,9 +471,9 @@ export default function FlightLists() {
         <>
             <CustomNavbar />
             {/* timerrr-------------------  */}
-            <div className="timer-FlightLists">
+            {/* <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
-            </div>
+            </div> */}
             {/* timerrr-------------------  */}
 
             <section className='flightlistsec1'>
@@ -669,66 +659,66 @@ export default function FlightLists() {
                         </div>
 
                         <div className="f-lists">
-    <div className="flight-content">
-        {dd && dd.length > 0 ? (
-            dd.map((flightSegments, index) => {
-                // Sort the flight segments based on the selected sort order
-                const sortedFlights = sortFlights([...flightSegments]);
-                return sortedFlights.map((flight, segmentIndex) => {
-                    return flight?.Segments?.[0].map((option, index) => {
-                        return (
-                            <>
-                                {(selected.includes(option.Airline.AirlineName) ||
-                                    selected.length === 0) && (
-                                    <div className="row" key={`${index}-${segmentIndex}`}>
-                                        <div className="pricebtnsmobil">
-                                            <p>₹{flight?.OfferedFare || "Unknown Airline"}</p>
-                                            <button onClick={() => handleSelectSeat(flight)}>SELECT</button>
-                                        </div>
-                                        <p className='regulrdeal'><span>Regular Deal</span></p>
-                                        <p className="f-listAirlinesNameMOB">{option.Airline.AirlineName}</p><br></br>
+                            <div className="flight-content">
+                                {dd && dd.length > 0 ? (
+                                    dd.map((flightSegments, index) => {
+                                        // Sort the flight segments based on the selected sort order
+                                        const sortedFlights = sortFlights([...flightSegments]);
+                                        return sortedFlights.map((flight, segmentIndex) => {
+                                            return flight?.Segments?.[0].map((option, index) => {
+                                                return (
+                                                    <>
+                                                        {(selected.includes(option.Airline.AirlineName) ||
+                                                            selected.length === 0) && (
+                                                                <div className="row" key={`${index}-${segmentIndex}`}>
+                                                                    <div className="pricebtnsmobil">
+                                                                        <p>₹{flight?.OfferedFare || "Unknown Airline"}</p>
+                                                                        <button onClick={() => handleSelectSeat(flight)}>SELECT</button>
+                                                                    </div>
+                                                                    <p className='regulrdeal'><span>Regular Deal</span></p>
+                                                                    <p className="f-listAirlinesNameMOB">{option.Airline.AirlineName}</p><br></br>
 
-                                        <div className="col-2 col-sm-3 f-listCol1">
-                                            <div className="f-listAirlines">
-                                                <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
-                                                <p className="f-listAirlinesNameWEb">{option.Airline.AirlineName}</p><br></br>
-                                            </div>
-                                        </div>
+                                                                    <div className="col-2 col-sm-3 f-listCol1">
+                                                                        <div className="f-listAirlines">
+                                                                            <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
+                                                                            <p className="f-listAirlinesNameWEb">{option.Airline.AirlineName}</p><br></br>
+                                                                        </div>
+                                                                    </div>
 
-                                        <div className="col-sm-6 col-10 f-listCol2">
-                                            <div className="flistname">
-                                                <p className="flistnamep1">{option.Origin.CityCode}</p>
-                                                <div>
-                                                    <p className="flistnamep2">{convertUTCToIST(option.DepTime)}</p>
-                                                    <p className="flistnamep4">{option.Origin.CityName}</p>
-                                                </div>
-                                                <p className="flistnamep3">{convertMinutesToHoursAndMinutes(option.Duration)}</p>
-                                                <div>
-                                                    <p className="flistnamep2">{convertUTCToIST(option.ArrTime)}</p>
-                                                    <p className="flistnamep4">{option.Destination.CityName}</p>
-                                                </div>
-                                                <p className="flistnamep5">{option.Destination.CityCode}</p>
-                                            </div>
-                                        </div>
+                                                                    <div className="col-sm-6 col-10 f-listCol2">
+                                                                        <div className="flistname">
+                                                                            <p className="flistnamep1">{option.Origin.CityCode}</p>
+                                                                            <div>
+                                                                                <p className="flistnamep2">{convertUTCToIST(option.DepTime)}</p>
+                                                                                <p className="flistnamep4">{option.Origin.CityName}</p>
+                                                                            </div>
+                                                                            <p className="flistnamep3">{convertMinutesToHoursAndMinutes(option.Duration)}</p>
+                                                                            <div>
+                                                                                <p className="flistnamep2">{convertUTCToIST(option.ArrTime)}</p>
+                                                                                <p className="flistnamep4">{option.Destination.CityName}</p>
+                                                                            </div>
+                                                                            <p className="flistnamep5">{option.Destination.CityCode}</p>
+                                                                        </div>
+                                                                    </div>
 
-                                        <div className="col-md-3 pricebtns f-listCol3">
-                                            <div><p>₹{flight?.OfferedFare}</p></div>
-                                            <div> 
-                                                <button onClick={() => handleSelectSeat(flight)}>SELECT</button>     
-                                            </div>
-                                        </div>
-                                    </div>
+                                                                    <div className="col-md-3 pricebtns f-listCol3">
+                                                                        <div><p>₹{flight?.OfferedFare}</p></div>
+                                                                        <div>
+                                                                            <button onClick={() => handleSelectSeat(flight)}>SELECT</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                    </>
+                                                );
+                                            });
+                                        });
+                                    })
+                                ) : (
+                                    <p>No flights available.</p>
                                 )}
-                            </>
-                        );
-                    });
-                });
-            })
-        ) : (
-            <p>No flights available.</p>
-        )}
-    </div>
-</div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
