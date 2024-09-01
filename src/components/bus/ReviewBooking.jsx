@@ -529,7 +529,6 @@ const ReviewBooking = () => {
     return <PayloaderHotel/>;
   }
 
-
   if (loading) {
     return <Loading />;
   }

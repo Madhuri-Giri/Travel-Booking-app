@@ -509,7 +509,7 @@ const bookHoldApi = async () => {
 
       localStorage.setItem('flight-status', JSON.stringify(responseBody));
   
-      navigate('/booking-history'); 
+      navigate('/flightNewTicket'); 
       return responseBody;
   
     } catch (error) {
@@ -556,13 +556,15 @@ const bookHoldApi = async () => {
   if (payLoading) {
     return <PayloaderHotel/>;
   }
-
-
   return (
     <>
       <CustomNavbar />
 
+      <div className="timer-FlightLists">
+
+
       {/* <div className="timer-FlightLists">
+
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
             </div> */}
       <div className="container-fluid review-cont">

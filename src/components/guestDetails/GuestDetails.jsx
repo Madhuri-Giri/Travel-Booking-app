@@ -13,7 +13,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import parse from 'html-react-parser';
-import Payloader from '../../pages/loading/Payloader';
+import Loading from '../../pages/loading/Loading';
+import PayloaderHotel from '../../pages/loading/PayloaderHotel';
 
 const GuestDetails = () => {
  
@@ -49,6 +50,7 @@ const GuestDetails = () => {
   const discount = parseFloat(localStorage.getItem('hotel-discount')) || 0;
 
   const [payLoading, setPayLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
 
  
   const [timer, setTimer] = useState(0);
@@ -342,20 +344,20 @@ const GuestDetails = () => {
       const status = data.data.status;
       console.log('statusHotel', status);
 
-      switch (status) {
-        case 'pending':
-          toast.info('Payment is pending. Please wait.');
-          break;
-        case 'failed':
-          toast.error('Payment failed. Redirecting to hotel search page.');
-          navigate('/hotel-search');
-          break;
-        case 'success':
-          toast.success('Payment updated successfully. please wait your hotel booking is processing.');
-          break;
-        default:
-          toast.warn('Unknown payment status. Please contact support.');
-      }
+      // switch (status) {
+      //   case 'pending':
+      //     toast.info('Payment is pending. Please wait.');
+      //     break;
+      //   case 'failed':
+      //     toast.error('Payment failed. Redirecting to hotel search page.');
+      //     navigate('/hotel-search');
+      //     break;
+      //   case 'success':
+      //     toast.success('Payment updated successfully. please wait your hotel booking is processing.');
+      //     break;
+      //   default:
+      //     toast.warn('Unknown payment status. Please contact support.');
+      // }
 
     } catch (error) {
       console.error('Error updating payment details:', error.message);
@@ -594,10 +596,14 @@ const GuestDetails = () => {
     });
     return cleanedDescription;
   };
-
-if (payLoading) {
-    return <hotel-payload/>;
+  if (payLoading) {
+    return <PayloaderHotel/>;
   }
+
+  if (loading) {
+    return <Loading />;
+  }
+
 
   return (
     <>
@@ -801,27 +807,28 @@ if (payLoading) {
                 />
               </div>
 
-              <div className="mb-3">
-                <DatePicker
-                  selected={formData.passportIssueDate}
-                  onChange={(date) => handleDateChange(index, date, 'passportIssueDate')}
-                  placeholderText="Passport Issue Date"
-                  className="form-control full-width"
-                  minDate={null}
-                />
-                <label className="custom-placeholder">Passport Issue Date</label>
-              </div>
+              <div className="mb-3 date-picker-container">
+  <DatePicker
+    selected={formData.passportIssueDate}
+    onChange={(date) => handleDateChange(index, date, 'passportIssueDate')}
+    placeholderText="Passport Issue Date"
+    className="form-control full-width"
+    minDate={null}
+  />
+  {/* <label className="custom-placeholder">Passport Issue Date</label> */}
+</div>
 
-              <div className="mb-3">
-                <DatePicker
-                  selected={formData.passportExpDate}
-                  onChange={(date) => handleDateChange(index, date, 'passportExpDate')}
-                  placeholderText="Passport Expiry Date"
-                  className="form-control full-width"
-                  minDate={null}
-                />
-                <label className="custom-placeholder">Passport Expiry Date</label>
-              </div>
+<div className="mb-3 date-picker-container">
+  <DatePicker
+    selected={formData.passportExpDate}
+    onChange={(date) => handleDateChange(index, date, 'passportExpDate')}
+    placeholderText="Passport Expiry Date"
+    className="form-control full-width"
+    minDate={null}
+  />
+  {/* <label className="custom-placeholder">Passport Expiry Date</label> */}
+</div>
+
 
               <div className="mb-3">
                 <input
