@@ -25,47 +25,47 @@ const BusLists = () => {
   // ------------------------------------------------------------------------------------------------ -------
 
 
-  const [timer, setTimer] = useState(600000); 
+  // const [timer, setTimer] = useState(600000); 
 
-  useEffect(() => {
-    const endTime = localStorage.getItem('timerEndTime');
-    const now = Date.now();
+  // useEffect(() => {
+  //   const endTime = localStorage.getItem('timerEndTime');
+  //   const now = Date.now();
     
-    let remainingTime = endTime ? endTime - now : 600000;
+  //   let remainingTime = endTime ? endTime - now : 600000;
 
-    if (remainingTime <= 0) {
-      navigate('/bus-search');
-      return;
-    }
+  //   if (remainingTime <= 0) {
+  //     navigate('/bus-search');
+  //     return;
+  //   }
 
-    setTimer(remainingTime);
+  //   setTimer(remainingTime);
 
-    const countdown = setInterval(() => {
-      setTimer((prev) => {
-        const updatedTime = prev - 1000;
+  //   const countdown = setInterval(() => {
+  //     setTimer((prev) => {
+  //       const updatedTime = prev - 1000;
         
-        localStorage.setItem('timerEndTime', Date.now() + updatedTime);
+  //       localStorage.setItem('timerEndTime', Date.now() + updatedTime);
         
-        if (updatedTime <= 0) {
-          clearInterval(countdown);
-          localStorage.removeItem('timerEndTime');
-          navigate('/bus-search');
-          return 0;
-        }
+  //       if (updatedTime <= 0) {
+  //         clearInterval(countdown);
+  //         localStorage.removeItem('timerEndTime');
+  //         navigate('/bus-search');
+  //         return 0;
+  //       }
         
-        return updatedTime;
-      });
-    }, 1000); 
+  //       return updatedTime;
+  //     });
+  //   }, 1000); 
 
-    return () => clearInterval(countdown);
-  }, [navigate]);
+  //   return () => clearInterval(countdown);
+  // }, [navigate]);
 
-  const formatTime = (milliseconds) => {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes} min ${seconds} sec left`;
-  };
+  // const formatTime = (milliseconds) => {
+  //   const totalSeconds = Math.floor(milliseconds / 1000);
+  //   const minutes = Math.floor(totalSeconds / 60);
+  //   const seconds = totalSeconds % 60;
+  //   return `${minutes} min ${seconds} sec left`;
+  // };
 
 
 
@@ -275,7 +275,7 @@ const toggleDropVisibility = () => {
   <div className='BusLists'>
     <div className="busList">
       <div className="timer-bus">
-        <p>Redirecting in {formatTime(timer)}...</p>
+        {/* <p>Redirecting in {formatTime(timer)}...</p> */}
       </div>
       <div className="B-lists-Top">
         <div className="text">
