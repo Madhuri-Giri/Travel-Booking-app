@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { toast, ToastContainer } from 'react-toastify';
@@ -9,17 +9,16 @@ import Footer from '../../pages/footer/Footer';
 import { useNavigate } from 'react-router-dom';
 import '../hotelBill/HotelTicket.css';
 import hotelImg from '../../../src/assets/images/hotel-ticket-img.png';
+import html2canvas from 'html2canvas';
 
 const BookingBill = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [storedGuestDetails, setStoredGuestDetails] = useState([]);
   const [storedHotelRoom, setStoredHotelRoom] = useState([]);
-  const [finalPriceSingleDeluxe, setFinalPriceSingleDeluxe] = useState(0);
-  const [finalPriceDoubleDeluxe, setFinalPriceDoubleDeluxe] = useState(0);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const ticketElementRef = useRef(null); 
 
-  
   useEffect(() => {
     const fetchBookingDetails = async () => {
       try {
@@ -28,14 +27,10 @@ const BookingBill = () => {
           throw new Error('Transaction ID not found in local storage');
         }
 
-        const requestData = { transaction_id };
-
         const response = await fetch('https://sajyatra.sajpe.in/admin/api/payment-detail', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestData),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transaction_id }),
         });
 
         if (response.status === 404) {
@@ -51,14 +46,12 @@ const BookingBill = () => {
 
         const storedGuestDetailsData = localStorage.getItem('guestDetails');
         if (storedGuestDetailsData) {
-          const parsedGuestDetails = JSON.parse(storedGuestDetailsData);
-          setStoredGuestDetails(parsedGuestDetails);
+          setStoredGuestDetails(JSON.parse(storedGuestDetailsData));
         }
 
         const storedSelectedRoomData = localStorage.getItem('selectedRoomsData');
         if (storedSelectedRoomData) {
-          const parsedSelectedRoom = JSON.parse(storedSelectedRoomData);
-          setStoredHotelRoom(parsedSelectedRoom);
+          setStoredHotelRoom(JSON.parse(storedSelectedRoomData));
         }
         
       } catch (error) {
@@ -71,43 +64,32 @@ const BookingBill = () => {
   }, []);
 
   const handleDownloadPDF = () => {
-    if (!bookingDetails) {
-      toast.error('No booking details available for download.');
+    if (!ticketElementRef.current) {
+      toast.error('No content available for download.');
       return;
     }
 
-    const doc = new jsPDF();
-    const { hotel_passengers, booking } = bookingDetails;
-
-    if (hotel_passengers?.length > 0) {
-      const hotelInfo = hotel_passengers[0];
-      doc.setFontSize(18);
-      doc.text('Booking Bill', 14, 22);
-      doc.setFontSize(12);
-      doc.text(`Hotel Name: ${hotelInfo.hotelname}`, 14, 40);
-      doc.text(`Room Quantity: ${hotelInfo.noofrooms}`, 14, 50);
-      doc.text(`Price: ${hotelInfo.roomprice}`, 14, 60);
-      doc.text(`Room Type: ${hotelInfo.room_type_name}`, 14, 70);
-      doc.text(`Check-In Date: ${hotelInfo.check_in_date}`, 14, 80);
-      doc.text(`Check-Out Date: ${hotelInfo.check_out_date || 'N/A'}`, 14, 90);
+    const buttonContainer = document.querySelector('.button-container');
+    if (buttonContainer) {
+      buttonContainer.style.display = 'none';
     }
 
-    if (booking?.length > 0) {
-      const bookingInfo = booking[0];
-      doc.text(`Booking ID: ${bookingInfo.booking_id}`, 14, 120);
-      doc.text(`Hotel Name: ${bookingInfo.hotel_name}`, 14, 130);
-      doc.text(`Transaction Number: ${bookingInfo.transaction_num}`, 14, 140);
-      doc.text(`Amount: ${bookingInfo.amount}`, 14, 150);
-    }
+    html2canvas(ticketElementRef.current, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    if (storedGuestDetails.length > 0) {
-      const guestInfo = storedGuestDetails[0];
-      doc.text(`User Name: ${guestInfo.fname} ${guestInfo.lname}`, 14, 160);
-      doc.text(`Email: ${guestInfo.email}`, 14, 170);
-      doc.text(`Mobile: ${guestInfo.mobile}`, 14, 180);
-    }
-
-    doc.save('booking-bill.pdf');
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('hotel_booking_details.pdf');
+    }).catch((error) => {
+      console.error('Error generating PDF:', error);
+      toast.error('Error generating PDF.');
+    }).finally(() => {
+      if (buttonContainer) {
+        buttonContainer.style.display = '';
+      }
+    });
   };
 
   const bookingCancel = async (event) => {
@@ -117,21 +99,19 @@ const BookingBill = () => {
     const transactionNum = localStorage.getItem('transactionNum');
      
     if (!hotelBookingId) {
-        console.error('No hotel booking ID available');
-        setError('No hotel booking ID available');
-        toast.error('No hotel booking ID available');
-        return;
+      setError('No hotel booking ID available');
+      toast.error('No hotel booking ID available');
+      return;
     }
 
     if (!transactionNum) {
-        console.error('No transaction number available');
-        setError('No transaction number available');
-        toast.error('No transaction number available');
-        return;
+      setError('No transaction number available');
+      toast.error('No transaction number available');
+      return;
     }
 
     const requestData = {
-      BookingId: hotelBookingId, 
+      BookingId: hotelBookingId,
       RequestType: 4,
       BookingMode: 5,
       SrdvType: "SingleTB",
@@ -139,16 +119,14 @@ const BookingBill = () => {
       Remarks: "Test",
       transaction_num: transactionNum,
       date: new Date().toISOString(),
-      hotel_booking_id: hotelBookingId, 
+      hotel_booking_id: hotelBookingId,
       trace_id: "1",
     };
 
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-cancel', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestData),
       });
   
@@ -158,29 +136,25 @@ const BookingBill = () => {
       }
   
       const res = await response.json();
-      console.log('hotel-cancel API Response:', res);
-  
       if (res.data) {
         localStorage.setItem('hotelTicket', JSON.stringify(res.data));
         setBookingDetails(res.data);
         toast.success('Booking cancelled successfully');
       } else {
-        console.error('No data found in the API response:', res);
-        setError('No data found in the API response');
-        toast.error('No data found in the API response');
+        throw new Error('No data found in the API response');
       }
   
     } catch (error) {
-        console.error('Error:', error);
-        setError('Error occurred during cancellation');
-        toast.error('Error occurred during cancellation');
+      console.error('Error:', error);
+      setError('Error occurred during cancellation');
+      toast.error('Error occurred during cancellation');
     }
-};
+  };
 
   return (
     <>
       <CustomNavbar />
-      <div className="booking-bill-hotel">
+      <div className="booking-bill-hotel" ref={ticketElementRef}>
         <div className="col-lg-9 hotel_img">
           <div className='hotelticktbox'>
             <div className="header_hotel">
@@ -204,17 +178,16 @@ const BookingBill = () => {
                     ))}
 
                     {storedHotelRoom.length > 0 && (
-            <div>
-              {storedHotelRoom.map((item, index) => (
-                <div key={index}>
-                  <p><span>Room Price:</span> ₹{item.roomprice}</p>
-                  <p><span>GST:</span> {item.tax}</p>
-                  <p><span>Discount:</span> {item.discount}</p>
-                  <p><span>Total Price:</span> ₹{item.publishedprice}</p>
-                </div>
-              ))}
-             
-            </div>
+                      <div>
+                        {storedHotelRoom.map((item, index) => (
+                          <div key={index}>
+                            <p><span>Room Price:</span> ₹{item.roomprice}</p>
+                            <p><span>GST:</span> {item.tax}</p>
+                            <p><span>Discount:</span> {item.discount}</p>
+                            <p><span>Total Price:</span> ₹{item.publishedprice}</p>
+                          </div>
+                        ))}
+                      </div>
                     )}
                   </div>
                 ) : (
@@ -224,7 +197,7 @@ const BookingBill = () => {
 
               <div className="details-section-guest">
                 <h3>Guest Details</h3>
-                {storedGuestDetails?.length > 0 ? (
+                {storedGuestDetails.length > 0 ? (
                   <div className="detail-guest">
                     {storedGuestDetails.map((item, index) => (
                       <div key={index}>
@@ -235,7 +208,6 @@ const BookingBill = () => {
                         <p><span>Age:</span> {item.age}</p>
                         <p><span>Passport Number:</span> {item.passportNo}</p>
                         <p><span>PaxType:</span> {item.paxType}</p>
-                        {/* <p><span>Govt. Id:</span> {item.number}</p> */}
                       </div>
                     ))}
                   </div>
