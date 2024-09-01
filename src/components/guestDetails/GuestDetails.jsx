@@ -801,27 +801,28 @@ if (payLoading) {
                 />
               </div>
 
-              <div className="mb-3">
-                <DatePicker
-                  selected={formData.passportIssueDate}
-                  onChange={(date) => handleDateChange(index, date, 'passportIssueDate')}
-                  placeholderText="Passport Issue Date"
-                  className="form-control full-width"
-                  minDate={null}
-                />
-                <label className="custom-placeholder">Passport Issue Date</label>
-              </div>
+              <div className="mb-3 date-picker-container">
+  <DatePicker
+    selected={formData.passportIssueDate}
+    onChange={(date) => handleDateChange(index, date, 'passportIssueDate')}
+    placeholderText="Passport Issue Date"
+    className="form-control full-width"
+    minDate={null}
+  />
+  {/* <label className="custom-placeholder">Passport Issue Date</label> */}
+</div>
 
-              <div className="mb-3">
-                <DatePicker
-                  selected={formData.passportExpDate}
-                  onChange={(date) => handleDateChange(index, date, 'passportExpDate')}
-                  placeholderText="Passport Expiry Date"
-                  className="form-control full-width"
-                  minDate={null}
-                />
-                <label className="custom-placeholder">Passport Expiry Date</label>
-              </div>
+<div className="mb-3 date-picker-container">
+  <DatePicker
+    selected={formData.passportExpDate}
+    onChange={(date) => handleDateChange(index, date, 'passportExpDate')}
+    placeholderText="Passport Expiry Date"
+    className="form-control full-width"
+    minDate={null}
+  />
+  {/* <label className="custom-placeholder">Passport Expiry Date</label> */}
+</div>
+
 
               <div className="mb-3">
                 <input
