@@ -562,6 +562,11 @@ const bookHoldApi = async () => {
     <>
       <CustomNavbar />
       {/* <div className="timer-FlightLists">
+
+
+
+
+
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
             </div> */}
       <div className="container-fluid review-cont">
