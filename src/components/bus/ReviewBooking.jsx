@@ -12,8 +12,9 @@ import { useSelector } from 'react-redux';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 // import updateGif from "../../assets/images/payloader.gif"
-import Payloader from '../../pages/loading/Payloader';
+// import Payloader from '../../pages/loading/Payloader';
 import Loading from '../../pages/loading/Loading';
+import PayloaderHotel from '../../pages/loading/PayloaderHotel';
 
 
 const ReviewBooking = () => {
@@ -228,7 +229,7 @@ const ReviewBooking = () => {
         try {
           await updateHandlePayment();
 
-          setLoading(true);
+          // setLoading(true);
 
           await bookHandler();
           await busPaymentStatus();
@@ -525,8 +526,17 @@ const ReviewBooking = () => {
   // -------------------------------------------------------------------------------------------------
 
   if (payLoading) {
-    return <hotel-payload />;
+    return <PayloaderHotel/>;
   }
+
+
+
+
+  if (loading) {
+    return <Loading />;
+  }
+
+ 
 
   // ----------------------------------------------------------------------------------------------------
  
