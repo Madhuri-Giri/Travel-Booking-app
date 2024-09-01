@@ -13,6 +13,8 @@ import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 // import updateGif from "../../assets/images/payloader.gif"
 import Payloader from '../../pages/loading/Payloader';
+import Loading from '../../pages/loading/Loading';
+
 
 const ReviewBooking = () => {
 
@@ -20,6 +22,7 @@ const ReviewBooking = () => {
   const to = useSelector((state) => state.bus.to);
 
   const [payLoading, setPayLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
 
 
 
@@ -198,6 +201,9 @@ const ReviewBooking = () => {
     }
 
     try {
+         
+      setLoading(true);
+       
       const paymentData = await fetchPaymentDetails();
 
       if (!paymentData) return;
@@ -217,18 +223,20 @@ const ReviewBooking = () => {
           );
           localStorage.setItem('transaction_id', options.transaction_id);
 
-        setPayLoading(true);
+          setLoading(true);
 
         try {
           await updateHandlePayment();
 
-          setPayLoading(false);
+          setLoading(true);
 
           await bookHandler();
           await busPaymentStatus();
         } catch (error) {
           console.error('Error during updateHandlePayment or bookHandler:', error.message);
           alert('An error occurred during processing. Please try again.');
+        } finally {
+          setLoading(false);
         }
       },
 
@@ -521,7 +529,6 @@ const ReviewBooking = () => {
   }
 
 
-  // --------------------------------------------------------------------------------------------
  
 
   // ----------------------------------------------------------------------------------------------------
