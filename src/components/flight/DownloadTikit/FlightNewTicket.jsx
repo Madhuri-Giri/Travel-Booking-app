@@ -26,6 +26,7 @@ const FlightNewTikit = () => {
   const ticketElementRef = useRef(null);
   const from = useSelector((state) => state.bus.from);
   const to = useSelector((state) => state.bus.to);
+  console.log("flightticketPassengerDetails", flightticketPassengerDetails);
 
   useEffect(() => {
     const fetchFlightTicketApiData = async () => {
@@ -67,7 +68,7 @@ const FlightNewTikit = () => {
     const loadAdultPassengerDetails = () => {
       const details = localStorage.getItem('adultPassengerDetails');
       if (details) {
-        setAdultPassengerDetails(JSON.parse(details)); 
+        setAdultPassengerDetails(JSON.parse(details));
         console.log('Loaded adult passenger details:', JSON.parse(details));
       } else {
         console.error("Adult passenger details not found in localStorage");
@@ -83,26 +84,26 @@ const FlightNewTikit = () => {
       console.error("No adult passenger details available for download");
       return;
     }
-  
+
     if (!ticketElementRef.current) {
       console.error("Ticket element reference is not set");
       return;
     }
-  
+
     const doc = new jsPDF();
-  
+
     // Temporarily hide the .btm div
     const btmDiv = ticketElementRef.current.querySelector('.btm');
     if (btmDiv) {
       btmDiv.style.display = 'none';
     }
-  
+
     html2canvas(ticketElementRef.current, { scale: 2 }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-  
+
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save('flight_ticket.pdf');
     }).catch((error) => {
@@ -114,7 +115,7 @@ const FlightNewTikit = () => {
       }
     });
   };
-  
+
 
   const handleCancelTicket = async () => {
     const confirmation = window.confirm("Are you sure you want to cancel?");
@@ -153,7 +154,7 @@ const FlightNewTikit = () => {
       month: 'short',
     });
   };
-  
+
   const formatTime = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleTimeString('en-GB', {
@@ -171,22 +172,37 @@ const FlightNewTikit = () => {
       <CustomNavbar />
       <div className="flight-Tikit">
         <div className="lottie container" ref={ticketElementRef}>
-          {flightticketPassengerDetails && flightticketPassengerDetails['user details'] && (
-            flightticketPassengerDetails['user details'].map((userDetail, index) => (
-              <div key={index} className="row">
-                <div className="col-lg-3">
-                  <Lottie animationData={LootiAnim} />
-                </div>
-                <div className="col-lg-9">
-                  <div className='flightticktbox'>
-                    <div className='flighttickthed'>
-                      <h5>Flight Ticket</h5>
-                    </div>
-                    <div className="top"></div>
-                    <div className="row flightpssngerdetails">
-                      <div className="col-12">
-                        <div className="row">
-                          <div className='fromtoMOB'>
+          {flightticketPassengerDetails && flightticketPassengerDetails.userdetails.map((userDetail, index) => (
+            <div key={index} className="row">
+              <div className="col-lg-3">
+                <Lottie animationData={LootiAnim} />
+              </div>
+              <div className="col-lg-9">
+                <div className='flightticktbox'>
+                  <div className='flighttickthed'>
+                    <h5>Flight Ticket</h5>
+                  </div>
+                  <div className="top"></div>
+                  <div className="row flightpssngerdetails">
+                    <div className="col-12">
+                      <div className="row">
+                        <div className='fromtoMOB'>
+                          <div>
+                            <strong>{from}</strong>
+                            <p>{formatTime(userDetail.updated_at)}</p>
+                          </div>
+                          <div>
+                            <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
+                          </div>
+                          <div>
+                            <strong>{to}</strong>
+                            <p>{formatTime(userDetail.created_at)}</p>
+                          </div>
+                        </div>
+                        <div className="col-md-4 col-6">
+                          <p><strong>First Name -: </strong><span>{userDetail.name}</span></p>
+                        <p><strong>Email -: </strong><span>{userDetail.email}</span></p>
+                          <div className='fromtoWEB'>
                             <div>
                               <strong>{from}</strong>
                               <p>{formatTime(userDetail.updated_at)}</p>
@@ -199,65 +215,43 @@ const FlightNewTikit = () => {
                               <p>{formatTime(userDetail.created_at)}</p>
                             </div>
                           </div>
-                          <div className="col-md-4 col-6">
-                            {adultPassengerDetails[0] ? (
-                              <>
-                                <p><strong>First Name -: </strong><span>{adultPassengerDetails[0].firstName}</span></p>
-                                <p><strong>Last Name -: </strong><span>{adultPassengerDetails[0].lastName}</span></p>
-                                <p><strong>Email -: </strong><span>{adultPassengerDetails[0].email}</span></p>
-                                <p><strong>Gender -: </strong><span>{adultPassengerDetails[0].gender}</span></p>
-                              </>
-                            ) : (
-                              <p>Loading passenger details...</p>
-                            )}
-                            <div className='fromtoWEB'>
-                              <div>
-                                <strong>{from}</strong>
-                                <p>{formatTime(userDetail.updated_at)}</p>
-                              </div>
-                              <div>
-                                <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
-                              </div>
-                              <div>
-                                <strong>{to}</strong>
-                                <p>{formatTime(userDetail.created_at)}</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-md-4 col-6">
-                            <p><strong>Contact No -: </strong><span>{adultPassengerDetails[0].contactNo}</span></p>
-                            <p><strong>Passport No -: </strong><span>{adultPassengerDetails[0].passportNo}</span></p>
-                            <p className='psngerstatus'><strong>Status -: </strong><span>{flightticketPassengerDetails?.status === 'success' ? 'Confirmed' : 'Pending'}</span></p>
-                          </div>
-                          <div className="col-md-4 ticktbordr">
-                            <div>
-                              <p><strong>Registration No -: </strong><span>{userDetail.registration_number}</span></p>
-                              <p><strong>Passcode: </strong></p>
-                              <Barcode className="flightpasscode" value={passcode} format="CODE128" />
-                            </div>
+                        </div>
+                        <div className="col-md-4 col-6">
+                          <p><strong>Contact No -: </strong><span>{userDetail.mobile}</span></p>
+                          <p className=''><strong>Booking Id -: </strong><span>{flightticketPassengerDetails.payment.booking_id}</span></p>
+                          <p><strong>Registration No -: </strong><span>{userDetail.registration_number}</span></p>
+
+                        </div>
+                        <div className="col-md-4 ticktbordr">
+                          <div>
+                            <p className='busbookconfrm'><strong>Booking -: </strong><span>{flightticketPassengerDetails.payment.payment_status}</span></p>
+
+                            <p className='psngeramount'><strong>Amount -: </strong><span>₹{flightticketPassengerDetails.payment.amount}</span></p>
+                            <Barcode className="flightpasscode" value={userDetail.token} format="CODE128" />
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="btm">
-                      <button className='flightdonload' onClick={downloadTicket}>
-                        Download
-                        <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
-                      </button>
-                      <button className='flightcncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
-                    </div>
+                  </div>
+                  <div className="btm">
+                    <button className='busdonload' onClick={downloadTicket}>
+                      Download
+                      <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
+                    </button>
+                    <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
                   </div>
                 </div>
               </div>
-            ))
-          )}
+            </div>
+          ))}
+
         </div>
       </div>
       <Footer />
       <ToastContainer />
     </>
   );
-  
+
 };
 
 export default FlightNewTikit;
