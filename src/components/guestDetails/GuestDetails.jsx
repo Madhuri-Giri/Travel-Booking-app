@@ -53,41 +53,41 @@ const GuestDetails = () => {
   const [loading, setLoading] = useState(false)
 
  
-  const [timer, setTimer] = useState(0);
+  // const [timer, setTimer] = useState(0);
 
-  useEffect(() => {
-    const updateTimer = () => {
-      // Retrieve end time from localStorage
-      const endTime = localStorage.getItem('h-timerEndTime');
-      const now = Date.now();
+  // useEffect(() => {
+  //   const updateTimer = () => {
+  //     // Retrieve end time from localStorage
+  //     const endTime = localStorage.getItem('h-timerEndTime');
+  //     const now = Date.now();
       
-      if (endTime) {
-        const remainingTime = endTime - now;
+  //     if (endTime) {
+  //       const remainingTime = endTime - now;
         
-        if (remainingTime <= 0) {
-          localStorage.removeItem('h-timerEndTime');
-          navigate('/hotel-search');
-        } else {
-          setTimer(remainingTime);
-        }
-      } else {
-        navigate('/hotel-search');
-      }
-    };
+  //       if (remainingTime <= 0) {
+  //         localStorage.removeItem('h-timerEndTime');
+  //         navigate('/hotel-search');
+  //       } else {
+  //         setTimer(remainingTime);
+  //       }
+  //     } else {
+  //       navigate('/hotel-search');
+  //     }
+  //   };
 
-    updateTimer();
+  //   updateTimer();
 
-    const interval = setInterval(updateTimer, 1000); 
+  //   const interval = setInterval(updateTimer, 1000); 
 
-    return () => clearInterval(interval);
-  }, [navigate]);
+  //   return () => clearInterval(interval);
+  // }, [navigate]);
 
-  const formatTime = (milliseconds) => {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes} min ${seconds} sec left`;
-  };
+  // const formatTime = (milliseconds) => {
+  //   const totalSeconds = Math.floor(milliseconds / 1000);
+  //   const minutes = Math.floor(totalSeconds / 60);
+  //   const seconds = totalSeconds % 60;
+  //   return `${minutes} min ${seconds} sec left`;
+  // };
 
   const navigateSearch = () => {
     navigate('/hotel-room');
@@ -608,9 +608,9 @@ const GuestDetails = () => {
   return (
     <>
       <CustomNavbar />
-      <div className="timer">
+      {/* <div className="timer">
         <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
-      </div>
+      </div> */}
 
       <div className="guest_bg">
         <div className="guest-details-container">

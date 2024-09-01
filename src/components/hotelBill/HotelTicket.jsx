@@ -13,11 +13,9 @@ import html2canvas from 'html2canvas';
 
 const BookingBill = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
-  const [storedGuestDetails, setStoredGuestDetails] = useState([]);
-  const [storedHotelRoom, setStoredHotelRoom] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const ticketElementRef = useRef(null); 
+  const ticketElementRef = useRef(null);
 
   useEffect(() => {
     const fetchBookingDetails = async () => {
@@ -42,16 +40,10 @@ const BookingBill = () => {
         }
 
         const res = await response.json();
-        setBookingDetails(res.data);
-
-        const storedGuestDetailsData = localStorage.getItem('guestDetails');
-        if (storedGuestDetailsData) {
-          setStoredGuestDetails(JSON.parse(storedGuestDetailsData));
-        }
-
-        const storedSelectedRoomData = localStorage.getItem('selectedRoomsData');
-        if (storedSelectedRoomData) {
-          setStoredHotelRoom(JSON.parse(storedSelectedRoomData));
+        if (res.result && res.data) {
+          setBookingDetails(res.data);
+        } else {
+          throw new Error('Invalid response structure');
         }
         
       } catch (error) {
@@ -97,7 +89,7 @@ const BookingBill = () => {
 
     const hotelBookingId = localStorage.getItem('hotel_booking_id');
     const transactionNum = localStorage.getItem('transactionNum');
-     
+
     if (!hotelBookingId) {
       setError('No hotel booking ID available');
       toast.error('No hotel booking ID available');
@@ -129,12 +121,12 @@ const BookingBill = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestData),
       });
-  
+
       if (!response.ok) {
         const errorDetails = await response.json();
         throw new Error(`HTTP error! Status: ${response.status}, Details: ${JSON.stringify(errorDetails)}`);
       }
-  
+
       const res = await response.json();
       if (res.data) {
         localStorage.setItem('hotelTicket', JSON.stringify(res.data));
@@ -143,13 +135,21 @@ const BookingBill = () => {
       } else {
         throw new Error('No data found in the API response');
       }
-  
+
     } catch (error) {
       console.error('Error:', error);
       setError('Error occurred during cancellation');
       toast.error('Error occurred during cancellation');
     }
   };
+
+  if (error) {
+    return (
+      <div className="error-message">
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -162,66 +162,42 @@ const BookingBill = () => {
               <img src={hotelImg} alt="Hotel" />
             </div>
 
-            <div className="details-section-wrapper">
-              <div className="details-section-hotel">
-                <h3>Hotel Information</h3>
-                {bookingDetails?.hotel_passengers?.length > 0 ? (
+            {bookingDetails ? (
+              <div className="details-section-wrapper">
+                <div className="details-section-hotel">
+                  <h3>Hotel Booking Information</h3>
                   <div className="detail-guest">
-                    {bookingDetails.hotel_passengers.map((item, index) => (
-                      <div key={index}>
-                        <p><span>Hotel Name:</span> {item.hotelname}</p>
-                        <p><span>Hotel Code:</span> {item.hotelcode}</p>
-                        <p><span>Transaction Number:</span> {item.transaction_num}</p>
-                        <p><span>Number of Rooms:</span> {item.noofrooms}</p>
-                        <p><span>Check-in Date:</span> {item.check_in_date}</p>
-                      </div>
-                    ))}
-
-                    {storedHotelRoom.length > 0 && (
-                      <div>
-                        {storedHotelRoom.map((item, index) => (
-                          <div key={index}>
-                            <p><span>Room Price:</span> ₹{item.roomprice}</p>
-                            <p><span>GST:</span> {item.tax}</p>
-                            <p><span>Discount:</span> {item.discount}</p>
-                            <p><span>Total Price:</span> ₹{item.publishedprice}</p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <p><span>Hotel Name:</span> {bookingDetails.hotel_passengers[0].hotelname}</p>
+                    <p><span>Hotel Code:</span> {bookingDetails.hotel_passengers[0].hotelcode}</p>
+                    <p><span>Transaction Number:</span> {bookingDetails.hotel_passengers[0].transaction_num}</p>
+                    <p><span>Number of Rooms:</span> {bookingDetails.hotel_passengers[0].noofrooms}</p>
+                    <p><span>Check-in Date:</span> {bookingDetails.hotel_passengers[0].check_in_date}</p>
+                    <p><span>Room Price:</span> ₹{bookingDetails.hotel_passengers[0].roomprice}</p>
+                    <p><span>GST:</span> {bookingDetails.hotel_passengers[0].igst}</p>
+                    <p><span>Discount:</span> {bookingDetails.hotel_passengers[0].discount}</p>
+                    <p><span>Total Price:</span> ₹{bookingDetails.hotel_passengers[0].publishedprice}</p>
                   </div>
-                ) : (
-                  <p>No hotel information available.</p>
-                )}
-              </div>
+                </div>
 
-              <div className="details-section-guest">
-                <h3>Guest Details</h3>
-                {storedGuestDetails.length > 0 ? (
+                <div className="details-section-guest">
+                  <h3>Guest Details</h3>
                   <div className="detail-guest">
-                    {storedGuestDetails.map((item, index) => (
-                      <div key={index}>
-                        <p><span>First Name:</span> {item.fname}</p>
-                        <p><span>Last Name:</span> {item.lname}</p>
-                        <p><span>Phone Number:</span> {item.mobile}</p>
-                        <p><span>Email:</span> {item.email}</p>
-                        <p><span>Age:</span> {item.age}</p>
-                        <p><span>Passport Number:</span> {item.passportNo}</p>
-                        <p><span>PaxType:</span> {item.paxType}</p>
-                      </div>
-                    ))}
+                    <p><span>Guest Name:</span> {bookingDetails.user_details.name}</p>
+                    <p><span>Email:</span> {bookingDetails.user_details.email}</p>
+                    <p><span>Mobile:</span> {bookingDetails.user_details.mobile}</p>
                   </div>
-                ) : (
-                  <p>No guest details available.</p>
-                )}
-              </div>
-            </div>
+                </div>
 
-            <div className='button-container'>
-              <button className='ticket_btn' onClick={handleDownloadPDF}>Download PDF</button>
-              <button className='ticket_btn_cancel' onClick={bookingCancel}>Cancel Ticket</button>
-            </div>
+                
+              </div>
+            ) : (
+              <p>Loading booking details...</p>
+            )}
           </div>
+          <div className='button-container'>
+                  <button className='ticket_btn' onClick={handleDownloadPDF}>Download PDF</button>
+                  <button className='ticket_btn_cancel' onClick={bookingCancel}>Cancel Ticket</button>
+                </div>
         </div>
         <ToastContainer />
       </div>

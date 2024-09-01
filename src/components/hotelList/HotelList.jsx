@@ -66,47 +66,47 @@ const HotelList = () => {
 
   // ---------------------------------------------
 
-  const [timer, setTimer] = useState(600000); 
+  // const [timer, setTimer] = useState(600000); 
 
-  useEffect(() => {
-    const endTime = localStorage.getItem('h-timerEndTime');
-    const now = Date.now();
+  // useEffect(() => {
+  //   const endTime = localStorage.getItem('h-timerEndTime');
+  //   const now = Date.now();
     
-    let remainingTime = endTime ? endTime - now : 600000;
+  //   let remainingTime = endTime ? endTime - now : 600000;
 
-    if (remainingTime <= 0) {
-      navigate('/hotel-search');
-      return;
-    }
+  //   if (remainingTime <= 0) {
+  //     navigate('/hotel-search');
+  //     return;
+  //   }
 
-    setTimer(remainingTime);
+  //   setTimer(remainingTime);
 
-    const countdown = setInterval(() => {
-      setTimer((prev) => {
-        const updatedTime = prev - 1000;
+  //   const countdown = setInterval(() => {
+  //     setTimer((prev) => {
+  //       const updatedTime = prev - 1000;
         
-        localStorage.setItem('h-timerEndTime', Date.now() + updatedTime);
+  //       localStorage.setItem('h-timerEndTime', Date.now() + updatedTime);
         
-        if (updatedTime <= 0) {
-          clearInterval(countdown);
-          localStorage.removeItem('h-timerEndTime');
-          navigate('/hotel-search');
-          return 0;
-        }
+  //       if (updatedTime <= 0) {
+  //         clearInterval(countdown);
+  //         localStorage.removeItem('h-timerEndTime');
+  //         navigate('/hotel-search');
+  //         return 0;
+  //       }
         
-        return updatedTime;
-      });
-    }, 1000); 
+  //       return updatedTime;
+  //     });
+  //   }, 1000); 
 
-    return () => clearInterval(countdown);
-  }, [navigate]);
+  //   return () => clearInterval(countdown);
+  // }, [navigate]);
 
-  const formatTime = (milliseconds) => {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes} min ${seconds} sec left`;
-  };
+  // const formatTime = (milliseconds) => {
+  //   const totalSeconds = Math.floor(milliseconds / 1000);
+  //   const minutes = Math.floor(totalSeconds / 60);
+  //   const seconds = totalSeconds % 60;
+  //   return `${minutes} min ${seconds} sec left`;
+  // };
 
 
 
@@ -317,9 +317,9 @@ const HandelHotelInfo = async (index) => {
     <>
       <CustomNavbar />
 
-      <div className="timer">
+      {/* <div className="timer">
           <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
-        </div>
+        </div> */}
 
       <section className="hotelMainsec">
         

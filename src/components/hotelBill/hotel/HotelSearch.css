@@ -1,0 +1,679 @@
+/* HotelSearch.css */
+/* --------- Start --------- */
+.form-field {
+  position: relative; 
+}
+
+.suggestions_hotel{
+  position: absolute; 
+  top: 100%; 
+  left: 0; 
+  width: 100%; 
+  background-color: white; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1000; 
+  list-style: none; 
+  padding: 0; 
+  margin: 0; 
+}
+
+.suggestions_hotel li {
+  padding: 8px; 
+  cursor: pointer; 
+}
+
+.suggestions_hotel li:hover {
+  background-color: #f0f0f0; 
+} 
+
+
+.hotel_container {
+  padding: 20px;
+  background-color: #00b7eb;
+}
+
+.content_wrapperRow {
+  margin-bottom: 25px;
+}
+
+.content_wrapper {
+  display: flex;
+  margin-top: 50px;
+}
+
+.content_box h1 {
+  font-family: sans-serif;
+  font-size: 2rem;
+  font-weight: 100;
+  letter-spacing: 1px;
+  color: #fff;
+  text-transform: capitalize;
+  margin: 15px 0 0 10px;
+}
+
+.luxury-font {
+  font-family: "Lucida Handwriting", cursive;
+  color: #bbe4f0;
+  font-size: 2.5rem;
+}
+
+.images_container {
+  margin-top: 100px;
+  position: relative;
+  width: 300px;
+  margin-left: 550px;
+}
+
+.img_box {
+  position: absolute;
+  width: 300px;
+  border: 3px solid black;
+  border-radius: 20px;
+}
+
+.image1 {
+  bottom: -100px;
+  left: -200px;
+  border: 3px solid black;
+  border-radius: 20px;
+  width: 300px;
+}
+
+.image2 {
+  bottom: -250px;
+  right: 350px;
+  border: 3px solid black;
+  border-radius: 20px;
+  width: 260px;
+}
+
+.image3 {
+  bottom: -110px;
+  right: 520px;
+  border: 3px solid black;
+  border-radius: 20px;
+  width: 70%;
+}
+
+.btn-book {
+  padding: 10px;
+  background-color: #fc3a21;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 25px;
+  align-self: center;
+  letter-spacing: 1px;
+}
+
+/* ----------- End ---------- */
+
+/* ----------- Start Form--------- */
+.sec_book {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+}
+
+.hotel_booking {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.form-field input,
+.form-field .react-datepicker-wrapper {
+  font-family: sans-serif;
+  width: 100%;
+  padding-left: 0;
+}
+
+.form-field .react-datepicker-wrapper {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.form-field {
+  flex: 1;
+  min-width: 200px;
+  margin: 10px 0;
+}
+
+.form-field label {
+  width: 100%;
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 1.1vmax;
+  font-family: sans-serif;
+
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2em;
+  color: #888;
+  pointer-events: none;
+}
+
+.date-picker-field .form_in {
+  padding-right: 30px;
+}
+
+.guest_field {
+  position: relative;
+  flex: 1;
+}
+
+.guest_options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  z-index: 10;
+  /* box-sizing: border-box; */
+}
+
+.user-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 1.2rem;
+}
+
+.guest_option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.guest_option label {
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+
+}
+
+.guest_option button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #00b7eb;
+  /* margin-top: 5px; */
+}
+
+.close_icon {
+  margin-left: 20px;
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+.form-field label {
+  margin-right: 0;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.form-field .form_in,
+.guest-field .form_in {
+  padding: 5px 5px;
+  font-size: 14px;
+  width: 100%;
+  border: 1px solid #343232; 
+  border-radius: 4px; 
+  color: #333; 
+}
+
+.form-field .form_in,
+.guest-field .form_in:focus{
+  border-color: #58585a;
+  outline: none; 
+}
+
+.btn-sub {
+  padding: 10px;
+  background-color: #00b7eb;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 25px;
+  align-self: center;
+  letter-spacing: 1px;
+}
+
+.btn-sub:hover {
+  background-color: #00b7eb;
+}
+
+/* --------------- End -------------- */
+
+/* ----------- End ------------- */
+.Exclusive_offer {
+  margin-top: 2vmax;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  background: #fff;
+}
+
+.Exclusive_offer h5 {
+  font-family: sans-serif;
+  font-size: 1.7vmax;
+  font-weight: 700;
+  margin-top: 1vmax;
+  width: 85%;
+}
+
+.offer_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: row;
+  padding: 1vmax;
+  margin-top: 1vmax;
+  margin-bottom: 1vmax;
+}
+
+.offer_box {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  overflow: hidden;
+  overflow-x: auto;
+  gap: 2vmax;
+}
+
+.offer_box::-webkit-scrollbar {
+  display: none;
+}
+
+.offer_box img {
+  width: 100%;
+  height: 300px;
+}
+
+/* ------------- End ----------- */
+
+/* ------------- start ----------- */
+.booking_head {
+  margin-top: 40px;
+  text-align: center;
+  margin-bottom: 1vmax;
+}
+
+.booking_head h5 {
+  font-family: sans-serif;
+  font-size: 1.7vmax;
+  font-weight: 700;
+  margin-top: 1vmax;
+}
+
+.Hotel_Booking_container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url('https://www.webintravel.com/wp-content/uploads/2022/03/hotel-hanieriani-GettyImages-1066x440.jpeg');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.booking_box {
+
+  max-width: 600px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+}
+
+.booking_box h5 {
+  font-family: sans-serif;
+}
+
+
+.booking_box p {
+  font-family: sans-serif;
+}
+
+.play_store {
+  width: 100px;
+  height: auto;
+}
+
+.apple_play_store {
+  width: 200px;
+  height: auto;
+}
+
+/* ------------- End -------------- */
+@media (max-width: 1440px) {
+  .images_container {
+    margin-top: 100px;
+    position: relative;
+    width: 300px;
+  }
+
+  .img_box {
+    position: absolute;
+    width: 300px;
+    border: 3px solid black;
+    border-radius: 20px;
+  }
+
+  .image1 {
+    bottom: -100px;
+    left: -210px;
+    border: 3px solid black;
+    border-radius: 20px;
+    width: 330px;
+  }
+
+  .image2 {
+    bottom: -280px;
+    right: 280px;
+    border: 3px solid black;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+
+  .image3 {
+    bottom: -80px;
+    right: 530px;
+    border: 3px solid black;
+    border-radius: 20px;
+    width: 80%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .hotel_container {
+    margin-top: 5px;
+  }
+
+  .content_wrapper {
+    margin-left: 0;
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .content_box p {
+    font-size: 2.5vmax;
+  }
+
+  .images_container {
+    margin-top: 0;
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 300px;
+  }
+
+  .img_box {
+    position: relative;
+    width: 100%;
+  }
+
+  .image1 {
+    margin-bottom: 10px;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .image2 {
+    display: none;
+  }
+
+  .image3 {
+    display: none;
+  }
+
+  .offer_img {
+    width: 100%;
+    padding-left: 0;
+  }
+
+  .hotel_booking {
+    margin-top: 0;
+  }
+
+  .btn-book {
+    margin-left: 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hotel_container {
+    padding: 10px;
+    margin-top: 7px;
+  }
+
+  .content_wrapper {
+    margin-left: 0;
+  }
+
+
+
+
+  .images_container {
+
+    width: 100%;
+  }
+
+  .img_box {
+    position: relative;
+    width: 100%;
+    margin-top: 0;
+
+  }
+
+
+  .image1 {
+    margin-top: 20px;
+    border: 3px solid black;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  .image2 {
+    display: none;
+  }
+
+  .image3 {
+    display: none;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-field {
+    margin-right: 0;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  .form-field .form_lable {
+    margin-right: 0;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .btn-sub {
+    width: 100%;
+  }
+
+  .offer_img {
+    width: 100%;
+    padding-left: 0;
+  }
+
+}
+
+@media (max-width: 576px) {
+  .booking_head {
+    margin-top: 2px;
+  }
+
+  .Exclusive_offer {
+    margin-top: 1vmax;
+  }
+
+  .form-field {
+    margin-bottom: 1px;
+  }
+
+  .btn-book {
+    padding: 5px 15px;
+    margin-top: 8px;
+    font-size: 14px;
+    margin-bottom: -10px;
+    margin-left: 10px;
+
+  }
+
+  .hotel_container {
+    padding: 0px 5px;
+    margin-top: 0px;
+  }
+
+  .Exclusive_offer h5 {
+    font-size: 20px;
+  }
+
+  .booking_head h5 {
+    font-size: 20px;
+  }
+
+  .content_wrapper {
+    margin: 0;
+    margin-left: 0;
+  }
+
+  .content_box h1 {
+    font-size: 20px;
+  }
+
+  .luxury-font {
+    font-size: 1.5rem;
+  }
+
+  .images_container {
+    /* margin-top: 20px; */
+    width: 100%;
+  }
+
+  .img_box {
+    position: relative;
+    width: 100%;
+  }
+
+  .image1,
+  .image2,
+  .image3 {
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: none;
+  }
+
+  .form-row {
+    gap: 0;
+  }
+
+  .form-field label {
+    margin-right: 0;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .form-field .form_in,
+  .guest-field .form_in {
+    padding: 5px 5px;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .guest-options {
+    margin-top: 10px;
+    width: 70%;
+  }
+
+  .guest-type span {
+    font-size: 12px;
+  }
+
+  .btn-sub {
+    font-size: 14px;
+    padding: 10px;
+    margin-top: 8px;
+  }
+
+  .offer_img {
+    width: 100%;
+    padding-left: 0;
+  }
+
+  .hotel_booking {
+    padding: 10px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+
+  .booking_box {
+    width: 80%;
+    max-width: 320px;
+  }
+
+  .guest_option label {
+    font-size: 16px;
+  }
+
+  .sec_book {
+    margin-top: 0;
+  }
+
+}
