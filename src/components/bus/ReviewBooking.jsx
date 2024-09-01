@@ -228,7 +228,7 @@ const ReviewBooking = () => {
         try {
           await updateHandlePayment();
 
-          setLoading(true);
+          // setLoading(true);
 
           await bookHandler();
           await busPaymentStatus();
@@ -528,6 +528,10 @@ const ReviewBooking = () => {
     return <hotel-payload />;
   }
 
+
+  if (loading) {
+    return <Loading />;
+  }
 
  
 
