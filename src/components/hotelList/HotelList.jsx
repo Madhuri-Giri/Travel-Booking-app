@@ -323,8 +323,7 @@ const HandelHotelInfo = async (index) => {
     <>
       <CustomNavbar />
 
-       {/* <div className="timer">
-          
+      {/* <div className="timer">
           <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
         </div> */}
 
