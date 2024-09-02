@@ -345,7 +345,7 @@
     /* display: flex; */
     /* align-items: center; */
     /* justify-content: center; */
-    padding: 3vmax;
+    padding: 1.5vmax 2vmax;
     margin: 1vmax;
     background: #fff;
     border: none;
@@ -455,4 +455,153 @@
 .busbookconfrm span{
     color: rgb(25, 179, 25);
     font-weight: bold;
+}
+
+
+
+/* new----------------------------------------------------------------- */
+
+.flightTicketmain {
+    border: 1px solid rgba(179, 176, 176, 0.356);
+    box-shadow: 2px 2px 2px 2px rgb(202, 200, 200);
+    background-color: white;
+
+}
+.flightticketboxHED{
+    display: flex;
+    justify-content: space-between;
+    color: #0a325f;
+    background-color: #dcdcdc54;
+    padding: 0px 10px;
+}
+.passengerDetailTable{
+    color: #0a325f;
+    background-color: #dcdcdc54;
+}
+.flightticketboxHED p{
+    margin: 0px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.flightticketboxHEDDestinatin{
+    display: flex;
+    justify-content: space-around;
+}
+.flightticketboxTravelDetails{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 10px;
+    margin-bottom: 15px;
+}
+.flightIndigodet{
+    color: #0a325f;
+}
+.flightIndigodet p{
+    margin-bottom: 0px;
+}
+.flightSaver{
+    margin-top: 20px;
+    color: #2e5e94;
+}
+.ffbox2{
+    text-align: right;
+    padding: 0px 30px;
+}
+.ffbox4{
+    padding: 0px 30px;
+}
+.ffbox2 p{
+    margin: 0px;
+}
+.ffbox1{
+    margin-right: 20px;
+}
+.ffbox3{
+    margin: 10px 50px;
+}
+.ffbox3 p{
+    margin: 0px;
+    font-size: 14px;
+}
+.ffbox2 p{
+    margin: 0px;
+    font-size: 14px;
+}
+.ffbox4 p{
+    margin: 0px;
+    font-size: 14px;
+}
+.ffbox4 p{
+    margin: 0px;
+}
+.ffbox2Time,
+.ffbox4Time{
+    border-top: 1px solid rgba(199, 194, 194, 0.514);
+    border-bottom: 1px solid rgba(199, 194, 194, 0.514);
+    margin-bottom: 5px !important;
+}
+.ffbox2 h4,
+.ffbox4 h4{
+    color: #0a325f;
+    margin-bottom: 0px;
+}
+.ffbox4P1,
+.ffbox2P1{
+    color: #0a325f;
+    font-weight: 600;
+    margin-bottom: 10px !important;
+}
+.ffbox3TImeborder{
+    border-bottom: 1px solid rgba(199, 194, 194, 0.514);
+}
+.ffbox3{
+    color: rgba(153, 143, 143, 0.884);
+}
+
+.fligthticketBtns {
+    display: flex;
+    justify-content: end;
+    /* width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background: #efeaea82;
+    flex-direction: column;
+    border-radius: 10px;
+    gap: 0.6vmax;
+    padding: 0.5vmax; */
+}
+
+.fligthticketBtns button {
+    border: none;
+    background: none;
+    padding: 0.5vmax 2vmax;
+    border-radius: 5px;
+    background-color: #00b7eb;
+    color: #fff;
+    margin-bottom: 10px;
+    /* font-weight: 600; */
+}
+
+.fligthticketBtns button:hover {
+    background-color: #009bb5;
+}
+
+@media screen and (max-width: 768px) {
+    .ffbox2 {
+        text-align: right;
+        padding: 0px 0px;
+    }
+    .ffbox4 {
+        padding: 0px 0px;
+    }
+    .flightSaver{
+        margin-top: 5px;
+    }
+    .flightSaver h6{
+        font-size: 14px;
+    }
+    .ffbox3 {
+        margin: 10px 25px;
+    }
 }
