@@ -3,6 +3,7 @@
           border: 2px solid #00ff00e7; /* Green border for selected seats */
           background-color: #0dec0d; /* Light green background for selected seats */
       }
+     
       
       .f-seat.booked {
           opacity: 0.2;
