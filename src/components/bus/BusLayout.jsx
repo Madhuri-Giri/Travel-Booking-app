@@ -220,6 +220,18 @@ const BusLayout = () => {
     ['27', '28', '29', '30', '31'],
   ];
 
+  const busLayoutUpper2 = [
+    ['11', '12', '13', '14', '15'],
+    [null, null, null, null, '16'],
+    ['17', '18', '19', '20', '21'],
+  ];
+  const getBusLayout = (seatName) => {
+    const seatNumber = parseInt(seatName, 10);
+    return seatNumber >= 21 ? busLayoutUpper2 : busLayoutUpper;
+  };
+
+  const UpeerSeatbusLayout = getBusLayout(busLayoutUpper.flat().find(Boolean));
+
 
   if (loading) {
     return <Loading />;
@@ -282,7 +294,7 @@ const BusLayout = () => {
                 {activeTab === 'lower' && seatType === 'Sitting' && (
                   <div className="lower sittingSeat">
                     <div className="sit">
-                    <div className="bus-layout">
+                      <div className="bus-layout">
                         {busLayout.map((row, rowIndex) => (
                           row.map((seatName, seatIndex) => {
                             if (!seatName) {
@@ -361,17 +373,20 @@ const BusLayout = () => {
                   <div className="upper sittingSeat">
                     <div className="sit">
                       <div className="bus-upperlayout">
-                        {busLayoutUpper.map((row, rowIndex) => (
+                        {UpeerSeatbusLayout.map((row, rowIndex) => (
                           row.map((seatName, seatIndex) => {
                             if (!seatName) {
                               return <div className="empty-space" key={`upper-empty-${rowIndex}-${seatIndex}`}></div>;
                             }
 
+                            const isLowerRange = busLayout.flat().filter(Boolean)[0].startsWith('11');
                             const seatObject = upperSeatsBus.find(seat => seat.SeatName === seatName);
                             const isSelected = selectedSeats.includes(seatName);
                             const basePrice = seatObject ? getUpperBasePrice(seatName) : null;
                             const isDisabled = basePrice === null;
-                            const isVerticalSeat = seatName === '26'; // Example: You can customize this condition as needed
+
+                            // Ensure seats '16' and '26' are always vertical
+                            const isVerticalSeat = ['16', '26'].includes(seatName);
 
                             return (
                               <div
@@ -390,9 +405,9 @@ const BusLayout = () => {
                                     src={BusSeatImgSleeper}
                                     alt="seat"
                                     style={{
-                                      transform: isVerticalSeat ? 'rotate(90deg)' : 'none', // Rotate the image if vertical
+                                      transform: isVerticalSeat ? 'rotate(90deg)' : 'none',
                                     }}
-                                    className={isVerticalSeat ? 'vertical-seat' : 'horizontal-seat'} // Apply different classes for custom styles if needed
+                                    className={isVerticalSeat ? 'vertical-seat' : 'horizontal-seat'}
                                   />
                                   <div className="seat-details">
                                     <span>Seat No {seatName} </span>
@@ -406,6 +421,7 @@ const BusLayout = () => {
                           })
                         ))}
                       </div>
+
                     </div>
                   </div>
                 )}
@@ -496,55 +512,54 @@ const BusLayout = () => {
                     <h6>Upper Deck</h6>
                     <div className="sit">
                       <div className="bus-upperlayout">
-  {busLayoutUpper.map((row, rowIndex) => (
-    row.map((seatName, seatIndex) => {
-      if (!seatName) {
-        return <div className="empty-space" key={`upper-empty-${rowIndex}-${seatIndex}`}></div>;
-      }
+                        {UpeerSeatbusLayout.map((row, rowIndex) => (
+                          row.map((seatName, seatIndex) => {
+                            if (!seatName) {
+                              return <div className="empty-space" key={`upper-empty-${rowIndex}-${seatIndex}`}></div>;
+                            }
 
-      // Find the seat object in the API response
-      const seatObject = upperSeatsBus.find(seat => seat.SeatName === seatName);
-      const isSelected = selectedSeats.includes(seatName);
-      // Check for seat base price, if not found then mark as disabled
-      const basePrice = seatObject ? getUpperBasePrice(seatName) : null;
-      const isDisabled = basePrice === null;
-      const isVerticalSeat = seatName === '26'; // Example condition for vertical seats
+                            const isLowerRange = busLayout.flat().filter(Boolean)[0].startsWith('11');
+                            const seatObject = upperSeatsBus.find(seat => seat.SeatName === seatName);
+                            const isSelected = selectedSeats.includes(seatName);
+                            const basePrice = seatObject ? getUpperBasePrice(seatName) : null;
+                            const isDisabled = basePrice === null;
 
-      return (
-        <div
-          onClick={!isDisabled ? () => handleSeatSelect(seatName) : undefined}
-          style={{
-            backgroundColor: isDisabled ? 'transparent' : (isSelected ? '#ccc' : 'transparent'),
-            pointerEvents: isDisabled ? 'none' : 'auto',
-            position: 'relative',
-          }}
-          className={`sit-img ${seatObject?.isLastRow ? 'last-row' : seatObject?.seatIndex % 4 === 2 ? 'aisle' : ''} ${isDisabled ? 'disabled' : ''}`}
-          key={seatName}
-        >
-          <div className="seat-image-container">
-            <img
-              width={40}
-              src={BusSeatImgSleeper}
-              alt="seat"
-              style={{
-                transform: isVerticalSeat ? 'rotate(90deg)' : 'none', // Rotate the image if vertical
-              }}
-              className={isVerticalSeat ? 'vertical-seat' : 'horizontal-seat'} // Apply different classes for custom styles if needed
-            />
-            <div className="seat-details">
-              <span>Seat No {seatName} </span>
-              <p>
-                <span>, Fare :</span> ₹{basePrice !== null ? `${Math.round(basePrice)}` : 'N/A'}
-              </p>
-            </div>
-          </div>
-        </div>
-      );
-    })
-  ))}
-</div>
+                            // Ensure seats '16' and '26' are always vertical
+                            const isVerticalSeat = ['16', '26'].includes(seatName);
 
-
+                            return (
+                              <div
+                                onClick={!isDisabled ? () => handleSeatSelect(seatName) : undefined}
+                                style={{
+                                  backgroundColor: isDisabled ? 'transparent' : (isSelected ? '#ccc' : 'transparent'),
+                                  pointerEvents: isDisabled ? 'none' : 'auto',
+                                  position: 'relative',
+                                }}
+                                className={`sit-img ${seatObject?.isLastRow ? 'last-row' : seatObject?.seatIndex % 4 === 2 ? 'aisle' : ''} ${isDisabled ? 'disabled' : ''}`}
+                                key={seatName}
+                              >
+                                <div className="seat-image-container">
+                                  <img
+                                    width={40}
+                                    src={BusSeatImgSleeper}
+                                    alt="seat"
+                                    style={{
+                                      transform: isVerticalSeat ? 'rotate(90deg)' : 'none',
+                                    }}
+                                    className={isVerticalSeat ? 'vertical-seat' : 'horizontal-seat'}
+                                  />
+                                  <div className="seat-details">
+                                    <span>Seat No {seatName} </span>
+                                    <p>
+                                      <span>, Fare :</span> ₹{basePrice !== null ? `${Math.round(basePrice)}` : 'N/A'}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })
+                        ))}
+                      </div>
 
                     </div>
 
