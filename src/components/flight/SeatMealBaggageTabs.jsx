@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import "./SeatMealBaggage.css";
+import FlightSeat from "../../assets/images/FlightSeat.png"
+import FlightImg from "../../assets/images/flightImgg.png"
 
 const SeatMealBaggageTabs = () => {
     const location = useLocation();
@@ -14,6 +16,8 @@ const SeatMealBaggageTabs = () => {
     const [activeTab, setActiveTab] = useState('Seats');
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [selectedBaggage, setSelectedBaggage] = useState(null);
+    const [selectedMeal, setSelectedMeal] = useState(null);
+
     // const [timer, setTimer] = useState(600000);
 
 
@@ -29,11 +33,29 @@ const SeatMealBaggageTabs = () => {
         }
     }, []);
 
+    useEffect(() => {
+        // Clear selections and prices from local storage
+        localStorage.removeItem('flightSelectedSeats');
+        localStorage.removeItem('selectedBaggage');
+        localStorage.removeItem('selectedMeal');
+        localStorage.removeItem('finalTotalPrice');
+        
+        // Reset state
+        setSelectedSeats([]);
+        setSelectedBaggage(null);
+        setSelectedMeal(null);
+
+        // Optionally, reset total price based on base fare
+        const savedFare = localStorage.getItem('selectedFlightBaseFare');
+        if (savedFare) {
+            setTotalPrice(parseFloat(savedFare));
+        }
+    }, []);
+
     const seatPrice = selectedSeats.reduce((total, seat) => total + seat.price, 0);
-    const mealPrice = 0; // Replace with actual meal price logic if applicable
+    const mealPrice = selectedMeal?.Price ||  0; 
     const baggagePrice = selectedBaggage?.Price || 0;
 
-    // Calculate the final total price
     const finalTotalPrice = seatPrice + mealPrice + baggagePrice;
 
     // Save the final total price to local storage
@@ -41,10 +63,10 @@ const SeatMealBaggageTabs = () => {
 
 
 
-    const ssrData = [
-        { Weight: 15, Price: 100, AirlineCode: "SG", FlightNumber: "8269", WayType: 1, Code: "BOF1SeKey276", Currency: "INR", Description: "Bag Out First with 1 Bag", Destination: "BOM", Origin: "DEL" },
-        { Weight: 20, Price: 200, AirlineCode: "SG", FlightNumber: "8269", WayType: 1, Code: "BOF2SeKey276", Currency: "INR", Description: "Bag Out First with 2 Bag", Destination: "BOM", Origin: "DEL" }
-    ];
+    // const ssrData = [
+    //     { Weight: 15, Price: 100, AirlineCode: "SG", FlightNumber: "8269", WayType: 1, Code: "BOF1SeKey276", Currency: "INR", Description: "Bag Out First with 1 Bag", Destination: "BOM", Origin: "DEL" },
+    //     { Weight: 20, Price: 200, AirlineCode: "SG", FlightNumber: "8269", WayType: 1, Code: "BOF2SeKey276", Currency: "INR", Description: "Bag Out First with 2 Bag", Destination: "BOM", Origin: "DEL" }
+    // ];
 
     const formData = {
         AdultCount: 1,
@@ -254,6 +276,19 @@ const SeatMealBaggageTabs = () => {
         return seats;
     };
 
+  
+
+    const calculateTotalPrice = () => {
+        return selectedSeats.reduce((total, seat) => total + seat.price, 0);
+    };
+
+    const handleBaggageClick = (baggage) => {
+        setSelectedBaggage(baggage);
+        localStorage.setItem('selectedBaggage', JSON.stringify(baggage));
+    };
+
+
+
     const handleSeatClick = (seat) => {
         const isAlreadySelected = selectedSeats.find(s => s.seatNumber === seat.seatNumber);
 
@@ -269,67 +304,66 @@ const SeatMealBaggageTabs = () => {
         localStorage.setItem('flightSelectedSeats', JSON.stringify(updatedSeats));
     };
 
-    const calculateTotalPrice = () => {
-        return selectedSeats.reduce((total, seat) => total + seat.price, 0);
-    };
 
-    const handleBaggageClick = (baggage) => {
-        setSelectedBaggage(baggage);
-        localStorage.setItem('selectedBaggage', JSON.stringify(baggage));
-    };
-
-
-
+    useEffect(() => {
+        localStorage.removeItem('flightSelectedSeats');
+        setSelectedSeats([]);  
+    }, []);
 
 
 
     const renderSeatsTab = () => (
         <div className="seatsTabss">
             <h5>SELECT YOUR PREFERRED SEAT</h5>
-
+    
             <div className="seaat-price">
                 <h6>Selected Seats: ({selectedSeats.map(seat => seat.seatNumber).join(', ')})</h6>
                 <h6>Total Price: (₹{calculateTotalPrice()})</h6>
             </div>
-
+    
             <div className="row seatsTabssRow">
                 <div className="col-lg-4 seatsTabssColImg">
                     <img
                         className="img-fluid"
-                        src='/src/assets/images/flightseattss-removebg-preview.png'
+                        src={FlightImg}
                         alt="Seats"
                     />
                 </div>
                 <div className="col-lg-8">
                     <div className="seatsTabssColText">
-                        <div className="seat-selection row">
-                            {seatData.map((seat, index) => (
-                                <div key={index} className="col-md-2 col-3">
-                                    <button
-                                        className={`f-seat ${seat.isBooked ? 'booked' : ''} ${selectedSeats.find(s => s.seatNumber === seat.seatNumber) ? 'selected' : ''}`}
-                                        onClick={() => handleSeatClick(seat)}
-                                    >
-                                        <h6>{seat.seatNumber}</h6>
-                                        <img
-                                            className="img-fluid"
-                                            src='/src/assets/images/seat-2-removebg-preview.png'
-                                            alt="Seat"
-                                        />
-                                        <p>₹{seat.price}</p>
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
+                        {seatData.length > 0 ? (
+                            <div className="seat-selection row">
+                                {seatData.map((seat, index) => (
+                                    <div key={index} className="col-md-2 col-3">
+                                        <button
+                                            className={`f-seat ${seat.isBooked ? 'booked' : ''} ${selectedSeats.find(s => s.seatNumber === seat.seatNumber) ? 'selected' : ''}`}
+                                            onClick={() => handleSeatClick(seat)}
+                                        >
+                                            <h6>{seat.seatNumber}</h6>
+                                            <img
+                                                className="img-fluid"
+                                                src={FlightSeat}
+                                                alt="Seat"
+                                            />
+                                            <p>₹{seat.price}</p>
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p style={{color:"red"}}> Seat data is not available.</p>
+                        )}
                     </div>
                 </div>
             </div>
         </div>
     );
+    
+
 
 
 
     const [mealData, setMealData] = useState([]);
-    const [selectedMeal, setSelectedMeal] = useState(null);
 
 
     useEffect(() => {
@@ -351,63 +385,72 @@ const SeatMealBaggageTabs = () => {
 
 
     const renderMealsTab = () => (
-        mealData.map((meal, index) => (
-            <div key={index} className="meal-selection">
-                <div className="row">
-                    <div className="col-md-6">
-                        <p>{meal.Name}</p>
-                        <h6>₹{meal.Price}</h6>
-                    </div>
-                    <div className="col-md-6 meal-selectionbtn">
-                        <div>
-                            <button
-                                className={selectedMeal?.Name === meal.Name ? 'btn-added' : 'btn-add'}
-                                onClick={() => handleMealClick(meal)}
-                            >
-                                {selectedMeal?.Name === meal.Name ? '✓ Added' : '+ Add'}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        ))
-    );
-
-
-
-
-    const renderBaggageTab = () => {
-        const baggageData = getSsrApiData();
-
-        return (
-            <div className="baggageTab">
-                <h5>Select Your Baggage Option</h5>
-                {baggageData.map((baggage, index) => (
-                    <div key={index} className="baggage-selection">
+        <div className="mealsTab">
+            <h5>Select Your Meal Option</h5>
+            {mealData.length > 0 ? (
+                mealData.map((meal, index) => (
+                    <div key={index} className="meal-selection">
                         <div className="row">
                             <div className="col-md-6">
-                                <p>{baggage.Weight} kg</p>
-                                <h6>₹{baggage.Price}</h6>
+                                <p>{meal.Name}</p>
+                                <h6>₹{meal.Price}</h6>
                             </div>
-                            <div className="col-md-6 baggagge-selectionbtn">
+                            <div className="col-md-6 meal-selectionbtn">
                                 <div>
                                     <button
-                                        className={selectedBaggage?.Weight === baggage.Weight ? 'btn-added' : 'btn-add'}
-                                        onClick={() => handleBaggageClick(baggage)}
+                                        className={selectedMeal?.Name === meal.Name ? 'btn-added' : 'btn-add'}
+                                        onClick={() => handleMealClick(meal)}
                                     >
-                                        {selectedBaggage?.Weight === baggage.Weight ? '✓ Added' : '+ Add'}
+                                        {selectedMeal?.Name === meal.Name ? '✓ Added' : '+ Add'}
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                ))}
+                ))
+            ) : (
+                <p style={{color:"red"}}>No meal data found</p>
+            )}
+        </div>
+    );
+    
 
 
+
+    const renderBaggageTab = () => {
+        const baggageData = getSsrApiData();
+    
+        return (
+            <div className="baggageTab">
+                <h5>Select Your Baggage Option</h5>
+                {baggageData.length > 0 ? (
+                    baggageData.map((baggage, index) => (
+                        <div key={index} className="baggage-selection">
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <p>{baggage.Weight} kg</p>
+                                    <h6>₹{baggage.Price}</h6>
+                                </div>
+                                <div className="col-md-6 baggagge-selectionbtn">
+                                    <div>
+                                        <button
+                                            className={selectedBaggage?.Weight === baggage.Weight ? 'btn-added' : 'btn-add'}
+                                            onClick={() => handleBaggageClick(baggage)}
+                                        >
+                                            {selectedBaggage?.Weight === baggage.Weight ? '✓ Added' : '+ Add'}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p style={{color:"red"}}> Baggage data is not available.</p>
+                )}
             </div>
         );
     };
-
+    
 
 
     return (
@@ -462,18 +505,21 @@ const SeatMealBaggageTabs = () => {
                             {activeTab === 'Meals' && renderMealsTab()}
                             {activeTab === 'Baggage' && renderBaggageTab()}
                         </div>
+
+{/* ------------------------------------------ */}
+
                         <div className="f-fare row mt-3">
                             <div className="col-md-3">
                                 <p>Seat: ₹{selectedSeats.reduce((total, seat) => total + seat.price, 0).toFixed(2)}</p>
                             </div>
                             <div className="col-md-3">
-                                <p>Meal:</p>
+                                <p>Meal: ₹{mealPrice.toFixed(2)}</p>
                             </div>
                             <div className="col-md-3">
                                 <p>Baggage: ₹{selectedBaggage?.Price || '0'}</p>
                             </div>
                             <div className="col-md-3">
-                                <p>Total Price (Seat, Meal, Baggage): ₹{finalTotalPrice.toFixed(2)}</p>
+                                <p style={{fontWeight:"500"}}>Total Price (Seat, Meal, Baggage): ₹{finalTotalPrice.toFixed(2)}</p>
                             </div>
                             <div>
                             <div className="meal-last">
@@ -482,6 +528,10 @@ const SeatMealBaggageTabs = () => {
                             </div>
                             </div>
                         </div>
+
+{/* --------------------------------------------------- */}
+
+                        
                     </div>
 
 

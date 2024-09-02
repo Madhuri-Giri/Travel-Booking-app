@@ -67,15 +67,21 @@ const FlightReview = () => {
 // -----------------------------------------------------------------------
 
 
-  const [totalPrice, setTotalPrice] = useState(0);
+const [totalPrice, setTotalPrice] = useState(0);
 
-  useEffect(() => {
-      const savedFare = localStorage.getItem('selectedFlightBaseFare');
-      
-      if (savedFare) {
-          setTotalPrice(parseFloat(savedFare));
-      }
-  }, []);
+useEffect(() => {
+    const savedFare = localStorage.getItem('selectedFlightBaseFare');
+    
+    if (savedFare) {
+        setTotalPrice(parseFloat(savedFare));
+    }
+}, []);
+
+const finalTotalPrice = parseFloat(localStorage.getItem('finalTotalPrice')) || 0;
+
+// Calculate the grand total
+const grandTotal = totalPrice + finalTotalPrice;
+
 
 
   if (!fareDataDetails) {
@@ -129,7 +135,6 @@ const FlightReview = () => {
   console.log("fareDataDetails", fareDataDetails);
 
 
-  const finalTotalPrice = localStorage.getItem('finalTotalPrice') || '0';
 
 
   //-----------------------------Payment apis--------------------------------------------------------------------------------------
@@ -591,7 +596,7 @@ const bookHoldApi = async () => {
                     </div>
                     <div className="flightPayDivhed3">
                       <h5>Grand Total</h5>
-                      <p>₹{totalPrice.toFixed(2)}</p>
+                      <p>₹{grandTotal.toFixed(2)}</p>
                     </div>
                   </div>
                   <div className="flightPayDivMain">
