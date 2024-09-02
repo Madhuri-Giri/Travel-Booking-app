@@ -134,7 +134,7 @@ const grandTotal = totalPrice + finalTotalPrice;
   // func for duration convert hpur minute---------------------
   console.log("fareDataDetails", fareDataDetails);
 
-
+  const roundedGrandTotal = Math.round(grandTotal);
 
 
   //-----------------------------Payment apis--------------------------------------------------------------------------------------
@@ -146,7 +146,7 @@ const grandTotal = totalPrice + finalTotalPrice;
       const loginId = localStorage.getItem('loginId')
 
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-flight-payment', {
-        amount: 100,
+        amount: roundedGrandTotal,
         user_id: loginId,
       });
 
@@ -196,7 +196,7 @@ const grandTotal = totalPrice + finalTotalPrice;
             await flightpayUpdate();
         
             const IsLCC = localStorage.getItem('F-IsLcc') === 'true'; 
-            setPayLoading(false);
+            setPayLoading(true);
         
             if (IsLCC === true) {
                 await bookLccApi();
@@ -561,6 +561,8 @@ const bookHoldApi = async () => {
   if (payLoading) {
     return <PayloaderHotel/>;
   }
+
+  
 
 
   return (
