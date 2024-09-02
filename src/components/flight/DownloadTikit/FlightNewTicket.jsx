@@ -27,6 +27,8 @@ const FlightNewTikit = () => {
   const from = useSelector((state) => state.bus.from);
   const to = useSelector((state) => state.bus.to);
   console.log("flightticketPassengerDetails", flightticketPassengerDetails);
+  const passengerDetailsFlight = flightticketPassengerDetails.userdetails
+  console.log("pasenger", passengerDetailsFlight[0].name);
 
   useEffect(() => {
     const fetchFlightTicketApiData = async () => {
@@ -78,32 +80,39 @@ const FlightNewTikit = () => {
     fetchFlightTicketApiData();
     loadAdultPassengerDetails();
   }, []);
-
   const downloadTicket = () => {
     if (!adultPassengerDetails.length) {
       console.error("No adult passenger details available for download");
       return;
     }
-
+  
     if (!ticketElementRef.current) {
       console.error("Ticket element reference is not set");
       return;
     }
-
+  
+    // Select only the flight ticket main content
+    const flightTicketMain = ticketElementRef.current.querySelector('.flightTicketmain');
+  
+    if (!flightTicketMain) {
+      console.error("Flight ticket main content not found");
+      return;
+    }
+  
     const doc = new jsPDF();
-
-    // Temporarily hide the .btm div
+  
+    // Temporarily hide the .btm div if exists
     const btmDiv = ticketElementRef.current.querySelector('.btm');
     if (btmDiv) {
       btmDiv.style.display = 'none';
     }
-
-    html2canvas(ticketElementRef.current, { scale: 2 }).then((canvas) => {
+  
+    // Capture only the flight ticket main section
+    html2canvas(flightTicketMain, { scale: 2 }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save('flight_ticket.pdf');
     }).catch((error) => {
@@ -115,6 +124,7 @@ const FlightNewTikit = () => {
       }
     });
   };
+  
 
 
   const formatDate = (dateString) => {
@@ -270,7 +280,7 @@ const FlightNewTikit = () => {
                       <tbody>
                         {passengers.map((passenger, index) => (
                           <tr key={index}>
-                            <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong>1. {passenger.name}</strong> , <span style={{ color: 'grey' }}>{passenger.type}</span> </td>
+                            <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong>1. {passengerDetailsFlight[0].name}</strong> , <span style={{ color: 'grey' }}>{passenger.type}</span> </td>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{passenger.pnr}</td>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{passenger.eTicket}</td>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{passenger.seat}</td>
