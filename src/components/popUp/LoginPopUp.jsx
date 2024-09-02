@@ -1,20 +1,26 @@
+// LoginPopUp Component
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import "../popUp/LoginPopUp.css";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const LoginPopUp = ({ showModal, onClose }) => {
+const LoginPopUp = ({ showModal, onClose, prefilledMobile }) => {
   const [otpShown, setOtpShown] = useState(false);
   const [formData, setFormData] = useState({
-    mobile: '',
-    otp: ''  
+    mobile: prefilledMobile || '',  // Initialize with prop value
+    otp: ''
   });
 
- 
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    // Update formData.mobile if prefilledMobile changes
+    setFormData(prevData => ({ ...prevData, mobile: prefilledMobile }));
+  }, [prefilledMobile]);
+
   const toggleOtpVisibility = () => {
     setOtpShown(prev => !prev);
   };
@@ -30,7 +36,7 @@ const LoginPopUp = ({ showModal, onClose }) => {
         },
         body: JSON.stringify(formData)
       });
-  
+
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('loginId', data.data.id);
@@ -38,7 +44,7 @@ const LoginPopUp = ({ showModal, onClose }) => {
 
         toast.success('Login successful!', {
           position: "top-right",
-          autoClose: 3000, // Toast duration in ms
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -69,7 +75,7 @@ const LoginPopUp = ({ showModal, onClose }) => {
         size="md" 
         centered 
         className="small-popup-modal"
-        backdrop="static"  // Static backdrop
+        backdrop="static"
       >
         <Modal.Header closeButton>
           <Modal.Title>Login to Your Account</Modal.Title>
