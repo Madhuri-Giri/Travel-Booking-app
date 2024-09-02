@@ -355,14 +355,15 @@
         justify-content: space-evenly;
         flex-direction: row;
         margin-top: 1vmax;
-  margin-bottom: 1vmax  ;
+  margin-bottom: 1vmax ;
 }
 
 .ReviewBooking .main-branch .r-left .left-main  .new-contact form .c-detail .cont input{
-       padding: 0.6vmax 3vmax;
+       padding: 0.6vmax 2vmax;
        outline: none;
        border-radius: 10px;
        border: 0.1px solid #00000082;
+       width: 100%;
  }
 
 
@@ -647,7 +648,7 @@ border-radius: 10px;
 
 
 
- @media (min-width:600px) and (max-width:1250px) {
+ @media (min-width:600px) and (max-width:1150px) {
        .ReviewBooking .review-book h5{
                  width: 100%;
                  justify-content:center;
