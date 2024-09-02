@@ -1,3 +1,4 @@
+// EnterOtp Component
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +10,9 @@ import LoginPopUp from "./LoginPopUp";
 const EnterOtp = ({ showModal, onClose }) => {
   const [formData, setFormData] = useState({ mobile: "" });
   const [error, setError] = useState("");
-  const [showRegisterModal, setShowRegisterModal] = useState(false); // State for RegisterModal
-  const [showLoginModal, setShowLoginModal] = useState(false); // State for LoginModal
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [loginMobile, setLoginMobile] = useState("");
   const navigate = useNavigate();
   const deviceId = isBrowser ? "browser" : isMobile ? "mobile" : "unknown";
 
@@ -22,7 +24,6 @@ const EnterOtp = ({ showModal, onClose }) => {
     }
 
     try {
-      
       const response = await fetch(
         "https://sajyatra.sajpe.in/admin/api/send-otp",
         {
@@ -45,11 +46,9 @@ const EnterOtp = ({ showModal, onClose }) => {
       console.log('send otp', data);
 
       localStorage.setItem("otpResponse", JSON.stringify(data));
-      
-      onClose(); 
+      setLoginMobile(formData.mobile);  // Set the mobile number for LoginPopUp
+      onClose();
 
-
-      // Show the appropriate modal based on the user registration status
       if (data.user_registered) {
         setShowLoginModal(true);
       } else {
@@ -69,11 +68,11 @@ const EnterOtp = ({ showModal, onClose }) => {
 
   return (
     <>
-      {showModal && <div className="modal-overlay" />} {/* Overlay div */}
+      {showModal && <div className="modal-overlay" />}
 
       <Modal
         show={showModal}
-        onHide={onClose} // Use the onClose prop to close the modal
+        onHide={onClose}
         centered
         className="small-popup-modal"
       >
@@ -102,13 +101,14 @@ const EnterOtp = ({ showModal, onClose }) => {
 
       <RegisterModal
         showModal={showRegisterModal}
-        onClose={() => setShowRegisterModal(false)} 
+        onClose={() => setShowRegisterModal(false)}
       />
 
-        <LoginPopUp
-          showModal={showLoginModal}
-          onClose={() => setShowLoginModal(false)}
-        />
+      <LoginPopUp
+        showModal={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        prefilledMobile={loginMobile} // Ensure mobile number is passed
+      />
     </>
   );
 };
