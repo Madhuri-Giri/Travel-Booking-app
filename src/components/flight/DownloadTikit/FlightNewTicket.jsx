@@ -117,36 +117,6 @@ const FlightNewTikit = () => {
   };
 
 
-  const handleCancelTicket = async () => {
-    const confirmation = window.confirm("Are you sure you want to cancel?");
-    if (confirmation) {
-      try {
-        const response = await fetch("https://sajyatra.sajpe.in/admin/api/flight-cancel", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            RequestType: "2",
-            TraceId: "123456"
-          }),
-        });
-
-        if (response.ok) {
-          toast.success("Your ticket is canceled");
-          console.log("Your ticket is canceled");
-        } else {
-          toast.error("Failed to cancel the ticket");
-        }
-      } catch (error) {
-        console.error("Error canceling the ticket:", error);
-        toast.error("An error occurred while canceling the ticket");
-      }
-    } else {
-      console.log("Ticket cancellation aborted");
-    }
-  };
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
@@ -163,9 +133,10 @@ const FlightNewTikit = () => {
     });
   };
 
-  if (!flightticketPassengerDetails || !adultPassengerDetails.length) {
-    return <p>Loading...</p>;
-  }
+  const passengers = [
+    { name: 'John Doe', type:'Adult', pnr: 'ABC123', eTicket: '1234567890', seat: '12A' },
+  ];
+
 
   return (
     <>
@@ -177,7 +148,7 @@ const FlightNewTikit = () => {
               <div className="col-lg-3">
                 <Lottie animationData={LootiAnim} />
               </div>
-              <div className="col-lg-9">
+              {/* <div className="col-lg-9">
                 <div className='flightticktbox'>
                   <div className='flighttickthed'>
                     <h5>Flight Ticket</h5>
@@ -241,7 +212,76 @@ const FlightNewTikit = () => {
                     <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
                   </div>
                 </div>
+              </div> */}
+
+              <div className="col-lg-9">
+                <div className="fligthticketBtns">
+                    <button className='busdonload' onClick={downloadTicket}>
+                      Download
+                      <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
+                    </button>
+                  </div>
+                <div className='flightTicketmain'>
+                  <div className='flightticketboxHED'>
+                    <h6>Thu,25 May 23</h6>
+                    <h6>KOLKATA TO DELHI</h6>
+                    <p>2h 20m</p>
+                  </div>
+                  <div className="flightticketboxTravelDetails">
+                    <div className="ffbox1">
+                      <div className='flightIndigodet'>
+                        <p>Indigo</p>
+                        <p>6E-2345</p>
+                      </div>
+                      <div className='flightSaver'>
+                        <h6>Regular Fare</h6>
+                        <h6>SAVER</h6>
+                      </div>
+                    </div>
+                    <div className="ffbox2">
+                      <h4>CCU</h4>
+                      <p className='ffbox2P1'>KOLKATA</p>
+                      <p className='ffbox2Time'>10:10 hrs , 25 May</p>
+                      <p>Netaji Sbhas Chandra Bose International Airport</p>
+                    </div>
+                    <div className="ffbox3">
+                      <p>---</p>
+                      <p className='ffbox3TImeborder'>2h 20m</p>
+                      <p>Economy</p>
+                    </div>
+                    <div className="ffbox4">
+                      <h4>DEL</h4>
+                      <p className='ffbox4P1'>DELHI</p>
+                      <p className='ffbox2Time'>10:10 hrs , 25 May</p>
+                      <p>Indira Gandhi International AIrport. Terminal 2</p>
+                    </div>
+
+                  </div>
+                  <div className="">
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                      <thead className='passengerDetailTable'>
+                        <tr>
+                          <th style={{ border: '1px solid #ddd', padding: '8px' }}>PASSENGER NAME</th>
+                          <th style={{ border: '1px solid #ddd', padding: '8px' }}>PNR</th>
+                          <th style={{ border: '1px solid #ddd', padding: '8px' }}>E-TICKET NO.</th>
+                          <th style={{ border: '1px solid #ddd', padding: '8px' }}>SEAT</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {passengers.map((passenger, index) => (
+                          <tr key={index}>
+                            <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong>1. {passenger.name}</strong> , <span style={{ color: 'grey' }}>{passenger.type}</span> </td>
+                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{passenger.pnr}</td>
+                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{passenger.eTicket}</td>
+                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{passenger.seat}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
+
             </div>
           ))}
 
