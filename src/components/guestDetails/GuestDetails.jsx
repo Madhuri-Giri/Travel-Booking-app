@@ -838,7 +838,7 @@ const GuestDetails = () => {
                   name="leadPassenger"
                   value={formData.leadPassenger}
                   onChange={(e) => handleFormChange(index, e)}
-                  pattern="^(Yes|No)$"
+                  pattern="^(Yes|No|yes|no)$"
                 />
                
               </div>

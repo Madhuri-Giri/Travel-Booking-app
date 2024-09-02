@@ -17,10 +17,31 @@ import BusGurantee from './BusGurantee';
 import Loading from '../../pages/loading/Loading';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
+import axios from 'axios';
 
 const BusSearch = () => {
   const [loading, setLoading] = useState(false);
   const dateInputRef = useRef(null);
+  const [ipAddress, setIpAddress] = useState('');
+
+// ---------------IP Address-------------
+  // Function to fetch the IP address
+  const fetchIPAddress = async () => {
+    try {
+      // Using the ipify API to get the public IP address
+      const response = await axios.get('https://api.ipify.org?format=json');
+      setIpAddress(response.data.ip);
+      console.log('IP Address:', response.data.ip);
+    } catch (error) {
+      console.error('Error fetching IP address:', error);
+    }
+  };
+
+  // Fetch the IP address when the component mounts
+  useEffect(() => {
+    fetchIPAddress();
+  }, []);
+// ------------end IP Address-------------
 
   const handleIconClick = () => {
     dateInputRef.current.showPicker();
