@@ -163,15 +163,16 @@ function BookingHistory() {
                 console.log('Bus booking history:', data);
                 // localStorage.setItem('BusBookingAmount', data.booking_Status[0].amount);
 
+                setBusBookings(data);
 
                 // Check for data in both keys
-                if (data && Array.isArray(data.result) && data.result.length > 0) {
-                    setBusBookings(data.result);
-                } else if (data && Array.isArray(data.booking_Status) && data.booking_Status.length > 0) {
-                    setBusBookings(data.booking_Status);
-                } else {
-                    setBusBookings([]); // Set empty if no data found
-                }
+                // if (data && Array.isArray(data.result) && data.result.length > 0) {
+                //     setBusBookings(data.result);
+                // } else if (data && Array.isArray(data.booking_Status) && data.booking_Status.length > 0) {
+                //     setBusBookings(data.booking_Status);
+                // } else {
+                //     setBusBookings([]);
+                // }
             } catch (error) {
                 console.error("Error fetching API of Bus bookings history:", error);
                 setError("Failed to fetch booking history");
@@ -209,13 +210,14 @@ function BookingHistory() {
 
                 const data = await response.json();
                 console.log('flight Booking API Response:', data);
+                setFlightBookings(data);
 
                 // Update to use the correct data structure
-                if (data && Array.isArray(data.flight_history) && data.flight_history.length > 0) {
-                    setFlightBookings(data);
-                } else {
-                    setFlightBookings([]);
-                }
+                // if (data && Array.isArray(data.flight_history) && data.flight_history.length > 0) {
+                //     setFlightBookings(data);
+                // } else {
+                //     setFlightBookings([]);
+                // }
             } catch (error) {
                 console.error("Error fetching API of flight bookings history:", error);
                 setError("Failed to fetch booking history");
@@ -258,26 +260,29 @@ function BookingHistory() {
                     <div className='busTabContent'>
                         <div className="container">
                             <h6 className='busTabContenthedding'>Bus Ticket Status</h6>
-                            {busBookings.length > 0 ? (
-                                busBookings.map((booking, index) => (
+                            {busBookings.booking_Status.length === 0 ? (
+                                <p>No bookings found, please book a ticket.</p>
+                            ) : (
+
+                                busBookings.booking_Status.map((booking, index) => (
                                     <div key={index} className="row busTabContentROW">
                                         <div className="col-md-6">
                                             <p><strong>Bus Booking ID : </strong> {booking.bus_booking_id}</p>
-                                            <p className=''><strong>Bus Trace ID : </strong> <span>{booking.id
-                                            }</span></p>
+                                            <p><strong>Bus Trace ID : </strong> <span>{booking.id}</span></p>
                                         </div>
                                         <div className="col-md-6">
-                                            <p className=''><strong>Transaction Number : </strong> <span>{booking.transaction_num}</span></p>
-                                            <p className='busBookingsamount'><strong>Amount : </strong> <span>₹{booking.amount}</span></p>
+                                            <p><strong>Transaction Number : </strong> <span>{booking.transaction_num}</span></p>
+                                            <p className="busBookingsamount"><strong>Amount : </strong> <span>₹{booking.amount}</span></p>
                                         </div>
-                                        <div className='viewbttn'>
-                                            <button onClick={() => navigateBusDetails(booking.bus_booking_id, booking.bus_trace_id)}>View Ticket</button>
+                                        <div className="viewbttn">
+                                            <button onClick={() => navigateBusDetails(booking.bus_booking_id, booking.bus_trace_id)}>
+                                                View Ticket
+                                            </button>
                                         </div>
                                     </div>
                                 ))
-                            ) : (
-                                <p>No bookings found please book ticket.</p>
                             )}
+
 
                         </div>
                     </div>
@@ -287,71 +292,70 @@ function BookingHistory() {
                     <div className='flightTabContent'>
                         <div className="container">
                             <h6 className='flightTabContentHeading'>Flight Ticket Status</h6>
-                            {flightBookings.flight_history.length > 0 ? (
-                                flightBookings.flight_history.map((booking, index) => (
-                                    <div key={index} className="row flightTabContentROW">
-                                        <div className="col-md-6">
-                                            <p><strong>Name : </strong> <span>{booking.username || '/NA/'}</span></p>
-                                            <p><strong>PNR : </strong> <span>{booking.amount}</span></p>
-                                            <p><strong>Booking ID : </strong> <span>{booking.booking_id}</span></p>
+                            {
+                                flightBookings.status === "success" ? (
+                                    flightBookings.flight_history.map((booking, index) => (
+                                        <div key={index} className="row flightTabContentROW">
+                                            <div className="col-md-6">
+                                                <p><strong>Booking ID : </strong> <span>{booking.booking_id}</span></p>
+                                                <p><strong>Transaction No : </strong> <span>{booking.transaction_num}</span></p>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <p className='bookingStats'><strong>Payment Status : </strong> <span>{booking.payment_status}</span></p>
+                                                <p className='hotlamount'><strong>Amount : </strong> <span>₹{Math.round(booking.amount)}</span></p>
+                                            </div>
+                                            <div className='viewbttn'>
+                                                <button onClick={() => navigateFlightDetails(booking.transaction_num, booking.booking_id)}>View Ticket</button>
+                                            </div>
                                         </div>
-                                        <div className="col-md-6">
-                                            <p className=' '><strong>Transaction No : </strong> <span>{booking.transaction_num}</span></p>
-                                            <p className='bookingStats'><strong>Payment Status : </strong> <span>{booking.payment_status}</span></p>
-                                            <p className='hotlamount '><strong>Amount : </strong> <span>₹{Math.round(booking.amount)}</span></p>
+                                    ))
+                                ) : (
+                                    <p>No flight bookings found. Please book a flight ticket.</p>
+                                )
+                            }
 
-                                        </div>
-                                        <div className='viewbttn'>
-                                            <button onClick={() => navigateFlightDetails(booking.transaction_num, booking.booking_id)}>View Ticket</button>
-                                            {/* <button onClick={() => navigateFlightDetails(booking.transaction_num)}>View Details</button> */}
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <p>No flight bookings found. Please book a flight ticket.</p>
-                            )}
                         </div>
                     </div>
                 );
             case 'hotel':
                 return (
                     <div className='hotelTabContent'>
-                    <div className="container">
-                        <h6 className='hotelTabContenthedding'>Hotel Ticket Status</h6>
-                        {hotelBookings && hotelBookings.data && Array.isArray(hotelBookings.data) ? (
-                            hotelBookings.data.length > 0 ? (
-                                hotelBookings.data.map((user, userIndex) => (
-                                    hotelBookings.userdetails && Array.isArray(hotelBookings.userdetails) ? (
-                                        hotelBookings.userdetails.map((userdetails, userDeatilsIndex) => (
-                                            <div key={`hotelTabContentROW-${userIndex}-${userDeatilsIndex}`} className="row hotelTabContentROW">
-                                                <div className="col-md-6">
-                                                    <p><strong>Hotel Name : </strong> {hotelBookings.hotel_name || "N/A"}</p>
-                                                    <p><strong>Transaction No : </strong> {user.transaction_num || "N/A"}</p>
-                                                    <p><strong>Mobile No : </strong> {userdetails.mobile|| "N/A"}</p>
+                        <div className="container">
+                            <h6 className='hotelTabContenthedding'>Hotel Ticket Status</h6>
+                            {hotelBookings && hotelBookings.data && Array.isArray(hotelBookings.data) ? (
+                                hotelBookings.data.length > 0 ? (
+                                    hotelBookings.data.map((user, userIndex) => (
+                                        hotelBookings.userdetails && Array.isArray(hotelBookings.userdetails) ? (
+                                            hotelBookings.userdetails.map((userdetails, userDeatilsIndex) => (
+                                                <div key={`hotelTabContentROW-${userIndex}-${userDeatilsIndex}`} className="row hotelTabContentROW">
+                                                    <div className="col-md-6">
+                                                        <p><strong>Hotel Name : </strong> {hotelBookings.hotel_name || "N/A"}</p>
+                                                        <p><strong>Transaction No : </strong> {user.transaction_num || "N/A"}</p>
+                                                        <p><strong>Mobile No : </strong> {userdetails.mobile || "N/A"}</p>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <p><strong>Hotel Id : </strong> {user.booking_id}</p>
+                                                        <p className='bookingStats'><strong>Status : </strong> <span>{user.status}</span></p>
+                                                        <p className='hotlamount'><strong>Amount : </strong> <span>₹{Math.round(user.amount)}</span></p>
+                                                    </div>
+                                                    <div className='viewbttn'>
+                                                        <button onClick={() => handleBookingClick(hotelBookings.hotel_booking_id)}>View Ticket</button>
+                                                    </div>
                                                 </div>
-                                                <div className="col-md-6">
-                                                    <p><strong>Hotel Id : </strong> {user.booking_id}</p>
-                                                    <p className='bookingStats'><strong>Status : </strong> <span>{user.status}</span></p>
-                                                    <p className='hotlamount'><strong>Amount : </strong> <span>₹{Math.round(user.amount)}</span></p>
-                                                </div>
-                                                <div className='viewbttn'>
-                                                    <button onClick={() => handleBookingClick(hotelBookings.hotel_booking_id)}>View Ticket</button>
-                                                </div>
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <p key={`user-details-${userIndex}`}>No user details found.</p>
-                                    )
-                                ))
+                                            ))
+                                        ) : (
+                                            <p key={`user-details-${userIndex}`}>No user details found.</p>
+                                        )
+                                    ))
+                                ) : (
+                                    <p>No bookings found. Please book a ticket.</p>
+                                )
                             ) : (
                                 <p>No bookings found. Please book a ticket.</p>
-                            )
-                        ) : (
-                            <p>No bookings found. Please book a ticket.</p>
-                        )}
+                            )}
+                        </div>
                     </div>
-                </div>
-                
+
                 );
             default:
                 return null;

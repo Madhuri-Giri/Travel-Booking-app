@@ -577,7 +577,7 @@
 .bus-upperlayout {
   display: grid;
   grid-template-columns: repeat(5, 45px); 
-  gap: 7px 25px; 
+  gap: 10px 10px; 
   align-items: center; 
   justify-content: center; 
   padding: 5px 0px;
@@ -673,5 +673,8 @@
 .booked-seat {
   background-color: #d9534f; /* Red for booked seats */
 }
+
+
+
 
 
