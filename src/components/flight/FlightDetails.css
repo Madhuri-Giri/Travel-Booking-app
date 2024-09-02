@@ -539,7 +539,7 @@
 
 .seatsTabssRow {
     background-color: #87ceeb36;
-    padding: 15px 0px;
+    /* padding: 15px 0px; */
 }
 
 .seat-selection button {

@@ -310,7 +310,7 @@ const SeatMealBaggageTabs = () => {
         setSelectedSeats([]);  
     }, []);
 
-
+// -------------------------------------------------------------------------------------------------------------------------
 
     const renderSeatsTab = () => (
         <div className="seatsTabss">
@@ -334,7 +334,7 @@ const SeatMealBaggageTabs = () => {
                         {seatData.length > 0 ? (
                             <div className="seat-selection row">
                                 {seatData.map((seat, index) => (
-                                    <div key={index} className="col-md-2 col-3">
+                                    <div key={index} className="col-md-2 col-3 unkown">
                                         <button
                                             className={`f-seat ${seat.isBooked ? 'booked' : ''} ${selectedSeats.find(s => s.seatNumber === seat.seatNumber) ? 'selected' : ''}`}
                                             onClick={() => handleSeatClick(seat)}
@@ -359,6 +359,7 @@ const SeatMealBaggageTabs = () => {
         </div>
     );
     
+// -------------------------------------------------------------------------------------------------------------------------
 
 
 
