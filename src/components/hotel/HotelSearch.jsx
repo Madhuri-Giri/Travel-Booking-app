@@ -19,7 +19,7 @@ import { faCalendarDays} from '@fortawesome/free-solid-svg-icons';
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faHotel} from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-
+import axios from 'axios';
 const HotelSearch = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Add loading state
@@ -192,7 +192,28 @@ const HotelSearch = () => {
     }
   };
 
-  // --------------- End API Code -------------------------------------------------------------------------
+  // --------------- End API Code ---------------------------------------------------------------------
+//------- FIND IP ADDRESS---------
+  const [ipAddress, setIpAddress] = useState('');
+
+  // Function to fetch the IP address
+  const fetchIPAddress = async () => {
+    try {
+      // Using the ipify API to get the public IP address
+      const response = await axios.get('https://api.ipify.org?format=json');
+      setIpAddress(response.data.ip);
+      console.log('IP Address:', response.data.ip);
+    } catch (error) {
+      console.error('Error fetching IP address:', error);
+    }
+  };
+
+  // Fetch the IP address when the component mounts
+  useEffect(() => {
+    fetchIPAddress();
+  }, []);
+
+  // --------------------------
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [isSuggestionVisible, setIsSuggestionVisible] = useState(true);

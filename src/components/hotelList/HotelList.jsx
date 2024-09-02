@@ -33,7 +33,7 @@ const HotelList = () => {
   const { searchResults } = location.state || {};
   const [hotels, setHotels] = useState([]);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [sortOption, setSortOption] = useState('name');
   const { position: userPosition, error: geoError } = useGeolocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -66,16 +66,20 @@ const HotelList = () => {
 
   // ---------------------------------------------
 
-  // const [timer, setTimer] = useState(600000); 
+  // const [timer, setTimer] = useState(600000); // 10 minutes in milliseconds
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   const endTime = localStorage.getItem('h-timerEndTime');
   //   const now = Date.now();
     
-  //   let remainingTime = endTime ? endTime - now : 600000;
+  //   let remainingTime = endTime ? parseInt(endTime) - now : 600000;
+
+  //   // Log the remaining time to check if it's calculated correctly
+  //   console.log('Initial remaining time:', remainingTime);
 
   //   if (remainingTime <= 0) {
-  //     navigate('/hotel-search');
+  //     navigate('/hotel-search'); // Redirect if the timer has already expired
   //     return;
   //   }
 
@@ -84,21 +88,24 @@ const HotelList = () => {
   //   const countdown = setInterval(() => {
   //     setTimer((prev) => {
   //       const updatedTime = prev - 1000;
-        
-  //       localStorage.setItem('h-timerEndTime', Date.now() + updatedTime);
-        
+
+  //       // Log the updated time to check if it's decreasing as expected
+  //       console.log('Updated time:', updatedTime);
+
   //       if (updatedTime <= 0) {
   //         clearInterval(countdown);
-  //         localStorage.removeItem('h-timerEndTime');
-  //         navigate('/hotel-search');
+  //         localStorage.removeItem('h-timerEndTime'); // Clean up localStorage
+  //         navigate('/hotel-search'); // Redirect when the timer expires
   //         return 0;
   //       }
-        
+
+  //       // Update end time in localStorage
+  //       localStorage.setItem('h-timerEndTime', Date.now() + updatedTime);
   //       return updatedTime;
   //     });
-  //   }, 1000); 
+  //   }, 1000);
 
-  //   return () => clearInterval(countdown);
+  //   return () => clearInterval(countdown); // Clean up interval on component unmount
   // }, [navigate]);
 
   // const formatTime = (milliseconds) => {
@@ -107,7 +114,6 @@ const HotelList = () => {
   //   const seconds = totalSeconds % 60;
   //   return `${minutes} min ${seconds} sec left`;
   // };
-
 
 
   // ----------------------------------------------
@@ -317,7 +323,8 @@ const HandelHotelInfo = async (index) => {
     <>
       <CustomNavbar />
 
-      {/* <div className="timer">
+       {/* <div className="timer">
+          
           <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
         </div> */}
 
@@ -523,13 +530,9 @@ const HandelHotelInfo = async (index) => {
             breakLinkClassName={'page-link'}
           />
         </div>
-
         <Footer />
-
       </section>
-
     </>
   );
 };
-
 export default HotelList;
