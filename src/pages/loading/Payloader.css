@@ -8,15 +8,17 @@
           flex-direction: column;
           /* background:#15a1fe;position: absolute; */
           z-index: 11111;
+          margin-top: 3vmax;
 }
 .payload h5{
 
        color:#0da50d ;
        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-       font-size: 35px
+       font-size: 1.3vmax;
+       margin-top: 2vmax;
 }
 .payload img{
-        width: 20%;
+        width: 8%;
         margin-top: 2vmax;
         border-radius: 50%;
         border: none;
@@ -26,19 +28,25 @@
 
 @media (max-width: 600px) {
           .payload img{
-                    width: 100%;
+                    width: 20%;
             }
             .payload h5{
+                
         font-size: 20px;
+        width: 100%;
+        text-align: center;
             }
                  
 }
 @media (min-width: 600px) and (max-width:1150px) {
-          .payload img{
-                    width: 100%;
-            }
-            .payload h5{
-                font-size: 20px;
-                    }
+    .payload img{
+        width: 20%;
+}
+.payload h5{
+    
+font-size: 20px;
+width: 100%;
+text-align: center;
+}
                  
 }
