@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import jsPDF from 'jspdf';
 import "jspdf-autotable";
+import "./FlightNewTicket.css";
 import "./FlightTickect.css"; // Ensure your CSS file is set up correctly
 import CustomNavbar from '../../../pages/navbar/CustomNavbar';
 import Footer from '../../../pages/footer/Footer';
@@ -232,7 +233,7 @@ const FlightTickect = () => {
                   </div>
 
                 </div>
-                <div className="">
+                <div className="passengerTable">
                   <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead className='passengerDetailTable'>
                       <tr>
