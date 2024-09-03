@@ -6,6 +6,7 @@ import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import { RiTimerLine } from "react-icons/ri";
 import he from 'he';
+import Timer from '../timmer/Timer';
 
   const HotelRoom = () => {
   const location = useLocation();
@@ -363,6 +364,7 @@ import he from 'he';
   return (
     <>
       <CustomNavbar />
+      <Timer />
       {/* <div className="timer ">
           <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
         </div> */}

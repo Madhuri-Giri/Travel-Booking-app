@@ -7,6 +7,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import { RiTimerLine } from "react-icons/ri";
+import Timer from '../timmer/Timer';
 
 const renderStar = (rating) => {
   const totalStars = 5;
@@ -121,6 +122,7 @@ const HotelDescription = () => {
   return (
     <>
      <CustomNavbar />
+     <Timer />
      {/* <div className="timer">
           
           <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>

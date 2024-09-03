@@ -20,6 +20,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faHotel} from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+
 const HotelSearch = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Add loading state

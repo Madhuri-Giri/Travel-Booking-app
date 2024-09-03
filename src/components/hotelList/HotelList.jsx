@@ -13,6 +13,7 @@ import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import { RiTimerLine } from "react-icons/ri";
 import EnterOtp from '../popUp/EnterOtp';
+import Timer from '../timmer/Timer';
 
 // Rating star Logic
 const renderStar = (rating) => {
@@ -322,7 +323,8 @@ const HandelHotelInfo = async (index) => {
   return (
     <>
       <CustomNavbar />
-
+      
+      <Timer />
       {/* <div className="timer">
           <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
         </div> */}
@@ -340,12 +342,12 @@ const HandelHotelInfo = async (index) => {
                     <div className="listItem">
                       <label>Destination</label>
                       <input
-  type="text"
-  className="destination-input"
-  placeholder="Enter hotel or city name"
-  value={destination}
-  onChange={(e) => setDestination(e.target.value)}
-/>
+                      type="text"
+                       className="destination-input"
+                       placeholder="Enter hotel  name"
+                       value={destination}
+                        onChange={(e) => setDestination(e.target.value)}
+                                  />
 
                     </div>
 

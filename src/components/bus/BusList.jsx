@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../../pages/footer/Footer';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import EnterOtp from '../popUp/EnterOtp';
-
+import TimerBus from '../timmer/TimerBus';
 const BusLists = () => {
   const dispatch = useDispatch();
   const dateMidRef = useRef(null);
@@ -230,6 +230,7 @@ const toggleDropVisibility = () => {
   return (
     <>
   <CustomNavbar />
+  <TimerBus/>
   <div className='BusLists'>
     <div className="busList">
       <div className="timer-bus">

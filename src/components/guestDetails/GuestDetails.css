@@ -129,26 +129,22 @@
   font-size: 14px; 
   color: #333; 
 }
-/* 
-.room-details p:first-child {
-  flex-basis: 20%; 
+
+.hotel-policy {
+  font-family: Arial, sans-serif; 
+  line-height: 1.6; 
 }
 
-.room-details p:nth-child(2) {
-  flex-basis: 20%; 
+.hotel-policy h4 {
+  margin-bottom: 10px; 
+  font-size: 1.2em; 
 }
 
-.room-details p:nth-child(3) {
-  flex-basis: 20%; 
+.hotel-policy p {
+  white-space: pre-wrap; 
+  margin: 0; 
+  letter-spacing: 0.6px;
 }
-
-.room-details p:nth-child(4) {
-  flex-basis: 20%; 
-}
-
-.room-details p:nth-child(5) {
-  flex-basis: 20%; 
-} */
 
 .form-control {
   width: 100%;
@@ -168,13 +164,10 @@
   width: 100%;
 }
 
-
 .form-control {
   width: 100%;
   box-sizing: border-box;
 }
-
-
 
 .custom-placeholder {
   position: absolute;
@@ -195,7 +188,6 @@
   color: #333;
 }
 
-
 .timer {
   position: sticky;
   top: 0;
@@ -214,7 +206,12 @@
 .check_btn{
   font-size: 18px;
   margin-top: 20px;
-  font-weight: 400;
+  font-weight:500;
+}
+
+.check_btn input[type="checkbox"] {
+  transform: scale(1.5); 
+    margin-right: 10px; 
 }
 
 /* Media Queries for Responsiveness */
@@ -286,21 +283,4 @@
     padding: 8px 16px;
     font-size: 14px;
   }
-}
-
-
-.hotel-policy {
-  font-family: Arial, sans-serif; 
-  line-height: 1.6; 
-}
-
-.hotel-policy h4 {
-  margin-bottom: 10px; 
-  font-size: 1.2em; 
-}
-
-.hotel-policy p {
-  white-space: pre-wrap; 
-  margin: 0; 
-  letter-spacing: 0.6px;
 }
