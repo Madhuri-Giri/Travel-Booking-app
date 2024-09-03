@@ -193,17 +193,7 @@ const handleToChange = (event) => {
     }
   };
 
-  // const handleCount = (key, name) => {
-  //   console.log("called", key, name)
-  //   if (key == "increment") {
-  //     setFormData((prev) => ({ ...prev, [name]: formData[name] + 1 }));
-  //   } else if (key == "decrement") {
-  //     if (formData[name] > 0) {
-  //       setFormData((prev) => ({ ...prev, [name]: formData[name] - 1 }));
-  //     }
-  //   }
-  // }
-  // fun for increase decrease adult , child , infant count------------------------------------------------
+ 
 
 
   // func for select flight class----------------------------------------------
@@ -777,21 +767,7 @@ const handleToChange = (event) => {
                                   placeholderText="Select a departure date"
                                   minDate={new Date()} // Departure date cannot be in the past
                                 />
-                                {/* <DatePicker
-                                  name="PreferredDepartureTime"
-                                  selected={preferredDepartureTime}
-                                  onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                  className="departureCallender"
-                                  id="PreferredDepartureTime"
-                                  placeholderText="Select a date"
-                                  ref={departureDatePickerRef}
-                                  minDate={new Date()}
-                                /> */}
-
-                                {/* <MdDateRange
-                                  className="date-picker-icon"
-                                  onClick={() => departureDatePickerRef.current.setOpen(true)}
-                                /> */}
+                                
                               </div>
                               <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
@@ -803,16 +779,7 @@ const handleToChange = (event) => {
                                 <MdDateRange />
                               </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
-                                {/* <DatePicker
-                                  name="PreferredArrivalTime"
-                                  selected={preferredArrivalTime}
-                                  onChange={(date) => handleChange(date, "PreferredArrivalTime")}
-                                  className=""
-                                  id="PreferredArrivalTime"
-                                  placeholderText="Select a date"
-                                  ref={arrivalDatePickerRef}
-                                  minDate={new Date()}
-                                /> */}
+                                
                                 <DatePicker
                                   selected={returnDateDep}
                                   onChange={handleDateChangeReturn}
@@ -1017,24 +984,7 @@ const handleToChange = (event) => {
         </div>
       </section>
 
-      {/* <section className="exictingOffers">
-        <div className="container-fluid mb-5 ss">
-          <div className="row">
-            <h5>Exicting offers</h5>
-            <div className="col-4">
-              <img className='img-fluid' src='https://www.vimaansafar.com/img/slide-72_t.png' />
-            </div>
-            <div className="col-4">
-              <img className='img-fluid' src='https://www.vimaansafar.com/img/slide-71_t.png?t' />
-            </div>
-            <div className="col-4">
-              <img className='img-fluid' src='https://www.vimaansafar.com/img/slide-75_t.png' />
-
-            </div>
-          </div>
-        </div>
-      </section> */}
-
+     
 
       <section className='exictingOffers'>
         <div className="container-fluid">
@@ -1052,68 +1002,7 @@ const handleToChange = (event) => {
         </div>
       </section>
 
-      {/* <section className="exclusive-dealsSec">
-        <div className="container-fluid mb-5">
-          <div className="row mb-4">
-            <h2>Exclusive Deals</h2>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/delhi.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Delhi</h3>
-                  <p>Rs 2200</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/amritsar.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Amritsar</h3>
-                  <p>Rs 1900</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/srinagar.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Srinagar</h3>
-                  <p>Rs 2400</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/bangkok.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Bangkok</h3>
-                  <p>Rs 7000</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/dubai.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Dubai</h3>
-                  <p>Rs 11000</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/hongkong.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Hong Kong</h3>
-                  <p>Rs 13000</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
-
+     
 
 
       <section className="flightsec7 bg-light">
