@@ -153,9 +153,9 @@ const handleToChange = (event) => {
   const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
   const [infantCount, setInfantCount] = useState(0);
-  console.log("adultCount", adultCount);
-  console.log("childCount", childCount);
-  console.log("infantCount", infantCount);
+  
+ 
+ 
   // Handle count change
   const handleCount = (action, type) => {
     let newCount;
@@ -234,7 +234,7 @@ const handleToChange = (event) => {
   // for one way & two way tabs-----------------------------------------
   const [activeTab, setActiveTab] = useState('oneway');
   const [tabValue, setTabValue] = useState(1); // State for tab value: 1 for oneway, 2 for twoway
-  console.log("tabValue", tabValue);
+  // console.log("tabValue", tabValue);
   const [segments, setSegments] = useState([
     {
       Origin: from,
@@ -300,7 +300,6 @@ const handleToChange = (event) => {
     }
   }, [tabValue, departureDate, returnDateDep , selectedflightClass]); 
 
-  // Effect to sync formData with the segments state
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
@@ -308,7 +307,7 @@ const handleToChange = (event) => {
     }));
   }, [segments]); // Dependency on segments state
 
-  console.log("formData", formData);
+  // console.log("formData", formData);
 
   // search API integration function----------------------------------------------
   const getFlightList = async () => {
@@ -329,7 +328,6 @@ const handleToChange = (event) => {
       const data = await response.json();
       console.log("Flight search API response: ", data);
   
-      // Save the entire response to localStorage
       localStorage.setItem('Flight-search', JSON.stringify(data));
   
       const firstResult = data?.Results?.[0]?.[0];
@@ -343,11 +341,11 @@ const handleToChange = (event) => {
         localStorage.setItem("F-SrdvType", SrdvType);
         localStorage.setItem("F-IsLcc", IsLCC);
   
-        console.log("Saved SrdvIndex to local storage:", SrdvIndex);
-        console.log("Saved ResultIndex to local storage:", ResultIndex);
-        console.log("Saved TraceId to local storage:", TraceId);
-        console.log("Saved SrdvType to local storage:", SrdvType);
-        console.log("Saved IsLCC to local storage:", IsLCC);
+        // console.log("Saved SrdvIndex to local storage:", SrdvIndex);
+        // console.log("Saved ResultIndex to local storage:", ResultIndex);
+        // console.log("Saved TraceId to local storage:", TraceId);
+        // console.log("Saved SrdvType to local storage:", SrdvType);
+        // console.log("Saved IsLCC to local storage:", IsLCC);
   
       } else {
         console.log("SrdvIndex or FareDataMultiple not found");
@@ -358,7 +356,6 @@ const handleToChange = (event) => {
     } catch (error) {
       setLoading(false);
       console.error('Error fetching suggestions:', error);
-      // Show user-friendly error message if needed
     }
   };
   
@@ -402,7 +399,6 @@ const handleToChange = (event) => {
         style={{ ...style, display: "block", right: "10px", zIndex: 1 }}
         onClick={onClick}
       >
-        {/* <FaArrowRightLong style={{ color: 'black', fontSize: '30px' }} /> */}
       </div>
     );
   };
@@ -563,16 +559,7 @@ const handleToChange = (event) => {
                                 <MdDateRange />
                               </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
-                                {/* <DatePicker
-                                  name="PreferredDepartureTime"
-                                  selected={preferredDepartureTime}
-                                  onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                  className="departureCallender"
-                                  id="PreferredDepartureTime"
-                                  placeholderText="Select a date"
-                                  ref={departureDatePickerRef}
-                                  minDate={new Date()}
-                                /> */}
+                                
                                 <DatePicker
                                   name="PreferredDepartureTime"
                                   selected={departureDate}

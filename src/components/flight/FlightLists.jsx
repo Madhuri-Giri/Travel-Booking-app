@@ -206,10 +206,6 @@ export default function FlightLists() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        "EndUserIp": "1.1.1.1",
-                        "ClientId": "180112",
-                        "UserName": "Maneesh3",
-                        "Password": "Maneesh@36",
                         "AdultCount": 1,
                         "ChildCount": 0,
                         "InfantCount": 0,
@@ -226,6 +222,7 @@ export default function FlightLists() {
                     })
                 });
                 const data = await response.json();
+                
                 localStorage.setItem('callenderData', JSON.stringify(data));
                 if (data.Results) {
                     setFlightData(data.Results);
@@ -361,7 +358,11 @@ export default function FlightLists() {
             localStorage.setItem('OtherCharges', fare.OtherCharges);
             localStorage.setItem('TransactionFee', fare.TransactionFee);
             localStorage.setItem('Currency', fare.Currency);
-
+            localStorage.setItem('CommissionEarned', fare.CommissionEarned);
+            localStorage.setItem('Discount', fare.Discount);
+            localStorage.setItem('TdsOnCommission', fare.TdsOnCommission);
+            localStorage.setItem('PublishedFare', fare.PublishedFare);         
+            localStorage.setItem('OfferedFare', fare.OfferedFare)
 
 
             if (data.Results && formData) {
@@ -416,7 +417,7 @@ export default function FlightLists() {
 
     const handleSelectSeat = async (flight) => {
         const loginId = localStorage.getItem('loginId');
-        console.log('Current loginId:', loginId);
+        // console.log('Current loginId:', loginId);
 
         // Extract price from the flight data
         const baseFare = flight?.OfferedFare;
@@ -424,7 +425,7 @@ export default function FlightLists() {
         // Save the base fare to local storage
         if (baseFare !== undefined) {
             localStorage.setItem('selectedFlightBaseFare', baseFare);
-            console.log('Saved base fare to local storage:', baseFare);
+            // console.log('Saved base fare to local storage:', baseFare);
         }
 
         await useridHandler();
