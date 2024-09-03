@@ -23,7 +23,7 @@ const FlightNewTikit = () => {
   const [flightticketPassengerDetails, setFlightticketPassengerDetails] = useState(null);
 
   // Convert the stored value to a boolean
-  const islcc = localStorage.getItem('F-IsLcc');
+  const islcc = localStorage.getItem('F-IsLcc') === 'false';
   console.log("islcc", islcc);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const FlightNewTikit = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ transaction_id: flightTransactionId }), // Use the correct transaction ID here
+          body: JSON.stringify({ transaction_id: 215 }), // Use the correct transaction ID here
         });
 
         const data = await response.json();
