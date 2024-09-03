@@ -15,7 +15,7 @@ import Footer from '../../pages/footer/Footer';
 // import Payloader from '../../pages/loading/Payloader';
 import Loading from '../../pages/loading/Loading';
 import PayloaderHotel from '../../pages/loading/PayloaderHotel';
-
+import TimerBus from '../timmer/TimerBus';
 
 const ReviewBooking = () => {
 
@@ -541,11 +541,11 @@ const ReviewBooking = () => {
     <>
 
       <CustomNavbar />
-
-         <div className="review-timer">
+      <TimerBus/>
+         {/* <div className="review-timer"> */}
       {/* <h1>Time Remaining: {formatTime(timer)}</h1> */}
 
-         </div>
+         {/* </div> */}
 
       <div className='ReviewBooking'>
         <div className="review-book">

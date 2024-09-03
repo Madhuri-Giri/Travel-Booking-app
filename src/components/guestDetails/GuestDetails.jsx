@@ -15,7 +15,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import parse from 'html-react-parser';
 import Loading from '../../pages/loading/Loading';
 import PayloaderHotel from '../../pages/loading/PayloaderHotel';
-
+import Timer from '../timmer/Timer';
 const GuestDetails = () => {
  
   const [hotelBlock, setHotelBlock] = useState([]);
@@ -30,12 +30,13 @@ const GuestDetails = () => {
     email: "",
     mobile: "",
     age: "",
+    passportNo: "",
+    PAN: "",
     // paxType: "",
     // leadPassenger: "",
-    passportNo: "",
     // passportIssueDate: "",
     // passportExpDate: "",
-    PAN: "",
+   
   }));
 
   const navigate = useNavigate();
@@ -52,6 +53,14 @@ const GuestDetails = () => {
   const [payLoading, setPayLoading] = useState(false);
   const [loading, setLoading] = useState(false)
 
+  const [errors, setErrors] = useState({});
+
+  const setErrorState = (index, field, message) => {
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      [`${index}-${field}`]: message,
+    }));
+  };
  
   // const [timer, setTimer] = useState(0);
 
@@ -386,13 +395,33 @@ const GuestDetails = () => {
           return isNaN(d.getTime()) ? new Date().toISOString().slice(0, 19) : d.toISOString().slice(0, 19);
         };
       
+        const errors = [];
+        
         // Validate required fields
-        for (const form of guestForms) {
-          if (!form.fname || !form.lname || !form.email || !form.mobile) {
-            alert("Please fill out all required fields.");
-            isProcessing = false;
-            return;
+        guestForms.forEach((formData, index) => {
+          if (!formData.fname || formData.fname.length < 2 || formData.fname.length > 30) {
+            errors.push(`First Name is required and must be between 2 and 30 characters at index ${index}`);
           }
+          if (!formData.lname || formData.lname.length < 2 || formData.lname.length > 30) {
+            errors.push(`Last Name is required and must be between 2 and 30 characters at index ${index}`);
+          }
+          if (!formData.email || !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(formData.email)) {
+            errors.push(`A valid Email is required at index ${index}`);
+          }
+          if (!formData.mobile || !/^\d{10}$/.test(formData.mobile)) {
+            errors.push(`Contact Number must be 10 digits at index ${index}`);
+          }
+          if (formData.age === '' || isNaN(formData.age) || formData.age < 18 || formData.age > 100) {
+            errors.push(`Age must be between 18 and 100 at index ${index}`);
+          }
+          // Additional validations can be added here
+        });
+      
+        if (errors.length > 0) {
+          // Display errors
+          toast.error(errors.join(', '));
+          isProcessing = false;
+          return;
         }
       
         try {
@@ -446,11 +475,11 @@ const GuestDetails = () => {
                   LastName: guest.lname || "",
                   Phoneno: guest.mobile || "",
                   Email: guest.email || "",
-                  PaxType: "Adult",         // Provide a default value
-                  LeadPassenger: "No",     // Provide a default value
+                  PaxType: "Adult",         
+                  LeadPassenger: "No",     
                   PassportNo: guest.passportNo || "",
-                  PassportIssueDate: "",   // Provide a default empty string
-                  PassportExpDate: "",     // Provide a default empty string
+                  PassportIssueDate: "",   
+                  PassportExpDate: "",     
                   PAN: guest.PAN || "",
                 })),
                 SupplierPrice: storedHotelRoomData.SupplierPrice || null,
@@ -544,7 +573,9 @@ const GuestDetails = () => {
       
           if (!response.ok) {
             console.error('Failed to hotel booking. Status:', response.status, 'Response:', responseBody);
-            throw new Error(`Failed to Hotel booking. Status: ${response.status}`);
+            toast.error(`Failed to Hotel booking. Status: ${response.status}`);
+            isProcessing = false;
+            return;
           }
       
           if (responseBody.Error && responseBody.Error.ErrorCode !== 0) {
@@ -566,6 +597,7 @@ const GuestDetails = () => {
       
         isProcessing = false;
       };
+      
       
       
     
@@ -613,6 +645,7 @@ const GuestDetails = () => {
   return (
     <>
       <CustomNavbar />
+      <Timer />
       {/* <div className="timer">
         <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
       </div> */}
@@ -678,9 +711,10 @@ const GuestDetails = () => {
                         {/* <p><strong>Total Price:</strong> {totalPriceWithGST.toFixed(2)}</p> */}
                         {/* <p><strong>GST (18%):</strong> {((totalPriceWithGST - totalPrice) / totalPrice * 100).toFixed(2)}%</p> */}
                         <p>GST ({gstRate}%): ₹{((applyDiscount(totalPrice, discount) * gstRate) / 100).toFixed(2)}</p>
+                       
+                        <p>Discount: ₹{(totalPrice * discount / 100).toFixed(2)}</p>
                         <p>Total Price with GST: ₹{totalPriceWithGST.toFixed(2)}</p>
-                        <p>Discount: -₹{(totalPrice * discount / 100).toFixed(2)}</p>
-                        <p>Price After Discount: ₹{applyDiscount(totalPrice, discount).toFixed(2)}</p>
+                        {/* /<p>Price After Discount: ₹{applyDiscount(totalPrice, discount).toFixed(2)}</p> */}
                         {/* <p>final price ₹{(totalPriceWithGST+applyDiscount)} </p> */}
                       </div>
                     </div>
@@ -782,15 +816,13 @@ const GuestDetails = () => {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="PAN No./Aadhaar Card No."
+                  placeholder="PAN No."
                   name="PAN No"
                   value={formData.number}
                   onChange={(e) => handleFormChange(index, e)}
                 />
               </div>
-           
 
-           
               <div className="mb-3">
                 <input
                   type="number"

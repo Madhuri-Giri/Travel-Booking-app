@@ -1,6 +1,4 @@
 /* ----------start side filter--------- */
-
-
 .timer {
   position: sticky;
   top: 0;
@@ -58,6 +56,7 @@
 .listFilter h5{
   color: #007bff;
 }
+
 .listItem {
   display: flex;
   flex-direction: column;
@@ -91,7 +90,6 @@
 .listOptions {
   padding: 10px;
 }
-
 
 .listOptionItem {
   display: flex;
@@ -166,7 +164,6 @@
   font-size: 20px;
   color: #00b7eb;
   font-family: sans-serif;
-
 }
 
 .hotelDistance {
@@ -210,7 +207,6 @@
   font-size: 12px;
   color: #333;
   font-family: sans-serif;
-
 }
 
 .Details {
@@ -242,7 +238,6 @@
   border: none;
   font-family: sans-serif;
 }
-
 
 .DetailTexts {
   text-align: right;
@@ -276,13 +271,8 @@
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  ;
-
 }
-
 /* ------------End -------------- */
-/* Container for each list item (label + datepicker) */
-
 
 /* Styling for the labels */
 .listItem label {
@@ -313,7 +303,6 @@
 .listItem .form_in::placeholder {
   color: #888; 
 }
-
 
 /*----------------- Pagination Container--------------- */
 .paginationContainer {
@@ -355,42 +344,25 @@
 .paginationContainer .pagination li a:hover {
   background-color: #ddd;
 }
-/* 
-.noHotelsMessage p{
-color: rgba(255, 0, 0, 0.71);
-} */
 
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .paginationContainer {
-    padding: 0 5px;
-  }
-
-  .paginationContainer .pagination li a {
-    padding: 6px 10px;
-    font-size: 16px;
-  }
+/*------- Responsive adjustments--------------- */
+@media(max-width:1024px){
+  
+.listItem .list_in::placeholder,
+.listItem .form_in::placeholder,
+.destination-input::placeholder {
+  font-size: 11px;
+  
 }
-
-@media (max-width: 480px) {
-  .paginationContainer .pagination li a {
-    padding: 5px 8px;
-    font-size: 10px;
-  }
+.listFilterOption{
+  font-size: 12px;
 }
-
-
-/* ---------------------End--------------------- */
-
-/* Responsive CSS */
+}
 @media (max-width: 992px) {
   .listSearchcol {
     display: none;
   }
-
 }
-
 
 @media (max-width: 768px) {
   .listWrapper {
@@ -419,9 +391,18 @@ color: rgba(255, 0, 0, 0.71);
     text-align: left;
   }
 
-
   .timer {
-    font-size: 14px;
+    padding: 8px 8px; 
+    font-size: 14px; 
+  }
+
+  .paginationContainer {
+    padding: 0 5px;
+  }
+
+  .paginationContainer .pagination li a {
+    padding: 6px 10px;
+    font-size: 16px;
   }
 }
 
@@ -437,21 +418,34 @@ color: rgba(255, 0, 0, 0.71);
   .searchItem {
     margin-bottom: 7px;
   }
-
-}
-
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  .timer {
-    padding: 8px 8px; 
-    font-size: 14px; 
-  }
 }
 
 @media (max-width: 480px) {
+  .paginationContainer .pagination li a {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+
   .timer {
     padding: 6px 6px; 
     font-size: 12px; 
     text-align: center; 
   }
 }
+@media (max-width: 768px) {
+  .CheckButton {
+  float:right;
+   padding: 8px 16px;
+   font-size: 16px;
+  }
+}
+
+@media (max-width: 320px) {
+  .CheckButton {
+  margin-left: 0;
+  float: left;
+  }
+}
+/* ---------------------End--------------------- */
+
+

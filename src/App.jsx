@@ -41,7 +41,9 @@ import FlightTickect from './components/flight/DownloadTikit/FlightTickect';
 import HotelTicket from './components/hotelBill/HotelTicket'
 import TicketBookBus from './components/bus/DownloadTikit/TicketBookBus';
 import Payloader from "./pages/loading/Payloader"
-
+import Timer from './components/timmer/Timer'
+import TimerBus from './components/timmer/TimerBus'
+import TimerFlight from './components/timmer/TimerFlight'
 import PayloaderHotel from "./pages/loading/PayloaderHotel"
 // import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
 import FlightNewTicket from './components/flight/DownloadTikit/FlightNewTicket'
@@ -95,7 +97,9 @@ const App = () => {
           <Route path='/payment-history' element={<PaymentHistory/>}/>
           <Route path='/booking-history' element={<BookingHistory/>}/>
           <Route path='busBookTicket' element={<TicketBookBus/>} />
-
+          <Route path='/timer' from element = {<Timer/>}/>
+          <Route path='/timerbus' from element = {<TimerBus/>}/>
+          <Route path='/timerbus' from element = {<TimerFlight/>}/>
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
           <Route path='/flightNewTicket' element={<FlightNewTicket/>} />
 
