@@ -32,38 +32,7 @@ const FlightReview = () => {
   console.log("F-IsLcc", IsLCC);
 
 // -----------------------------------------------------------------------
-  // const [timer, setTimer] = useState(0);
-  // useEffect(() => {
-  //   const updateTimer = () => {
-  //     const endTime = localStorage.getItem('F-timerEndTime');
-  //     const now = Date.now();
-      
-  //     if (endTime) {
-  //       const remainingTime = endTime - now;
-        
-  //       if (remainingTime <= 0) {
-  //         localStorage.removeItem('F-timerEndTime');
-  //         navigate('/flight-search');
-  //       } else {
-  //         setTimer(remainingTime);
-  //       }
-  //     } else {
-  //       navigate('/flight-search');
-  //     }
-  //   };
-
-  //   updateTimer();
-
-  //   const interval = setInterval(updateTimer, 1000); 
-
-  //   return () => clearInterval(interval);
-  // }, [navigate]);
-  // const formatTimers = (milliseconds) => {
-  //   const totalSeconds = Math.floor(milliseconds / 1000);
-  //   const minutes = Math.floor(totalSeconds / 60);
-  //   const seconds = totalSeconds % 60;
-  //   return `${minutes} min ${seconds} sec left`;
-  // };
+ 
 // -----------------------------------------------------------------------
 
 
@@ -132,7 +101,7 @@ const grandTotal = totalPrice + finalTotalPrice;
   };
 
   // func for duration convert hpur minute---------------------
-  console.log("fareDataDetails", fareDataDetails);
+  // console.log("fareDataDetails", fareDataDetails);
 
   const roundedGrandTotal = Math.round(grandTotal);
 
@@ -163,6 +132,8 @@ const grandTotal = totalPrice + finalTotalPrice;
       return null;
     }
   };
+
+
 
   const flightpayHandler = async () => {
     const loginId = localStorage.getItem('loginId');
@@ -203,12 +174,11 @@ const grandTotal = totalPrice + finalTotalPrice;
                 await flightPaymentStatus();
             } else if (IsLCC === false) {
                 await bookHoldApi();
+                await sendTicketGDSRequest();
             } else {
                 console.error('IsLCC value is not set correctly in localStorage');
             }
-        
-            await sendTicketGDSRequest();
-        
+              
         } catch (error) {
             console.error('Error during updateHandlePayment or bookHandler:', error.message);
             alert('An error occurred during processing. Please try again.');
@@ -314,8 +284,6 @@ const grandTotal = totalPrice + finalTotalPrice;
   
 
  
-
-
   const bookLccApi = async () => {
     try {
       const transactionFlightNo = localStorage.getItem('transactionNum-Flight');
@@ -340,7 +308,7 @@ const grandTotal = totalPrice + finalTotalPrice;
           "Title": passenger.gender === "male" ? "Mr" : "Ms",
           "FirstName": passenger.firstName,
           "LastName": passenger.lastName,
-          "PaxType": 1, // Assuming PaxType 1 is for adults
+          "PaxType": 1,
           "DateOfBirth": passenger.dateOfBirth,
           "Gender": passenger.gender === "male" ? "1" : "2",
           "PassportNo": passenger.passportNo || "null",
@@ -405,53 +373,59 @@ const grandTotal = totalPrice + finalTotalPrice;
   
   
 
-// bookLccApi()
-
-
 
 
 const bookHoldApi = async () => {
   const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
-  // const transactionFlightNo = localStorage.getItem('transactionNum-Flight');
   const transaction_id = localStorage.getItem('flight_transaction_id');
 
+  if (!storedPassengers.length || !transaction_id) {
+    console.error('Required data is missing from local storage');
+    return;
+  }
 
-  const passengers = storedPassengers.map(passenger => ({
-    "Title": passenger.gender === "male" ? "Mr" : "Ms",
-    "FirstName": passenger.firstName,
-    "LastName": passenger.lastName,
-    "PaxType": 1, 
-    "DateOfBirth": passenger.dateOfBirth,
-    "Gender": passenger.gender === "male" ? "1" : "2",
-    "PassportNo": passenger.passportNo || "null",
-    "PassportExpiry": passenger.passportExpiry || "",
-    "PassportIssueDate": passenger.passportIssueDate || "", 
-    "AddressLine1": passenger.addressLine1,
-    "City": passenger.city,
-    "CountryCode": passenger.countryCode,
-    "CountryName": passenger.countryName,
-    "ContactNo": passenger.contactNo,
-    "Email": passenger.email,
-    "IsLeadPax": passenger.isLeadPax || 0,
-    "Fare": [
-      {
-        "Currency": Currency,
-        "BaseFare": parseFloat(baseFare),
-        "Tax": parseFloat(tax),
-        "YQTax": parseFloat(yqTax),
-        "OtherCharges": OtherCharges,
-        "TransactionFee": TransactionFee,
-        "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
-        "AdditionalTxnFeePub": AdditionalTxnFeePub,
-        "AirTransFee": AirTransFee,
-        "Discount": Discount,
-        "PublishedFare": PublishedFare,
-        "OfferedFare": OfferedFare,
-        "CommissionEarned": CommissionEarned,
-        "TdsOnCommission": TdsOnCommission
-      }
-    ]
-  }));
+ const passengers = storedPassengers.map(passenger => ({
+  "Title": passenger.gender === "male" ? "Mr" : "Ms",
+  "FirstName": passenger.firstName,
+  "LastName": passenger.lastName,
+  "PaxType": 1,
+  "DateOfBirth": passenger.dateOfBirth,
+  "Gender": passenger.gender === "male" ? "1" : "2",
+  "PassportNo": passenger.passportNo || "abc12345",
+  "PassportExpiry": passenger.passportExpiry || "",
+  "PassportIssueDate": passenger.passportIssueDate || "",
+  "AddressLine1": passenger.addressLine1,
+  "City": passenger.city,
+  "CountryCode": passenger.countryCode && passenger.countryCode.length <= 3 ? passenger.countryCode : "001" || 'IN', 
+  "CountryName": passenger.countryName,
+  "ContactNo": passenger.contactNo && passenger.contactNo.length <= 10 ? passenger.contactNo : "", 
+  "Email": passenger.email,
+  "IsLeadPax": passenger.isLeadPax || 0,
+  "Fare": [
+    {
+      "Currency": Currency,
+      "BaseFare": parseFloat(baseFare),
+      "Tax": parseFloat(tax),
+      "YQTax": parseFloat(yqTax),
+      "OtherCharges": OtherCharges,
+      "TransactionFee": TransactionFee,
+      "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+      "AdditionalTxnFeePub": AdditionalTxnFeePub,
+      "AirTransFee": AirTransFee,
+      "Discount": Discount,
+      "PublishedFare": PublishedFare,
+      "OfferedFare": OfferedFare,
+      "CommissionEarned": CommissionEarned,
+      "TdsOnCommission": TdsOnCommission
+    }
+  ],
+  "GSTCompanyAddress": "",
+  "GSTCompanyContactNumber": "",
+  "GSTCompanyName": "",
+  "GSTNumber": "",
+  "GSTCompanyEmail": ""
+}));
+
 
   const holdPayload = {
     "SrdvIndex": FsrdvIndex,
@@ -459,7 +433,6 @@ const bookHoldApi = async () => {
     "ResultIndex": FresultIndex,
     "SrdvType": FsrdvType,
     "Passengers": passengers,
-    // "transaction_num": transactionFlightNo,
     "transaction_id": transaction_id,
   };
 
@@ -473,20 +446,71 @@ const bookHoldApi = async () => {
     });
 
     if (!response.ok) {
+      const errorData = await response.text(); // Read raw response text
+      console.error('Response status:', response.status);
+      console.error('Error details:', errorData);
       throw new Error('Network response was not ok');
     }
 
     const holdData = await response.json();
     console.log('Hold Response:', holdData);
-     localStorage.setItem('HolApiData', JSON.stringify(holdData))
-     
+    localStorage.setItem('HolApiData', JSON.stringify(holdData));
+    
   } catch (error) {
-    console.error('API call failed:', error);
+    console.error('API call failed:', error.message || error);
   }
 };
 
-   
   
+  
+
+
+
+ // -------------------------------------------------------------------------------------------
+
+ const sendTicketGDSRequest = async () => {
+
+  const savedData = JSON.parse(localStorage.getItem('HolApiData'));
+
+  const pnr = savedData.data.pnr;
+  const bookingId = savedData.data.booking_id;
+
+  console.log('pnr',  pnr)
+  console.log('bookingId', bookingId)
+
+  
+
+  try {
+    const response = await fetch('https://sajyatra.sajpe.in/admin/api/ticketgds', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "SrdvIndex": FsrdvIndex,
+        "TraceId": FtraceId,
+        "ResultIndex": FresultIndex,
+        "SrdvType": FsrdvType,
+        "PNR": "QNN9AF",
+        "BookingId": 1910562
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to send request');
+    }
+
+    const data = await response.json();
+    console.log('GDS Api:', data);
+
+    navigate('/flightNewTicket');
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+
+// -------------------------------------------------------------------------------------------
 
 
   const flightPaymentStatus = async () => {
@@ -530,38 +554,7 @@ const bookHoldApi = async () => {
   }
 
 
-  // -------------------------------------------------------------------------------------------
-
-  const sendTicketGDSRequest = async () => {
-    try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/ticketgds', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "SrdvIndex": FsrdvIndex, 
-          "TraceId": FtraceId,
-          "ResultIndex": FresultIndex,
-          "SrdvType": FsrdvType,
-          PNR: '',
-          BookingId: '',
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to send request');
-      }
-  
-      const data = await response.json();
-      console.log('GDS Api:', data);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-  
-
-  // -------------------------------------------------------------------------------------------
+ 
 
   if (payLoading) {
     return <PayloaderHotel/>;
