@@ -8,7 +8,7 @@ import { FaEquals } from "react-icons/fa6";
 import { MdOutlineFlightTakeoff } from "react-icons/md";
 import { IoTimeOutline } from "react-icons/io5";
 import { PiTrolleySuitcaseFill } from "react-icons/pi";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { json, useLocation, useNavigate } from 'react-router-dom';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 // import Payloader from '../../pages/loading/Payloader';
@@ -298,10 +298,17 @@ const grandTotal = totalPrice + finalTotalPrice;
   const OtherCharges = localStorage.getItem('OtherCharges');
   const TransactionFee = localStorage.getItem('TransactionFee');
   const Currency = localStorage.getItem('Currency');
+  const CommissionEarned = localStorage.getItem('CommissionEarned');
+  const Discount = localStorage.getItem('Discount');
+  const PublishedFare = localStorage.getItem('PublishedFare');
+  const TdsOnCommission = localStorage.getItem('TdsOnCommission');
+  const OfferedFare  = localStorage.getItem('OfferedFare');
+
   
   const baseFare = localStorage.getItem('BaseFare');
   const tax = localStorage.getItem('Tax');
   const yqTax = localStorage.getItem('YQTax');
+
   const passengerDetails = JSON.parse(localStorage.getItem('adultPassengerDetails'));
   const title = passengerDetails[0].gender;
   
@@ -404,56 +411,56 @@ const grandTotal = totalPrice + finalTotalPrice;
 
 
 const bookHoldApi = async () => {
-  // Fetch and parse stored passenger details
   const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
+  // const transactionFlightNo = localStorage.getItem('transactionNum-Flight');
+  const transaction_id = localStorage.getItem('flight_transaction_id');
 
-  // Map the stored passengers to the required format
+
   const passengers = storedPassengers.map(passenger => ({
     "Title": passenger.gender === "male" ? "Mr" : "Ms",
     "FirstName": passenger.firstName,
     "LastName": passenger.lastName,
-    "PaxType": 1, // Assuming PaxType 1 is for adults
+    "PaxType": 1, 
     "DateOfBirth": passenger.dateOfBirth,
     "Gender": passenger.gender === "male" ? "1" : "2",
     "PassportNo": passenger.passportNo || "null",
     "PassportExpiry": passenger.passportExpiry || "",
-    "PassportIssueDate": passenger.passportIssueDate || "", // Include if needed
+    "PassportIssueDate": passenger.passportIssueDate || "", 
     "AddressLine1": passenger.addressLine1,
     "City": passenger.city,
     "CountryCode": passenger.countryCode,
     "CountryName": passenger.countryName,
     "ContactNo": passenger.contactNo,
     "Email": passenger.email,
-    "IsLeadPax": passenger.isLeadPax || 0, // Adjust if needed
+    "IsLeadPax": passenger.isLeadPax || 0,
     "Fare": [
       {
-        "Currency": Currency, // Ensure Currency is defined
+        "Currency": Currency,
         "BaseFare": parseFloat(baseFare),
         "Tax": parseFloat(tax),
         "YQTax": parseFloat(yqTax),
-        "OtherCharges": OtherCharges || 0,
+        "OtherCharges": OtherCharges,
         "TransactionFee": TransactionFee,
         "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
         "AdditionalTxnFeePub": AdditionalTxnFeePub,
         "AirTransFee": AirTransFee,
-
-        // Uncomment and set these fields if needed
-        // "Discount": Discount,
-        // "PublishedFare": PublishedFare,
-        // "OfferedFare": OfferedFare,
-        // "CommissionEarned": CommissionEarned,
-        // "TdsOnCommission": TdsOnCommission
+        "Discount": Discount,
+        "PublishedFare": PublishedFare,
+        "OfferedFare": OfferedFare,
+        "CommissionEarned": CommissionEarned,
+        "TdsOnCommission": TdsOnCommission
       }
     ]
   }));
 
-  // Prepare the payload for the API call
   const holdPayload = {
     "SrdvIndex": FsrdvIndex,
     "TraceId": FtraceId,
     "ResultIndex": FresultIndex,
     "SrdvType": FsrdvType,
-    "Passengers": passengers
+    "Passengers": passengers,
+    // "transaction_num": transactionFlightNo,
+    "transaction_id": transaction_id,
   };
 
   try {
@@ -471,10 +478,8 @@ const bookHoldApi = async () => {
 
     const holdData = await response.json();
     console.log('Hold Response:', holdData);
-
-    // Handle the holdData response as needed
-    // e.g., saving to localStorage or navigating to another page
-
+     localStorage.setItem('HolApiData', JSON.stringify(holdData))
+     
   } catch (error) {
     console.error('API call failed:', error);
   }

@@ -25,48 +25,6 @@ const BusLists = () => {
   // ------------------------------------------------------------------------------------------------ -------
 
 
-  // const [timer, setTimer] = useState(600000); 
-
-  // useEffect(() => {
-  //   const endTime = localStorage.getItem('timerEndTime');
-  //   const now = Date.now();
-    
-  //   let remainingTime = endTime ? endTime - now : 600000;
-
-  //   if (remainingTime <= 0) {
-  //     navigate('/bus-search');
-  //     return;
-  //   }
-
-  //   setTimer(remainingTime);
-
-  //   const countdown = setInterval(() => {
-  //     setTimer((prev) => {
-  //       const updatedTime = prev - 1000;
-        
-  //       localStorage.setItem('timerEndTime', Date.now() + updatedTime);
-        
-  //       if (updatedTime <= 0) {
-  //         clearInterval(countdown);
-  //         localStorage.removeItem('timerEndTime');
-  //         navigate('/bus-search');
-  //         return 0;
-  //       }
-        
-  //       return updatedTime;
-  //     });
-  //   }, 1000); 
-
-  //   return () => clearInterval(countdown);
-  // }, [navigate]);
-
-  // const formatTime = (milliseconds) => {
-  //   const totalSeconds = Math.floor(milliseconds / 1000);
-  //   const minutes = Math.floor(totalSeconds / 60);
-  //   const seconds = totalSeconds % 60;
-  //   return `${minutes} min ${seconds} sec left`;
-  // };
-
 
 
   // --------------------------------------------------------------------------------------------------------
@@ -275,7 +233,8 @@ const toggleDropVisibility = () => {
   <div className='BusLists'>
     <div className="busList">
       <div className="timer-bus">
-        {/* <p>Redirecting in {formatTime(timer)}...</p> */}
+        {/* <p>Redirecting in 9 min. 59 second</p> */}
+        
       </div>
       <div className="B-lists-Top">
         <div className="text">
@@ -287,14 +246,14 @@ const toggleDropVisibility = () => {
               <h6>{from} - {to}</h6>
             </div>
           </h5>
-          {/* <span>
+          <span>
             <i style={{ color: "#fff" }} className="ri-calendar-line"></i>
             Depart Date: {selectedBusDate && (
               <>
                 {selectedBusDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })}{' '}
               </>
             )}
-          </span> */}
+          </span>
           <div className="search-functinality">
             <button onClick={responsiveFilter} className='filter-bus'><i className="ri-equalizer-line"></i> Filter</button>
             <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
