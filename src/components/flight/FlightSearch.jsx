@@ -299,7 +299,11 @@ const handleToChange = (event) => {
 
   // console.log("formData", formData);
 
-  // search API integration function----------------------------------------------
+  
+
+ 
+  
+
   const getFlightList = async () => {
     setLoading(true);
     try {
@@ -322,7 +326,7 @@ const handleToChange = (event) => {
   
       const firstResult = data?.Results?.[0]?.[0];
       if (firstResult && firstResult.FareDataMultiple?.[0]) {
-        const { SrdvIndex, ResultIndex , IsLCC } = firstResult.FareDataMultiple[0];
+        const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
         const { TraceId, SrdvType } = data;
   
         localStorage.setItem("F-SrdvIndex", SrdvIndex);
@@ -331,12 +335,20 @@ const handleToChange = (event) => {
         localStorage.setItem("F-SrdvType", SrdvType);
         localStorage.setItem("F-IsLcc", IsLCC);
   
-        // console.log("Saved SrdvIndex to local storage:", SrdvIndex);
-        // console.log("Saved ResultIndex to local storage:", ResultIndex);
-        // console.log("Saved TraceId to local storage:", TraceId);
-        // console.log("Saved SrdvType to local storage:", SrdvType);
-        // console.log("Saved IsLCC to local storage:", IsLCC);
+        const airlineCodes = data.Results.flatMap(result =>
+          result.flatMap(fareData =>
+            fareData.FareDataMultiple.flatMap(fare =>
+              fare.FareSegments.map(segment => segment.AirlineCode)
+            )
+          )
+        );
   
+        const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
+        console.log("Airline Codes: ", filteredAirlineCodes);
+  
+        // for (const airlineCode of filteredAirlineCodes) {
+        //   await flightLogoHandler(airlineCode);
+        // }
       } else {
         console.log("SrdvIndex or FareDataMultiple not found");
       }
@@ -349,7 +361,35 @@ const handleToChange = (event) => {
     }
   };
   
+  
+  
+// ---------------------------------------------------------------------------------------------------------------------------------
+// const flightLogoHandler = async (airline_code) => {
+//   try {
+//     const response = await fetch(`https://sajyatra.sajpe.in/admin/api/airline-logo?airline_code=${encodeURIComponent(airline_code)}`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     });
 
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+
+//     const data = await response.json();
+//     // console.log("Airline logo API response: ", data);
+//   } catch (error) {
+//     console.error('Error fetching airline logos:', error);
+//   }
+// };
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+
+const searchFlightHandler = async () => {
+  await getFlightList();
+};
 
 
   // ----------  Api integration start for slider image  ----------
@@ -364,7 +404,6 @@ const handleToChange = (event) => {
       });
   }, []);
   // ----------  Api integration end for slider image  ----------
-  // slider logics------------------------------------------------------
   const SamplePrevArrow = (props) => {
     const { className, style, onClick } = props;
     return (
@@ -586,7 +625,7 @@ const handleToChange = (event) => {
                           </div>
 
                           <div className="col-sm-4 form-group home-flight-search">
-                            <button onClick={getFlightList} type="button" className="btn">Search</button>
+                            <button onClick={searchFlightHandler} type="button" className="btn">Search</button>
                           </div>
 
                           <div>
@@ -808,7 +847,7 @@ const handleToChange = (event) => {
                           </div>
 
                           <div className="col-sm-4 form-group home-flight-search">
-                            <button onClick={getFlightList} type="button" className="btn">Search</button>
+                            <button onClick={searchFlightHandler} type="button" className="btn">Search</button>
                           </div>
 
                           <div>
