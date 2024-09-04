@@ -386,7 +386,7 @@ export default function FlightDetails() {
                             onClick={(e) => e.target.showPicker && e.target.showPicker()}
                             onChange={(e) => handleInputChange(e, index, type, 'passportExpiry')}
                             value={details[index]?.passportExpiry || ''}
-                            min={new Date().toISOString().split("T")[0]} // Prevent past dates
+                            min={new Date().toISOString().split("T")[0]}
                             
                         />
                     </div>

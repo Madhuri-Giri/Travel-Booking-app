@@ -11,6 +11,8 @@ import Lottie from 'lottie-react';
 import LootiAnim from '../../../assets/images/Anim.json';
 import html2canvas from 'html2canvas';
 import FooterLogo from "../../../assets/images/main logo.png"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFire, faBiohazard, faFlask, faSprayCan, faGasPump, faSmoking, faVirus, faRadiation, faBomb } from '@fortawesome/free-solid-svg-icons';
 
 // Helper function to generate a passcode
 const generatePasscode = () => {
@@ -30,7 +32,7 @@ const FlightNewTikit = () => {
     const fetchFlightTicketApiData = async () => {
       try {
         const flightTransactionId = localStorage.getItem('flight_transaction_id');
-        console.log(flightTransactionId)
+        console.log('flightTransactionId', flightTransactionId)
         if (!flightTransactionId) {
           throw new Error('Flight Transaction ID is missing');
         }
@@ -42,8 +44,9 @@ const FlightNewTikit = () => {
           },
 
           body: JSON.stringify({
-           transaction_id: flightTransactionId
-         }),
+            // transaction_id: 377
+            transaction_id: flightTransactionId
+          }),
         });
 
         const data = await response.json();
@@ -71,6 +74,9 @@ const FlightNewTikit = () => {
   }, []);
 
   console.log("flightticketPassengerDetails", flightticketPassengerDetails);
+  // Accessing the 'message' property of the response
+  // Safely access the 'message' property using optional chaining
+  console.log("message", flightticketPassengerDetails?.message);
 
   const downloadTicket = () => {
     const flightTicketMain = ticketElementRef.current.querySelector('.flightTicketmain');
@@ -84,12 +90,29 @@ const FlightNewTikit = () => {
       btmDiv.style.display = 'none';
     }
 
-    html2canvas(flightTicketMain, { scale: 2 }).then((canvas) => {
+    html2canvas(flightTicketMain, { scale: 3 }).then((canvas) => { // Increased scale for better quality
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+      // Define margins (in mm)
+      const margin = 10;
+      const imgWidth = pdfWidth - 2 * margin;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      // Adding image to PDF
+      pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+
+      // Adjust page height to fit content if needed
+      if (pdfHeight > pdf.internal.pageSize.height) {
+        const pages = Math.ceil(pdfHeight / pdf.internal.pageSize.height);
+        for (let i = 1; i < pages; i++) {
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', margin, -pdf.internal.pageSize.height * i + margin, imgWidth, imgHeight);
+        }
+      }
+
       pdf.save('flight_ticket.pdf');
     }).catch((error) => {
       console.error('Error generating PDF:', error);
@@ -99,6 +122,8 @@ const FlightNewTikit = () => {
       }
     });
   };
+
+
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -116,8 +141,21 @@ const FlightNewTikit = () => {
     });
   };
 
+  const items = [
+    // { id: 1, name: 'Lighters, Matchsticks', icon: faLighter },
+    { id: 2, name: 'Flammable Liquids', icon: faFire },
+    { id: 3, name: 'Toxic Substances', icon: faBiohazard },
+    { id: 4, name: 'Corrosive Substances', icon: faFlask },
+    { id: 5, name: 'Pepper Spray', icon: faSprayCan },
+    { id: 6, name: 'Flammable Gas', icon: faGasPump },
+    { id: 7, name: 'E-cigarettes', icon: faSmoking },
+    { id: 8, name: 'Infectious Substances', icon: faVirus },
+    { id: 9, name: 'Radioactive Materials', icon: faRadiation },
+    { id: 10, name: 'Explosives, Ammunition', icon: faBomb },
+  ];
+
   // Destructure the data with fallback to prevent errors
-  const { payment, userdetails, booking_hold, bookingstatus } = flightticketPassengerDetails || {};
+  const { payment, userdetails, booking_hold, bookingstatus, booking_gds } = flightticketPassengerDetails || {};
 
   return (
     <>
@@ -138,7 +176,8 @@ const FlightNewTikit = () => {
               </div>
               {flightticketPassengerDetails ? (
                 <div className='flightTicketmain'>
-                  {islcc ? (
+                  {/* {islcc ? ( */}
+                  {flightticketPassengerDetails?.message == 'LCC booking details found' ? (
                     // LCC Booking Details when islcc is true
                     <>
                       <div>
@@ -201,8 +240,8 @@ const FlightNewTikit = () => {
                       <div className='ticketpart'>
                         <div className='mt-5 sajyatraticketmain'>
                           <div className='sajyatratickethed'>
-                          <h6 className=''>Sajyatra</h6>
-                          <img src={FooterLogo} className='img-fluid' alt="logo"></img>
+                            <h6 className=''>Sajyatra</h6>
+                            <img src={FooterLogo} className='img-fluid' alt="logo"></img>
                           </div>
                           <div className='sajyatraticketmainDiv'>
                             <strong>Avoid Long Queues at the Airport with Sajyatra</strong>
@@ -210,7 +249,23 @@ const FlightNewTikit = () => {
                             <p><strong>Step-1</strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, obcaecati odio! Dignissimos ea sed rerum porro. </p>
                             <p><strong>Step-2</strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, obcaecati odio! Dignissimos ea sed rerum porro. </p>
                           </div>
-                          
+                        </div>
+
+                        <div className="items-not-allowed-container">
+                          <div className="header">
+                            <h2>Items not allowed in the aircraft</h2>
+                          </div>
+                          <div className="items-grid">
+                            {items.map((item) => (
+                              <div className="item" key={item.id}>
+                                <div className="icon-container">
+                                  <FontAwesomeIcon icon={item.icon} className="main-icon" />
+                                  <div className="cross-line"></div>
+                                </div>
+                                <span className="item-name">{item.name}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                         <div className='impotantNotmain'>
                           <h6 className='impotantNothed'>IMPORTANT INFORMATION</h6>
@@ -248,7 +303,7 @@ const FlightNewTikit = () => {
                               <tr>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>Adult</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>CCU-DEL</td>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>7- Kgs (1 pieace only)</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{`${bookingstatus.baggage}`}</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>15- Kgs (1 pieace only)</td>
                               </tr>
                             </tbody>
@@ -264,10 +319,10 @@ const FlightNewTikit = () => {
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Type</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Condition</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Airline</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>MakeMyTrip</th>
+                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Sajyatra</th>
                                   </tr>
                                 </thead>
-                               
+
                                 <tbody>
                                   <tr>
                                     <td style={{ border: '1px solid #ddd', padding: '8px' }}>Adult</td>
@@ -285,7 +340,7 @@ const FlightNewTikit = () => {
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Type</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Condition</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Airline</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>MakeMyTrip</th>
+                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Sajyatra</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -299,12 +354,35 @@ const FlightNewTikit = () => {
                               </table>
                             </div>
                           </div>
+                          <p className='convenFee'>*Convenience Fee is non-refundable and will not be refund back even in the case of 100% Fee Cancellation</p>
+                        </div>
+                        <div className='mt-4'>
+                          <h6 className='impotantNothed'>24x7 CUSTOMER SUPPORT</h6>
+                        </div>
+                        <div className='supportDiv row'>
+                          <div className="col-6 ">
+                            <div className='supportDivCOl'>
+                              <h6 className='impotantNothed'>Sajyatra SUPPORT</h6>
+                              <div className='supportDivCOlText'>
+                                <strong>Tel </strong> <span> 1-800-103-9695 (toll free) for all major operators</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6 ">
+                            <div className='supportDivCOl'>
+                              <h6 className='impotantNothed'>Airlline SUPPORT</h6>
+                              <div className='supportDivCOlText'>
+                                <strong>Indigo </strong> <span> 1-800-103-9695 (toll free) for all major operators</span>
+                              </div>
+                            </div>
+                          </div>
+
                         </div>
                       </div>
                     </>
 
                   ) : (
-                    // Non-LCC Booking Details when islcc is false
+                    // Non-LCC (hold) Booking Details when islcc is false
                     <>
                       <div>
                         <div className='flightticketboxHED'>
@@ -319,8 +397,9 @@ const FlightNewTikit = () => {
                               <p>{booking_hold.airline_code || 'Flight Number Not Available'}</p>
                             </div>
                             <div className='flightSaver'>
-                              <h6>Fare Basis Code</h6>
-                              <h6>{booking_hold.fare_basis_code || 'Not Available'}</h6>
+                              {/* <h6>Fare Basis Code</h6> */}
+                              {/* <h6>{booking_hold.fare_basis_code || 'Not Available'}</h6> */}
+                              <h6>{`${booking_hold.fare_basis_code}`}</h6>
                             </div>
                           </div>
                           <div className="ffbox2">
@@ -355,7 +434,7 @@ const FlightNewTikit = () => {
                               <tr>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong>1. {userdetails.name}</strong></td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_hold.pnr}</td>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>E-Ticket Number</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_hold.ticket_number || 'null'}</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_hold.seat_no || 'Seat No null'}</td>
                               </tr>
                             </tbody>
@@ -365,8 +444,8 @@ const FlightNewTikit = () => {
                       <div className='ticketpart'>
                         <div className='mt-5 sajyatraticketmain'>
                           <div className='sajyatratickethed'>
-                          <h6 className=''>Sajyatra</h6>
-                          <img src={FooterLogo} className='img-fluid' alt="logo"></img>
+                            <h6 className=''>Sajyatra</h6>
+                            <img src={FooterLogo} className='img-fluid' alt="logo"></img>
                           </div>
                           <div className='sajyatraticketmainDiv'>
                             <strong>Avoid Long Queues at the Airport with Sajyatra</strong>
@@ -374,8 +453,25 @@ const FlightNewTikit = () => {
                             <p><strong>Step-1</strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, obcaecati odio! Dignissimos ea sed rerum porro. </p>
                             <p><strong>Step-2</strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, obcaecati odio! Dignissimos ea sed rerum porro. </p>
                           </div>
-                          
                         </div>
+
+                        <div className="items-not-allowed-container">
+                          <div className="header">
+                            <h2>Items not allowed in the aircraft</h2>
+                          </div>
+                          <div className="items-grid">
+                            {items.map((item) => (
+                              <div className="item" key={item.id}>
+                                <div className="icon-container">
+                                  <FontAwesomeIcon icon={item.icon} className="main-icon" />
+                                  <div className="cross-line"></div>
+                                </div>
+                                <span className="item-name">{item.name}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
                         <div className='impotantNotmain'>
                           <h6 className='impotantNothed'>IMPORTANT INFORMATION</h6>
                           <ul>
@@ -392,7 +488,8 @@ const FlightNewTikit = () => {
                               Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, aperiam veniam quisquam vel doloribus iure pariatur, sunt est temporibus rem
                             </li>
                             <li>
-                              <strong>You have Paid : INR 9,7366</strong>
+                              {/* <strong>You have Paid : INR 9,7366</strong> */}
+                              <strong>You have Paid :  {payment.amount} Rs</strong>
                             </li>
 
                           </ul>
@@ -412,7 +509,7 @@ const FlightNewTikit = () => {
                               <tr>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>Adult</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>CCU-DEL</td>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>7- Kgs (1 pieace only)</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{`${booking_hold.baggage}`}</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>15- Kgs (1 pieace only)</td>
                               </tr>
                             </tbody>
@@ -428,10 +525,10 @@ const FlightNewTikit = () => {
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Type</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Condition</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Airline</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>MakeMyTrip</th>
+                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Sajyatra</th>
                                   </tr>
                                 </thead>
-                               
+
                                 <tbody>
                                   <tr>
                                     <td style={{ border: '1px solid #ddd', padding: '8px' }}>Adult</td>
@@ -449,7 +546,7 @@ const FlightNewTikit = () => {
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Type</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Condition</th>
                                     <th style={{ border: '1px solid #ddd', padding: '8px' }}>Airline</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>MakeMyTrip</th>
+                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Sajyatra</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -463,7 +560,28 @@ const FlightNewTikit = () => {
                               </table>
                             </div>
                           </div>
-
+                          <p className='convenFee'>*Convenience Fee is non-refundable and will not be refund back even in the case of 100% Fee Cancellation</p>
+                        </div>
+                        <div className='mt-4'>
+                          <h6 className='impotantNothed'>24x7 CUSTOMER SUPPORT</h6>
+                        </div>
+                        <div className='supportDiv row'>
+                          <div className="col-6 ">
+                            <div className='supportDivCOl'>
+                              <h6 className='impotantNothed'>Sajyatra SUPPORT</h6>
+                              <div className='supportDivCOlText'>
+                                <strong>Tel </strong> <span> 1-800-103-9695 (toll free) for all major operators</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6 ">
+                            <div className='supportDivCOl'>
+                              <h6 className='impotantNothed'>Airlline SUPPORT</h6>
+                              <div className='supportDivCOlText'>
+                                <strong>Indigo </strong> <span> 1-800-103-9695 (toll free) for all major operators</span>
+                              </div>
+                            </div>
+                          </div>
 
                         </div>
                       </div>
