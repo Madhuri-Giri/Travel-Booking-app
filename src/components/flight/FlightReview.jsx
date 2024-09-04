@@ -217,7 +217,7 @@ const grandTotal = totalPrice + finalTotalPrice;
     try {
       const payment_id = localStorage.getItem('flight_payment_id');
       const transaction_id = localStorage.getItem('flight_transaction_id');
-      const transaction_num = localStorage.getItem('transactionNum');
+      const transaction_num = localStorage.getItem('transactionNum-Flight');
 
       if (!payment_id || !transaction_id) {
         throw new Error('Missing payment details');
@@ -456,9 +456,11 @@ const bookHoldApi = async () => {
 
   const pnr = savedData.data.pnr;
   const bookingId = savedData.data.booking_id;
+  const gdsId = savedData.data.id;
 
   console.log('pnr',  pnr)
   console.log('bookingId', bookingId)
+  console.log('gdsId', gdsId)
 
   
 
@@ -471,10 +473,10 @@ const bookHoldApi = async () => {
       body: JSON.stringify({
         "SrdvIndex": FsrdvIndex,
         "TraceId": FtraceId,
-        // "ResultIndex": FresultIndex,
         "SrdvType": FsrdvType,
-        "PNR": "QNN9AF",
-        "BookingId": 1910562
+        "PNR": pnr,
+        "BookingId": bookingId,
+        "flight_hold_id": gdsId
       }),
     });
 
