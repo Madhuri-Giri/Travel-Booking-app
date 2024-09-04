@@ -193,9 +193,6 @@ export default function FlightLists() {
 
     // -------------------------------------------------------------airline filters logic----------------
 
-
-
-
     // for callender slider-----------------------------------------------------------------------
     useEffect(() => {
         const getCallenderData = async () => {

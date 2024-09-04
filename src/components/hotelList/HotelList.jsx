@@ -263,7 +263,7 @@ const HandelHotelInfo = async (index) => {
         },
         body: JSON.stringify(requestBody),
       });
-  
+  z
       if (!response.ok) {
         throw new Error('Failed to fetch user details');
       }
