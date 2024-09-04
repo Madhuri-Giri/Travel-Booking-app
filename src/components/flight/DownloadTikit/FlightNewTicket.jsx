@@ -84,26 +84,32 @@ const FlightNewTikit = () => {
       console.error("Flight ticket main content not found");
       return;
     }
-
+  
+    // Ensure the .ticketpart div is visible before capturing it
+    const ticketPartDiv = ticketElementRef.current.querySelector('.ticketpart');
+    if (ticketPartDiv) {
+      ticketPartDiv.style.display = 'block'; // Make sure it's visible
+    }
+  
     const btmDiv = ticketElementRef.current.querySelector('.btm');
     if (btmDiv) {
       btmDiv.style.display = 'none';
     }
-
-    html2canvas(flightTicketMain, { scale: 3 }).then((canvas) => { // Increased scale for better quality
+  
+    html2canvas(flightTicketMain, { scale: 3 }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
+  
       // Define margins (in mm)
       const margin = 10;
       const imgWidth = pdfWidth - 2 * margin;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
+  
       // Adding image to PDF
       pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
-
+  
       // Adjust page height to fit content if needed
       if (pdfHeight > pdf.internal.pageSize.height) {
         const pages = Math.ceil(pdfHeight / pdf.internal.pageSize.height);
@@ -112,17 +118,21 @@ const FlightNewTikit = () => {
           pdf.addImage(imgData, 'PNG', margin, -pdf.internal.pageSize.height * i + margin, imgWidth, imgHeight);
         }
       }
-
+  
       pdf.save('flight_ticket.pdf');
     }).catch((error) => {
       console.error('Error generating PDF:', error);
     }).finally(() => {
+      // Restore the visibility of the .ticketpart div and .btm div
+      if (ticketPartDiv) {
+        ticketPartDiv.style.display = 'none'; // Hide it again
+      }
       if (btmDiv) {
         btmDiv.style.display = '';
       }
     });
   };
-
+  
 
 
   const formatDate = (dateString) => {
@@ -288,7 +298,7 @@ const FlightNewTikit = () => {
 
                           </ul>
                         </div>
-                        <div className='fticketBaggageInformation'>
+                        <div className='fticketBaggageInformation mt-5'>
                           <h6 className='impotantNothed'>BAGGAGE INFORMATION</h6>
                           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead className='passengerDetailTable'>
@@ -494,7 +504,7 @@ const FlightNewTikit = () => {
 
                           </ul>
                         </div>
-                        <div className='fticketBaggageInformation'>
+                        <div className='fticketBaggageInformation mt-5'>
                           <h6 className='impotantNothed'>BAGGAGE INFORMATION</h6>
                           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead className='passengerDetailTable'>
