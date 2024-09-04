@@ -30,6 +30,7 @@ const FlightNewTikit = () => {
     const fetchFlightTicketApiData = async () => {
       try {
         const flightTransactionId = localStorage.getItem('flight_transaction_id');
+        console.log(flightTransactionId)
         if (!flightTransactionId) {
           throw new Error('Flight Transaction ID is missing');
         }
@@ -39,7 +40,10 @@ const FlightNewTikit = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ transaction_id: flightTransactionId }), // Use the correct transaction ID here
+
+          body: JSON.stringify({
+           transaction_id: flightTransactionId
+         }),
         });
 
         const data = await response.json();

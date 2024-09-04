@@ -171,7 +171,7 @@ const grandTotal = totalPrice + finalTotalPrice;
         
             if (IsLCC === true) {
                 await bookLccApi();
-                await flightPaymentStatus();
+                // await flightPaymentStatus();
             } else if (IsLCC === false) {
                 await bookHoldApi();
                 await sendTicketGDSRequest();
@@ -296,7 +296,6 @@ const grandTotal = totalPrice + finalTotalPrice;
         return;
       }
   
-      // Iterate over each passenger and make an API call
       const bookingResponses = await Promise.all(parsedAdultPassengerDetails.map(async (passenger) => {
         const llcPayload = {
           "SrdvType": FsrdvType,
@@ -344,32 +343,15 @@ const grandTotal = totalPrice + finalTotalPrice;
   
       console.log('LLC Responses:', bookingResponses);
   
-      // Check if all bookings were successful
-      const allBookingsSuccessful = bookingResponses.every(response => response && response.Error && response.Error.ErrorCode === 0);
-  
-      if (allBookingsSuccessful) {
-        toast.success('Flight booking successful!');
-  
-        // Save the flight ticket details in localStorage
-        localStorage.setItem('flightTikitDetails', JSON.stringify(bookingResponses));
-  
-        setTimeout(() => {
-          navigate('/flightNewTicket', { state: { flightbookingDetails: bookingResponses } });
-        }, 2000);
-      } else {
-        bookingResponses.forEach(response => {
-          if (response.Error && response.Error.ErrorCode !== 0) {
-            console.error('Booking failed:', response.Error.ErrorMessage);
-            toast.error(`Booking failed: ${response.Error.ErrorMessage}`);
-          }
-        });
-      }
+      localStorage.setItem('flightTikitDetails', JSON.stringify(bookingResponses));
+      navigate('/flightNewTicket', { state: { flightbookingDetails: bookingResponses } });
   
     } catch (error) {
       console.error('LLC API error:', error.message);
       toast.error('An error occurred during booking. Please try again.');
     }
   };
+  
   
   
 
@@ -489,7 +471,7 @@ const bookHoldApi = async () => {
       body: JSON.stringify({
         "SrdvIndex": FsrdvIndex,
         "TraceId": FtraceId,
-        "ResultIndex": FresultIndex,
+        // "ResultIndex": FresultIndex,
         "SrdvType": FsrdvType,
         "PNR": "QNN9AF",
         "BookingId": 1910562
@@ -513,45 +495,45 @@ const bookHoldApi = async () => {
 // -------------------------------------------------------------------------------------------
 
 
-  const flightPaymentStatus = async () => {
-    try {
+  // const flightPaymentStatus = async () => {
+  //   try {
 
-      const transaction_id = localStorage.getItem('flight_transaction_id');
+  //     const transaction_id = localStorage.getItem('flight_transaction_id');
 
 
-      if (!transaction_id) {
-        throw new Error('Transaction ID is missing.');
-      }  
+  //     if (!transaction_id) {
+  //       throw new Error('Transaction ID is missing.');
+  //     }  
 
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-payment-history', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          transaction_id
-           }), 
-      });
+  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-payment-history', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         transaction_id
+  //          }), 
+  //     });
   
-      const responseBody = await response.json();
-      console.log('Flight Payment Status :', responseBody);
+  //     const responseBody = await response.json();
+  //     console.log('Flight Payment Status :', responseBody);
   
-      if (!response.ok) {
-        console.error('Failed to fetch payment status. Status:', response.status, 'Response:', responseBody);
-        throw new Error(`Failed to fetch payment status. Status: ${response.status}`);
-      }
+  //     if (!response.ok) {
+  //       console.error('Failed to fetch payment status. Status:', response.status, 'Response:', responseBody);
+  //       throw new Error(`Failed to fetch payment status. Status: ${response.status}`);
+  //     }
 
-      localStorage.setItem('flight-status', JSON.stringify(responseBody));
+  //     localStorage.setItem('flight-status', JSON.stringify(responseBody));
   
-      navigate('/flightNewTicket'); 
-      return responseBody;
+  //     navigate('/flightNewTicket'); 
+  //     return responseBody;
   
-    } catch (error) {
-      console.error('Error during fetching payment status:', error.message);
-      toast.error('An error occurred while checking payment status. Please try again.');
-      return null; 
-    }
-  }
+  //   } catch (error) {
+  //     console.error('Error during fetching payment status:', error.message);
+  //     toast.error('An error occurred while checking payment status. Please try again.');
+  //     return null; 
+  //   }
+  // }
 
 
  
