@@ -358,7 +358,7 @@ export default function FlightDetails() {
                             onChange={(e) => handleInputChange(e, index, type, 'dateOfBirth')}
                             value={details[index]?.dateOfBirth || ''}
                             max={new Date().toISOString().split("T")[0]} // Prevent future dates
-                            required
+                            // required
                         />
                     </div>
                 </div>
@@ -371,7 +371,7 @@ export default function FlightDetails() {
                             className="form-control"
                             onChange={(e) => handleInputChange(e, index, type, 'passportNo')}
                             value={details[index]?.passportNo || ''}
-                            required
+                            
                             placeholder="Passport No"
                         />
                     </div>
@@ -387,7 +387,7 @@ export default function FlightDetails() {
                             onChange={(e) => handleInputChange(e, index, type, 'passportExpiry')}
                             value={details[index]?.passportExpiry || ''}
                             min={new Date().toISOString().split("T")[0]} // Prevent past dates
-                            required
+                            
                         />
                     </div>
                 </div>
@@ -402,7 +402,7 @@ export default function FlightDetails() {
                             onChange={(e) => handleInputChange(e, index, type, 'passportIssueDate')}
                             value={details[index]?.passportIssueDate || ''}
                             max={new Date().toISOString().split("T")[0]} // Prevent future dates
-                            required
+                            
                         />
                     </div>
                 </div>
@@ -415,7 +415,7 @@ export default function FlightDetails() {
                             className="form-control"
                             onChange={(e) => handleInputChange(e, index, type, 'addressLine1')}
                             value={details[index]?.addressLine1 || ''}
-                            required
+                            
                             placeholder="Address Line 1"
                         />
                     </div>
@@ -443,7 +443,7 @@ export default function FlightDetails() {
                             className="form-control"
                             onChange={(e) => handleInputChange(e, index, type, 'countryCode')}
                             value={details[index]?.countryCode || ''}
-                            required
+                            
                             placeholder="Country Code"
                         />
                     </div>
@@ -457,7 +457,7 @@ export default function FlightDetails() {
                             className="form-control"
                             onChange={(e) => handleInputChange(e, index, type, 'countryName')}
                             value={details[index]?.countryName || ''}
-                            required
+                            
                             placeholder="Country Name"
                         />
                     </div>

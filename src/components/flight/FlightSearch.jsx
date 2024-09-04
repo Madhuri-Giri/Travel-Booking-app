@@ -153,9 +153,9 @@ const handleToChange = (event) => {
   const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
   const [infantCount, setInfantCount] = useState(0);
-  console.log("adultCount", adultCount);
-  console.log("childCount", childCount);
-  console.log("infantCount", infantCount);
+  
+ 
+ 
   // Handle count change
   const handleCount = (action, type) => {
     let newCount;
@@ -193,17 +193,7 @@ const handleToChange = (event) => {
     }
   };
 
-  // const handleCount = (key, name) => {
-  //   console.log("called", key, name)
-  //   if (key == "increment") {
-  //     setFormData((prev) => ({ ...prev, [name]: formData[name] + 1 }));
-  //   } else if (key == "decrement") {
-  //     if (formData[name] > 0) {
-  //       setFormData((prev) => ({ ...prev, [name]: formData[name] - 1 }));
-  //     }
-  //   }
-  // }
-  // fun for increase decrease adult , child , infant count------------------------------------------------
+ 
 
 
   // func for select flight class----------------------------------------------
@@ -234,7 +224,7 @@ const handleToChange = (event) => {
   // for one way & two way tabs-----------------------------------------
   const [activeTab, setActiveTab] = useState('oneway');
   const [tabValue, setTabValue] = useState(1); // State for tab value: 1 for oneway, 2 for twoway
-  console.log("tabValue", tabValue);
+  // console.log("tabValue", tabValue);
   const [segments, setSegments] = useState([
     {
       Origin: from,
@@ -300,7 +290,6 @@ const handleToChange = (event) => {
     }
   }, [tabValue, departureDate, returnDateDep , selectedflightClass]); 
 
-  // Effect to sync formData with the segments state
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
@@ -308,9 +297,13 @@ const handleToChange = (event) => {
     }));
   }, [segments]); // Dependency on segments state
 
-  console.log("formData", formData);
+  // console.log("formData", formData);
 
-  // search API integration function----------------------------------------------
+  
+
+ 
+  
+
   const getFlightList = async () => {
     setLoading(true);
     try {
@@ -329,12 +322,11 @@ const handleToChange = (event) => {
       const data = await response.json();
       console.log("Flight search API response: ", data);
   
-      // Save the entire response to localStorage
       localStorage.setItem('Flight-search', JSON.stringify(data));
   
       const firstResult = data?.Results?.[0]?.[0];
       if (firstResult && firstResult.FareDataMultiple?.[0]) {
-        const { SrdvIndex, ResultIndex , IsLCC } = firstResult.FareDataMultiple[0];
+        const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
         const { TraceId, SrdvType } = data;
   
         localStorage.setItem("F-SrdvIndex", SrdvIndex);
@@ -343,12 +335,20 @@ const handleToChange = (event) => {
         localStorage.setItem("F-SrdvType", SrdvType);
         localStorage.setItem("F-IsLcc", IsLCC);
   
-        console.log("Saved SrdvIndex to local storage:", SrdvIndex);
-        console.log("Saved ResultIndex to local storage:", ResultIndex);
-        console.log("Saved TraceId to local storage:", TraceId);
-        console.log("Saved SrdvType to local storage:", SrdvType);
-        console.log("Saved IsLCC to local storage:", IsLCC);
+        const airlineCodes = data.Results.flatMap(result =>
+          result.flatMap(fareData =>
+            fareData.FareDataMultiple.flatMap(fare =>
+              fare.FareSegments.map(segment => segment.AirlineCode)
+            )
+          )
+        );
   
+        const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
+        console.log("Airline Codes: ", filteredAirlineCodes);
+  
+        // for (const airlineCode of filteredAirlineCodes) {
+        //   await flightLogoHandler(airlineCode);
+        // }
       } else {
         console.log("SrdvIndex or FareDataMultiple not found");
       }
@@ -358,11 +358,38 @@ const handleToChange = (event) => {
     } catch (error) {
       setLoading(false);
       console.error('Error fetching suggestions:', error);
-      // Show user-friendly error message if needed
     }
   };
   
+  
+  
+// ---------------------------------------------------------------------------------------------------------------------------------
+// const flightLogoHandler = async (airline_code) => {
+//   try {
+//     const response = await fetch(`https://sajyatra.sajpe.in/admin/api/airline-logo?airline_code=${encodeURIComponent(airline_code)}`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     });
 
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+
+//     const data = await response.json();
+//     // console.log("Airline logo API response: ", data);
+//   } catch (error) {
+//     console.error('Error fetching airline logos:', error);
+//   }
+// };
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+
+const searchFlightHandler = async () => {
+  await getFlightList();
+};
 
 
   // ----------  Api integration start for slider image  ----------
@@ -377,7 +404,6 @@ const handleToChange = (event) => {
       });
   }, []);
   // ----------  Api integration end for slider image  ----------
-  // slider logics------------------------------------------------------
   const SamplePrevArrow = (props) => {
     const { className, style, onClick } = props;
     return (
@@ -402,7 +428,6 @@ const handleToChange = (event) => {
         style={{ ...style, display: "block", right: "10px", zIndex: 1 }}
         onClick={onClick}
       >
-        {/* <FaArrowRightLong style={{ color: 'black', fontSize: '30px' }} /> */}
       </div>
     );
   };
@@ -563,16 +588,7 @@ const handleToChange = (event) => {
                                 <MdDateRange />
                               </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
-                                {/* <DatePicker
-                                  name="PreferredDepartureTime"
-                                  selected={preferredDepartureTime}
-                                  onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                  className="departureCallender"
-                                  id="PreferredDepartureTime"
-                                  placeholderText="Select a date"
-                                  ref={departureDatePickerRef}
-                                  minDate={new Date()}
-                                /> */}
+                                
                                 <DatePicker
                                   name="PreferredDepartureTime"
                                   selected={departureDate}
@@ -609,7 +625,7 @@ const handleToChange = (event) => {
                           </div>
 
                           <div className="col-sm-4 form-group home-flight-search">
-                            <button onClick={getFlightList} type="button" className="btn">Search</button>
+                            <button onClick={searchFlightHandler} type="button" className="btn">Search</button>
                           </div>
 
                           <div>
@@ -790,21 +806,7 @@ const handleToChange = (event) => {
                                   placeholderText="Select a departure date"
                                   minDate={new Date()} // Departure date cannot be in the past
                                 />
-                                {/* <DatePicker
-                                  name="PreferredDepartureTime"
-                                  selected={preferredDepartureTime}
-                                  onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                  className="departureCallender"
-                                  id="PreferredDepartureTime"
-                                  placeholderText="Select a date"
-                                  ref={departureDatePickerRef}
-                                  minDate={new Date()}
-                                /> */}
-
-                                {/* <MdDateRange
-                                  className="date-picker-icon"
-                                  onClick={() => departureDatePickerRef.current.setOpen(true)}
-                                /> */}
+                                
                               </div>
                               <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
@@ -816,16 +818,7 @@ const handleToChange = (event) => {
                                 <MdDateRange />
                               </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
-                                {/* <DatePicker
-                                  name="PreferredArrivalTime"
-                                  selected={preferredArrivalTime}
-                                  onChange={(date) => handleChange(date, "PreferredArrivalTime")}
-                                  className=""
-                                  id="PreferredArrivalTime"
-                                  placeholderText="Select a date"
-                                  ref={arrivalDatePickerRef}
-                                  minDate={new Date()}
-                                /> */}
+                                
                                 <DatePicker
                                   selected={returnDateDep}
                                   onChange={handleDateChangeReturn}
@@ -854,7 +847,7 @@ const handleToChange = (event) => {
                           </div>
 
                           <div className="col-sm-4 form-group home-flight-search">
-                            <button onClick={getFlightList} type="button" className="btn">Search</button>
+                            <button onClick={searchFlightHandler} type="button" className="btn">Search</button>
                           </div>
 
                           <div>
@@ -1030,24 +1023,7 @@ const handleToChange = (event) => {
         </div>
       </section>
 
-      {/* <section className="exictingOffers">
-        <div className="container-fluid mb-5 ss">
-          <div className="row">
-            <h5>Exicting offers</h5>
-            <div className="col-4">
-              <img className='img-fluid' src='https://www.vimaansafar.com/img/slide-72_t.png' />
-            </div>
-            <div className="col-4">
-              <img className='img-fluid' src='https://www.vimaansafar.com/img/slide-71_t.png?t' />
-            </div>
-            <div className="col-4">
-              <img className='img-fluid' src='https://www.vimaansafar.com/img/slide-75_t.png' />
-
-            </div>
-          </div>
-        </div>
-      </section> */}
-
+     
 
       <section className='exictingOffers'>
         <div className="container-fluid">
@@ -1065,68 +1041,7 @@ const handleToChange = (event) => {
         </div>
       </section>
 
-      {/* <section className="exclusive-dealsSec">
-        <div className="container-fluid mb-5">
-          <div className="row mb-4">
-            <h2>Exclusive Deals</h2>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/delhi.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Delhi</h3>
-                  <p>Rs 2200</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/amritsar.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Amritsar</h3>
-                  <p>Rs 1900</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/srinagar.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Srinagar</h3>
-                  <p>Rs 2400</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/bangkok.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Bangkok</h3>
-                  <p>Rs 7000</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/dubai.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Dubai</h3>
-                  <p>Rs 11000</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/hongkong.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Hong Kong</h3>
-                  <p>Rs 13000</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
-
+     
 
 
       <section className="flightsec7 bg-light">

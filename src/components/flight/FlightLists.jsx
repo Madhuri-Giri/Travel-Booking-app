@@ -311,25 +311,25 @@ export default function FlightLists() {
     // ------------------------------------------------fare-Quote-api-----------------------------------------
     const fareQuoteHandler = async () => {
         setLoading(true);
-
+      
         const FtraceId = localStorage.getItem('F-TraceId');
         const FresultIndex = localStorage.getItem('F-ResultIndex');
         const FsrdvType = localStorage.getItem('F-SrdvType');
         const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
-
+      
         if (!FtraceId || !FresultIndex || !FsrdvType || !FsrdvIndex) {
             console.error('TraceId, ResultIndex, SrdvType, or SrdvIndex not found in local storage');
             setLoading(false);
             return;
         }
-
+      
         const payload = {
             SrdvIndex: FsrdvIndex,
             ResultIndex: FresultIndex,
             TraceId: parseInt(FtraceId),
             SrdvType: FsrdvType,
         };
-
+      
         try {
             const response = await fetch('https://sajyatra.sajpe.in/admin/api/farequote', {
                 method: 'POST',
@@ -338,16 +338,16 @@ export default function FlightLists() {
                 },
                 body: JSON.stringify(payload),
             });
-
+      
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
-
+      
             const data = await response.json();
             console.log('FareQuote API Response:', data);
-
+      
             const fare = data.Results?.Fare || {};
-
+      
             // Save all fare details in local storage
             localStorage.setItem('BaseFare', fare.BaseFare);
             localStorage.setItem('YQTax', fare.YQTax);
@@ -358,9 +358,13 @@ export default function FlightLists() {
             localStorage.setItem('OtherCharges', fare.OtherCharges);
             localStorage.setItem('TransactionFee', fare.TransactionFee);
             localStorage.setItem('Currency', fare.Currency);
-
-
-
+            localStorage.setItem('CommissionEarned', fare.CommissionEarned);
+            localStorage.setItem('Discount', fare.Discount);
+            localStorage.setItem('TdsOnCommission', fare.TdsOnCommission);
+            localStorage.setItem('PublishedFare', fare.PublishedFare);         
+            localStorage.setItem('OfferedFare', fare.OfferedFare)
+      
+      
             if (data.Results && formData) {
                 setLoading(false);
                 setTimeout(() => {
@@ -374,7 +378,7 @@ export default function FlightLists() {
             console.error('Error calling the farequote API:', error);
             setLoading(false);
         }
-    };
+      };
 
     // -------------------------------------------------fare-Quote-api----------------------------------------
 

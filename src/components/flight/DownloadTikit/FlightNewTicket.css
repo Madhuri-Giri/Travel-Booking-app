@@ -605,3 +605,87 @@
         margin: 10px 25px;
     }
 }
+
+@media screen and (max-width: 768px) {
+    .passengerTable th{
+        font-size: 11px;
+    }
+    .passengerTable td{
+        font-size: 11px;
+    }
+    .ffbox2 p,
+    .ffbox4 p {
+        margin: 0px;
+        font-size: 11px;
+    }
+    .flightIndigodet p{
+        font-size: 12px;
+    }
+    .flightSaver{
+        margin-top: 15px;
+    }
+    .flightSaver h6 {
+        font-size: 13px;
+    }
+    .ffbox3 p {
+        margin: 0px;
+        font-size: 12px;
+    }
+    .ffbox2Time{
+        font-size: 10px !important;
+    }
+    .flightticketboxTravelDetails {
+        padding: 10px 2px;
+    }
+    .flightticketboxHED h6{
+        font-size: 14px;
+    }
+    .flightticketboxHED p{
+        font-size: 12px !important;
+        margin: 0px !important;
+    }
+    .ffbox2 h4, .ffbox4 h4 {
+       font-size: 20px;
+       margin-bottom: 4px;
+    }
+}
+
+
+
+
+
+
+.impotantNothed{
+    background-color: #dcdcdc54;
+    color: #0a325f;
+    padding: 10px 10px;
+}
+.impotantNotmain ul li{
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+.qq{
+    display: flex;
+    justify-content: space-between;
+}
+
+.sajyatraticketmain img{
+    height: 30px;
+}
+.sajyatratickethed{
+    background-color: #dcdcdc54;
+    color: #0a325f;
+    padding: 10px 10px;
+    display: flex;
+    justify-content: space-between;
+
+}
+.sajyatraticketmainDiv{
+    background-color: rgba(177, 230, 177, 0.527);
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+/* .ticketpart{
+    display: none;
+} */
