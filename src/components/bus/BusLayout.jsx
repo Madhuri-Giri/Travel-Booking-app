@@ -212,25 +212,49 @@ const BusLayout = () => {
     ['7', '8', '9', '10', '11', '12'],
     [null, null, null, null, null, '13'],
     ['14', '15', '16', '17', '19', '20'],
+    ['31', '32', '33', '34', '35', '36'],
   ];
 
-  const busLayoutUpper = [
-    ['21', '22', '23', '24', '25'],
-    [null, null, null, null, '26'],
-    ['27', '28', '29', '30', '31'],
-  ];
+  // const busLayoutUpper2 = [
+  //   ['11', '12', '13', '14', '15'],
+  //   [null, null, null, null, '16'],
+  //   ['17', '18', '19', '20', '21'],
+  // ];
+  // const busLayoutUpper = [
+  //   ['21', '22', '23', '24', '25'],
+  //   [null, null, null, null, '26'],
+  //   ['27', '28', '29', '30', '31'],
+  // ];
+  // const getBusLayout = (seatName) => {
+  //   const seatNumber = parseInt(seatName, 10);
+  //   return seatNumber >= 21 ? busLayoutUpper2 : busLayoutUpper;
+  // };
+  // const UpeerSeatbusLayout = getBusLayout(busLayoutUpper.flat().find(Boolean));
 
   const busLayoutUpper2 = [
     ['11', '12', '13', '14', '15'],
     [null, null, null, null, '16'],
     ['17', '18', '19', '20', '21'],
   ];
+  const busLayoutUpper = [
+    ['21', '22', '23', '24', '25'],
+    [null, null, null, null, '26'],
+    ['27', '28', '29', '30', '31'],
+  ];
+
+  // Function to select the correct bus layout based on seatName range.
   const getBusLayout = (seatName) => {
-    const seatNumber = parseInt(seatName, 10);
-    return seatNumber >= 21 ? busLayoutUpper2 : busLayoutUpper;
+    if (seatName >= '11' && seatName <= '21') {
+      return busLayoutUpper2;
+    } else if (seatName >= '21' && seatName <= '31') {
+      return busLayoutUpper;
+    }
+    return [];
   };
 
-  const UpeerSeatbusLayout = getBusLayout(busLayoutUpper.flat().find(Boolean));
+  // Use the seat name you need to decide which layout to show. Here it's an example seat name.
+  const seatName = '21'; // Example seatName, replace with your actual logic.
+  const UpeerSeatbusLayout = getBusLayout(seatName);
 
 
   if (loading) {
@@ -372,14 +396,14 @@ const BusLayout = () => {
                 {activeTab === 'upper' && seatType === 'Sitting' && (
                   <div className="upper sittingSeat">
                     <div className="sit">
-                      <div className="bus-upperlayout">
-                        {UpeerSeatbusLayout.map((row, rowIndex) => (
+                    <div className="bus-upperlayout">
+                        {UpeerSeatbusLayout.map((row, rowIndex) =>
                           row.map((seatName, seatIndex) => {
                             if (!seatName) {
                               return <div className="empty-space" key={`upper-empty-${rowIndex}-${seatIndex}`}></div>;
                             }
 
-                            const isLowerRange = busLayout.flat().filter(Boolean)[0].startsWith('11');
+                            // Assuming you have these variables properly defined elsewhere in your code.
                             const seatObject = upperSeatsBus.find(seat => seat.SeatName === seatName);
                             const isSelected = selectedSeats.includes(seatName);
                             const basePrice = seatObject ? getUpperBasePrice(seatName) : null;
@@ -419,9 +443,8 @@ const BusLayout = () => {
                               </div>
                             );
                           })
-                        ))}
+                        )}
                       </div>
-
                     </div>
                   </div>
                 )}
@@ -512,13 +535,13 @@ const BusLayout = () => {
                     <h6>Upper Deck</h6>
                     <div className="sit">
                       <div className="bus-upperlayout">
-                        {UpeerSeatbusLayout.map((row, rowIndex) => (
+                        {UpeerSeatbusLayout.map((row, rowIndex) =>
                           row.map((seatName, seatIndex) => {
                             if (!seatName) {
                               return <div className="empty-space" key={`upper-empty-${rowIndex}-${seatIndex}`}></div>;
                             }
 
-                            const isLowerRange = busLayout.flat().filter(Boolean)[0].startsWith('11');
+                            // Assuming you have these variables properly defined elsewhere in your code.
                             const seatObject = upperSeatsBus.find(seat => seat.SeatName === seatName);
                             const isSelected = selectedSeats.includes(seatName);
                             const basePrice = seatObject ? getUpperBasePrice(seatName) : null;
@@ -558,9 +581,8 @@ const BusLayout = () => {
                               </div>
                             );
                           })
-                        ))}
+                        )}
                       </div>
-
                     </div>
 
                   </div>
