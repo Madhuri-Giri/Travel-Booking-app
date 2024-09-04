@@ -147,7 +147,7 @@ function BookingHistory() {
     useEffect(() => {
         const fetchBusBookingHistory = async () => {
 
-            const transactionNoBus = localStorage.getItem('transactionNum-bus')
+            const transactionNoBus = localStorage.getItem('transactionNum')
             try {
                 const response = await fetch("https://sajyatra.sajpe.in/admin/api/bus-booking-history", {
                     method: "POST",
@@ -191,7 +191,7 @@ function BookingHistory() {
     useEffect(() => {
         const fetchFlightBookingHistory = async () => {
             try {
-                const transactionFlightNo = localStorage.getItem('transactionNum-Flight');
+                const transactionFlightNo = localStorage.getItem('transactionNum');
 
 
                 if (!transactionFlightNo) {

@@ -124,7 +124,7 @@ const BusLists = () => {
       // console.log('trans', data.transaction.transaction_num)
       if (data.result && data.transaction) {
         localStorage.setItem('transactionIdBus', data.transaction.id);
-        localStorage.setItem('transactionNum-bus', data.transaction.transaction_num);
+        localStorage.setItem('transactionNum', data.transaction.transaction_num);
       }
     } catch (error) {
       console.error('Error fetching user details:', error.message);

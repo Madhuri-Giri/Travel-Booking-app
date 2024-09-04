@@ -376,7 +376,7 @@ export default function FlightDetails() {
                         />
                     </div>
                 </div>
-                <div className="col-md-3">
+             <div className="col-md-3">
                     <div className="form-group">
                         <label htmlFor={`passportExpiry-${type}-${index}`}>Passport Expiry</label>
                         <input
@@ -405,7 +405,7 @@ export default function FlightDetails() {
                             
                         />
                     </div>
-                </div>
+                </div> 
                 <div className="col-md-3">
                     <div className="form-group">
                         <label htmlFor={`addressLine1-${type}-${index}`}>Address Line 1</label>
