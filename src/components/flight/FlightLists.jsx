@@ -206,6 +206,10 @@ export default function FlightLists() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
+                        "EndUserIp": "1.1.1.1",
+                        "ClientId": "180112",
+                        "UserName": "Maneesh3",
+                        "Password": "Maneesh@36",
                         "AdultCount": 1,
                         "ChildCount": 0,
                         "InfantCount": 0,
@@ -222,7 +226,6 @@ export default function FlightLists() {
                     })
                 });
                 const data = await response.json();
-                
                 localStorage.setItem('callenderData', JSON.stringify(data));
                 if (data.Results) {
                     setFlightData(data.Results);
@@ -311,25 +314,25 @@ export default function FlightLists() {
     // ------------------------------------------------fare-Quote-api-----------------------------------------
     const fareQuoteHandler = async () => {
         setLoading(true);
-
+      
         const FtraceId = localStorage.getItem('F-TraceId');
         const FresultIndex = localStorage.getItem('F-ResultIndex');
         const FsrdvType = localStorage.getItem('F-SrdvType');
         const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
-
+      
         if (!FtraceId || !FresultIndex || !FsrdvType || !FsrdvIndex) {
             console.error('TraceId, ResultIndex, SrdvType, or SrdvIndex not found in local storage');
             setLoading(false);
             return;
         }
-
+      
         const payload = {
             SrdvIndex: FsrdvIndex,
             ResultIndex: FresultIndex,
             TraceId: parseInt(FtraceId),
             SrdvType: FsrdvType,
         };
-
+      
         try {
             const response = await fetch('https://sajyatra.sajpe.in/admin/api/farequote', {
                 method: 'POST',
@@ -338,16 +341,16 @@ export default function FlightLists() {
                 },
                 body: JSON.stringify(payload),
             });
-
+      
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
-
+      
             const data = await response.json();
             console.log('FareQuote API Response:', data);
-
+      
             const fare = data.Results?.Fare || {};
-
+      
             // Save all fare details in local storage
             localStorage.setItem('BaseFare', fare.BaseFare);
             localStorage.setItem('YQTax', fare.YQTax);
@@ -363,8 +366,8 @@ export default function FlightLists() {
             localStorage.setItem('TdsOnCommission', fare.TdsOnCommission);
             localStorage.setItem('PublishedFare', fare.PublishedFare);         
             localStorage.setItem('OfferedFare', fare.OfferedFare)
-
-
+      
+      
             if (data.Results && formData) {
                 setLoading(false);
                 setTimeout(() => {
@@ -378,7 +381,7 @@ export default function FlightLists() {
             console.error('Error calling the farequote API:', error);
             setLoading(false);
         }
-    };
+      };
 
     // -------------------------------------------------fare-Quote-api----------------------------------------
 
@@ -417,7 +420,7 @@ export default function FlightLists() {
 
     const handleSelectSeat = async (flight) => {
         const loginId = localStorage.getItem('loginId');
-        // console.log('Current loginId:', loginId);
+        console.log('Current loginId:', loginId);
 
         // Extract price from the flight data
         const baseFare = flight?.OfferedFare;
@@ -425,7 +428,7 @@ export default function FlightLists() {
         // Save the base fare to local storage
         if (baseFare !== undefined) {
             localStorage.setItem('selectedFlightBaseFare', baseFare);
-            // console.log('Saved base fare to local storage:', baseFare);
+            console.log('Saved base fare to local storage:', baseFare);
         }
 
         await useridHandler();

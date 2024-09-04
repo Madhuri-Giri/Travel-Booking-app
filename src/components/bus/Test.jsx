@@ -1,48 +1,70 @@
-{
-  "TraceId": 158294,
-  "SrdvType": "MixAPI",
-  "ResultIndex": "OB2_0_0",
-  "SrdvIndex": "1",
-  "Passengers": [
-    {
-      "Title": "Mr",
-      "FirstName": "Manish",
-      "LastName": "Milson",
-      "PaxType": 1,
-      "DateOfBirth": "1994-03-12T00:00:00",
-      "Gender": "1",
-      "PassportNo": "abc12345",
-      "PassportExpiry": "2027-12-12T00:00:00",
-      "AddressLine1": "Noida, Sector 63",
-      "City": "Noida",
-      "CountryCode": "IN",
-      "CountryName": "INDIA",
-      "ContactNo": "9988776655",
-      "Email": "hello@gmail.com",
-      "IsLeadPax": 1,
-      "Fare": [
-        {
-          "Currency": "INR",
-          "BaseFare": 3547,
-          "Tax": 703,
-          "YQTax": 0,
-          "OtherCharges": 0,
-          "TransactionFee": "0",
-          "AdditionalTxnFeeOfrd": 0,
-          "AdditionalTxnFeePub": 0,
-          "AirTransFee": "0",
-          "Discount": 0,
-          "PublishedFare": 4250,
-          "OfferedFare": 3766,
-          "CommissionEarned": 232.68,
-          "TdsOnCommission": 93.07
-        }
-      ],
-      "GSTCompanyAddress": "",
-      "GSTCompanyContactNumber": "",
-      "GSTCompanyName": "",
-      "GSTNumber": "",
-      "GSTCompanyEmail": ""
-    }
-  ]
-}
+const fareQuoteHandler = async () => {
+  setLoading(true);
+
+  const FtraceId = localStorage.getItem('F-TraceId');
+  const FresultIndex = localStorage.getItem('F-ResultIndex');
+  const FsrdvType = localStorage.getItem('F-SrdvType');
+  const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
+
+  if (!FtraceId || !FresultIndex || !FsrdvType || !FsrdvIndex) {
+      console.error('TraceId, ResultIndex, SrdvType, or SrdvIndex not found in local storage');
+      setLoading(false);
+      return;
+  }
+
+  const payload = {
+      SrdvIndex: FsrdvIndex,
+      ResultIndex: FresultIndex,
+      TraceId: parseInt(FtraceId),
+      SrdvType: FsrdvType,
+  };
+
+  try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/farequote', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('FareQuote API Response:', data);
+
+      const fare = data.Results?.Fare || {};
+
+      // Save all fare details in local storage
+      localStorage.setItem('BaseFare', fare.BaseFare);
+      localStorage.setItem('YQTax', fare.YQTax);
+      localStorage.setItem('Tax', fare.Tax);
+      localStorage.setItem('AdditionalTxnFeeOfrd', fare.AdditionalTxnFeeOfrd);
+      localStorage.setItem('AdditionalTxnFeePub', fare.AdditionalTxnFeePub);
+      localStorage.setItem('AirTransFee', fare.AirTransFee);
+      localStorage.setItem('OtherCharges', fare.OtherCharges);
+      localStorage.setItem('TransactionFee', fare.TransactionFee);
+      localStorage.setItem('Currency', fare.Currency);
+      localStorage.setItem('CommissionEarned', fare.CommissionEarned);
+      localStorage.setItem('Discount', fare.Discount);
+      localStorage.setItem('TdsOnCommission', fare.TdsOnCommission);
+      localStorage.setItem('PublishedFare', fare.PublishedFare);         
+      localStorage.setItem('OfferedFare', fare.OfferedFare)
+
+
+      if (data.Results && formData) {
+          setLoading(false);
+          setTimeout(() => {
+              navigate('/flight-Farequote', { state: { fareData: data.Results, formData: formData } });
+          }, 1000);
+      } else {
+          console.error('data.Results or formData is undefined');
+          setLoading(false);
+      }
+  } catch (error) {
+      console.error('Error calling the farequote API:', error);
+      setLoading(false);
+  }
+};
