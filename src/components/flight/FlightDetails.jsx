@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
-
+import TimerFlight from '../timmer/TimerFlight';
 export default function FlightDetails() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false); // Add loading state
@@ -386,7 +386,7 @@ export default function FlightDetails() {
                             onClick={(e) => e.target.showPicker && e.target.showPicker()}
                             onChange={(e) => handleInputChange(e, index, type, 'passportExpiry')}
                             value={details[index]?.passportExpiry || ''}
-                            min={new Date().toISOString().split("T")[0]} // Prevent past dates
+                            min={new Date().toISOString().split("T")[0]}
                             
                         />
                     </div>
@@ -746,6 +746,7 @@ export default function FlightDetails() {
     return (
         <>
             <CustomNavbar />
+            <TimerFlight/>
             {/* timerrr-------------------  */}
             {/* <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>

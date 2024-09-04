@@ -20,7 +20,7 @@ import 'swiper/swiper-bundle.css';
 import { Navigation } from 'swiper/modules'; // Note the updated import path in newer versions
 import 'swiper/css';
 import 'swiper/css/navigation';
-
+import TimerFlight from '../timmer/TimerFlight';
 export default function FlightLists() {
     const swiperRef = useRef(null);
 
@@ -471,6 +471,7 @@ export default function FlightLists() {
     return (
         <>
             <CustomNavbar />
+            <TimerFlight/>
             {/* timerrr-------------------  */}
             {/* <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>

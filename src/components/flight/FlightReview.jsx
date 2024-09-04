@@ -14,7 +14,7 @@ import Footer from "../../pages/footer/Footer";
 // import Payloader from '../../pages/loading/Payloader';
 import { RiTimerLine } from "react-icons/ri";
 import PayloaderHotel from "../../pages/loading/PayloaderHotel";
-
+import TimerFlight from '../timmer/TimerFlight';
 
 
 
@@ -554,6 +554,7 @@ const bookHoldApi = async () => {
   return (
     <>
       <CustomNavbar />
+      <TimerFlight/>
       {/* <div className="timer-FlightLists">
 
 
