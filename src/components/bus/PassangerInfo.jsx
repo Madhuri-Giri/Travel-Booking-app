@@ -11,17 +11,20 @@ const PassangerInfo = () => {
     gender: '1',
   };
 
+
   const [formData, setFormData] = useState(initialFormData);
   const navigate = useNavigate();
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [passengers, setPassengers] = useState([]);
   const [passengerCount, setPassengerCount] = useState(0);
 
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     const seats = JSON.parse(localStorage.getItem('selectedSeats')) || [];
     setSelectedSeats(seats);
-
   }, []);
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -31,7 +34,33 @@ const PassangerInfo = () => {
     }));
   };
 
-// ----------------------------------------------------------------------------------------------------
+
+
+
+  const cleanUpErrors = (errors) => {
+    const cleanedErrors = {};
+
+    for (const key in errors) {
+      const newKey = key.split('.').slice(1).join('.');
+
+      if (!cleanedErrors[newKey]) {
+        cleanedErrors[newKey] = [];
+      }
+      cleanedErrors[newKey] = [...cleanedErrors[newKey], ...errors[key]];
+    }
+    for (const key in cleanedErrors) {
+      cleanedErrors[key] = cleanedErrors[key].map(msg => msg.replace(/The Passenger.\d+\./, ''));
+    }
+
+    return cleanedErrors;
+  };
+
+
+
+
+
+
+  // ----------------------------------------------------------------------------------------------------
 
 
   const blockHandler = async (event) => {
@@ -39,10 +68,7 @@ const PassangerInfo = () => {
 
     const selectedBusSeatData = JSON.parse(localStorage.getItem('selectedBusSeatData')) || [];
 
-    // console.log('Selected Bus Seat Data:', selectedBusSeatData);
-
     if (passengerCount < selectedSeats.length) {
-      // Prepare GST data
       const gstData = {
         CGSTAmount: 0,
         CGSTRate: 0,
@@ -56,15 +82,6 @@ const PassangerInfo = () => {
       };
 
       selectedBusSeatData.forEach((seat) => {
-        // console.log(`Seat: ${seat.SeatName || ''}`);
-        // console.log('ColumnNo:', seat.ColumnNo);
-        // console.log('Height:', seat.Height);
-        // console.log('IsLadiesSeat:', seat.IsLadiesSeat);
-        // console.log('IsMalesSeat:', seat.IsMalesSeat);
-        // console.log('IsUpper:', seat.IsUpper);
-        // console.log('RowNo:', seat.RowNo);
-    
-        // Update GST data dynamically from seat pricing
         if (seat.Price) {
           gstData.CGSTAmount += parseFloat(seat.Price.CGSTAmount) || 0;
           gstData.CGSTRate = Math.max(gstData.CGSTRate, parseFloat(seat.Price.CGSTRate) || 0);
@@ -76,8 +93,6 @@ const PassangerInfo = () => {
           gstData.SGSTRate = Math.max(gstData.SGSTRate, parseFloat(seat.Price.SGSTRate) || 0);
           gstData.TaxableAmount += parseFloat(seat.Price.TaxableAmount) || 0;
         }
-    
-        // Update seat Price object with GST data
         seat.Price.GST = gstData;
       });
 
@@ -136,6 +151,7 @@ const PassangerInfo = () => {
         Passenger: passengersData,
       };
 
+
       try {
         const response = await fetch('https://sajyatra.sajpe.in/admin/api/seat-block', {
           method: 'POST',
@@ -146,6 +162,12 @@ const PassangerInfo = () => {
         });
 
         if (!response.ok) {
+          const errorData = await response.json();
+          console.log('Raw Errors:', errorData.errors);
+          const cleanedErrors = cleanUpErrors(errorData.errors || {});
+          setErrors(cleanedErrors);
+          console.log('Cleaned Errors:', cleanedErrors);
+
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -166,7 +188,8 @@ const PassangerInfo = () => {
         const updatedPassengers = [...passengers, newPassenger];
         setPassengers(updatedPassengers);
         setPassengerCount(updatedPassengers.length);
-        setFormData(initialFormData);       
+        setFormData(initialFormData);
+        setErrors({});
 
       } catch (error) {
         console.error('Error:', error);
@@ -174,7 +197,6 @@ const PassangerInfo = () => {
     } else {
       alert("All selected seats must have corresponding passengers.");
     }
-
   };
 
 
@@ -232,12 +254,17 @@ const PassangerInfo = () => {
                   <div className="p-form">
                     <input
                       type="text"
-                      name='firstName'
+                      name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      placeholder='Enter Name'
-                      required
+                      placeholder="Enter First Name"
+                      className={`form-control ${errors['0.FirstName'] ? 'is-invalid' : ''}`}
                     />
+                    {errors['0.FirstName'] && (
+                      <div className="invalid-feedback">
+                        {errors['0.FirstName'].join(', ')}
+                      </div>
+                    )}
                   </div>
                   <div className="p-form">
                     <input
@@ -246,34 +273,49 @@ const PassangerInfo = () => {
                       value={formData.lastName}
                       onChange={handleInputChange}
                       placeholder='Enter Last Name'
-                      required
+                      className={`form-control ${errors['0.LastName'] ? 'is-invalid' : ''}`}
+
                     />
-                  </div>
+                    {errors['0.LastName'] && (
+                      <div className="invalid-feedback">
+                        {errors['0.LastName'].join(', ')}
+                      </div>
+                    )}                 </div>
                   <div className="p-form">
                     <input
                       type="text"
                       name='address'
                       value={formData.address}
                       onChange={handleInputChange}
-                      placeholder='Enter Address'
-                      required
+                      placeholder='Address'
+                      className={`form-control ${errors['0.Address'] ? 'is-invalid' : ''}`}
                     />
+                    {errors['0.Address'] && (
+                      <div className="invalid-feedback">
+                        {errors['0.Address'].join(', ')}
+                      </div>
+                    )}
                   </div>
                   <div className="p-form">
                     <input
-                      type="text"
+                      type="number"
                       name='age'
                       value={formData.age}
                       onChange={handleInputChange}
-                      placeholder='Enter Age'
-                      required
-                      pattern="\d*"
+                      placeholder='Age'
+                      className={`form-control ${errors['0.Age'] ? 'is-invalid' : ''}`}
+
                     />
-                  </div>
+                    {errors['0.Age'] && (
+                      <div className="invalid-feedback">
+                        {errors['0.Age'].join(', ')}
+                      </div>
+                    )}                     </div>
                 </p>
               </div>
-            </div>
 
+
+            </div>
             <div className="p-btn">
               <button type='submit' disabled={passengerCount >= selectedSeats.length}>
                 Add Passenger
@@ -281,6 +323,7 @@ const PassangerInfo = () => {
             </div>
           </form>
         </div>
+
       </div>
 
       <div className="passenger-details-display">
@@ -299,13 +342,14 @@ const PassangerInfo = () => {
               <span>{passenger.Age}</span>
               <span>{passenger.Gender === '1' ? 'Male' : 'Female'}</span>
               <span>{passenger.Address}</span>
-              <i style={{cursor:"pointer", color:"red"}} onClick={() => deletePassenger(index)} className="ri-delete-bin-6-line"></i>
+              <i style={{ cursor: "pointer", color: "red" }} onClick={() => deletePassenger(index)} className="ri-delete-bin-6-line"></i>
             </div>
           ))}
         </div>
       </div>
     </>
   );
+
 };
 
 export default PassangerInfo;

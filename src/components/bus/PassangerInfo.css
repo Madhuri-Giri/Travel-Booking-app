@@ -5,6 +5,16 @@
       justify-content: center;
       flex-direction: column;
     }
+    .invalid-feedback {
+      color: #e7423c; 
+      font-size: 0.875rem; 
+      display: block;
+      font-weight: 500;
+    }
+    
+    .form-control.is-invalid {
+      border-color: #d9534f; 
+    }
     
     .PassangerInfo .pbh {
       width: 95%;
