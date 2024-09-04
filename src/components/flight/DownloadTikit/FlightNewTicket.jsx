@@ -40,6 +40,7 @@ const FlightNewTikit = () => {
           headers: {
             "Content-Type": "application/json",
           },
+
           body: JSON.stringify({
            transaction_id: flightTransactionId
          }),
