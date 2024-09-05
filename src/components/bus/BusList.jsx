@@ -269,7 +269,7 @@ const toggleDropVisibility = () => {
 
         <div className="bus-sidebar">
           <div className="busSide">
-            <h5>Filters</h5>
+            <h5><i style={{marginTop:"0.1vmax"}} className="ri-filter-2-line"></i> Filters</h5>
             <div className="seat-type">
               <h6>Price</h6>
               <div className="filter-seat">
@@ -462,15 +462,15 @@ const toggleDropVisibility = () => {
                         </span></h6>
                       </div>
                       <div className="price">
-                        <h4>₹{(bus.Price.BasePrice * (1 - 0.18)).toFixed(2)}</h4>
-                        <h6 style={{ textDecorationLine: 'line-through', color: "#000000b9" }}>₹1000</h6>
+                      <h4>₹{Math.round(bus.Price.BasePrice * (1 - 0.18))}</h4>
+                    <h6 style={{ textDecorationLine: 'line-through', color: "green" }}>₹1000</h6>
                       </div>
                     </div>
 
                     <div className="one-btm">
                       <div className="rating">
-                        <a style={{ textDecoration: "none", color: 'green' }}>boarding points<i className="ri-arrow-down-s-line"></i></a>
-                        <a style={{ textDecoration: "none", color: 'green' }}>dropping points<i className="ri-arrow-down-s-line"></i></a>
+                        <a style={{ textDecoration: "none", color: 'green' }}>select boarding & droping points</a>
+                        {/* <a style={{ textDecoration: "none", color: 'green' }}>dropping points</a> */}
                       </div>
                       <button className="btn btn-primary" onClick={() => handleSelectSeat(index)}>Select Seat</button>
                     </div>
