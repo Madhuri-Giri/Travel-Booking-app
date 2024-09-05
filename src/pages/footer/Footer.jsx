@@ -40,9 +40,9 @@ function Footer() {
 
                         <div className="col-lg-3 col-md-4 col-sm-6 footer-links">
                             <h5>Get in Touch</h5>
-                            <div> <span>Email : </span> example@gmail.com </div>
-                            <div> <span>Phone : </span> +1234567899 </div>
-                            <div> <span>Fax : </span> +1 (987)  793805</div>                            
+                            <div> <span>Email : </span> info@mktechitsolution.com</div>
+                            <div> <span>Phone : </span> +91 8447906804 </div>
+                            <div> <span>Fax : </span> +91 8447906804 </div>                            
                         </div>
 
                         <div className="col-lg-2 col-sm-6 footer-links f-linkPayment">

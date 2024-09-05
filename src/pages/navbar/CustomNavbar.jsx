@@ -98,7 +98,7 @@ const CustomNavbar = () => {
                                     </Nav.Link>
                                 </div>
                                 <Nav.Link href="" className="numNavbar">
-                                    <FaPhoneAlt /> <span>+91 9876543210</span>
+                                    <FaPhoneAlt /> <span> +91 8447906804 </span>
                                 </Nav.Link>
                                 <div className="mobileLoginSignup">
                                     {loginId ? (

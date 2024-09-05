@@ -15,6 +15,7 @@ import Footer from "../../pages/footer/Footer";
 import { RiTimerLine } from "react-icons/ri";
 import PayloaderHotel from "../../pages/loading/PayloaderHotel";
 import TimerFlight from '../timmer/TimerFlight';
+import Loading from '../../pages/loading/Loading';
 
 
 
@@ -22,7 +23,7 @@ const FlightReview = () => {
   const navigate = useNavigate();
 
   const [payLoading, setPayLoading] = useState(false);
-
+  const [loader, setLoader] = useState(false);
 
   const location = useLocation();
   const { fareDataDetails } = location.state || {}; 
@@ -112,11 +113,14 @@ const grandTotal = totalPrice + finalTotalPrice;
   const flightPayCreate = async () => {
     try {
 
+      const transaction_num = localStorage.getItem('transactionNum');
       const loginId = localStorage.getItem('loginId')
 
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-flight-payment', {
         amount: roundedGrandTotal,
         user_id: loginId,
+        transaction_num,
+
       });
 
       if (response.data.status === 'success') {
@@ -217,18 +221,18 @@ const grandTotal = totalPrice + finalTotalPrice;
     try {
       const payment_id = localStorage.getItem('flight_payment_id');
       const transaction_id = localStorage.getItem('flight_transaction_id');
-      const transaction_num = localStorage.getItem('transactionNum');
-      console.log('transaction_num',transaction_num)
+      // const transaction_num = localStorage.getItem('transactionNum');
+      // console.log('transaction_num',transaction_num)
 
       if (!payment_id || !transaction_id) {
         throw new Error('Missing payment details');
-      }
+      } 
 
       const url = 'https://sajyatra.sajpe.in/admin/api/update-flight-payment';
       const payload = {
         payment_id,
         transaction_id,
-        transaction_num
+        // transaction_num
       };
 
       const response = await fetch(url, {
@@ -246,7 +250,7 @@ const grandTotal = totalPrice + finalTotalPrice;
       }
 
       const data = await response.json();
-      // console.log('flight Update successful:', data);
+      console.log('flight Update successful:', data);
     } catch (error) {
       console.error('Error updating payment details:', error.message);
       throw error;
@@ -307,7 +311,7 @@ const grandTotal = totalPrice + finalTotalPrice;
           "SrdvIndex": FsrdvIndex,
           "TraceId": FtraceId,
           "ResultIndex": FresultIndex,
-          "Title": passenger.gender === "male" ? "Mr" : "Ms",
+          "Title": passenger.gender === "male" ? "Mr" : "Ms" || null,
           "FirstName": passenger.firstName,
           "LastName": passenger.lastName,
           "PaxType": 1,
@@ -318,7 +322,7 @@ const grandTotal = totalPrice + finalTotalPrice;
           "PassportIssueDate": passenger.passportIssueDate || null,
           "AddressLine1": passenger.addressLine1,
           "City": passenger.city,
-          "CountryCode": passenger.countryCode,
+          "CountryCode": passenger.countryCode || null,
           "CountryName": passenger.countryName,
           "ContactNo": passenger.contactNo,
           "Email": passenger.email,
@@ -367,6 +371,8 @@ const bookHoldApi = async () => {
 
   if (!storedPassengers.length || !transaction_id) {
     console.error('Required data is missing from local storage');
+    toast.error('Required data is missing from local storage'); 
+    setLoader(false); 
     return;
   }
 
@@ -432,18 +438,28 @@ const bookHoldApi = async () => {
     });
 
     if (!response.ok) {
-      const errorData = await response.text(); // Read raw response text
+      const errorData = await response.json(); 
       console.error('Response status:', response.status);
       console.error('Error details:', errorData);
-      throw new Error('Network response was not ok');
+
+      if (errorData?.Error?.ErrorMessage) {
+        toast.error(`Booking failed: ${errorData.Error.ErrorMessage}`);
+      } else {
+        toast.error('Network response was not ok');
+      }
+
+      setLoader(false); 
+      return;
     }
 
     const holdData = await response.json();
     console.log('Hold Response:', holdData);
     localStorage.setItem('HolApiData', JSON.stringify(holdData));
     
-  } catch (error) {
+  }  catch (error) {
     console.error('API call failed:', error.message || error);
+    toast.error(`API call failed: ${error.message}`); 
+    setLoader(false); 
   }
 };
 
@@ -498,49 +514,6 @@ const bookHoldApi = async () => {
 };
 
 
-// -------------------------------------------------------------------------------------------
-
-
-  // const flightPaymentStatus = async () => {
-  //   try {
-
-  //     const transaction_id = localStorage.getItem('flight_transaction_id');
-
-
-  //     if (!transaction_id) {
-  //       throw new Error('Transaction ID is missing.');
-  //     }  
-
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-payment-history', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         transaction_id
-  //          }), 
-  //     });
-  
-  //     const responseBody = await response.json();
-  //     console.log('Flight Payment Status :', responseBody);
-  
-  //     if (!response.ok) {
-  //       console.error('Failed to fetch payment status. Status:', response.status, 'Response:', responseBody);
-  //       throw new Error(`Failed to fetch payment status. Status: ${response.status}`);
-  //     }
-
-  //     localStorage.setItem('flight-status', JSON.stringify(responseBody));
-  
-  //     navigate('/flightNewTicket'); 
-  //     return responseBody;
-  
-  //   } catch (error) {
-  //     console.error('Error during fetching payment status:', error.message);
-  //     toast.error('An error occurred while checking payment status. Please try again.');
-  //     return null; 
-  //   }
-  // }
-
 
  
 
@@ -549,6 +522,9 @@ const bookHoldApi = async () => {
   }
 
   
+  if (loader) {
+    return <Loading/>;
+  }
 
 
   return (

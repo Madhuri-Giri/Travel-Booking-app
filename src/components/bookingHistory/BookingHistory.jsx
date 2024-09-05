@@ -396,7 +396,7 @@ function BookingHistory() {
                                 </button>
                             </div>
                             <div className="tab-content">
-                                {renderTabContent()} {/* Render content based on the active tab */}
+                                {renderTabContent()} 
                             </div>
                         </div>
                     </div>
