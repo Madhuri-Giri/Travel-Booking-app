@@ -95,36 +95,47 @@ const FlightSearch = () => {
   const handleToInputFocus = () => {
     fetchSuggestions('', setToSuggestions, true);
   };
- // Function to handle "From" input change
-const handleFromChange = (event) => {
-  const value = event.target.value;
-  setFrom(value);
-  if (value.length > 2) {
-    fetchSuggestions(value, setFromSuggestions);
-  } else {
-    setFromSuggestions([]);
-  }
-  console.log("OriginFrom",value);
-  localStorage.setItem('OriginFrom', value);
-};
+  // Function to handle "From" input change
+  const handleFromChange = (event) => {
+    const value = event.target.value;
+    setFrom(value);
+    if (value.length > 2) {
+      fetchSuggestions(value, setFromSuggestions);
+    } else {
+      setFromSuggestions([]);
+    }
+    console.log("OriginFrom", value);
+    localStorage.setItem('OriginFrom', value);
+  };
 
-// Function to handle "To" input change
-const handleToChange = (event) => {
-  const value = event.target.value;
-  setTo(value);
-  if (value.length > 2) {
-    fetchSuggestions(value, setToSuggestions);
-  } else {
-    setToSuggestions([]);
-  }
-  localStorage.setItem('DestinationTo', value);
-};
+  // Function to handle "To" input change
+  const handleToChange = (event) => {
+    const value = event.target.value;
+    setTo(value);
+    if (value.length > 2) {
+      fetchSuggestions(value, setToSuggestions);
+    } else {
+      setToSuggestions([]);
+    }
+    localStorage.setItem('DestinationTo', value);
+  };
 
   // Function for selecting a suggestion
-  const handleSuggestionClick = (suggestion, fieldSetter, setSuggestions) => {
-    fieldSetter(suggestion.busodma_destination_name);
+  // const handleSuggestionClick = (suggestion, fieldSetter, setSuggestions) => {
+  //   fieldSetter(suggestion.busodma_destination_name);
+  //   setSuggestions([]);
+  // };
+
+  const handleSuggestionClick = (suggestion, setFunction, setSuggestions) => {
+    setFunction(suggestion.busodma_destination_name);
     setSuggestions([]);
   };
+  // Setting Origin value
+  localStorage.setItem('OriginFrom', from);
+
+  // Setting Destination value
+  localStorage.setItem('DestinationTo', to);
+
 
 
   // function for adult , child , infact dropdown list-------------------------------------------
@@ -153,13 +164,13 @@ const handleToChange = (event) => {
   const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
   const [infantCount, setInfantCount] = useState(0);
-  
- 
- 
+
+
+
   // Handle count change
   const handleCount = (action, type) => {
     let newCount;
-    
+
     switch (type) {
       case 'AdultCount':
         newCount = action === 'increment' ? adultCount + 1 : Math.max(adultCount - 1, 0);
@@ -169,7 +180,7 @@ const handleToChange = (event) => {
           AdultCount: newCount
         }));
         break;
-  
+
       case 'ChildCount':
         newCount = action === 'increment' ? childCount + 1 : Math.max(childCount - 1, 0);
         setChildCount(newCount);
@@ -178,7 +189,7 @@ const handleToChange = (event) => {
           ChildCount: newCount
         }));
         break;
-  
+
       case 'InfantCount':
         newCount = action === 'increment' ? infantCount + 1 : Math.max(infantCount - 1, 0);
         setInfantCount(newCount);
@@ -187,13 +198,13 @@ const handleToChange = (event) => {
           InfantCount: newCount
         }));
         break;
-  
+
       default:
         break;
     }
   };
 
- 
+
 
 
   // func for select flight class----------------------------------------------
@@ -249,9 +260,9 @@ const handleToChange = (event) => {
   const handleTabChange = (event) => {
     const selectedTab = event.target.value;
     setActiveTab(selectedTab);
-      const newValue = selectedTab === 'oneway' ? 1 : 2;
+    const newValue = selectedTab === 'oneway' ? 1 : 2;
     setTabValue(newValue);
-      setFormData((prevFormData) => ({
+    setFormData((prevFormData) => ({
       ...prevFormData,
       JourneyType: newValue.toString()
     }));
@@ -262,6 +273,8 @@ const handleToChange = (event) => {
       // One-Way: Keep only one segment
       setSegments([
         {
+          // Origin: from,
+          // Destination: to,
           Origin: "DEL",
           Destination: "BOM",
           FlightCabinClass: selectedflightClass,
@@ -273,6 +286,8 @@ const handleToChange = (event) => {
       // Two-Way: Add a second segment
       setSegments([
         {
+          // Origin: from,
+          // Destination: to,
           Origin: "DEL",
           Destination: "BOM",
           FlightCabinClass: selectedflightClass,
@@ -280,6 +295,8 @@ const handleToChange = (event) => {
           PreferredArrivalTime: departureDate
         },
         {
+          // Origin: to,
+          // Destination: from,
           Origin: "BOM",
           Destination: "DEL",
           FlightCabinClass: selectedflightClass,
@@ -288,7 +305,7 @@ const handleToChange = (event) => {
         }
       ]);
     }
-  }, [tabValue, departureDate, returnDateDep , selectedflightClass]); 
+  }, [tabValue, departureDate, returnDateDep, selectedflightClass]);
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -299,10 +316,10 @@ const handleToChange = (event) => {
 
   // console.log("formData", formData);
 
-  
 
- 
-  
+
+
+
 
   const getFlightList = async () => {
     setLoading(true);
@@ -314,27 +331,27 @@ const handleToChange = (event) => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-  
+
       const data = await response.json();
       console.log("Flight search API response: ", data);
-  
+
       localStorage.setItem('Flight-search', JSON.stringify(data));
-  
+
       const firstResult = data?.Results?.[0]?.[0];
       if (firstResult && firstResult.FareDataMultiple?.[0]) {
         const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
         const { TraceId, SrdvType } = data;
-  
+
         localStorage.setItem("F-SrdvIndex", SrdvIndex);
         localStorage.setItem("F-ResultIndex", ResultIndex);
         localStorage.setItem("F-TraceId", TraceId);
         localStorage.setItem("F-SrdvType", SrdvType);
         localStorage.setItem("F-IsLcc", IsLCC);
-  
+
         const airlineCodes = data.Results.flatMap(result =>
           result.flatMap(fareData =>
             fareData.FareDataMultiple.flatMap(fare =>
@@ -342,17 +359,17 @@ const handleToChange = (event) => {
             )
           )
         );
-  
+
         const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
         console.log("Airline Codes: ", filteredAirlineCodes);
-  
+
         // for (const airlineCode of filteredAirlineCodes) {
         //   await flightLogoHandler(airlineCode);
         // }
       } else {
         console.log("SrdvIndex or FareDataMultiple not found");
       }
-  
+
       setLoading(false);
       navigate("/flight-list", { state: { data: data, formData: formData } });
     } catch (error) {
@@ -360,36 +377,36 @@ const handleToChange = (event) => {
       console.error('Error fetching suggestions:', error);
     }
   };
-  
-  
-  
-// ---------------------------------------------------------------------------------------------------------------------------------
-// const flightLogoHandler = async (airline_code) => {
-//   try {
-//     const response = await fetch(`https://sajyatra.sajpe.in/admin/api/airline-logo?airline_code=${encodeURIComponent(airline_code)}`, {
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     });
-
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-
-//     const data = await response.json();
-//     // console.log("Airline logo API response: ", data);
-//   } catch (error) {
-//     console.error('Error fetching airline logos:', error);
-//   }
-// };
-
-// ---------------------------------------------------------------------------------------------------------------------------------
 
 
-const searchFlightHandler = async () => {
-  await getFlightList();
-};
+
+  // ---------------------------------------------------------------------------------------------------------------------------------
+  // const flightLogoHandler = async (airline_code) => {
+  //   try {
+  //     const response = await fetch(`https://sajyatra.sajpe.in/admin/api/airline-logo?airline_code=${encodeURIComponent(airline_code)}`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
+
+  //     const data = await response.json();
+  //     // console.log("Airline logo API response: ", data);
+  //   } catch (error) {
+  //     console.error('Error fetching airline logos:', error);
+  //   }
+  // };
+
+  // ---------------------------------------------------------------------------------------------------------------------------------
+
+
+  const searchFlightHandler = async () => {
+    await getFlightList();
+  };
 
 
   // ----------  Api integration start for slider image  ----------
@@ -527,10 +544,9 @@ const searchFlightHandler = async () => {
                               <input
                                 type="text"
                                 className="form-control"
-                                id="flightSatrtingPoint"
+                                id="flightStartingPoint"
                                 placeholder="Starting Point"
                                 value={from}
-                                // onChange={(e) => setFrom(e.target.value)}
                                 onChange={handleFromChange}
                                 onFocus={handleFromInputFocus}
                                 ref={fromInputRef}
@@ -548,7 +564,7 @@ const searchFlightHandler = async () => {
                                   ))}
                                 </ul>
                               )}
-                              <label className="flight-input-labelFrom" htmlFor="From">
+                              <label className="flight-input-labelFrom" htmlFor="flightStartingPoint">
                                 Starting Point
                               </label>
                             </div>
@@ -563,32 +579,38 @@ const searchFlightHandler = async () => {
                                 type="text"
                                 className="form-control"
                                 id="flightDestinationPoint"
-                                placeholder='Destination'
+                                placeholder="Destination"
                                 value={to}
-                                // onChange={(e) => setTo(e.target.value)}
-                                onFocus={handleToInputFocus}
                                 onChange={handleToChange}
+                                onFocus={handleToInputFocus}
                                 ref={toInputRef}
                               />
                               {toSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listTo" ref={toSuggestionsRef}>
                                   {toSuggestions.map((suggestion, index) => (
-                                    <li key={index} onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions)}>
+                                    <li
+                                      key={index}
+                                      onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions)}
+                                    >
                                       {suggestion.busodma_destination_name}
                                     </li>
                                   ))}
                                 </ul>
                               )}
-                              <label className="flight-input-labelTo" htmlFor="flightDestinationPoint">Destination</label>
+                              <label className="flight-input-labelTo" htmlFor="flightDestinationPoint">
+                                Destination
+                              </label>
                             </div>
                           </div>
+
+
                           <div className="col-6 flightformCol">
                             <div className="form-group flight-input-container">
                               <span className="plane-icon">
                                 <MdDateRange />
                               </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
-                                
+
                                 <DatePicker
                                   name="PreferredDepartureTime"
                                   selected={departureDate}
@@ -738,10 +760,9 @@ const searchFlightHandler = async () => {
                               <input
                                 type="text"
                                 className="form-control"
-                                id="flightSatrtingPoint"
+                                id="flightStartingPoint"
                                 placeholder="Starting Point"
                                 value={from}
-                                // onChange={(e) => setFrom(e.target.value)}
                                 onChange={handleFromChange}
                                 onFocus={handleFromInputFocus}
                                 ref={fromInputRef}
@@ -759,11 +780,12 @@ const searchFlightHandler = async () => {
                                   ))}
                                 </ul>
                               )}
-                              <label className="flight-input-labelFrom" htmlFor="From">
+                              <label className="flight-input-labelFrom" htmlFor="flightStartingPoint">
                                 Starting Point
                               </label>
                             </div>
                           </div>
+
                           <div className="col-12 flightformCol">
                             <div className="form-group flight-input-container">
                               <span className="plane-icon">
@@ -773,23 +795,27 @@ const searchFlightHandler = async () => {
                                 type="text"
                                 className="form-control"
                                 id="flightDestinationPoint"
-                                placeholder='Destination'
+                                placeholder="Destination"
                                 value={to}
-                                // onChange={(e) => setTo(e.target.value)}
-                                onFocus={handleToInputFocus}
                                 onChange={handleToChange}
+                                onFocus={handleToInputFocus}
                                 ref={toInputRef}
                               />
                               {toSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listTo" ref={toSuggestionsRef}>
                                   {toSuggestions.map((suggestion, index) => (
-                                    <li key={index} onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions)}>
+                                    <li
+                                      key={index}
+                                      onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions)}
+                                    >
                                       {suggestion.busodma_destination_name}
                                     </li>
                                   ))}
                                 </ul>
                               )}
-                              <label className="flight-input-labelTo" htmlFor="flightDestinationPoint">Destination</label>
+                              <label className="flight-input-labelTo" htmlFor="flightDestinationPoint">
+                                Destination
+                              </label>
                             </div>
                           </div>
 
@@ -806,7 +832,7 @@ const searchFlightHandler = async () => {
                                   placeholderText="Select a departure date"
                                   minDate={new Date()} // Departure date cannot be in the past
                                 />
-                                
+
                               </div>
                               <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
@@ -818,7 +844,7 @@ const searchFlightHandler = async () => {
                                 <MdDateRange />
                               </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
-                                
+
                                 <DatePicker
                                   selected={returnDateDep}
                                   onChange={handleDateChangeReturn}
@@ -1023,7 +1049,7 @@ const searchFlightHandler = async () => {
         </div>
       </section>
 
-     
+
 
       <section className='exictingOffers'>
         <div className="container-fluid">
@@ -1041,7 +1067,7 @@ const searchFlightHandler = async () => {
         </div>
       </section>
 
-     
+
 
 
       <section className="flightsec7 bg-light">

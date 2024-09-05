@@ -46,4 +46,26 @@
 
       .unkown {
         padding:0px  2px 0px 0px !important;
+        display: flex;
+        justify-content: center;
       }
+      .seat-selection .unkown h6{
+        margin: 0px;
+        font-size: 12px;
+
+      }
+      .seat-selection .unkown p{
+        margin: 0px;
+        font-size: 12px;
+      }
+      .seatsTabssColText img {
+        height: 25px;
+    }
+
+  
+  @media screen and (max-width: 768px) {
+    .meal-selection {
+      padding: 10px 27px;
+  }
+
+}

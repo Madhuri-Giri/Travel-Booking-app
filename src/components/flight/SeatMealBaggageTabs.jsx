@@ -114,7 +114,7 @@ const SeatMealBaggageTabs = () => {
     const seatMapApi = async () => {
         const FtraceId = localStorage.getItem('F-TraceId');
         const FresultIndex = localStorage.getItem('F-ResultIndex');
-        const FsrdvType = localStorage.getItem('F-SrdvType');
+        const FsrbdvType = localStorage.getItem('F-SrdvType');
         const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
 
         const url = 'https://sajyatra.sajpe.in/admin/api/seatmap';
@@ -275,19 +275,19 @@ const SeatMealBaggageTabs = () => {
             </div>
     
             <div className="row seatsTabssRow">
-                <div className="col-lg-4 seatsTabssColImg">
+                <div className="col-lg-3 seatsTabssColImg">
                     <img
                         className="img-fluid"
                         src={FlightImg}
                         alt="Seats"
                     />
                 </div>
-                <div className="col-lg-8">
+                <div className="col-lg-9">
                     <div className="seatsTabssColText">
                         {seatData.length > 0 ? (
                             <div className="seat-selection row">
                                 {seatData.map((seat, index) => (
-                                    <div key={index} className="col-md-2 col-3 unkown">
+                                    <div key={index} className="col-md-1 col-2 unkown">
                                         <button
                                             className={`f-seat ${seat.isBooked ? 'booked' : ''} ${selectedSeats.find(s => s.seatNumber === seat.seatNumber) ? 'selected' : ''}`}
                                             onClick={() => handleSeatClick(seat)}
