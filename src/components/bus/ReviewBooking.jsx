@@ -27,44 +27,6 @@ const ReviewBooking = () => {
 
 
 
-  // const [timer, setTimer] = useState(0);
-
-  // useEffect(() => {
-  //   const updateTimer = () => {
-  //     // Retrieve end time from localStorage
-  //     const endTime = localStorage.getItem('timerEndTime');
-  //     const now = Date.now();
-      
-  //     if (endTime) {
-  //       const remainingTime = endTime - now;
-        
-  //       if (remainingTime <= 0) {
-  //         localStorage.removeItem('timerEndTime');
-  //         navigate('/bus-search');
-  //       } else {
-  //         setTimer(remainingTime);
-  //       }
-  //     } else {
-  //       navigate('/bus-search');
-  //     }
-  //   };
-
-  //   updateTimer();
-
-  //   const interval = setInterval(updateTimer, 1000); 
-
-  //   return () => clearInterval(interval);
-  // }, [navigate]);
-
-  // const formatTime = (milliseconds) => {
-  //   const totalSeconds = Math.floor(milliseconds / 1000);
-  //   const minutes = Math.floor(totalSeconds / 60);
-  //   const seconds = totalSeconds % 60;
-  //   return `${minutes} min ${seconds} sec left`;
-  // };
-
-
-
   const [paymentDetails, setPaymentDetails] = useState(null);
   // const [email, setEmail] = useState('');
   // const [phone, setPhone] = useState('');
@@ -229,7 +191,7 @@ const ReviewBooking = () => {
         try {
           await updateHandlePayment();
 
-          // setLoading(true);
+          setLoading(true);
 
           await bookHandler();
           await busPaymentStatus();
@@ -542,10 +504,6 @@ const ReviewBooking = () => {
 
       <CustomNavbar />
       <TimerBus/>
-         {/* <div className="review-timer"> */}
-      {/* <h1>Time Remaining: {formatTime(timer)}</h1> */}
-
-         {/* </div> */}
 
       <div className='ReviewBooking'>
         <div className="review-book">
@@ -631,6 +589,7 @@ const ReviewBooking = () => {
                           value={newContactData.contact}
                           onChange={handleInputChange}
                           placeholder="Enter Your Contact"
+                             maxLength="10" 
                           required
                         />
                       </div>

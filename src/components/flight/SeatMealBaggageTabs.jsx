@@ -63,10 +63,7 @@ const SeatMealBaggageTabs = () => {
 
 
 
-    // const ssrData = [
-    //     { Weight: 15, Price: 100, AirlineCode: "SG", FlightNumber: "8269", WayType: 1, Code: "BOF1SeKey276", Currency: "INR", Description: "Bag Out First with 1 Bag", Destination: "BOM", Origin: "DEL" },
-    //     { Weight: 20, Price: 200, AirlineCode: "SG", FlightNumber: "8269", WayType: 1, Code: "BOF2SeKey276", Currency: "INR", Description: "Bag Out First with 2 Bag", Destination: "BOM", Origin: "DEL" }
-    // ];
+   
 
     const formData = {
         AdultCount: 1,
@@ -76,19 +73,7 @@ const SeatMealBaggageTabs = () => {
 
     const totalCount = formData.AdultCount + formData.ChildCount + formData.InfantCount;
 
-    // useEffect(() => {
-    //     const countdown = setInterval(() => {
-    //         setTimer((prev) => prev - 50);
-    //     }, 50);
-
-    //     if (timer <= 0) {
-    //         clearInterval(countdown);
-    //         alert("Your Session is Expired");
-    //         navigate('/flight-search');
-    //     }
-
-    //     return () => clearInterval(countdown);
-    // }, [timer, navigate]);
+   
 
     useEffect(() => {
         handleSeatMapApi();
@@ -107,36 +92,7 @@ const SeatMealBaggageTabs = () => {
 //  ------------------------------------
 
 
-// const [timer, setTimer] = useState(0);
-// useEffect(() => {
-//   const updateTimer = () => {
-//     const endTime = localStorage.getItem('F-timerEndTime');
-//     const now = Date.now();
-//     if (endTime) {
-//       const remainingTime = endTime - now;   
-//       if (remainingTime <= 0) {
-//         localStorage.removeItem('F-timerEndTime');
-//         navigate('/flight-search');
-//       } else {
-//         setTimer(remainingTime);
-//       }
-//     } else {
-//       navigate('/flight-search');
-//     }
-//   };
-//   updateTimer();
-//   const interval = setInterval(updateTimer, 1000); 
-//   return () => clearInterval(interval);
-// }, [navigate]);
-// const formatTimers = (milliseconds) => {
-//   const totalSeconds = Math.floor(milliseconds / 1000);
-//   const minutes = Math.floor(totalSeconds / 60);
-//   const seconds = totalSeconds % 60;
-//   return `${minutes} min ${seconds} sec left`;
-// };
 
-
-    // -------------------------------------
 
     const reviewHandler = () => {
         if (fareDataDetails) {
@@ -282,10 +238,7 @@ const SeatMealBaggageTabs = () => {
         return selectedSeats.reduce((total, seat) => total + seat.price, 0);
     };
 
-    const handleBaggageClick = (baggage) => {
-        setSelectedBaggage(baggage);
-        localStorage.setItem('selectedBaggage', JSON.stringify(baggage));
-    };
+   
 
 
 
@@ -381,8 +334,17 @@ const SeatMealBaggageTabs = () => {
     }, []);
 
     const handleMealClick = (meal) => {
-        setSelectedMeal(meal);
+        if (selectedMeal?.Name === meal.Name) {
+            // Deselect if already selected
+            setSelectedMeal(null);
+            localStorage.removeItem('selectedMeal');
+        } else {
+            // Select the clicked meal
+            setSelectedMeal(meal);
+            localStorage.setItem('selectedMeal', JSON.stringify(meal));
+        }
     };
+
 
 
     const renderMealsTab = () => (
@@ -410,10 +372,22 @@ const SeatMealBaggageTabs = () => {
                     </div>
                 ))
             ) : (
-                <p style={{color:"red"}}>No meal data found</p>
+                <p style={{ color: "red" }}>No meal data found</p>
             )}
         </div>
     );
+    
+
+    const handleBaggageClick = (baggage) => {
+        // Toggle the baggage selection
+        if (selectedBaggage?.Weight === baggage.Weight) {
+            setSelectedBaggage(null); 
+            localStorage.removeItem('selectedBaggage'); 
+        } else {
+            setSelectedBaggage(baggage); // Select the clicked baggage
+            localStorage.setItem('selectedBaggage', JSON.stringify(baggage)); 
+        }
+    };
     
 
 
