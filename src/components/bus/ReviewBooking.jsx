@@ -148,7 +148,7 @@ const ReviewBooking = () => {
     try {
       const loginId = localStorage.getItem('loginId');
       const roundedAmount = Math.round(totalPayment);
-      const transactionNoBus = localStorage.getItem('transactionNum-bus');
+      const transactionNoBus = localStorage.getItem('transactionNum');
       const busSavedId = localStorage.getItem('busSavedId');
 
 
@@ -316,7 +316,7 @@ const ReviewBooking = () => {
 
   const bookHandler = async () => {
     try {
-      const transactionNoBus = localStorage.getItem('transactionNum-bus');
+      const transactionNoBus = localStorage.getItem('transactionNum');
       const busSavedId = localStorage.getItem('busSavedId');
       const transaction_id = localStorage.getItem('transaction_id');
       const selectedBusSeatData = JSON.parse(localStorage.getItem('selectedBusSeatData')) || [];

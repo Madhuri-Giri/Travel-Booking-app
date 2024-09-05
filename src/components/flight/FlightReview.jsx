@@ -14,7 +14,7 @@ import Footer from "../../pages/footer/Footer";
 // import Payloader from '../../pages/loading/Payloader';
 import { RiTimerLine } from "react-icons/ri";
 import PayloaderHotel from "../../pages/loading/PayloaderHotel";
-
+import TimerFlight from '../timmer/TimerFlight';
 
 
 
@@ -217,7 +217,8 @@ const grandTotal = totalPrice + finalTotalPrice;
     try {
       const payment_id = localStorage.getItem('flight_payment_id');
       const transaction_id = localStorage.getItem('flight_transaction_id');
-      const transaction_num = localStorage.getItem('transactionNum-Flight');
+      const transaction_num = localStorage.getItem('transactionNum');
+      console.log('transaction_num',transaction_num)
 
       if (!payment_id || !transaction_id) {
         throw new Error('Missing payment details');
@@ -227,7 +228,7 @@ const grandTotal = totalPrice + finalTotalPrice;
       const payload = {
         payment_id,
         transaction_id,
-        transaction_num,
+        transaction_num
       };
 
       const response = await fetch(url, {
@@ -286,8 +287,10 @@ const grandTotal = totalPrice + finalTotalPrice;
  
   const bookLccApi = async () => {
     try {
-      const transactionFlightNo = localStorage.getItem('transactionNum-Flight');
+      const transactionFlightNo = localStorage.getItem('transactionNum');
       const transaction_id = localStorage.getItem('flight_transaction_id');
+  console.log("transaction_id",transaction_id)
+
       const adultPassengerDetails = localStorage.getItem('adultPassengerDetails');
       const parsedAdultPassengerDetails = JSON.parse(adultPassengerDetails);
   
@@ -311,8 +314,8 @@ const grandTotal = totalPrice + finalTotalPrice;
           "DateOfBirth": passenger.dateOfBirth,
           "Gender": passenger.gender === "male" ? "1" : "2",
           "PassportNo": passenger.passportNo || "null",
-          "PassportExpiry": passenger.passportExpiry || "",
-          "PassportIssueDate": passenger.passportIssueDate || "",
+          "PassportExpiry": passenger.passportExpiry || null,
+          "PassportIssueDate": passenger.passportIssueDate || null,
           "AddressLine1": passenger.addressLine1,
           "City": passenger.city,
           "CountryCode": passenger.countryCode,
@@ -360,6 +363,7 @@ const grandTotal = totalPrice + finalTotalPrice;
 const bookHoldApi = async () => {
   const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
   const transaction_id = localStorage.getItem('flight_transaction_id');
+  console.log("transaction_id",transaction_id)
 
   if (!storedPassengers.length || !transaction_id) {
     console.error('Required data is missing from local storage');
@@ -550,6 +554,7 @@ const bookHoldApi = async () => {
   return (
     <>
       <CustomNavbar />
+      <TimerFlight/>
       {/* <div className="timer-FlightLists">
 
 

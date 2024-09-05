@@ -9,7 +9,7 @@ import { LuDot } from "react-icons/lu";
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
-
+// import TimerFlight from '../timmer/TimerFlight';
 
 
 const FareQuote = () => {
@@ -117,6 +117,7 @@ const FareQuote = () => {
     return (
         <>
             <CustomNavbar />
+            {/* <TimerFlight/> */}
             {/* timerrr-------------------  */}
             {/* <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>

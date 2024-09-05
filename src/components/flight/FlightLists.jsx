@@ -20,7 +20,7 @@ import 'swiper/swiper-bundle.css';
 import { Navigation } from 'swiper/modules'; // Note the updated import path in newer versions
 import 'swiper/css';
 import 'swiper/css/navigation';
-
+import TimerFlight from '../timmer/TimerFlight';
 export default function FlightLists() {
     const swiperRef = useRef(null);
 
@@ -192,9 +192,6 @@ export default function FlightLists() {
     }, []);
 
     // -------------------------------------------------------------airline filters logic----------------
-
-
-
 
     // for callender slider-----------------------------------------------------------------------
     useEffect(() => {
@@ -410,7 +407,7 @@ export default function FlightLists() {
             // console.log('flight transcNo', data.transaction.transaction_num)
             if (data.result && data.transaction) {
                 localStorage.setItem('transactionId', data.transaction.id);
-                localStorage.setItem('transactionNum-Flight', data.transaction.transaction_num);
+                localStorage.setItem('transactionNum', data.transaction.transaction_num);
             }
         } catch (error) {
             console.error('Error fetching user details:', error.message);
@@ -474,6 +471,7 @@ export default function FlightLists() {
     return (
         <>
             <CustomNavbar />
+            <TimerFlight/>
             {/* timerrr-------------------  */}
             {/* <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>

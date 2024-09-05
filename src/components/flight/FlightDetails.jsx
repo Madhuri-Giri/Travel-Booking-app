@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
-
+import TimerFlight from '../timmer/TimerFlight';
 export default function FlightDetails() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false); // Add loading state
@@ -376,7 +376,7 @@ export default function FlightDetails() {
                         />
                     </div>
                 </div>
-                <div className="col-md-3">
+             <div className="col-md-3">
                     <div className="form-group">
                         <label htmlFor={`passportExpiry-${type}-${index}`}>Passport Expiry</label>
                         <input
@@ -405,7 +405,7 @@ export default function FlightDetails() {
                             
                         />
                     </div>
-                </div>
+                </div> 
                 <div className="col-md-3">
                     <div className="form-group">
                         <label htmlFor={`addressLine1-${type}-${index}`}>Address Line 1</label>
@@ -746,6 +746,7 @@ export default function FlightDetails() {
     return (
         <>
             <CustomNavbar />
+            <TimerFlight/>
             {/* timerrr-------------------  */}
             {/* <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>

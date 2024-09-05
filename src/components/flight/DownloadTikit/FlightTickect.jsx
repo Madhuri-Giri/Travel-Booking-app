@@ -14,7 +14,7 @@ import LootiAnim from '../../../assets/images/Anim.json';
 import { FaArrowRightLong } from "react-icons/fa6";
 import Barcode from 'react-barcode';
 import html2canvas from 'html2canvas';
-
+import FooterLogo from "../../../assets/images/main logo.png"
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
 };
@@ -30,8 +30,8 @@ const FlightTickect = () => {
   useEffect(() => {
     const fetchFlightTicketApiData = async () => {
       try {
-        const transactionFlightNo = localStorage.getItem('transactionNum-Flight');
-
+        const transactionFlightNo = localStorage.getItem('transactionNum');
+         const flight_booking_id = localStorage.getItem('flight_booking_id')
         const response = await fetch("https://sajyatra.sajpe.in/admin/api/flight-ticket-history", {
           method: "POST",
           headers: {
@@ -256,7 +256,7 @@ const FlightTickect = () => {
                   </table>
                 </div>
               </div>
-            </div>
+                          </div>
             {/* <div className="col-lg-9">
                   <div className='busticktbox'>
                     <div className='bustickthed'>
