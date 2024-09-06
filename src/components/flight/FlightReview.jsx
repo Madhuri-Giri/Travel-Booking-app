@@ -163,19 +163,18 @@ const grandTotal = totalPrice + finalTotalPrice;
           localStorage.setItem('flight_payment_id', response.razorpay_payment_id);
           localStorage.setItem('flight_transaction_id', options.transaction_id);
           // alert('Flight Payment successful!');
-          setPayLoading(true);
-
-
+          setLoader(true);
           try {
-
+            // setLoader(true)
             await flightpayUpdate();
+            setLoader(true)
+
         
             const IsLCC = localStorage.getItem('F-IsLcc') === 'true'; 
             setPayLoading(true);
         
             if (IsLCC === true) {
                 await bookLccApi();
-                // await flightPaymentStatus();
             } else if (IsLCC === false) {
                 await bookHoldApi();
                 await sendTicketGDSRequest();
