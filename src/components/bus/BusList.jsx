@@ -271,7 +271,8 @@ const toggleDropVisibility = () => {
           <div className="busSide">
             <h5><i style={{marginTop:"0.1vmax"}} className="ri-filter-2-line"></i> Filters</h5>
             <div className="seat-type">
-              <h6>Price</h6>
+             
+              <h6><i style={{fontWeight:"lighter"}} className="ri-price-tag-2-line"></i> Price</h6>
               <div className="filter-seat">
                 <input
                   type="range"
