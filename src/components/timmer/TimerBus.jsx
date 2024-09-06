@@ -15,7 +15,7 @@ const TimerBus = () => {
     const isHotelSearchPage = location.pathname == '/bus-list';
 
     if (isHotelSearchPage) {
-      // Reset timer if navigating to /hotel-search
+      // Reset timer if navigating to /bus-search
       localStorage.setItem('timerStartTime', now.toString());
       setTimeRemaining(TIMER_DURATION);
     } else if (startTime) {
@@ -23,7 +23,7 @@ const TimerBus = () => {
       const newTimeRemaining = TIMER_DURATION - elapsedTime;
 
       if (newTimeRemaining <= 0) {
-        // Timer expired, navigate to /hotel-search
+        // Timer expired, navigate to /bus-search
         navigate('/bus-search');
         localStorage.removeItem('timerStartTime');
       } else {

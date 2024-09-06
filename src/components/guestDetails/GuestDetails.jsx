@@ -414,7 +414,9 @@ const GuestDetails = () => {
           if (formData.age === '' || isNaN(formData.age) || formData.age < 18 || formData.age > 100) {
             errors.push(`Age must be between 18 and 100 at index ${index}`);
           }
-          // Additional validations can be added here
+          // if (!formData.PAN || !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.PAN)) {
+          //   errors.push(`A valid PAN Number is required at index ${index}`);
+          // }
         });
       
         if (errors.length > 0) {
