@@ -383,7 +383,7 @@ export default function FlightDetails() {
             return (
                 <div key={`${type}-${index}`} className="row userFormFill">
                     <div className="col-12">
-                        <label>Gender:</label>
+                        <label>Gender: <span className="text-danger">*</span> </label>
                         <div className="form-group genderFormGrp">
                             <div className="form-check form-check-inline">
                                 <input
@@ -412,7 +412,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`firstName-${type}-${index}`}>First Name</label>
+                            <label htmlFor={`firstName-${type}-${index}`}>First Name <span className="text-danger">*</span> </label>
                             <input
                                 type="text"
                                 id={`firstName-${type}-${index}`}
@@ -426,7 +426,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`lastName-${type}-${index}`}>Last Name</label>
+                            <label htmlFor={`lastName-${type}-${index}`}>Last Name <span className="text-danger">*</span> </label>
                             <input
                                 type="text"
                                 id={`lastName-${type}-${index}`}
@@ -440,7 +440,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`dateOfBirth-${type}-${index}`}>Date of Birth</label>
+                            <label htmlFor={`dateOfBirth-${type}-${index}`}>Date of Birth <span className="text-danger">*</span> </label>
                             <input
                                 type="date"
                                 id={`dateOfBirth-${type}-${index}`}
@@ -478,6 +478,7 @@ export default function FlightDetails() {
                                 onChange={(e) => handleInputChange(e, index, type, 'passportExpiry')}
                                 value={details[index]?.passportExpiry || ''}
                                 min={new Date().toISOString().split("T")[0]}
+                                placeholder="optional"
                             />
                             {fieldErrors.passportExpiry && <div className="text-danger">{fieldErrors.passportExpiry}</div>}
                         </div>
@@ -499,7 +500,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`addressLine1-${type}-${index}`}>Address Line 1</label>
+                            <label htmlFor={`addressLine1-${type}-${index}`}>Address Line 1 <span className="text-danger">*</span> </label>
                             <input
                                 type="text"
                                 id={`addressLine1-${type}-${index}`}
@@ -513,7 +514,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`city-${type}-${index}`}>City</label>
+                            <label htmlFor={`city-${type}-${index}`}>City <span className="text-danger">*</span> </label>
                             <input
                                 type="text"
                                 id={`city-${type}-${index}`}
@@ -541,7 +542,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`countryName-${type}-${index}`}>Country Name</label>
+                            <label htmlFor={`countryName-${type}-${index}`}>Country Name <span className="text-danger">*</span> </label>
                             <input
                                 type="text"
                                 id={`countryName-${type}-${index}`}
@@ -555,7 +556,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`contactNo-${type}-${index}`}>Contact No</label>
+                            <label htmlFor={`contactNo-${type}-${index}`}>Contact No <span className="text-danger">*</span> </label>
                             <input
                                 type="text"
                                 id={`contactNo-${type}-${index}`}
@@ -569,7 +570,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`email-${type}-${index}`}>Email</label>
+                            <label htmlFor={`email-${type}-${index}`}>Email <span className="text-danger">*</span> </label>
                             <input
                                 type="email"
                                 id={`email-${type}-${index}`}
