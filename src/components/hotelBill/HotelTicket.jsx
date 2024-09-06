@@ -84,72 +84,73 @@ const BookingBill = () => {
     });
   };
 
-  const bookingCancel = async (event) => {
-    event.preventDefault();
+  // const bookingCancel = async (event) => {
+  //   event.preventDefault();
 
-    const hotelBookingId = localStorage.getItem('hotel_booking_id');
-    const transactionNum = localStorage.getItem('transactionNum');
+  //   const hotelBookingId = localStorage.getItem('hotel_booking_id');
+  //   const transactionNum = localStorage.getItem('transactionNum');
 
-    if (!hotelBookingId) {
-      setError('No hotel booking ID available');
-      toast.error('No hotel booking ID available');
-      return;
-    }
+  //   if (!hotelBookingId) {
+  //     setError('No hotel booking ID available');
+  //     toast.error('No hotel booking ID available');
+  //     return;
+  //   }
 
-    if (!transactionNum) {
-      setError('No transaction number available');
-      toast.error('No transaction number available');
-      return;
-    }
+  //   if (!transactionNum) {
+  //     setError('No transaction number available');
+  //     toast.error('No transaction number available');
+  //     return;
+  //   }
 
-    const requestData = {
-      BookingId: hotelBookingId,
-      RequestType: 4,
-      BookingMode: 5,
-      SrdvType: "SingleTB",
-      SrdvIndex: "SrdvTB",
-      Remarks: "Test",
-      transaction_num: transactionNum,
-      date: new Date().toISOString(),
-      hotel_booking_id: hotelBookingId,
-      trace_id: "1",
-    };
+  //   const requestData = {
+  //     BookingId: hotelBookingId,
+  //     RequestType: 4,
+  //     BookingMode: 5,
+  //     SrdvType: "SingleTB",
+  //     SrdvIndex: "SrdvTB",
+  //     Remarks: "Test",
+  //     transaction_num: transactionNum,
+  //     date: new Date().toISOString(),
+  //     hotel_booking_id: hotelBookingId,
+  //     trace_id: "1",
+  //   };
 
-    try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-cancel', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestData),
-      });
+  //   try {
+  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-cancel', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(requestData),
+  //     });
 
-      if (!response.ok) {
-        const errorDetails = await response.json();
-        throw new Error(`HTTP error! Status: ${response.status}, Details: ${JSON.stringify(errorDetails)}`);
-      }
+  //     if (!response.ok) {
+  //       const errorDetails = await response.json();
+  //       throw new Error(`HTTP error! Status: ${response.status}, Details: ${JSON.stringify(errorDetails)}`);
+  //     }
 
-      const res = await response.json();
-      if (res.data) {
-        localStorage.setItem('hotelTicket', JSON.stringify(res.data));
-        setBookingDetails(res.data);
-        toast.success('Booking cancelled successfully');
-      } else {
-        throw new Error('No data found in the API response');
-      }
+  //     const res = await response.json();
+  //     if (res.data) {
+  //       localStorage.setItem('hotelTicket', JSON.stringify(res.data));
+  //       setBookingDetails(res.data);
+  //       toast.success('Booking cancelled successfully');
+  //       navigate('/hotel-search');
+  //     } else {
+  //       throw new Error('No data found in the API response');
+  //     }
 
-    } catch (error) {
-      console.error('Error:', error);
-      setError('Error occurred during cancellation');
-      toast.error('Error occurred during cancellation');
-    }
-  };
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     setError('Error occurred during cancellation');
+  //     toast.error('Error occurred during cancellation');
+  //   }
+  // };
 
-  if (error) {
-    return (
-      <div className="error-message">
-        <p>{error}</p>
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="error-message">
+  //       <p>{error}</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
@@ -196,7 +197,7 @@ const BookingBill = () => {
           </div>
           <div className='button-container'>
                   <button className='ticket_btn' onClick={handleDownloadPDF}>Download PDF</button>
-                  <button className='ticket_btn_cancel' onClick={bookingCancel}>Cancel Ticket</button>
+                  {/* <button className='ticket_btn_cancel' onClick={bookingCancel}>Cancel Ticket</button> */}
                 </div>
         </div>
         <ToastContainer />

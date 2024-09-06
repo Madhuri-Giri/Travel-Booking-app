@@ -152,6 +152,7 @@ const BookingBill = () => {
         localStorage.setItem('hotelTicket', JSON.stringify(res.data));
         setBookingDetails(res.data);
         toast.success('Booking cancelled successfully');
+        navigate('/hotel-search');
       } else {
         setError('No data found in the API response');
         toast.error('No data found in the API response');
