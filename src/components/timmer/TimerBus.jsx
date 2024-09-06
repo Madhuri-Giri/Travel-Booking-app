@@ -12,9 +12,9 @@ const TimerBus = () => {
   useEffect(() => {
     const now = Date.now();
     const startTime = localStorage.getItem('timerStartTime');
-    const isHotelSearchPage = location.pathname == '/bus-list';
+    const isBusSearchPage = location.pathname == '/bus-list';
 
-    if (isHotelSearchPage) {
+    if (isBusSearchPage) {
       // Reset timer if navigating to /bus-search
       localStorage.setItem('timerStartTime', now.toString());
       setTimeRemaining(TIMER_DURATION);

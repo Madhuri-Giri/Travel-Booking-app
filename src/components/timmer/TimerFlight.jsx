@@ -12,18 +12,18 @@ const TimerFlight = () => {
   useEffect(() => {
     const now = Date.now();
     const startTime = localStorage.getItem('timerStartTime');
-    const isHotelSearchPage = location.pathname == '/flight-list';
+    const isFlightSearchPage = location.pathname === '/flight-list';
 
-    if (isHotelSearchPage) {
-      // Reset timer if navigating to /hotel-search
+    if (isFlightSearchPage) {
+      // Reset timer if navigating to /flight-list
       localStorage.setItem('timerStartTime', now.toString());
-      setTimeRemaining(TIMER_DURATION);
     } else if (startTime) {
+      // Calculate remaining time
       const elapsedTime = now - parseInt(startTime, 10);
       const newTimeRemaining = TIMER_DURATION - elapsedTime;
 
       if (newTimeRemaining <= 0) {
-        // Timer expired, navigate to /hotel-search
+        // Timer expired, navigate to /flight-search
         navigate('/flight-search');
         localStorage.removeItem('timerStartTime');
       } else {
@@ -32,7 +32,6 @@ const TimerFlight = () => {
     } else {
       // Initialize timer if there's no start time in local storage
       localStorage.setItem('timerStartTime', now.toString());
-      setTimeRemaining(TIMER_DURATION);
     }
 
     const intervalId = setInterval(() => {

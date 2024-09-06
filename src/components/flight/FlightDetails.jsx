@@ -12,7 +12,8 @@ import { Link } from "react-router-dom";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
-import TimerFlight from '../timmer/TimerFlight';
+// import TimerFlight from '../timmer/TimerFlight';
+
 export default function FlightDetails() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false); // Add loading state
@@ -835,7 +836,9 @@ export default function FlightDetails() {
     return (
         <>
             <CustomNavbar />
-            <TimerFlight />
+            {/* <TimerFlight/> */}
+
+            
             {/* timerrr-------------------  */}
             {/* <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>

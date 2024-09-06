@@ -44,12 +44,11 @@ import Payloader from "./pages/loading/Payloader"
 import Timer from './components/timmer/Timer'
 import TimerBus from './components/timmer/TimerBus'
 import TimerFlight from './components/timmer/TimerFlight'
-import PayloaderHotel from "./pages/loading/PayloaderHotel"
-// import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
-import FlightNewTicket from './components/flight/DownloadTikit/FlightNewTicket'
+import PayloaderHotel from "./pages/loading/PayloaderHotel";
+import FlightNewTicket from './components/flight/DownloadTikit/FlightNewTicket';
 
 // import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
-
+// import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
 
 const App = () => {
   const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number',  '/load'];
@@ -59,54 +58,66 @@ const App = () => {
       <Router>
         {/* {!noNavbarFooterRoutes.includes(window.location.pathname) && <CustomNavbar />} */}
         <Routes>
+
           <Route path='/' element={<Home />} />
           <Route path='/flight-search' element={<FlightSearch />} />
           <Route path='/flight-list' element={<FlightLists />} />
           <Route path='/flight-details' element={<FlightDetails />} />
+          <Route path='/flight-Farequote' element={<FareQuote />} />
+          <Route path='/flight-review' element={<FlightReview />} />
+          <Route path='seat-meal-baggage' element={<SeatMealBaggageTabs />} />
+          <Route path='/flightNewTicket' element={<FlightNewTicket/>} />
+          <Route path='/flight-ticket' element={<FlightTickect />} /> 
+
           <Route path='/bus-search' element={<BusSearch />} />
           <Route path='/bus-list' element={<BusLists />} />
           <Route path='/bus-layout' element={<BusLayout />} />
           <Route path='/bord-drop' element={<BoardAndDrop />} />
           <Route path='/layout' element={<BusLayout />} />
           <Route path='/bus-tikit-download' element={<BusTikit />} />
-          <Route path='/flight-ticket' element={<FlightTickect />} /> 
-          <Route path='/signup' element={<SignUp />} />
+          <Route path='busBookTicket' element={<TicketBookBus/>} />
+          <Route path='/review-booking' element={<ReviewBooking />} />
+        
+          <Route path='/hotel-search' element={<HotelSearch />} />
+          <Route path='/hotel-list' element={<HotelList />} />
+          <Route path='/hotel-description' element={<HotelDescription />} />
+          <Route path='/hotel-room' element={<HotelRoom />} />
+          <Route path='/hotel-guest' element={<GuestDetails />} />
+          <Route path='/hotel-ticket' element={<HotelTicket/>} />
+          <Route path='/hotel-bill' element={<HotelBillReceipt />} />
+
+          <Route path='/help' element={<Help />} />
+          <Route path='/review' element={<Reviews />} />
+         
+          
           <Route path='/faq' element={<Faq />} />
           <Route path='/setting' element={<Setting />} />
           <Route path='profile' element={<Profile />} />
-          <Route path='/login' element={<LogIn />} />
+         
           <Route path='/enter-number' element={<EnterNumber />} />
-          <Route path='/review-booking' element={<ReviewBooking />} />
-          <Route path='/hotel-search' element={<HotelSearch />} />
-          <Route path='/hotel-list' element={<HotelList />} />
-          <Route path='/hotel-room' element={<HotelRoom />} />
-          <Route path='/hotel-guest' element={<GuestDetails />} />
-          <Route path='/hotel-description' element={<HotelDescription />} />
-          <Route path='/hotel-ticket' element={<HotelTicket/>} />
-          <Route path='/help' element={<Help />} />
-          <Route path='/review' element={<Reviews />} />
-          <Route path='/hotel-bill' element={<HotelBillReceipt />} />
-          <Route path='/flight-Farequote' element={<FareQuote />} />
-          <Route path='/flight-review' element={<FlightReview />} />
-          <Route path='seat-meal-baggage' element={<SeatMealBaggageTabs />} />
+          <Route path='/login' element={<LogIn />} />
+          <Route path='/signup' element={<SignUp />} />
+
           <Route path='/sajyatra-login' element={<SajyatraLogin />} />
-          <Route path='load'  element={<Loading/>}/>
           <Route path='/enterOtp'  element={<EnterOtp/>}/>
-          <Route path='/register'  element={<RegisterModal/>}/>
           <Route path='/login-popup'  element={<LoginPopUp/>}/>
+          <Route path='/register'  element={<RegisterModal/>}/>
+         
           <Route path='/payment-history' element={<PaymentHistory/>}/>
           <Route path='/booking-history' element={<BookingHistory/>}/>
-          <Route path='busBookTicket' element={<TicketBookBus/>} />
+         
           <Route path='/timer' from element = {<Timer/>}/>
           <Route path='/timerbus' from element = {<TimerBus/>}/>
           <Route path='/timerflight' from element = {<TimerFlight/>}/>
-          {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
-          <Route path='/flightNewTicket' element={<FlightNewTicket/>} />
-         
-          {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
-       
+
+          <Route path='load'  element={<Loading/>}/>
           <Route path='/payload' element={<Payloader/>} />
           <Route path='/hotel-payload' element={<PayloaderHotel/>}/>
+
+          {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
+          {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
+       
+        
         </Routes>
         <ToastContainer
           position="top-right"
