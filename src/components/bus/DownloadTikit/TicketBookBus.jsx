@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import jsPDF from 'jspdf';
 import "jspdf-autotable";
@@ -120,6 +119,9 @@ const TicketBookBus = () => {
     return <p>Loading...</p>;
   }
 
+  // Extract name and mobile from userdetails
+  const { name, mobile, email } = buspaymentStatusResState.userdetails;
+
   return (
     <>
       <CustomNavbar />
@@ -157,16 +159,16 @@ const TicketBookBus = () => {
                           <div className="col-md-4 col-6">
                             <p>
                               <strong>Name -: </strong>
-                              <span>{dd.name}</span>
+                              <span>{name}</span> {/* Display name from userdetails */}
                             </p>
                             <p>
-                              <strong>Age -: </strong>
-                              <span>{dd.age}</span>
+                              <strong>Email -: </strong>
+                              <span>{email}</span>
                             </p>
-                            <p>
+                            {/* <p>
                               <strong>Gender -: </strong>
                               <span>{dd.gender}</span>
-                            </p>
+                            </p> */}
                             <p>
                               <strong>Date -: </strong>
                               <span>{formatDate(busDetail.created_at)}</span>
@@ -190,16 +192,21 @@ const TicketBookBus = () => {
                               <strong>PNR No -: </strong>
                               <span>{busDetail.bus_book_id}</span>
                             </p>
-                            <p>
+                            {/* <p>
                               <strong>Address -: </strong>
                               <span>{dd.address}</span>
-                            </p>
+                            </p> */}
                             <p>
                               <strong>Number -: </strong>
-                              <span>{dd.number}</span>
+                              <span>{mobile}</span> {/* Display mobile from userdetails */}
                             </p>
                           </div>
                           <div className="col-md-4 ticktbordr">
+                          <p>
+                              <strong>Travell Name -: </strong>
+                              <span>{dd.
+                              travel_name}</span>
+                            </p>
                             <p>
                               <strong>Seat No -: </strong>
                               <span>{busDetail.seat_name}</span>
@@ -237,4 +244,4 @@ const TicketBookBus = () => {
   );
 };
 
-export default TicketBookBus;
+export default TicketBookBus
