@@ -99,11 +99,10 @@ const App = () => {
           <Route path='busBookTicket' element={<TicketBookBus/>} />
           <Route path='/timer' from element = {<Timer/>}/>
           <Route path='/timerbus' from element = {<TimerBus/>}/>
-          <Route path='/timerbus' from element = {<TimerFlight/>}/>
+          <Route path='/timerflight' from element = {<TimerFlight/>}/>
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
           <Route path='/flightNewTicket' element={<FlightNewTicket/>} />
-
-
+         
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
        
           <Route path='/payload' element={<Payloader/>} />
