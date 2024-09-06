@@ -21,6 +21,8 @@ import home_newsletter from "../../../src/assets/images/home-yotube.jpg";
 import Loading from '../../pages/loading/Loading';
 import Footer from "../../pages/footer/Footer"
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const FlightSearch = () => {
   const [loading, setLoading] = useState(false); // Add loading state
@@ -36,13 +38,13 @@ const FlightSearch = () => {
   const toInputRef = useRef(null);
   const fromSuggestionsRef = useRef(null);
   const toSuggestionsRef = useRef(null);
-  const mainCityNames = ['Delhi', 'Mumbai', 'Bangalore', 'Kolkata', 'Goa', 'Hyderabad'];
+  const mainCityNames = ['Delhi', 'Mumbai', 'Bhopal', 'Indore', 'Goa', 'Hyderabad'];
   const [originCode, setOriginCode] = useState(''); // State for origin code
   const [desctinationCode, setDesctinationCode] = useState(''); // State for origin code
 
-  console.log("originCode",originCode);
-  console.log("desctinationCode",desctinationCode);
-  
+  console.log("originCode", originCode);
+  console.log("desctinationCode", desctinationCode);
+
 
   const [departureDate, setDepartureDate] = useState();
   const [returnDateDep, setReturnDateDep] = useState();
@@ -64,58 +66,91 @@ const FlightSearch = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
   // Function to fetch suggestions
+  // const fetchSuggestions = async (query, setSuggestions, isMainCityFetch = false) => {
+  //   try {
+  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ query }),
+  //     });
+
+  //     const data = await response.json();
+  //     let suggestions = data.data;
+
+  //     if (isMainCityFetch) {
+  //       // Filter to only include main cities from the API response
+  //       suggestions = suggestions.filter((suggestion) =>
+  //         mainCityNames.includes(suggestion.busodma_destination_name)
+  //       );
+  //     } else {
+  //       // Filter suggestions based on the input query
+  //       suggestions = suggestions.filter((suggestion) =>
+  //         suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
+  //       );
+  //     }
+  //     setSuggestions(suggestions.slice(0, 6)); // Show up to 10 suggestions
+  //   } catch (error) {
+  //     console.error('Error fetching suggestions:', error);
+  //   }
+  // };
   const fetchSuggestions = async (query, setSuggestions, isMainCityFetch = false) => {
     try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
-        method: 'POST',
+      // Encode the query parameter
+      const encodedQuery = encodeURIComponent(query);
+      const url = `https://sajyatra.sajpe.in/admin/api/flight-list?query=${encodedQuery}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query }),
       });
 
       const data = await response.json();
       let suggestions = data.data;
 
       if (isMainCityFetch) {
-        // Filter to only include main cities from the API response
+        // Filter to only include main cities
         suggestions = suggestions.filter((suggestion) =>
-          mainCityNames.includes(suggestion.busodma_destination_name)
+          mainCityNames.includes(suggestion.airport_city_name)
         );
       } else {
         // Filter suggestions based on the input query
         suggestions = suggestions.filter((suggestion) =>
-          suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
+          suggestion.airport_city_name.toLowerCase().includes(query.toLowerCase())
         );
       }
-      setSuggestions(suggestions.slice(0, 6)); // Show up to 10 suggestions
+
+      setSuggestions(suggestions.slice(0, 6)); // Show up to 6 suggestions
     } catch (error) {
       console.error('Error fetching suggestions:', error);
     }
   };
+
+
   // Function to handle input focus
   const handleFromInputFocus = () => {
     fetchSuggestions('', setFromSuggestions, true);
   };
+
   const handleToInputFocus = () => {
     fetchSuggestions('', setToSuggestions, true);
   };
-  // Function to handle "From" input change
-  // console.log("fromSuggestions",fromSuggestions);
-  
+
+  // Function to handle "From" input change  
   const handleFromChange = (event) => {
     const value = event.target.value;
     setFrom(value);
-    console.log("originCode",originCode);
-    
     if (value.length > 2) {
       fetchSuggestions(value, setFromSuggestions);
     } else {
       setFromSuggestions([]);
     }
   };
-
   // Function to handle "To" input change
   const handleToChange = (event) => {
     const value = event.target.value;
@@ -126,21 +161,11 @@ const FlightSearch = () => {
       setToSuggestions([]);
     }
   };
-
-  // Function for selecting a suggestion
-  // const handleSuggestionClick = (suggestion, fieldSetter, setSuggestions) => {
-  //   fieldSetter(suggestion.busodma_destination_name);
-  //   setSuggestions([]);
-  // };
-
-  const handleSuggestionClick = (suggestion, setFunction, setSuggestions , setValuee) => {
-    setFunction(suggestion.busodma_destination_name);
-    setValuee(suggestion.busodma_origin_code);
+  const handleSuggestionClick = (suggestion, setFunction, setSuggestions, setValuee) => {
+    setFunction(suggestion.airport_city_name);
+    setValuee(suggestion.airport_city_code); // Update with airport city code
     setSuggestions([]);
-    setOriginCode(suggestion.busodma_origin_code); // Update the state with the origin code
-    console.log("suggestion",suggestion.busodma_origin_code);
   };
-
 
   // function for adult , child , infact dropdown list-------------------------------------------
   const [showDropdown, setShowDropdown] = useState(false);
@@ -242,8 +267,8 @@ const FlightSearch = () => {
   // console.log("tabValue", tabValue);
   const [segments, setSegments] = useState([
     {
-      Origin: from,
-      Destination: to,
+      Origin: originCode,
+      Destination: desctinationCode,
       FlightCabinClass: selectedflightClass,
       PreferredDepartureTime: departureDate,
       PreferredArrivalTime: departureDate
@@ -277,10 +302,8 @@ const FlightSearch = () => {
       // One-Way: Keep only one segment
       setSegments([
         {
-          // Origin: from,
-          // Destination: to,
-          Origin: "KWI",
-          Destination: "DEL",
+          Origin: originCode,
+          Destination: desctinationCode,
           FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: departureDate,
           PreferredArrivalTime: departureDate
@@ -290,19 +313,15 @@ const FlightSearch = () => {
       // Two-Way: Add a second segment
       setSegments([
         {
-          // Origin: from,
-          // Destination: to,
-          Origin: "KWI",
-          Destination: "DEL",
+          Origin: originCode,
+          Destination: desctinationCode,
           FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: departureDate,
           PreferredArrivalTime: departureDate
         },
         {
-          Origin: to,
-          Destination: from,
-          Origin: "DEL",
-          Destination: "KWI",
+          Origin: desctinationCode,
+          Destination: originCode,
           FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: returnDateDep,
           PreferredArrivalTime: returnDateDep
@@ -318,11 +337,57 @@ const FlightSearch = () => {
     }));
   }, [segments]); // Dependency on segments state
 
-  // console.log("formData", formData);
+  // const getFlightList = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
 
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
 
+  //     const data = await response.json();
+  //     console.log("Flight search API response: ", data);
 
+  //     localStorage.setItem('Flight-search', JSON.stringify(data));
 
+  //     const firstResult = data?.Results?.[0]?.[0];
+  //     if (firstResult && firstResult.FareDataMultiple?.[0]) {
+  //       const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
+  //       const { TraceId, SrdvType } = data;
+
+  //       localStorage.setItem("F-SrdvIndex", SrdvIndex);
+  //       localStorage.setItem("F-ResultIndex", ResultIndex);
+  //       localStorage.setItem("F-TraceId", TraceId);
+  //       localStorage.setItem("F-SrdvType", SrdvType);
+  //       localStorage.setItem("F-IsLcc", IsLCC);
+
+  //       const airlineCodes = data.Results.flatMap(result =>
+  //         result.flatMap(fareData =>
+  //           fareData.FareDataMultiple.flatMap(fare =>
+  //             fare.FareSegments.map(segment => segment.AirlineCode)
+  //           )
+  //         )
+  //       );
+  //       const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
+  //       console.log("Airline Codes: ", filteredAirlineCodes);
+  //     } else {
+  //       console.log("SrdvIndex or FareDataMultiple not found");
+  //     }
+  //     setLoading(false);
+  //     navigate("/flight-list", { state: { data: data, formData: formData } });
+  //   } catch (error) {
+  //     setLoading(false);
+  //     toast.error('An error occurred during booking. Please try again.');
+  //     console.error('Error fetching suggestions:', error);
+  //   }
+  // };
 
 
   const getFlightList = async () => {
@@ -335,27 +400,27 @@ const FlightSearch = () => {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
+  
       const data = await response.json();
       console.log("Flight search API response: ", data);
-
+  
       localStorage.setItem('Flight-search', JSON.stringify(data));
-
+  
       const firstResult = data?.Results?.[0]?.[0];
       if (firstResult && firstResult.FareDataMultiple?.[0]) {
         const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
         const { TraceId, SrdvType } = data;
-
+  
         localStorage.setItem("F-SrdvIndex", SrdvIndex);
         localStorage.setItem("F-ResultIndex", ResultIndex);
         localStorage.setItem("F-TraceId", TraceId);
         localStorage.setItem("F-SrdvType", SrdvType);
         localStorage.setItem("F-IsLcc", IsLCC);
-
+  
         const airlineCodes = data.Results.flatMap(result =>
           result.flatMap(fareData =>
             fareData.FareDataMultiple.flatMap(fare =>
@@ -363,25 +428,23 @@ const FlightSearch = () => {
             )
           )
         );
-
         const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
         console.log("Airline Codes: ", filteredAirlineCodes);
-
-        // for (const airlineCode of filteredAirlineCodes) {
-        //   await flightLogoHandler(airlineCode);
-        // }
+  
+        // Navigate only when the data is successfully fetched and parsed
+        navigate("/flight-list", { state: { data: data, formData: formData } });
       } else {
         console.log("SrdvIndex or FareDataMultiple not found");
+        toast.error('No valid results found. Please try a different search.');
       }
-
-      setLoading(false);
-      navigate("/flight-list", { state: { data: data, formData: formData } });
     } catch (error) {
-      setLoading(false);
-      console.error('Error fetching suggestions:', error);
+      toast.error('An error occurred during booking. Please try again.');
+      console.error('Error fetching flight data:', error);
+    } finally {
+      setLoading(false); // Ensure loading is set to false regardless of success or failure
     }
   };
-
+  
 
 
   // ---------------------------------------------------------------------------------------------------------------------------------
@@ -561,9 +624,9 @@ const FlightSearch = () => {
                                     <li
                                       className="text-red"
                                       key={index}
-                                      onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions , setOriginCode)}
+                                      onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions, setOriginCode)}
                                     >
-                                      {suggestion.busodma_destination_name}
+                                      {suggestion.airport_city_name}
                                     </li>
                                   ))}
                                 </ul>
@@ -594,9 +657,9 @@ const FlightSearch = () => {
                                   {toSuggestions.map((suggestion, index) => (
                                     <li
                                       key={index}
-                                      onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions , setDesctinationCode)}
+                                      onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions, setDesctinationCode)}
                                     >
-                                      {suggestion.busodma_destination_name}
+                                      {suggestion.airport_city_name}
                                     </li>
                                   ))}
                                 </ul>
@@ -756,7 +819,7 @@ const FlightSearch = () => {
                     <div className="ps-2 pe-2">
                       <form action="" >
                         <div className="row flightformRow">
-                          <div className="col-12 flightformCol">
+                        <div className="col-12 flightformCol">
                             <div className="form-group position-relative flight-input-container">
                               <span className="plane-icon">
                                 <BiSolidPlaneTakeOff />
@@ -777,9 +840,9 @@ const FlightSearch = () => {
                                     <li
                                       className="text-red"
                                       key={index}
-                                      onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions)}
+                                      onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions, setOriginCode)}
                                     >
-                                      {suggestion.busodma_destination_name}
+                                      {suggestion.airport_city_name}
                                     </li>
                                   ))}
                                 </ul>
@@ -810,9 +873,9 @@ const FlightSearch = () => {
                                   {toSuggestions.map((suggestion, index) => (
                                     <li
                                       key={index}
-                                      onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions)}
+                                      onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions, setDesctinationCode)}
                                     >
-                                      {suggestion.busodma_destination_name}
+                                      {suggestion.airport_city_name}
                                     </li>
                                   ))}
                                 </ul>
@@ -822,6 +885,7 @@ const FlightSearch = () => {
                               </label>
                             </div>
                           </div>
+
 
                           <div className="col-6 flightformCol">
                             <div className="form-group flight-input-container">
