@@ -9,7 +9,7 @@ import { LuDot } from "react-icons/lu";
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
-// import TimerFlight from '../timmer/TimerFlight';
+// impor TimerFlight from '../timmer/TimerFlight';
 
 
 const FareQuote = () => {
