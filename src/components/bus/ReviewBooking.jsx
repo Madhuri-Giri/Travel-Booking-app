@@ -47,7 +47,7 @@ const ReviewBooking = () => {
 
 
 
-  const timerEndTime =  localStorage.getItem('timerEndTime')
+  const timerEndTime = localStorage.getItem('timerEndTime')
   // ---------------------------new payment ---------------------------
   const newContactInitialData = {
     name: '',
@@ -68,7 +68,6 @@ const ReviewBooking = () => {
     }));
   };
 
-
   useEffect(() => {
     const loginData = JSON.parse(localStorage.getItem('loginData'));
     if (loginData) {
@@ -76,7 +75,7 @@ const ReviewBooking = () => {
         ...prevData,
         name: loginData.name || '',
         email: loginData.email || '',
-        contact: loginData.contact || ''
+        contact: loginData.mobile || '' 
       }));
     }
   }, []);
@@ -120,7 +119,7 @@ const ReviewBooking = () => {
         amount: roundedAmount,
         user_id: loginId,
         transaction_num: transactionNoBus,
-        bus_booking_id: [busSavedId] ,
+        bus_booking_id: [busSavedId],
       });
 
       console.log('API response:', response.data);
@@ -164,9 +163,9 @@ const ReviewBooking = () => {
     }
 
     try {
-         
+
       setLoading(true);
-       
+
       const paymentData = await fetchPaymentDetails();
 
       if (!paymentData) return;
@@ -188,20 +187,20 @@ const ReviewBooking = () => {
 
           setLoading(true);
 
-        try {
-          await updateHandlePayment();
+          try {
+            await updateHandlePayment();
 
-          setLoading(true);
+            setLoading(true);
 
-          await bookHandler();
-          await busPaymentStatus();
-        } catch (error) {
-          console.error('Error during updateHandlePayment or bookHandler:', error.message);
-          alert('An error occurred during processing. Please try again.');
-        } finally {
-          setLoading(false);
-        }
-      },
+            await bookHandler();
+            await busPaymentStatus();
+          } catch (error) {
+            console.error('Error during updateHandlePayment or bookHandler:', error.message);
+            alert('An error occurred during processing. Please try again.');
+          } finally {
+            setLoading(false);
+          }
+        },
 
         prefill: {
           username: 'pallavi',
@@ -266,7 +265,7 @@ const ReviewBooking = () => {
       const status = data.data.status;
       console.log('statusBus', status);
 
-    
+
     } catch (error) {
       console.error('Error updating payment details:', error.message);
       throw error;
@@ -283,17 +282,17 @@ const ReviewBooking = () => {
       const transaction_id = localStorage.getItem('transaction_id');
       const selectedBusSeatData = JSON.parse(localStorage.getItem('selectedBusSeatData')) || [];
       const busPassengerData = JSON.parse(localStorage.getItem('busPassengerData')) || [];
-  
+
       const seatDataMap = new Map();
       selectedBusSeatData.forEach(seat => {
         seatDataMap.set(seat.ColumnNo, seat);
       });
-  
+
       const passengersData = busPassengerData.map(passenger => {
         const seat = seatDataMap.get(passenger.Seat.ColumnNo) || {};
         return {
           LeadPassenger: passenger.LeadPassenger,
-          PassengerId: 0, 
+          PassengerId: 0,
           Title: null,
           FirstName: passenger.FirstName,
           LastName: passenger.LastName,
@@ -305,32 +304,32 @@ const ReviewBooking = () => {
           Address: passenger.Address,
           Age: passenger.Age,
           Seat: {
-            ColumnNo: seat.ColumnNo ,
-            Height: seat.Height ,
-            IsLadiesSeat: seat.IsLadiesSeat ,
-            IsMalesSeat: seat.IsMalesSeat ,
-            IsUpper: seat.IsUpper ,
-            RowNo: seat.RowNo ,
-            SeatFare: seat.SeatFare ,
-            SeatIndex: seat.SeatIndex ,
-            SeatName: seat.SeatName ,
-            SeatStatus: seat.SeatStatus ,
-            SeatType: seat.SeatType ,
-            Width: seat.Width ,
+            ColumnNo: seat.ColumnNo,
+            Height: seat.Height,
+            IsLadiesSeat: seat.IsLadiesSeat,
+            IsMalesSeat: seat.IsMalesSeat,
+            IsUpper: seat.IsUpper,
+            RowNo: seat.RowNo,
+            SeatFare: seat.SeatFare,
+            SeatIndex: seat.SeatIndex,
+            SeatName: seat.SeatName,
+            SeatStatus: seat.SeatStatus,
+            SeatType: seat.SeatType,
+            Width: seat.Width,
             Price: {
-              CurrencyCode: seat.Price?.CurrencyCode ,
+              CurrencyCode: seat.Price?.CurrencyCode,
               BasePrice: seat.Price?.BasePrice,
-              Tax: seat.Price?.Tax ,
+              Tax: seat.Price?.Tax,
               OtherCharges: seat.Price?.OtherCharges,
               Discount: seat.Price?.Discount,
-              PublishedPrice: seat.Price?.PublishedPrice ,
-              PublishedPriceRoundedOff: seat.Price?.PublishedPriceRoundedOff ,
+              PublishedPrice: seat.Price?.PublishedPrice,
+              PublishedPriceRoundedOff: seat.Price?.PublishedPriceRoundedOff,
               OfferedPrice: seat.Price?.OfferedPrice,
-              OfferedPriceRoundedOff: seat.Price?.OfferedPriceRoundedOff ,
+              OfferedPriceRoundedOff: seat.Price?.OfferedPriceRoundedOff,
               AgentCommission: seat.Price?.AgentCommission,
               AgentMarkUp: seat.Price?.AgentMarkUp,
               TDS: seat.Price?.TDS,
-              GST: seat.Price?.GST ||  {
+              GST: seat.Price?.GST || {
                 CGSTAmount: 0,
                 CGSTRate: 0,
                 CessAmount: 0,
@@ -345,19 +344,19 @@ const ReviewBooking = () => {
           },
         };
       });
-  
+
       const requestData = {
-        ResultIndex: "1", 
-        TraceId: "1", 
-        BoardingPointId: 1, 
-        DroppingPointId: 1, 
-        RefID: "1", 
+        ResultIndex: "1",
+        TraceId: "1",
+        BoardingPointId: 1,
+        DroppingPointId: 1,
+        RefID: "1",
         transaction_num: transactionNoBus,
         bus_booking_id: [busSavedId],
         transaction_id: transaction_id,
         Passenger: passengersData,
       };
-  
+
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/seat-book', {
         method: 'POST',
         headers: {
@@ -365,32 +364,32 @@ const ReviewBooking = () => {
         },
         body: JSON.stringify(requestData),
       });
-  
+
       const responseBody = await response.json();
       console.log('Bus Book Response:', responseBody);
-  
+
       if (!response.ok) {
         console.error('Failed to book seats. Status:', response.status, 'Response:', responseBody);
         throw new Error(`Failed to book seats. Status: ${response.status}`);
       }
-  
+
       if (responseBody.Error && responseBody.Error.ErrorCode !== 0) {
         console.error('Booking failed:', responseBody.Error.ErrorMessage);
         toast.error(`Booking failed: ${responseBody.Error.ErrorMessage}`);
       } else {
         toast.success('Booking successful!');
         localStorage.setItem('busTikitDetails', JSON.stringify(responseBody));
-  
+
       }
-  
+
     } catch (error) {
       console.error('Error during booking:', error.message);
       toast.error('An error occurred during booking. Please try again.');
     }
   };
-  
 
-  
+
+
 
 
   // ------------------------------status api--------------------------------------------------------
@@ -401,7 +400,7 @@ const ReviewBooking = () => {
       if (!transaction_id) {
         throw new Error('Transaction ID is missing.');
       }
-  
+
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus-payment-status', {
         method: 'POST',
         headers: {
@@ -409,33 +408,33 @@ const ReviewBooking = () => {
         },
         body: JSON.stringify({ transaction_id }),
       });
-  
+
       const responseBody = await response.json();
       console.log('Bus Payment Status Response:', responseBody);
-  
+
       if (!response.ok) {
         console.error('Failed to fetch payment status. Status:', response.status, 'Response:', responseBody);
         throw new Error(`Failed to fetch payment status. Status: ${response.status}`);
       }
-  
+
       // Save to localStorage
       localStorage.setItem("buspaymentStatusRes", JSON.stringify(responseBody));
-  
+
       // Navigate with state
       navigate('/busBookTicket', { state: { buspaymentStatus: responseBody } });
-  
+
       return responseBody;
-  
+
     } catch (error) {
       console.error('Error during fetching payment status:', error.message);
       toast.error('An error occurred while checking payment status. Please try again.');
       return null;
     }
   };
-  
+
   // -------------------------------------------------------------------------------------------------
 
- 
+
 
   // --------------------------------------------------------------------------------------------------
 
@@ -479,31 +478,31 @@ const ReviewBooking = () => {
       }
     }
   }, []);
-  
-  
+
+
   const totalPayment = Math.round(totalFare + taxes + (totalFare * 0.18) - discount);
 
-  
+
 
   // -------------------------------------------------------------------------------------------------
 
-  if (payLoading) {
-    return <PayloaderHotel/>;
-  }
+  // if (payLoading) {
+  //   return <PayloaderHotel />;
+  // }
 
   if (loading) {
     return <Loading />;
   }
 
- 
+
 
   // ----------------------------------------------------------------------------------------------------
- 
+
   return (
     <>
 
       <CustomNavbar />
-      <TimerBus/>
+      <TimerBus />
 
       <div className='ReviewBooking'>
         <div className="review-book">
@@ -583,16 +582,22 @@ const ReviewBooking = () => {
                         />
                       </div>
                       <div className="cont">
-                        <input
-                          type="number"
-                          name="contact"
-                          value={newContactData.contact}
-                          onChange={handleInputChange}
-                          placeholder="Enter Your Contact"
-                             maxLength="10" 
-                          required
-                        />
+                      <input
+          type="text"
+          name="contact"
+          value={newContactData.contact}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/^\d*$/.test(value) && value.length <= 10) {
+              handleInputChange(e);
+            }
+          }}
+          placeholder="Enter Your Contact"
+          maxLength="10"
+          required
+        />
                       </div>
+
 
 
 
@@ -628,43 +633,43 @@ const ReviewBooking = () => {
             </div>
 
             <div className="r-right">
-            <div className="price-page">
-  <h6><i className="ri-price-tag-2-line"></i> <span>Price Details</span></h6>
-  <div className="price">
-    <div className="p-line">
-      <span>Base Fare</span>
-      <small>{totalFare.toFixed(2)}</small>
-    </div>
-    <div className="p-line">
-      <span>Taxes</span>
-      <small>{taxes.toFixed(2)}</small>
-    </div>
-    <div className="total-fare">
-      <span>Total Price</span>
-      <small>{totalFare.toFixed(2)}</small>
-    </div>
-    <div className="p-line">
-      <span>Convenience Fee</span>
-      <small>0</small>
-    </div>
-    <div className="p-line">
-      <span>Discount</span>
-      <small>{discount.toFixed(2)}</small>
-    </div>
-    <div className="p-line">
-      <span>IGST (18%)</span>
-      <small>{(totalFare * 0.18).toFixed(2)}</small>
-    </div>
-    <div className="coupen">
-      <span>Offered Price</span>
-      <small>{offeredPrice.toFixed(2)}</small>
-    </div>
-    <div className="final-pay">
-      <span>Total Payment</span>
-      <small>₹{totalPayment}</small>
-    </div>
-  </div>
-</div>
+              <div className="price-page">
+                <h6><i className="ri-price-tag-2-line"></i> <span>Price Details</span></h6>
+                <div className="price">
+                  <div className="p-line">
+                    <span>Base Fare</span>
+                    <small>{totalFare.toFixed(2)}</small>
+                  </div>
+                  <div className="p-line">
+                    <span>Taxes</span>
+                    <small>{taxes.toFixed(2)}</small>
+                  </div>
+                  <div className="total-fare">
+                    <span>Total Price</span>
+                    <small>{totalFare.toFixed(2)}</small>
+                  </div>
+                  <div className="p-line">
+                    <span>Convenience Fee</span>
+                    <small>0</small>
+                  </div>
+                  <div className="p-line">
+                    <span>Discount</span>
+                    <small>{discount.toFixed(2)}</small>
+                  </div>
+                  <div className="p-line">
+                    <span>IGST (18%)</span>
+                    <small>{(totalFare * 0.18).toFixed(2)}</small>
+                  </div>
+                  <div className="coupen">
+                    <span>Offered Price</span>
+                    <small>{offeredPrice.toFixed(2)}</small>
+                  </div>
+                  <div className="final-pay">
+                    <span>Total Payment</span>
+                    <small>₹{totalPayment}</small>
+                  </div>
+                </div>
+              </div>
 
             </div>
 

@@ -252,6 +252,9 @@ const PassangerInfo = () => {
 
                 <p className="p-mid">
                   <div className="p-form">
+                    <label htmlFor="firstName">
+                      First Name <span className="text-danger">*</span>
+                    </label>
                     <input
                       type="text"
                       name="firstName"
@@ -266,28 +269,35 @@ const PassangerInfo = () => {
                       </div>
                     )}
                   </div>
+
                   <div className="p-form">
+                    <label htmlFor="lastName">
+                      Last Name <span className="text-danger">*</span>
+                    </label>
                     <input
                       type="text"
-                      name='lastName'
+                      name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      placeholder='Enter Last Name'
+                      placeholder="Enter Last Name"
                       className={`form-control ${errors['0.LastName'] ? 'is-invalid' : ''}`}
-
                     />
                     {errors['0.LastName'] && (
                       <div className="invalid-feedback">
                         {errors['0.LastName'].join(', ')}
                       </div>
-                    )}                 </div>
+                    )}
+                  </div>
                   <div className="p-form">
+                    <label htmlFor="address">
+                      Address <span className="text-danger">*</span>
+                    </label>
                     <input
                       type="text"
-                      name='address'
+                      name="address"
                       value={formData.address}
                       onChange={handleInputChange}
-                      placeholder='Address'
+                      placeholder="Address"
                       className={`form-control ${errors['0.Address'] ? 'is-invalid' : ''}`}
                     />
                     {errors['0.Address'] && (
@@ -296,21 +306,33 @@ const PassangerInfo = () => {
                       </div>
                     )}
                   </div>
-                  <div className="p-form">
-                    <input
-                      type="number"
-                      name='age'
-                      value={formData.age}
-                      onChange={handleInputChange}
-                      placeholder='Age'
-                      className={`form-control ${errors['0.Age'] ? 'is-invalid' : ''}`}
 
-                    />
-                    {errors['0.Age'] && (
-                      <div className="invalid-feedback">
-                        {errors['0.Age'].join(', ')}
-                      </div>
-                    )}                     </div>
+
+                  <div className="p-form">
+  <label htmlFor="age">
+    Age <span className="text-danger">*</span>
+  </label>
+  <input
+    type="text" // Use type="text"
+    name="age"
+    value={formData.age}
+    onChange={(e) => {
+      const value = e.target.value;
+      // Validate if the value is numeric and within the range 0-120
+      if (/^\d*$/.test(value) && (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 120))) {
+        handleInputChange(e);
+      }
+    }}
+    placeholder="Age"
+    className={`form-control ${errors['0.Age'] ? 'is-invalid' : ''}`}
+  />
+  {errors['0.Age'] && (
+    <div className="invalid-feedback">
+      {errors['0.Age'].join(', ')}
+    </div>
+  )}
+</div>
+
                 </p>
               </div>
 
