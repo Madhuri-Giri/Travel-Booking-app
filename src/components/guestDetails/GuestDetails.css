@@ -169,6 +169,18 @@
   box-sizing: border-box;
 }
 
+.req_field label.required_field:after {
+  content: '*';
+  color: red;
+  margin-left: 0.2em;
+  font-size: 1.2em;
+}
+
+.req_field label{
+  margin-left: 5px;
+  font-weight: 500;
+}
+
 .custom-placeholder {
   position: absolute;
   top: 0;

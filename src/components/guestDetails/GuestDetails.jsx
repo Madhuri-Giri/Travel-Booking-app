@@ -752,101 +752,112 @@ const GuestDetails = () => {
         <div key={index} className="guest-form">
           <div className="row">
             <div className="col-md-6">
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="First Name"
-                  name="fname"
-                  value={formData.fname}
-                  onChange={(e) => handleFormChange(index, e)}
-                  required
-                  minLength={2}
-                  maxLength={30}
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Middle Name (Optional)"
-                  name="mname"
-                  value={formData.mname}
-                  onChange={(e) => handleFormChange(index, e)}
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Last Name"
-                  name="lname"
-                  value={formData.lname}
-                  onChange={(e) => handleFormChange(index, e)}
-                  required
-                  minLength={2}
-                  maxLength={30}
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Email"
-                  name="email"
-                  value={formData.email}
-                  onChange={(e) => handleFormChange(index, e)}
-                  required
-                />
-              </div>
+            <div className="mb-3 req_field">
+      <label className="required_field">First Name</label>
+      <input
+        type="text"
+        className="form-control"
+        placeholder="First Name"
+        name="fname"
+        value={formData.fname}
+        onChange={(e) => handleFormChange(index, e)}
+        required
+        minLength={2}
+        maxLength={30}
+      />
+    </div>
+
+              <div className="mb-3 req_field">
+      <label>Middle Name (Optional)</label>
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Middle Name (Optional)"
+        name="mname"
+        value={formData.mname}
+        onChange={(e) => handleFormChange(index, e)}
+      />
+    </div>
+              
+              <div className="mb-3 req_field">
+      <label className="required_field">Last Name</label>
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Last Name"
+        name="lname"
+        value={formData.lname}
+        onChange={(e) => handleFormChange(index, e)}
+        required
+        minLength={2}
+        maxLength={30}
+      />
+    </div>
+
+              <div className="mb-3 req_field">
+      <label className="required_field">Email</label>
+      <input
+        type="email"
+        className="form-control"
+        placeholder="Email"
+        name="email"
+        value={formData.email}
+        onChange={(e) => handleFormChange(index, e)}
+        required
+      />
+    </div>
               </div>
               <div className="col-md-6">
-              <div className="mb-3">
-                <input
-                  type="tel"
-                  className="form-control"
-                  placeholder="Contact Number"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={(e) => handleFormChange(index, e)}
-                  required
-                  pattern="[0-9]{10}"
-                />
-                
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="PAN No."
-                  name="PAN No"
-                  value={formData.number}
-                  onChange={(e) => handleFormChange(index, e)}
-                />
-              </div>
+              <div className="mb-3 req_field">
+      <label className="required_field">Contact Number</label>
+      <input
+        type="tel"
+        className="form-control"
+        placeholder="Contact Number"
+        name="mobile"
+        value={formData.mobile}
+        onChange={(e) => handleFormChange(index, e)}
+        required
+        pattern="[0-9]{10}"
+      />
+    </div>
 
-              <div className="mb-3">
-                <input
-                  type="number"
-                  className="form-control"
-                  placeholder="Age"
-                  name="age"
-                  value={formData.age}
-                  onChange={(e) => handleFormChange(index, e)}
-                  min={0}
-                />
-              </div>
+              <div className="mb-3 req_field">
+      <label className="required_field">PAN No.</label>
+      <input
+        type="text"
+        className="form-control"
+        placeholder="PAN No."
+        name="PAN No"
+        value={formData.number}
+        onChange={(e) => handleFormChange(index, e)}
+      />
+    </div>
 
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Passport No."
-                  name="passportNo"
-                  value={formData.passportNo}
-                  onChange={(e) => handleFormChange(index, e)}
-                />
-              </div>
+              <div className="mb-3 req_field">
+      <label className="required_field">Age</label>
+      <input
+        type="number"
+        className="form-control"
+        placeholder="Age"
+        name="age"
+        value={formData.age}
+        onChange={(e) => handleFormChange(index, e)}
+        min={0}
+      />
+    </div>
+
+              <div className="mb-3 req_field">
+      <label className="required_field">Passport No.</label>
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Passport No."
+        name="passportNo"
+        value={formData.passportNo}
+        onChange={(e) => handleFormChange(index, e)}
+      />
+    </div>
 
               {/* <div className="mb-3 date-picker-container">
   <DatePicker
