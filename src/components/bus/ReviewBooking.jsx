@@ -507,7 +507,7 @@ const ReviewBooking = () => {
 
       <div className='ReviewBooking'>
         <div className="review-book">
-          <h5><i onClick={back} className="ri-arrow-left-s-line"></i> Review Details</h5>
+          <h5><i onClick={back} className="ri-arrow-left-s-line"></i> Review Booking Details</h5>
 
 
           <div className="main-branch">

@@ -527,9 +527,7 @@
 /* .seatsTabssColImg img{
     height: 250px;
 } */
-.seatsTabssColText img {
-    height: 30px;
-}
+
 
 .seatsTabss h5 {
     text-align: center;
@@ -584,6 +582,18 @@
     margin: 35px 0px;
 }
 
+.meal-selection {
+    box-shadow: 1px 3px 8px 2px #4d776e;
+    padding: 20px 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    background: aliceblue;
+    margin: 35px 0px;
+}
+
+.meal-selection h6 {
+    font-weight: bold;
+}
 .baggage-selection h6 {
     font-weight: bold;
 }
@@ -764,4 +774,10 @@
         font-size: 12px;
     }
 
+}
+
+
+.userFormFill .text-danger{
+    font-size: 12px;
+    font-weight: 700;
 }

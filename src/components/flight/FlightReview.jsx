@@ -120,7 +120,6 @@ const grandTotal = totalPrice + finalTotalPrice;
         amount: roundedGrandTotal,
         user_id: loginId,
         transaction_num,
-
       });
 
       if (response.data.status === 'success') {
@@ -168,6 +167,7 @@ const grandTotal = totalPrice + finalTotalPrice;
 
 
           try {
+
             await flightpayUpdate();
         
             const IsLCC = localStorage.getItem('F-IsLcc') === 'true'; 
@@ -232,7 +232,6 @@ const grandTotal = totalPrice + finalTotalPrice;
       const payload = {
         payment_id,
         transaction_id,
-        // transaction_num
       };
 
       const response = await fetch(url, {
@@ -250,14 +249,14 @@ const grandTotal = totalPrice + finalTotalPrice;
       }
 
       const data = await response.json();
-      console.log('flight Update successful:', data);
+      console.log('Flight Update successful:', data);
+
     } catch (error) {
       console.error('Error updating payment details:', error.message);
       throw error;
     }
 
   }
-
 
   // -----------------------flight LcC Api----------------------------------------------
 
@@ -278,8 +277,7 @@ const grandTotal = totalPrice + finalTotalPrice;
   const PublishedFare = localStorage.getItem('PublishedFare');
   const TdsOnCommission = localStorage.getItem('TdsOnCommission');
   const OfferedFare  = localStorage.getItem('OfferedFare');
-
-  
+ 
   const baseFare = localStorage.getItem('BaseFare');
   const tax = localStorage.getItem('Tax');
   const yqTax = localStorage.getItem('YQTax');
@@ -359,10 +357,6 @@ const grandTotal = totalPrice + finalTotalPrice;
     }
   };
   
-  
-  
-
-
 
 const bookHoldApi = async () => {
   const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
@@ -384,13 +378,13 @@ const bookHoldApi = async () => {
   "DateOfBirth": passenger.dateOfBirth,
   "Gender": passenger.gender === "male" ? "1" : "2",
   "PassportNo": passenger.passportNo || "abc12345",
-  "PassportExpiry": passenger.passportExpiry || "",
-  "PassportIssueDate": passenger.passportIssueDate || "",
+  "PassportExpiry": passenger.passportExpiry || null,
+  "PassportIssueDate": passenger.passportIssueDate || null,
   "AddressLine1": passenger.addressLine1,
   "City": passenger.city,
-  "CountryCode": passenger.countryCode && passenger.countryCode.length <= 3 ? passenger.countryCode : "001" || 'IN', 
+  "CountryCode": passenger.countryCode || null, 
   "CountryName": passenger.countryName,
-  "ContactNo": passenger.contactNo && passenger.contactNo.length <= 10 ? passenger.contactNo : "", 
+  "ContactNo": passenger.contactNo, 
   "Email": passenger.email,
   "IsLeadPax": passenger.isLeadPax || 0,
   "Fare": [
@@ -442,12 +436,8 @@ const bookHoldApi = async () => {
       console.error('Response status:', response.status);
       console.error('Error details:', errorData);
 
-      if (errorData?.Error?.ErrorMessage) {
-        toast.error(`Booking failed: ${errorData.Error.ErrorMessage}`);
-      } else {
-        toast.error('Network response was not ok');
-      }
-
+      navigate('/flight-search');
+      
       setLoader(false); 
       return;
     }
@@ -455,18 +445,13 @@ const bookHoldApi = async () => {
     const holdData = await response.json();
     console.log('Hold Response:', holdData);
     localStorage.setItem('HolApiData', JSON.stringify(holdData));
-    
-  }  catch (error) {
+
+  } catch (error) {
     console.error('API call failed:', error.message || error);
-    toast.error(`API call failed: ${error.message}`); 
-    setLoader(false); 
+    navigate('/flight-search');
+    setLoader(false);
   }
 };
-
-  
-  
-
-
 
  // -------------------------------------------------------------------------------------------
 
@@ -477,12 +462,6 @@ const bookHoldApi = async () => {
   const pnr = savedData.data.pnr;
   const bookingId = savedData.data.booking_id;
   const gdsId = savedData.data.id;
-
-  console.log('pnr',  pnr)
-  console.log('bookingId', bookingId)
-  console.log('gdsId', gdsId)
-
-  
 
   try {
     const response = await fetch('https://sajyatra.sajpe.in/admin/api/ticketgds', {
@@ -513,32 +492,19 @@ const bookHoldApi = async () => {
   }
 };
 
-
-
- 
-
   if (payLoading) {
     return <PayloaderHotel/>;
   }
-
-  
+ 
   if (loader) {
     return <Loading/>;
   }
-
 
   return (
     <>
       <CustomNavbar />
       <TimerFlight/>
-      {/* <div className="timer-FlightLists">
-
-
-
-
-
-                <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
-            </div> */}
+     
       <div className="container-fluid review-cont">
         <div className="row">
           <div className="col-md-6">

@@ -1,7 +1,7 @@
 import "./FlightLists.css"
 import "./FlightDetails.css"
 import React from 'react'
-import { useEffect, useRef, useState , } from 'react';
+import { useEffect, useRef, useState, } from 'react';
 import { json, useLocation, useNavigate } from 'react-router-dom';
 import { TiPlane } from "react-icons/ti";
 import { FaCalendarAlt, FaUser } from 'react-icons/fa';
@@ -24,7 +24,7 @@ export default function FlightDetails() {
     useEffect(() => {
         // Retrieve the base fare from local storage
         const savedFare = localStorage.getItem('selectedFlightBaseFare');
-        
+
         // Set the totalFare state, converting it to a number
         if (savedFare) {
             setTotalPrice(parseFloat(savedFare));
@@ -99,7 +99,7 @@ export default function FlightDetails() {
     };
 
 
-  
+
     const reviewHandler = () => {
         // Ensure fareDataDetails is defined before navigating
         if (fareDataDetails) {
@@ -210,21 +210,53 @@ export default function FlightDetails() {
 
     const handleConfirm = (e, index, type) => {
         e.preventDefault();
-        let details;
-
-        if (type === 'adult') {
-            details = [...adultDetails];
-        } else if (type === 'child') {
-            details = [...childDetails];
-        } else if (type === 'infant') {
-            details = [...infantDetails];
-        }
-
-        const { gender, firstName, lastName, dateOfBirth, passportNo, passportExpiry, passportIssueDate, addressLine1, city, countryCode, countryName, contactNo, email } = details[index];
-
-        // Check for all fields
-        if (gender && firstName && lastName && dateOfBirth && passportNo && passportExpiry && passportIssueDate && addressLine1 && city && countryCode && countryName && contactNo && email) {
-            setError('');
+    
+        // Select the correct details array based on the type
+        let details = type === 'adult' ? [...adultDetails] : type === 'child' ? [...childDetails] : [...infantDetails];
+    
+        // Define the fields and their labels for validation, excluding specified fields
+        const fieldsToCheck = {
+            gender: 'Gender',
+            firstName: 'First Name',
+            lastName: 'Last Name',
+            dateOfBirth: 'Date of Birth',
+            addressLine1: 'Address Line 1',
+            city: 'City',
+            countryName: 'Country Name',
+            contactNo: 'Contact No',
+            email: 'Email',
+            // Passport No, Passport Expiry, Passport Issue Date, Country Code are not validated
+        };
+    
+        // Initialize errors for the current detail at the specified index
+        let newErrors = {};
+        Object.keys(fieldsToCheck).forEach(field => {
+            if (!details[index][field]) {
+                newErrors[field] = `${fieldsToCheck[field]} is required.`;
+            }
+        });
+    
+        // Check if there are any validation errors
+        if (Object.keys(newErrors).length > 0) {
+            // Update the error state with new errors for this type and index
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                [type]: {
+                    ...prevErrors[type],
+                    [index]: newErrors
+                }
+            }));
+        } else {
+            // Clear errors if all fields are valid
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                [type]: {
+                    ...prevErrors[type],
+                    [index]: {}
+                }
+            }));
+    
+            // Add the confirmed detail to the appropriate confirmed details array
             const newDetail = { ...details[index], selected: false };
             if (type === 'adult') {
                 setConfirmedAdultDetails([...confirmedAdultDetails, newDetail]);
@@ -233,11 +265,68 @@ export default function FlightDetails() {
             } else if (type === 'infant') {
                 setConfirmedInfantDetails([...confirmedInfantDetails, newDetail]);
             }
+    
+            // Clear form fields after confirmation
+            resetFormFields(type);
+    
+            // Check and update the button disabled state if needed
             checkButtonDisabled();
-        } else {
-            setError(`Please fill out all fields for ${type} ${index + 1}.`);
         }
     };
+    
+    // Function to reset form fields after confirmation
+    const resetFormFields = (type) => {
+        if (type === 'adult') {
+            setAdultDetails(prevDetails => prevDetails.map(detail => ({
+                gender: '',
+                firstName: '',
+                lastName: '',
+                dateOfBirth: '',
+                passportNo: '',
+                passportExpiry: '',
+                passportIssueDate: '',
+                addressLine1: '',
+                city: '',
+                countryCode: '',
+                countryName: '',
+                contactNo: '',
+                email: '',
+            })));
+        } else if (type === 'child') {
+            setChildDetails(prevDetails => prevDetails.map(detail => ({
+                gender: '',
+                firstName: '',
+                lastName: '',
+                dateOfBirth: '',
+                passportNo: '',
+                passportExpiry: '',
+                passportIssueDate: '',
+                addressLine1: '',
+                city: '',
+                countryCode: '',
+                countryName: '',
+                contactNo: '',
+                email: '',
+            })));
+        } else if (type === 'infant') {
+            setInfantDetails(prevDetails => prevDetails.map(detail => ({
+                gender: '',
+                firstName: '',
+                lastName: '',
+                dateOfBirth: '',
+                passportNo: '',
+                passportExpiry: '',
+                passportIssueDate: '',
+                addressLine1: '',
+                city: '',
+                countryCode: '',
+                countryName: '',
+                contactNo: '',
+                email: '',
+            })));
+        }
+    };
+    
 
     const handleDelete = (type, index) => {
         if (type === 'adult') {
@@ -267,15 +356,6 @@ export default function FlightDetails() {
                                 <div><strong>Gender:</strong> <span>{detail.gender}</span></div>
                                 <div><strong>Name:</strong> <span>{detail.firstName} {detail.lastName}</span></div>
                                 <div><strong>Date of Birth:</strong> <span>{detail.dateOfBirth}</span></div>
-                                {/* <div><strong>Passport No:</strong> <span>{detail.passportNo}</span></div> */}
-                                {/* <div><strong>Passport Expiry:</strong> <span>{detail.passportExpiry}</span></div> */}
-                                {/* <div><strong>Passport Issue Date:</strong> <span>{detail.passportIssueDate}</span></div> */}
-                                {/* <div><strong>Address Line 1:</strong> <span>{detail.addressLine1}</span></div> */}
-                                {/* <div><strong>City:</strong> <span>{detail.city}</span></div> */}
-                                {/* <div><strong>Country Code:</strong> <span>{detail.countryCode}</span></div> */}
-                                {/* <div><strong>Country Name:</strong> <span>{detail.countryName}</span></div> */}
-                                {/* <div><strong>Contact No:</strong> <span>{detail.contactNo}</span></div> */}
-                                {/* <div><strong>Email:</strong> <span>{detail.email}</span></div> */}
                             </div>
                             <div className="mt-2">
                                 <FaTrash className="text-danger cursor-pointer" onClick={() => handleDelete(type, index)} />
@@ -286,220 +366,229 @@ export default function FlightDetails() {
             </div>
         </div>
     );
+
+    // State for handling errors
+    const [errors, setErrors] = useState({
+        adult: [],
+        child: [],
+        infant: [],
+    });
+
     const renderFormFields = (count, type) => {
         const details = type === 'adult' ? adultDetails : type === 'child' ? childDetails : infantDetails;
 
-        return Array.from({ length: count }, (_, index) => (
-            <div key={`${type}-${index}`} className="row userFormFill">
-                <div className="col-md-3">
-                    <label>Gender:</label>
-                    <div className="form-group genderFormGrp">
-                        <div className="form-check form-check-inline">
-                            <input
-                                type="radio"
-                                id={`${type}-male-${index}`}
-                                name={`gender-${type}-${index}`}
-                                value="male"
-                                className="form-check-input"
-                                onChange={(e) => handleInputChange(e, index, type, 'gender')}
-                                required
-                            />
-                            <label className="form-check-label" htmlFor={`${type}-male-${index}`}>Male</label>
+        return Array.from({ length: count }, (_, index) => {
+            const fieldErrors = errors[type]?.[index] || {};
+
+            return (
+                <div key={`${type}-${index}`} className="row userFormFill">
+                    <div className="col-12">
+                        <label>Gender:</label>
+                        <div className="form-group genderFormGrp">
+                            <div className="form-check form-check-inline">
+                                <input
+                                    type="radio"
+                                    id={`${type}-male-${index}`}
+                                    name={`gender-${type}-${index}`}
+                                    value="male"
+                                    className="form-check-input"
+                                    onChange={(e) => handleInputChange(e, index, type, 'gender')}
+                                />
+                                <label className="form-check-label" htmlFor={`${type}-male-${index}`}>Male</label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input
+                                    type="radio"
+                                    id={`${type}-female-${index}`}
+                                    name={`gender-${type}-${index}`}
+                                    value="female"
+                                    className="form-check-input"
+                                    onChange={(e) => handleInputChange(e, index, type, 'gender')}
+                                />
+                                <label className="form-check-label" htmlFor={`${type}-female-${index}`}>Female</label>
+                            </div>
+                            {fieldErrors.gender && <div className="text-danger">{fieldErrors.gender}</div>}
                         </div>
-                        <div className="form-check form-check-inline">
+                    </div>
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor={`firstName-${type}-${index}`}>First Name</label>
                             <input
-                                type="radio"
-                                id={`${type}-female-${index}`}
-                                name={`gender-${type}-${index}`}
-                                value="female"
-                                className="form-check-input"
-                                onChange={(e) => handleInputChange(e, index, type, 'gender')}
-                                required
+                                type="text"
+                                id={`firstName-${type}-${index}`}
+                                className="form-control"
+                                onChange={(e) => handleInputChange(e, index, type, 'firstName')}
+                                value={details[index]?.firstName || ''}
+                                placeholder="First & Middle Name"
                             />
-                            <label className="form-check-label" htmlFor={`${type}-female-${index}`}>Female</label>
+                            {fieldErrors.firstName && <div className="text-danger">{fieldErrors.firstName}</div>}
                         </div>
                     </div>
-                </div>
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor={`firstName-${type}-${index}`}>First Name</label>
-                        <input
-                            type="text"
-                            id={`firstName-${type}-${index}`}
-                            className="form-control"
-                            onChange={(e) => handleInputChange(e, index, type, 'firstName')}
-                            value={details[index]?.firstName || ''}
-                            required
-                            placeholder="First & Middle Name"
-                        />
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor={`lastName-${type}-${index}`}>Last Name</label>
+                            <input
+                                type="text"
+                                id={`lastName-${type}-${index}`}
+                                className="form-control"
+                                onChange={(e) => handleInputChange(e, index, type, 'lastName')}
+                                value={details[index]?.lastName || ''}
+                                placeholder="Last Name"
+                            />
+                            {fieldErrors.lastName && <div className="text-danger">{fieldErrors.lastName}</div>}
+                        </div>
                     </div>
-                </div>
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor={`lastName-${type}-${index}`}>Last Name</label>
-                        <input
-                            type="text"
-                            id={`lastName-${type}-${index}`}
-                            className="form-control"
-                            onChange={(e) => handleInputChange(e, index, type, 'lastName')}
-                            value={details[index]?.lastName || ''}
-                            required
-                            placeholder="Last Name"
-                        />
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor={`dateOfBirth-${type}-${index}`}>Date of Birth</label>
+                            <input
+                                type="date"
+                                id={`dateOfBirth-${type}-${index}`}
+                                className="form-control"
+                                onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                                onChange={(e) => handleInputChange(e, index, type, 'dateOfBirth')}
+                                value={details[index]?.dateOfBirth || ''}
+                                max={new Date().toISOString().split("T")[0]} // Prevent future dates
+                            />
+                            {fieldErrors.dateOfBirth && <div className="text-danger">{fieldErrors.dateOfBirth}</div>}
+                        </div>
                     </div>
-                </div>
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor={`dateOfBirth-${type}-${index}`}>Date of Birth</label>
-                        <input
-                            type="date"
-                            id={`dateOfBirth-${type}-${index}`}
-                            className="form-control"
-                            onClick={(e) => e.target.showPicker && e.target.showPicker()}
-                            onChange={(e) => handleInputChange(e, index, type, 'dateOfBirth')}
-                            value={details[index]?.dateOfBirth || ''}
-                            max={new Date().toISOString().split("T")[0]} // Prevent future dates
-                            // required
-                        />
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor={`passportNo-${type}-${index}`}>Passport No</label>
+                            <input
+                                type="text"
+                                id={`passportNo-${type}-${index}`}
+                                className="form-control"
+                                onChange={(e) => handleInputChange(e, index, type, 'passportNo')}
+                                value={details[index]?.passportNo || ''}
+                                placeholder="Passport No"
+                            />
+                            {fieldErrors.passportNo && <div className="text-danger">{fieldErrors.passportNo}</div>}
+                        </div>
                     </div>
-                </div>
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor={`passportNo-${type}-${index}`}>Passport No</label>
-                        <input
-                            type="text"
-                            id={`passportNo-${type}-${index}`}
-                            className="form-control"
-                            onChange={(e) => handleInputChange(e, index, type, 'passportNo')}
-                            value={details[index]?.passportNo || ''}
-                            
-                            placeholder="Passport No"
-                        />
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor={`passportExpiry-${type}-${index}`}>Passport Expiry</label>
+                            <input
+                                type="date"
+                                id={`passportExpiry-${type}-${index}`}
+                                className="form-control"
+                                onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                                onChange={(e) => handleInputChange(e, index, type, 'passportExpiry')}
+                                value={details[index]?.passportExpiry || ''}
+                                min={new Date().toISOString().split("T")[0]}
+                            />
+                            {fieldErrors.passportExpiry && <div className="text-danger">{fieldErrors.passportExpiry}</div>}
+                        </div>
                     </div>
-                </div>
-             <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor={`passportExpiry-${type}-${index}`}>Passport Expiry</label>
-                        <input
-                            type="date"
-                            id={`passportExpiry-${type}-${index}`}
-                            className="form-control"
-                            onClick={(e) => e.target.showPicker && e.target.showPicker()}
-                            onChange={(e) => handleInputChange(e, index, type, 'passportExpiry')}
-                            value={details[index]?.passportExpiry || ''}
-                            min={new Date().toISOString().split("T")[0]}
-                            
-                        />
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor={`passportIssueDate-${type}-${index}`}>Passport Issue Date</label>
+                            <input
+                                type="date"
+                                id={`passportIssueDate-${type}-${index}`}
+                                className="form-control"
+                                onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                                onChange={(e) => handleInputChange(e, index, type, 'passportIssueDate')}
+                                value={details[index]?.passportIssueDate || ''}
+                                max={new Date().toISOString().split("T")[0]} // Prevent future dates
+                            />
+                            {fieldErrors.passportIssueDate && <div className="text-danger">{fieldErrors.passportIssueDate}</div>}
+                        </div>
                     </div>
-                </div>
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor={`passportIssueDate-${type}-${index}`}>Passport Issue Date</label>
-                        <input
-                            type="date"
-                            id={`passportIssueDate-${type}-${index}`}
-                            className="form-control"
-                            onClick={(e) => e.target.showPicker && e.target.showPicker()}
-                            onChange={(e) => handleInputChange(e, index, type, 'passportIssueDate')}
-                            value={details[index]?.passportIssueDate || ''}
-                            max={new Date().toISOString().split("T")[0]} // Prevent future dates
-                            
-                        />
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor={`addressLine1-${type}-${index}`}>Address Line 1</label>
+                            <input
+                                type="text"
+                                id={`addressLine1-${type}-${index}`}
+                                className="form-control"
+                                onChange={(e) => handleInputChange(e, index, type, 'addressLine1')}
+                                value={details[index]?.addressLine1 || ''}
+                                placeholder="Address Line 1"
+                            />
+                            {fieldErrors.addressLine1 && <div className="text-danger">{fieldErrors.addressLine1}</div>}
+                        </div>
                     </div>
-                </div> 
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor={`addressLine1-${type}-${index}`}>Address Line 1</label>
-                        <input
-                            type="text"
-                            id={`addressLine1-${type}-${index}`}
-                            className="form-control"
-                            onChange={(e) => handleInputChange(e, index, type, 'addressLine1')}
-                            value={details[index]?.addressLine1 || ''}
-                            
-                            placeholder="Address Line 1"
-                        />
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor={`city-${type}-${index}`}>City</label>
+                            <input
+                                type="text"
+                                id={`city-${type}-${index}`}
+                                className="form-control"
+                                onChange={(e) => handleInputChange(e, index, type, 'city')}
+                                value={details[index]?.city || ''}
+                                placeholder="City"
+                            />
+                            {fieldErrors.city && <div className="text-danger">{fieldErrors.city}</div>}
+                        </div>
                     </div>
-                </div>
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor={`city-${type}-${index}`}>City</label>
-                        <input
-                            type="text"
-                            id={`city-${type}-${index}`}
-                            className="form-control"
-                            onChange={(e) => handleInputChange(e, index, type, 'city')}
-                            value={details[index]?.city || ''}
-                            required
-                            placeholder="City"
-                        />
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor={`countryCode-${type}-${index}`}>Country Code</label>
+                            <input
+                                type="text"
+                                id={`countryCode-${type}-${index}`}
+                                className="form-control"
+                                onChange={(e) => handleInputChange(e, index, type, 'countryCode')}
+                                value={details[index]?.countryCode || ''}
+                                placeholder="Country Code"
+                            />
+                            {fieldErrors.countryCode && <div className="text-danger">{fieldErrors.countryCode}</div>}
+                        </div>
                     </div>
-                </div>
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor={`countryCode-${type}-${index}`}>Country Code</label>
-                        <input
-                            type="text"
-                            id={`countryCode-${type}-${index}`}
-                            className="form-control"
-                            onChange={(e) => handleInputChange(e, index, type, 'countryCode')}
-                            value={details[index]?.countryCode || ''}
-                            
-                            placeholder="Country Code"
-                        />
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor={`countryName-${type}-${index}`}>Country Name</label>
+                            <input
+                                type="text"
+                                id={`countryName-${type}-${index}`}
+                                className="form-control"
+                                onChange={(e) => handleInputChange(e, index, type, 'countryName')}
+                                value={details[index]?.countryName || ''}
+                                placeholder="Country Name"
+                            />
+                            {fieldErrors.countryName && <div className="text-danger">{fieldErrors.countryName}</div>}
+                        </div>
                     </div>
-                </div>
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor={`countryName-${type}-${index}`}>Country Name</label>
-                        <input
-                            type="text"
-                            id={`countryName-${type}-${index}`}
-                            className="form-control"
-                            onChange={(e) => handleInputChange(e, index, type, 'countryName')}
-                            value={details[index]?.countryName || ''}
-                            
-                            placeholder="Country Name"
-                        />
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor={`contactNo-${type}-${index}`}>Contact No</label>
+                            <input
+                                type="text"
+                                id={`contactNo-${type}-${index}`}
+                                className="form-control"
+                                onChange={(e) => handleInputChange(e, index, type, 'contactNo')}
+                                value={details[index]?.contactNo || ''}
+                                placeholder="Contact No"
+                            />
+                            {fieldErrors.contactNo && <div className="text-danger">{fieldErrors.contactNo}</div>}
+                        </div>
                     </div>
-                </div>
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor={`contactNo-${type}-${index}`}>Contact No</label>
-                        <input
-                            type="text"
-                            id={`contactNo-${type}-${index}`}
-                            className="form-control"
-                            onChange={(e) => handleInputChange(e, index, type, 'contactNo')}
-                            value={details[index]?.contactNo || ''}
-                            required
-                            placeholder="Contact No"
-                        />
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor={`email-${type}-${index}`}>Email</label>
+                            <input
+                                type="email"
+                                id={`email-${type}-${index}`}
+                                className="form-control"
+                                onChange={(e) => handleInputChange(e, index, type, 'email')}
+                                value={details[index]?.email || ''}
+                                placeholder="Email"
+                            />
+                            {fieldErrors.email && <div className="text-danger">{fieldErrors.email}</div>}
+                        </div>
                     </div>
-                </div>
-                <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor={`email-${type}-${index}`}>Email</label>
-                        <input
-                            type="email"
-                            id={`email-${type}-${index}`}
-                            className="form-control"
-                            onChange={(e) => handleInputChange(e, index, type, 'email')}
-                            value={details[index]?.email || ''}
-                            required
-                            placeholder="Email"
-                        />
-                    </div>
-                </div>
-                {/* <div className="col-md-3"> */}
                     <div className="form-group formConfbtn">
                         <button className="btn btn-primary mt-4" onClick={(e) => handleConfirm(e, index, type)}>
                             Confirm
                         </button>
                     </div>
-                {/* </div> */}
-            </div>
-        ));
+                </div>
+            );
+        });
     };
 
 
@@ -705,38 +794,38 @@ export default function FlightDetails() {
 
 
     // for timerss----------------------------------
-//     const [timer, setTimer] = useState(0);
-//   useEffect(() => {
-//     const updateTimer = () => {
-//       const endTime = localStorage.getItem('F-timerEndTime');
-//       const now = Date.now();
-      
-//       if (endTime) {
-//         const remainingTime = endTime - now;
-        
-//         if (remainingTime <= 0) {
-//           localStorage.removeItem('F-timerEndTime');
-//           navigate('/flight-search');
-//         } else {
-//           setTimer(remainingTime);
-//         }
-//       } else {
-//         navigate('/flight-search');
-//       }
-//     };
+    //     const [timer, setTimer] = useState(0);
+    //   useEffect(() => {
+    //     const updateTimer = () => {
+    //       const endTime = localStorage.getItem('F-timerEndTime');
+    //       const now = Date.now();
 
-//     updateTimer();
+    //       if (endTime) {
+    //         const remainingTime = endTime - now;
 
-//     const interval = setInterval(updateTimer, 1000); 
+    //         if (remainingTime <= 0) {
+    //           localStorage.removeItem('F-timerEndTime');
+    //           navigate('/flight-search');
+    //         } else {
+    //           setTimer(remainingTime);
+    //         }
+    //       } else {
+    //         navigate('/flight-search');
+    //       }
+    //     };
 
-//     return () => clearInterval(interval);
-//   }, [navigate]);
-//   const formatTimers = (milliseconds) => {
-//     const totalSeconds = Math.floor(milliseconds / 1000);
-//     const minutes = Math.floor(totalSeconds / 60);
-//     const seconds = totalSeconds % 60;
-//     return `${minutes} min ${seconds} sec left`;
-//   };
+    //     updateTimer();
+
+    //     const interval = setInterval(updateTimer, 1000); 
+
+    //     return () => clearInterval(interval);
+    //   }, [navigate]);
+    //   const formatTimers = (milliseconds) => {
+    //     const totalSeconds = Math.floor(milliseconds / 1000);
+    //     const minutes = Math.floor(totalSeconds / 60);
+    //     const seconds = totalSeconds % 60;
+    //     return `${minutes} min ${seconds} sec left`;
+    //   };
 
     // for timerss----------------------------------
 
@@ -748,6 +837,8 @@ export default function FlightDetails() {
         <>
             <CustomNavbar />
             {/* <TimerFlight/> */}
+
+            
             {/* timerrr-------------------  */}
             {/* <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
@@ -856,7 +947,9 @@ export default function FlightDetails() {
                                                     </>
                                                 )}
                                             </div>
-                                            {error && <div className="text-danger mt-2" aria-live="assertive">{error}</div>}
+                                            {/* {error && 
+                                            <div className="text-danger mt-2" aria-live="assertive">{error}</div>
+                                            } */}
 
                                             {/* code for tabs seat meals--------- */}
                                             <div className="row seatMealBaggageTabRow">
@@ -874,7 +967,7 @@ export default function FlightDetails() {
                                             </div>
 
                                             <div className="col-12 lastBtnssContinue">
-                                            <h5>Fare Breakup <span>₹{totalPrice.toFixed(2)}</span></h5>                                                <button
+                                                <h5>Fare Breakup <span>₹{totalPrice.toFixed(2)}</span></h5>                                                <button
                                                     onClick={handleButtonClick}
                                                     disabled={isContinueDisabled}
                                                     style={{

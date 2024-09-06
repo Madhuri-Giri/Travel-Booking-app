@@ -65,7 +65,7 @@ const TimerBus = () => {
 
   return (
     <div className='timer'>
-      <p>Time remaining: {getFormattedTime(timeRemaining)}</p>
+      <h5 style={{marginTop:"1vmax", fontFamily:"cursive"}}>Remaining Time... {getFormattedTime(timeRemaining)}</h5>
     </div>
   );
 };
