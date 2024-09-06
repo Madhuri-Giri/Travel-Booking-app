@@ -37,6 +37,12 @@ const FlightSearch = () => {
   const fromSuggestionsRef = useRef(null);
   const toSuggestionsRef = useRef(null);
   const mainCityNames = ['Delhi', 'Mumbai', 'Bangalore', 'Kolkata', 'Goa', 'Hyderabad'];
+  const [originCode, setOriginCode] = useState(''); // State for origin code
+  const [desctinationCode, setDesctinationCode] = useState(''); // State for origin code
+
+  console.log("originCode",originCode);
+  console.log("desctinationCode",desctinationCode);
+  
 
   const [departureDate, setDepartureDate] = useState();
   const [returnDateDep, setReturnDateDep] = useState();
@@ -96,16 +102,18 @@ const FlightSearch = () => {
     fetchSuggestions('', setToSuggestions, true);
   };
   // Function to handle "From" input change
+  // console.log("fromSuggestions",fromSuggestions);
+  
   const handleFromChange = (event) => {
     const value = event.target.value;
     setFrom(value);
+    console.log("originCode",originCode);
+    
     if (value.length > 2) {
       fetchSuggestions(value, setFromSuggestions);
     } else {
       setFromSuggestions([]);
     }
-    console.log("OriginFrom", value);
-    localStorage.setItem('OriginFrom', value);
   };
 
   // Function to handle "To" input change
@@ -117,7 +125,6 @@ const FlightSearch = () => {
     } else {
       setToSuggestions([]);
     }
-    localStorage.setItem('DestinationTo', value);
   };
 
   // Function for selecting a suggestion
@@ -126,16 +133,13 @@ const FlightSearch = () => {
   //   setSuggestions([]);
   // };
 
-  const handleSuggestionClick = (suggestion, setFunction, setSuggestions) => {
+  const handleSuggestionClick = (suggestion, setFunction, setSuggestions , setValuee) => {
     setFunction(suggestion.busodma_destination_name);
+    setValuee(suggestion.busodma_origin_code);
     setSuggestions([]);
+    setOriginCode(suggestion.busodma_origin_code); // Update the state with the origin code
+    console.log("suggestion",suggestion.busodma_origin_code);
   };
-  // Setting Origin value
-  localStorage.setItem('OriginFrom', from);
-
-  // Setting Destination value
-  localStorage.setItem('DestinationTo', to);
-
 
 
   // function for adult , child , infact dropdown list-------------------------------------------
@@ -275,8 +279,8 @@ const FlightSearch = () => {
         {
           // Origin: from,
           // Destination: to,
-          Origin: "DEL",
-          Destination: "BOM",
+          Origin: "KWI",
+          Destination: "DEL",
           FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: departureDate,
           PreferredArrivalTime: departureDate
@@ -288,17 +292,17 @@ const FlightSearch = () => {
         {
           // Origin: from,
           // Destination: to,
-          Origin: "DEL",
-          Destination: "BOM",
+          Origin: "KWI",
+          Destination: "DEL",
           FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: departureDate,
           PreferredArrivalTime: departureDate
         },
         {
-          // Origin: to,
-          // Destination: from,
-          Origin: "BOM",
-          Destination: "DEL",
+          Origin: to,
+          Destination: from,
+          Origin: "DEL",
+          Destination: "KWI",
           FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: returnDateDep,
           PreferredArrivalTime: returnDateDep
@@ -557,7 +561,7 @@ const FlightSearch = () => {
                                     <li
                                       className="text-red"
                                       key={index}
-                                      onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions)}
+                                      onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions , setOriginCode)}
                                     >
                                       {suggestion.busodma_destination_name}
                                     </li>
@@ -590,7 +594,7 @@ const FlightSearch = () => {
                                   {toSuggestions.map((suggestion, index) => (
                                     <li
                                       key={index}
-                                      onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions)}
+                                      onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions , setDesctinationCode)}
                                     >
                                       {suggestion.busodma_destination_name}
                                     </li>

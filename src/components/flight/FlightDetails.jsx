@@ -210,10 +210,10 @@ export default function FlightDetails() {
 
     const handleConfirm = (e, index, type) => {
         e.preventDefault();
-    
+
         // Select the correct details array based on the type
         let details = type === 'adult' ? [...adultDetails] : type === 'child' ? [...childDetails] : [...infantDetails];
-    
+
         // Define the fields and their labels for validation, excluding specified fields
         const fieldsToCheck = {
             gender: 'Gender',
@@ -227,7 +227,7 @@ export default function FlightDetails() {
             email: 'Email',
             // Passport No, Passport Expiry, Passport Issue Date, Country Code are not validated
         };
-    
+
         // Initialize errors for the current detail at the specified index
         let newErrors = {};
         Object.keys(fieldsToCheck).forEach(field => {
@@ -235,7 +235,7 @@ export default function FlightDetails() {
                 newErrors[field] = `${fieldsToCheck[field]} is required.`;
             }
         });
-    
+
         // Check if there are any validation errors
         if (Object.keys(newErrors).length > 0) {
             // Update the error state with new errors for this type and index
@@ -255,7 +255,7 @@ export default function FlightDetails() {
                     [index]: {}
                 }
             }));
-    
+
             // Add the confirmed detail to the appropriate confirmed details array
             const newDetail = { ...details[index], selected: false };
             if (type === 'adult') {
@@ -265,15 +265,15 @@ export default function FlightDetails() {
             } else if (type === 'infant') {
                 setConfirmedInfantDetails([...confirmedInfantDetails, newDetail]);
             }
-    
+
             // Clear form fields after confirmation
             resetFormFields(type);
-    
+
             // Check and update the button disabled state if needed
             checkButtonDisabled();
         }
     };
-    
+
     // Function to reset form fields after confirmation
     const resetFormFields = (type) => {
         if (type === 'adult') {
@@ -326,7 +326,7 @@ export default function FlightDetails() {
             })));
         }
     };
-    
+
 
     const handleDelete = (type, index) => {
         if (type === 'adult') {
@@ -455,21 +455,21 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`passportNo-${type}-${index}`}>Passport No</label>
+                            <label htmlFor={`passportNo-${type}-${index}`}>Passport No (Optional)</label>
                             <input
                                 type="text"
                                 id={`passportNo-${type}-${index}`}
                                 className="form-control"
                                 onChange={(e) => handleInputChange(e, index, type, 'passportNo')}
                                 value={details[index]?.passportNo || ''}
-                                placeholder="Passport No"
+                                placeholder="Passport No " // Updated placeholder
                             />
                             {fieldErrors.passportNo && <div className="text-danger">{fieldErrors.passportNo}</div>}
                         </div>
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`passportExpiry-${type}-${index}`}>Passport Expiry</label>
+                            <label htmlFor={`passportExpiry-${type}-${index}`}>Passport Expiry(Optional)</label>
                             <input
                                 type="date"
                                 id={`passportExpiry-${type}-${index}`}
@@ -478,14 +478,14 @@ export default function FlightDetails() {
                                 onChange={(e) => handleInputChange(e, index, type, 'passportExpiry')}
                                 value={details[index]?.passportExpiry || ''}
                                 min={new Date().toISOString().split("T")[0]}
-                                placeholder="optional"
+                                placeholder="Optional" // Updated placeholder
                             />
                             {fieldErrors.passportExpiry && <div className="text-danger">{fieldErrors.passportExpiry}</div>}
                         </div>
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`passportIssueDate-${type}-${index}`}>Passport Issue Date</label>
+                            <label htmlFor={`passportIssueDate-${type}-${index}`}>Passport Issue(Optional)</label>
                             <input
                                 type="date"
                                 id={`passportIssueDate-${type}-${index}`}
@@ -494,10 +494,12 @@ export default function FlightDetails() {
                                 onChange={(e) => handleInputChange(e, index, type, 'passportIssueDate')}
                                 value={details[index]?.passportIssueDate || ''}
                                 max={new Date().toISOString().split("T")[0]} // Prevent future dates
+                                placeholder="Optional" // Updated placeholder
                             />
                             {fieldErrors.passportIssueDate && <div className="text-danger">{fieldErrors.passportIssueDate}</div>}
                         </div>
                     </div>
+
                     <div className="col-md-3">
                         <div className="form-group">
                             <label htmlFor={`addressLine1-${type}-${index}`}>Address Line 1 <span className="text-danger">*</span> </label>
@@ -528,14 +530,14 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`countryCode-${type}-${index}`}>Country Code</label>
+                            <label htmlFor={`countryCode-${type}-${index}`}>Country Code (Optional) </label>
                             <input
                                 type="text"
                                 id={`countryCode-${type}-${index}`}
                                 className="form-control"
                                 onChange={(e) => handleInputChange(e, index, type, 'countryCode')}
                                 value={details[index]?.countryCode || ''}
-                                placeholder="Country Code"
+                                placeholder="Country Code "
                             />
                             {fieldErrors.countryCode && <div className="text-danger">{fieldErrors.countryCode}</div>}
                         </div>
@@ -839,7 +841,7 @@ export default function FlightDetails() {
             <CustomNavbar />
             {/* <TimerFlight/> */}
 
-            
+
             {/* timerrr-------------------  */}
             {/* <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
