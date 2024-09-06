@@ -36,7 +36,13 @@ const Home = () => {
   const toInputRef = useRef(null);
   const fromSuggestionsRef = useRef(null);
   const toSuggestionsRef = useRef(null);
-  const mainCityNames = ['Delhi', 'Mumbai', 'Bangalore', 'Kolkata', 'Goa', 'Hyderabad'];
+  const mainCityNames = ['Delhi', 'Mumbai', 'Bhopal', 'Indore', 'Goa', 'Hyderabad'];
+  const [originCode, setOriginCode] = useState(''); // State for origin code
+  const [desctinationCode, setDesctinationCode] = useState(''); // State for origin code
+
+  console.log("originCode", originCode);
+  console.log("desctinationCode", desctinationCode);
+
 
   const [departureDate, setDepartureDate] = useState();
   const [returnDateDep, setReturnDateDep] = useState();
@@ -58,74 +64,106 @@ const Home = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
   // Function to fetch suggestions
+  // const fetchSuggestions = async (query, setSuggestions, isMainCityFetch = false) => {
+  //   try {
+  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ query }),
+  //     });
+
+  //     const data = await response.json();
+  //     let suggestions = data.data;
+
+  //     if (isMainCityFetch) {
+  //       // Filter to only include main cities from the API response
+  //       suggestions = suggestions.filter((suggestion) =>
+  //         mainCityNames.includes(suggestion.busodma_destination_name)
+  //       );
+  //     } else {
+  //       // Filter suggestions based on the input query
+  //       suggestions = suggestions.filter((suggestion) =>
+  //         suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
+  //       );
+  //     }
+  //     setSuggestions(suggestions.slice(0, 6)); // Show up to 10 suggestions
+  //   } catch (error) {
+  //     console.error('Error fetching suggestions:', error);
+  //   }
+  // };
   const fetchSuggestions = async (query, setSuggestions, isMainCityFetch = false) => {
     try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
-        method: 'POST',
+      // Encode the query parameter
+      const encodedQuery = encodeURIComponent(query);
+      const url = `https://sajyatra.sajpe.in/admin/api/flight-list?query=${encodedQuery}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query }),
       });
 
       const data = await response.json();
       let suggestions = data.data;
 
       if (isMainCityFetch) {
-        // Filter to only include main cities from the API response
+        // Filter to only include main cities
         suggestions = suggestions.filter((suggestion) =>
-          mainCityNames.includes(suggestion.busodma_destination_name)
+          mainCityNames.includes(suggestion.airport_city_name)
         );
       } else {
         // Filter suggestions based on the input query
         suggestions = suggestions.filter((suggestion) =>
-          suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
+          suggestion.airport_city_name.toLowerCase().includes(query.toLowerCase())
         );
       }
-      setSuggestions(suggestions.slice(0, 6)); // Show up to 10 suggestions
+
+      setSuggestions(suggestions.slice(0, 6)); // Show up to 6 suggestions
     } catch (error) {
       console.error('Error fetching suggestions:', error);
     }
   };
+
+
   // Function to handle input focus
   const handleFromInputFocus = () => {
     fetchSuggestions('', setFromSuggestions, true);
   };
+
   const handleToInputFocus = () => {
     fetchSuggestions('', setToSuggestions, true);
   };
- // Function to handle "From" input change
-const handleFromChange = (event) => {
-  const value = event.target.value;
-  setFrom(value);
-  if (value.length > 2) {
-    fetchSuggestions(value, setFromSuggestions);
-  } else {
-    setFromSuggestions([]);
-  }
-  console.log("OriginFrom",value);
-  localStorage.setItem('OriginFrom', value);
-};
 
-// Function to handle "To" input change
-const handleToChange = (event) => {
-  const value = event.target.value;
-  setTo(value);
-  if (value.length > 2) {
-    fetchSuggestions(value, setToSuggestions);
-  } else {
-    setToSuggestions([]);
-  }
-  localStorage.setItem('DestinationTo', value);
-};
-
-  // Function for selecting a suggestion
-  const handleSuggestionClick = (suggestion, fieldSetter, setSuggestions) => {
-    fieldSetter(suggestion.busodma_destination_name);
+  // Function to handle "From" input change  
+  const handleFromChange = (event) => {
+    const value = event.target.value;
+    setFrom(value);
+    if (value.length > 2) {
+      fetchSuggestions(value, setFromSuggestions);
+    } else {
+      setFromSuggestions([]);
+    }
+  };
+  // Function to handle "To" input change
+  const handleToChange = (event) => {
+    const value = event.target.value;
+    setTo(value);
+    if (value.length > 2) {
+      fetchSuggestions(value, setToSuggestions);
+    } else {
+      setToSuggestions([]);
+    }
+  };
+  const handleSuggestionClick = (suggestion, setFunction, setSuggestions, setValuee) => {
+    setFunction(suggestion.airport_city_name);
+    setValuee(suggestion.airport_city_code); // Update with airport city code
     setSuggestions([]);
   };
-
 
   // function for adult , child , infact dropdown list-------------------------------------------
   const [showDropdown, setShowDropdown] = useState(false);
@@ -153,13 +191,13 @@ const handleToChange = (event) => {
   const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
   const [infantCount, setInfantCount] = useState(0);
-  console.log("adultCount", adultCount);
-  console.log("childCount", childCount);
-  console.log("infantCount", infantCount);
+
+
+
   // Handle count change
   const handleCount = (action, type) => {
     let newCount;
-    
+
     switch (type) {
       case 'AdultCount':
         newCount = action === 'increment' ? adultCount + 1 : Math.max(adultCount - 1, 0);
@@ -169,7 +207,7 @@ const handleToChange = (event) => {
           AdultCount: newCount
         }));
         break;
-  
+
       case 'ChildCount':
         newCount = action === 'increment' ? childCount + 1 : Math.max(childCount - 1, 0);
         setChildCount(newCount);
@@ -178,7 +216,7 @@ const handleToChange = (event) => {
           ChildCount: newCount
         }));
         break;
-  
+
       case 'InfantCount':
         newCount = action === 'increment' ? infantCount + 1 : Math.max(infantCount - 1, 0);
         setInfantCount(newCount);
@@ -187,23 +225,13 @@ const handleToChange = (event) => {
           InfantCount: newCount
         }));
         break;
-  
+
       default:
         break;
     }
   };
 
-  // const handleCount = (key, name) => {
-  //   console.log("called", key, name)
-  //   if (key == "increment") {
-  //     setFormData((prev) => ({ ...prev, [name]: formData[name] + 1 }));
-  //   } else if (key == "decrement") {
-  //     if (formData[name] > 0) {
-  //       setFormData((prev) => ({ ...prev, [name]: formData[name] - 1 }));
-  //     }
-  //   }
-  // }
-  // fun for increase decrease adult , child , infant count------------------------------------------------
+
 
 
   // func for select flight class----------------------------------------------
@@ -234,11 +262,11 @@ const handleToChange = (event) => {
   // for one way & two way tabs-----------------------------------------
   const [activeTab, setActiveTab] = useState('oneway');
   const [tabValue, setTabValue] = useState(1); // State for tab value: 1 for oneway, 2 for twoway
-  console.log("tabValue", tabValue);
+  // console.log("tabValue", tabValue);
   const [segments, setSegments] = useState([
     {
-      Origin: from,
-      Destination: to,
+      Origin: originCode,
+      Destination: desctinationCode,
       FlightCabinClass: selectedflightClass,
       PreferredDepartureTime: departureDate,
       PreferredArrivalTime: departureDate
@@ -259,9 +287,9 @@ const handleToChange = (event) => {
   const handleTabChange = (event) => {
     const selectedTab = event.target.value;
     setActiveTab(selectedTab);
-      const newValue = selectedTab === 'oneway' ? 1 : 2;
+    const newValue = selectedTab === 'oneway' ? 1 : 2;
     setTabValue(newValue);
-      setFormData((prevFormData) => ({
+    setFormData((prevFormData) => ({
       ...prevFormData,
       JourneyType: newValue.toString()
     }));
@@ -272,8 +300,8 @@ const handleToChange = (event) => {
       // One-Way: Keep only one segment
       setSegments([
         {
-          Origin: "LKO",
-          Destination: "KWI",
+          Origin: originCode,
+          Destination: desctinationCode,
           FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: departureDate,
           PreferredArrivalTime: departureDate
@@ -283,24 +311,23 @@ const handleToChange = (event) => {
       // Two-Way: Add a second segment
       setSegments([
         {
-          Origin: "LKO",
-          Destination: "KWI",
+          Origin: originCode,
+          Destination: desctinationCode,
           FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: departureDate,
           PreferredArrivalTime: departureDate
         },
         {
-          Origin: "KWI",
-          Destination: "LKO",
+          Origin: desctinationCode,
+          Destination: originCode,
           FlightCabinClass: selectedflightClass,
           PreferredDepartureTime: returnDateDep,
           PreferredArrivalTime: returnDateDep
         }
       ]);
     }
-  }, [tabValue, departureDate, returnDateDep , selectedflightClass]); 
+  }, [tabValue, departureDate, returnDateDep, selectedflightClass]);
 
-  // Effect to sync formData with the segments state
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
@@ -308,9 +335,59 @@ const handleToChange = (event) => {
     }));
   }, [segments]); // Dependency on segments state
 
-  console.log("formData", formData);
+  // const getFlightList = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
 
-  // search API integration function----------------------------------------------
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
+
+  //     const data = await response.json();
+  //     console.log("Flight search API response: ", data);
+
+  //     localStorage.setItem('Flight-search', JSON.stringify(data));
+
+  //     const firstResult = data?.Results?.[0]?.[0];
+  //     if (firstResult && firstResult.FareDataMultiple?.[0]) {
+  //       const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
+  //       const { TraceId, SrdvType } = data;
+
+  //       localStorage.setItem("F-SrdvIndex", SrdvIndex);
+  //       localStorage.setItem("F-ResultIndex", ResultIndex);
+  //       localStorage.setItem("F-TraceId", TraceId);
+  //       localStorage.setItem("F-SrdvType", SrdvType);
+  //       localStorage.setItem("F-IsLcc", IsLCC);
+
+  //       const airlineCodes = data.Results.flatMap(result =>
+  //         result.flatMap(fareData =>
+  //           fareData.FareDataMultiple.flatMap(fare =>
+  //             fare.FareSegments.map(segment => segment.AirlineCode)
+  //           )
+  //         )
+  //       );
+  //       const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
+  //       console.log("Airline Codes: ", filteredAirlineCodes);
+  //     } else {
+  //       console.log("SrdvIndex or FareDataMultiple not found");
+  //     }
+  //     setLoading(false);
+  //     navigate("/flight-list", { state: { data: data, formData: formData } });
+  //   } catch (error) {
+  //     setLoading(false);
+  //     toast.error('An error occurred during booking. Please try again.');
+  //     console.error('Error fetching suggestions:', error);
+  //   }
+  // };
+
+
   const getFlightList = async () => {
     setLoading(true);
     try {
@@ -319,53 +396,83 @@ const handleToChange = (event) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        // body: JSON.stringify(payload),
         body: JSON.stringify(formData),
       });
-
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
       const data = await response.json();
-      console.log("Flight search api response: ", data);
-      localStorage.setItem('Flight-search', data)
-      // Save TraceId to local storage with the key "FlightTraceId2"
-      if (data.TraceId) {
-        localStorage.setItem("FlightTraceId2", data.TraceId);
-        console.log("Saved TraceId to local storage:", data.TraceId); // Log TraceId
-      }
-
-      if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.ResultIndex) {
-        const resultIndex = data.Results[0][0].FareDataMultiple[0].ResultIndex;
-        localStorage.setItem("FlightResultIndex2", resultIndex);
-
-        console.log("Saved ResultIndex to local storage:", resultIndex);
+      console.log("Flight search API response: ", data);
+  
+      localStorage.setItem('Flight-search', JSON.stringify(data));
+  
+      const firstResult = data?.Results?.[0]?.[0];
+      if (firstResult && firstResult.FareDataMultiple?.[0]) {
+        const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
+        const { TraceId, SrdvType } = data;
+  
+        localStorage.setItem("F-SrdvIndex", SrdvIndex);
+        localStorage.setItem("F-ResultIndex", ResultIndex);
+        localStorage.setItem("F-TraceId", TraceId);
+        localStorage.setItem("F-SrdvType", SrdvType);
+        localStorage.setItem("F-IsLcc", IsLCC);
+  
+        const airlineCodes = data.Results.flatMap(result =>
+          result.flatMap(fareData =>
+            fareData.FareDataMultiple.flatMap(fare =>
+              fare.FareSegments.map(segment => segment.AirlineCode)
+            )
+          )
+        );
+        const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
+        console.log("Airline Codes: ", filteredAirlineCodes);
+  
+        // Navigate only when the data is successfully fetched and parsed
+        navigate("/flight-list", { state: { data: data, formData: formData } });
       } else {
-        console.log("ResultIndex not found");
+        console.log("SrdvIndex or FareDataMultiple not found");
+        toast.error('No valid results found. Please try a different search.');
       }
-
-      if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.SrdvIndex) {
-        const srdvIndex = data.Results[0][0].FareDataMultiple[0].SrdvIndex;
-        localStorage.setItem("FlightSrdvIndex2", srdvIndex);
-        console.log("Saved SrdvIndex to local storage:", srdvIndex);
-      } else {
-        console.log("SrdvIndex not found");
-      }
-
-      if (data?.Results?.[0]?.[0]?.FareDataMultiple?.[0]?.IsLCC) {
-        const IsLCC = data.Results[0][0].FareDataMultiple[0].IsLCC;
-        localStorage.setItem("IsLCC", IsLCC);
-        console.log("Saved IsLCC to local storage:", IsLCC);
-      } else {
-        console.log("IsLCC not found");
-      }
-
-      setLoading(false);
-      navigate("/flight-list", { state: { data: data, formData: formData } });
+    } catch (error) {
+      toast.error('An error occurred during booking. Please try again.');
+      console.error('Error fetching flight data:', error);
+    } finally {
+      setLoading(false); // Ensure loading is set to false regardless of success or failure
     }
+  };
+  
 
-    catch (error) {
-      setLoading(false);
-      console.error('Error fetching suggestions:', error);
-    }
-  }
+
+  // ---------------------------------------------------------------------------------------------------------------------------------
+  // const flightLogoHandler = async (airline_code) => {
+  //   try {
+  //     const response = await fetch(`https://sajyatra.sajpe.in/admin/api/airline-logo?airline_code=${encodeURIComponent(airline_code)}`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
+
+  //     const data = await response.json();
+  //     // console.log("Airline logo API response: ", data);
+  //   } catch (error) {
+  //     console.error('Error fetching airline logos:', error);
+  //   }
+  // };
+
+  // ---------------------------------------------------------------------------------------------------------------------------------
+
+
+  const searchFlightHandler = async () => {
+    await getFlightList();
+  };
+
 
   // ----------  Api integration start for slider image  ----------
   const [offerSliderImages, setOfferSliderImages] = useState([]);
@@ -379,7 +486,6 @@ const handleToChange = (event) => {
       });
   }, []);
   // ----------  Api integration end for slider image  ----------
-  // slider logics------------------------------------------------------
   const SamplePrevArrow = (props) => {
     const { className, style, onClick } = props;
     return (
@@ -404,7 +510,6 @@ const handleToChange = (event) => {
         style={{ ...style, display: "block", right: "10px", zIndex: 1 }}
         onClick={onClick}
       >
-        {/* <FaArrowRightLong style={{ color: 'black', fontSize: '30px' }} /> */}
       </div>
     );
   };
@@ -504,10 +609,9 @@ const handleToChange = (event) => {
                               <input
                                 type="text"
                                 className="form-control"
-                                id="flightSatrtingPoint"
+                                id="flightStartingPoint"
                                 placeholder="Starting Point"
                                 value={from}
-                                // onChange={(e) => setFrom(e.target.value)}
                                 onChange={handleFromChange}
                                 onFocus={handleFromInputFocus}
                                 ref={fromInputRef}
@@ -518,14 +622,14 @@ const handleToChange = (event) => {
                                     <li
                                       className="text-red"
                                       key={index}
-                                      onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions)}
+                                      onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions, setOriginCode)}
                                     >
-                                      {suggestion.busodma_destination_name}
+                                      {suggestion.airport_city_name}
                                     </li>
                                   ))}
                                 </ul>
                               )}
-                              <label className="flight-input-labelFrom" htmlFor="From">
+                              <label className="flight-input-labelFrom" htmlFor="flightStartingPoint">
                                 Starting Point
                               </label>
                             </div>
@@ -540,41 +644,38 @@ const handleToChange = (event) => {
                                 type="text"
                                 className="form-control"
                                 id="flightDestinationPoint"
-                                placeholder='Destination'
+                                placeholder="Destination"
                                 value={to}
-                                // onChange={(e) => setTo(e.target.value)}
-                                onFocus={handleToInputFocus}
                                 onChange={handleToChange}
+                                onFocus={handleToInputFocus}
                                 ref={toInputRef}
                               />
                               {toSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listTo" ref={toSuggestionsRef}>
                                   {toSuggestions.map((suggestion, index) => (
-                                    <li key={index} onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions)}>
-                                      {suggestion.busodma_destination_name}
+                                    <li
+                                      key={index}
+                                      onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions, setDesctinationCode)}
+                                    >
+                                      {suggestion.airport_city_name}
                                     </li>
                                   ))}
                                 </ul>
                               )}
-                              <label className="flight-input-labelTo" htmlFor="flightDestinationPoint">Destination</label>
+                              <label className="flight-input-labelTo" htmlFor="flightDestinationPoint">
+                                Destination
+                              </label>
                             </div>
                           </div>
+
+
                           <div className="col-6 flightformCol">
                             <div className="form-group flight-input-container">
                               <span className="plane-icon">
                                 <MdDateRange />
                               </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
-                                {/* <DatePicker
-                                  name="PreferredDepartureTime"
-                                  selected={preferredDepartureTime}
-                                  onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                  className="departureCallender"
-                                  id="PreferredDepartureTime"
-                                  placeholderText="Select a date"
-                                  ref={departureDatePickerRef}
-                                  minDate={new Date()}
-                                /> */}
+
                                 <DatePicker
                                   name="PreferredDepartureTime"
                                   selected={departureDate}
@@ -611,7 +712,7 @@ const handleToChange = (event) => {
                           </div>
 
                           <div className="col-sm-4 form-group home-flight-search">
-                            <button onClick={getFlightList} type="button" className="btn">Search</button>
+                            <button onClick={searchFlightHandler} type="button" className="btn">Search</button>
                           </div>
 
                           <div>
@@ -716,7 +817,7 @@ const handleToChange = (event) => {
                     <div className="ps-2 pe-2">
                       <form action="" >
                         <div className="row flightformRow">
-                          <div className="col-12 flightformCol">
+                        <div className="col-12 flightformCol">
                             <div className="form-group position-relative flight-input-container">
                               <span className="plane-icon">
                                 <BiSolidPlaneTakeOff />
@@ -724,10 +825,9 @@ const handleToChange = (event) => {
                               <input
                                 type="text"
                                 className="form-control"
-                                id="flightSatrtingPoint"
+                                id="flightStartingPoint"
                                 placeholder="Starting Point"
                                 value={from}
-                                // onChange={(e) => setFrom(e.target.value)}
                                 onChange={handleFromChange}
                                 onFocus={handleFromInputFocus}
                                 ref={fromInputRef}
@@ -738,18 +838,19 @@ const handleToChange = (event) => {
                                     <li
                                       className="text-red"
                                       key={index}
-                                      onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions)}
+                                      onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions, setOriginCode)}
                                     >
-                                      {suggestion.busodma_destination_name}
+                                      {suggestion.airport_city_name}
                                     </li>
                                   ))}
                                 </ul>
                               )}
-                              <label className="flight-input-labelFrom" htmlFor="From">
+                              <label className="flight-input-labelFrom" htmlFor="flightStartingPoint">
                                 Starting Point
                               </label>
                             </div>
                           </div>
+
                           <div className="col-12 flightformCol">
                             <div className="form-group flight-input-container">
                               <span className="plane-icon">
@@ -759,25 +860,30 @@ const handleToChange = (event) => {
                                 type="text"
                                 className="form-control"
                                 id="flightDestinationPoint"
-                                placeholder='Destination'
+                                placeholder="Destination"
                                 value={to}
-                                // onChange={(e) => setTo(e.target.value)}
-                                onFocus={handleToInputFocus}
                                 onChange={handleToChange}
+                                onFocus={handleToInputFocus}
                                 ref={toInputRef}
                               />
                               {toSuggestions.length > 0 && (
                                 <ul className="suggestions-list flight-suggestions-listTo" ref={toSuggestionsRef}>
                                   {toSuggestions.map((suggestion, index) => (
-                                    <li key={index} onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions)}>
-                                      {suggestion.busodma_destination_name}
+                                    <li
+                                      key={index}
+                                      onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions, setDesctinationCode)}
+                                    >
+                                      {suggestion.airport_city_name}
                                     </li>
                                   ))}
                                 </ul>
                               )}
-                              <label className="flight-input-labelTo" htmlFor="flightDestinationPoint">Destination</label>
+                              <label className="flight-input-labelTo" htmlFor="flightDestinationPoint">
+                                Destination
+                              </label>
                             </div>
                           </div>
+
 
                           <div className="col-6 flightformCol">
                             <div className="form-group flight-input-container">
@@ -792,21 +898,7 @@ const handleToChange = (event) => {
                                   placeholderText="Select a departure date"
                                   minDate={new Date()} // Departure date cannot be in the past
                                 />
-                                {/* <DatePicker
-                                  name="PreferredDepartureTime"
-                                  selected={preferredDepartureTime}
-                                  onChange={(date) => handleChange(date, "PreferredDepartureTime")}
-                                  className="departureCallender"
-                                  id="PreferredDepartureTime"
-                                  placeholderText="Select a date"
-                                  ref={departureDatePickerRef}
-                                  minDate={new Date()}
-                                /> */}
 
-                                {/* <MdDateRange
-                                  className="date-picker-icon"
-                                  onClick={() => departureDatePickerRef.current.setOpen(true)}
-                                /> */}
                               </div>
                               <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
@@ -818,16 +910,7 @@ const handleToChange = (event) => {
                                 <MdDateRange />
                               </span>
                               <div className="date-picker-wrapper flightDateDiv form-control">
-                                {/* <DatePicker
-                                  name="PreferredArrivalTime"
-                                  selected={preferredArrivalTime}
-                                  onChange={(date) => handleChange(date, "PreferredArrivalTime")}
-                                  className=""
-                                  id="PreferredArrivalTime"
-                                  placeholderText="Select a date"
-                                  ref={arrivalDatePickerRef}
-                                  minDate={new Date()}
-                                /> */}
+
                                 <DatePicker
                                   selected={returnDateDep}
                                   onChange={handleDateChangeReturn}
@@ -856,7 +939,7 @@ const handleToChange = (event) => {
                           </div>
 
                           <div className="col-sm-4 form-group home-flight-search">
-                            <button onClick={getFlightList} type="button" className="btn">Search</button>
+                            <button onClick={searchFlightHandler} type="button" className="btn">Search</button>
                           </div>
 
                           <div>
@@ -1032,23 +1115,6 @@ const handleToChange = (event) => {
         </div>
       </section>
 
-      {/* <section className="exictingOffers">
-        <div className="container-fluid mb-5 ss">
-          <div className="row">
-            <h5>Exicting offers</h5>
-            <div className="col-4">
-              <img className='img-fluid' src='https://www.vimaansafar.com/img/slide-72_t.png' />
-            </div>
-            <div className="col-4">
-              <img className='img-fluid' src='https://www.vimaansafar.com/img/slide-71_t.png?t' />
-            </div>
-            <div className="col-4">
-              <img className='img-fluid' src='https://www.vimaansafar.com/img/slide-75_t.png' />
-
-            </div>
-          </div>
-        </div>
-      </section> */}
 
 
       <section className='exictingOffers'>
@@ -1067,67 +1133,6 @@ const handleToChange = (event) => {
         </div>
       </section>
 
-      <section className="exclusive-dealsSec">
-        <div className="container-fluid mb-5">
-          <div className="row mb-4">
-            <h2>Exclusive Deals</h2>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/delhi.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Delhi</h3>
-                  <p>Rs 2200</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/amritsar.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Amritsar</h3>
-                  <p>Rs 1900</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/srinagar.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Srinagar</h3>
-                  <p>Rs 2400</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/bangkok.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Bangkok</h3>
-                  <p>Rs 7000</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/dubai.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Dubai</h3>
-                  <p>Rs 11000</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/hongkong.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Hong Kong</h3>
-                  <p>Rs 13000</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
 
 
