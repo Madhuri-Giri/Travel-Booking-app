@@ -401,6 +401,8 @@ const FlightSearch = () => {
         body: JSON.stringify(formData),
       });
   
+      console.log("response",response);
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -409,12 +411,14 @@ const FlightSearch = () => {
       console.log("Flight search API response: ", data);
   
       localStorage.setItem('Flight-search', JSON.stringify(data));
-  
+
       const firstResult = data?.Results?.[0]?.[0];
+      console.log("firstResult",firstResult);
+      
       if (firstResult && firstResult.FareDataMultiple?.[0]) {
         const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
         const { TraceId, SrdvType } = data;
-  
+
         localStorage.setItem("F-SrdvIndex", SrdvIndex);
         localStorage.setItem("F-ResultIndex", ResultIndex);
         localStorage.setItem("F-TraceId", TraceId);
