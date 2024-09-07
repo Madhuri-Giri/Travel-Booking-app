@@ -21,7 +21,8 @@ import home_newsletter from "../../../src/assets/images/home-yotube.jpg";
 import Loading from '../../pages/loading/Loading'; 
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Home = () => {
   const [loading, setLoading] = useState(false); // Add loading state
 
