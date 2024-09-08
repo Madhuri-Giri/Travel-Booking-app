@@ -1,20 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import html2canvas from 'html2canvas';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './HotelBillReceipt.css';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
-import { useNavigate } from 'react-router-dom';
-import '../hotelBill/HotelTicket.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './HotelTicket.css';
 import hotelImg from '../../../src/assets/images/hotel-ticket-img.png';
-import html2canvas from 'html2canvas';
+import Lottie from 'lottie-react';
+import hotelAnim from "../../assets/images/hotelanimation.json";
 
 const BookingBill = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [guestDetails, setGuestDetails] = useState(null);
   const ticketElementRef = useRef(null);
 
   useEffect(() => {
@@ -45,14 +45,32 @@ const BookingBill = () => {
         } else {
           throw new Error('Invalid response structure');
         }
-        
       } catch (error) {
         setError(error.message);
         toast.error(`Error: ${error.message}`);
       }
     };
 
+    // Fetch booking details
     fetchBookingDetails();
+
+    // Retrieve guest details from local storage
+    const storedGuestDetails = localStorage.getItem('guestDetails');
+    if (storedGuestDetails) {
+      try {
+        // Parse the guest details
+        const parsedGuestDetails = JSON.parse(storedGuestDetails);
+        // Assuming guestDetails is an array and we need the first item
+        if (Array.isArray(parsedGuestDetails) && parsedGuestDetails.length > 0) {
+          setGuestDetails(parsedGuestDetails[0]);
+        } else {
+          setGuestDetails(null);
+        }
+      } catch (error) {
+        setGuestDetails(null);
+        console.error('Error parsing guest details from local storage:', error);
+      }
+    }
   }, []);
 
   const handleDownloadPDF = () => {
@@ -84,121 +102,120 @@ const BookingBill = () => {
     });
   };
 
-  // const bookingCancel = async (event) => {
-  //   event.preventDefault();
+  const bookingCancel = async (event) => {
+    event.preventDefault();
 
-  //   const hotelBookingId = localStorage.getItem('hotel_booking_id');
-  //   const transactionNum = localStorage.getItem('transactionNum');
+    const hotelBookingId = localStorage.getItem('hotel_booking_id');
+    const transactionNum = localStorage.getItem('transactionNum');
+    
+    if (!hotelBookingId) {
+        setError('No hotel booking ID available');
+        toast.error('No hotel booking ID available');
+        return;
+    }
 
-  //   if (!hotelBookingId) {
-  //     setError('No hotel booking ID available');
-  //     toast.error('No hotel booking ID available');
-  //     return;
-  //   }
+    if (!transactionNum) {
+        setError('No transaction number available');
+        toast.error('No transaction number available');
+        return;
+    }
 
-  //   if (!transactionNum) {
-  //     setError('No transaction number available');
-  //     toast.error('No transaction number available');
-  //     return;
-  //   }
+    const requestData = {
+      BookingId: '1554760',
+      RequestType: 4,
+      BookingMode: 5,
+      SrdvType: "SingleTB",
+      SrdvIndex: "SrdvTB",
+      Remarks: "Test",
+      transaction_num: transactionNum,
+      date: new Date().toISOString(),
+      hotel_booking_id: hotelBookingId, 
+      trace_id: "1",
+    };
 
-  //   const requestData = {
-  //     BookingId: hotelBookingId,
-  //     RequestType: 4,
-  //     BookingMode: 5,
-  //     SrdvType: "SingleTB",
-  //     SrdvIndex: "SrdvTB",
-  //     Remarks: "Test",
-  //     transaction_num: transactionNum,
-  //     date: new Date().toISOString(),
-  //     hotel_booking_id: hotelBookingId,
-  //     trace_id: "1",
-  //   };
-
-  //   try {
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-cancel', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(requestData),
-  //     });
-
-  //     if (!response.ok) {
-  //       const errorDetails = await response.json();
-  //       throw new Error(`HTTP error! Status: ${response.status}, Details: ${JSON.stringify(errorDetails)}`);
-  //     }
-
-  //     const res = await response.json();
-  //     if (res.data) {
-  //       localStorage.setItem('hotelTicket', JSON.stringify(res.data));
-  //       setBookingDetails(res.data);
-  //       toast.success('Booking cancelled successfully');
-  //       navigate('/hotel-search');
-  //     } else {
-  //       throw new Error('No data found in the API response');
-  //     }
-
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     setError('Error occurred during cancellation');
-  //     toast.error('Error occurred during cancellation');
-  //   }
-  // };
-
-  // if (error) {
-  //   return (
-  //     <div className="error-message">
-  //       <p>{error}</p>
-  //     </div>
-  //   );
-  // }
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-cancel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+  
+      if (!response.ok) {
+        const errorDetails = await response.json();
+        throw new Error(`HTTP error! Status: ${response.status}, Details: ${JSON.stringify(errorDetails)}`);
+      }
+  
+      const res = await response.json();
+  
+      if (res.data) {
+        localStorage.setItem('hotelTicket', JSON.stringify(res.data));
+        setBookingDetails(res.data);
+        toast.success('Booking cancelled successfully');
+        navigate('/hotel-search');
+      } else {
+        setError('No data found in the API response');
+        toast.error('No data found in the API response');
+      }
+  
+    } catch (error) {
+        setError('Error occurred during cancellation');
+        toast.error('Error occurred during cancellation');
+    }
+  };
 
   return (
     <>
       <CustomNavbar />
-      <div className="booking-bill-hotel" ref={ticketElementRef}>
-        <div className="col-lg-9 hotel_img">
-          <div className='hotelticktbox'>
-            <div className="header_hotel">
-              <h2>Hotel Booking Details</h2>
-              <img src={hotelImg} alt="Hotel" />
-            </div>
-
-            {bookingDetails ? (
-              <div className="details-section-wrapper">
-                <div className="details-section-hotel">
-                  <h3>Hotel Booking Information</h3>
-                  <div className="detail-guest">
-                    <p><span>Hotel Name:</span> {bookingDetails.hotel_passengers[0].hotelname}</p>
-                    <p><span>Hotel Code:</span> {bookingDetails.hotel_passengers[0].hotelcode}</p>
-                    <p><span>Transaction Number:</span> {bookingDetails.hotel_passengers[0].transaction_num}</p>
-                    <p><span>Number of Rooms:</span> {bookingDetails.hotel_passengers[0].noofrooms}</p>
-                    <p><span>Check-in Date:</span> {bookingDetails.hotel_passengers[0].check_in_date}</p>
-                    <p><span>Room Price:</span> ₹{bookingDetails.hotel_passengers[0].roomprice}</p>
-                    <p><span>GST:</span> {bookingDetails.hotel_passengers[0].igst}</p>
-                    <p><span>Discount:</span> {bookingDetails.hotel_passengers[0].discount}</p>
-                    <p><span>Total Price:</span> ₹{bookingDetails.hotel_passengers[0].publishedprice}</p>
-                  </div>
-                </div>
-
-                <div className="details-section-guest">
-                  <h3>Guest Details</h3>
-                  <div className="detail-guest">
-                    <p><span>Guest Name:</span> {bookingDetails.user_details.name}</p>
-                    <p><span>Email:</span> {bookingDetails.user_details.email}</p>
-                    <p><span>Mobile:</span> {bookingDetails.user_details.mobile}</p>
-                  </div>
-                </div>
-
-                
-              </div>
-            ) : (
-              <p>Loading booking details...</p>
-            )}
+      <div className="main-container">
+        <div className="content-container">
+          <div className="animation-container">
+            <Lottie animationData={hotelAnim} className="lottie-animation" />
           </div>
-          <div className='button-container'>
-                  <button className='ticket_btn' onClick={handleDownloadPDF}>Download PDF</button>
-                  {/* <button className='ticket_btn_cancel' onClick={bookingCancel}>Cancel Ticket</button> */}
+          <div className="receipt-container" ref={ticketElementRef}>
+            <div className="receipt-header">
+              <img src={hotelImg} alt="Hotel" className="hotel-logo" />
+              <h1>Hotel Booking Receipt</h1>
+            </div>
+            <div className="receipt-body">
+              <div className="section_r">
+                <p><strong>Check-in Date:</strong> {bookingDetails?.hotel_passengers[0].check_in_date}</p>
+                <p><strong>Invoice No:</strong> {bookingDetails?.booking[0].InvoiceNumber}</p>
+                <p><strong>Ref No:</strong> {bookingDetails?.booking[0].BookingRefNo}</p>
+              </div>
+              <div className="section_c">
+                <div className="column">
+                  <h2>Hotel Information</h2>
+                  <p><strong>Hotel Name:</strong> {bookingDetails?.hotel_passengers[0].hotelname}</p>
+                  <p><strong>Hotel Code:</strong> {bookingDetails?.hotel_passengers[0].hotelcode}</p>
+                  <p><strong>Number of Rooms:</strong> {bookingDetails?.hotel_passengers[0].noofrooms}</p>
                 </div>
+                <div className="column">
+                  <h2>Guest Details</h2>
+                  <p><strong>First Name:</strong> {guestDetails?.fname}</p>
+                  <p><strong>Middle Name:</strong> {guestDetails?.mname}</p>
+                  <p><strong>Last Name:</strong> {guestDetails?.lname}</p>
+                  <p><strong>Email:</strong> {guestDetails?.email}</p>
+                  <p><strong>Mobile:</strong> {guestDetails?.mobile}</p>
+                  {/* <p><strong>PAN No:</strong> {guestDetails?.PANNo}</p> */}
+                  {/* <p><strong>Passport No:</strong> {guestDetails?.passportNo}</p> */}
+                  <p><strong>Age:</strong> {guestDetails?.age}</p>
+                </div>
+              </div>
+              <div className="section_c price-summary">
+                <h2>Price Summary</h2>
+                <p><strong>Room Price:</strong> ₹{bookingDetails?.hotel_passengers[0].roomprice}</p>
+                <p><strong>GST:</strong> {bookingDetails?.hotel_passengers[0].igst}</p>
+                <p><strong>Discount:</strong> {bookingDetails?.hotel_passengers[0].discount}</p>
+                <p><strong>Total Price:</strong> ₹{bookingDetails?.hotel_passengers[0].publishedprice}</p>
+              </div>
+            </div>
+            <div className='button-container'>
+              <button className='download-button' onClick={handleDownloadPDF}>Download PDF</button>
+              <button className='cancel-button' onClick={bookingCancel}>Cancel</button>
+            </div>
+          </div>
         </div>
         <ToastContainer />
       </div>

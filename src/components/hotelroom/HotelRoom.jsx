@@ -355,7 +355,17 @@ import Timer from '../timmer/Timer';
   return cleanedText;
   };
   
-
+  const formatCancellationPolicy = (policies) => {
+    return policies.map((policy, idx) => (
+      <li key={idx}>
+        <p>
+          <span>{new Date(policy.FromDate).toLocaleDateString()}</span> to{' '}
+          <span>{new Date(policy.ToDate).toLocaleDateString()}</span>:{' '}
+          <span>₹{policy.Charge} charges</span>
+        </p>
+      </li>
+    ));
+  };
   
   
   const singleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'SINGLE DELUXE');
@@ -432,7 +442,8 @@ import Timer from '../timmer/Timer';
                                 <Accordion.Item eventKey="0">
                                   <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
                                   <Accordion.Body>
-                                 {cleanCancellationPolicy(room.CancellationPolicy)}
+                                  <ul>{cleanCancellationPolicy(room.CancellationPolicy)}</ul>
+                                 
                                   </Accordion.Body>
                                 </Accordion.Item>
                               </Accordion>

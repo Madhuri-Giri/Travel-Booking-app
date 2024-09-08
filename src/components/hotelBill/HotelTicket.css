@@ -1,145 +1,205 @@
-.booking-bill-hotel {
-  margin: 30px auto;
+
+.main-container {
   padding: 20px;
-  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+  min-height: 100vh;
+  font-family: 'Open Sans', sans-serif;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  background-color: #f4f4f4;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-  .hotel_img{
-  width: 50%;
-  }
-  
-.hotelticktbox {
+.content-container {
   display: flex;
-  flex-direction: column;
+  max-width: 1200px;
   width: 100%;
 }
 
-.header_hotel {
+.animation-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 30px; 
+}
+
+.lottie-animation {
+  width: 100%; 
+  max-width: 600px; 
+  height: auto; 
+}
+
+.receipt-container {
+  flex: 2;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+.receipt-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   background-color: #00b7eb;
+  padding: 15px;
+  border-radius: 8px;
 }
 
-.header_hotel h2 {
-  text-align: left;
-  color: #fff;
-  font-size: 36px;
-  font-weight: 600;
-  margin: 0;
-  margin-left: 30px;
-}
-
-.header_hotel img {
-  width: 200px;
+.hotel-logo {
+  width: 100px;
   height: auto;
-  border-radius: 5px;
 }
 
-.details-section-wrapper {
+.receipt-header h1 {
+  font-size: 32px;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  font-weight: bold;
+  text-align: left;
+}
+
+.section_r {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 25px;
+  margin-bottom: 20px;
+}
+
+.section_r p {
+  margin: 0;
+  min-width: 200px; 
+}
+
+.section_r strong {
+  width: 200px; 
+}
+
+.section_c{
   display: flex;
   justify-content: space-between;
-}
-
-.details-section-guest, .details-section-hotel {
-  flex: 1;
+  gap: 30px;
+  margin-bottom: 20px;
   padding: 20px;
-  border: 1px solid #ddd;
+  border: 1px solid #d0d0d0;
   border-radius: 10px;
-  background-color: #fff;
-  /* margin: 0 10px;  */
+  background: #f5f5f5;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.details-section-guest h3, .details-section-hotel h3 {
-  color: #333;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 10px;
-  font-size: 20px;
-  font-weight: 500;
-  /* margin-bottom: 10px; */
-  margin-left: 30px;
+.section_c .column {
+  flex: 1;
 }
 
-.detail-guest p, .detail-hotel p {
-  margin: 12px 0;
-  font-size: 16px;
-  color: #555;
-  line-height: 1.6;
-  margin-left: 30px;
-}
-
-.detail-guest p span, .detail-hotel p span {
-  font-weight: 600;
+.section_c .column h2 {
+  font-size: 24px;
   color: #007bff;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+}
+
+.section_c .column p {
+  font-size: 16px;
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.price-summary {
+  border-top: 2px solid #007bff;
+  padding-top: 20px;
 }
 
 .button-container {
-  display: flex;
-  justify-content: space-between;
-  margin: 30px 0;
+  text-align: center;
+  margin-top: 40px;
 }
-
-.ticket_btn, .ticket_btn_cancel {
-  display: inline-block;
-  padding: 12px 24px;
-  font-size: 18px;
+.cancel-button {
+  background-color: rgb(237, 38, 38);
+  color: white;
   border: none;
-  border-radius: 5px;
+  padding: 14px 30px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-family: 'Roboto', sans-serif;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
-.ticket_btn {
-  color: #fff;
+.download-button {
   background-color: #00b7eb;
-  margin-left: 20px;
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
-.ticket_btn:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
+.download-button:hover {
+  background-color: #004d40;
+  transform: scale(1.05);
 }
-
-.ticket_btn:active {
-  transform: translateY(0);
-}
-
-.ticket_btn_cancel {
-  color: #fff;
-  background-color: #ff3a3a;
-  margin-right: 20px;
-}
-
-.ticket_btn_cancel:hover {
-  background-color: #cc0000;
-  transform: translateY(-2px);
-}
-
-.ticket_btn_cancel:active {
-  transform: translateY(0);
-}
-
+/* Media Queries for Responsive Design */
 @media (max-width: 768px) {
-  .details-section-wrapper {
+  .content-container {
     flex-direction: column;
   }
 
-  .details-section-guest, .details-section-hotel {
-    margin: 0;
-    padding: 15px;
+  .animation-container {
+    margin-bottom: 20px;
   }
 
-  .ticket_btn, .ticket_btn_cancel {
-    width: 100%;
-    padding: 14px;
+  .section_r {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .section_r p {
+    min-width: 100%; 
+  }
+
+  .section_c {
+    flex-direction: column;
+  }
+
+  .section_c .column {
+    margin-bottom: 20px;
+  }
+
+  .button-container {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .receipt-header h1 {
+    font-size: 24px;
+  }
+
+  .section_r p,
+  .section_c .column p {
+    font-size: 14px;
+  }
+
+  .button-container {
+    margin-top: 20px;
+  }
+
+  .download-button,
+  .cancel-button {
     font-size: 16px;
-    margin: 5px 0;
+    padding: 10px 20px;
   }
 }
