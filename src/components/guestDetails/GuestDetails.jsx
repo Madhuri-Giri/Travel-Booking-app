@@ -847,7 +847,7 @@ const GuestDetails = () => {
       />
     </div>
 
-              <div className="mb-3 req_field">
+              <div className="mb-3 passport_field">
       <label className="required_field">Passport No.</label>
       <input
         type="text"

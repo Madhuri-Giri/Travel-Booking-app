@@ -176,11 +176,13 @@
   font-size: 1.2em;
 }
 
-.req_field label{
+.req_field label .passport_field label{
   margin-left: 5px;
   font-weight: 500;
 }
-
+.passport_field label:after {
+  content: none; 
+}
 .custom-placeholder {
   position: absolute;
   top: 0;
