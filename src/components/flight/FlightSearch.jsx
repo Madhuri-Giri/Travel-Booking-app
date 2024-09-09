@@ -395,6 +395,9 @@ const FlightSearch = () => {
 const getFlightList = async () => {
   setLoading(true);
   try {
+    // Logging formData before making the request
+    console.log("Sending formData: ", formData);
+
     const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
       method: 'POST',
       headers: {
@@ -403,6 +406,8 @@ const getFlightList = async () => {
       body: JSON.stringify(formData),
     });
 
+    console.log("response", response);
+
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -410,33 +415,58 @@ const getFlightList = async () => {
     const data = await response.json();
     console.log("Flight search API response: ", data);
 
+    // Store the flight data in localStorage
     localStorage.setItem('Flight-search', JSON.stringify(data));
 
-    const airlineCodes = data.Results.flatMap(result =>
-      result.flatMap(fareData =>
-        fareData.FareDataMultiple.flatMap(fare =>
-          fare.FareSegments.map(segment => segment.AirlineCode)
+    const firstResult = data?.Results?.[0]?.[0];
+    console.log("firstResult", firstResult);
+
+    // Checking if FareDataMultiple and first result exist
+    if (firstResult && firstResult.FareDataMultiple?.[0]) {
+      const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
+      const { TraceId, SrdvType } = data;
+
+      // Storing important data in localStorage
+      localStorage.setItem("F-SrdvIndex", SrdvIndex);
+      localStorage.setItem("F-ResultIndex", ResultIndex);
+      localStorage.setItem("F-TraceId", TraceId);
+      localStorage.setItem("F-SrdvType", SrdvType);
+      localStorage.setItem("F-IsLcc", IsLCC);
+
+      // Flattening and filtering airline codes
+      const airlineCodes = data.Results.flatMap(result =>
+        result.flatMap(fareData =>
+          fareData.FareDataMultiple.flatMap(fare =>
+            fare.FareSegments.map(segment => segment.AirlineCode)
+          )
         )
-      )
-    );
-    const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
+      );
+      const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
+      console.log("Airline Codes: ", filteredAirlineCodes);
 
-    console.log("Airline Codes: ", filteredAirlineCodes);
+      // Fetching airline logos
+      const logos = await fetchAirlineLogos(filteredAirlineCodes);
+      console.log("Fetched Airline Logos: ", logos);
 
-    const logos = await fetchAirlineLogos(filteredAirlineCodes);
-    console.log("Fetched Airline Logos: ", logos);
+      // Mapping logos to airline codes
+      const logoMap = filteredAirlineCodes.reduce((acc, code, index) => {
+        acc[code] = logos[index] || '';
+        return acc;
+      }, {});
 
-    const logoMap = filteredAirlineCodes.reduce((acc, code, index) => {
-      acc[code] = logos[index] || '';
-      return acc;
-    }, {});
+      // Storing logos in localStorage
+      localStorage.setItem('Airline-Logos', JSON.stringify(logoMap));
 
-    localStorage.setItem('Airline-Logos', JSON.stringify(logoMap));
-
-    navigate("/flight-list", { state: { data: data, formData: formData } });
+      // Navigating to flight list with state
+      navigate("/flight-list", { state: { data: data, formData: formData } });
+    } else {
+      console.error("No FareDataMultiple found in the first result.");
+      toast.error('No flight data available for the selected criteria.');
+    }
   } catch (error) {
-    toast.error('An error occurred during booking. Please try again.');
+    // Better error handling
     console.error('Error fetching flight data:', error);
+    toast.error('An error occurred during booking. Please try again.');
   } finally {
     setLoading(false);
   }
