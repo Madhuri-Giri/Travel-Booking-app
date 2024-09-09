@@ -14,6 +14,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import JsBarcode from 'jsbarcode';
 import { toast, ToastContainer } from 'react-toastify';
 import html2canvas from 'html2canvas'; // Import html2canvas
+import { useNavigate } from 'react-router-dom';
 
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
@@ -21,6 +22,7 @@ const generatePasscode = () => {
 
 const TicketBookBus = () => {
   const passcode = generatePasscode();
+  const navigate = useNavigate()
   const [buspaymentStatusResState, setBuspaymentStatusResState] = useState(null);
 
   const handleCancelTicket = async () => {
@@ -40,11 +42,16 @@ const TicketBookBus = () => {
           }),
         });
 
+        const data = await response.json(); // Parse the response data
+
         if (response.ok) {
           toast.success("Your ticket is canceled");
-          console.log("Your ticket is canceled");
+          // console.log("Your ticket is canceled");
+          console.log("bus-new-cancel response:", data);
+          navigate('/bus-search'); 
         } else {
           toast.error("Failed to cancel the ticket");
+          console.log("Failed to cancel the ticket. Response Data:", data);
         }
       } catch (error) {
         console.error("Error canceling the ticket:", error);
@@ -70,13 +77,12 @@ const TicketBookBus = () => {
   }, []);
 
   const downloadTicket = () => {
-    const ticketElement = document.querySelector('.busticktbox'); // Select the busticktbox element
+    const ticketElement = document.querySelector('.busticktbox'); 
     if (!ticketElement) {
       console.error("Ticket box not found!");
       return;
     }
 
-    // Temporarily hide the .btm div
     const btmDiv = ticketElement.querySelector('.btm');
     if (btmDiv) {
       btmDiv.style.display = 'none';
@@ -93,7 +99,6 @@ const TicketBookBus = () => {
     }).catch((error) => {
       console.error('Error generating PDF:', error);
     }).finally(() => {
-      // Restore the .btm div visibility
       if (btmDiv) {
         btmDiv.style.display = '';
       }
@@ -137,7 +142,14 @@ const TicketBookBus = () => {
                     <div className="bustickthed">
                       <h5>Bus Ticket</h5>
                     </div>
-                    <div className="top"></div>
+                    {/* ----------------------------------------------- */}
+                    <div className="last-line">
+                              <small><i className="ri-phone-fill"></i> Company No:-</small>
+                              <small><i className="ri-phone-fill"></i> Help Line No:-</small>
+                    </div>
+{/* ----------------------------------------------- */}
+                    <div className="top">
+                    </div>
                     <div className="row buspssngerdetails">
                       <div className="col-12">
                         <div className="row">
@@ -240,12 +252,7 @@ const TicketBookBus = () => {
                         </div>
                       </div>
                     </div>
-                    {/* ----------------------------------------------- */}
-                    <div className="last-line">
-                              <h6>Company No:-</h6>
-                              <h6>Help Line No:-</h6>
-                         </div>
-{/* ----------------------------------------------- */}
+                   
                   </div>
                 </div>
               </div>

@@ -194,6 +194,7 @@ const ReviewBooking = () => {
 
             await bookHandler();
             await busPaymentStatus();
+            
           } catch (error) {
             console.error('Error during updateHandlePayment or bookHandler:', error.message);
             alert('An error occurred during processing. Please try again.');
@@ -479,8 +480,16 @@ const ReviewBooking = () => {
     }
   }, []);
 
+  
+
 
   const totalPayment = Math.round(totalFare + taxes + (totalFare * 0.18) - discount);
+
+  useEffect(() => {
+    if (totalPayment) {
+      localStorage.setItem('bus-totalPayment', totalPayment); // Store the value
+    }
+  }, [totalPayment]);
 
 
 
