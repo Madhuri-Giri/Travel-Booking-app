@@ -654,8 +654,16 @@
 
 
 
+.ftickethed{
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 0px 5px;
+}
 
-
+.impotantNotmain{
+    margin-top: 15vmax;
+}
 
 .impotantNothed{
     background-color: #dcdcdc54;
