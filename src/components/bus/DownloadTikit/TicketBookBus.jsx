@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import jsPDF from 'jspdf';
 import "jspdf-autotable";
@@ -119,9 +120,6 @@ const TicketBookBus = () => {
     return <p>Loading...</p>;
   }
 
-  // Extract name and mobile from userdetails
-  const { name, mobile, email } = buspaymentStatusResState.userdetails;
-
   return (
     <>
       <CustomNavbar />
@@ -159,16 +157,24 @@ const TicketBookBus = () => {
                           <div className="col-md-4 col-6">
                             <p>
                               <strong>Name -: </strong>
-                              <span>{name}</span> {/* Display name from userdetails */}
+                              <span>{dd.name}</span>
                             </p>
                             <p>
-                              <strong>Email -: </strong>
-                              <span>{email}</span>
+                              <strong>Age -: </strong>
+                              <span>{dd.age}</span>
                             </p>
-                            {/* <p>
+                            <p>
                               <strong>Gender -: </strong>
                               <span>{dd.gender}</span>
-                            </p> */}
+                            </p>
+                            <p>
+                              <strong>Address -: </strong>
+                              <span>{dd.address}</span>
+                            </p>
+                            <p>
+                              <strong>Number -: </strong>
+                              <span>{dd.number}</span>
+                            </p>
                             <p>
                               <strong>Date -: </strong>
                               <span>{formatDate(busDetail.created_at)}</span>
@@ -188,24 +194,25 @@ const TicketBookBus = () => {
                             </div>
                           </div>
                           <div className="col-md-4 col-6">
-                            <p>
-                              <strong>PNR No -: </strong>
-                              <span>{busDetail.bus_book_id}</span>
-                            </p>
-                            {/* <p>
-                              <strong>Address -: </strong>
-                              <span>{dd.address}</span>
-                            </p> */}
-                            <p>
-                              <strong>Number -: </strong>
-                              <span>{mobile}</span> {/* Display mobile from userdetails */}
-                            </p>
+                          <p>
+    <strong>Bus Id -: </strong>
+    <span>{buspaymentStatusResState.passengers.bus_id}</span>
+  </p>
+  <p>
+    <strong>Ticket No -: </strong>
+    <span>{buspaymentStatusResState.passengers.ticket_no}</span>
+  </p>
+  <p>
+    <strong>User ID -: </strong>
+    <span>{buspaymentStatusResState.passengers.transaction_num}</span>
+  </p>
+  
+                           
                           </div>
                           <div className="col-md-4 ticktbordr">
                           <p>
-                              <strong>Travell Name -: </strong>
-                              <span>{dd.
-                              travel_name}</span>
+                              <strong>Travel Name -: </strong>
+                              <span>{dd.travel_name}</span>
                             </p>
                             <p>
                               <strong>Seat No -: </strong>
@@ -228,9 +235,17 @@ const TicketBookBus = () => {
                             </button>
                             <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
                           </div>
+
+
                         </div>
                       </div>
                     </div>
+                    {/* ----------------------------------------------- */}
+                    <div className="last-line">
+                              <h6>Company No:-</h6>
+                              <h6>Help Line No:-</h6>
+                         </div>
+{/* ----------------------------------------------- */}
                   </div>
                 </div>
               </div>
@@ -244,4 +259,4 @@ const TicketBookBus = () => {
   );
 };
 
-export default TicketBookBus
+export default TicketBookBus;
