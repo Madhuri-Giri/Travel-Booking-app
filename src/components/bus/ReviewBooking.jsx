@@ -517,7 +517,7 @@ const ReviewBooking = () => {
 
                 <div className="l-top">
                   <div className="line">
-                    <i className="ri-bus-line"> {from} - {to}</i>
+                    <i className="ri-bus-line">{from} - {to}</i>
                   </div>
 
                   <div className="line-btm">

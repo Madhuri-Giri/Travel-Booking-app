@@ -500,7 +500,7 @@ margin-top: 1vmax;
       .BusLists .busList .B-lists-Top{
                 width: 100%;
                 justify-content: center;
-                background: #004a5ec3;
+                background: #00b7eb;
       }
       
       .BusLists .busList .B-lists-Top .text{
@@ -526,7 +526,8 @@ margin-top: 1vmax;
       .BusLists .busList .B-lists-Top .text .destination h6{
                padding: 0.4vmax;
           margin-top: 2vmax;
-          font-size: 3vmax
+          font-size: 2vmax;
+          font-weight: lighter;
       }
      
       .BusLists .busList .B-lists-Top .text span{
@@ -534,7 +535,7 @@ margin-top: 1vmax;
       
       }
       .BusLists .search-functinality button{
-               padding: 1.2vmax 2vmax;
+               padding: 1.2vmax 5vmax;
                font-weight: 600;
       }
       .filter-bus{
