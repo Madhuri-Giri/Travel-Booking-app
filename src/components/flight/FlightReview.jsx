@@ -26,31 +26,31 @@ const FlightReview = () => {
   const [loader, setLoader] = useState(false);
 
   const location = useLocation();
-  const { fareDataDetails } = location.state || {}; 
+  const { fareDataDetails } = location.state || {};
 
 
   const IsLCC = localStorage.getItem('F-IsLcc')
   console.log("F-IsLcc", IsLCC);
 
-// -----------------------------------------------------------------------
- 
-// -----------------------------------------------------------------------
+  // -----------------------------------------------------------------------
+
+  // -----------------------------------------------------------------------
 
 
-const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-useEffect(() => {
+  useEffect(() => {
     const savedFare = localStorage.getItem('selectedFlightBaseFare');
-    
+
     if (savedFare) {
-        setTotalPrice(parseFloat(savedFare));
+      setTotalPrice(parseFloat(savedFare));
     }
-}, []);
+  }, []);
 
-const finalTotalPrice = parseFloat(localStorage.getItem('finalTotalPrice')) || 0;
+  const finalTotalPrice = parseFloat(localStorage.getItem('finalTotalPrice')) || 0;
 
-// Calculate the grand total
-const grandTotal = totalPrice + finalTotalPrice;
+  // Calculate the grand total
+  const grandTotal = totalPrice + finalTotalPrice;
 
 
 
@@ -169,24 +169,24 @@ const grandTotal = totalPrice + finalTotalPrice;
             await flightpayUpdate();
             setLoader(true)
 
-        
-            const IsLCC = localStorage.getItem('F-IsLcc') === 'true'; 
+
+            const IsLCC = localStorage.getItem('F-IsLcc') === 'true';
             setPayLoading(true);
-        
+
             if (IsLCC === true) {
-                await bookLccApi();
+              await bookLccApi();
             } else if (IsLCC === false) {
-                await bookHoldApi();
-                await sendTicketGDSRequest();
+              await bookHoldApi();
+              await sendTicketGDSRequest();
             } else {
-                console.error('IsLCC value is not set correctly in localStorage');
+              console.error('IsLCC value is not set correctly in localStorage');
             }
-              
-        } catch (error) {
+
+          } catch (error) {
             console.error('Error during updateHandlePayment or bookHandler:', error.message);
             alert('An error occurred during processing. Please try again.');
-        }
-        
+          }
+
         },
         prefill: {
           username: 'tanisha',
@@ -208,7 +208,7 @@ const grandTotal = totalPrice + finalTotalPrice;
 
       rzp1.open();
     }
-     catch (error) {
+    catch (error) {
       console.error('Error during payment setup:', error.message);
       alert('An error occurred during payment setup. Please try again.');
     }
@@ -225,7 +225,7 @@ const grandTotal = totalPrice + finalTotalPrice;
 
       if (!payment_id || !transaction_id) {
         throw new Error('Missing payment details');
-      } 
+      }
 
       const url = 'https://sajyatra.sajpe.in/admin/api/update-flight-payment';
       const payload = {
@@ -275,31 +275,31 @@ const grandTotal = totalPrice + finalTotalPrice;
   const Discount = localStorage.getItem('Discount');
   const PublishedFare = localStorage.getItem('PublishedFare');
   const TdsOnCommission = localStorage.getItem('TdsOnCommission');
-  const OfferedFare  = localStorage.getItem('OfferedFare');
- 
+  const OfferedFare = localStorage.getItem('OfferedFare');
+
   const baseFare = localStorage.getItem('BaseFare');
   const tax = localStorage.getItem('Tax');
   const yqTax = localStorage.getItem('YQTax');
 
   const passengerDetails = JSON.parse(localStorage.getItem('adultPassengerDetails'));
-  const title = passengerDetails[0].gender;
-  
+  // const title = passengerDetails[0].gender;
 
- 
+
+
   const bookLccApi = async () => {
     try {
       const transactionFlightNo = localStorage.getItem('transactionNum');
       const transaction_id = localStorage.getItem('flight_transaction_id');
-  console.log("transaction_id",transaction_id)
+      console.log("transaction_id", transaction_id)
 
       const adultPassengerDetails = localStorage.getItem('adultPassengerDetails');
       const parsedAdultPassengerDetails = JSON.parse(adultPassengerDetails);
-  
+
       if (!parsedAdultPassengerDetails || parsedAdultPassengerDetails.length === 0) {
         console.error('No adult passenger details found in localStorage');
         return;
       }
-  
+
       const bookingResponses = await Promise.all(parsedAdultPassengerDetails.map(async (passenger) => {
         const llcPayload = {
           "SrdvType": FsrdvType,
@@ -332,7 +332,7 @@ const grandTotal = totalPrice + finalTotalPrice;
           "AdditionalTxnFeePub": AdditionalTxnFeePub,
           "AirTransFee": AirTransFee
         };
-  
+
         const response = await fetch('https://sajyatra.sajpe.in/admin/api/bookllc', {
           method: 'POST',
           headers: {
@@ -340,170 +340,170 @@ const grandTotal = totalPrice + finalTotalPrice;
           },
           body: JSON.stringify(llcPayload),
         });
-  
+
         const responseBody = await response.json();
         return responseBody;
       }));
-  
+
       console.log('LLC Responses:', bookingResponses);
-  
+
       localStorage.setItem('flightTikitDetails', JSON.stringify(bookingResponses));
       navigate('/flightNewTicket', { state: { flightbookingDetails: bookingResponses } });
-  
+
     } catch (error) {
       console.error('LLC API error:', error.message);
       toast.error('An error occurred during booking. Please try again.');
     }
   };
-  
-
-const bookHoldApi = async () => {
-  const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
-  const transaction_id = localStorage.getItem('flight_transaction_id');
-  console.log("transaction_id",transaction_id)
-
-  if (!storedPassengers.length || !transaction_id) {
-    console.error('Required data is missing from local storage');
-    toast.error('Required data is missing from local storage'); 
-    setLoader(false); 
-    return;
-  }
-
- const passengers = storedPassengers.map(passenger => ({
-  "Title": passenger.gender === "male" ? "Mr" : "Ms",
-  "FirstName": passenger.firstName,
-  "LastName": passenger.lastName,
-  "PaxType": 1,
-  "DateOfBirth": passenger.dateOfBirth,
-  "Gender": passenger.gender === "male" ? "1" : "2",
-  "PassportNo": passenger.passportNo || "abc12345",
-  "PassportExpiry": passenger.passportExpiry || null,
-  "PassportIssueDate": passenger.passportIssueDate || null,
-  "AddressLine1": passenger.addressLine1,
-  "City": passenger.city,
-  "CountryCode": passenger.countryCode || null, 
-  "CountryName": passenger.countryName,
-  "ContactNo": passenger.contactNo, 
-  "Email": passenger.email,
-  "IsLeadPax": passenger.isLeadPax || 0,
-  "Fare": [
-    {
-      "Currency": Currency,
-      "BaseFare": parseFloat(baseFare),
-      "Tax": parseFloat(tax),
-      "YQTax": parseFloat(yqTax),
-      "OtherCharges": OtherCharges,
-      "TransactionFee": TransactionFee,
-      "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
-      "AdditionalTxnFeePub": AdditionalTxnFeePub,
-      "AirTransFee": AirTransFee,
-      "Discount": Discount,
-      "PublishedFare": PublishedFare,
-      "OfferedFare": OfferedFare,
-      "CommissionEarned": CommissionEarned,
-      "TdsOnCommission": TdsOnCommission
-    }
-  ],
-  "GSTCompanyAddress": "",
-  "GSTCompanyContactNumber": "",
-  "GSTCompanyName": "",
-  "GSTNumber": "",
-  "GSTCompanyEmail": ""
-}));
 
 
-  const holdPayload = {
-    "SrdvIndex": FsrdvIndex,
-    "TraceId": FtraceId,
-    "ResultIndex": FresultIndex,
-    "SrdvType": FsrdvType,
-    "Passengers": passengers,
-    "transaction_id": transaction_id,
-  };
+  const bookHoldApi = async () => {
+    const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
+    const transaction_id = localStorage.getItem('flight_transaction_id');
+    console.log("transaction_id", transaction_id)
 
-  try {
-    const response = await fetch('https://sajyatra.sajpe.in/admin/api/book-hold', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(holdPayload)
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json(); 
-      console.error('Response status:', response.status);
-      console.error('Error details:', errorData);
-
-      navigate('/flight-search');
-      
-      setLoader(false); 
+    if (!storedPassengers.length || !transaction_id) {
+      console.error('Required data is missing from local storage');
+      toast.error('Required data is missing from local storage');
+      setLoader(false);
       return;
     }
 
-    const holdData = await response.json();
-    console.log('Hold Response:', holdData);
-    localStorage.setItem('HolApiData', JSON.stringify(holdData));
+    const passengers = storedPassengers.map(passenger => ({
+      "Title": passenger.gender === "male" ? "Mr" : "Ms",
+      "FirstName": passenger.firstName,
+      "LastName": passenger.lastName,
+      "PaxType": 1,
+      "DateOfBirth": passenger.dateOfBirth,
+      "Gender": passenger.gender === "male" ? "1" : "2",
+      "PassportNo": passenger.passportNo || "abc12345",
+      "PassportExpiry": passenger.passportExpiry || null,
+      "PassportIssueDate": passenger.passportIssueDate || null,
+      "AddressLine1": passenger.addressLine1,
+      "City": passenger.city,
+      "CountryCode": passenger.countryCode || null,
+      "CountryName": passenger.countryName,
+      "ContactNo": passenger.contactNo,
+      "Email": passenger.email,
+      "IsLeadPax": passenger.isLeadPax || 0,
+      "Fare": [
+        {
+          "Currency": Currency,
+          "BaseFare": parseFloat(baseFare),
+          "Tax": parseFloat(tax),
+          "YQTax": parseFloat(yqTax),
+          "OtherCharges": OtherCharges,
+          "TransactionFee": TransactionFee,
+          "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+          "AdditionalTxnFeePub": AdditionalTxnFeePub,
+          "AirTransFee": AirTransFee,
+          "Discount": Discount,
+          "PublishedFare": PublishedFare,
+          "OfferedFare": OfferedFare,
+          "CommissionEarned": CommissionEarned,
+          "TdsOnCommission": TdsOnCommission
+        }
+      ],
+      "GSTCompanyAddress": "",
+      "GSTCompanyContactNumber": "",
+      "GSTCompanyName": "",
+      "GSTNumber": "",
+      "GSTCompanyEmail": ""
+    }));
 
-  } catch (error) {
-    console.error('API call failed:', error.message || error);
-    navigate('/flight-search');
-    setLoader(false);
-  }
-};
 
- // -------------------------------------------------------------------------------------------
+    const holdPayload = {
+      "SrdvIndex": FsrdvIndex,
+      "TraceId": FtraceId,
+      "ResultIndex": FresultIndex,
+      "SrdvType": FsrdvType,
+      "Passengers": passengers,
+      "transaction_id": transaction_id,
+    };
 
- const sendTicketGDSRequest = async () => {
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/book-hold', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(holdPayload)
+      });
 
-  const savedData = JSON.parse(localStorage.getItem('HolApiData'));
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Response status:', response.status);
+        console.error('Error details:', errorData);
 
-  const pnr = savedData.data.pnr;
-  const bookingId = savedData.data.booking_id;
-  const gdsId = savedData.data.id;
+        navigate('/flight-search');
 
-  try {
-    const response = await fetch('https://sajyatra.sajpe.in/admin/api/ticketgds', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "SrdvIndex": FsrdvIndex,
-        "TraceId": FtraceId,
-        "SrdvType": FsrdvType,
-        "PNR": pnr,
-        "BookingId": bookingId,
-        "flight_hold_id": gdsId
-      }),
-    });
+        setLoader(false);
+        return;
+      }
 
-    if (!response.ok) {
-      throw new Error('Failed to send request');
+      const holdData = await response.json();
+      console.log('Hold Response:', holdData);
+      localStorage.setItem('HolApiData', JSON.stringify(holdData));
+
+    } catch (error) {
+      console.error('API call failed:', error.message || error);
+      navigate('/flight-search');
+      setLoader(false);
     }
+  };
 
-    const data = await response.json();
-    console.log('GDS Api:', data);
+  // -------------------------------------------------------------------------------------------
 
-    navigate('/flightNewTicket');
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
+  const sendTicketGDSRequest = async () => {
+
+    const savedData = JSON.parse(localStorage.getItem('HolApiData'));
+
+    const pnr = savedData.data.pnr;
+    const bookingId = savedData.data.booking_id;
+    const gdsId = savedData.data.id;
+
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/ticketgds', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "SrdvIndex": FsrdvIndex,
+          "TraceId": FtraceId,
+          "SrdvType": FsrdvType,
+          "PNR": pnr,
+          "BookingId": bookingId,
+          "flight_hold_id": gdsId
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send request');
+      }
+
+      const data = await response.json();
+      console.log('GDS Api:', data);
+
+      navigate('/flightNewTicket');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   if (payLoading) {
-    return <PayloaderHotel/>;
+    return <PayloaderHotel />;
   }
- 
+
   if (loader) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   return (
     <>
       <CustomNavbar />
       {/* <TimerFlight/> */}
-     
+
       <div className="container-fluid review-cont">
         <div className="row">
           <div className="col-md-6">

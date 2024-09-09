@@ -8,10 +8,12 @@ import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import { MdOutlineFlightTakeoff } from "react-icons/md";
 import { FaTrash } from 'react-icons/fa';
 import { Link } from "react-router-dom";
-// import { RiTimerLine } from "react-icons/ri";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+// import { RiTimerLine } from "react-icons/ri";
 // import TimerFlight from '../timmer/TimerFlight';
 
 export default function FlightDetails() {
@@ -216,13 +218,24 @@ export default function FlightDetails() {
         }
     };
 
+    const calculateAge = (dateOfBirth) => {
+        const today = new Date();
+        const dob = new Date(dateOfBirth);
+        let age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+        return age;
+    };
+
     const handleConfirm = (e, index, type) => {
         e.preventDefault();
-
+    
         // Select the correct details array based on the type
         let details = type === 'adult' ? [...adultDetails] : type === 'child' ? [...childDetails] : [...infantDetails];
-
-        // Define the fields and their labels for validation, excluding specified fields
+    
+        // Define the fields and their labels for validation
         const fieldsToCheck = {
             gender: 'Gender',
             firstName: 'First Name',
@@ -234,7 +247,7 @@ export default function FlightDetails() {
             email: 'Email',
             // Passport No, Passport Expiry, Passport Issue Date, Country Code are not validated
         };
-
+    
         // Initialize errors for the current detail at the specified index
         let newErrors = {};
         Object.keys(fieldsToCheck).forEach(field => {
@@ -242,7 +255,18 @@ export default function FlightDetails() {
                 newErrors[field] = `${fieldsToCheck[field]} is required.`;
             }
         });
-
+    
+        // Perform age validation
+        const age = calculateAge(details[index].dateOfBirth);
+    
+        if (type === 'adult' && age < 18) {
+            newErrors.dateOfBirth = 'Adult age must be 18 years or older.';
+        } else if (type === 'child' && (age < 0 || age > 17)) {
+            newErrors.dateOfBirth = 'Child age must be between 0 and 17 years.';
+        } else if (type === 'infant' && (age < 0 || age > 2)) {
+            newErrors.dateOfBirth = 'Infant age must be between 0 and 2 years.';
+        }
+    
         // Check if there are any validation errors
         if (Object.keys(newErrors).length > 0) {
             // Update the error state with new errors for this type and index
@@ -262,25 +286,32 @@ export default function FlightDetails() {
                     [index]: {}
                 }
             }));
-
+    
             // Add the confirmed detail to the appropriate confirmed details array
             const newDetail = { ...details[index], selected: true };
+    
             if (type === 'adult') {
-                setConfirmedAdultDetails([...confirmedAdultDetails, newDetail]);
+                const updatedAdults = [...confirmedAdultDetails, newDetail];
+                setConfirmedAdultDetails(updatedAdults);
+                localStorage.setItem('adultPassengerDetails', JSON.stringify(updatedAdults)); // Save to local storage
             } else if (type === 'child') {
-                setConfirmedChildDetails([...confirmedChildDetails, newDetail]);
+                const updatedChildren = [...confirmedChildDetails, newDetail];
+                setConfirmedChildDetails(updatedChildren);
+                localStorage.setItem('childPassengerDetails', JSON.stringify(updatedChildren)); // Save to local storage
             } else if (type === 'infant') {
-                setConfirmedInfantDetails([...confirmedInfantDetails, newDetail]);
+                const updatedInfants = [...confirmedInfantDetails, newDetail];
+                setConfirmedInfantDetails(updatedInfants);
+                localStorage.setItem('infantPassengerDetails', JSON.stringify(updatedInfants)); // Save to local storage
             }
-
+    
             // Clear form fields after confirmation
             resetFormFields(type);
-
+    
             // Check and update the button disabled state if needed
             checkButtonDisabled();
         }
     };
-
+    
     // Function to reset form fields after confirmation
     const resetFormFields = (type) => {
         if (type === 'adult') {
@@ -333,8 +364,6 @@ export default function FlightDetails() {
             })));
         }
     };
-
-
     const handleDelete = (type, index) => {
         if (type === 'adult') {
             setConfirmedAdultDetails(confirmedAdultDetails.filter((_, i) => i !== index));
@@ -448,14 +477,14 @@ export default function FlightDetails() {
                     <div className="col-md-3">
                         <div className="form-group">
                             <label htmlFor={`dateOfBirth-${type}-${index}`}>Date of Birth <span className="text-danger">*</span> </label>
-                            <input
-                                type="date"
+                            <DatePicker
                                 id={`dateOfBirth-${type}-${index}`}
+                                selected={details[index]?.dateOfBirth ? new Date(details[index]?.dateOfBirth) : null}
+                                onChange={(date) => handleInputChange({ target: { value: date.toISOString().split('T')[0] } }, index, type, 'dateOfBirth')}
+                                dateFormat="yyyy-MM-dd"
                                 className="form-control"
-                                onClick={(e) => e.target.showPicker && e.target.showPicker()}
-                                onChange={(e) => handleInputChange(e, index, type, 'dateOfBirth')}
-                                value={details[index]?.dateOfBirth || ''}
-                                max={new Date().toISOString().split("T")[0]} // Prevent future dates
+                                maxDate={new Date()} // Prevent future dates
+                                placeholderText="Select Date of Birth"
                             />
                             {fieldErrors.dateOfBirth && <div className="text-danger">{fieldErrors.dateOfBirth}</div>}
                         </div>
@@ -476,36 +505,35 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`passportExpiry-${type}-${index}`}>Passport Expiry(Optional)</label>
-                            <input
-                                type="date"
+                            <label htmlFor={`passportExpiry-${type}-${index}`}>PassportExpiry      (Optional)</label>
+                            <DatePicker
                                 id={`passportExpiry-${type}-${index}`}
+                                selected={details[index]?.passportExpiry ? new Date(details[index]?.passportExpiry) : null}
+                                onChange={(date) => handleInputChange({ target: { value: date ? date.toISOString().split('T')[0] : '' } }, index, type, 'passportExpiry')}
+                                dateFormat="yyyy-MM-dd"
                                 className="form-control"
-                                onClick={(e) => e.target.showPicker && e.target.showPicker()}
-                                onChange={(e) => handleInputChange(e, index, type, 'passportExpiry')}
-                                value={details[index]?.passportExpiry || ''}
-                                min={new Date().toISOString().split("T")[0]}
-                                placeholder="Optional" // Updated placeholder
+                                minDate={new Date()} // Optional: set minimum date to today
+                                placeholderText="Select Passport Expiry Date"
                             />
                             {fieldErrors.passportExpiry && <div className="text-danger">{fieldErrors.passportExpiry}</div>}
                         </div>
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`passportIssueDate-${type}-${index}`}>Passport Issue(Optional)</label>
-                            <input
-                                type="date"
+                            <label htmlFor={`passportIssueDate-${type}-${index}`}>Passport Issue (Optional)</label>
+                            <DatePicker
                                 id={`passportIssueDate-${type}-${index}`}
+                                selected={details[index]?.passportIssueDate ? new Date(details[index]?.passportIssueDate) : null}
+                                onChange={(date) => handleInputChange({ target: { value: date ? date.toISOString().split('T')[0] : '' } }, index, type, 'passportIssueDate')}
+                                dateFormat="yyyy-MM-dd"
                                 className="form-control"
-                                onClick={(e) => e.target.showPicker && e.target.showPicker()}
-                                onChange={(e) => handleInputChange(e, index, type, 'passportIssueDate')}
-                                value={details[index]?.passportIssueDate || ''}
-                                max={new Date().toISOString().split("T")[0]} // Prevent future dates
-                                placeholder="Optional" // Updated placeholder
+                                maxDate={new Date()} // Prevent future dates
+                                placeholderText="Select Passport Issue Date"
                             />
                             {fieldErrors.passportIssueDate && <div className="text-danger">{fieldErrors.passportIssueDate}</div>}
                         </div>
                     </div>
+
 
                     <div className="col-md-3">
                         <div className="form-group">
