@@ -312,6 +312,7 @@
        color: white;
        padding: 5px 10px;
        text-align: center;
+      
 }
 
 .buspssngerdetails {
@@ -333,6 +334,7 @@
        border-radius: 5px;
        border: none;
        color: white;
+       padding: 0.6vmax 1.5vmax; 
 }
 
 .btm .busdonload {
@@ -340,6 +342,8 @@
        border-radius: 5px;
        border: none;
        color: white;
+       padding: 0.6vmax 1.5vmax; 
+
 }
 
 .Bus-Tikit .lottie {
