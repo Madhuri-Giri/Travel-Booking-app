@@ -683,6 +683,12 @@
 }
 
 @media screen and (max-width: 576px) {
+    .flight-slide h6 {
+        font-size: 10px;
+    }
+    .flight-slide p {
+        font-size: 10px;
+    }
     .flight-slide{
         padding: 10px 0px !important;
     }
