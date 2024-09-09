@@ -389,96 +389,122 @@ const FlightSearch = () => {
   //   }
   // };
 
-// ------------------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------------------
 
 
-const getFlightList = async () => {
-  setLoading(true);
-  try {
-    const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+  const getFlightList = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-    const data = await response.json();
-    console.log("Flight search API response: ", data);
+      const data = await response.json();
+      console.log("Flight search API response: ", data);
 
-    localStorage.setItem('Flight-search', JSON.stringify(data));
+      localStorage.setItem('Flight-search', JSON.stringify(data));
 
-    const airlineCodes = data.Results.flatMap(result =>
-      result.flatMap(fareData =>
-        fareData.FareDataMultiple.flatMap(fare =>
-          fare.FareSegments.map(segment => segment.AirlineCode)
+      const airlineCodes = data.Results.flatMap(result =>
+        result.flatMap(fareData =>
+          fareData.FareDataMultiple.flatMap(fare =>
+            fare.FareSegments.map(segment => segment.AirlineCode)
+          )
         )
-      )
-    );
-    const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
+      );
+      const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
 
-    console.log("Airline Codes: ", filteredAirlineCodes);
+      console.log("Airline Codes: ", filteredAirlineCodes);
 
-    const logos = await fetchAirlineLogos(filteredAirlineCodes);
-    console.log("Fetched Airline Logos: ", logos);
+      const logos = await fetchAirlineLogos(filteredAirlineCodes);
+      console.log("Fetched Airline Logos: ", logos);
 
-    const logoMap = filteredAirlineCodes.reduce((acc, code, index) => {
-      acc[code] = logos[index] || '';
-      return acc;
-    }, {});
+      const logoMap = filteredAirlineCodes.reduce((acc, code, index) => {
+        acc[code] = logos[index] || '';
+        return acc;
+      }, {});
 
-    localStorage.setItem('Airline-Logos', JSON.stringify(logoMap));
+      localStorage.setItem('Airline-Logos', JSON.stringify(logoMap));
 
-    navigate("/flight-list", { state: { data: data, formData: formData } });
-  } catch (error) {
-    toast.error('An error occurred during booking. Please try again.');
-    console.error('Error fetching flight data:', error);
-  } finally {
-    setLoading(false);
-  }
-};
+      // navigate("/flight-list", { state: { data: data, formData: formData } });
 
 
+      const firstResult = data?.Results?.[0]?.[0];
+      if (firstResult && firstResult.FareDataMultiple?.[0]) {
+        const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
+        const { TraceId, SrdvType } = data;
+        localStorage.setItem("F-SrdvIndex", SrdvIndex);
+        localStorage.setItem("F-ResultIndex", ResultIndex);
+        localStorage.setItem("F-TraceId", TraceId);
+        localStorage.setItem("F-SrdvType", SrdvType);
+        localStorage.setItem("F-IsLcc", IsLCC);
+        const airlineCodes = data.Results.flatMap(result =>
+          result.flatMap(fareData =>
+            fareData.FareDataMultiple.flatMap(fare =>
+              fare.FareSegments.map(segment => segment.AirlineCode)
+            )
+          )
+        );
+        const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
+        console.log("Airline Codes: ", filteredAirlineCodes);
+      } else {
+        console.log("SrdvIndex or FareDataMultiple not found");
+      }
+      setLoading(false);
+      navigate("/flight-list", { state: { data: data, formData: formData } });
 
-// Fetch airline logos by codes
-const fetchAirlineLogos = async (airlineCodes) => {
-  try {
-    const response = await fetch('https://sajyatra.sajpe.in/admin/api/airline-logo', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    } catch (error) {
+      toast.error('An error occurred during booking. Please try again.');
+      console.error('Error fetching flight data:', error);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const data = await response.json();
-    console.log("Airline logo API response: ", data);
 
-    const logoMap = data.data.reduce((acc, curr) => {
-      acc[curr.airline_code] = curr.airline_log;
-      return acc;
-    }, {});
 
-    return airlineCodes.map(code => logoMap[code] || null);
-  } catch (error) {
-    console.error('Error fetching airline logos:', error);
-    return airlineCodes.map(() => null);
-  }
-};
+  // Fetch airline logos by codes
+  const fetchAirlineLogos = async (airlineCodes) => {
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/airline-logo', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-// Search flight handler
-const searchFlightHandler = async () => {
-  await getFlightList();
-};
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-// ------------------------------------------------------------------------------------------------------------
+      const data = await response.json();
+      console.log("Airline logo API response: ", data);
+
+      const logoMap = data.data.reduce((acc, curr) => {
+        acc[curr.airline_code] = curr.airline_log;
+        return acc;
+      }, {});
+
+      return airlineCodes.map(code => logoMap[code] || null);
+    } catch (error) {
+      console.error('Error fetching airline logos:', error);
+      return airlineCodes.map(() => null);
+    }
+  };
+
+  // Search flight handler
+  const searchFlightHandler = async () => {
+    await getFlightList();
+  };
+
+  // ------------------------------------------------------------------------------------------------------------
 
 
   // ----------  Api integration start for slider image  ----------
@@ -824,7 +850,7 @@ const searchFlightHandler = async () => {
                     <div className="ps-2 pe-2">
                       <form action="" >
                         <div className="row flightformRow">
-                        <div className="col-12 flightformCol">
+                          <div className="col-12 flightformCol">
                             <div className="form-group position-relative flight-input-container">
                               <span className="plane-icon">
                                 <BiSolidPlaneTakeOff />

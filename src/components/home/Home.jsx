@@ -23,6 +23,7 @@ import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 const Home = () => {
   const [loading, setLoading] = useState(false); // Add loading state
 
@@ -388,6 +389,8 @@ const Home = () => {
   //   }
   // };
 
+  // ------------------------------------------------------------------------------------------------------------
+
 
   const getFlightList = async () => {
     setLoading(true);
@@ -399,27 +402,49 @@ const Home = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-  
+
       const data = await response.json();
       console.log("Flight search API response: ", data);
-  
+
       localStorage.setItem('Flight-search', JSON.stringify(data));
-  
+
+      const airlineCodes = data.Results.flatMap(result =>
+        result.flatMap(fareData =>
+          fareData.FareDataMultiple.flatMap(fare =>
+            fare.FareSegments.map(segment => segment.AirlineCode)
+          )
+        )
+      );
+      const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
+
+      console.log("Airline Codes: ", filteredAirlineCodes);
+
+      const logos = await fetchAirlineLogos(filteredAirlineCodes);
+      console.log("Fetched Airline Logos: ", logos);
+
+      const logoMap = filteredAirlineCodes.reduce((acc, code, index) => {
+        acc[code] = logos[index] || '';
+        return acc;
+      }, {});
+
+      localStorage.setItem('Airline-Logos', JSON.stringify(logoMap));
+
+      // navigate("/flight-list", { state: { data: data, formData: formData } });
+
+
       const firstResult = data?.Results?.[0]?.[0];
       if (firstResult && firstResult.FareDataMultiple?.[0]) {
         const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
         const { TraceId, SrdvType } = data;
-  
         localStorage.setItem("F-SrdvIndex", SrdvIndex);
         localStorage.setItem("F-ResultIndex", ResultIndex);
         localStorage.setItem("F-TraceId", TraceId);
         localStorage.setItem("F-SrdvType", SrdvType);
         localStorage.setItem("F-IsLcc", IsLCC);
-  
         const airlineCodes = data.Results.flatMap(result =>
           result.flatMap(fareData =>
             fareData.FareDataMultiple.flatMap(fare =>
@@ -429,50 +454,57 @@ const Home = () => {
         );
         const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
         console.log("Airline Codes: ", filteredAirlineCodes);
-  
-        // Navigate only when the data is successfully fetched and parsed
-        navigate("/flight-list", { state: { data: data, formData: formData } });
       } else {
         console.log("SrdvIndex or FareDataMultiple not found");
-        toast.error('No valid results found. Please try a different search.');
       }
+      setLoading(false);
+      navigate("/flight-list", { state: { data: data, formData: formData } });
+
     } catch (error) {
       toast.error('An error occurred during booking. Please try again.');
       console.error('Error fetching flight data:', error);
     } finally {
-      setLoading(false); // Ensure loading is set to false regardless of success or failure
+      setLoading(false);
     }
   };
-  
 
 
-  // ---------------------------------------------------------------------------------------------------------------------------------
-  // const flightLogoHandler = async (airline_code) => {
-  //   try {
-  //     const response = await fetch(`https://sajyatra.sajpe.in/admin/api/airline-logo?airline_code=${encodeURIComponent(airline_code)}`, {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
 
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     }
+  // Fetch airline logos by codes
+  const fetchAirlineLogos = async (airlineCodes) => {
+    try {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/airline-logo', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-  //     const data = await response.json();
-  //     // console.log("Airline logo API response: ", data);
-  //   } catch (error) {
-  //     console.error('Error fetching airline logos:', error);
-  //   }
-  // };
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-  // ---------------------------------------------------------------------------------------------------------------------------------
+      const data = await response.json();
+      console.log("Airline logo API response: ", data);
 
+      const logoMap = data.data.reduce((acc, curr) => {
+        acc[curr.airline_code] = curr.airline_log;
+        return acc;
+      }, {});
 
+      return airlineCodes.map(code => logoMap[code] || null);
+    } catch (error) {
+      console.error('Error fetching airline logos:', error);
+      return airlineCodes.map(() => null);
+    }
+  };
+
+  // Search flight handler
   const searchFlightHandler = async () => {
     await getFlightList();
   };
+
+  // ------------------------------------------------------------------------------------------------------------
 
 
   // ----------  Api integration start for slider image  ----------
@@ -818,7 +850,7 @@ const Home = () => {
                     <div className="ps-2 pe-2">
                       <form action="" >
                         <div className="row flightformRow">
-                        <div className="col-12 flightformCol">
+                          <div className="col-12 flightformCol">
                             <div className="form-group position-relative flight-input-container">
                               <span className="plane-icon">
                                 <BiSolidPlaneTakeOff />
@@ -1196,4 +1228,5 @@ const Home = () => {
     </>
   )
 }
+
 export default Home
