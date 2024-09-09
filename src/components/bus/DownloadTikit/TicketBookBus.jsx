@@ -15,6 +15,8 @@ import JsBarcode from 'jsbarcode';
 import { toast, ToastContainer } from 'react-toastify';
 import html2canvas from 'html2canvas'; // Import html2canvas
 import { useNavigate } from 'react-router-dom';
+import sajLogo from  "../../../assets/images/main logo.png"
+
 
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
@@ -25,9 +27,22 @@ const TicketBookBus = () => {
   const navigate = useNavigate()
   const [buspaymentStatusResState, setBuspaymentStatusResState] = useState(null);
 
+
+  // ------------------------------------------------------------------------------------------------------------------------------------
+
   const handleCancelTicket = async () => {
     const confirmation = window.confirm("Are you sure you want to cancel?");
+    
     if (confirmation) {
+      const storedData = JSON.parse(localStorage.getItem('buspaymentStatusRes'));
+  
+      if (!storedData || !storedData.data || !storedData.data.passengers) {
+        toast.error("No passenger data found");
+        return;
+      }
+  
+      const { bus_id, ticket_no, transaction_num } = storedData.data.passengers;
+  
       try {
         const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-cancel", {
           method: "POST",
@@ -35,18 +50,17 @@ const TicketBookBus = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            BusId: "11836",
-            SeatId: "25SYK4ET",
-            Remarks: "test",
-            transaction_num: "null"
+            BusId: bus_id,
+            SeatId: ticket_no,
+            Remarks: "User initiated cancellation",
+            transaction_num: transaction_num 
           }),
         });
-
+  
         const data = await response.json(); // Parse the response data
-
+  
         if (response.ok) {
           toast.success("Your ticket is canceled");
-          // console.log("Your ticket is canceled");
           console.log("bus-new-cancel response:", data);
           navigate('/bus-search'); 
         } else {
@@ -61,6 +75,9 @@ const TicketBookBus = () => {
       console.log("Ticket cancellation aborted");
     }
   };
+
+  // ------------------------------------------------------------------------------------------------------------------------------------
+
 
   const from = useSelector((state) => state.bus.from);
   const to = useSelector((state) => state.bus.to);
@@ -140,6 +157,8 @@ const TicketBookBus = () => {
                 <div className="col-lg-9">
                   <div className="busticktbox">
                     <div className="bustickthed">
+                    <img style={{float:"left", position:"relative", bottom:"0.8vmax"}} width={80} src={sajLogo} alt="" />
+
                       <h5>Bus Ticket</h5>
                     </div>
                     {/* ----------------------------------------------- */}

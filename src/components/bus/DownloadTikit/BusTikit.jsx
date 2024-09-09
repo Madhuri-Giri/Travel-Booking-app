@@ -16,6 +16,8 @@ import html2canvas from 'html2canvas'; // Import html2canvas
 import { useNavigate } from 'react-router-dom';
 import { BsDatabaseAdd } from 'react-icons/bs';
 
+import sajLogo from  "../../../assets/images/main logo.png"
+
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
 };
@@ -88,9 +90,22 @@ const BusTikit = () => {
     });
   };
 
+
+  // --------------------------------------------------------------------------------------------------------------------
+
   const handleCancelTicket = async () => {
     const confirmation = window.confirm("Are you sure you want to cancel?");
+    
     if (confirmation) {
+      const storedData = JSON.parse(localStorage.getItem('buspaymentStatusRes'));
+  
+      if (!storedData || !storedData.data || !storedData.data.passengers) {
+        toast.error("No passenger data found");
+        return;
+      }
+  
+      const { bus_id, ticket_no, transaction_num } = storedData.data.passengers;
+  
       try {
         const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-cancel", {
           method: "POST",
@@ -98,23 +113,24 @@ const BusTikit = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            BusId: "11836",
-            SeatId: "25SYK4ET",
-            Remarks: "test",
-            transaction_num: "null"
+            BusId: bus_id,
+            SeatId: ticket_no,
+            Remarks: "User initiated cancellation",
+            transaction_num: transaction_num 
           }),
         });
-
+  
         const data = await response.json(); 
-
-
+        localStorage.setItem('busSeatCancel', JSON.stringify(data));
+        
+        
         if (response.ok) {
           toast.success("Your ticket is canceled");
-          // console.log("Your ticket is canceled");
-          console.log('bus-old cancel Response', data)
-          navigate('/bus-search')
+          console.log("bus-new-cancel response:", data);
+          // navigate('/bus-search'); 
         } else {
           toast.error("Failed to cancel the ticket");
+          console.log("Failed to cancel the ticket. Response Data:", data);
         }
       } catch (error) {
         console.error("Error canceling the ticket:", error);
@@ -124,6 +140,25 @@ const BusTikit = () => {
       console.log("Ticket cancellation aborted");
     }
   };
+
+
+  const [status, setStatus] = useState('N/A');
+
+  useEffect(() => {
+    // Retrieve the data from localStorage
+    const busSeatCancelData = localStorage.getItem('busSeatCancel');
+    
+    if (busSeatCancelData) {
+      const parsedData = JSON.parse(busSeatCancelData);
+
+      if (parsedData && parsedData.status) {
+        setStatus(parsedData.status);
+      }
+    }
+  }, []);
+
+
+  // ------------------------------------------------------------------------------------------------------------------
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -164,6 +199,7 @@ const BusTikit = () => {
                 <div className="col-lg-9">
                   <div className='busticktbox'>
                     <div className='bustickthed'>
+                      <img style={{float:"left", position:"relative", bottom:"0.8vmax"}} width={80} src={sajLogo} alt="" />
                       <h5>Bus Ticket</h5>
                     </div>
                      {/* ----------------------------------------------- */}
@@ -218,9 +254,7 @@ const BusTikit = () => {
                             <div>
                               <p><strong>Seat No -: </strong><span>{seatDetail ? seatDetail.seat_name : 'N/A'}</span></p>
                               <p className='busbookconfrm'><strong>Booking -: </strong><span>{busticketPassengerDetails.booking_status[0].bus_status || 'N/A'}</span></p>
-                              {/* <p><strong>Booking Id -: </strong><span>{seatDetail ? seatDetail.bus_book_id : 'N/A'}</span></p> */}
-                              {/* <p className="psngeramount"><strong>Amount -: </strong><span>₹{storedAmount}</span></p> */}
-                              {/* <p><strong>Passcode: </strong></p> */}
+                             
                               <Barcode className="buspasscode" value={passcode} format="CODE128" />
                             </div>
                           </div>
