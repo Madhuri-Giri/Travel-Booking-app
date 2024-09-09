@@ -99,18 +99,19 @@ export default function FlightDetails() {
     };
 
 
-
     const reviewHandler = () => {
         // Ensure fareDataDetails is defined before navigating
         if (fareDataDetails) {
+            console.log('Navigating to flight-review with fareDataDetails:', fareDataDetails); // Debugging log
             setLoading(true);
             setTimeout(() => {
                 navigate('/flight-review', { state: { fareDataDetails } });
             }, 1000);
         } else {
             console.error('fareDataDetails is undefined');
+            alert('Error: fareDataDetails is not available.');
         }
-    }
+    };
 
 
 
@@ -179,8 +180,15 @@ export default function FlightDetails() {
         const allAdultsConfirmed = confirmedAdultDetails.every(detail => detail.selected);
         const allChildrenConfirmed = confirmedChildDetails.every(detail => detail.selected);
         const allInfantsConfirmed = confirmedInfantDetails.every(detail => detail.selected);
-        setIsContinueDisabled((allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
+
+        // Set the button disabled state based on the confirmation status of all details
+        setIsContinueDisabled(!(allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
     };
+
+    // Use useEffect to call checkButtonDisabled whenever confirmed details change
+    useEffect(() => {
+        checkButtonDisabled();
+    }, [confirmedAdultDetails, confirmedChildDetails, confirmedInfantDetails]);
 
     const handleInputChange = (e, index, type, field) => {
         const { value } = e.target;
@@ -222,7 +230,6 @@ export default function FlightDetails() {
             dateOfBirth: 'Date of Birth',
             addressLine1: 'Address Line 1',
             city: 'City',
-            countryName: 'Country Name',
             contactNo: 'Contact No',
             email: 'Email',
             // Passport No, Passport Expiry, Passport Issue Date, Country Code are not validated
@@ -257,7 +264,7 @@ export default function FlightDetails() {
             }));
 
             // Add the confirmed detail to the appropriate confirmed details array
-            const newDetail = { ...details[index], selected: false };
+            const newDetail = { ...details[index], selected: true };
             if (type === 'adult') {
                 setConfirmedAdultDetails([...confirmedAdultDetails, newDetail]);
             } else if (type === 'child') {
@@ -544,7 +551,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`countryName-${type}-${index}`}>Country Name <span className="text-danger">*</span> </label>
+                            <label htmlFor={`countryName-${type}-${index}`}>Country Name (Optional) </label>
                             <input
                                 type="text"
                                 id={`countryName-${type}-${index}`}
@@ -1049,7 +1056,6 @@ export default function FlightDetails() {
         </>
     )
 }
-
 
 
 

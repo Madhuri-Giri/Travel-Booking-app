@@ -236,6 +236,9 @@
     color: white;
     display: none;
 }
+.flightlistsec1Mobile .row{
+    margin-bottom: -10px;
+}
 
 .flightlistsec1colMobileOriDes {
     display: flex;
@@ -243,7 +246,7 @@
 }
 
 .flightlistsec1colMobileOriDes p {
-    font-size: 20px;
+    font-size: 14px;
     font-weight: bold;
     margin: 0px;
 }
@@ -252,7 +255,7 @@
     /* text-align: center; */
     display: flex;
     justify-content: center;
-    margin-top: 5px;
+    /* margin-top: 5px; */
 }
 
 .flightlistsec1colMobileTravlr p {
@@ -274,7 +277,7 @@
 .filterIcondiv svg,
 .editIconDiv svg {
     border: 1px solid white;
-    font-size: 47px;
+    font-size: 32px;
     padding: 5px 7px;
 }
 
@@ -680,6 +683,9 @@
 }
 
 @media screen and (max-width: 576px) {
+    .flight-slide{
+        padding: 10px 0px !important;
+    }
     .regulrdeal {
         margin-bottom: 10px;
     }

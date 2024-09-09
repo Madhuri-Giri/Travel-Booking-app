@@ -1,3 +1,11 @@
+.ticketamount{
+    color: #00e100;
+    font-weight: bold;
+    text-align: end;
+}
+.ticketamountHed{
+    text-align: end;
+}
 .flight-Tikit {
     width: 100%;
     display: flex;
@@ -559,23 +567,17 @@
 }
 
 .fligthticketBtns {
-    display: flex;
-    justify-content: end;
-    /* width: 100%;
+    /* display: flex; */
+    /* justify-content: end; */
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    background: #efeaea82;
-    flex-direction: column;
-    border-radius: 10px;
-    gap: 0.6vmax;
-    padding: 0.5vmax; */
+    justify-content: space-between;
 }
 
 .fligthticketBtns button {
     border: none;
     background: none;
-    padding: 0.5vmax 2vmax;
+    padding: 0.1vmax 1vmax;
     border-radius: 5px;
     background-color: #00b7eb;
     color: #fff;
