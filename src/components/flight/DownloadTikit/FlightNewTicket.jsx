@@ -138,8 +138,10 @@ const FlightNewTikit = () => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
+      weekday: 'short',  
       day: 'numeric',
       month: 'short',
+      year: 'numeric',
     });
   };
 
@@ -164,8 +166,28 @@ const FlightNewTikit = () => {
     { id: 10, name: 'Explosives, Ammunition', icon: faBomb },
   ];
 
-  // Destructure the data with fallback to prevent errors
-  const { payment, userdetails, booking_hold, bookingstatus, booking_gds } = flightticketPassengerDetails || {};
+
+  const calculateDuration = (depTime, arrTime) => {
+    // Convert departure and arrival times to Date objects
+    const departure = new Date(depTime);
+    const arrival = new Date(arrTime);
+    
+    // Calculate the difference in milliseconds
+    const durationInMilliseconds = arrival - departure;
+
+    // Convert the difference to hours and minutes
+    const durationInMinutes = Math.floor(durationInMilliseconds / 60000); // 1 minute = 60000 milliseconds
+    const hours = Math.floor(durationInMinutes / 60);
+    const minutes = durationInMinutes % 60;
+
+    // Return the formatted duration
+    return `${hours}h ${minutes}m`;
+};
+
+
+
+// Destructure the data with fallback to prevent errors
+const { payment, userdetails, booking_hold, booking_status, booking_gds , book_passengers} = flightticketPassengerDetails || {};
 
   return (
     <>
@@ -183,6 +205,8 @@ const FlightNewTikit = () => {
                   Download
                   <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
                 </button>
+                <button className='buscncl' style={{ backgroundColor: 'red' }}>Cancel Ticket</button>
+
               </div>
               {flightticketPassengerDetails ? (
                 <div className='flightTicketmain'>
@@ -192,37 +216,36 @@ const FlightNewTikit = () => {
                     <>
                       <div>
                         <div className='flightticketboxHED'>
-                          <p>{` ${bookingstatus.dep_time}`}</p>
-                          <h6>{`${bookingstatus.origin} TO ${bookingstatus.destination}`}</h6>
-                          <p>2h 15m</p>
+                          <p>{` ${formatDate(booking_status.dep_time)}`}</p>
+                          <h6>{`${booking_status.city_name} To ${booking_status.destination_city_name}`}</h6>
+                          <p>{calculateDuration(booking_status.dep_time,booking_status.arr_time)}</p>
                         </div>
                         <div className="flightticketboxTravelDetails">
                           <div className="ffbox1">
                             <div className='flightIndigodet'>
-                              <p>{bookingstatus.airline || 'null'}</p>
-                              <p>{bookingstatus.airline_code || 'Flight Number Not Available'}</p>
+                              <p>{booking_status.airline || 'Airline null'}</p>
+                              <p>{booking_status.airline_code || 'Airline code null'}</p>
                             </div>
                             <div className='flightSaver'>
-                              <h6>Fare Basis Code</h6>
-                              <h6>{bookingstatus.fare_basis_code || 'Not Available'}</h6>
+                              <h6>{booking_status.fare_basis_code || 'Fare Basis null'}</h6>
                             </div>
                           </div>
                           <div className="ffbox2">
-                            <h4>{bookingstatus.origin}</h4>
-                            <p className='ffbox2P1'>{bookingstatus.city_name || 'null'}</p>
-                            <p className='ffbox2Time'>{new Date(bookingstatus.dep_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(bookingstatus.dep_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p>
-                            <p>{bookingstatus.origin_airport || 'Origin Airport null'}</p>
+                            <h4>{booking_status.origin}</h4>
+                            <p className='ffbox2P1'>{booking_status.city_name || 'null'}</p>
+                            <p className='ffbox2Time'>{new Date(booking_status.dep_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(booking_status.dep_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p>
+                            <p>{booking_status.origin_airport || 'Origin Airport null'}</p>
                           </div>
                           <div className="ffbox3">
                             <p>---</p>
-                            <p className='ffbox3TImeborder'>2h 15m</p>
-                            <p>{bookingstatus.fare_type || 'Economy'}</p>
+                            <p className='ffbox3TImeborder'>{calculateDuration(booking_status.dep_time,booking_status.arr_time)}</p>
+                            <p>{booking_status.fare_type || 'Economy'}</p>
                           </div>
                           <div className="ffbox4">
-                            <h4>{bookingstatus.destination}</h4>
-                            <p className='ffbox4P1'>{bookingstatus.destination_city_name || 'null'}</p>
-                            <p className='ffbox2Time'>{new Date(bookingstatus.arr_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(bookingstatus.arr_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p>
-                            <p>{bookingstatus.destination_airport || 'Destination Airport null'}</p>
+                            <h4>{booking_status.destination}</h4>
+                            <p className='ffbox4P1'>{booking_status.destination_city_name || 'null'}</p>
+                            <p className='ffbox2Time'>{new Date(booking_status.arr_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(booking_status.arr_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p>
+                            <p>{booking_status.destination_airport || 'Destination Airport null'}</p>
                           </div>
                         </div>
 
@@ -231,17 +254,37 @@ const FlightNewTikit = () => {
                             <thead className='passengerDetailTable'>
                               <tr>
                                 <th style={{ border: '1px solid #ddd', padding: '8px' }}>PASSENGER NAME</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>PNR</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>E-TICKET NO.</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>SEAT</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>ADDRESS</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>MOBILE</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>CITY</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong>1. {userdetails.name}</strong></td>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{bookingstatus.pnr}</td>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{bookingstatus.ticket_no || 'E-Ticket Number'}</td>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{bookingstatus.seat_no || 'Seat No null'}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong>1. {book_passengers[0].title} {book_passengers[0].first_name} {book_passengers[0].last_name}</strong></td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong> {book_passengers[0].address}</strong></td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong> {book_passengers[0].contact_no}</strong></td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong> {book_passengers[0].city}</strong></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className='mt-4'>
+                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <thead className='passengerDetailTable'>
+                              <tr>
+                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>PNR</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>E-TICKET NO.</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>SEAT</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px' }} className='ticketamountHed'>AMOUNT</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong>{booking_status.pnr}</strong></td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_status.ticket_no || 'E-Ticket Number'}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_status.seat_no || 'Seat No null'}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }} className='ticketamount'>{payment.amount || 'Seat No null'} Rs.</td>
                               </tr>
                             </tbody>
                           </table>
@@ -313,7 +356,7 @@ const FlightNewTikit = () => {
                               <tr>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>Adult</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>CCU-DEL</td>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{`${bookingstatus.baggage}`}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{`${booking_status.baggage}`}</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>15- Kgs (1 pieace only)</td>
                               </tr>
                             </tbody>
@@ -600,45 +643,46 @@ const FlightNewTikit = () => {
                   )}
                 </div>
               ) : (
-                <div>Loading ticket details...</div>
+                <div>No Booikng ticket details..</div>
               )}
+
               {/* {flightticketPassengerDetails ? (
                 <div className='flightTicketmain'>
                   {islcc ? (
                     // LCC Booking Details when islcc is true
                     <div>
                       <div className='flightticketboxHED'>
-                      <p>{` ${bookingstatus.dep_time}`}</p>
-                      <h6>{`${bookingstatus.origin} TO ${bookingstatus.destination}`}</h6>
+                      <p>{` ${booking_status.dep_time}`}</p>
+                      <h6>{`${booking_status.origin} TO ${booking_status.destination}`}</h6>
                         <p>2h 15m</p>
                       </div>
                       <div className="flightticketboxTravelDetails">
                         <div className="ffbox1">
                           <div className='flightIndigodet'>
-                            <p>{bookingstatus.airline || 'null'}</p>
-                            <p>{bookingstatus.airline_code || 'Flight Number Not Available'}</p>
+                            <p>{booking_status.airline || 'null'}</p>
+                            <p>{booking_status.airline_code || 'Flight Number Not Available'}</p>
                           </div>
                           <div className='flightSaver'>
                             <h6>Fare Basis Code</h6>
-                            <h6>{bookingstatus.fare_basis_code || 'Not Available'}</h6>
+                            <h6>{booking_status.fare_basis_code || 'Not Available'}</h6>
                           </div>
                         </div>
                         <div className="ffbox2">
-                          <h4>{bookingstatus.origin}</h4>
-                          <p className='ffbox2P1'>{bookingstatus.city_name || 'null'}</p>
-                          <p className='ffbox2Time'>{new Date(bookingstatus.dep_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(bookingstatus.dep_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p>
-                          <p>{bookingstatus.origin_airport || 'Origin Airport null'}</p>
+                          <h4>{booking_status.origin}</h4>
+                          <p className='ffbox2P1'>{booking_status.city_name || 'null'}</p>
+                          <p className='ffbox2Time'>{new Date(booking_status.dep_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(booking_status.dep_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p>
+                          <p>{booking_status.origin_airport || 'Origin Airport null'}</p>
                         </div>
                         <div className="ffbox3">
                           <p>---</p>
                           <p className='ffbox3TImeborder'>2h 15m</p>
-                          <p>{bookingstatus.fare_type || 'Economy'}</p>
+                          <p>{booking_status.fare_type || 'Economy'}</p>
                         </div>
                         <div className="ffbox4">
-                          <h4>{bookingstatus.destination}</h4>
-                          <p className='ffbox4P1'>{bookingstatus.destination_city_name || 'null'}</p>
-                          <p className='ffbox2Time'>{new Date(bookingstatus.arr_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(bookingstatus.arr_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p>
-                          <p>{bookingstatus.destination_airport || 'Destination Airport null'}</p>
+                          <h4>{booking_status.destination}</h4>
+                          <p className='ffbox4P1'>{booking_status.destination_city_name || 'null'}</p>
+                          <p className='ffbox2Time'>{new Date(booking_status.arr_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(booking_status.arr_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p>
+                          <p>{booking_status.destination_airport || 'Destination Airport null'}</p>
                         </div>
                       </div>
 
@@ -655,9 +699,9 @@ const FlightNewTikit = () => {
                           <tbody>
                             <tr>
                               <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong>1. {userdetails.name}</strong></td>
-                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{bookingstatus.pnr}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{bookingstatus.ticket_no || 'E-Ticket Number'}</td>
-                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{bookingstatus.seat_no || 'Seat No null'}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_status.pnr}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_status.ticket_no || 'E-Ticket Number'}</td>
+                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_status.seat_no || 'Seat No null'}</td>
                             </tr>
                           </tbody>
                         </table>
