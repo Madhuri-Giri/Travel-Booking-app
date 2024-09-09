@@ -13,6 +13,8 @@ import busAnim from "../../../assets/images/mainBus.json";
 import Barcode from 'react-barcode';
 import { FaArrowRightLong } from "react-icons/fa6";
 import html2canvas from 'html2canvas'; // Import html2canvas
+import { useNavigate } from 'react-router-dom';
+import { BsDatabaseAdd } from 'react-icons/bs';
 
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
@@ -20,6 +22,7 @@ const generatePasscode = () => {
 
 const BusTikit = () => {
   const passcode = generatePasscode();
+  const navigate = useNavigate()
   const [busticketPassengerDetails, setBusticketPassengerDetails] = useState(null);
 
   const from = useSelector((state) => state.bus.from);
@@ -102,9 +105,14 @@ const BusTikit = () => {
           }),
         });
 
+        const data = await response.json(); 
+
+
         if (response.ok) {
           toast.success("Your ticket is canceled");
-          console.log("Your ticket is canceled");
+          // console.log("Your ticket is canceled");
+          console.log('bus-old cancel Response', data)
+          navigate('/bus-search')
         } else {
           toast.error("Failed to cancel the ticket");
         }
@@ -158,6 +166,12 @@ const BusTikit = () => {
                     <div className='bustickthed'>
                       <h5>Bus Ticket</h5>
                     </div>
+                     {/* ----------------------------------------------- */}
+                     <div className="last-line">
+                              <small><i className="ri-phone-fill"></i> Company No:-</small>
+                              <small><i className="ri-phone-fill"></i> Help Line No:-</small>
+                    </div>
+{/* ----------------------------------------------- */}
                     <div className="top"></div>
                     <div className="row buspssngerdetails">
                       <div className="col-12">
@@ -205,7 +219,7 @@ const BusTikit = () => {
                               <p><strong>Seat No -: </strong><span>{seatDetail ? seatDetail.seat_name : 'N/A'}</span></p>
                               <p className='busbookconfrm'><strong>Booking -: </strong><span>{busticketPassengerDetails.booking_status[0].bus_status || 'N/A'}</span></p>
                               {/* <p><strong>Booking Id -: </strong><span>{seatDetail ? seatDetail.bus_book_id : 'N/A'}</span></p> */}
-                              <p className="psngeramount"><strong>Amount -: </strong><span>₹{storedAmount}</span></p>
+                              {/* <p className="psngeramount"><strong>Amount -: </strong><span>₹{storedAmount}</span></p> */}
                               {/* <p><strong>Passcode: </strong></p> */}
                               <Barcode className="buspasscode" value={passcode} format="CODE128" />
                             </div>

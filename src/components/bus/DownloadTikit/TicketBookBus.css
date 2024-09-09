@@ -13,9 +13,9 @@
     background: #dddddd;
   display: flex;
   align-items: center;
+  padding-left: 2vmax;
+  padding-right: 2vmax;
   justify-content: space-between;
-  padding: 1vmax;
-  margin-top: 1vmax;
 }
 
 
