@@ -308,7 +308,7 @@ const FlightNewTikit = () => {
                             </thead>
                             <tbody>
                               <tr>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong>1. {book_passengers[0].title} {book_passengers[0].first_name} {book_passengers[0].last_name}</strong></td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong> {book_passengers[0].first_name} {book_passengers[0].last_name}</strong></td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong> {book_passengers[0].address}</strong></td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong> {book_passengers[0].contact_no}</strong></td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong> {book_passengers[0].city}</strong></td>
