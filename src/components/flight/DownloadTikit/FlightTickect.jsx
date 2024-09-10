@@ -36,8 +36,11 @@ const FlightTickect = () => {
   useEffect(() => {
     const fetchFlightTicketApiData = async () => {
       try {
+        // const transactionFlightNo = localStorage.getItem('flight_transaction_num');
+        // const flight_booking_id = localStorage.getItem('flight_booking_id');
         const transactionFlightNo = localStorage.getItem('transactionNum');
         const flight_booking_id = localStorage.getItem('flight_transaction_id');
+
         const response = await fetch("https://sajyatra.sajpe.in/admin/api/flight-ticket-history", {
           method: "POST",
           headers: {
@@ -49,9 +52,9 @@ const FlightTickect = () => {
           }),
         });
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+        // if (!response.ok) {
+        //   throw new Error('Network response was not ok');
+        // }
 
         const data = await response.json();
         setflightticketPassengerDetails(data);
@@ -72,32 +75,32 @@ const FlightTickect = () => {
       console.error("Flight ticket main content not found");
       return;
     }
-  
+
     // Ensure the .ticketpart div is visible before capturing it
     const ticketPartDiv = ticketElementRef.current.querySelector('.ticketpart');
     if (ticketPartDiv) {
       ticketPartDiv.style.display = 'block'; // Make sure it's visible
     }
-  
+
     const btmDiv = ticketElementRef.current.querySelector('.btm');
     if (btmDiv) {
       btmDiv.style.display = 'none';
     }
-  
+
     html2canvas(flightTicketMain, { scale: 3 }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-  
+
       // Define margins (in mm)
       const margin = 10;
       const imgWidth = pdfWidth - 2 * margin;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  
+
       // Adding image to PDF
       pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
-  
+
       // Adjust page height to fit content if needed
       if (pdfHeight > pdf.internal.pageSize.height) {
         const pages = Math.ceil(pdfHeight / pdf.internal.pageSize.height);
@@ -106,7 +109,7 @@ const FlightTickect = () => {
           pdf.addImage(imgData, 'PNG', margin, -pdf.internal.pageSize.height * i + margin, imgWidth, imgHeight);
         }
       }
-  
+
       pdf.save('flight_ticket.pdf');
     }).catch((error) => {
       console.error('Error generating PDF:', error);
@@ -120,8 +123,8 @@ const FlightTickect = () => {
       }
     });
   };
-  
-  
+
+
   const handleCancelTicket = async () => {
     const confirmation = window.confirm("Are you sure you want to cancel?");
     if (confirmation) {
@@ -182,7 +185,7 @@ const FlightTickect = () => {
   ];
 
   const { user_details, booking_details } = flightticketPassengerDetails || {};
-  
+
   return (
     <>
       <CustomNavbar />
@@ -257,149 +260,149 @@ const FlightTickect = () => {
                   </table>
                 </div>
                 <div className='ticketpart'>
-                        <div className='mt-5 sajyatraticketmain'>
-                          <div className='sajyatratickethed'>
-                            <h6 className=''>Sajyatra</h6>
-                            <img src={FooterLogo} className='img-fluid' alt="logo"></img>
-                          </div>
-                          <div className='sajyatraticketmainDiv'>
-                            <strong>Avoid Long Queues at the Airport with Sajyatra</strong>
-                            <p>Use Sajyatra - Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto repudiandae suscipit adipisci tempore nesciunt rem unde voluptas, nulla ut sint ab odit a sit optio debitis, expedita impedit eos dolor?</p>
-                            <p><strong>Step-1</strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, obcaecati odio! Dignissimos ea sed rerum porro. </p>
-                            <p><strong>Step-2</strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, obcaecati odio! Dignissimos ea sed rerum porro. </p>
-                          </div>
-                        </div>
+                  <div className='mt-5 sajyatraticketmain'>
+                    <div className='sajyatratickethed'>
+                      <h6 className=''>Sajyatra</h6>
+                      <img src={FooterLogo} className='img-fluid' alt="logo"></img>
+                    </div>
+                    <div className='sajyatraticketmainDiv'>
+                      <strong>Avoid Long Queues at the Airport with Sajyatra</strong>
+                      <p>Use Sajyatra - Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto repudiandae suscipit adipisci tempore nesciunt rem unde voluptas, nulla ut sint ab odit a sit optio debitis, expedita impedit eos dolor?</p>
+                      <p><strong>Step-1</strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, obcaecati odio! Dignissimos ea sed rerum porro. </p>
+                      <p><strong>Step-2</strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, obcaecati odio! Dignissimos ea sed rerum porro. </p>
+                    </div>
+                  </div>
 
-                        <div className="items-not-allowed-container">
-                          <div className="header">
-                            <h2>Items not allowed in the aircraft</h2>
+                  <div className="items-not-allowed-container">
+                    <div className="header">
+                      <h2>Items not allowed in the aircraft</h2>
+                    </div>
+                    <div className="items-grid">
+                      {items.map((item) => (
+                        <div className="item" key={item.id}>
+                          <div className="icon-container">
+                            <FontAwesomeIcon icon={item.icon} className="main-icon" />
+                            <div className="cross-line"></div>
                           </div>
-                          <div className="items-grid">
-                            {items.map((item) => (
-                              <div className="item" key={item.id}>
-                                <div className="icon-container">
-                                  <FontAwesomeIcon icon={item.icon} className="main-icon" />
-                                  <div className="cross-line"></div>
-                                </div>
-                                <span className="item-name">{item.name}</span>
-                              </div>
-                            ))}
-                          </div>
+                          <span className="item-name">{item.name}</span>
                         </div>
-                        <div className='impotantNotmain'>
-                          <h6 className='impotantNothed'>IMPORTANT INFORMATION</h6>
-                          <ul>
-                            <li>
-                              <strong>Chheck-in Time : </strong>
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, aperiam veniam quisquam vel doloribus iure pariatur, sunt est temporibus rem
-                            </li>
-                            <li>
-                              <strong>DGCA passenger charter : </strong>
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, aperiam veniam quisquam vel doloribus iure pariatur, sunt est temporibus rem
-                            </li>
-                            <li>
-                              <strong>Valid Id proof needed : </strong>
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, aperiam veniam quisquam vel doloribus iure pariatur, sunt est temporibus rem
-                            </li>
-                            <li>
-                              <strong>You have Paid : INR 9,7366</strong>
-                            </li>
+                      ))}
+                    </div>
+                  </div>
+                  <div className='impotantNotmain'>
+                    <h6 className='impotantNothed'>IMPORTANT INFORMATION</h6>
+                    <ul>
+                      <li>
+                        <strong>Chheck-in Time : </strong>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, aperiam veniam quisquam vel doloribus iure pariatur, sunt est temporibus rem
+                      </li>
+                      <li>
+                        <strong>DGCA passenger charter : </strong>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, aperiam veniam quisquam vel doloribus iure pariatur, sunt est temporibus rem
+                      </li>
+                      <li>
+                        <strong>Valid Id proof needed : </strong>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, aperiam veniam quisquam vel doloribus iure pariatur, sunt est temporibus rem
+                      </li>
+                      <li>
+                        <strong>You have Paid : INR 9,7366</strong>
+                      </li>
 
-                          </ul>
-                        </div>
-                        <div className='fticketBaggageInformation mt-5'>
-                          <h6 className='impotantNothed'>BAGGAGE INFORMATION</h6>
-                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                            <thead className='passengerDetailTable'>
-                              <tr>
-                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>Type</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>Sector</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>Cabin</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px' }}>Check-in</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>Adult</td>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>CCU-DEL</td>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{`${booking_details.baggage}`}</td>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>15- Kgs (1 pieace only)</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div className='flightitcketCancelationDetails mt-4'>
-                          <h6 className='impotantNothed'>CANCELLATION AND DATE CHANGE CHARGES</h6>
-                          <div className="row">
-                            <div className="col-6">
-                              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                                <thead className='passengerDetailTable'>
-                                  <tr>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Type</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Condition</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Airline</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Sajyatra</th>
-                                  </tr>
-                                </thead>
+                    </ul>
+                  </div>
+                  <div className='fticketBaggageInformation mt-5'>
+                    <h6 className='impotantNothed'>BAGGAGE INFORMATION</h6>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                      <thead className='passengerDetailTable'>
+                        <tr>
+                          <th style={{ border: '1px solid #ddd', padding: '8px' }}>Type</th>
+                          <th style={{ border: '1px solid #ddd', padding: '8px' }}>Sector</th>
+                          <th style={{ border: '1px solid #ddd', padding: '8px' }}>Cabin</th>
+                          <th style={{ border: '1px solid #ddd', padding: '8px' }}>Check-in</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style={{ border: '1px solid #ddd', padding: '8px' }}>Adult</td>
+                          <td style={{ border: '1px solid #ddd', padding: '8px' }}>CCU-DEL</td>
+                          {/* <td style={{ border: '1px solid #ddd', padding: '8px' }}>{`${booking_details.baggage}`}</td> */}
+                          <td style={{ border: '1px solid #ddd', padding: '8px' }}>15- Kgs (1 pieace only)</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className='flightitcketCancelationDetails mt-4'>
+                    <h6 className='impotantNothed'>CANCELLATION AND DATE CHANGE CHARGES</h6>
+                    <div className="row">
+                      <div className="col-6">
+                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                          <thead className='passengerDetailTable'>
+                            <tr>
+                              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Type</th>
+                              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Condition</th>
+                              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Airline</th>
+                              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Sajyatra</th>
+                            </tr>
+                          </thead>
 
-                                <tbody>
-                                  <tr>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>Adult</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>3 days - 365 days</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>3000</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>0</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                            <div className="col-6">
-                              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                                <thead className='passengerDetailTable'>
-                                  <tr>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Type</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Condition</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Airline</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Sajyatra</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>Adult</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>3 days - 365 days</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>3000</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '8px' }}>0</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                          <p className='convenFee'>*Convenience Fee is non-refundable and will not be refund back even in the case of 100% Fee Cancellation</p>
-                        </div>
-                        <div className='mt-4'>
-                          <h6 className='impotantNothed'>24x7 CUSTOMER SUPPORT</h6>
-                        </div>
-                        <div className='supportDiv row'>
-                          <div className="col-6 ">
-                            <div className='supportDivCOl'>
-                              <h6 className='impotantNothed'>Sajyatra SUPPORT</h6>
-                              <div className='supportDivCOlText'>
-                                <strong>Tel </strong> <span> 1-800-103-9695 (toll free) for all major operators</span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-6 ">
-                            <div className='supportDivCOl'>
-                              <h6 className='impotantNothed'>Airlline SUPPORT</h6>
-                              <div className='supportDivCOlText'>
-                                <strong>Indigo </strong> <span> 1-800-103-9695 (toll free) for all major operators</span>
-                              </div>
-                            </div>
-                          </div>
-
+                          <tbody>
+                            <tr>
+                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>Adult</td>
+                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>3 days - 365 days</td>
+                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>3000</td>
+                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>0</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div className="col-6">
+                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                          <thead className='passengerDetailTable'>
+                            <tr>
+                              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Type</th>
+                              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Condition</th>
+                              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Airline</th>
+                              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Sajyatra</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>Adult</td>
+                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>3 days - 365 days</td>
+                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>3000</td>
+                              <td style={{ border: '1px solid #ddd', padding: '8px' }}>0</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <p className='convenFee'>*Convenience Fee is non-refundable and will not be refund back even in the case of 100% Fee Cancellation</p>
+                  </div>
+                  <div className='mt-4'>
+                    <h6 className='impotantNothed'>24x7 CUSTOMER SUPPORT</h6>
+                  </div>
+                  <div className='supportDiv row'>
+                    <div className="col-6 ">
+                      <div className='supportDivCOl'>
+                        <h6 className='impotantNothed'>Sajyatra SUPPORT</h6>
+                        <div className='supportDivCOlText'>
+                          <strong>Tel </strong> <span> 1-800-103-9695 (toll free) for all major operators</span>
                         </div>
                       </div>
+                    </div>
+                    <div className="col-6 ">
+                      <div className='supportDivCOl'>
+                        <h6 className='impotantNothed'>Airlline SUPPORT</h6>
+                        <div className='supportDivCOlText'>
+                          <strong>Indigo </strong> <span> 1-800-103-9695 (toll free) for all major operators</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
               </div>
-             
+
             </div>
           </div>
         </div>
