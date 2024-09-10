@@ -244,13 +244,16 @@ function BookingHistory() {
 
     // -----------------------navigate flight ticket page--------------------------
     const navigateFlightDetails = (transactionNum, booking_id) => {
-        localStorage.setItem("flight_transaction_num", transactionNum);
-        localStorage.setItem("flight_booking_id", booking_id);
         console.log("Flight details clicked");
         setLoading(true);
         setTimeout(() => {
-            navigate('/flight-ticket');
-        }, 10000);
+            navigate('/flight-ticket', {
+                state: {
+                    transactionNum,
+                    booking_id,
+                },
+            });
+        }, 10000); // 10 seconds delay
     };
     // -----------bus---hotel-----flight----tabs content---------------------------------
     const renderTabContent = () => {
@@ -302,7 +305,7 @@ function BookingHistory() {
                                                 <p className='hotlamount'><strong>Amount : </strong> <span>₹{Math.round(booking.amount)}</span></p>
                                             </div>
                                             <div className='viewbttn'>
-                                                <button onClick={() => navigateFlightDetails(booking.transaction_num, booking.booking_id)}>View Ticket</button>
+                                                <button onClick={() => navigateFlightDetails(booking.transaction_num, booking.id)}>View Ticket</button>
                                             </div>
                                         </div>
                                     ))
