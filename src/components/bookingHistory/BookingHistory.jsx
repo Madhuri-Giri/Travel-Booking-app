@@ -76,59 +76,56 @@ function BookingHistory() {
 
     // ----------------------hotel ticket API-------------------------------
     const handleBookingClick = async () => {
-        // Get hotelBookingId from local storage
         const hotelBookingId = localStorage.getItem('hotel_booking_id');
         console.log('handleBookingClick called with:', hotelBookingId);
-
+    
         try {
-            // Check if hotelBookingId is valid
-            if (typeof hotelBookingId !== 'string' && typeof hotelBookingId !== 'number') {
+            if (typeof hotelBookingId !== 'string') {
                 console.error('Invalid hotel booking ID:', hotelBookingId);
                 throw new Error('Invalid hotel booking ID.');
             }
-
-            // Define request data with the hotel_booking_id
-            const requestData = {
-                hotel_booking_id: hotelBookingId
-            };
-
+    
+            const requestData = { hotel_booking_id: hotelBookingId };
+    
             const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestData),
             });
-
+    
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
+    
             const res = await response.json();
             console.log('Hotel Ticket API Response:', res);
-
-            // Define ticketData with default empty arrays
+    
+            // Extract and log the passenger data
+            const passengers = res.passenger || [];
+            console.log('Passenger Data:', passengers);
+    
             const ticketData = {
                 hotelBook: res.hotelBook || [],
-                bookingStatus: res.booking_status || []
+                bookingStatus: res.booking_status || [],
+                passenger: passengers
             };
-
-            // Check if the required data is present
-            if (!ticketData.hotelBook.length && !ticketData.bookingStatus.length) {
+    
+            if (!ticketData.hotelBook.length && !ticketData.bookingStatus.length && !ticketData.passenger.length) {
                 console.error('No relevant ticket data found in the response:', ticketData);
                 throw new Error('No relevant ticket data found in the response.');
             }
-
-            // Save ticket data to local storage
+    
             localStorage.setItem('hotelTicket', JSON.stringify(ticketData));
-
-            // Navigate to the hotel-bill page
+    
             navigate('/hotel-bill');
-
+    
         } catch (error) {
             console.error('Error fetching hotel ticket:', error);
         }
     };
+    
+    
+    
     // ----------------------hotel ticket API End-------------------------------
 
 
