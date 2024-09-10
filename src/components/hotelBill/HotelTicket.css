@@ -50,11 +50,15 @@
   border-radius: 8px;
 }
 
-.hotel-logo {
+/* .hotel-logo {
   width: 100px;
   height: auto;
-}
+} */
 
+.hotel-logo-home{
+  width: 150px;
+  height: auto;
+}
 .receipt-header h1 {
   font-size: 32px;
   color: #ffffff;
@@ -125,7 +129,7 @@
   background-color: rgb(237, 38, 38);
   color: white;
   border: none;
-  padding: 14px 30px;
+  padding: 10px 20px;
   border-radius: 8px;
   font-size: 20px;
   font-family: 'Roboto', sans-serif;
@@ -138,7 +142,7 @@
   background-color: #00b7eb;
   color: white;
   border: none;
-  padding: 14px 30px;
+  padding: 10px 20px;
   border-radius: 8px;
   font-size: 20px;
   font-family: 'Roboto', sans-serif;
@@ -153,6 +157,11 @@
 }
 /* Media Queries for Responsive Design */
 @media (max-width: 768px) {
+  
+.hotel-logo-home{
+  width: 100px;
+  height: auto;
+}
   .content-container {
     flex-direction: column;
   }
@@ -200,6 +209,10 @@
   .download-button,
   .cancel-button {
     font-size: 16px;
-    padding: 10px 20px;
+    padding: 8px 15px;
+  }
+  .hotel-logo-home{
+    width: 100px;
+    height: auto;
   }
 }

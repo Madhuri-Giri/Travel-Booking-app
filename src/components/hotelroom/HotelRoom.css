@@ -322,6 +322,11 @@ margin-right: 5px;
   color: #007bff 
   
 }
+
+.accordian_space ul{
+  /* font-weight: 400; */
+  color: #232020;
+}
 /* 
 .position-relative {
   position: relative;

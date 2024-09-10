@@ -16,6 +16,8 @@ import parse from 'html-react-parser';
 import Loading from '../../pages/loading/Loading';
 import PayloaderHotel from '../../pages/loading/PayloaderHotel';
 import Timer from '../timmer/Timer';
+import Popup from '../guestDetails/PopUp'; 
+
 const GuestDetails = () => {
  
   const [hotelBlock, setHotelBlock] = useState([]);
@@ -31,7 +33,7 @@ const GuestDetails = () => {
     mobile: "",
     age: "",
     passportNo: "",
-    PAN: "",
+    pan: "",
     // paxType: "",
     // leadPassenger: "",
     // passportIssueDate: "",
@@ -43,6 +45,8 @@ const GuestDetails = () => {
   const [showForm, setShowForm] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [isFormComplete, setIsFormComplete] = useState(false);
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalPriceWithGST, setTotalPriceWithGST] = useState(0);
@@ -174,6 +178,7 @@ const GuestDetails = () => {
   if (!selectedRoomsData) {
     return <p>Loading...</p>;
   }
+
   const handleDateChange = (index, date, field) => {
     const newGuestForms = [...guestForms];
     newGuestForms[index] = {
@@ -191,17 +196,31 @@ const GuestDetails = () => {
       [name]: value,
     };
     setGuestForms(newGuestForms);
-  };
+ // Check if all fields are filled
+ const allFilled = newGuestForms.every(formData =>
+  formData.fname && formData.lname && formData.email && formData.mobile &&
+  formData.age && formData.passportNo && formData.pan
+);
+
+setIsFormComplete(allFilled);
+setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are filled
+};
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setFormSubmitted(true);
     localStorage.setItem('guestDetails', JSON.stringify(guestForms));
+    setShowPopup(true); 
+
   };
 
   const handleCheckboxChange = () => {
     setCheckboxChecked(!checkboxChecked);
   };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+};
   // ---------------- RozarPay Payment Gateway  Integration start -------------------
   const fetchPaymentDetails = async () => {
     try {
@@ -482,7 +501,7 @@ const GuestDetails = () => {
                   PassportNo: guest.passportNo || "",
                   PassportIssueDate: "",   
                   PassportExpDate: "",     
-                  PAN: guest.PAN || "",
+                  PAN: guest.pan || "",
                 })),
                 SupplierPrice: storedHotelRoomData.SupplierPrice || null,
                 Price: {
@@ -599,10 +618,7 @@ const GuestDetails = () => {
       
         isProcessing = false;
       };
-      
-      
-      
-    
+       
   const { AddressLine1, HotelName, HotelRoomsDetails, HotelPolicyDetail, HotelNorms } = hotelBlock;
   const { singleDeluxe, doubleDeluxe, totalPriceSingleDeluxe, totalPriceDoubleDeluxe, checkInDate, checkOutDate } = selectedRoomsData;
 
@@ -635,6 +651,7 @@ const GuestDetails = () => {
     });
     return cleanedDescription;
   };
+  
   if (payLoading) {
     return <PayloaderHotel/>;
   }
@@ -828,13 +845,13 @@ const GuestDetails = () => {
         type="text"
         className="form-control"
         placeholder="PAN No."
-        name="PAN No"
+        name="pan"
         value={formData.number}
         onChange={(e) => handleFormChange(index, e)}
       />
     </div>
 
-              <div className="mb-3 req_field">
+      <div className="mb-3 req_field">
       <label className="required_field">Age</label>
       <input
         type="number"
@@ -847,8 +864,8 @@ const GuestDetails = () => {
       />
     </div>
 
-              <div className="mb-3 passport_field">
-      <label className="required_field">Passport No.</label>
+      <div className="mb-3 passport_field">
+      <label>Passport No.</label>
       <input
         type="text"
         className="form-control"
@@ -916,24 +933,19 @@ const GuestDetails = () => {
                 )}
                 {formSubmitted && (
                   <div>
-                    {/* <h2>Guest Details</h2>
-                  <p><strong>First Name:</strong> {formData.fname}</p>
-                  <p><strong>Middle Name:</strong> {formData.mname}</p>
-                  <p><strong>Last Name:</strong> {formData.lname}</p>
-                  <p><strong>Email:</strong> {formData.email}</p>
-                  <p><strong>Mobile:</strong> {formData.mobile}</p> */}
+                    <Popup show={showPopup} onClose={handleClosePopup} formData={guestForms} />
                     <label className='check_btn'>
-                      <input
-                        type="checkbox"
-                        checked={checkboxChecked}
-                        onChange={handleCheckboxChange}
-                      />
-                      Confirm details are correct
+                        <input
+                            type="checkbox"
+                            checked={checkboxChecked}
+                            onChange={handleCheckboxChange}
+                        />
+                        Confirm details are correct
                     </label>
-                    {checkboxChecked && (
-                      <button className='submit-btn' onClick={handlePayment}>Proceed to Payment</button>
-                    )}
-                  </div>
+                    {isFormComplete && (
+            <button className='submit-btn' onClick={handlePayment}>Proceed to Payment</button>
+          )}
+                </div>
                 )}
               </div>
             ))
