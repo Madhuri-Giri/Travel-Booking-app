@@ -41,11 +41,6 @@ const FlightSearch = () => {
   const mainCityNames = ['Delhi', 'Mumbai', 'Bhopal', 'Indore', 'Goa', 'Hyderabad'];
   const [originCode, setOriginCode] = useState(''); // State for origin code
   const [desctinationCode, setDesctinationCode] = useState(''); // State for origin code
-
-  console.log("originCode", originCode);
-  console.log("desctinationCode", desctinationCode);
-
-
   const [departureDate, setDepartureDate] = useState();
   const [returnDateDep, setReturnDateDep] = useState();
 
@@ -67,36 +62,7 @@ const FlightSearch = () => {
     };
   }, []);
 
-  // Function to fetch suggestions
-  // const fetchSuggestions = async (query, setSuggestions, isMainCityFetch = false) => {
-  //   try {
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ query }),
-  //     });
 
-  //     const data = await response.json();
-  //     let suggestions = data.data;
-
-  //     if (isMainCityFetch) {
-  //       // Filter to only include main cities from the API response
-  //       suggestions = suggestions.filter((suggestion) =>
-  //         mainCityNames.includes(suggestion.busodma_destination_name)
-  //       );
-  //     } else {
-  //       // Filter suggestions based on the input query
-  //       suggestions = suggestions.filter((suggestion) =>
-  //         suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
-  //       );
-  //     }
-  //     setSuggestions(suggestions.slice(0, 6)); // Show up to 10 suggestions
-  //   } catch (error) {
-  //     console.error('Error fetching suggestions:', error);
-  //   }
-  // };
   const fetchSuggestions = async (query, setSuggestions, isMainCityFetch = false) => {
     try {
       // Encode the query parameter
@@ -167,14 +133,7 @@ const FlightSearch = () => {
     setSuggestions([]);
   };
 
-  // function for adult , child , infact dropdown list-------------------------------------------
-  const [showDropdown, setShowDropdown] = useState(false);
-  const handleShow = () => {
-    setShowDropdown(!showDropdown);
-  };
-  const handleClose = () => {
-    setShowDropdown(false);
-  };
+  // function for dates departure return 
   const handleDateChangeDeparture = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -189,6 +148,16 @@ const FlightSearch = () => {
     const formattedDate = `${year}-${month}-${day}T00:00:00`;
     setReturnDateDep(formattedDate);
   };
+
+  // function for adult , child , infact dropdown list-------------------------------------------
+  const [showDropdown, setShowDropdown] = useState(false);
+  const handleShow = () => {
+    setShowDropdown(!showDropdown);
+  };
+  const handleClose = () => {
+    setShowDropdown(false);
+  };
+
   // State variables for counts
   const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
@@ -296,6 +265,10 @@ const FlightSearch = () => {
       JourneyType: newValue.toString()
     }));
   };
+  const activateTwoWayTab = () => {
+    handleTabChange({ target: { value: 'twoway' } });
+  };
+  
 
   useEffect(() => {
     if (tabValue === 1) {
@@ -707,7 +680,7 @@ const FlightSearch = () => {
                               <span className="plane-icon">
                                 <MdDateRange />
                               </span>
-                              <div className="date-picker-wrapper flightDateDiv form-control">
+                              <div className="date-picker-wrapper flightDateDiv form-control flightDepDATE">
 
                                 <DatePicker
                                   name="PreferredDepartureTime"
@@ -723,11 +696,12 @@ const FlightSearch = () => {
                               <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
                           </div>
+
                           <div className="col-6 flight-input-container onewayreturnhidebtn">
-                            <span className="plane-icon">
-                            </span>
-                            <Link>Add Return date</Link>
+                            <span className="plane-icon"></span>
+                            <Link onClick={activateTwoWayTab}>Add Return date</Link>
                           </div>
+
                           <div className="col-sm-8 flightformCol form-group " onClick={handleShow}>
                             <div className="form-control flightTravellerclssFormControl  flight-input-container">
                               <span className="travellerplane-icon">
@@ -923,7 +897,7 @@ const FlightSearch = () => {
                               <span className="plane-icon">
                                 <MdDateRange />
                               </span>
-                              <div className="date-picker-wrapper flightDateDiv form-control">
+                              <div className="date-picker-wrapper flightDateDiv form-control flightDepDATE" >
                                 <DatePicker
                                   selected={departureDate}
                                   onChange={handleDateChangeDeparture}
@@ -942,7 +916,7 @@ const FlightSearch = () => {
                               <span className="plane-icon">
                                 <MdDateRange />
                               </span>
-                              <div className="date-picker-wrapper flightDateDiv form-control">
+                              <div className="date-picker-wrapper flightDateDiv form-control flightRetDATE">
 
                                 <DatePicker
                                   selected={returnDateDep}

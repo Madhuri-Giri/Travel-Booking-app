@@ -1,5 +1,5 @@
 
-import { useState, useRef, useEffect} from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 
 
@@ -28,7 +28,7 @@ const BusSearch = () => {
   const dateInputRef = useRef(null);
   const [ipAddress, setIpAddress] = useState('');
 
-// ---------------IP Address-------------
+  // ---------------IP Address-------------
   // Function to fetch the IP address
   const fetchIPAddress = async () => {
     try {
@@ -45,7 +45,7 @@ const BusSearch = () => {
   useEffect(() => {
     fetchIPAddress();
   }, []);
-// ------------end IP Address-------------
+  // ------------end IP Address-------------
 
   const handleIconClick = () => {
     dateInputRef.current.showPicker();
@@ -135,95 +135,95 @@ const BusSearch = () => {
   }
 
   return (
-   <>
-   <CustomNavbar />
-     <div className='BusSearch'>
-      <div className="bus-search">
-        <div className="B-main">
-          <div className="B-main-top">
-            {/* <img src={BusMainImg} alt="" /> */}
-            <Lottie className='lotti-bus' animationData={busAnim} style={{ marginTop:"-4vmax"}}  />
-          </div>
-          <div className="B-main-btm">
-            <div className="sarch-tab">
-              <div className="one">
-                <div className="ipt-bus">
-                  <label>From</label>
-                  <div className="ipt-handle">
-                    <i className="ri-map-pin-line"></i>
-                    <input
-                      type="text"
-                      placeholder='Starting Point'
-                      value={from}
-                      onChange={handleFromChange}
-                      onFocus={handleFromFocus}
-                    />
-                  </div>
-                  
-                  {fromSuggestions.length > 0 && (
-                    <ul className="suggestions-list-from">
-                      {fromSuggestions.map((suggestion, index) => (
-                        <li key={index} onClick={() => handleFromSelect(suggestion)}>
-                          {suggestion.busodma_destination_name}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-              <div className="one">
-                <div className="ipt-bus">
-                  <label>To</label>
-                  <div className="ipt-handle">
-                    <i className="ri-map-pin-line"></i>
-                    <input
-                      type="text"
-                      placeholder='Destination'
-                      value={to}
-                      onChange={handleToChange}
-                      onFocus={handleToFocus}
-                    />
-                  </div>
-                  {toSuggestions.length > 0 && (
-                    <ul className="suggestions-list">
-                      {toSuggestions.map((suggestion, index) => (
-                        <li key={index} onClick={() => handleToSelect(suggestion)}>
-                          {suggestion.busodma_destination_name}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-              <div className="one">
-                <div className="ipt-bus" onClick={handleIconClick}>
-                  <label>Departure Date</label>
-                  <div className="ipt-handle">
-                    <i className="ri-calendar-2-line"></i>
-                    <input
-                      type="date"
-                      ref={dateInputRef}
-                      className="date-input"
-                      value={selectedBusDate ? selectedBusDate.toISOString().split('T')[0] : ''}
-                      onChange={(e) => dispatch(setSelectedBusDate(new Date(e.target.value)))}
-                      min={today}
-                    />
-                  </div>
-                </div>
-              </div>
+    <>
+      <CustomNavbar />
+      <div className='BusSearch'>
+        <div className="bus-search">
+          <div className="B-main">
+            <div className="B-main-top">
+              {/* <img src={BusMainImg} alt="" /> */}
+              <Lottie className='lotti-bus' animationData={busAnim} style={{ marginTop: "-4vmax" }} />
+            </div>
+            <div className="B-main-btm">
+              <div className="sarch-tab">
+                <div className="one">
+                  <div className="ipt-bus">
+                    <label>From</label>
+                    <div className="ipt-handle">
+                      <i className="ri-map-pin-line"></i>
+                      <input
+                        type="text"
+                        placeholder='Starting Point'
+                        value={from}
+                        onChange={handleFromChange}
+                        onFocus={handleFromFocus}
+                      />
+                    </div>
 
-              <div className="search-bus-btn">
-                <label>Search Bus</label>
-                <button onClick={handleSearch}>Search Buses</button>
+                    {fromSuggestions.length > 0 && (
+                      <ul className="suggestions-list-from">
+                        {fromSuggestions.map((suggestion, index) => (
+                          <li key={index} onClick={() => handleFromSelect(suggestion)}>
+                            {suggestion.busodma_destination_name}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+                <div className="one">
+                  <div className="ipt-bus">
+                    <label>To</label>
+                    <div className="ipt-handle">
+                      <i className="ri-map-pin-line"></i>
+                      <input
+                        type="text"
+                        placeholder='Destination'
+                        value={to}
+                        onChange={handleToChange}
+                        onFocus={handleToFocus}
+                      />
+                    </div>
+                    {toSuggestions.length > 0 && (
+                      <ul className="suggestions-list">
+                        {toSuggestions.map((suggestion, index) => (
+                          <li key={index} onClick={() => handleToSelect(suggestion)}>
+                            {suggestion.busodma_destination_name}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+                <div className="one">
+                  <div className="ipt-bus" onClick={handleIconClick}>
+                    <label>Departure Date</label>
+                    <div className="ipt-handle">
+                      <i className="ri-calendar-2-line"></i>
+                      <input
+                        type="date"
+                        ref={dateInputRef}
+                        className="date-input"
+                        value={selectedBusDate ? selectedBusDate.toISOString().split('T')[0] : ''}
+                        onChange={(e) => dispatch(setSelectedBusDate(new Date(e.target.value)))}
+                        min={today}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="search-bus-btn">
+                  <label>Search Bus</label>
+                  <button onClick={handleSearch}>Search Buses</button>
+                </div>
               </div>
             </div>
           </div>
+          <BusGurantee />
         </div>
-        <BusGurantee />
       </div>
-    </div>
-    <Footer />
-   </>
+      <Footer />
+    </>
   );
 };
 

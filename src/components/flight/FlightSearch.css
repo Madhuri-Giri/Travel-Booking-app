@@ -1,3 +1,40 @@
+
+
+
+
+
+.hide-calendar-icon::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+  .flightDepDATE .react-datepicker{
+    margin-left: 90px;
+  }
+  .flightRetDATE .react-datepicker{
+    margin-right: 90px;
+  }
+
+.flightDateDiv {
+    border-radius: 15px;
+    border: 1px solid gray;
+    padding: 9px 40px;
+}
+
+.flightDateDiv input {
+    width: 100%;
+    border: none !important;
+    /* border-radius: 4px; */
+    font-size: 16px;
+    position: relative;
+    line-height: 30px;
+    cursor: pointer;
+}
+.flightDateDiv input:focus {
+    border: none !important;
+    outline: none !important;
+}
+
+
+
 .flightTravellerclssFormControl svg {
     font-size: 20px;
 }
