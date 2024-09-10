@@ -127,7 +127,7 @@ const BusTikit = () => {
         if (response.ok) {
           toast.success("Your ticket is canceled");
           console.log("bus-new-cancel response:", data);
-          // navigate('/bus-search'); 
+          navigate('/bus-search'); 
         } else {
           toast.error("Failed to cancel the ticket");
           console.log("Failed to cancel the ticket. Response Data:", data);
@@ -199,15 +199,15 @@ const BusTikit = () => {
                 <div className="col-lg-9">
                   <div className='busticktbox'>
                     <div className='bustickthed'>
-                      <img style={{float:"left", position:"relative", bottom:"0.8vmax"}} width={80} src={sajLogo} alt="" />
-                      <h5>Bus Ticket</h5>
+                    <h5>Your Bus Ticket</h5>
+                    <img style={{position:"absolute", right:'0%', paddingTop:"0.4vmax", paddingBottom:"0.6vmax", paddingRight:"1vmax"}} width={90} src={sajLogo} alt="" />
                     </div>
-                     {/* ----------------------------------------------- */}
-                     <div className="last-line">
+                    <div className="last-line">
                               <small><i className="ri-phone-fill"></i> Company No:-</small>
-                              <small><i className="ri-phone-fill"></i> Help Line No:-</small>
+                              {/* <small><i className="ri-phone-fill"></i> Help Line No:-</small> */}
                     </div>
 {/* ----------------------------------------------- */}
+                     
                     <div className="top"></div>
                     <div className="row buspssngerdetails">
                       <div className="col-12">
@@ -269,6 +269,8 @@ const BusTikit = () => {
                       </button>
                       <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
                     </div>
+                    {/* ----------------------------------------------- */}
+                  
                   </div>
                 </div>
               </div>

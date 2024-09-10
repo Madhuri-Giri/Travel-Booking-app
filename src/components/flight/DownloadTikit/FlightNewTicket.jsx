@@ -25,6 +25,7 @@ const FlightNewTikit = () => {
   const ticketElementRef = useRef(null);
   const [flightticketPassengerDetails, setFlightticketPassengerDetails] = useState(null);
   const navigate = useNavigate();
+  const [buttonsVisible, setButtonsVisible] = useState(true); // State to manage button visibility
 
   // Convert the stored value to a boolean
   const islcc = localStorage.getItem('F-IsLcc');
@@ -153,6 +154,7 @@ const FlightNewTikit = () => {
         if (response.ok) {
           toast.success("Your ticket is canceled");
           setFlightticketPassengerDetails(null); // Clear the state
+          setButtonsVisible(false); // Hide the buttons
           setTimeout(() => {
             // Navigate to the flight-search page
             navigate('/flight-search');
@@ -166,6 +168,7 @@ const FlightNewTikit = () => {
       }
     }
   };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
@@ -231,14 +234,21 @@ const FlightNewTikit = () => {
             </div>
 
             <div className="col-lg-9">
-              <div className="fligthticketBtns">
-                <button className='busdonload' onClick={downloadTicket}>
-                  Download
-                  <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
-                </button>
-                <button className='buscncl' onClick={handleCancelTicket} style={{ backgroundColor: 'red' }}>Cancel Ticket</button>
 
+              <div className="fligthticketBtns">
+                {buttonsVisible && (
+                  <>
+                    <button className='busdonload' onClick={downloadTicket}>
+                      Download
+                      <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
+                    </button>
+                    <button className='buscncl' onClick={handleCancelTicket} style={{ backgroundColor: 'red' }}>
+                      Cancel Ticket
+                    </button>
+                  </>
+                )}
               </div>
+
               {flightticketPassengerDetails ? (
                 <div className='flightTicketmain'>
                   {/* {islcc ? ( */}
@@ -298,7 +308,7 @@ const FlightNewTikit = () => {
                             </thead>
                             <tbody>
                               <tr>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong>1. {book_passengers[0].title} {book_passengers[0].first_name} {book_passengers[0].last_name}</strong></td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong> {book_passengers[0].first_name} {book_passengers[0].last_name}</strong></td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong> {book_passengers[0].address}</strong></td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong> {book_passengers[0].contact_no}</strong></td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong> {book_passengers[0].city}</strong></td>

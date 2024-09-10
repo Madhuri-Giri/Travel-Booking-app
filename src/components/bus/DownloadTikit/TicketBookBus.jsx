@@ -156,17 +156,15 @@ const TicketBookBus = () => {
                 </div>
                 <div className="col-lg-9">
                   <div className="busticktbox">
-                    <div className="bustickthed">
-                    <img style={{float:"left", position:"relative", bottom:"0.8vmax"}} width={80} src={sajLogo} alt="" />
-
-                      <h5>Bus Ticket</h5>
+                  <div className='bustickthed'>
+                    <h5>Your Bus Ticket</h5>
+                    <img style={{position:"absolute", right:'0%', paddingTop:"0.4vmax", paddingBottom:"0.6vmax", paddingRight:"1vmax"}} width={90} src={sajLogo} alt="" />
                     </div>
-                    {/* ----------------------------------------------- */}
                     <div className="last-line">
                               <small><i className="ri-phone-fill"></i> Company No:-</small>
-                              <small><i className="ri-phone-fill"></i> Help Line No:-</small>
+                              {/* <small><i className="ri-phone-fill"></i> Help Line No:-</small> */}
                     </div>
-{/* ----------------------------------------------- */}
+                   
                     <div className="top">
                     </div>
                     <div className="row buspssngerdetails">
@@ -266,7 +264,7 @@ const TicketBookBus = () => {
                             </button>
                             <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
                           </div>
-
+ 
 
                         </div>
                       </div>
