@@ -8,6 +8,19 @@
 
 }
 
+.last-line{
+       width: 100%;
+       background: #dddddd;
+     display: flex;
+     align-items: center;
+     padding-left: 2vmax;
+     padding-right: 2vmax;
+     justify-content: space-between;
+     /* margin-top: 1vmax; */
+     /* border-top-left-radius: 10px;
+     border-top-right-radius: 10px; */
+   }
+
 .hide-during-download {
        display: none;
 }
@@ -310,9 +323,17 @@
        border-top-left-radius: 10px;
        border-top-right-radius: 10px;
        color: white;
-       padding: 5px 10px;
+       padding: 3px 10px;
        text-align: center;
+       position: relative;
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
       
+}
+.bustickthed h5{
+       padding-left: 1.5vmax;
+       font-size: 1.2vmax;
 }
 
 .buspssngerdetails {
