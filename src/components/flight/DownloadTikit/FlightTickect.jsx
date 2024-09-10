@@ -17,6 +17,7 @@ import html2canvas from 'html2canvas';
 import FooterLogo from "../../../assets/images/main logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFire, faBiohazard, faFlask, faSprayCan, faGasPump, faSmoking, faVirus, faRadiation, faBomb } from '@fortawesome/free-solid-svg-icons';
+import { useLocation } from 'react-router-dom';
 
 
 const generatePasscode = () => {
@@ -29,32 +30,32 @@ const FlightTickect = () => {
   const [flightticketPassengerDetails, setflightticketPassengerDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [buttonsVisible, setButtonsVisible] = useState(true); // State to manage button visibility
 
-  const from = useSelector((state) => state.bus.from);
-  const to = useSelector((state) => state.bus.to);
+  const location = useLocation();
+  const { transactionNum, booking_id } = location.state || {};
+  console.log("transactionNum",transactionNum);
+  console.log("booking_id",booking_id);
+  
 
   useEffect(() => {
     const fetchFlightTicketApiData = async () => {
       try {
-        // const transactionFlightNo = localStorage.getItem('flight_transaction_num');
-        // const flight_booking_id = localStorage.getItem('flight_booking_id');
-        const transactionFlightNo = localStorage.getItem('transactionNum');
-        const flight_booking_id = localStorage.getItem('flight_transaction_id');
-
+    
         const response = await fetch("https://sajyatra.sajpe.in/admin/api/flight-ticket-history", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            transaction_num: transactionFlightNo,
-            flight_booking_id: flight_booking_id,
+            transaction_num: transactionNum,
+            flight_booking_id: booking_id,
           }),
         });
 
-        // if (!response.ok) {
-        //   throw new Error('Network response was not ok');
-        // }
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
 
         const data = await response.json();
         setflightticketPassengerDetails(data);
@@ -197,10 +198,17 @@ const FlightTickect = () => {
             </div>
             <div className="col-lg-9">
               <div className="fligthticketBtns">
-                <button className='busdonload' onClick={downloadTicket}>
-                  Download
-                  <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
-                </button>
+              {buttonsVisible && (
+                  <>
+                    <button className='busdonload' onClick={downloadTicket}>
+                      Download
+                      <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
+                    </button>
+                    <button className='buscncl' onClick={handleCancelTicket} style={{ backgroundColor: 'red' }}>
+                      Cancel Ticket
+                    </button>
+                  </>
+                )}
               </div>
               <div className='flightTicketmain'>
                 <div className='flightticketboxHED'>
@@ -406,8 +414,8 @@ const FlightTickect = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
+      <Footer />
       <ToastContainer />
     </>
   );
