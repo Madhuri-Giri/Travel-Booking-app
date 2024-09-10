@@ -364,7 +364,7 @@ const PassangerInfo = () => {
               <span>{passenger.Age}</span>
               <span>{passenger.Gender === '1' ? 'Male' : 'Female'}</span>
               <span>{passenger.Address}</span>
-              <i style={{ cursor: "pointer", color: "red" }} onClick={() => deletePassenger(index)} className="ri-delete-bin-6-line"></i>
+               <span> <i style={{ cursor: "pointer", color: "red" }} onClick={() => deletePassenger(index)} className="ri-delete-bin-6-line"></i></span>
             </div>
           ))}
         </div>
