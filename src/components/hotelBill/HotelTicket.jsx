@@ -122,8 +122,6 @@ const BookingBill = () => {
     });
   };
   
-  
-
   const bookingCancel = async (event) => {
     event.preventDefault();
 
@@ -186,33 +184,40 @@ const BookingBill = () => {
         toast.error('Error occurred during cancellation');
     }
   };
+
   const cleanUpDescription = (description) => {
-    if (!description) return '';
-    let cleanedDescription = he.decode(description);
-    cleanedDescription = cleanedDescription.replace(/<\/?(ul|li|b|i|strong|em|span)\b[^>]*>/gi, '');
-    cleanedDescription = cleanedDescription.replace(/<br\s*\/?>|<p\s*\/?>|<\/p>/gi, '\n');
-    cleanedDescription = cleanedDescription.replace(/\\|\|/g, '');
-    cleanedDescription = cleanedDescription.replace(/\s{2,}/g, ' ');
-    cleanedDescription = cleanedDescription.replace(/\n{2,}/g, '\n');
-    cleanedDescription = cleanedDescription.replace(/\/\/+|\\|\|/g, '');
-    cleanedDescription = cleanedDescription.trim();
-    cleanedDescription = cleanedDescription.replace(/"/g, '');
-    cleanedDescription = cleanedDescription.replace(/<\/li>/gi, '\n');
-    cleanedDescription = cleanedDescription.replace(/<\/?ul>/gi, '\n');
-    cleanedDescription = cleanedDescription.replace(/<br\s*\/?>|<\/p>|<p\s*\/?>/gi, '\n');
-    cleanedDescription = cleanedDescription.replace(/<\/?(b|i|strong|em|span)\b[^>]*>/gi, '');
-    cleanedDescription = cleanedDescription.replace(/\\|\|/g, '');
-    cleanedDescription = cleanedDescription.replace(/\s{2,}/g, ' ');
-    cleanedDescription = cleanedDescription.replace(/\n{2,}/g, '\n');
-    cleanedDescription = cleanedDescription.trim();
-    cleanedDescription = cleanedDescription.replace(/(?:Valid From|Check-in hour|Identification card at arrival)/gi, '\n$&');
-    cleanedDescription = cleanedDescription.replace(/<li>/gi, (match, offset, string) => {
-      const listItems = string.split('</li>');
-      const index = listItems.indexOf(match);
-      return `${index + 1}. `;
-    });
-    return cleanedDescription;
-  };
+  if (!description) return '';
+
+  // Decode HTML entities
+  let cleanedDescription = he.decode(description);
+
+  // Define patterns to extract key points
+  const patterns = [
+    /Check-in hour[^.]+?\./i,
+    /Valid From[^.]+?\./i,
+    /Identification card at arrival[^.]+?\./i,
+    /Minimum check-in age[^.]+?\./i,
+    /Car park[^.]+?\./i,
+    /Amendments cannot be made[^.]+?\./i,
+  ];
+
+  let formattedText = '';
+  
+  patterns.forEach((pattern) => {
+    const matches = cleanedDescription.match(pattern);
+    if (matches) {
+      matches.forEach((match) => {
+        formattedText += `<li>${match.trim()}</li>`;
+      });
+    }
+  });
+
+  // Replace multiple spaces with single space
+  formattedText = formattedText.replace(/\s{2,}/g, ' ').trim();
+
+  // Wrap the text in <ul> tags for list formatting
+  return `<ul>${formattedText}</ul>`;
+};
 
   return (
     <>
@@ -235,9 +240,12 @@ const BookingBill = () => {
                 <p><strong>Ref No:</strong> {bookingDetails?.hotel_status.BookingRefNo}</p>
               </div>
 
-              <div className="section_c">
-              <p><strong>Hotel Policy:</strong>{cleanUpDescription(bookingDetails?.booking[0].hotelpolicy)}</p>
+              <div className="section_cp">
+              <div><h2>Hotel Policy:</h2>
+              <div dangerouslySetInnerHTML={{ __html: cleanUpDescription(bookingDetails?.booking[0].hotelpolicy) }} />
               </div>
+              </div>
+
               <div className="section_c">
                 <div className="column">
                   <h2>Hotel Information</h2>

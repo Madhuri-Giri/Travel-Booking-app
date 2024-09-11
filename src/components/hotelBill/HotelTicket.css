@@ -83,7 +83,26 @@
 .section_r strong {
   width: 200px; 
 }
-
+.section_cp{
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  background: #f5f5f5;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.section_cp h2 {
+  font-size: 24px;
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+}
 .section_c{
   display: flex;
   justify-content: space-between;

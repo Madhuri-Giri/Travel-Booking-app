@@ -415,7 +415,7 @@ setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are fil
         };
       
         const errors = [];
-        
+      
         // Validate required fields
         guestForms.forEach((formData, index) => {
           if (!formData.fname || formData.fname.length < 2 || formData.fname.length > 30) {
@@ -433,13 +433,9 @@ setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are fil
           if (formData.age === '' || isNaN(formData.age) || formData.age < 18 || formData.age > 100) {
             errors.push(`Age must be between 18 and 100 at index ${index}`);
           }
-          // if (!formData.PAN || !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.PAN)) {
-          //   errors.push(`A valid PAN Number is required at index ${index}`);
-          // }
         });
       
         if (errors.length > 0) {
-          // Display errors
           toast.error(errors.join(', '));
           isProcessing = false;
           return;
@@ -457,6 +453,7 @@ setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are fil
       
           const guestDetails = guestForms;
       
+      
           const bookingPayload = {
             ResultIndex: "9",
             HotelCode: "92G|DEL",
@@ -467,7 +464,7 @@ setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are fil
             IsVoucherBooking: true,
             transaction_num: transactionNum,
             transaction_id: transaction_id,
-            hotel_booking_id: [hotel_booking_id],
+            hotel_booking_id: hotel_booking_id,
       
             HotelRoomsDetails: [
               {
@@ -496,6 +493,7 @@ setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are fil
                   LastName: guest.lname || "",
                   Phoneno: guest.mobile || "",
                   Email: guest.email || "",
+                  Age: guest.age || "",
                   PaxType: "Adult",         
                   LeadPassenger: "No",     
                   PassportNo: guest.passportNo || "",
@@ -589,27 +587,36 @@ setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are fil
             body: JSON.stringify(bookingPayload),
           });
       
-          const responseBody = await response.json();
-          console.log('Hotel Booking Confirmation Response:', responseBody);
+          // Handle non-JSON responses
+          const contentType = response.headers.get('Content-Type');
+          if (contentType && contentType.includes('application/json')) {
+            const responseBody = await response.json();
+            console.log('Hotel Booking Confirmation Response:', responseBody);
       
-          if (!response.ok) {
-            console.error('Failed to hotel booking. Status:', response.status, 'Response:', responseBody);
-            toast.error(`Failed to Hotel booking. Status: ${response.status}`);
-            isProcessing = false;
-            return;
-          }
+            if (!response.ok) {
+              console.error('Failed to hotel booking. Status:', response.status, 'Response:', responseBody);
+              toast.error(`Failed to Hotel booking. Status: ${response.status}`);
+              isProcessing = false;
+              return;
+            }
       
-          if (responseBody.Error && responseBody.Error.ErrorCode !== 0) {
-            console.error('Booking failed:', responseBody.Error.ErrorMessage);
-            toast.error(`Booking failed: ${responseBody.Error.ErrorMessage}`);
+            if (responseBody.Error && responseBody.Error.ErrorCode !== 0) {
+              console.error('Booking failed:', responseBody.Error.ErrorMessage);
+              toast.error(`Booking failed: ${responseBody.Error.ErrorMessage}`);
+            } else {
+              toast.success('Hotel Booking successful!');
+              localStorage.setItem('HotelBookingDetails', JSON.stringify(responseBody));
+              const guestDetails = JSON.parse(localStorage.getItem('guestDetails'));
+      
+              setTimeout(() => {
+                navigate('/hotel-ticket', { state: { bookingDetails: responseBody.hotelBooking } });
+              }, 2000);
+            }
           } else {
-            toast.success('Hotel Booking successful!');
-            localStorage.setItem('HotelBookingDetails', JSON.stringify(responseBody));
-            const guestDetails = JSON.parse(localStorage.getItem('guestDetails'));
-      
-            setTimeout(() => {
-              navigate('/hotel-ticket', { state: { bookingDetails: responseBody.hotelBooking } });
-            }, 2000);
+            // Handle non-JSON response
+            const text = await response.text();
+            console.error('Received non-JSON response:', text);
+            toast.error('Received non-JSON response from server. Please try again.');
           }
         } catch (error) {
           console.error('Error during hotel booking:', error.message);

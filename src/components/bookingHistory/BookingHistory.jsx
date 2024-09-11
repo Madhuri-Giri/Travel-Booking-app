@@ -18,7 +18,6 @@ function BookingHistory() {
     console.log("hotelBookings", hotelBookings);
 
 
-    const hoteltransaction_num = localStorage.getItem('transactionNumHotel')
 
     // ----------------------hotel history API-------------------------------
     useEffect(() => {
@@ -44,15 +43,15 @@ function BookingHistory() {
                 const data = await response.json();
                 console.log('Hotel History API Response:', data);
 
-                if (data) {
+                if (data && data.status === "success" && Array.isArray(data.data)) {
                     // Store the API response in local storage
                     localStorage.setItem('hotelHistoryData', JSON.stringify(data));
 
                     // Update state with fetched data
-                    setHotelBookings(data);
+                    setHotelBookings(data.data);
 
-                    // Extract and store hotel_booking_id
-                    const hotelBookingId = data.bookinghistory?.hotel_booking_id;
+                    // Extract and store hotel_booking_id from the booking history
+                    const hotelBookingId = data.data[0]?.hotel_booking_id; // Assuming you want the first one
                     if (hotelBookingId) {
                         localStorage.setItem('hotel_booking_id', hotelBookingId);
                     } else {
@@ -105,24 +104,24 @@ function BookingHistory() {
             console.log('Passenger Data:', passengers);
     
             const ticketData = {
-                hotelBook: res.hotelBook || [],
-                bookingStatus: res.booking_status || [],
+                hotelBook: res.hotelBook || {},
+                bookingStatus: res.booking_status || {},
                 passenger: passengers
             };
     
-            if (!ticketData.hotelBook.length && !ticketData.bookingStatus.length && !ticketData.passenger.length) {
+            if (!Object.keys(ticketData.hotelBook).length && !Object.keys(ticketData.bookingStatus).length && !ticketData.passenger.length) {
                 console.error('No relevant ticket data found in the response:', ticketData);
                 throw new Error('No relevant ticket data found in the response.');
             }
     
             localStorage.setItem('hotelTicket', JSON.stringify(ticketData));
-    
             navigate('/hotel-bill');
     
         } catch (error) {
             console.error('Error fetching hotel ticket:', error);
         }
     };
+    
     
     
     
@@ -317,32 +316,28 @@ function BookingHistory() {
             case 'hotel':
                 return (
                     <div className='hotelTabContent'>
-                        <div className="container">
-                            <h6 className='hotelTabContenthedding'>Hotel Ticket Status</h6>
-                            {hotelBookings && hotelBookings.data && Array.isArray(hotelBookings.data) ? (
-                                hotelBookings.data.map((user, userIndex) => (
-                                    hotelBookings.userdetails && Array.isArray(hotelBookings.userdetails) ? (
-                                        hotelBookings.userdetails.map((userdetails, userDeatilsIndex) => (
-                                            <div key={`hotelTabContentROW-${userIndex}-${userDeatilsIndex}`} className="row hotelTabContentROW">
-                                                <div className="col-md-6">
-                                                    <p><strong>Hotel Name : </strong> {hotelBookings.hotel_name || "N/A"}</p>
-                                                    <p><strong>Transaction No : </strong> {user.transaction_num || "N/A"}</p>
-                                                    <p><strong>Mobile No : </strong> {userdetails.mobile || "N/A"}</p>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <p><strong>Hotel Id : </strong> {user.booking_id}</p>
-                                                    <p className='bookingStats'><strong>Status : </strong> <span>{user.status}</span></p>
-                                                    <p className='hotlamount'><strong>Amount : </strong> <span>₹{Math.round(user.amount)}</span></p>
-                                                </div>
-                                                <div className='viewbttn'>
-                                                    <button onClick={() => handleBookingClick(hotelBookings.hotel_booking_id)}>View Ticket</button>
-                                                </div>
-                                            </div>
+                    <div className="container">
+                        <h6 className='hotelTabContenthedding'>Hotel Ticket Status</h6>
+                        {hotelBookings.length > 0 ? (
+                            hotelBookings.map((booking, index) => (
+                                <div key={`hotelTabContentROW-${index}`} className="row hotelTabContentROW">
+                                    <div className="col-md-6">
+                                        {/* <p><strong>Hotel Name : </strong> {booking.hotel_name || "N/A"}</p> */}
+                                        <p><strong>Transaction No : </strong> {booking.transaction_num || "N/A"}</p>
+                                        {/* <p><strong>Mobile No : </strong> {booking.userdetails?.mobile || "N/A"}</p> */}
+                                    </div>
+                                    <div className="col-md-6">
+                                        <p><strong>Hotel Id : </strong> {booking.booking_id}</p>
+                                        <p className='bookingStats'><strong>Status : </strong> <span>{booking.status}</span></p>
+                                        <p className='hotlamount'><strong>Amount : </strong> <span>₹{Math.round(booking.amount)}</span></p>
+                                    </div>
+                                    <div className='viewbttn'>
+                             <button onClick={handleBookingClick}>View Ticket</button>
+                            </div>
+
+                                </div>
                                         ))
-                                    ) : (
-                                        <p key={`user-details-${userIndex}`}>No user details found.</p>
-                                    )
-                                ))
+                                   
                             ) : (
                                 <p>No bookings found. Please book a ticket.</p>
                             )}
