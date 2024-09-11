@@ -323,7 +323,7 @@ const Home = () => {
     let valid = true;
     const newErrors = { from: '', to: '', departureDate: '' };
     if (!from) {
-      newErrors.from = 'Starting point is required.';
+      newErrors.from = 'Origin is required.';
       valid = false;
     }
     if (!to) {
@@ -331,8 +331,8 @@ const Home = () => {
       valid = false;
     }
     if (from && to && from === to) {
-      newErrors.from = 'Starting point and destination cannot be the same.';
-      newErrors.to = 'Starting point and destination cannot be the same.';
+      newErrors.from = 'Origin and destination cannot be the same.';
+      newErrors.to = 'Origin and destination cannot be the same.';
       valid = false;
     }
     if (!departureDate) {
