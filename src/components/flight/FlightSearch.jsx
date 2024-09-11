@@ -30,8 +30,8 @@ const FlightSearch = () => {
   const navigate = useNavigate();
 
   // states-------------------------------------------
-  const [from, setFrom] = useState('LKO');
-  const [to, setTo] = useState('KWI');
+  const [from, setFrom] = useState();
+  const [to, setTo] = useState();
   const [fromSuggestions, setFromSuggestions] = useState([]);
   const [toSuggestions, setToSuggestions] = useState([]);
   const fromInputRef = useRef(null);
@@ -43,6 +43,7 @@ const FlightSearch = () => {
   const [desctinationCode, setDesctinationCode] = useState(''); // State for origin code
   const [departureDate, setDepartureDate] = useState();
   const [returnDateDep, setReturnDateDep] = useState();
+  const [errors, setErrors] = useState({ from: '', to: '', departureDate: '' });
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -111,6 +112,7 @@ const FlightSearch = () => {
   const handleFromChange = (event) => {
     const value = event.target.value;
     setFrom(value);
+    setErrors({ ...errors, from: '' }); // Clear the error when the user types
     if (value.length > 2) {
       fetchSuggestions(value, setFromSuggestions);
     } else {
@@ -121,6 +123,7 @@ const FlightSearch = () => {
   const handleToChange = (event) => {
     const value = event.target.value;
     setTo(value);
+    setErrors({ ...errors, to: '' }); // Clear the error when the user types
     if (value.length > 2) {
       fetchSuggestions(value, setToSuggestions);
     } else {
@@ -140,6 +143,8 @@ const FlightSearch = () => {
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}T00:00:00`;
     setDepartureDate(formattedDate);
+    setErrors({ ...errors, departureDate: '' }); // Clear the error when the user selects a date
+
   };
   const handleDateChangeReturn = (date) => {
     const year = date.getFullYear();
@@ -233,7 +238,6 @@ const FlightSearch = () => {
   // for one way & two way tabs-----------------------------------------
   const [activeTab, setActiveTab] = useState('oneway');
   const [tabValue, setTabValue] = useState(1); // State for tab value: 1 for oneway, 2 for twoway
-  // console.log("tabValue", tabValue);
   const [segments, setSegments] = useState([
     {
       Origin: originCode,
@@ -268,7 +272,7 @@ const FlightSearch = () => {
   const activateTwoWayTab = () => {
     handleTabChange({ target: { value: 'twoway' } });
   };
-  
+
 
   useEffect(() => {
     if (tabValue === 1) {
@@ -282,6 +286,8 @@ const FlightSearch = () => {
           PreferredArrivalTime: departureDate
         }
       ]);
+
+      
     } else if (tabValue === 2) {
       // Two-Way: Add a second segment
       setSegments([
@@ -300,6 +306,8 @@ const FlightSearch = () => {
           PreferredArrivalTime: returnDateDep
         }
       ]);
+
+      
     }
   }, [tabValue, departureDate, returnDateDep, selectedflightClass]);
 
@@ -310,60 +318,30 @@ const FlightSearch = () => {
     }));
   }, [segments]); // Dependency on segments state
 
-  // const getFlightList = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(formData),
-  //     });
 
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     }
-
-  //     const data = await response.json();
-  //     console.log("Flight search API response: ", data);
-
-  //     localStorage.setItem('Flight-search', JSON.stringify(data));
-
-  //     const firstResult = data?.Results?.[0]?.[0];
-  //     if (firstResult && firstResult.FareDataMultiple?.[0]) {
-  //       const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
-  //       const { TraceId, SrdvType } = data;
-
-  //       localStorage.setItem("F-SrdvIndex", SrdvIndex);
-  //       localStorage.setItem("F-ResultIndex", ResultIndex);
-  //       localStorage.setItem("F-TraceId", TraceId);
-  //       localStorage.setItem("F-SrdvType", SrdvType);
-  //       localStorage.setItem("F-IsLcc", IsLCC);
-
-  //       const airlineCodes = data.Results.flatMap(result =>
-  //         result.flatMap(fareData =>
-  //           fareData.FareDataMultiple.flatMap(fare =>
-  //             fare.FareSegments.map(segment => segment.AirlineCode)
-  //           )
-  //         )
-  //       );
-  //       const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
-  //       console.log("Airline Codes: ", filteredAirlineCodes);
-  //     } else {
-  //       console.log("SrdvIndex or FareDataMultiple not found");
-  //     }
-  //     setLoading(false);
-  //     navigate("/flight-list", { state: { data: data, formData: formData } });
-  //   } catch (error) {
-  //     setLoading(false);
-  //     toast.error('An error occurred during booking. Please try again.');
-  //     console.error('Error fetching suggestions:', error);
-  //   }
-  // };
-
-  // ------------------------------------------------------------------------------------------------------------
-
+  const validateForm = () => {
+    let valid = true;
+    const newErrors = { from: '', to: '', departureDate: '' };
+    if (!from) {
+      newErrors.from = 'Origin is required.';
+      valid = false;
+    }
+    if (!to) {
+      newErrors.to = 'Destination is required.';
+      valid = false;
+    }
+    if (from && to && from === to) {
+      newErrors.from = 'Origin and destination cannot be the same.';
+      newErrors.to = 'Origin and destination cannot be the same.';
+      valid = false;
+    }
+    if (!departureDate) {
+      newErrors.departureDate = 'Departure date is required.';
+      valid = false;
+    }
+    setErrors(newErrors);
+    return valid;
+  };
 
   const getFlightList = async () => {
     setLoading(true);
@@ -377,11 +355,22 @@ const FlightSearch = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorText = await response.text();
+        console.error(`HTTP error! Status: ${response.status}, Response: ${errorText}`);
+        alert(`Failed to fetch flight data: ${errorText}`);
+        setLoading(false);
+        return;
       }
 
       const data = await response.json();
       console.log("Flight search API response: ", data);
+
+      if (!data.Results) {
+        console.error("No results found in the API response");
+        alert("No flights found. Please try again later.");
+        setLoading(false);
+        return;
+      }
 
       localStorage.setItem('Flight-search', JSON.stringify(data));
 
@@ -406,9 +395,6 @@ const FlightSearch = () => {
 
       localStorage.setItem('Airline-Logos', JSON.stringify(logoMap));
 
-      // navigate("/flight-list", { state: { data: data, formData: formData } });
-
-
       const firstResult = data?.Results?.[0]?.[0];
       if (firstResult && firstResult.FareDataMultiple?.[0]) {
         const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
@@ -418,30 +404,20 @@ const FlightSearch = () => {
         localStorage.setItem("F-TraceId", TraceId);
         localStorage.setItem("F-SrdvType", SrdvType);
         localStorage.setItem("F-IsLcc", IsLCC);
-        const airlineCodes = data.Results.flatMap(result =>
-          result.flatMap(fareData =>
-            fareData.FareDataMultiple.flatMap(fare =>
-              fare.FareSegments.map(segment => segment.AirlineCode)
-            )
-          )
-        );
-        const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
-        console.log("Airline Codes: ", filteredAirlineCodes);
       } else {
         console.log("SrdvIndex or FareDataMultiple not found");
       }
+
       setLoading(false);
       navigate("/flight-list", { state: { data: data, formData: formData } });
 
     } catch (error) {
-      toast.error('An error occurred during booking. Please try again.');
-      console.error('Error fetching flight data:', error);
+      console.error('Error fetching flight data:', error.message);
+      alert(`An error occurred: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
-
-
 
   // Fetch airline logos by codes
   const fetchAirlineLogos = async (airlineCodes) => {
@@ -471,12 +447,15 @@ const FlightSearch = () => {
       return airlineCodes.map(() => null);
     }
   };
-
   // Search flight handler
   const searchFlightHandler = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    // Call the function to get flight list if validation passes
     await getFlightList();
   };
-
   // ------------------------------------------------------------------------------------------------------------
 
 
@@ -639,6 +618,7 @@ const FlightSearch = () => {
                                 Starting Point
                               </label>
                             </div>
+                            {errors.from && <p className="error-message">{errors.from}</p>}
                           </div>
 
                           <div className="col-12 flightformCol">
@@ -672,8 +652,8 @@ const FlightSearch = () => {
                                 Destination
                               </label>
                             </div>
+                            {errors.to && <p className="error-message">{errors.to}</p>}
                           </div>
-
 
                           <div className="col-6 flightformCol">
                             <div className="form-group flight-input-container">
@@ -681,7 +661,6 @@ const FlightSearch = () => {
                                 <MdDateRange />
                               </span>
                               <div className="date-picker-wrapper flightDateDiv form-control flightDepDATE">
-
                                 <DatePicker
                                   name="PreferredDepartureTime"
                                   selected={departureDate}
@@ -691,10 +670,10 @@ const FlightSearch = () => {
                                   placeholderText="Select a date"
                                   minDate={new Date()}
                                 />
-
                               </div>
                               <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
+                            {errors.departureDate && <p className="error-message">{errors.departureDate}</p>}
                           </div>
 
                           <div className="col-6 flight-input-container onewayreturnhidebtn">
@@ -708,9 +687,7 @@ const FlightSearch = () => {
                                 <FaCircleUser />
                               </span>
                               <div className="flightTravellerclss">
-                                {/* <FaCircleUser /> */}
                                 <p> Traveller - <span>{adultCount + childCount + infantCount}</span> , </p>
-                                {/* <p> Traveller - <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> , </p> */}
                                 <p> Class - <span>{selectedflightClass}</span>  </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
@@ -856,6 +833,7 @@ const FlightSearch = () => {
                                 Starting Point
                               </label>
                             </div>
+                            {errors.from && <p className="error-message">{errors.from}</p>}
                           </div>
 
                           <div className="col-12 flightformCol">
@@ -889,7 +867,9 @@ const FlightSearch = () => {
                                 Destination
                               </label>
                             </div>
+                            {errors.to && <p className="error-message">{errors.to}</p>}
                           </div>
+
 
 
                           <div className="col-6 flightformCol">
@@ -909,6 +889,8 @@ const FlightSearch = () => {
                               </div>
                               <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
+                            {errors.departureDate && <p className="error-message">{errors.departureDate}</p>}
+
                           </div>
 
                           <div className="col-6 flightformCol">
@@ -937,7 +919,6 @@ const FlightSearch = () => {
                               </span>
                               <div className="flightTravellerclss">
                                 <p> Traveller - <span>{adultCount + childCount + infantCount}</span> , </p>
-                                {/* <p> Traveller - <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> , </p> */}
                                 <p> Class - <span>{selectedflightClass}</span>  </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
