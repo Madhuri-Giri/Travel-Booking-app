@@ -30,8 +30,8 @@ const Home = () => {
   const navigate = useNavigate();
 
   // states-------------------------------------------
-  const [from, setFrom] = useState('LKO');
-  const [to, setTo] = useState('KWI');
+  const [from, setFrom] = useState();
+  const [to, setTo] = useState();
   const [fromSuggestions, setFromSuggestions] = useState([]);
   const [toSuggestions, setToSuggestions] = useState([]);
   const fromInputRef = useRef(null);
@@ -41,13 +41,9 @@ const Home = () => {
   const mainCityNames = ['Delhi', 'Mumbai', 'Bhopal', 'Indore', 'Goa', 'Hyderabad'];
   const [originCode, setOriginCode] = useState(''); // State for origin code
   const [desctinationCode, setDesctinationCode] = useState(''); // State for origin code
-
-  console.log("originCode", originCode);
-  console.log("desctinationCode", desctinationCode);
-
-
   const [departureDate, setDepartureDate] = useState();
   const [returnDateDep, setReturnDateDep] = useState();
+  const [errors, setErrors] = useState({ from: '', to: '', departureDate: '' });
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -67,36 +63,7 @@ const Home = () => {
     };
   }, []);
 
-  // Function to fetch suggestions
-  // const fetchSuggestions = async (query, setSuggestions, isMainCityFetch = false) => {
-  //   try {
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus_list', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ query }),
-  //     });
 
-  //     const data = await response.json();
-  //     let suggestions = data.data;
-
-  //     if (isMainCityFetch) {
-  //       // Filter to only include main cities from the API response
-  //       suggestions = suggestions.filter((suggestion) =>
-  //         mainCityNames.includes(suggestion.busodma_destination_name)
-  //       );
-  //     } else {
-  //       // Filter suggestions based on the input query
-  //       suggestions = suggestions.filter((suggestion) =>
-  //         suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
-  //       );
-  //     }
-  //     setSuggestions(suggestions.slice(0, 6)); // Show up to 10 suggestions
-  //   } catch (error) {
-  //     console.error('Error fetching suggestions:', error);
-  //   }
-  // };
   const fetchSuggestions = async (query, setSuggestions, isMainCityFetch = false) => {
     try {
       // Encode the query parameter
@@ -145,6 +112,7 @@ const Home = () => {
   const handleFromChange = (event) => {
     const value = event.target.value;
     setFrom(value);
+    setErrors({ ...errors, from: '' }); // Clear the error when the user types
     if (value.length > 2) {
       fetchSuggestions(value, setFromSuggestions);
     } else {
@@ -155,6 +123,7 @@ const Home = () => {
   const handleToChange = (event) => {
     const value = event.target.value;
     setTo(value);
+    setErrors({ ...errors, to: '' }); // Clear the error when the user types
     if (value.length > 2) {
       fetchSuggestions(value, setToSuggestions);
     } else {
@@ -167,20 +136,15 @@ const Home = () => {
     setSuggestions([]);
   };
 
-  // function for adult , child , infact dropdown list-------------------------------------------
-  const [showDropdown, setShowDropdown] = useState(false);
-  const handleShow = () => {
-    setShowDropdown(!showDropdown);
-  };
-  const handleClose = () => {
-    setShowDropdown(false);
-  };
+  // function for dates departure return 
   const handleDateChangeDeparture = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}T00:00:00`;
     setDepartureDate(formattedDate);
+    setErrors({ ...errors, departureDate: '' }); // Clear the error when the user selects a date
+
   };
   const handleDateChangeReturn = (date) => {
     const year = date.getFullYear();
@@ -189,6 +153,16 @@ const Home = () => {
     const formattedDate = `${year}-${month}-${day}T00:00:00`;
     setReturnDateDep(formattedDate);
   };
+
+  // function for adult , child , infact dropdown list-------------------------------------------
+  const [showDropdown, setShowDropdown] = useState(false);
+  const handleShow = () => {
+    setShowDropdown(!showDropdown);
+  };
+  const handleClose = () => {
+    setShowDropdown(false);
+  };
+
   // State variables for counts
   const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
@@ -264,7 +238,6 @@ const Home = () => {
   // for one way & two way tabs-----------------------------------------
   const [activeTab, setActiveTab] = useState('oneway');
   const [tabValue, setTabValue] = useState(1); // State for tab value: 1 for oneway, 2 for twoway
-  // console.log("tabValue", tabValue);
   const [segments, setSegments] = useState([
     {
       Origin: originCode,
@@ -296,6 +269,10 @@ const Home = () => {
       JourneyType: newValue.toString()
     }));
   };
+  const activateTwoWayTab = () => {
+    handleTabChange({ target: { value: 'twoway' } });
+  };
+
 
   useEffect(() => {
     if (tabValue === 1) {
@@ -309,6 +286,8 @@ const Home = () => {
           PreferredArrivalTime: departureDate
         }
       ]);
+
+      
     } else if (tabValue === 2) {
       // Two-Way: Add a second segment
       setSegments([
@@ -327,6 +306,8 @@ const Home = () => {
           PreferredArrivalTime: returnDateDep
         }
       ]);
+
+      
     }
   }, [tabValue, departureDate, returnDateDep, selectedflightClass]);
 
@@ -337,60 +318,30 @@ const Home = () => {
     }));
   }, [segments]); // Dependency on segments state
 
-  // const getFlightList = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(formData),
-  //     });
 
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! Status: ${response.status}`);
-  //     }
-
-  //     const data = await response.json();
-  //     console.log("Flight search API response: ", data);
-
-  //     localStorage.setItem('Flight-search', JSON.stringify(data));
-
-  //     const firstResult = data?.Results?.[0]?.[0];
-  //     if (firstResult && firstResult.FareDataMultiple?.[0]) {
-  //       const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
-  //       const { TraceId, SrdvType } = data;
-
-  //       localStorage.setItem("F-SrdvIndex", SrdvIndex);
-  //       localStorage.setItem("F-ResultIndex", ResultIndex);
-  //       localStorage.setItem("F-TraceId", TraceId);
-  //       localStorage.setItem("F-SrdvType", SrdvType);
-  //       localStorage.setItem("F-IsLcc", IsLCC);
-
-  //       const airlineCodes = data.Results.flatMap(result =>
-  //         result.flatMap(fareData =>
-  //           fareData.FareDataMultiple.flatMap(fare =>
-  //             fare.FareSegments.map(segment => segment.AirlineCode)
-  //           )
-  //         )
-  //       );
-  //       const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
-  //       console.log("Airline Codes: ", filteredAirlineCodes);
-  //     } else {
-  //       console.log("SrdvIndex or FareDataMultiple not found");
-  //     }
-  //     setLoading(false);
-  //     navigate("/flight-list", { state: { data: data, formData: formData } });
-  //   } catch (error) {
-  //     setLoading(false);
-  //     toast.error('An error occurred during booking. Please try again.');
-  //     console.error('Error fetching suggestions:', error);
-  //   }
-  // };
-
-  // ------------------------------------------------------------------------------------------------------------
-
+  const validateForm = () => {
+    let valid = true;
+    const newErrors = { from: '', to: '', departureDate: '' };
+    if (!from) {
+      newErrors.from = 'Starting point is required.';
+      valid = false;
+    }
+    if (!to) {
+      newErrors.to = 'Destination is required.';
+      valid = false;
+    }
+    if (from && to && from === to) {
+      newErrors.from = 'Starting point and destination cannot be the same.';
+      newErrors.to = 'Starting point and destination cannot be the same.';
+      valid = false;
+    }
+    if (!departureDate) {
+      newErrors.departureDate = 'Departure date is required.';
+      valid = false;
+    }
+    setErrors(newErrors);
+    return valid;
+  };
 
   const getFlightList = async () => {
     setLoading(true);
@@ -404,11 +355,22 @@ const Home = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorText = await response.text();
+        console.error(`HTTP error! Status: ${response.status}, Response: ${errorText}`);
+        alert(`Failed to fetch flight data: ${errorText}`);
+        setLoading(false);
+        return;
       }
 
       const data = await response.json();
       console.log("Flight search API response: ", data);
+
+      if (!data.Results) {
+        console.error("No results found in the API response");
+        alert("No flights found. Please try again later.");
+        setLoading(false);
+        return;
+      }
 
       localStorage.setItem('Flight-search', JSON.stringify(data));
 
@@ -433,9 +395,6 @@ const Home = () => {
 
       localStorage.setItem('Airline-Logos', JSON.stringify(logoMap));
 
-      // navigate("/flight-list", { state: { data: data, formData: formData } });
-
-
       const firstResult = data?.Results?.[0]?.[0];
       if (firstResult && firstResult.FareDataMultiple?.[0]) {
         const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
@@ -445,30 +404,20 @@ const Home = () => {
         localStorage.setItem("F-TraceId", TraceId);
         localStorage.setItem("F-SrdvType", SrdvType);
         localStorage.setItem("F-IsLcc", IsLCC);
-        const airlineCodes = data.Results.flatMap(result =>
-          result.flatMap(fareData =>
-            fareData.FareDataMultiple.flatMap(fare =>
-              fare.FareSegments.map(segment => segment.AirlineCode)
-            )
-          )
-        );
-        const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
-        console.log("Airline Codes: ", filteredAirlineCodes);
       } else {
         console.log("SrdvIndex or FareDataMultiple not found");
       }
+
       setLoading(false);
       navigate("/flight-list", { state: { data: data, formData: formData } });
 
     } catch (error) {
-      toast.error('An error occurred during booking. Please try again.');
-      console.error('Error fetching flight data:', error);
+      console.error('Error fetching flight data:', error.message);
+      alert(`An error occurred: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
-
-
 
   // Fetch airline logos by codes
   const fetchAirlineLogos = async (airlineCodes) => {
@@ -498,12 +447,15 @@ const Home = () => {
       return airlineCodes.map(() => null);
     }
   };
-
   // Search flight handler
   const searchFlightHandler = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    // Call the function to get flight list if validation passes
     await getFlightList();
   };
-
   // ------------------------------------------------------------------------------------------------------------
 
 
@@ -666,6 +618,7 @@ const Home = () => {
                                 Starting Point
                               </label>
                             </div>
+                            {errors.from && <p className="error-message">{errors.from}</p>}
                           </div>
 
                           <div className="col-12 flightformCol">
@@ -699,16 +652,15 @@ const Home = () => {
                                 Destination
                               </label>
                             </div>
+                            {errors.to && <p className="error-message">{errors.to}</p>}
                           </div>
-
 
                           <div className="col-6 flightformCol">
                             <div className="form-group flight-input-container">
                               <span className="plane-icon">
                                 <MdDateRange />
                               </span>
-                              <div className="date-picker-wrapper flightDateDiv form-control">
-
+                              <div className="date-picker-wrapper flightDateDiv form-control flightDepDATE">
                                 <DatePicker
                                   name="PreferredDepartureTime"
                                   selected={departureDate}
@@ -718,25 +670,24 @@ const Home = () => {
                                   placeholderText="Select a date"
                                   minDate={new Date()}
                                 />
-
                               </div>
                               <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
+                            {errors.departureDate && <p className="error-message">{errors.departureDate}</p>}
                           </div>
+
                           <div className="col-6 flight-input-container onewayreturnhidebtn">
-                            <span className="plane-icon">
-                            </span>
-                            <Link>Add Return date</Link>
+                            <span className="plane-icon"></span>
+                            <Link onClick={activateTwoWayTab}>Add Return date</Link>
                           </div>
+
                           <div className="col-sm-8 flightformCol form-group " onClick={handleShow}>
                             <div className="form-control flightTravellerclssFormControl  flight-input-container">
                               <span className="travellerplane-icon">
                                 <FaCircleUser />
                               </span>
                               <div className="flightTravellerclss">
-                                {/* <FaCircleUser /> */}
                                 <p> Traveller - <span>{adultCount + childCount + infantCount}</span> , </p>
-                                {/* <p> Traveller - <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> , </p> */}
                                 <p> Class - <span>{selectedflightClass}</span>  </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
@@ -882,6 +833,7 @@ const Home = () => {
                                 Starting Point
                               </label>
                             </div>
+                            {errors.from && <p className="error-message">{errors.from}</p>}
                           </div>
 
                           <div className="col-12 flightformCol">
@@ -915,7 +867,9 @@ const Home = () => {
                                 Destination
                               </label>
                             </div>
+                            {errors.to && <p className="error-message">{errors.to}</p>}
                           </div>
+
 
 
                           <div className="col-6 flightformCol">
@@ -923,7 +877,7 @@ const Home = () => {
                               <span className="plane-icon">
                                 <MdDateRange />
                               </span>
-                              <div className="date-picker-wrapper flightDateDiv form-control">
+                              <div className="date-picker-wrapper flightDateDiv form-control flightDepDATE" >
                                 <DatePicker
                                   selected={departureDate}
                                   onChange={handleDateChangeDeparture}
@@ -935,6 +889,8 @@ const Home = () => {
                               </div>
                               <label className="flight-input-labelDepDate" htmlFor="PreferredDepartureTime">Departure</label>
                             </div>
+                            {errors.departureDate && <p className="error-message">{errors.departureDate}</p>}
+
                           </div>
 
                           <div className="col-6 flightformCol">
@@ -942,7 +898,7 @@ const Home = () => {
                               <span className="plane-icon">
                                 <MdDateRange />
                               </span>
-                              <div className="date-picker-wrapper flightDateDiv form-control">
+                              <div className="date-picker-wrapper flightDateDiv form-control flightRetDATE">
 
                                 <DatePicker
                                   selected={returnDateDep}
@@ -963,7 +919,6 @@ const Home = () => {
                               </span>
                               <div className="flightTravellerclss">
                                 <p> Traveller - <span>{adultCount + childCount + infantCount}</span> , </p>
-                                {/* <p> Traveller - <span>{formData.AdultCount + formData.ChildCount + formData.InfantCount}</span> , </p> */}
                                 <p> Class - <span>{selectedflightClass}</span>  </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
@@ -1228,5 +1183,6 @@ const Home = () => {
     </>
   )
 }
+
 
 export default Home
