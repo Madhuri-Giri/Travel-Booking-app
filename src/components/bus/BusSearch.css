@@ -17,23 +17,7 @@
   justify-content: center;
   flex-direction: column;
   padding: 2vmax; 
-
-
   background: linear-gradient(135deg,#017fa9, #00b7eb) ;
-
-
-
- 
-  /* background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-image: linear-gradient(
-    rgba(0, 0, 0, 0.5), 
-    rgba(0, 0, 0, 0.5) 
-  ),
-  url('https://imgak.mmtcdn.com/pwa_v3/pwa_commons_assets/desktop/bg1.jpg'); */
-
-
 }
 
 .BusSearch .bus-search .B-main .B-main-top {
@@ -41,13 +25,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* padding: 2vmax; */
-  /* background: #000; */
+  
 }
 
-/* .BusSearch .bus-search .B-main .B-main-top img {
-  width: 20%;
-} */
+
 
 .BusSearch .bus-search .B-main .B-main-btm {
   width: 100%;
@@ -163,19 +144,22 @@ background: none;
   position: absolute;
   top: 7vmax;
   background: #fff;
-  box-shadow: 2px 2px 5px 2px rgb(149, 149, 149);
+  box-shadow: 2px 2px 5px 2px rgb(103, 103, 103);
 }
-
-.suggestions-list-from li {
+.suggestions-list-from span {
   cursor: pointer;
   width: 100%;
   margin-bottom: 0.2vmax;
-  list-style: none;
+  font-weight: 500;
+  padding: 0.2vmax;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  padding-left: 1vmax;
+}
+.suggestions-list-from span:hover{
+  background: rgb(220, 220, 220);
 }
 
-
-
-.suggestions-list {
+.suggestions-list-to {
   width: 19%;
   display: flex;
   align-items: flex-start;
@@ -184,14 +168,21 @@ background: none;
   position: absolute;
   top: 7vmax;
   background: #fff;
-  box-shadow: 2px 2px 5px 2px rgb(149, 149, 149);
+  box-shadow: 2px 2px 5px 2px rgb(103, 103, 103);
+
 }
 
-.suggestions-list li {
+.suggestions-list-to span {
   cursor: pointer;
   width: 100%;
   margin-bottom: 0.2vmax;
-  list-style: none;
+  font-weight: 500;
+  padding: 0.2vmax;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  padding-left: 1vmax;
+}
+.suggestions-list-to span:hover{
+ background: rgb(220, 220, 220);
 }
 
 .lotti-bus{
@@ -200,9 +191,7 @@ background: none;
 
 @media (max-width:600px) {
 
-  /* .BusSearch .bus-search .B-main .B-main-top img {
-    width: 100%;
-  } */
+ 
   .lotti-bus{
     width: 90%;
   }
@@ -254,18 +243,18 @@ background: none;
     top: 15vmax;
   }
 
-  .suggestions-list-from li {
+  .suggestions-list-from span {
     width: 100%;
   }
 
-  .suggestions-list {
+  .suggestions-list-to {
     width: 95%;
     display: flex;
     flex-direction: column;
     top: 28vmax;
   }
   
-  .suggestions-list li {
+  .suggestions-list-to span {
     width: 100%;
   }
   
@@ -321,17 +310,6 @@ background: none;
   .BusSearch .bus-search .B-main .B-main-btm .sarch-tab .search-bus-btn button {
     padding: 1.7vmax 1vmax;
   }
-  .suggestions-list {
-    width: 95%;
-    display: flex;
-    flex-direction: column;
-    top: 28vmax;
-  }
-  
-  .suggestions-list li {
-    width: 100%;
-  }
-  
   .suggestions-list-from{
     width: 95%;
     display: flex;
@@ -339,8 +317,20 @@ background: none;
     top: 15vmax;
   }
 
-  .suggestions-list-from li {
+  .suggestions-list-from span {
     width: 100%;
   }
+
+  .suggestions-list-to {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    top: 28vmax;
+  }
+  
+  .suggestions-list-to span {
+    width: 100%;
+  }
+  
   
 }

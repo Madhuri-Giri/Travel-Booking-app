@@ -161,13 +161,13 @@ const BusSearch = () => {
                     </div>
 
                     {fromSuggestions.length > 0 && (
-                      <ul className="suggestions-list-from">
+                      <div className="suggestions-list-from">
                         {fromSuggestions.map((suggestion, index) => (
-                          <li key={index} onClick={() => handleFromSelect(suggestion)}>
+                          <span key={index} onClick={() => handleFromSelect(suggestion)}>
                             {suggestion.busodma_destination_name}
-                          </li>
+                          </span>
                         ))}
-                      </ul>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -185,13 +185,13 @@ const BusSearch = () => {
                       />
                     </div>
                     {toSuggestions.length > 0 && (
-                      <ul className="suggestions-list">
+                      <div className="suggestions-list-to">
                         {toSuggestions.map((suggestion, index) => (
-                          <li key={index} onClick={() => handleToSelect(suggestion)}>
+                          <span key={index} onClick={() => handleToSelect(suggestion)}>
                             {suggestion.busodma_destination_name}
-                          </li>
+                          </span>
                         ))}
-                      </ul>
+                      </div>
                     )}
                   </div>
                 </div>

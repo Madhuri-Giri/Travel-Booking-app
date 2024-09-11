@@ -286,20 +286,91 @@ const FlightReview = () => {
 
 
 
+  // const bookLccApi = async () => {
+  //   try {
+  //     const transactionFlightNo = localStorage.getItem('transactionNum');
+  //     const transaction_id = localStorage.getItem('flight_transaction_id');
+  //     console.log("transaction_id", transaction_id)
+
+  //     const adultPassengerDetails = localStorage.getItem('adultPassengerDetails');
+  //     const parsedAdultPassengerDetails = JSON.parse(adultPassengerDetails);
+
+  //     if (!parsedAdultPassengerDetails || parsedAdultPassengerDetails.length === 0) {
+  //       console.error('No adult passenger details found in localStorage');
+  //       return;
+  //     }
+
+  //     const bookingResponses = await Promise.all(parsedAdultPassengerDetails.map(async (passenger) => {
+  //       const llcPayload = {
+  //         "SrdvType": FsrdvType,
+  //         "transaction_num": transactionFlightNo,
+  //         "transaction_id": transaction_id,
+  //         "SrdvIndex": FsrdvIndex,
+  //         "TraceId": FtraceId,
+  //         "ResultIndex": FresultIndex,
+  //         "Title": passenger.gender === "male" ? "Mr" : "Ms" || null,
+  //         "FirstName": passenger.firstName,
+  //         "LastName": passenger.lastName,
+  //         "PaxType": 1,
+  //         "DateOfBirth": passenger.dateOfBirth,
+  //         "Gender": passenger.gender === "male" ? "1" : "2",
+  //         "PassportNo": passenger.passportNo || "null",
+  //         "PassportExpiry": passenger.passportExpiry || null,
+  //         "PassportIssueDate": passenger.passportIssueDate || null,
+  //         "AddressLine1": passenger.addressLine1,
+  //         "City": passenger.city,
+  //         "CountryCode": passenger.countryCode || null,
+  //         "CountryName": passenger.countryName,
+  //         "ContactNo": passenger.contactNo,
+  //         "Email": passenger.email,
+  //         "IsLeadPax": passenger.isLeadPax || 0,
+  //         "BaseFare": parseFloat(baseFare),
+  //         "Tax": parseFloat(tax),
+  //         "TransactionFee": TransactionFee,
+  //         "YQTax": parseFloat(yqTax),
+  //         "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
+  //         "AdditionalTxnFeePub": AdditionalTxnFeePub,
+  //         "AirTransFee": AirTransFee
+  //       };
+
+  //       const response = await fetch('https://sajyatra.sajpe.in/admin/api/bookllc', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify(llcPayload),
+  //       });
+
+  //       const responseBody = await response.json();
+  //       return responseBody;
+  //     }));
+
+  //     console.log('LLC Responses:', bookingResponses);
+
+  //     localStorage.setItem('flightTikitDetails', JSON.stringify(bookingResponses));
+  //     navigate('/flightNewTicket', { state: { flightbookingDetails: bookingResponses } });
+
+  //   } catch (error) {
+  //     console.error('LLC API error:', error.message);
+  //     toast.error('An error occurred during booking. Please try again.');
+  //   }
+  // };
+
   const bookLccApi = async () => {
     try {
       const transactionFlightNo = localStorage.getItem('transactionNum');
       const transaction_id = localStorage.getItem('flight_transaction_id');
-      console.log("transaction_id", transaction_id)
-
+      console.log("transaction_id", transaction_id);
+  
       const adultPassengerDetails = localStorage.getItem('adultPassengerDetails');
       const parsedAdultPassengerDetails = JSON.parse(adultPassengerDetails);
-
+  
       if (!parsedAdultPassengerDetails || parsedAdultPassengerDetails.length === 0) {
         console.error('No adult passenger details found in localStorage');
+        toast.error('No adult passenger details found in localStorage');
         return;
       }
-
+  
       const bookingResponses = await Promise.all(parsedAdultPassengerDetails.map(async (passenger) => {
         const llcPayload = {
           "SrdvType": FsrdvType,
@@ -332,7 +403,7 @@ const FlightReview = () => {
           "AdditionalTxnFeePub": AdditionalTxnFeePub,
           "AirTransFee": AirTransFee
         };
-
+  
         const response = await fetch('https://sajyatra.sajpe.in/admin/api/bookllc', {
           method: 'POST',
           headers: {
@@ -340,22 +411,26 @@ const FlightReview = () => {
           },
           body: JSON.stringify(llcPayload),
         });
-
+  
+        if (!response.ok) {
+          throw new Error(`Failed to book LLC. Status: ${response.status}`);
+        }
+  
         const responseBody = await response.json();
         return responseBody;
       }));
-
+  
       console.log('LLC Responses:', bookingResponses);
-
+  
       localStorage.setItem('flightTikitDetails', JSON.stringify(bookingResponses));
       navigate('/flightNewTicket', { state: { flightbookingDetails: bookingResponses } });
-
+  
     } catch (error) {
       console.error('LLC API error:', error.message);
-      toast.error('An error occurred during booking. Please try again.');
+      toast.error(`LLC API error: ${error.message}`);  
     }
   };
-
+  
 
   const bookHoldApi = async () => {
     const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
@@ -547,6 +622,8 @@ const FlightReview = () => {
             </div>
           </div>
         </div>
+
+        
       </div>
       <Footer />
     </>
