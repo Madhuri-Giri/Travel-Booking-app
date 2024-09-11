@@ -151,7 +151,8 @@
     cursor: pointer;
 }
 
-.flight-suggestions-listFrom {
+.flight-suggestions-listFrom ,
+.flight-suggestions-listTo{
     width: 100%;
     display: flex;
     align-items: flex-start;
@@ -172,7 +173,18 @@
     padding: 5px 15px;
     font-size: 17px;
     font-weight: bold;
+    list-style: none;
+    /* cursor: pointer;
+    width: 100%;
+    margin-bottom: 0.2vmax;
+    font-weight: 500;
+     padding: 0.2vmax;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    padding-left: 1vmax; */
 }
+/* .suggestions-list-from li {
+   
+} */
 
 .flight-suggestions-listTo {
     width: 100%;
