@@ -14,7 +14,7 @@ import Footer from '../../pages/footer/Footer';
 // import updateGif from "../../assets/images/payloader.gif"
 // import Payloader from '../../pages/loading/Payloader';
 import Loading from '../../pages/loading/Loading';
-import PayloaderHotel from '../../pages/loading/PayloaderHotel';
+import PayloaderBus from '../../pages/loading/PayloaderBus'
 import TimerBus from '../timmer/TimerBus';
 
 const ReviewBooking = () => {
@@ -190,7 +190,7 @@ const ReviewBooking = () => {
           try {
             await updateHandlePayment();
 
-            setLoading(true);
+            setPayLoading(true);
 
             await bookHandler();
             await busPaymentStatus();
@@ -495,9 +495,9 @@ const ReviewBooking = () => {
 
   // -------------------------------------------------------------------------------------------------
 
-  // if (payLoading) {
-  //   return <PayloaderHotel />;
-  // }
+  if (payLoading) {
+    return <PayloaderBus />;
+  }
 
   if (loading) {
     return <Loading />;

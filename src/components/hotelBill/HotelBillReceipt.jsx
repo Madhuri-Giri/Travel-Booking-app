@@ -20,25 +20,23 @@ const BookingBill = () => {
     const ticketElementRef = useRef(null);
 
     useEffect(() => {
-        const hotelTicketData = async () => {
+        const storedTicketData = localStorage.getItem('hotelTicket');
+        console.log('Stored Ticket Data:', storedTicketData); // Check data in local storage
+        if (storedTicketData) {
             try {
-                const storedTicketData = localStorage.getItem('hotelTicket');
-                if (storedTicketData) {
-                    const parsedData = JSON.parse(storedTicketData);
-                    setBookingDetails(parsedData);
-                } else {
-                    throw new Error('No ticket data found');
-                }
+                const parsedData = JSON.parse(storedTicketData);
+                console.log('Parsed Data:', parsedData); // Check parsed data structure
+                setBookingDetails(parsedData);
             } catch (e) {
-                setError(e.message);
+                console.error('Failed to parse ticket data:', e);
+                setError('Failed to parse ticket data.');
             }
-        };
-
-        hotelTicketData();
+        } else {
+            setError('No ticket data found');
+        }
     }, []);
 
     if (error) {
-        toast.error(error);
         return <div>Error: {error}</div>;
     }
 
@@ -46,13 +44,14 @@ const BookingBill = () => {
         return <div>Loading...</div>;
     }
 
-    const passenger = bookingDetails.passenger && bookingDetails.passenger.length > 0 ? bookingDetails.passenger[0] : null;
-    const hotelBook = bookingDetails.hotelBook && bookingDetails.hotelBook.length > 0 ? bookingDetails.hotelBook[0] : null;
-    const bookingStatus = bookingDetails.booking_status && bookingDetails.booking_status.length > 0 ? bookingDetails.booking_status[0] : null;
+    // Extract the relevant data
+    const passenger = bookingDetails.passenger && bookingDetails.passenger[0] ? bookingDetails.passenger[0] : null;
+    const hotelBook = bookingDetails.hotelBook && bookingDetails.hotelBook[0] ? bookingDetails.hotelBook[0] : null;
+    const bookingStatus = bookingDetails.booking_status && bookingDetails.booking_status[0] ? bookingDetails.booking_status[0] : null;
 
-    console.log('Passenger:', passenger); // Debugging line
-    console.log('Hotel Book:', hotelBook); // Debugging line
-    console.log('Booking Status:', bookingStatus); // Debugging line
+    console.log('Passenger:', passenger); 
+    console.log('Hotel Book:', hotelBook); 
+    console.log('Booking Status:', bookingStatus); 
 
     const handleDownloadPDF = () => {
         if (!ticketElementRef.current) {
@@ -216,12 +215,7 @@ const BookingBill = () => {
                                 <p><strong>Ref No:</strong> {bookingStatus?.BookingRefNo || 'N/A'}</p>
                             </div>
 
-                            <div className="section_cp">
-                            <div><h2>Hotel Policy:</h2>
-                            <div dangerouslySetInnerHTML={{ __html: cleanUpDescription(hotelBook?.hotelpolicy || '') }} /></div>
-                                
-                            </div>
-
+                           
                             <div className="section_c">
                                 <div className="column">
                                     <h2>Hotel Information</h2>
@@ -254,9 +248,13 @@ const BookingBill = () => {
                                 <p><strong>Total Price:</strong> ₹{hotelBook?.publishedprice || 'N/A'}</p>
                             </div>
                         </div>
-                        <div className='button-container'>
-                            <button className='download-button' onClick={handleDownloadPDF}>Download PDF</button>
-                            <button className='cancel-button' onClick={bookingCancel}>Cancel</button>
+                        <div className="section_cp">
+                            <div><h2>Hotel Policy:</h2>
+                            <div  className="section_hp" dangerouslySetInnerHTML={{ __html: cleanUpDescription(hotelBook?.hotelpolicy || '') }} /></div> 
+                            </div>
+                        <div className='button-container-h'>
+                            <button className='download-button-h' onClick={handleDownloadPDF}>Download PDF</button>
+                            <button className='cancel-button-h' onClick={bookingCancel}>Cancel</button>
                         </div>
                     </div>
                 </div>
