@@ -159,7 +159,7 @@ const toggleDropVisibility = () => {
         throw new Error('TraceId or ResultIndex not found in localStorage');
       }
 
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/AddseatLayout', {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/add-seat-layout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

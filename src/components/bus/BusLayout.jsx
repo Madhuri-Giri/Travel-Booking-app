@@ -139,7 +139,7 @@ const BusLayout = () => {
       localStorage.setItem('selectedSeats', JSON.stringify(selectedSeats));
       localStorage.setItem('totalPrice', totalPrice);
 
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/addboarding', {
+      const response = await fetch('https://sajyatra.sajpe.in/admin/api/add-boarding-point', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -18,7 +18,7 @@ const BoardAndDrop = ({ onBoardingSelect, onDroppingSelect }) => {
           throw new Error('TraceId or ResultIndex not found in localStorage');
         }
 
-        const response = await fetch('https://sajyatra.sajpe.in/admin/api/addboarding', {
+        const response = await fetch('https://sajyatra.sajpe.in/admin/api/add-boarding-point', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
