@@ -16,7 +16,7 @@ import html2canvas from 'html2canvas'; // Import html2canvas
 import { useNavigate } from 'react-router-dom';
 import { BsDatabaseAdd } from 'react-icons/bs';
 
-import sajLogo from  "../../../assets/images/main logo.png"
+import sajLogo from "../../../assets/images/main logo.png"
 
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
@@ -95,17 +95,17 @@ const BusTikit = () => {
 
   const handleCancelTicket = async () => {
     const confirmation = window.confirm("Are you sure you want to cancel?");
-    
+
     if (confirmation) {
       const storedData = JSON.parse(localStorage.getItem('buspaymentStatusRes'));
-  
+
       if (!storedData || !storedData.data || !storedData.data.passengers) {
         toast.error("No passenger data found");
         return;
       }
-  
+
       const { bus_id, ticket_no, transaction_num } = storedData.data.passengers;
-  
+
       try {
         const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-cancel", {
           method: "POST",
@@ -116,18 +116,18 @@ const BusTikit = () => {
             BusId: bus_id,
             SeatId: ticket_no,
             Remarks: "User initiated cancellation",
-            transaction_num: transaction_num 
+            transaction_num: transaction_num
           }),
         });
-  
-        const data = await response.json(); 
+
+        const data = await response.json();
         localStorage.setItem('busSeatCancel', JSON.stringify(data));
-        
-        
+
+
         if (response.ok) {
           toast.success("Your ticket is canceled");
           console.log("bus-new-cancel response:", data);
-          navigate('/bus-search'); 
+          navigate('/bus-search');
         } else {
           toast.error("Failed to cancel the ticket");
           console.log("Failed to cancel the ticket. Response Data:", data);
@@ -147,7 +147,7 @@ const BusTikit = () => {
   useEffect(() => {
     // Retrieve the data from localStorage
     const busSeatCancelData = localStorage.getItem('busSeatCancel');
-    
+
     if (busSeatCancelData) {
       const parsedData = JSON.parse(busSeatCancelData);
 
@@ -199,15 +199,15 @@ const BusTikit = () => {
                 <div className="col-lg-9">
                   <div className='busticktbox'>
                     <div className='bustickthed'>
-                    <h5>Your Bus Ticket</h5>
-                    <img style={{position:"absolute", right:'0%', paddingTop:"0.4vmax", paddingBottom:"0.6vmax", paddingRight:"1vmax"}} width={90} src={sajLogo} alt="" />
+                      <h5>Your Bus Ticket</h5>
+                      <img style={{ position: "absolute", right: '0%', paddingTop: "0.4vmax", paddingBottom: "0.6vmax", paddingRight: "1vmax" }} width={90} src={sajLogo} alt="" />
                     </div>
                     <div className="last-line">
-                              <small><i className="ri-phone-fill"></i> Company No:-</small>
-                              {/* <small><i className="ri-phone-fill"></i> Help Line No:-</small> */}
+                      <small><i className="ri-phone-fill"></i> Company No:-</small>
+                      {/* <small><i className="ri-phone-fill"></i> Help Line No:-</small> */}
                     </div>
-{/* ----------------------------------------------- */}
-                     
+                    {/* ----------------------------------------------- */}
+
                     <div className="top"></div>
                     <div className="row buspssngerdetails">
                       <div className="col-12">
@@ -253,8 +253,9 @@ const BusTikit = () => {
                           <div className="col-md-4 ticktbordr">
                             <div>
                               <p><strong>Seat No -: </strong><span>{seatDetail ? seatDetail.seat_name : 'N/A'}</span></p>
-                              <p className='busbookconfrm'><strong>Booking -: </strong><span>{busticketPassengerDetails.booking_status[0].bus_status || 'N/A'}</span></p>
-                             
+                              <p className='busbookconfrm'><strong>Amount -: </strong><span>₹{seatDetail ? seatDetail.base_price : 'N/A'}</span></p>
+                              {/* <p className='busbookconfrm'><strong>Booking -: </strong><span>{busticketPassengerDetails.booking_status[0].bus_status || 'N/A'}</span></p> */}
+
                               <Barcode className="buspasscode" value={passcode} format="CODE128" />
                             </div>
                           </div>
@@ -270,7 +271,7 @@ const BusTikit = () => {
                       <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
                     </div>
                     {/* ----------------------------------------------- */}
-                  
+
                   </div>
                 </div>
               </div>
