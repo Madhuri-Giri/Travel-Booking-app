@@ -205,28 +205,16 @@ const BusTikit = () => {
                   <div className='busticktbox'>
                     <div className='bustickthed'>
                       <h5>Your Bus Ticket</h5>
-
                       <img
                         style={{ position: "absolute", right: '0%', paddingTop: "0.4vmax", paddingBottom: "0.6vmax", paddingRight: "1vmax" }}
                         width={90}
                         src={sajLogo}
                         alt="Company Logo"
                       />
-
-                     
                     </div>
-
                     <div className="last-line">
                       <small><i className="ri-phone-fill"></i> Company No:-</small>
-
                     </div>
-
-                    {/* Passenger Details */}
-
-                      {/* <small><i className="ri-phone-fill"></i> Help Line No:-</small> */}
-                    </div>
-                    {/* ----------------------------------------------- */}
-
                     <div className="top"></div>
                     <div className="row buspssngerdetails">
                       <div className="col-12">
@@ -245,7 +233,6 @@ const BusTikit = () => {
                               <p>{formatTime(busDetail.arrival_time)}</p>
                             </div>
                           </div>
-
                           {/* Web Layout */}
                           <div className="col-md-4 col-6">
                             <p><strong>Name -: </strong><span>{busDetail.name || 'N/A'}</span></p>
@@ -266,7 +253,6 @@ const BusTikit = () => {
                               </div>
                             </div>
                           </div>
-
                           {/* Bus Details */}
                           <div className="col-md-4 col-6">
                             <p><strong>Number -: </strong><span>{busDetail.number || 'N/A'}</span></p>
@@ -274,44 +260,37 @@ const BusTikit = () => {
                             <p><strong>Bus Type -: </strong><span>{busDetail.bus_type || 'N/A'}</span></p>
                             <p><strong>Traveller -: </strong><span>{busDetail.travel_name || 'N/A'}</span></p>
                           </div>
-
                           {/* Ticket and Seat Details */}
                           <div className="col-md-4 ticktbordr">
                             <div>
                               <p><strong>Seat No -: </strong><span>{seatDetail ? seatDetail.seat_name : 'N/A'}</span></p>
-
                               <p className='busbookconfrm'><strong>Booking -: </strong><span>{busticketPassengerDetails.booking_status[0].bus_status || 'N/A'}</span></p>
                               <p><strong>Boarding Point -: </strong><span>{busDetail.boarding_point || 'N/A'}</span></p>
                               <p><strong>Dropping Point -: </strong><span>{busDetail.dropping_point || 'N/A'}</span></p>
                               <p className='busbookconfrm'><strong>Amount -: </strong><span>₹{seatDetail ? seatDetail.base_price : 'N/A'}</span></p>
-                              {/* <p className='busbookconfrm'><strong>Booking -: </strong><span>{busticketPassengerDetails.booking_status[0].bus_status || 'N/A'}</span></p> */}
-
                               <Barcode className="buspasscode" value={passcode} format="CODE128" />
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-
                     <div className="bus-cancels">
-  <h6>CANCELLATION POLICY</h6>
-  <div className="b-cancel">
-    {Array.isArray(busCancelPolicy) && busCancelPolicy.length > 0 ? (
-      busCancelPolicy.map((policy, index) => (
-        <div key={index} className="b-policy">
-          <span><small>Policy:</small> {policy.policy_string}</span>
-          <span><small>Cancellation Charge:</small> {policy.cancellation_charge} {policy.cancellation_charge_type === '1' ? '%' : 'INR'}</span>
-          <span><small>From Date:</small> {new Date(policy.from_date).toLocaleString()}</span>
-          <span><small>To Date:</small> {new Date(policy.to_date).toLocaleString()}</span>
-        </div>
-      ))
-    ) : (
-      <p>No cancellation policy available</p>
-    )}
-  </div>
-</div>
-
-
+                      <h6>CANCELLATION POLICY</h6>
+                      <div className="b-cancel">
+                        {Array.isArray(busCancelPolicy) && busCancelPolicy.length > 0 ? (
+                          busCancelPolicy.map((policy, index) => (
+                            <div key={index} className="b-policy">
+                              <span><small>Policy:</small> {policy.policy_string}</span>
+                              <span><small>Cancellation Charge:</small> {policy.cancellation_charge} {policy.cancellation_charge_type === '1' ? '%' : 'INR'}</span>
+                              <span><small>From Date:</small> {new Date(policy.from_date).toLocaleString()}</span>
+                              <span><small>To Date:</small> {new Date(policy.to_date).toLocaleString()}</span>
+                            </div>
+                          ))
+                        ) : (
+                          <p>No cancellation policy available</p>
+                        )}
+                      </div>
+                    </div>
                     {/* Buttons */}
                     <div className="btm-bus">
                       <button className='busdonload' onClick={downloadTicket}>
@@ -320,15 +299,9 @@ const BusTikit = () => {
                       </button>
                       <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
                     </div>
-
-
-                    {/* ----------------------------------------------- */}
-
-
                   </div>
                 </div>
               </div>
-
             );
           })}
         </div>
