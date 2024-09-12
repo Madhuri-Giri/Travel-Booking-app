@@ -69,7 +69,7 @@ const BusTikit = () => {
     }
 
     // Temporarily hide the .btm div
-    const btmDiv = ticketElement.querySelector('.btm');
+    const btmDiv = ticketElement.querySelector('.btm-bus');
     if (btmDiv) {
       btmDiv.style.display = 'none';
     }
@@ -92,6 +92,7 @@ const BusTikit = () => {
     });
   };
 
+  
 
   // --------------------------------------------------------------------------------------------------------------------
 
