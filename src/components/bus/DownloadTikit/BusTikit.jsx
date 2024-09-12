@@ -205,19 +205,29 @@ const BusTikit = () => {
                   <div className='busticktbox'>
                     <div className='bustickthed'>
                       <h5>Your Bus Ticket</h5>
+
                       <img
                         style={{ position: "absolute", right: '0%', paddingTop: "0.4vmax", paddingBottom: "0.6vmax", paddingRight: "1vmax" }}
                         width={90}
                         src={sajLogo}
                         alt="Company Logo"
                       />
+
+                     
                     </div>
 
                     <div className="last-line">
                       <small><i className="ri-phone-fill"></i> Company No:-</small>
+
                     </div>
 
                     {/* Passenger Details */}
+
+                      {/* <small><i className="ri-phone-fill"></i> Help Line No:-</small> */}
+                    </div>
+                    {/* ----------------------------------------------- */}
+
+                    <div className="top"></div>
                     <div className="row buspssngerdetails">
                       <div className="col-12">
                         <div className="row">
@@ -269,9 +279,13 @@ const BusTikit = () => {
                           <div className="col-md-4 ticktbordr">
                             <div>
                               <p><strong>Seat No -: </strong><span>{seatDetail ? seatDetail.seat_name : 'N/A'}</span></p>
+
                               <p className='busbookconfrm'><strong>Booking -: </strong><span>{busticketPassengerDetails.booking_status[0].bus_status || 'N/A'}</span></p>
                               <p><strong>Boarding Point -: </strong><span>{busDetail.boarding_point || 'N/A'}</span></p>
                               <p><strong>Dropping Point -: </strong><span>{busDetail.dropping_point || 'N/A'}</span></p>
+                              <p className='busbookconfrm'><strong>Amount -: </strong><span>₹{seatDetail ? seatDetail.base_price : 'N/A'}</span></p>
+                              {/* <p className='busbookconfrm'><strong>Booking -: </strong><span>{busticketPassengerDetails.booking_status[0].bus_status || 'N/A'}</span></p> */}
+
                               <Barcode className="buspasscode" value={passcode} format="CODE128" />
                             </div>
                           </div>
@@ -306,6 +320,11 @@ const BusTikit = () => {
                       </button>
                       <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
                     </div>
+
+
+                    {/* ----------------------------------------------- */}
+
+
                   </div>
                 </div>
               </div>

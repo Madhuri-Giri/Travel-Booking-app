@@ -19,44 +19,7 @@ import Timer from '../timmer/Timer';
   const [selectedDoubleDeluxeRooms, setSelectedDoubleDeluxeRooms] = useState([]);
   const [totalPriceSingleDeluxe, setTotalPriceSingleDeluxe] = useState(0);
   const [totalPriceDoubleDeluxe, setTotalPriceDoubleDeluxe] = useState(0);
-
- 
-  // const [timer, setTimer] = useState(0);
-
-  // useEffect(() => {
-  //   const updateTimer = () => {
-  //     // Retrieve end time from localStorage
-  //     const endTime = localStorage.getItem('h-timerEndTime');
-  //     const now = Date.now();
-      
-  //     if (endTime) {
-  //       const remainingTime = endTime - now;
-        
-  //       if (remainingTime <= 0) {
-  //         localStorage.removeItem('h-timerEndTime');
-  //         navigate('/hotel-search');
-  //       } else {
-  //         setTimer(remainingTime);
-  //       }
-  //     } else {
-  //       navigate('/hotel-search');
-  //     }
-  //   };
-
-  //   updateTimer();
-
-  //   const interval = setInterval(updateTimer, 1000); 
-
-  //   return () => clearInterval(interval);
-  // }, [navigate]);
-
-  // const formatTime = (milliseconds) => {
-  //   const totalSeconds = Math.floor(milliseconds / 1000);
-  //   const minutes = Math.floor(totalSeconds / 60);
-  //   const seconds = totalSeconds % 60;
-  //   return `${minutes} min ${seconds} sec left`;
-  // };
-
+  
   const navigateSearch = () => {
     navigate('/hotel-description');
   };
@@ -339,33 +302,32 @@ import Timer from '../timmer/Timer';
   const cleanCancellationPolicy = (text) => {
     if (!text) return '';
   
+    // Basic replacements and cleanup
     let cleanedText = text
-    .replace(/#\^#|#!#|\s+/g, ' ') // Remove special sequences and extra spaces
-    .replace(/\|/g, '\n') // Replace pipe characters with new lines
-    .replace(/(\d{2}-\w{3}-\d{4}), (\d{2}:\d{2}:\d{2})/, '$1, $2') // Ensure proper date-time formatting
-    .replace(/INR (\d+\.\d{2})/, 'INR $1') // Ensure proper amount formatting
-    .replace(/(\d+)% of total amount/, '$1% of the total amount') // Clarify percentage text
-    .replace(/(\d{2}-\w{3}-\d{4})/, '$1'); // Ensure proper date formatting
-
-  // Clean up any redundant spaces or formatting issues
-  cleanedText = cleanedText
-    .replace(/\s{2,}/g, ' ') // Remove extra spaces
-    .trim(); // Remove leading and trailing spaces
-
-  return cleanedText;
+      .replace(/#\^#|#!#|\s+/g, ' ') // Remove special sequences and extra spaces
+      .replace(/\|/g, '\n') // Replace pipe characters with new lines
+      .replace(/(\d{2}-\w{3}-\d{4}), (\d{2}:\d{2}:\d{2})/, '$1, $2') // Ensure proper date-time formatting
+      .replace(/INR (\d+\.\d{2})/, 'INR $1') // Ensure proper amount formatting
+      .replace(/(\d+)% of total amount/, '$1% of the total amount') // Clarify percentage text
+      .replace(/(\d{2}-\w{3}-\d{4})/, '$1'); // Ensure proper date formatting
+  
+    // Clean up any redundant spaces or formatting issues
+    cleanedText = cleanedText
+      .replace(/\s{2,}/g, ' ') // Remove extra spaces
+      .trim(); // Remove leading and trailing spaces
+  
+    return cleanedText;
   };
   
-  const formatCancellationPolicy = (policies) => {
+  // Function to convert cleaned text into list items (if needed)
+  const formatCancellationPolicy = (text) => {
+    // Assuming each policy is separated by a newline or similar
+    const policies = text.split('\n').map(policy => policy.trim()).filter(Boolean);
     return policies.map((policy, idx) => (
-      <li key={idx}>
-        <p>
-          <span>{new Date(policy.FromDate).toLocaleDateString()}</span> to{' '}
-          <span>{new Date(policy.ToDate).toLocaleDateString()}</span>:{' '}
-          <span>₹{policy.Charge} charges</span>
-        </p>
-      </li>
+      <li key={idx}>{policy}</li>
     ));
   };
+  
   
   
   const singleDeluxeRooms = hotelRooms.filter(room => room.RoomTypeName === 'SINGLE DELUXE');
@@ -442,7 +404,9 @@ import Timer from '../timmer/Timer';
                                 <Accordion.Item eventKey="0">
                                   <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
                                   <Accordion.Body>
-                                  <ul>{cleanCancellationPolicy(room.CancellationPolicy)}</ul>
+                                  <ul>
+                    {formatCancellationPolicy(cleanCancellationPolicy(room.CancellationPolicy))}
+                  </ul>
                                  
                                   </Accordion.Body>
                                 </Accordion.Item>
@@ -522,7 +486,9 @@ import Timer from '../timmer/Timer';
                                 <Accordion.Item eventKey="0">
                                   <Accordion.Header><b>Cancellation Policies:</b></Accordion.Header>
                                   <Accordion.Body>
-                                    {cleanCancellationPolicy(room.CancellationPolicy)}
+                                  <ul>
+                    {formatCancellationPolicy(cleanCancellationPolicy(room.CancellationPolicy))}
+                  </ul>
 
                                   </Accordion.Body>
                                 </Accordion.Item>

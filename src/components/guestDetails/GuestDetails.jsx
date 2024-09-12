@@ -16,6 +16,8 @@ import parse from 'html-react-parser';
 import Loading from '../../pages/loading/Loading';
 import PayloaderHotel from '../../pages/loading/PayloaderHotel';
 import Timer from '../timmer/Timer';
+import Popup from '../guestDetails/PopUp'; 
+
 const GuestDetails = () => {
  
   const [hotelBlock, setHotelBlock] = useState([]);
@@ -31,7 +33,7 @@ const GuestDetails = () => {
     mobile: "",
     age: "",
     passportNo: "",
-    PAN: "",
+    pan: "",
     // paxType: "",
     // leadPassenger: "",
     // passportIssueDate: "",
@@ -43,6 +45,8 @@ const GuestDetails = () => {
   const [showForm, setShowForm] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [isFormComplete, setIsFormComplete] = useState(false);
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalPriceWithGST, setTotalPriceWithGST] = useState(0);
@@ -174,6 +178,7 @@ const GuestDetails = () => {
   if (!selectedRoomsData) {
     return <p>Loading...</p>;
   }
+
   const handleDateChange = (index, date, field) => {
     const newGuestForms = [...guestForms];
     newGuestForms[index] = {
@@ -191,17 +196,31 @@ const GuestDetails = () => {
       [name]: value,
     };
     setGuestForms(newGuestForms);
-  };
+ // Check if all fields are filled
+ const allFilled = newGuestForms.every(formData =>
+  formData.fname && formData.lname && formData.email && formData.mobile &&
+  formData.age && formData.passportNo && formData.pan
+);
+
+setIsFormComplete(allFilled);
+setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are filled
+};
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setFormSubmitted(true);
     localStorage.setItem('guestDetails', JSON.stringify(guestForms));
+    setShowPopup(true); 
+
   };
 
   const handleCheckboxChange = () => {
     setCheckboxChecked(!checkboxChecked);
   };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+};
   // ---------------- RozarPay Payment Gateway  Integration start -------------------
   const fetchPaymentDetails = async () => {
     try {
@@ -396,7 +415,7 @@ const GuestDetails = () => {
         };
       
         const errors = [];
-        
+      
         // Validate required fields
         guestForms.forEach((formData, index) => {
           if (!formData.fname || formData.fname.length < 2 || formData.fname.length > 30) {
@@ -414,13 +433,9 @@ const GuestDetails = () => {
           if (formData.age === '' || isNaN(formData.age) || formData.age < 18 || formData.age > 100) {
             errors.push(`Age must be between 18 and 100 at index ${index}`);
           }
-          // if (!formData.PAN || !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.PAN)) {
-          //   errors.push(`A valid PAN Number is required at index ${index}`);
-          // }
         });
       
         if (errors.length > 0) {
-          // Display errors
           toast.error(errors.join(', '));
           isProcessing = false;
           return;
@@ -438,6 +453,7 @@ const GuestDetails = () => {
       
           const guestDetails = guestForms;
       
+      
           const bookingPayload = {
             ResultIndex: "9",
             HotelCode: "92G|DEL",
@@ -448,7 +464,7 @@ const GuestDetails = () => {
             IsVoucherBooking: true,
             transaction_num: transactionNum,
             transaction_id: transaction_id,
-            hotel_booking_id: [hotel_booking_id],
+            hotel_booking_id: hotel_booking_id,
       
             HotelRoomsDetails: [
               {
@@ -477,12 +493,13 @@ const GuestDetails = () => {
                   LastName: guest.lname || "",
                   Phoneno: guest.mobile || "",
                   Email: guest.email || "",
+                  Age: guest.age || "",
                   PaxType: "Adult",         
                   LeadPassenger: "No",     
                   PassportNo: guest.passportNo || "",
                   PassportIssueDate: "",   
                   PassportExpDate: "",     
-                  PAN: guest.PAN || "",
+                  PAN: guest.pan || "",
                 })),
                 SupplierPrice: storedHotelRoomData.SupplierPrice || null,
                 Price: {
@@ -570,27 +587,36 @@ const GuestDetails = () => {
             body: JSON.stringify(bookingPayload),
           });
       
-          const responseBody = await response.json();
-          console.log('Hotel Booking Confirmation Response:', responseBody);
+          // Handle non-JSON responses
+          const contentType = response.headers.get('Content-Type');
+          if (contentType && contentType.includes('application/json')) {
+            const responseBody = await response.json();
+            console.log('Hotel Booking Confirmation Response:', responseBody);
       
-          if (!response.ok) {
-            console.error('Failed to hotel booking. Status:', response.status, 'Response:', responseBody);
-            toast.error(`Failed to Hotel booking. Status: ${response.status}`);
-            isProcessing = false;
-            return;
-          }
+            if (!response.ok) {
+              console.error('Failed to hotel booking. Status:', response.status, 'Response:', responseBody);
+              toast.error(`Failed to Hotel booking. Status: ${response.status}`);
+              isProcessing = false;
+              return;
+            }
       
-          if (responseBody.Error && responseBody.Error.ErrorCode !== 0) {
-            console.error('Booking failed:', responseBody.Error.ErrorMessage);
-            toast.error(`Booking failed: ${responseBody.Error.ErrorMessage}`);
+            if (responseBody.Error && responseBody.Error.ErrorCode !== 0) {
+              console.error('Booking failed:', responseBody.Error.ErrorMessage);
+              toast.error(`Booking failed: ${responseBody.Error.ErrorMessage}`);
+            } else {
+              toast.success('Hotel Booking successful!');
+              localStorage.setItem('HotelBookingDetails', JSON.stringify(responseBody));
+              const guestDetails = JSON.parse(localStorage.getItem('guestDetails'));
+      
+              setTimeout(() => {
+                navigate('/hotel-ticket', { state: { bookingDetails: responseBody.hotelBooking } });
+              }, 2000);
+            }
           } else {
-            toast.success('Hotel Booking successful!');
-            localStorage.setItem('HotelBookingDetails', JSON.stringify(responseBody));
-            const guestDetails = JSON.parse(localStorage.getItem('guestDetails'));
-      
-            setTimeout(() => {
-              navigate('/hotel-ticket', { state: { bookingDetails: responseBody.hotelBooking } });
-            }, 2000);
+            // Handle non-JSON response
+            const text = await response.text();
+            console.error('Received non-JSON response:', text);
+            toast.error('Received non-JSON response from server. Please try again.');
           }
         } catch (error) {
           console.error('Error during hotel booking:', error.message);
@@ -599,10 +625,7 @@ const GuestDetails = () => {
       
         isProcessing = false;
       };
-      
-      
-      
-    
+       
   const { AddressLine1, HotelName, HotelRoomsDetails, HotelPolicyDetail, HotelNorms } = hotelBlock;
   const { singleDeluxe, doubleDeluxe, totalPriceSingleDeluxe, totalPriceDoubleDeluxe, checkInDate, checkOutDate } = selectedRoomsData;
 
@@ -635,6 +658,7 @@ const GuestDetails = () => {
     });
     return cleanedDescription;
   };
+  
   if (payLoading) {
     return <PayloaderHotel/>;
   }
@@ -828,13 +852,13 @@ const GuestDetails = () => {
         type="text"
         className="form-control"
         placeholder="PAN No."
-        name="PAN No"
+        name="pan"
         value={formData.number}
         onChange={(e) => handleFormChange(index, e)}
       />
     </div>
 
-              <div className="mb-3 req_field">
+      <div className="mb-3 req_field">
       <label className="required_field">Age</label>
       <input
         type="number"
@@ -847,8 +871,8 @@ const GuestDetails = () => {
       />
     </div>
 
-              <div className="mb-3 passport_field">
-      <label className="required_field">Passport No.</label>
+      <div className="mb-3 passport_field">
+      <label>Passport No.</label>
       <input
         type="text"
         className="form-control"
@@ -916,24 +940,19 @@ const GuestDetails = () => {
                 )}
                 {formSubmitted && (
                   <div>
-                    {/* <h2>Guest Details</h2>
-                  <p><strong>First Name:</strong> {formData.fname}</p>
-                  <p><strong>Middle Name:</strong> {formData.mname}</p>
-                  <p><strong>Last Name:</strong> {formData.lname}</p>
-                  <p><strong>Email:</strong> {formData.email}</p>
-                  <p><strong>Mobile:</strong> {formData.mobile}</p> */}
+                    <Popup show={showPopup} onClose={handleClosePopup} formData={guestForms} />
                     <label className='check_btn'>
-                      <input
-                        type="checkbox"
-                        checked={checkboxChecked}
-                        onChange={handleCheckboxChange}
-                      />
-                      Confirm details are correct
+                        <input
+                            type="checkbox"
+                            checked={checkboxChecked}
+                            onChange={handleCheckboxChange}
+                        />
+                        Confirm details are correct
                     </label>
-                    {checkboxChecked && (
-                      <button className='submit-btn' onClick={handlePayment}>Proceed to Payment</button>
-                    )}
-                  </div>
+                    {isFormComplete && (
+            <button className='submit-btn' onClick={handlePayment}>Proceed to Payment</button>
+          )}
+                </div>
                 )}
               </div>
             ))

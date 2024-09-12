@@ -1,6 +1,20 @@
 
 
-
+.is-invalid {
+    border-color: #dc3545;
+  }
+  
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875rem;
+  }
+.error-message{
+    color: red;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 0px;
+    margin-left: 5px;
+}  
 
 
 .hide-calendar-icon::-webkit-calendar-picker-indicator {
@@ -52,7 +66,7 @@
 
 .flight-input-container {
     position: relative;
-    margin: 9px 0;
+    margin: 6px 0;
 }
 
 .flight-input-labelFrom {
@@ -137,7 +151,8 @@
     cursor: pointer;
 }
 
-.flight-suggestions-listFrom {
+.flight-suggestions-listFrom ,
+.flight-suggestions-listTo{
     width: 100%;
     display: flex;
     align-items: flex-start;
@@ -158,7 +173,18 @@
     padding: 5px 15px;
     font-size: 17px;
     font-weight: bold;
+    list-style: none;
+    /* cursor: pointer;
+    width: 100%;
+    margin-bottom: 0.2vmax;
+    font-weight: 500;
+     padding: 0.2vmax;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    padding-left: 1vmax; */
 }
+/* .suggestions-list-from li {
+   
+} */
 
 .flight-suggestions-listTo {
     width: 100%;

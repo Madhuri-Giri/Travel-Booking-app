@@ -72,7 +72,7 @@ const HotelSearch = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [showGuestOptions, setShowGuestOptions] = useState(false);
   const guestRef = useRef(null);
-
+  const inputRef = useRef(null);
   // const handleChange = (event) => {
   //   const { name, value } = event.target;
   //   setInputs((values) => ({ ...values, [name]: value }));
@@ -94,9 +94,28 @@ const HotelSearch = () => {
     }));
   };
 
-  const handleClose = () => {
-    setIsVisible(false); // Hide the guest options
+   // Handle close action
+   const handleClose = () => {
+    setShowGuestOptions(false); // Hide the guest options
   };
+
+  // Toggle guest options visibility
+  const handleToggleOptions = () => {
+    setShowGuestOptions((prev) => !prev);
+  };
+
+  // Handle clicks outside of guest options to close the dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (guestRef.current && !guestRef.current.contains(event.target) && !inputRef.current.contains(event.target)) {
+        handleClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   // ------------- Start API code -------------------
 
   const [inputs, setInputs] = useState({
@@ -385,39 +404,44 @@ const HotelSearch = () => {
     </div>
 
     <div className="form-field guest_field">
-  <label className="form_label" htmlFor="guestField">Guests:</label>
-  <div className="input-with-icon">
-    <input className="form_in" type="text" id="guestField" name="guestField" 
-      placeholder="Guests" onClick={() => setShowGuestOptions(!showGuestOptions)}
-      value={`${inputs.adults} Adults, ${inputs.children} Children`} readOnly />
-    <FontAwesomeIcon icon={faUser} className="user-icon" />
-    
-    {showGuestOptions && isVisible && (
-      
-      <div ref={guestRef} className="guest_options">
-        <FontAwesomeIcon 
-          icon={faXmark} 
-          className="close_icon" 
-          onClick={handleClose}
+      <label className="form_label" htmlFor="guestField">Guests:</label>
+      <div className="input-with-icon" ref={inputRef}>
+        <input
+          className="form_in"
+          type="text"
+          id="guestField"
+          name="guestField"
+          placeholder="Guests"
+          onClick={handleToggleOptions}
+          value={`${inputs.adults} Adults, ${inputs.children} Children`}
+          readOnly
         />
-      {/* <div ref={guestRef} className="guest_options"> */}
-        <div className="guest_option">
-          <label htmlFor="adults">Adults:</label>
-          <button type="button" onClick={() => handleGuestChange("adults", "decrement")}>-</button>
-          <span>{inputs.adults}</span>
-          <button type="button" onClick={() => handleGuestChange("adults", "increment")}>+</button>
-        </div>
+        <FontAwesomeIcon icon={faUser} className="user-icon" />
 
-        <div className="guest_option">
-          <label htmlFor="children">Children:</label>
-          <button type="button" onClick={() => handleGuestChange("children", "decrement")}>-</button>
-          <span>{inputs.children}</span>
-          <button type="button" onClick={() => handleGuestChange("children", "increment")}>+</button>
-        </div>
+        {showGuestOptions && isVisible && (
+          <div ref={guestRef} className="guest_options">
+            <FontAwesomeIcon
+              icon={faXmark}
+              className="close_icon"
+              onClick={handleClose}
+            />
+            <div className="guest_option">
+              <label htmlFor="adults">Adults:</label>
+              <button type="button" onClick={() => handleGuestChange("adults", "decrement")}>-</button>
+              <span>{inputs.adults}</span>
+              <button type="button" onClick={() => handleGuestChange("adults", "increment")}>+</button>
+            </div>
+
+            <div className="guest_option">
+              <label htmlFor="children">Children:</label>
+              <button type="button" onClick={() => handleGuestChange("children", "decrement")}>-</button>
+              <span>{inputs.children}</span>
+              <button type="button" onClick={() => handleGuestChange("children", "increment")}>+</button>
+            </div>
+          </div>
+        )}
       </div>
-    )}
-  </div>
-</div>
+    </div>
 
     <button className="btn-sub" type="submit">Search Now</button>
   </div>

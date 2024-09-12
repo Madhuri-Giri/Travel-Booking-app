@@ -34,14 +34,14 @@ const FlightTickect = () => {
 
   const location = useLocation();
   const { transactionNum, booking_id } = location.state || {};
-  console.log("transactionNum",transactionNum);
-  console.log("booking_id",booking_id);
-  
+  console.log("transactionNum", transactionNum);
+  console.log("booking_id", booking_id);
+
 
   useEffect(() => {
     const fetchFlightTicketApiData = async () => {
       try {
-    
+
         const response = await fetch("https://sajyatra.sajpe.in/admin/api/flight-ticket-history", {
           method: "POST",
           headers: {
@@ -58,6 +58,8 @@ const FlightTickect = () => {
         }
 
         const data = await response.json();
+        console.log("ticket response", data);
+
         setflightticketPassengerDetails(data);
         setLoading(false);
       } catch (error) {
@@ -156,18 +158,39 @@ const FlightTickect = () => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
+      weekday: 'short',
       day: 'numeric',
       month: 'short',
+      year: 'numeric',
     });
   };
 
   const formatTime = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString('en-GB', {
+    return date.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
+      hour12: true, // This will format the time in 12-hour format with AM/PM
     });
   };
+
+  const calculateDuration = (depTime, arrTime) => {
+    // Convert departure and arrival times to Date objects
+    const departure = new Date(depTime);
+    const arrival = new Date(arrTime);
+
+    // Calculate the difference in milliseconds
+    const durationInMilliseconds = arrival - departure;
+
+    // Convert the difference to hours and minutes
+    const durationInMinutes = Math.floor(durationInMilliseconds / 60000); // 1 minute = 60000 milliseconds
+    const hours = Math.floor(durationInMinutes / 60);
+    const minutes = durationInMinutes % 60;
+
+    // Return the formatted duration
+    return `${hours}h ${minutes}m`;
+  };
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -185,7 +208,7 @@ const FlightTickect = () => {
     { id: 10, name: 'Explosives, Ammunition', icon: faBomb },
   ];
 
-  const { user_details, booking_details } = flightticketPassengerDetails || {};
+  const { user_details, booking_details, passenger_details } = flightticketPassengerDetails || {};
 
   return (
     <>
@@ -198,7 +221,7 @@ const FlightTickect = () => {
             </div>
             <div className="col-lg-9">
               <div className="fligthticketBtns">
-              {buttonsVisible && (
+                {buttonsVisible && (
                   <>
                     <button className='busdonload' onClick={downloadTicket}>
                       Download
@@ -214,7 +237,8 @@ const FlightTickect = () => {
                 <div className='flightticketboxHED'>
                   <h6>{formatDate(booking_details?.dep_time)}</h6>
                   <h6>{`${booking_details?.destination_city_name} TO ${booking_details?.destination_city_name}`}</h6>
-                  <p>{booking_details?.baggage}</p>
+                  <p>{calculateDuration(booking_details.dep_time, booking_details.arr_time)}</p>
+
                 </div>
                 <div className="flightticketboxTravelDetails">
                   <div className="ffbox1">
@@ -228,20 +252,22 @@ const FlightTickect = () => {
                     </div>
                   </div>
                   <div className="ffbox2">
-                    <h4>{booking_details?.destination}</h4>
-                    <p className='ffbox2P1'>{booking_details?.destination_city_name}</p>
-                    <p className='ffbox2Time'>{formatTime(booking_details?.dep_time)} hrs</p>
-                    <p>{booking_details?.destination_airport}</p>
+                    <h4>{booking_details?.origin}</h4>
+                    <p className='ffbox2P1'>{booking_details?.city_name}</p>
+                    <p className='ffbox2Time'>{new Date(booking_details.arr_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(booking_details.arr_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p>
+                    <p>{booking_details?.origin_airport}</p>
                   </div>
                   <div className="ffbox3">
-                    <p>---</p>
-                    <p className='ffbox3TImeborder'>{booking_details?.baggage}</p>
+                    <FaArrowRightLong />
+                    <p>{calculateDuration(booking_details.dep_time, booking_details.arr_time)}</p>
+                    <p className='ffbox3TImeborder'></p>
                     <p>Economy</p>
                   </div>
                   <div className="ffbox4">
                     <h4>{booking_details?.destination}</h4>
                     <p className='ffbox4P1'>{booking_details?.destination_city_name}</p>
-                    <p className='ffbox2Time'>{formatTime(booking_details?.arr_time)} hrs</p>
+                    <p className='ffbox2Time'>{formatTime(booking_details.dep_time)}</p>
+                    {/* <p className='ffbox2Time'>{new Date(booking_details.dep_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(booking_details.dep_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p> */}
                     <p>{booking_details?.destination_airport}</p>
                   </div>
                 </div>
@@ -250,19 +276,40 @@ const FlightTickect = () => {
                     <thead className='passengerDetailTable'>
                       <tr>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>PASSENGER NAME</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>ADDRESS</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>MOBILE</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>CITY</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0].first_name} {passenger_details[0].last_name} </strong> </td>
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0].address}</strong> </td>
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0].contact_no}</strong> </td>
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0].city}</strong> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="passengerTable">
+                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <thead className='passengerDetailTable'>
+                      <tr>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>PNR</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>E-TICKET NO.</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>SEAT</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }} className='ticketamountHed'>AMOUNT</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td style={{ border: '1px solid #ddd', padding: '8px' }}>
-                          <strong>{user_details?.name}</strong>
+                          <strong>{booking_details?.pnr}</strong>
                         </td>
-                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_details?.pnr}</td>
-                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_details?.transaction_num}</td>
-                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>N/A</td>
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_details?.ticket_no}</td>
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_details.seat || 'Seat null'}</td>
+                        <td className='ticketamount' style={{ border: '1px solid #ddd', padding: '8px' }}> {booking_details.base_fare || 'Amount null'} Rs.</td>
+
                       </tr>
                     </tbody>
                   </table>
