@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to, departDate }) => {
-  const response = await fetch('https://sajyatra.sajpe.in/admin/api/searchBus', {
+  const response = await fetch('https://sajyatra.sajpe.in/admin/api/search-bus', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
