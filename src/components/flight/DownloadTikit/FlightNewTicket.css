@@ -709,7 +709,7 @@
 }
 
 .ticketpart{
-    /* display: none; */
+    display: none;
 }
 .items-not-allowed-container {
     padding: 20px;
