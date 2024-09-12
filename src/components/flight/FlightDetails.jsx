@@ -16,9 +16,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 // import { RiTimerLine } from "react-icons/ri";
 // import TimerFlight from '../timmer/TimerFlight';
 
+
 export default function FlightDetails() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false); // Add loading state
+    const [selectedDate, setSelectedDate] = useState(null);
 
     //   ----------------------------------------------------
     const [totalPrice, setTotalPrice] = useState(0);
@@ -231,10 +233,10 @@ export default function FlightDetails() {
 
     const handleConfirm = (e, index, type) => {
         e.preventDefault();
-    
+
         // Select the correct details array based on the type
         let details = type === 'adult' ? [...adultDetails] : type === 'child' ? [...childDetails] : [...infantDetails];
-    
+
         // Define the fields and their labels for validation
         const fieldsToCheck = {
             gender: 'Gender',
@@ -247,7 +249,7 @@ export default function FlightDetails() {
             email: 'Email',
             // Passport No, Passport Expiry, Passport Issue Date, Country Code are not validated
         };
-    
+
         // Initialize errors for the current detail at the specified index
         let newErrors = {};
         Object.keys(fieldsToCheck).forEach(field => {
@@ -255,10 +257,27 @@ export default function FlightDetails() {
                 newErrors[field] = `${fieldsToCheck[field]} is required.`;
             }
         });
-    
+
+        // Additional validations for mobile number and email
+        const mobileNumber = details[index].contactNo;
+        const email = details[index].email;
+
+        // Regular expression for email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Mobile number validation: ensure it's a 10-digit number
+        if (mobileNumber && (!/^\d{10}$/.test(mobileNumber))) {
+            newErrors.contactNo = 'Contact No must be a 10-digit number.';
+        }
+
+        // Email validation: check if it matches the email regex pattern
+        if (email && !emailRegex.test(email)) {
+            newErrors.email = 'Email is not in a valid format.';
+        }
+
         // Perform age validation
         const age = calculateAge(details[index].dateOfBirth);
-    
+
         if (type === 'adult' && age < 18) {
             newErrors.dateOfBirth = 'Adult age must be 18 years or older.';
         } else if (type === 'child' && (age < 0 || age > 17)) {
@@ -266,7 +285,7 @@ export default function FlightDetails() {
         } else if (type === 'infant' && (age < 0 || age > 2)) {
             newErrors.dateOfBirth = 'Infant age must be between 0 and 2 years.';
         }
-    
+
         // Check if there are any validation errors
         if (Object.keys(newErrors).length > 0) {
             // Update the error state with new errors for this type and index
@@ -286,10 +305,10 @@ export default function FlightDetails() {
                     [index]: {}
                 }
             }));
-    
+
             // Add the confirmed detail to the appropriate confirmed details array
             const newDetail = { ...details[index], selected: true };
-    
+
             if (type === 'adult') {
                 const updatedAdults = [...confirmedAdultDetails, newDetail];
                 setConfirmedAdultDetails(updatedAdults);
@@ -303,15 +322,16 @@ export default function FlightDetails() {
                 setConfirmedInfantDetails(updatedInfants);
                 localStorage.setItem('infantPassengerDetails', JSON.stringify(updatedInfants)); // Save to local storage
             }
-    
+
             // Clear form fields after confirmation
             resetFormFields(type);
-    
+
             // Check and update the button disabled state if needed
             checkButtonDisabled();
         }
     };
-    
+
+
     // Function to reset form fields after confirmation
     const resetFormFields = (type) => {
         if (type === 'adult') {
@@ -419,7 +439,7 @@ export default function FlightDetails() {
             return (
                 <div key={`${type}-${index}`} className="row userFormFill">
                     <div className="col-12">
-                        <label>Gender: <span className="text-danger">*</span> </label>
+                        <label>Gender: <span className="text-danger">*</span></label>
                         <div className="form-group genderFormGrp">
                             <div className="form-check form-check-inline">
                                 <input
@@ -448,7 +468,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`firstName-${type}-${index}`}>First Name <span className="text-danger">*</span> </label>
+                            <label htmlFor={`firstName-${type}-${index}`}>First Name <span className="text-danger">*</span></label>
                             <input
                                 type="text"
                                 id={`firstName-${type}-${index}`}
@@ -462,7 +482,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`lastName-${type}-${index}`}>Last Name <span className="text-danger">*</span> </label>
+                            <label htmlFor={`lastName-${type}-${index}`}>Last Name <span className="text-danger">*</span></label>
                             <input
                                 type="text"
                                 id={`lastName-${type}-${index}`}
@@ -477,18 +497,19 @@ export default function FlightDetails() {
                     <div className="col-md-3">
                         <div className="form-group">
                             <label htmlFor={`dateOfBirth-${type}-${index}`}>Date of Birth <span className="text-danger">*</span> </label>
-                            <DatePicker
+                            <input
+                                type="date"
                                 id={`dateOfBirth-${type}-${index}`}
-                                selected={details[index]?.dateOfBirth ? new Date(details[index]?.dateOfBirth) : null}
-                                onChange={(date) => handleInputChange({ target: { value: date.toISOString().split('T')[0] } }, index, type, 'dateOfBirth')}
-                                dateFormat="yyyy-MM-dd"
                                 className="form-control"
-                                maxDate={new Date()} // Prevent future dates
-                                placeholderText="Select Date of Birth"
+                                onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                                onChange={(e) => handleInputChange(e, index, type, 'dateOfBirth')}
+                                value={details[index]?.dateOfBirth || ''}
+                                max={new Date().toISOString().split("T")[0]} // Prevent future dates
                             />
                             {fieldErrors.dateOfBirth && <div className="text-danger">{fieldErrors.dateOfBirth}</div>}
                         </div>
                     </div>
+
                     <div className="col-md-3">
                         <div className="form-group">
                             <label htmlFor={`passportNo-${type}-${index}`}>Passport No (Optional)</label>
@@ -498,22 +519,23 @@ export default function FlightDetails() {
                                 className="form-control"
                                 onChange={(e) => handleInputChange(e, index, type, 'passportNo')}
                                 value={details[index]?.passportNo || ''}
-                                placeholder="Passport No " // Updated placeholder
+                                placeholder="Passport No"
                             />
                             {fieldErrors.passportNo && <div className="text-danger">{fieldErrors.passportNo}</div>}
                         </div>
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`passportExpiry-${type}-${index}`}>PassportExpiry      (Optional)</label>
-                            <DatePicker
+                            <label htmlFor={`passportExpiry-${type}-${index}`}>Passport Expiry(Optional)</label>
+                            <input
+                                type="date"
                                 id={`passportExpiry-${type}-${index}`}
-                                selected={details[index]?.passportExpiry ? new Date(details[index]?.passportExpiry) : null}
-                                onChange={(date) => handleInputChange({ target: { value: date ? date.toISOString().split('T')[0] : '' } }, index, type, 'passportExpiry')}
-                                dateFormat="yyyy-MM-dd"
                                 className="form-control"
-                                minDate={new Date()} // Optional: set minimum date to today
-                                placeholderText="Select Passport Expiry Date"
+                                onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                                onChange={(e) => handleInputChange(e, index, type, 'passportExpiry')}
+                                value={details[index]?.passportExpiry || ''}
+                                min={new Date().toISOString().split("T")[0]}
+                                placeholder="Optional" // Updated placeholder
                             />
                             {fieldErrors.passportExpiry && <div className="text-danger">{fieldErrors.passportExpiry}</div>}
                         </div>
@@ -521,23 +543,22 @@ export default function FlightDetails() {
                     <div className="col-md-3">
                         <div className="form-group">
                             <label htmlFor={`passportIssueDate-${type}-${index}`}>Passport Issue (Optional)</label>
-                            <DatePicker
+                            <input
+                                type="date"
                                 id={`passportIssueDate-${type}-${index}`}
-                                selected={details[index]?.passportIssueDate ? new Date(details[index]?.passportIssueDate) : null}
-                                onChange={(date) => handleInputChange({ target: { value: date ? date.toISOString().split('T')[0] : '' } }, index, type, 'passportIssueDate')}
-                                dateFormat="yyyy-MM-dd"
                                 className="form-control"
-                                maxDate={new Date()} // Prevent future dates
-                                placeholderText="Select Passport Issue Date"
+                                onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                                onChange={(e) => handleInputChange(e, index, type, 'passportIssueDate')}
+                                value={details[index]?.passportIssueDate || ''}
+                                max={new Date().toISOString().split("T")[0]} // Prevent future dates
+                                placeholder="Optional" // Updated placeholder
                             />
                             {fieldErrors.passportIssueDate && <div className="text-danger">{fieldErrors.passportIssueDate}</div>}
                         </div>
                     </div>
-
-
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`addressLine1-${type}-${index}`}>Address Line 1 <span className="text-danger">*</span> </label>
+                            <label htmlFor={`addressLine1-${type}-${index}`}>Address Line 1 <span className="text-danger">*</span></label>
                             <input
                                 type="text"
                                 id={`addressLine1-${type}-${index}`}
@@ -551,7 +572,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`city-${type}-${index}`}>City <span className="text-danger">*</span> </label>
+                            <label htmlFor={`city-${type}-${index}`}>City <span className="text-danger">*</span></label>
                             <input
                                 type="text"
                                 id={`city-${type}-${index}`}
@@ -565,21 +586,21 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`countryCode-${type}-${index}`}>Country Code (Optional) </label>
+                            <label htmlFor={`countryCode-${type}-${index}`}>Country Code (Optional)</label>
                             <input
                                 type="text"
                                 id={`countryCode-${type}-${index}`}
                                 className="form-control"
                                 onChange={(e) => handleInputChange(e, index, type, 'countryCode')}
                                 value={details[index]?.countryCode || ''}
-                                placeholder="Country Code "
+                                placeholder="Country Code"
                             />
                             {fieldErrors.countryCode && <div className="text-danger">{fieldErrors.countryCode}</div>}
                         </div>
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`countryName-${type}-${index}`}>Country Name (Optional) </label>
+                            <label htmlFor={`countryName-${type}-${index}`}>Country Name (Optional)</label>
                             <input
                                 type="text"
                                 id={`countryName-${type}-${index}`}
@@ -593,7 +614,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`contactNo-${type}-${index}`}>Contact No <span className="text-danger">*</span> </label>
+                            <label htmlFor={`contactNo-${type}-${index}`}>Contact No <span className="text-danger">*</span></label>
                             <input
                                 type="text"
                                 id={`contactNo-${type}-${index}`}
@@ -607,7 +628,7 @@ export default function FlightDetails() {
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label htmlFor={`email-${type}-${index}`}>Email <span className="text-danger">*</span> </label>
+                            <label htmlFor={`email-${type}-${index}`}>Email <span className="text-danger">*</span></label>
                             <input
                                 type="email"
                                 id={`email-${type}-${index}`}
@@ -628,6 +649,7 @@ export default function FlightDetails() {
             );
         });
     };
+
 
 
     // Other parts of the code remain unchanged

@@ -236,7 +236,7 @@ const FlightTickect = () => {
               <div className='flightTicketmain'>
                 <div className='flightticketboxHED'>
                   <h6>{formatDate(booking_details?.dep_time)}</h6>
-                  <h6>{`${booking_details?.destination_city_name} TO ${booking_details?.destination_city_name}`}</h6>
+                  <h6>{`${booking_details?.city_name} TO ${booking_details?.destination_city_name}`}</h6>
                   <p>{calculateDuration(booking_details.dep_time, booking_details.arr_time)}</p>
 
                 </div>
