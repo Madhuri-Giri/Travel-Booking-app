@@ -13,9 +13,9 @@ import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 // import Payloader from '../../pages/loading/Payloader';
 import { RiTimerLine } from "react-icons/ri";
-import PayloaderHotel from "../../pages/loading/PayloaderHotel";
 // import TimerFlight from '../timmer/TimerFlight';
 import Loading from '../../pages/loading/Loading';
+import PayloaderFlight from "../../pages/loading/PayloaderFlight";
 
 
 
@@ -571,7 +571,7 @@ const FlightReview = () => {
   };
 
   if (payLoading) {
-    return <PayloaderHotel />;
+    return <PayloaderFlight />;
   }
 
   if (loader) {

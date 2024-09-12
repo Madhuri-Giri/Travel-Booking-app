@@ -45,7 +45,9 @@ import Timer from './components/timmer/Timer'
 import TimerBus from './components/timmer/TimerBus'
 import TimerFlight from './components/timmer/TimerFlight'
 import PayloaderHotel from "./pages/loading/PayloaderHotel";
+import PayloaderBus from './pages/loading/PayloaderBus';
 import FlightNewTicket from './components/flight/DownloadTikit/FlightNewTicket';
+import PayloaderFlight from './pages/loading/PayloaderFlight';
 
 // import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
 // import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
@@ -113,7 +115,8 @@ const App = () => {
           <Route path='load'  element={<Loading/>}/>
           <Route path='/payload' element={<Payloader/>} />
           <Route path='/hotel-payload' element={<PayloaderHotel/>}/>
-
+          <Route path='/bus-payload' element={<PayloaderBus/>}/>
+          <Route path='/flight-payload' element={<PayloaderFlight/>}/>
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
        

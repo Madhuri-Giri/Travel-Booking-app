@@ -240,12 +240,6 @@ const BookingBill = () => {
                 <p><strong>Ref No:</strong> {bookingDetails?.hotel_status.BookingRefNo}</p>
               </div>
 
-              <div className="section_cp">
-              <div><h2>Hotel Policy:</h2>
-              <div dangerouslySetInnerHTML={{ __html: cleanUpDescription(bookingDetails?.booking[0].hotelpolicy) }} />
-              </div>
-              </div>
-
               <div className="section_c">
                 <div className="column">
                   <h2>Hotel Information</h2>
@@ -271,10 +265,15 @@ const BookingBill = () => {
                 <p><strong>Discount:</strong> {bookingDetails?.booking[0].discount}</p>
                 <p><strong>Total Price:</strong> ₹{bookingDetails?.booking[0].publishedprice}</p>
               </div>
+              <div className="section_cp">
+              <div><h2>Hotel Policy:</h2>
+              <div className="section_hp" dangerouslySetInnerHTML={{ __html: cleanUpDescription(bookingDetails?.booking[0].hotelpolicy) }} />
+              </div>
+              </div>
             </div>
-            <div className='button-container'>
-              <button className='download-button' onClick={handleDownloadPDF}>Download PDF</button>
-              <button className='cancel-button' onClick={bookingCancel}>Cancel</button>
+            <div className='button-container-h'>
+              <button className='download-button-h' onClick={handleDownloadPDF}>Download PDF</button>
+              <button className='cancel-button-h' onClick={bookingCancel}>Cancel</button>
             </div>
           </div>
         </div>

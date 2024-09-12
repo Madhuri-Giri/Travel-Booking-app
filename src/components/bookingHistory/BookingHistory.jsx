@@ -122,9 +122,6 @@ function BookingHistory() {
         }
     };
     
-    
-    
-    
     // ----------------------hotel ticket API End-------------------------------
 
 
@@ -235,8 +232,6 @@ function BookingHistory() {
         }, 10000);
     };
     // -----------------------navigate bus ticket page--------------------------
-
-
 
     // -----------------------navigate flight ticket page--------------------------
     const navigateFlightDetails = (transactionNum, booking_id) => {
