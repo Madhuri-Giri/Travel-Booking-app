@@ -15,7 +15,7 @@ import JsBarcode from 'jsbarcode';
 import { toast, ToastContainer } from 'react-toastify';
 import html2canvas from 'html2canvas'; // Import html2canvas
 import { useNavigate } from 'react-router-dom';
-import sajLogo from  "../../../assets/images/main logo.png"
+import sajLogo from "../../../assets/images/main logo.png"
 
 
 const generatePasscode = () => {
@@ -32,17 +32,17 @@ const TicketBookBus = () => {
 
   const handleCancelTicket = async () => {
     const confirmation = window.confirm("Are you sure you want to cancel?");
-    
+
     if (confirmation) {
       const storedData = JSON.parse(localStorage.getItem('buspaymentStatusRes'));
-  
+
       if (!storedData || !storedData.data || !storedData.data.passengers) {
         toast.error("No passenger data found");
         return;
       }
-  
+
       const { bus_id, ticket_no, transaction_num } = storedData.data.passengers;
-  
+
       try {
         const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-cancel", {
           method: "POST",
@@ -53,16 +53,16 @@ const TicketBookBus = () => {
             BusId: bus_id,
             SeatId: ticket_no,
             Remarks: "User initiated cancellation",
-            transaction_num: transaction_num 
+            transaction_num: transaction_num
           }),
         });
-  
+
         const data = await response.json(); // Parse the response data
-  
+
         if (response.ok) {
           toast.success("Your ticket is canceled");
           console.log("bus-new-cancel response:", data);
-          navigate('/bus-search'); 
+          navigate('/bus-search');
         } else {
           toast.error("Failed to cancel the ticket");
           console.log("Failed to cancel the ticket. Response Data:", data);
@@ -94,7 +94,7 @@ const TicketBookBus = () => {
   }, []);
 
   const downloadTicket = () => {
-    const ticketElement = document.querySelector('.busticktbox'); 
+    const ticketElement = document.querySelector('.busticktbox');
     if (!ticketElement) {
       console.error("Ticket box not found!");
       return;
@@ -139,7 +139,7 @@ const TicketBookBus = () => {
   };
 
   if (!buspaymentStatusResState) {
-    return <p>Loading...</p>;
+    return <p>  Loading...</p>;
   }
 
   return (
@@ -156,15 +156,15 @@ const TicketBookBus = () => {
                 </div>
                 <div className="col-lg-9">
                   <div className="busticktbox">
-                  <div className='bustickthed'>
-                    <h5>Your Bus Ticket</h5>
-                    <img style={{position:"absolute", right:'0%', paddingTop:"0.4vmax", paddingBottom:"0.6vmax", paddingRight:"1vmax"}} width={90} src={sajLogo} alt="" />
+                    <div className='bustickthed'>
+                      <h5>Your Bus Ticket</h5>
+                      <img style={{ position: "absolute", right: '0%', paddingTop: "0.4vmax", paddingBottom: "0.6vmax", paddingRight: "1vmax" }} width={90} src={sajLogo} alt="" />
                     </div>
                     <div className="last-line">
-                              <small><i className="ri-phone-fill"></i> Company No:-</small>
-                              {/* <small><i className="ri-phone-fill"></i> Help Line No:-</small> */}
+                      <small><i className="ri-phone-fill"></i> Company No:-</small>
+                      {/* <small><i className="ri-phone-fill"></i> Help Line No:-</small> */}
                     </div>
-                   
+
                     <div className="top">
                     </div>
                     <div className="row buspssngerdetails">
@@ -223,23 +223,32 @@ const TicketBookBus = () => {
                             </div>
                           </div>
                           <div className="col-md-4 col-6">
-                          <p>
-    <strong>Bus Id -: </strong>
-    <span>{buspaymentStatusResState.passengers.bus_id}</span>
-  </p>
-  <p>
-    <strong>Ticket No -: </strong>
-    <span>{buspaymentStatusResState.passengers.ticket_no}</span>
-  </p>
-  <p>
-    <strong>User ID -: </strong>
-    <span>{buspaymentStatusResState.passengers.transaction_num}</span>
-  </p>
-  
-                           
+                            <p>
+                              <strong>Bus Id -: </strong>
+                              <span>{buspaymentStatusResState.passengers.bus_id}</span>
+                            </p>
+                            <p>
+                              <strong>Ticket No -: </strong>
+                              <span>{buspaymentStatusResState.passengers.ticket_no}</span>
+                            </p>
+                            <p>
+                              <strong>User ID -: </strong>
+                              <span>{buspaymentStatusResState.passengers.transaction_num}</span>
+                            </p>
+
+                            <p>
+                              <strong>Boarding Point -: </strong>
+                              <span>{}</span>
+                            </p>
+                            <p>
+                              <strong>Dropping Point -: </strong>
+                              <span>{}</span>
+                            </p>
+
+
                           </div>
                           <div className="col-md-4 ticktbordr">
-                          <p>
+                            <p>
                               <strong>Travel Name -: </strong>
                               <span>{dd.travel_name}</span>
                             </p>
@@ -257,19 +266,39 @@ const TicketBookBus = () => {
                             </p>
                             <Barcode className="buspasscode" value={passcode} format="CODE128" />
                           </div>
-                          <div className="btm">
-                            <button className='busdonload' onClick={downloadTicket}>
-                              Download
-                              <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
-                            </button>
-                            <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
-                          </div>
- 
+
 
                         </div>
                       </div>
                     </div>
-                   
+
+                    <div className="bus-cancel">
+                    <h6>CANCELLATION POLICY</h6>
+                      <div className="cancel">
+                      {buspaymentStatusResState.cancelpolicy.length > 0 ? (
+                          buspaymentStatusResState.cancelpolicy.map((policy, index) => (
+                            <div key={index} className="policy-item">
+                              <span><small>From:</small> {formatTime(policy.from_date)}</span>
+                              <span><small>To:</small> {formatTime(policy.to_date)}</span>
+                              <span><small>Policy:</small> {policy.policy_string}</span>
+                              <span><small>Cancellation_charge:</small> {policy.cancellation_charge} {policy.cancellation_charge_type === '1' ? '%' : 'INR'}</span>
+                            </div>
+                          ))
+                        ) : (
+                          <p>No cancellation policy available.</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="btm-bus">
+                      <button className='busdonload' onClick={downloadTicket}>
+                        Download
+                        <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
+                      </button>
+                      <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
+                    </div>
+
+
                   </div>
                 </div>
               </div>

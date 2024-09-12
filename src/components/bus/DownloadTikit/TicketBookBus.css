@@ -7,10 +7,45 @@
     background: #dddddd;
 
 }
+.bus-cancel{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #b1b1b1;
+    flex-direction: column;
+}
+.bus-cancel h6{
+    margin-top: 0.5vmax;
+}
+.bus-cancel .cancel{
+    width: 90%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.bus-cancel .cancel .policy-item{
+ width: 30%;
+ margin-top: 0.5vmax;
+ display: flex;
+ align-items: flex-start;
+ justify-content: space-between;
+ flex-direction: column;
+}
+.bus-cancel .cancel .policy-item small{
+  font-weight: 600;
+  color: #000;
+}
+.bus-cancel .cancel .policy-item span{
+ color:#656565 ;
+ font-weight: lighter;
+ font-size: 1vmax;
+  } 
 
 .last-line{
     width: 100%;
-    background: #dddddd;
+      background: #cccccc27;
   display: flex;
   align-items: center;
   padding-left: 2vmax;
@@ -111,7 +146,7 @@
 }
 
 
-.Bus-Tikit .do-wn .btm {
+.Bus-Tikit .do-wn .btm-bus {
     width: 100%;
     display: flex;
     align-items: center;
@@ -123,7 +158,7 @@
     padding: 0.5vmax;
 }
 
-.Bus-Tikit .do-wn .btm button {
+.Bus-Tikit .do-wn .btm-bus button {
     border: none;
     background: none;
     padding: 0.5vmax 2vmax;
@@ -134,7 +169,7 @@
     width: 95%;
 }
 
-.Bus-Tikit .do-wn .btm button:hover {
+.Bus-Tikit .do-wn .btm-bus button:hover {
     background-color: #009bb5;
 }
 
@@ -143,149 +178,11 @@
     font-weight: 700;
 }
 
-@media (max-width:600px) {
-
-    .Bus-Tikit .b-hed h5 {
-           font-size: 2.2vmax;
-    }
-
-    .btm {
-        flex-direction: column;
-        width: 90%;
-   }
-   .btm .busdonload {
-          background-color: #00b7eb;
-          border-radius: 5px;
-          border: none;
-          color: white;
-          padding: 1vmax 2vmax; 
-          margin-bottom: 1vmax;
-           
-   }
-   .btm button {
-        width: 100%;
-           
-   }
-   .btm .buscncl {
-
-          background-color: red;
-          border-radius: 5px;
-          border: none;
-          color: white;
-          padding: 1vmax 2vmax; 
-   }
-   .busticktbox::after {
-          right: -10px;
-   }
 
 
-    .Bus-Tikit .lottie {
-           width: 100%;
-           flex-direction: column;
-           align-items: center;
-    }
-
-    .Bus-Tikit .lottie .anim {
-           width: 90%;
-           display: flex;
-           align-items: center;
-           justify-content: center;
-    }
-
-    .Bus-Tikit .do-wn {
-           width: 95%;
-           margin-top: 2vmax;
-    }
-
-    .Bus-Tikit .do-wn .top {
-           width: 100%;
-           padding: 1vmax;
-    }
-
-    .Bus-Tikit .do-wn .top h5 {
-           font-size: 2vmax;
-    }
-
-    .Bus-Tikit .do-wn .mid {
-           justify-content: space-between;
-    }
-
-    .Bus-Tikit .do-wn .mid .left {
-           width: 50%;
-           padding: 1vmax;
-    }
-
-    .Bus-Tikit .do-wn .mid h6 {
-           width: 90%;
-           font-size: 1.2vmax;
-    }
-
-    .Bus-Tikit .do-wn .mid .right {
-           width: 50%;
-    }
-
-    .Bus-Tikit .do-wn .btm {
-           gap: 1vmax;
-           padding: 0.2vmax;
-    }
-
-    .Bus-Tikit .do-wn .btm button {
-           padding: 1vmax 2vmax;
-           text-transform: capitalize;
-    }
-
-}
 
 
-@media (min-width:600px) and (max-width:1150px) {
 
-    .Bus-Tikit .b-hed h5 {
-           font-size: 2.2vmax;
-    }
-
-    .Bus-Tikit .do-wn {
-           width: 95%;
-    }
-
-    .Bus-Tikit .do-wn .top {
-           width: 100%;
-           padding: 1vmax;
-    }
-
-    .Bus-Tikit .do-wn .top h5 {
-           font-size: 2vmax;
-    }
-
-    .Bus-Tikit .do-wn .mid {
-           justify-content: space-between;
-    }
-
-    .Bus-Tikit .do-wn .mid .left {
-           width: 50%;
-           padding: 1vmax;
-    }
-
-    .Bus-Tikit .do-wn .mid h6 {
-           width: 90%;
-           font-size: 1.2vmax;
-    }
-
-    .Bus-Tikit .do-wn .mid .right {
-           width: 50%;
-    }
-
-
-    .Bus-Tikit .do-wn .btm {
-           gap: 1vmax;
-           padding: 0.2vmax;
-    }
-
-    .Bus-Tikit .do-wn .btm button {
-           padding: 1vmax 2vmax;
-           text-transform: capitalize;
-    }
-
-}
 
 .buspssngerdetails span {
     font-size: 15px;
@@ -347,29 +244,36 @@
 .buspssngerdetails {
     padding: 10px 30px;
 }
-
-.btm {
-    padding: 10px 30px !important;
-    display: flex;
-    justify-content: space-between;
-}
-
 .ticktbordr {
     border-left: 2px dotted skyblue;
 }
 
-.btm .buscncl {
+
+.btm-bus {
+    padding: 10px 30px !important;
+    display: flex;
+    justify-content: space-between ;
+    align-items: center;
+    background: #cccccc27;
+    margin-top: 0.5vmax;
+}
+
+
+.btm-bus .buscncl {
     background-color: red;
     border-radius: 5px;
     border: none;
     color: white;
+    padding: 0.6vmax 1.6vmax;
 }
 
-.btm .busdonload {
+.btm-bus .busdonload {
     background-color: #00b7eb;
     border-radius: 5px;
     border: none;
     color: white;
+    padding: 0.6vmax 1.6vmax;
+
 }
 
 .Bus-Tikit .lottie {
@@ -431,6 +335,182 @@
 }
 .fromtoWEB {
     display: flex;
+}
+
+
+
+
+
+
+
+@media (max-width:600px) {
+
+    .Bus-Tikit .b-hed h5 {
+           font-size: 2.2vmax;
+    }
+
+    .btm-bus {
+        flex-direction: column;
+        width: 100%;
+   }
+   .btm-bus .busdonload {
+          background-color: #00b7eb;
+          border-radius: 5px;
+          border: none;
+          color: white;
+          padding: 1vmax 2vmax; 
+          margin-bottom: 1vmax;
+           
+   }
+   .btm-bus button {
+        width: 100%;
+           
+   }
+   .btm-bus .buscncl {
+
+          background-color: red;
+          border-radius: 5px;
+          border: none;
+          color: white;
+          padding: 1vmax 2vmax; 
+   }
+   .busticktbox::after {
+          right: -10px;
+   }
+
+
+    .Bus-Tikit .lottie {
+           width: 100%;
+           flex-direction: column;
+           align-items: center;
+    }
+
+    .Bus-Tikit .lottie .anim {
+           width: 90%;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+    }
+
+    .Bus-Tikit .do-wn {
+           width: 95%;
+           margin-top: 2vmax;
+    }
+
+    .Bus-Tikit .do-wn .top {
+           width: 100%;
+           padding: 1vmax;
+    }
+
+    .Bus-Tikit .do-wn .top h5 {
+           font-size: 2vmax;
+    }
+
+    .Bus-Tikit .do-wn .mid {
+           justify-content: space-between;
+    }
+
+    .Bus-Tikit .do-wn .mid .left {
+           width: 50%;
+           padding: 1vmax;
+    }
+
+    .Bus-Tikit .do-wn .mid h6 {
+           width: 90%;
+           font-size: 1.2vmax;
+    }
+
+    .Bus-Tikit .do-wn .mid .right {
+           width: 50%;
+    }
+/* 
+    .Bus-Tikit .do-wn .btm-bus {
+           gap: 1vmax;
+           padding: 0.2vmax;
+    } */
+
+    .Bus-Tikit .do-wn .btm-bus button {
+           padding: 1vmax 2vmax;
+           text-transform: capitalize;
+    }
+
+}
+
+
+@media (min-width:600px) and (max-width:1150px) {
+
+    .Bus-Tikit .b-hed h5 {
+           font-size: 2.2vmax;
+    }
+    .btm-bus {
+        flex-direction: column;
+        width: 100%;
+   }
+    .Bus-Tikit .do-wn {
+           width: 95%;
+    }
+   
+   .btm-bus .busdonload {
+          background-color: #00b7eb;
+          border-radius: 5px;
+          border: none;
+          color: white;
+          padding: 1vmax 2vmax; 
+          margin-bottom: 1vmax;
+           
+   }
+   .btm-bus button {
+        width: 100%;
+           
+   }
+   .btm-bus .buscncl {
+
+          background-color: red;
+          border-radius: 5px;
+          border: none;
+          color: white;
+          padding: 1vmax 2vmax; 
+   }
+
+    .Bus-Tikit .do-wn .top {
+           width: 100%;
+           padding: 1vmax;
+    }
+
+    .Bus-Tikit .do-wn .top h5 {
+           font-size: 2vmax;
+    }
+
+    .Bus-Tikit .do-wn .mid {
+           justify-content: space-between;
+    }
+
+    .Bus-Tikit .do-wn .mid .left {
+           width: 50%;
+           padding: 1vmax;
+    }
+
+    .Bus-Tikit .do-wn .mid h6 {
+           width: 90%;
+           font-size: 1.2vmax;
+    }
+
+    .Bus-Tikit .do-wn .mid .right {
+           width: 50%;
+    }
+
+
+    .Bus-Tikit .do-wn .btm-bus {
+           gap: 1vmax;
+           padding: 0.2vmax;
+           width: 100%;
+    }
+
+    .Bus-Tikit .do-wn .btm-bus button {
+           padding: 1vmax 2vmax;
+           text-transform: capitalize;
+    }
+
 }
 
 
