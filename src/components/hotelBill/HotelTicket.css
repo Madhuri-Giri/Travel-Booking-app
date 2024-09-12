@@ -56,11 +56,11 @@
 } */
 
 .hotel-logo-home{
-  width: 150px;
+  width: 100px;
   height: auto;
 }
 .receipt-header h1 {
-  font-size: 32px;
+  font-size: 20px;
   color: #ffffff;
   font-family: 'Roboto', sans-serif;
   margin: 0;
@@ -81,9 +81,28 @@
 }
 
 .section_r strong {
-  width: 200px; 
+  width: 150px; 
 }
-
+.section_cp{
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  background: #f5f5f5;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.section_cp h2 {
+  font-size: 18px;
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+}
 .section_c{
   display: flex;
   justify-content: space-between;
@@ -101,7 +120,7 @@
 }
 
 .section_c .column h2 {
-  font-size: 24px;
+  font-size: 18px;
   color: #007bff;
   border-bottom: 2px solid #007bff;
   padding-bottom: 12px;
@@ -111,16 +130,21 @@
 }
 
 .section_c .column p {
-  font-size: 16px;
+  font-size: 12px;
   margin: 10px 0;
   line-height: 1.6;
 }
-
+.section_h p{
+  font-size: 8px;
+}
 .price-summary {
   border-top: 2px solid #007bff;
   padding-top: 20px;
 }
-
+.price-summary h2{
+  font-size: 18px;
+  color: #007bff;
+}
 .button-container {
   text-align: center;
   margin-top: 40px;
