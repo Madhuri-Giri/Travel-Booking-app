@@ -16,7 +16,7 @@ import html2canvas from 'html2canvas'; // Import html2canvas
 import { useNavigate } from 'react-router-dom';
 import { BsDatabaseAdd } from 'react-icons/bs';
 
-import sajLogo from  "../../../assets/images/main logo.png"
+import sajLogo from "../../../assets/images/main logo.png"
 
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
@@ -50,6 +50,8 @@ const BusTikit = () => {
         const data = await response.json();
         setBusticketPassengerDetails(data);
         console.log('Bus ticket API Response:', data);
+        // console.log('bus cancel policy', data.cancelpolicy)
+        localStorage.setItem('busCancelPolicy', JSON.stringify(data.cancelpolicy))
 
       } catch (error) {
         console.error("Error fetching API of bus ticket:", error);
@@ -95,17 +97,17 @@ const BusTikit = () => {
 
   const handleCancelTicket = async () => {
     const confirmation = window.confirm("Are you sure you want to cancel?");
-    
+
     if (confirmation) {
       const storedData = JSON.parse(localStorage.getItem('buspaymentStatusRes'));
-  
+
       if (!storedData || !storedData.data || !storedData.data.passengers) {
         toast.error("No passenger data found");
         return;
       }
-  
+
       const { bus_id, ticket_no, transaction_num } = storedData.data.passengers;
-  
+
       try {
         const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-cancel", {
           method: "POST",
@@ -116,18 +118,18 @@ const BusTikit = () => {
             BusId: bus_id,
             SeatId: ticket_no,
             Remarks: "User initiated cancellation",
-            transaction_num: transaction_num 
+            transaction_num: transaction_num
           }),
         });
-  
-        const data = await response.json(); 
+
+        const data = await response.json();
         localStorage.setItem('busSeatCancel', JSON.stringify(data));
-        
-        
+
+
         if (response.ok) {
           toast.success("Your ticket is canceled");
           console.log("bus-new-cancel response:", data);
-          navigate('/bus-search'); 
+          navigate('/bus-search');
         } else {
           toast.error("Failed to cancel the ticket");
           console.log("Failed to cancel the ticket. Response Data:", data);
@@ -147,7 +149,7 @@ const BusTikit = () => {
   useEffect(() => {
     // Retrieve the data from localStorage
     const busSeatCancelData = localStorage.getItem('busSeatCancel');
-    
+
     if (busSeatCancelData) {
       const parsedData = JSON.parse(busSeatCancelData);
 
@@ -180,6 +182,9 @@ const BusTikit = () => {
     return <p>Loading...</p>;
   }
 
+
+  const busCancelPolicy = JSON.parse(localStorage.getItem('busCancelPolicy') || '[]');  
+
   return (
     <>
       <CustomNavbar />
@@ -199,19 +204,24 @@ const BusTikit = () => {
                 <div className="col-lg-9">
                   <div className='busticktbox'>
                     <div className='bustickthed'>
-                    <h5>Your Bus Ticket</h5>
-                    <img style={{position:"absolute", right:'0%', paddingTop:"0.4vmax", paddingBottom:"0.6vmax", paddingRight:"1vmax"}} width={90} src={sajLogo} alt="" />
+                      <h5>Your Bus Ticket</h5>
+                      <img
+                        style={{ position: "absolute", right: '0%', paddingTop: "0.4vmax", paddingBottom: "0.6vmax", paddingRight: "1vmax" }}
+                        width={90}
+                        src={sajLogo}
+                        alt="Company Logo"
+                      />
                     </div>
+
                     <div className="last-line">
-                              <small><i className="ri-phone-fill"></i> Company No:-</small>
-                              {/* <small><i className="ri-phone-fill"></i> Help Line No:-</small> */}
+                      <small><i className="ri-phone-fill"></i> Company No:-</small>
                     </div>
-{/* ----------------------------------------------- */}
-                     
-                    <div className="top"></div>
+
+                    {/* Passenger Details */}
                     <div className="row buspssngerdetails">
                       <div className="col-12">
                         <div className="row">
+                          {/* Mobile Layout */}
                           <div className='fromtoMOB'>
                             <div>
                               <strong>Bhopal{from}</strong>
@@ -225,10 +235,12 @@ const BusTikit = () => {
                               <p>{formatTime(busDetail.arrival_time)}</p>
                             </div>
                           </div>
+
+                          {/* Web Layout */}
                           <div className="col-md-4 col-6">
-                            <p><strong>Name -: </strong><span>{busDetail.name}</span></p>
-                            <p><strong>Age -: </strong><span>{busDetail.age}</span></p>
-                            <p><strong>Gender -: </strong><span>{busDetail.gender}</span></p>
+                            <p><strong>Name -: </strong><span>{busDetail.name || 'N/A'}</span></p>
+                            <p><strong>Age -: </strong><span>{busDetail.age || 'N/A'}</span></p>
+                            <p><strong>Gender -: </strong><span>{busDetail.gender === '1' ? 'Male' : 'Female'}</span></p>
                             <p><strong>Date -: </strong><span>{formatDate(busDetail.departure_time)}</span></p>
                             <div className='fromtoWEB'>
                               <div>
@@ -244,17 +256,22 @@ const BusTikit = () => {
                               </div>
                             </div>
                           </div>
+
+                          {/* Bus Details */}
                           <div className="col-md-4 col-6">
-                            <p><strong>Number -: </strong><span>{busDetail.number}</span></p>
-                            <p><strong>Address -: </strong><span>{busDetail.address}</span></p>
-                            <p><strong>Bus Type -: </strong><span>{busDetail.bus_type}</span></p>
-                            <p><strong>Traveller -: </strong><span>{busDetail.travel_name}</span></p>
+                            <p><strong>Number -: </strong><span>{busDetail.number || 'N/A'}</span></p>
+                            <p><strong>Address -: </strong><span>{busDetail.address || 'N/A'}</span></p>
+                            <p><strong>Bus Type -: </strong><span>{busDetail.bus_type || 'N/A'}</span></p>
+                            <p><strong>Traveller -: </strong><span>{busDetail.travel_name || 'N/A'}</span></p>
                           </div>
+
+                          {/* Ticket and Seat Details */}
                           <div className="col-md-4 ticktbordr">
                             <div>
                               <p><strong>Seat No -: </strong><span>{seatDetail ? seatDetail.seat_name : 'N/A'}</span></p>
                               <p className='busbookconfrm'><strong>Booking -: </strong><span>{busticketPassengerDetails.booking_status[0].bus_status || 'N/A'}</span></p>
-                             
+                              <p><strong>Boarding Point -: </strong><span>{busDetail.boarding_point || 'N/A'}</span></p>
+                              <p><strong>Dropping Point -: </strong><span>{busDetail.dropping_point || 'N/A'}</span></p>
                               <Barcode className="buspasscode" value={passcode} format="CODE128" />
                             </div>
                           </div>
@@ -262,18 +279,37 @@ const BusTikit = () => {
                       </div>
                     </div>
 
-                    <div className="btm">
+                    <div className="bus-cancels">
+  <h6>CANCELLATION POLICY</h6>
+  <div className="b-cancel">
+    {Array.isArray(busCancelPolicy) && busCancelPolicy.length > 0 ? (
+      busCancelPolicy.map((policy, index) => (
+        <div key={index} className="b-policy">
+          <span><small>Policy:</small> {policy.policy_string}</span>
+          <span><small>Cancellation Charge:</small> {policy.cancellation_charge} {policy.cancellation_charge_type === '1' ? '%' : 'INR'}</span>
+          <span><small>From Date:</small> {new Date(policy.from_date).toLocaleString()}</span>
+          <span><small>To Date:</small> {new Date(policy.to_date).toLocaleString()}</span>
+        </div>
+      ))
+    ) : (
+      <p>No cancellation policy available</p>
+    )}
+  </div>
+</div>
+
+
+                    {/* Buttons */}
+                    <div className="btm-bus">
                       <button className='busdonload' onClick={downloadTicket}>
                         Download
                         <CiSaveDown1 className='icon-down' style={{ marginLeft: '5px', fontSize: '20px', fontWeight: '800' }} />
                       </button>
                       <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
                     </div>
-                    {/* ----------------------------------------------- */}
-                  
                   </div>
                 </div>
               </div>
+
             );
           })}
         </div>

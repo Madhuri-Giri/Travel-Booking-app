@@ -411,7 +411,7 @@ const ReviewBooking = () => {
       });
 
       const responseBody = await response.json();
-      console.log('Bus Payment Status Response:', responseBody);
+      // console.log('Bus Payment Status Response:', responseBody);
 
       if (!response.ok) {
         console.error('Failed to fetch payment status. Status:', response.status, 'Response:', responseBody);
