@@ -419,6 +419,12 @@
 }
 
 @media screen and (max-width: 576px) {
+    .tabletikcett th{
+        font-size: 12px;
+    }
+    .tabletikcett td{
+        font-size: 11px;
+    }
 
     .flightticktbox::before,
     .flightticktbox::after {
@@ -703,7 +709,7 @@
 }
 
 .ticketpart{
-    display: none;
+    /* display: none; */
 }
 .items-not-allowed-container {
     padding: 20px;

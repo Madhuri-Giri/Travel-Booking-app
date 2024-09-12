@@ -299,7 +299,7 @@ const FlightNewTikit = () => {
                         </div>
 
                         <div>
-                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                          <table className='tabletikcett' style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead className='passengerDetailTable'>
                               <tr>
                                 <th style={{ border: '1px solid #ddd', padding: '8px' }}>PASSENGER NAME</th>
@@ -318,8 +318,8 @@ const FlightNewTikit = () => {
                             </tbody>
                           </table>
                         </div>
-                        <div className='mt-4'>
-                          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <div className='mt-3'>
+                          <table className='tabletikcett' style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead className='passengerDetailTable'>
                               <tr>
                                 <th style={{ border: '1px solid #ddd', padding: '8px' }}>PNR</th>
