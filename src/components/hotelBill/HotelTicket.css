@@ -50,13 +50,17 @@
   border-radius: 8px;
 }
 
-.hotel-logo {
+/* .hotel-logo {
+  width: 100px;
+  height: auto;
+} */
+
+.hotel-logo-home{
   width: 100px;
   height: auto;
 }
-
 .receipt-header h1 {
-  font-size: 32px;
+  font-size: 20px;
   color: #ffffff;
   font-family: 'Roboto', sans-serif;
   margin: 0;
@@ -77,9 +81,28 @@
 }
 
 .section_r strong {
-  width: 200px; 
+  width: 150px; 
 }
-
+.section_cp{
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  background: #f5f5f5;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.section_cp h2 {
+  font-size: 18px;
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+}
 .section_c{
   display: flex;
   justify-content: space-between;
@@ -97,7 +120,7 @@
 }
 
 .section_c .column h2 {
-  font-size: 24px;
+  font-size: 18px;
   color: #007bff;
   border-bottom: 2px solid #007bff;
   padding-bottom: 12px;
@@ -107,16 +130,21 @@
 }
 
 .section_c .column p {
-  font-size: 16px;
+  font-size: 12px;
   margin: 10px 0;
   line-height: 1.6;
 }
-
+.section_h p{
+  font-size: 8px;
+}
 .price-summary {
   border-top: 2px solid #007bff;
   padding-top: 20px;
 }
-
+.price-summary h2{
+  font-size: 18px;
+  color: #007bff;
+}
 .button-container {
   text-align: center;
   margin-top: 40px;
@@ -125,7 +153,7 @@
   background-color: rgb(237, 38, 38);
   color: white;
   border: none;
-  padding: 14px 30px;
+  padding: 10px 20px;
   border-radius: 8px;
   font-size: 20px;
   font-family: 'Roboto', sans-serif;
@@ -138,7 +166,7 @@
   background-color: #00b7eb;
   color: white;
   border: none;
-  padding: 14px 30px;
+  padding: 10px 20px;
   border-radius: 8px;
   font-size: 20px;
   font-family: 'Roboto', sans-serif;
@@ -153,6 +181,11 @@
 }
 /* Media Queries for Responsive Design */
 @media (max-width: 768px) {
+  
+.hotel-logo-home{
+  width: 100px;
+  height: auto;
+}
   .content-container {
     flex-direction: column;
   }
@@ -200,6 +233,10 @@
   .download-button,
   .cancel-button {
     font-size: 16px;
-    padding: 10px 20px;
+    padding: 8px 15px;
+  }
+  .hotel-logo-home{
+    width: 100px;
+    height: auto;
   }
 }

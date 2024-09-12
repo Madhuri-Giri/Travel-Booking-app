@@ -1,244 +1,270 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import jsPDF from 'jspdf';
 import "jspdf-autotable";
+import html2canvas from 'html2canvas';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './HotelBillReceipt.css';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import { useNavigate } from 'react-router-dom';
-import { CiSaveDown1 } from "react-icons/ci";
-import hotelImg from '../../../src/assets/images/hotel-ticket-img.png';
+import Lottie from 'lottie-react';
+import hotelAnim from "../../assets/images/hotelanimation.json";
+import hotelImglogo from "../../assets/images/main logo.png";
+import he from 'he';
 
 const BookingBill = () => {
-  const [bookingDetails, setBookingDetails] = useState(null);
-  const [error, setError] = useState(null);
-  const [storedGuestDetails, setStoredGuestDetails] = useState([]);
-  const [storedHotelRoom, setstoredHotelRoom] = useState([]);
-  const navigate = useNavigate();
+    const [bookingDetails, setBookingDetails] = useState(null);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const ticketElementRef = useRef(null);
 
-  useEffect(() => {
-    const hotelTicketData = async () => {
-      try {
-        const storedTicketData = localStorage.getItem('hotelTicket');
-        // console.log('Stored Ticket Data:', storedTicketData); 
-        if (storedTicketData) {
-          const parsedData = JSON.parse(storedTicketData);
-          setBookingDetails(parsedData);
-        } else {
-          throw new Error('No ticket data found');
-        }
-        
-        const storedGuestDetailsData = localStorage.getItem('guestDetails');
-        if (storedGuestDetailsData) {
-          const parsedGuestDetails = JSON.parse(storedGuestDetailsData);
-          setStoredGuestDetails(parsedGuestDetails);
-        }
-        
-        const storedSelectedRoomData = localStorage.getItem('selectedRoomsData');
-        if (storedSelectedRoomData) {
-          const parsedSelectedRoom = JSON.parse(storedSelectedRoomData);
-          setstoredHotelRoom(parsedSelectedRoom);
-        }
-  
-      } catch (e) {
-        setError(e.message);
-      }
-    };
-  
-    hotelTicketData();
-  }, []);
-  
+    useEffect(() => {
+        const hotelTicketData = async () => {
+            try {
+                const storedTicketData = localStorage.getItem('hotelTicket');
+                if (storedTicketData) {
+                    const parsedData = JSON.parse(storedTicketData);
+                    setBookingDetails(parsedData);
+                } else {
+                    throw new Error('No ticket data found');
+                }
+            } catch (e) {
+                setError(e.message);
+            }
+        };
 
-  if (error) {
-    toast.error(error);
-    return <div>Error: {error}</div>;
-  }
+        hotelTicketData();
+    }, []);
 
-  if (!bookingDetails) {
-    return <div>Loading...</div>;
-  }
-
-  const handleDownloadPDF = () => {
-    if (bookingDetails) {
-      ;
-  
-      const doc = new jsPDF();
-      const { hotel_passengers, booking } = bookingDetails;
-  
-      if (hotel_passengers?.length > 0) {
-        const hotelInfo = hotel_passengers[0];
-        doc.setFontSize(18);
-        doc.text('Booking Bill', 14, 22);
-        doc.setFontSize(12);
-        doc.text(`Hotel Name: ${hotelInfo.hotelname}`, 14, 40);
-        doc.text(`Room Quantity: ${hotelInfo.noofrooms}`, 14, 50);
-        doc.text(`Price: ${hotelInfo.roomprice}`, 14, 60);
-        doc.text(`Room Type: ${hotelInfo.room_type_name}`, 14, 70);
-        doc.text(`Check-In Date: ${hotelInfo.check_in_date}`, 14, 80);
-        doc.text(`Check-Out Date: ${hotelInfo.check_out_date || 'N/A'}`, 14, 90);
-  
-       
-      if (booking?.length > 0) {
-        const bookingInfo = booking[0];
-        doc.text(`Booking ID: ${bookingInfo.booking_id}`, 14, 140);
-        doc.text(`Hotel Name: ${bookingInfo.hotel_name}`, 14, 150);
-        doc.text(`Transaction Number: ${bookingInfo.transaction_num}`, 14, 160);
-        doc.text(`Amount: ${bookingInfo.amount}`, 14, 170);
-      }
-  
-        doc.autoTable({
-          startY: doc.previousAutoTable.finalY + 10,
-          head: [['Booking Detail', 'Information']],
-          body: bookingData.map(item => [item.label, item.value])
-        });
-      }
-  
-      doc.save('hotel-booking-bill.pdf');
-    } else {
-      toast.error('No booking details available to generate PDF');
+    if (error) {
+        toast.error(error);
+        return <div>Error: {error}</div>;
     }
-  };
-  
 
-  const bookingCancel = async (event) => {
-    event.preventDefault();
+    if (!bookingDetails) {
+        return <div>Loading...</div>;
+    }
 
-    const hotelBookingId = localStorage.getItem('hotel_booking_id');
-    const transactionNum = localStorage.getItem('transactionNum');
+    const passenger = bookingDetails.passenger && bookingDetails.passenger.length > 0 ? bookingDetails.passenger[0] : null;
+    const hotelBook = bookingDetails.hotelBook && bookingDetails.hotelBook.length > 0 ? bookingDetails.hotelBook[0] : null;
+    const bookingStatus = bookingDetails.booking_status && bookingDetails.booking_status.length > 0 ? bookingDetails.booking_status[0] : null;
+
+    console.log('Passenger:', passenger); // Debugging line
+    console.log('Hotel Book:', hotelBook); // Debugging line
+    console.log('Booking Status:', bookingStatus); // Debugging line
+
+    const handleDownloadPDF = () => {
+        if (!ticketElementRef.current) {
+            toast.error('No content available for download.');
+            return;
+        }
     
-    if (!hotelBookingId) {
-        setError('No hotel booking ID available');
-        toast.error('No hotel booking ID available');
-        return;
-    }
+        const buttonContainer = document.querySelector('.button-container');
+        if (buttonContainer) {
+            buttonContainer.style.display = 'none';
+        }
+    
+        html2canvas(ticketElementRef.current, { scale: 2 }).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+    
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+    
+            const widthRatio = pdfWidth / imgWidth;
+            const heightRatio = pdfHeight / imgHeight;
+            const scale = widthRatio;
+    
+            const newImgWidth = imgWidth * scale;
+            const newImgHeight = imgHeight * scale;
+    
+            const pageHeight = pdf.internal.pageSize.height;
+            if (newImgHeight > pageHeight) {
+                pdf.internal.pageSize.height = newImgHeight;
+                pdf.internal.pageSize.width = newImgWidth;
+            }
+    
+            pdf.addImage(imgData, 'PNG', 0, 0, newImgWidth, newImgHeight);
+            pdf.save('hotel_booking_details.pdf');
+        }).catch((error) => {
+            console.error('Error generating PDF:', error);
+            toast.error('Error generating PDF.');
+        }).finally(() => {
+            if (buttonContainer) {
+                buttonContainer.style.display = '';
+            }
+        });
+    };
+    
+    const bookingCancel = async (event) => {
+        event.preventDefault();
 
-    if (!transactionNum) {
-        setError('No transaction number available');
-        toast.error('No transaction number available');
-        return;
-    }
+        const hotelBookingId = localStorage.getItem('hotel_booking_id');
+        const transactionNum = localStorage.getItem('transactionNum');
+        
+        if (!hotelBookingId) {
+            setError('No hotel booking ID available');
+            toast.error('No hotel booking ID available');
+            return;
+        }
 
-    const requestData = {
-      BookingId: '1554760',
-      RequestType: 4,
-      BookingMode: 5,
-      SrdvType: "SingleTB",
-      SrdvIndex: "SrdvTB",
-      Remarks: "Test",
-      transaction_num: transactionNum,
-      date: new Date().toISOString(),
-      hotel_booking_id: hotelBookingId, 
-      trace_id: "1",
+        if (!transactionNum) {
+            setError('No transaction number available');
+            toast.error('No transaction number available');
+            return;
+        }
+
+        const requestData = {
+            BookingId: hotelBookingId,
+            RequestType: 4,
+            BookingMode: 5,
+            SrdvType: "SingleTB",
+            SrdvIndex: "SrdvTB",
+            Remarks: "Test",
+            transaction_num: transactionNum,
+            date: new Date().toISOString(),
+            hotel_booking_id: hotelBookingId, 
+            trace_id: "1",
+        };
+
+        try {
+            const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-cancel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            });
+
+            if (!response.ok) {
+                const errorDetails = await response.json();
+                throw new Error(`HTTP error! Status: ${response.status}, Details: ${JSON.stringify(errorDetails)}`);
+            }
+
+            const res = await response.json();
+
+            if (res.data) {
+                localStorage.setItem('hotelTicket', JSON.stringify(res.data));
+                setBookingDetails(res.data);
+                toast.success('Booking cancelled successfully');
+                navigate('/hotel-search');
+            } else {
+                setError('No data found in the API response');
+                toast.error('No data found in the API response');
+            }
+
+        } catch (error) {
+            setError('Error occurred during cancellation');
+            toast.error('Error occurred during cancellation');
+        }
     };
 
-    try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-cancel', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-      });
-  
-      if (!response.ok) {
-        const errorDetails = await response.json();
-        throw new Error(`HTTP error! Status: ${response.status}, Details: ${JSON.stringify(errorDetails)}`);
-      }
-  
-      const res = await response.json();
-  
-      if (res.data) {
-        localStorage.setItem('hotelTicket', JSON.stringify(res.data));
-        setBookingDetails(res.data);
-        toast.success('Booking cancelled successfully');
-        navigate('/hotel-search');
-      } else {
-        setError('No data found in the API response');
-        toast.error('No data found in the API response');
-      }
-  
-    } catch (error) {
-        setError('Error occurred during cancellation');
-        toast.error('Error occurred during cancellation');
-    }
-  };
+    const cleanUpDescription = (description) => {
+        if (!description) return '';
 
-  return (
-    <>
-      <CustomNavbar />
+        // Decode HTML entities
+        let cleanedDescription = he.decode(description);
 
-      <div className="booking-bill-hotel">
-        <div className="col-lg-9 hotel_img">
-          <div className='hotelticktbox'>
-            <div className="header_hotel">
-              <h2>Hotel Booking Details</h2>
-              <img src={hotelImg} alt="Hotel" />
+        // Define patterns to extract key points
+        const patterns = [
+            /Check-in hour[^.]+?\./i,
+            /Valid From[^.]+?\./i,
+            /Identification card at arrival[^.]+?\./i,
+            /Minimum check-in age[^.]+?\./i,
+            /Car park[^.]+?\./i,
+            /Amendments cannot be made[^.]+?\./i,
+        ];
+
+        let formattedText = '';
+        
+        patterns.forEach((pattern) => {
+            const matches = cleanedDescription.match(pattern);
+            if (matches) {
+                matches.forEach((match) => {
+                    formattedText += `<li>${match.trim()}</li>`;
+                });
+            }
+        });
+
+        // Replace multiple spaces with single space
+        formattedText = formattedText.replace(/\s{2,}/g, ' ').trim();
+
+        // Wrap the text in <ul> tags for list formatting
+        return `<ul>${formattedText}</ul>`;
+    };
+
+    return (
+        <>
+            <CustomNavbar />
+            <div className="main-container">
+                <div className="content-container">
+                    <div className="animation-container">
+                        <Lottie animationData={hotelAnim} className="lottie-animation" />
+                    </div>
+                    <div className="receipt-container" ref={ticketElementRef}>
+                        <div className="receipt-header">
+                            <img src={hotelImglogo} alt="Hotel" className="hotel-logo-home" />
+                            <h1>Hotel Booking Receipt</h1>
+                        </div>
+                        <div className="receipt-body">
+                            <div className="section_r">
+                                <p><strong>Check-in Date:</strong> {hotelBook?.check_in_date || 'N/A'}</p>
+                                <p><strong>Invoice No:</strong> {bookingStatus?.InvoiceNumber || 'N/A'}</p>
+                                <p><strong>Ref No:</strong> {bookingStatus?.BookingRefNo || 'N/A'}</p>
+                            </div>
+
+                            <div className="section_cp">
+                            <div><h2>Hotel Policy:</h2>
+                            <div dangerouslySetInnerHTML={{ __html: cleanUpDescription(hotelBook?.hotelpolicy || '') }} /></div>
+                                
+                            </div>
+
+                            <div className="section_c">
+                                <div className="column">
+                                    <h2>Hotel Information</h2>
+                                    <p><strong>Hotel Name:</strong> {hotelBook?.hotelname || 'N/A'}</p>
+                                    <p><strong>Hotel Code:</strong> {hotelBook?.hotelcode || 'N/A'}</p>
+                                    <p><strong>Number of Rooms:</strong> {hotelBook?.noofrooms || 'N/A'}</p>
+                                    <p><strong>Room Type:</strong> {hotelBook?.room_type_name || 'N/A'}</p>
+                                </div>
+                                
+                                <div className="column">
+                                    <h2>Guest Details</h2>
+                                    {passenger ? (
+                                        <div>
+                                            <p><strong>First Name:</strong> {passenger.firstname || 'N/A'}</p>
+                                            <p><strong>Last Name:</strong> {passenger.lastname || 'N/A'}</p>
+                                            <p><strong>Email:</strong> {passenger.email || 'N/A'}</p>
+                                            <p><strong>Mobile:</strong> {passenger.mobile || 'N/A'}</p>
+                                            <p><strong>Age:</strong> {passenger.age || 'N/A'}</p>
+                                        </div>
+                                    ) : (
+                                        <p>No guest details available</p>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="section_c price-summary">
+                                <h2>Price Summary</h2>
+                                <p><strong>Room Price:</strong> ₹{hotelBook?.roomprice || 'N/A'}</p>
+                                <p><strong>GST:</strong> {hotelBook?.igst || 'N/A'}</p>
+                                <p><strong>Discount:</strong> {hotelBook?.discount || 'N/A'}</p>
+                                <p><strong>Total Price:</strong> ₹{hotelBook?.publishedprice || 'N/A'}</p>
+                            </div>
+                        </div>
+                        <div className='button-container'>
+                            <button className='download-button' onClick={handleDownloadPDF}>Download PDF</button>
+                            <button className='cancel-button' onClick={bookingCancel}>Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <ToastContainer />
             </div>
-
-            <div className="details-section-wrapper">
-              <div className="details-section-hotel">
-                <h3>Hotel Information</h3>
-                {bookingDetails?.hotel_passengers?.length > 0 ? (
-                  <div className="detail-guest">
-                    {bookingDetails.hotel_passengers.map((item, index) => (
-                      <div key={index}>
-                        <p><span>Hotel Name:</span> {item.hotelname}</p>
-                        <p><span>Hotel Code:</span> {item.hotelcode}</p>
-                        <p><span>Transaction Number:</span> {item.transaction_num}</p>
-                        <p><span>Number of Rooms:</span> {item.noofrooms}</p>
-                        <p><span>Check-in Date:</span> {item.check_in_date}</p>
-                      </div>
-                    ))}
-                    {storedHotelRoom?.map((item, index) => (
-                      <div key={index}>
-                        <p><span>Room Price:</span> {item.roomprice}</p>
-                        <p><span>GST:</span> {item.tax}</p>
-                        <p><span>Discount:</span> {item.discount}</p>
-                        <p><span>Total Price:</span> {item.publishedprice}</p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p>No hotel information available.</p>
-                )}
-              </div>
-
-              <div className="details-section-guest">
-                <h3>Guest Details</h3>
-                {storedGuestDetails?.length > 0 ? (
-                  <div className="detail-guest">
-                    {storedGuestDetails.map((item, index) => (
-                      <div key={index}>
-                        <p><span>First Name:</span> {item.fname}</p>
-                        <p><span>Last Name:</span> {item.lname}</p>
-                        <p><span>Phone Number:</span> {item.mobile}</p>
-                        <p><span>Email:</span> {item.email}</p>
-                        <p><span>Age:</span> {item.age}</p>
-                        <p><span>Passport Number:</span> {item.passportNo}</p>
-                        <p><span>PaxType:</span> {item.paxType}</p>
-                        {/* <p><span>Govt. Id:</span> {item.govtId}</p> */}
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p>No guest details available.</p>
-                )}
-              </div>
-            </div>
-
-            <div className='button-container'>
-              <button className='ticket_btn' onClick={handleDownloadPDF}>Download PDF</button>
-              <button className='ticket_btn_cancel' onClick={bookingCancel}>Cancel Ticket</button>
-            </div>
-            
-          </div>
-        </div>
-        <ToastContainer />
-      </div>               
-      <Footer />
-    </>
-  );
+            <Footer />
+        </>
+    );
 };
 
 export default BookingBill;
