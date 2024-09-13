@@ -315,7 +315,7 @@ const FlightTickect = () => {
                   </table>
                 </div>
                 <div className='ticketpart'>
-                  <div className='mt-5 sajyatraticketmain'>
+                  <div className=' sajyatraticketmain sajyatraticketmainold'>
                     <div className='sajyatratickethed'>
                       <h6 className=''>Sajyatra</h6>
                       <img src={FooterLogo} className='img-fluid' alt="logo"></img>
@@ -328,13 +328,13 @@ const FlightTickect = () => {
                     </div>
                   </div>
 
-                  <div className="items-not-allowed-container">
+                  <div className="items-not-allowed-container items-not-allowed-containeroldd">
                     <div className="header">
                       <h2>Items not allowed in the aircraft</h2>
                     </div>
-                    <div className="items-grid">
+                    <div className="items-grid row">
                       {items.map((item) => (
-                        <div className="item" key={item.id}>
+                        <div className="item col-md-2 col-4" key={item.id}>
                           <div className="icon-container">
                             <FontAwesomeIcon icon={item.icon} className="main-icon" />
                             <div className="cross-line"></div>
@@ -344,7 +344,7 @@ const FlightTickect = () => {
                       ))}
                     </div>
                   </div>
-                  <div className='impotantNotmain'>
+                  <div className='impotantNotmain impotantNotmainOLD'>
                     <h6 className='impotantNothed'>IMPORTANT INFORMATION</h6>
                     <ul>
                       <li>
@@ -360,12 +360,12 @@ const FlightTickect = () => {
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, aperiam veniam quisquam vel doloribus iure pariatur, sunt est temporibus rem
                       </li>
                       <li>
-                        <strong>You have Paid : INR 9,7366</strong>
+                        <strong>You have Paid : {booking_details.base_fare || 'Amount null'} Rs.</strong>
                       </li>
 
                     </ul>
                   </div>
-                  <div className='fticketBaggageInformation mt-5'>
+                  <div className='fticketBaggageInformation'>
                     <h6 className='impotantNothed'>BAGGAGE INFORMATION</h6>
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                       <thead className='passengerDetailTable'>
@@ -380,7 +380,7 @@ const FlightTickect = () => {
                         <tr>
                           <td style={{ border: '1px solid #ddd', padding: '8px' }}>Adult</td>
                           <td style={{ border: '1px solid #ddd', padding: '8px' }}>CCU-DEL</td>
-                          {/* <td style={{ border: '1px solid #ddd', padding: '8px' }}>{`${booking_details.baggage}`}</td> */}
+                          <td style={{ border: '1px solid #ddd', padding: '8px' }}>{`${booking_details.baggage}`}</td>
                           <td style={{ border: '1px solid #ddd', padding: '8px' }}>15- Kgs (1 pieace only)</td>
                         </tr>
                       </tbody>
@@ -389,7 +389,7 @@ const FlightTickect = () => {
                   <div className='flightitcketCancelationDetails mt-4'>
                     <h6 className='impotantNothed'>CANCELLATION AND DATE CHANGE CHARGES</h6>
                     <div className="row">
-                      <div className="col-6">
+                      <div className="col-md-6">
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                           <thead className='passengerDetailTable'>
                             <tr>
@@ -410,7 +410,7 @@ const FlightTickect = () => {
                           </tbody>
                         </table>
                       </div>
-                      <div className="col-6">
+                      <div className="col-md-6 flightitcketCancelationDetailsCOL">
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                           <thead className='passengerDetailTable'>
                             <tr>
@@ -437,7 +437,7 @@ const FlightTickect = () => {
                     <h6 className='impotantNothed'>24x7 CUSTOMER SUPPORT</h6>
                   </div>
                   <div className='supportDiv row'>
-                    <div className="col-6 ">
+                    <div className="col-md-6 ">
                       <div className='supportDivCOl'>
                         <h6 className='impotantNothed'>Sajyatra SUPPORT</h6>
                         <div className='supportDivCOlText'>
@@ -445,7 +445,7 @@ const FlightTickect = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-6 ">
+                    <div className="col-md-6 ">
                       <div className='supportDivCOl'>
                         <h6 className='impotantNothed'>Airlline SUPPORT</h6>
                         <div className='supportDivCOlText'>

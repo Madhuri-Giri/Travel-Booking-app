@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import jsPDF from 'jspdf';
 import "jspdf-autotable";
 import "./FlightNewTicket.css";
+import "./FlightTickect.css";
 import CustomNavbar from '../../../pages/navbar/CustomNavbar';
 import Footer from '../../../pages/footer/Footer';
 import { toast, ToastContainer } from 'react-toastify';
@@ -286,8 +287,8 @@ const FlightNewTikit = () => {
                             <p>{booking_status.origin_airport || 'Origin Airport null'}</p>
                           </div>
                           <div className="ffbox3">
-                          <FaArrowRightLong />
-                          <p className='ffbox3TImeborder'>{calculateDuration(booking_status.dep_time, booking_status.arr_time)}</p>
+                            <FaArrowRightLong />
+                            <p className='ffbox3TImeborder'>{calculateDuration(booking_status.dep_time, booking_status.arr_time)}</p>
                             <p>{booking_status.fare_type || 'Economy'}</p>
                           </div>
                           <div className="ffbox4">
@@ -333,7 +334,7 @@ const FlightNewTikit = () => {
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}><strong>{booking_status.pnr}</strong></td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_status.ticket_no || 'E-Ticket Number'}</td>
                                 <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_status.seat_no || 'Seat No null'}</td>
-                                <td style={{ border: '1px solid #ddd', padding: '8px' }} className='ticketamount'>{payment.amount || 'Seat No null'} Rs.</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }} className='ticketamount'>{payment.amount || 'Amount null'} Rs.</td>
                               </tr>
                             </tbody>
                           </table>
@@ -341,7 +342,7 @@ const FlightNewTikit = () => {
                       </div>
                       <div className='ticketpart'>
 
-                        <div className='mt-5 sajyatraticketmain'>
+                        <div className=' sajyatraticketmain sajyatraticketmainnew'>
                           <div className='sajyatratickethed'>
                             <h6 className=''>Sajyatra</h6>
                             <img src={FooterLogo} className='img-fluid' alt="logo"></img>
@@ -354,13 +355,13 @@ const FlightNewTikit = () => {
                           </div>
                         </div>
 
-                        <div className="items-not-allowed-container">
+                        <div className="items-not-allowed-container items-not-allowed-containernewTikct">
                           <div className="header">
                             <h2>Items not allowed in the aircraft</h2>
                           </div>
-                          <div className="items-grid">
+                          <div className="items-grid row">
                             {items.map((item) => (
-                              <div className="item" key={item.id}>
+                              <div className="item col-md-2 col-4" key={item.id}>
                                 <div className="icon-container">
                                   <FontAwesomeIcon icon={item.icon} className="main-icon" />
                                   <div className="cross-line"></div>
@@ -370,7 +371,7 @@ const FlightNewTikit = () => {
                             ))}
                           </div>
                         </div>
-                        <div className='impotantNotmain'>
+                        <div className='impotantNotmain impotantNotmainNEW'>
                           <h6 className='impotantNothed'>IMPORTANT INFORMATION</h6>
                           <ul>
                             <li>
@@ -386,12 +387,12 @@ const FlightNewTikit = () => {
                               Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, aperiam veniam quisquam vel doloribus iure pariatur, sunt est temporibus rem
                             </li>
                             <li>
-                              <strong>You have Paid : INR 9,7366</strong>
+                            <strong>You have Paid :  {payment.amount || 'Amount null'} Rs.</strong>
                             </li>
 
                           </ul>
                         </div>
-                        <div className='fticketBaggageInformation mt-5'>
+                        <div className='fticketBaggageInformation'>
                           <h6 className='impotantNothed'>BAGGAGE INFORMATION</h6>
                           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead className='passengerDetailTable'>
@@ -415,7 +416,7 @@ const FlightNewTikit = () => {
                         <div className='flightitcketCancelationDetails mt-4'>
                           <h6 className='impotantNothed'>CANCELLATION AND DATE CHANGE CHARGES</h6>
                           <div className="row">
-                            <div className="col-6">
+                            <div className="col-md-6">
                               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                 <thead className='passengerDetailTable'>
                                   <tr>
@@ -436,7 +437,7 @@ const FlightNewTikit = () => {
                                 </tbody>
                               </table>
                             </div>
-                            <div className="col-6">
+                            <div className="col-md-6 flightitcketCancelationDetailsCOL">
                               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                 <thead className='passengerDetailTable'>
                                   <tr>
@@ -463,7 +464,7 @@ const FlightNewTikit = () => {
                           <h6 className='impotantNothed'>24x7 CUSTOMER SUPPORT</h6>
                         </div>
                         <div className='supportDiv row'>
-                          <div className="col-6 ">
+                          <div className="col-md-6 ">
                             <div className='supportDivCOl'>
                               <h6 className='impotantNothed'>Sajyatra SUPPORT</h6>
                               <div className='supportDivCOlText'>
@@ -471,7 +472,7 @@ const FlightNewTikit = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-6 ">
+                          <div className="col-md-6 ">
                             <div className='supportDivCOl'>
                               <h6 className='impotantNothed'>Airlline SUPPORT</h6>
                               <div className='supportDivCOlText'>
@@ -546,7 +547,7 @@ const FlightNewTikit = () => {
                       </div>
 
                       <div className='ticketpart'>
-                        <div className='mt-5 sajyatraticketmain'>
+                        <div className='mt-5 sajyatraticketmain sajyatraticketmainnez'>
                           <div className='sajyatratickethed'>
                             <h6 className=''>Sajyatra</h6>
                             <img src={FooterLogo} className='img-fluid' alt="logo"></img>
@@ -559,13 +560,13 @@ const FlightNewTikit = () => {
                           </div>
                         </div>
 
-                        <div className="items-not-allowed-container">
+                        <div className="items-not-allowed-container items-not-allowed-containernewTikct">
                           <div className="header">
                             <h2>Items not allowed in the aircraft</h2>
                           </div>
-                          <div className="items-grid">
+                          <div className="items-grid row">
                             {items.map((item) => (
-                              <div className="item" key={item.id}>
+                              <div className="item col-md-2 col-3" key={item.id}>
                                 <div className="icon-container">
                                   <FontAwesomeIcon icon={item.icon} className="main-icon" />
                                   <div className="cross-line"></div>
@@ -576,7 +577,7 @@ const FlightNewTikit = () => {
                           </div>
                         </div>
 
-                        <div className='impotantNotmain'>
+                        <div className='impotantNotmain impotantNotmainNEW'>
                           <h6 className='impotantNothed'>IMPORTANT INFORMATION</h6>
                           <ul>
                             <li>
@@ -593,12 +594,12 @@ const FlightNewTikit = () => {
                             </li>
                             <li>
                               {/* <strong>You have Paid : INR 9,7366</strong> */}
-                              <strong>You have Paid :  {payment.amount} Rs</strong>
+                              <strong>You have Paid :  {payment.amount || 'Amount null'} Rs.</strong>
                             </li>
 
                           </ul>
                         </div>
-                        <div className='fticketBaggageInformation mt-5'>
+                        <div className='fticketBaggageInformation'>
                           <h6 className='impotantNothed'>BAGGAGE INFORMATION</h6>
                           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead className='passengerDetailTable'>
@@ -622,7 +623,7 @@ const FlightNewTikit = () => {
                         <div className='flightitcketCancelationDetails mt-4'>
                           <h6 className='impotantNothed'>CANCELLATION AND DATE CHANGE CHARGES</h6>
                           <div className="row">
-                            <div className="col-6">
+                            <div className="col-md-6">
                               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                 <thead className='passengerDetailTable'>
                                   <tr>
@@ -643,7 +644,7 @@ const FlightNewTikit = () => {
                                 </tbody>
                               </table>
                             </div>
-                            <div className="col-6">
+                            <div className="col-md-6">
                               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                 <thead className='passengerDetailTable'>
                                   <tr>
