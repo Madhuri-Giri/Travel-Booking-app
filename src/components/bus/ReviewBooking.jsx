@@ -26,6 +26,27 @@ const ReviewBooking = () => {
   const [loading, setLoading] = useState(false)
 
 
+//  -------------------------------------------get seat and passenger counts ---------------------------------------------------------------
+
+useEffect(() => {
+  const passengerCountStr = localStorage.getItem('passengerCount');
+  const selectedSeatsCountStr = localStorage.getItem('selectedSeatsCount');
+  
+  const passengerCount = passengerCountStr ? JSON.parse(passengerCountStr) : null;
+  const selectedSeatsCount = selectedSeatsCountStr ? JSON.parse(selectedSeatsCountStr) : null;
+  
+  console.log('Passenger Count:', passengerCount !== null ? passengerCount : 'No data');
+  console.log('Selected Seats Count:', selectedSeatsCount !== null ? selectedSeatsCount : 'No data');
+
+  // Compare and log whether they are equal
+  if (passengerCount !== null && selectedSeatsCount !== null) {
+    console.log('Are Passenger Count and Selected Seats Count equal?', passengerCount === selectedSeatsCount);
+  } else {
+    console.log('Cannot compare values as one or both are missing.');
+  }
+}, []);
+
+// -----------------------------------------------------------------------------------------------------------------------------------------
 
   const [paymentDetails, setPaymentDetails] = useState(null);
   // const [email, setEmail] = useState('');
@@ -45,7 +66,8 @@ const ReviewBooking = () => {
   }, []);
 
 
-
+  
+   
 
   const timerEndTime = localStorage.getItem('timerEndTime')
   // ---------------------------new payment ---------------------------
@@ -505,6 +527,8 @@ const ReviewBooking = () => {
 
 
 
+
+
   // ----------------------------------------------------------------------------------------------------
 
   return (
@@ -630,6 +654,11 @@ const ReviewBooking = () => {
                     </div>
 
 
+{/* ------------------------------------------- new condition wala code count ka-------------------------------------- */}
+
+
+
+{/* -------------------------------------------------------------------------------------------------------------------- */}
 
                   </form>
                 </div>

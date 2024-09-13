@@ -199,6 +199,10 @@ const PassangerInfo = () => {
     }
   };
 
+  useEffect(() => {
+    localStorage.setItem('selectedSeatsCount', selectedSeats.length);
+    localStorage.setItem('passengerCount', passengerCount);
+  }, [selectedSeats, passengerCount]);
 
 
   // -----------------------------------------------------------------------------------------------------
@@ -208,7 +212,6 @@ const PassangerInfo = () => {
     setPassengers(updatedPassengers);
     setPassengerCount(updatedPassengers.length);
     // Optionally, update localStorage
-    // localStorage.setItem('passengers', JSON.stringify(updatedPassengers));
   };
 
   return (
