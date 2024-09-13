@@ -104,12 +104,18 @@ function BookingHistory() {
             console.log('Passenger Data:', passengers);
     
             const ticketData = {
-                hotelBook: res.hotelBook || {},
-                bookingStatus: res.booking_status || {},
-                passenger: passengers
+                hotelBook: res.hotelBook || [],
+                bookingStatus: res.booking_status || [],
+                passenger: passengers,
+                policy: res.policy || []
             };
     
-            if (!Object.keys(ticketData.hotelBook).length && !Object.keys(ticketData.bookingStatus).length && !ticketData.passenger.length) {
+            if (
+                (!Array.isArray(ticketData.hotelBook) || !ticketData.hotelBook.length) &&
+                (!Array.isArray(ticketData.bookingStatus) || !ticketData.bookingStatus.length) &&
+                (!Array.isArray(ticketData.passenger) || !ticketData.passenger.length) &&
+                (!Array.isArray(ticketData.policy) || !ticketData.policy.length)
+            ) {
                 console.error('No relevant ticket data found in the response:', ticketData);
                 throw new Error('No relevant ticket data found in the response.');
             }
@@ -121,6 +127,7 @@ function BookingHistory() {
             console.error('Error fetching hotel ticket:', error);
         }
     };
+    
     
     // ----------------------hotel ticket API End-------------------------------
 
