@@ -20,7 +20,11 @@ import 'swiper/swiper-bundle.css';
 import { Navigation } from 'swiper/modules'; // Note the updated import path in newer versions
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 // import TimerFlight from '../timmer/TimerFlight';
+
+
 export default function FlightLists() {
     const swiperRef = useRef(null);
 
@@ -159,6 +163,8 @@ export default function FlightLists() {
         const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
         const selectedAirlines = Array.from(airlineFilters).map(filter => filter.value);
         setSelected(selectedAirlines);
+        console.log("selected", selected);
+
         const originalAirlineList = listData?.Results || [];
     };
     useEffect(() => {
@@ -407,11 +413,10 @@ export default function FlightLists() {
         navigate('/flight-search');
     };
 
-    if (loading) {
-        return <Loading />;
-    }
 
-
+    const handleCheckboxChange = (order) => {
+        setSortOrder(prevOrder => (prevOrder === order ? '' : order));
+    };
 
     const sortFlights = (flights) => {
         if (sortOrder === 'lowToHigh') {
@@ -422,8 +427,46 @@ export default function FlightLists() {
         return flights;
     };
 
+    const [selectedAirlines, setSelectedAirlines] = useState([]);
+    const [availableAirlines, setAvailableAirlines] = useState([]);
+
+    useEffect(() => {
+        // Extract all unique airline names from the flights data
+        const airlines = new Set();
+        dd.forEach((flightSegments) => {
+            flightSegments.forEach((flight) => {
+                flight.Segments[0].forEach((option) => {
+                    airlines.add(option.Airline.AirlineName);
+                });
+            });
+        });
+        setAvailableAirlines(Array.from(airlines));
+    }, [dd]);
+
+    // Handle airline filter selection
+    const handleAirlineSelect = (airlineName) => {
+        setSelectedAirlines((prevSelected) =>
+            prevSelected.includes(airlineName)
+                ? prevSelected.filter((name) => name !== airlineName)
+                : [...prevSelected, airlineName]
+        );
+    };
+
+    // Filter flights based on selected airlines
+    const filteredFlights = selectedAirlines.length > 0
+        ? dd.map((flightSegments) =>
+            flightSegments.filter((flight) =>
+                flight.Segments[0].some((option) =>
+                    selectedAirlines.includes(option.Airline.AirlineName)
+                )
+            )
+        ).filter(segment => segment.length > 0) // Filter out empty segments
+        : dd;
 
 
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <>
@@ -503,47 +546,72 @@ export default function FlightLists() {
                             <div className="col-12 flightlistsec2col1 flightlistsec2col1MobileView">
                                 <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
                                     <Accordion.Item eventKey="0">
-                                        <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
+                                        <Accordion.Header className="flightlistaccordian-header">
+                                            <span className="header-title">Price</span>
+                                        </Accordion.Header>
                                         <Accordion.Body className="flightpriceaccordian">
                                             <div className="row">
-                                                <div className="col-5 flightstopaccordian">
+                                                <div className="col-12 flightstopaccordian">
                                                     <div>
+                                                        <h6>
+                                                            <FontAwesomeIcon icon={faArrowDown} className="me-2" /> {/* Icon for Low to High */}
+                                                            Low to High
+                                                        </h6>
                                                         <span className="custom-checkbox">
                                                             <input
                                                                 type="checkbox"
                                                                 id="checkbox1"
                                                                 checked={sortOrder === 'lowToHigh'}
-                                                                onChange={() => setSortOrder('lowToHigh')}
+                                                                onChange={() => handleCheckboxChange('lowToHigh')}
                                                             />
                                                             <label htmlFor="checkbox1"></label>
                                                         </span>
                                                     </div>
-                                                    <h6>Low to High</h6>
                                                 </div>
-                                                <div className="col-5 flightstopaccordian">
+                                                <div className="col-12 flightstopaccordian">
                                                     <div>
+                                                        <h6>
+                                                            <FontAwesomeIcon icon={faArrowUp} className="me-2" /> {/* Icon for High to Low */}
+                                                            High to Low
+                                                        </h6>
                                                         <span className="custom-checkbox">
                                                             <input
                                                                 type="checkbox"
                                                                 id="checkbox2"
                                                                 checked={sortOrder === 'highToLow'}
-                                                                onChange={() => setSortOrder('highToLow')}
+                                                                onChange={() => handleCheckboxChange('highToLow')}
                                                             />
                                                             <label htmlFor="checkbox2"></label>
                                                         </span>
                                                     </div>
-                                                    <h6>High to Low</h6>
                                                 </div>
                                             </div>
                                         </Accordion.Body>
                                     </Accordion.Item>
                                     <Accordion.Item eventKey="1">
-                                        <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
+                                        <Accordion.Header className="flightlistaccordian-header">
+                                            <span className="header-title">Airlines</span>
+                                        </Accordion.Header>
                                         <Accordion.Body>
-                                            <div className="airlineFilters mobileAirlines" > </div>
+                                            <div className="airlineFilters mobileAirlines">
+                                                <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                                    {availableAirlines.map((airline) => (
+                                                        <li key={airline} style={{ marginBottom: '10px' }}>
+                                                            <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                                                                {airline}
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={selectedAirlines.includes(airline)}
+                                                                    onChange={() => handleAirlineSelect(airline)}
+                                                                    style={{ marginLeft: '10px', transform: 'scale(1.3)', cursor: 'pointer' }} // Scaling the checkbox
+                                                                />
+                                                            </label>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
                                         </Accordion.Body>
                                     </Accordion.Item>
-
                                 </Accordion>
                             </div>
                         </div>
@@ -556,120 +624,152 @@ export default function FlightLists() {
                     <div className="col-lg-3 flightlistsec2col1 flightlistsec2col1DeskView">
                         <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
                             <Accordion.Item eventKey="0">
-                                <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
+                                <Accordion.Header className="flightlistaccordian-header">
+                                    <span className="header-title">Price</span>
+                                    {/* <FontAwesomeIcon icon={faChevronDown} className="header-icon" /> */}
+                                </Accordion.Header>
                                 <Accordion.Body className="flightpriceaccordian">
                                     <div className="row">
-                                        <div className="col-5 flightstopaccordian">
+                                        <div className="col-12 flightstopaccordian">
                                             <div>
+                                                <h6>
+                                                    <FontAwesomeIcon icon={faArrowDown} className="me-2" /> {/* Icon for Low to High */}
+                                                    Low to High
+                                                </h6>
                                                 <span className="custom-checkbox">
                                                     <input
                                                         type="checkbox"
                                                         id="checkbox1"
                                                         checked={sortOrder === 'lowToHigh'}
-                                                        onChange={() => setSortOrder('lowToHigh')}
+                                                        onChange={() => handleCheckboxChange('lowToHigh')}
                                                     />
                                                     <label htmlFor="checkbox1"></label>
                                                 </span>
                                             </div>
-                                            <h6>Low to High</h6>
                                         </div>
-                                        <div className="col-5 flightstopaccordian">
+                                        <div className="col-12 flightstopaccordian">
                                             <div>
+                                                <h6>
+                                                    <FontAwesomeIcon icon={faArrowUp} className="me-2" /> {/* Icon for High to Low */}
+                                                    High to Low
+                                                </h6>
                                                 <span className="custom-checkbox">
                                                     <input
                                                         type="checkbox"
                                                         id="checkbox2"
                                                         checked={sortOrder === 'highToLow'}
-                                                        onChange={() => setSortOrder('highToLow')}
+                                                        onChange={() => handleCheckboxChange('highToLow')}
                                                     />
                                                     <label htmlFor="checkbox2"></label>
                                                 </span>
                                             </div>
-                                            <h6>High to Low</h6>
                                         </div>
                                     </div>
                                 </Accordion.Body>
                             </Accordion.Item>
                             <Accordion.Item eventKey="1">
-                                <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
+                                <Accordion.Header className="flightlistaccordian-header">
+                                    <span className="header-title">Airlines</span>
+                                    {/* <FontAwesomeIcon icon={faChevronDown} className="header-icon" /> */}
+                                </Accordion.Header>
                                 <Accordion.Body>
-                                    <div className="airlineFilters desktopAirlines"> </div>
+                                    <div className="desktopAirlines">
+                                        <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                            {availableAirlines.map((airline) => (
+                                                <li key={airline} style={{ marginBottom: '10px' }}>
+                                                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                                                        {airline}
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={selectedAirlines.includes(airline)}
+                                                            onChange={() => handleAirlineSelect(airline)}
+                                                            style={{ marginLeft: '10px', transform: 'scale(1.3)', cursor: 'pointer' }} // Scaling the checkbox
+                                                        />
+                                                    </label>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
                                 </Accordion.Body>
                             </Accordion.Item>
                         </Accordion>
                     </div>
                     <div className="col-lg-8">
-                    <div className="slider-container">
-            {isDataLoaded ? (
-                <Slider {...settings}>
-                    {flightData.map((flight, index) => (
-                        <div key={flight.FlightId || index} className="flight-slide">
-                            <h6>
-                                {new Date(flight.DepartureDate).toLocaleDateString('en-US', {
-                                    weekday: 'short',
-                                    month: 'short',
-                                    day: 'numeric',
-                                })}
-                            </h6>
-                            <p>₹{flight.BaseFare}</p>
+                        <div className="slider-container">
+                            {isDataLoaded ? (
+                                <Slider {...settings}>
+                                    {flightData.map((flight, index) => (
+                                        <div key={flight.FlightId || index} className="flight-slide">
+                                            <h6>
+                                                {new Date(flight.DepartureDate).toLocaleDateString('en-US', {
+                                                    weekday: 'short',
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                })}
+                                            </h6>
+                                            <p>₹{flight.BaseFare}</p>
+                                        </div>
+                                    ))}
+                                </Slider>
+                            ) : (
+                                <p>Loading data...</p> // Display loading state or placeholder
+                            )}
                         </div>
-                    ))}
-                </Slider>
-            ) : (
-                <p>Loading data...</p> // Display loading state or placeholder
-            )}
-        </div>
 
                         <div className="f-lists">
                             <div className="flight-content">
-                                {dd && dd.length > 0 ? (
-                                    dd.map((flightSegments, index) => {
+                                {filteredFlights && filteredFlights.length > 0 ? (
+                                    filteredFlights.map((flightSegments, index) => {
+                                        // Sort the flight segments based on the selected sort order
                                         const sortedFlights = sortFlights([...flightSegments]);
                                         return sortedFlights.map((flight, segmentIndex) => {
-                                            return flight?.Segments?.[0].map((option, index) => {
+                                            return flight?.Segments?.[0].map((option, optionIndex) => {
                                                 const airlineCode = option.Airline.AirlineCode;
                                                 const logoUrl = logos[airlineCode] || ''; // Get logo URL from local storage
                                                 return (
-                                                    <div className="row" key={`${index}-${segmentIndex}`}>
-                                                        <div className="pricebtnsmobil">
-                                                            <p>₹{flight?.OfferedFare || "Unknown Airline"}</p>
-                                                            <button onClick={() => handleSelectSeat(flight)}>SELECT</button>
-                                                        </div>
-                                                        <p className='regulrdeal'><span>Regular Deal</span></p>
-                                                        <p className="f-listAirlinesNameMOB">{option.Airline.AirlineName}</p><br />
-
-                                                        <div className="col-2 col-sm-3 f-listCol1">
-                                                            <div className="f-listAirlines">
-                                                                <img src={logoUrl} className="img-fluid" alt={`${option.Airline.AirlineName} Logo`} />
-                                                                <p className="f-listAirlinesNameWEb">{option.Airline.AirlineName}</p><br />
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="col-sm-6 col-10 f-listCol2">
-                                                            <div className="flistname">
-                                                                <p className="flistnamep1">{option.Origin.CityCode}</p>
-                                                                <div>
-                                                                    <p className="flistnamep2">{convertUTCToIST(option.DepTime)}</p>
-                                                                    <p className="flistnamep4">{option.Origin.CityName}</p>
-                                                                </div>
-                                                                <p className="flistnamep3">{convertMinutesToHoursAndMinutes(option.Duration)}</p>
-                                                                <div>
-                                                                    <p className="flistnamep2">{convertUTCToIST(option.ArrTime)}</p>
-                                                                    <p className="flistnamep4">{option.Destination.CityName}</p>
-                                                                </div>
-                                                                <p className="flistnamep5">{option.Destination.CityCode}</p>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="col-md-3 pricebtns f-listCol3">
-                                                            <div><p>₹{flight?.OfferedFare}</p></div>
-                                                            <div>
+                                                    <div key={`${index}-${segmentIndex}-${optionIndex}`}>
+                                                        <div className="row" key={`${index}-${segmentIndex}-${optionIndex}`}>
+                                                            <div className="pricebtnsmobil">
+                                                                <p>₹{flight?.OfferedFare || "Unknown Airline"}</p>
                                                                 <button onClick={() => handleSelectSeat(flight)}>SELECT</button>
+                                                            </div>
+                                                            <p className="regulrdeal"><span>Regular Deal</span></p>
+                                                            <p className="f-listAirlinesNameMOB">{option.Airline.AirlineName}</p><br />
+
+                                                            <div className="col-2 col-sm-3 f-listCol1">
+                                                                <div className="f-listAirlines">
+                                                                    <img src={logoUrl} className="img-fluid" alt={`${option.Airline.AirlineName} Logo`} />
+                                                                    <p className="f-listAirlinesNameWEb">{option.Airline.AirlineName}</p><br />
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="col-sm-6 col-10 f-listCol2">
+                                                                <div className="flistname">
+                                                                    <p className="flistnamep1">{option.Origin.CityCode}</p>
+                                                                    <div>
+                                                                        <p className="flistnamep2">{convertUTCToIST(option.DepTime)}</p>
+                                                                        <p className="flistnamep4">{option.Origin.CityName}</p>
+                                                                    </div>
+                                                                    <p className="flistnamep3">{convertMinutesToHoursAndMinutes(option.Duration)}</p>
+                                                                    <div>
+                                                                        <p className="flistnamep2">{convertUTCToIST(option.ArrTime)}</p>
+                                                                        <p className="flistnamep4">{option.Destination.CityName}</p>
+                                                                    </div>
+                                                                    <p className="flistnamep5">{option.Destination.CityCode}</p>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="col-md-3 pricebtns f-listCol3">
+                                                                <div><p>₹{flight?.OfferedFare}</p></div>
+                                                                <div>
+                                                                    <button onClick={() => handleSelectSeat(flight)}>SELECT</button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 );
                                             });
+
                                         });
                                     })
                                 ) : (
@@ -677,6 +777,7 @@ export default function FlightLists() {
                                 )}
                             </div>
                         </div>
+
 
                     </div>
                 </div>

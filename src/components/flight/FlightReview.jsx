@@ -168,8 +168,6 @@ const FlightReview = () => {
             // setLoader(true)
             await flightpayUpdate();
             setLoader(true)
-
-
             const IsLCC = localStorage.getItem('F-IsLcc') === 'true';
             setPayLoading(true);
 
@@ -185,6 +183,9 @@ const FlightReview = () => {
           } catch (error) {
             console.error('Error during updateHandlePayment or bookHandler:', error.message);
             alert('An error occurred during processing. Please try again.');
+            setLoader(false);
+            // Navigate to flight search page after showing the error message
+            setTimeout(() => navigate('/flight-search'), 4000); // Navigate after 3 seconds
           }
 
         },

@@ -199,6 +199,14 @@ const PassangerInfo = () => {
     }
   };
 
+  useEffect(() => {
+    localStorage.setItem('selectedSeatsCount', selectedSeats.length);
+    localStorage.setItem('passengerCount', passengerCount);
+    
+    // console.log("selectedSeatsCountttttttt", localStorage.getItem('selectedSeatsCount'));
+    // console.log("pssssssngr", localStorage.getItem('passengerCount'));
+
+  }, [selectedSeats, passengerCount]);
 
 
   // -----------------------------------------------------------------------------------------------------
@@ -208,7 +216,6 @@ const PassangerInfo = () => {
     setPassengers(updatedPassengers);
     setPassengerCount(updatedPassengers.length);
     // Optionally, update localStorage
-    // localStorage.setItem('passengers', JSON.stringify(updatedPassengers));
   };
 
   return (
@@ -309,29 +316,29 @@ const PassangerInfo = () => {
 
 
                   <div className="p-form">
-  <label htmlFor="age">
-    Age <span className="text-danger">*</span>
-  </label>
-  <input
-    type="text" // Use type="text"
-    name="age"
-    value={formData.age}
-    onChange={(e) => {
-      const value = e.target.value;
-      // Validate if the value is numeric and within the range 0-120
-      if (/^\d*$/.test(value) && (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 120))) {
-        handleInputChange(e);
-      }
-    }}
-    placeholder="Age"
-    className={`form-control ${errors['0.Age'] ? 'is-invalid' : ''}`}
-  />
-  {errors['0.Age'] && (
-    <div className="invalid-feedback">
-      {errors['0.Age'].join(', ')}
-    </div>
-  )}
-</div>
+                    <label htmlFor="age">
+                      Age <span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="text" // Use type="text"
+                      name="age"
+                      value={formData.age}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Validate if the value is numeric and within the range 0-120
+                        if (/^\d*$/.test(value) && (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 120))) {
+                          handleInputChange(e);
+                        }
+                      }}
+                      placeholder="Age"
+                      className={`form-control ${errors['0.Age'] ? 'is-invalid' : ''}`}
+                    />
+                    {errors['0.Age'] && (
+                      <div className="invalid-feedback">
+                        {errors['0.Age'].join(', ')}
+                      </div>
+                    )}
+                  </div>
 
                 </p>
               </div>
@@ -364,7 +371,7 @@ const PassangerInfo = () => {
               <span>{passenger.Age}</span>
               <span>{passenger.Gender === '1' ? 'Male' : 'Female'}</span>
               <span>{passenger.Address}</span>
-               <span> <i style={{ cursor: "pointer", color: "red" }} onClick={() => deletePassenger(index)} className="ri-delete-bin-6-line"></i></span>
+              <span> <i style={{ cursor: "pointer", color: "red" }} onClick={() => deletePassenger(index)} className="ri-delete-bin-6-line"></i></span>
             </div>
           ))}
         </div>
