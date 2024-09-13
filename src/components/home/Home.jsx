@@ -38,7 +38,7 @@ const Home = () => {
   const toInputRef = useRef(null);
   const fromSuggestionsRef = useRef(null);
   const toSuggestionsRef = useRef(null);
-  const mainCityNames = ['Delhi', 'Mumbai', 'Bhopal', 'Indore', 'Goa', 'Hyderabad'];
+  const mainCityNames = ['Delhi', 'Mumbai', 'Bhopal', 'Indore'];
   const [originCode, setOriginCode] = useState(''); // State for origin code
   const [desctinationCode, setDesctinationCode] = useState(''); // State for origin code
   const [departureDate, setDepartureDate] = useState();
@@ -1183,6 +1183,5 @@ const Home = () => {
     </>
   )
 }
-
 
 export default Home

@@ -1,11 +1,13 @@
-.ticketamount{
+.ticketamount {
     color: #00e100;
     font-weight: bold;
     text-align: end;
 }
-.ticketamountHed{
+
+.ticketamountHed {
     text-align: end;
 }
+
 .flight-Tikit {
     width: 100%;
     display: flex;
@@ -134,7 +136,8 @@
 .flight-Tikit .do-wn .btm button:hover {
     background-color: #009bb5;
 }
-.flightdonload{
+
+.flightdonload {
     border: none;
     background: none;
     padding: 0.5vmax 2vmax;
@@ -144,6 +147,7 @@
     /* font-weight: 600; */
     /* width: 95%;    */
 }
+
 .icon-down {
     font-size: 1.3vmax;
     font-weight: 700;
@@ -152,62 +156,62 @@
 @media (max-width:600px) {
 
     .flight-Tikit .b-hed h5 {
-           font-size: 2.2vmax;
+        font-size: 2.2vmax;
     }
 
     .flight-Tikit .lottie {
-           width: 100%;
-           flex-direction: column;
-           align-items: center;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
     }
 
     .flight-Tikit .lottie .anim {
-           width: 90%;
-           display: flex;
-           align-items: center;
-           justify-content: center;
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .flight-Tikit .do-wn {
-           width: 95%;
-           margin-top: 2vmax;
+        width: 95%;
+        margin-top: 2vmax;
     }
 
     .flight-Tikit .do-wn .top {
-           width: 100%;
-           padding: 1vmax;
+        width: 100%;
+        padding: 1vmax;
     }
 
     .flight-Tikit .do-wn .top h5 {
-           font-size: 2vmax;
+        font-size: 2vmax;
     }
 
     .flight-Tikit .do-wn .mid {
-           justify-content: space-between;
+        justify-content: space-between;
     }
 
     .flight-Tikit .do-wn .mid .left {
-           width: 50%;
-           padding: 1vmax;
+        width: 50%;
+        padding: 1vmax;
     }
 
     .flight-Tikit .do-wn .mid h6 {
-           width: 90%;
-           font-size: 1.2vmax;
+        width: 90%;
+        font-size: 1.2vmax;
     }
 
     .flight-Tikit .do-wn .mid .right {
-           width: 50%;
+        width: 50%;
     }
 
     .flight-Tikit .do-wn .btm {
-           gap: 1vmax;
-           padding: 0.2vmax;
+        gap: 1vmax;
+        padding: 0.2vmax;
     }
 
     .flight-Tikit .do-wn .btm button {
-           padding: 1vmax 2vmax;
-           text-transform: capitalize;
+        padding: 1vmax 2vmax;
+        text-transform: capitalize;
     }
 
 }
@@ -216,49 +220,49 @@
 @media (min-width:600px) and (max-width:1150px) {
 
     .flight-Tikit .b-hed h5 {
-           font-size: 2.2vmax;
+        font-size: 2.2vmax;
     }
 
     .flight-Tikit .do-wn {
-           width: 95%;
+        width: 95%;
     }
 
     .flight-Tikit .do-wn .top {
-           width: 100%;
-           padding: 1vmax;
+        width: 100%;
+        padding: 1vmax;
     }
 
     .flight-Tikit .do-wn .top h5 {
-           font-size: 2vmax;
+        font-size: 2vmax;
     }
 
     .flight-Tikit .do-wn .mid {
-           justify-content: space-between;
+        justify-content: space-between;
     }
 
     .flight-Tikit .do-wn .mid .left {
-           width: 50%;
-           padding: 1vmax;
+        width: 50%;
+        padding: 1vmax;
     }
 
     .flight-Tikit .do-wn .mid h6 {
-           width: 90%;
-           font-size: 1.2vmax;
+        width: 90%;
+        font-size: 1.2vmax;
     }
 
     .flight-Tikit .do-wn .mid .right {
-           width: 50%;
+        width: 50%;
     }
 
 
     .flight-Tikit .do-wn .btm {
-           gap: 1vmax;
-           padding: 0.2vmax;
+        gap: 1vmax;
+        padding: 0.2vmax;
     }
 
     .flight-Tikit .do-wn .btm button {
-           padding: 1vmax 2vmax;
-           text-transform: capitalize;
+        padding: 1vmax 2vmax;
+        text-transform: capitalize;
     }
 
 }
@@ -339,7 +343,7 @@
     border-radius: 5px;
     border: none;
     color: white;
-    
+
 }
 
 .flightbtm .flightdonload {
@@ -414,46 +418,89 @@
 
 @media screen and (max-width: 768px) {
     .ticktbordr {
-           border-left: none;
+        border-left: none;
     }
 }
 
 @media screen and (max-width: 576px) {
-    .tabletikcett th{
+    .impotantNotmainOLD {
+        margin-top: 10px !important;
+    }
+    .impotantNotmainNEW{
+        margin-top: 50px !important;
+    }
+    .items-not-allowed-containernewTikct{
+        margin-top: 200px !important;
+    }
+    .flightitcketCancelationDetailsCOL{
+        margin-top: 60px !important;
+    }
+    .sajyatraticketmainold{
+        margin-top: 350px;
+    }
+    .sajyatraticketmainnew{
+        margin-top: 200px;
+    }
+    .items-not-allowed-containeroldd{
+        margin-top: 150px !important;
+    }
+    .items-grid {
+        display: grid;
+        /* grid-template-columns: repeat(5, 1fr); */
+        /* 5 items per line */
+        gap: 0px !important;
+    }
+    .impotantNotmain ul {
+        padding-left: 25px;
+        padding-right: 10px;
+    }
+
+    .impotantNotmain ul li {
+        font-size: 12px !important;
+    }
+
+   
+
+    .items-not-allowed-container h2 {
+        font-size: 17px;
+    }
+
+    .tabletikcett th {
         font-size: 12px;
     }
-    .tabletikcett td{
+
+    .tabletikcett td {
         font-size: 11px;
     }
 
     .flightticktbox::before,
     .flightticktbox::after {
-           width: 30px;
+        width: 30px;
     }
 
     .flightticktbox::after {
-           right: -10px;
+        right: -10px;
     }
 
     .flightticktbox::before {
-           left: -10px;
+        left: -10px;
     }
 
     .flight-Tikit .lottie {
-           padding: 1vmax;
+        padding: 1vmax;
     }
 
     .flightpssngerdetails span {
-           margin-left: unset;
-           font-size: 13px;
+        margin-left: unset;
+        font-size: 13px;
     }
 
     .fromtoMOB {
-           display: flex;
+        display: flex;
     }
 
     .fromtoWEB {
-           display: none;
+        display: none;
     }
 }
 
@@ -466,7 +513,8 @@
 .flightticketROW {
     margin: 20px 0px;
 }
-.busbookconfrm span{
+
+.busbookconfrm span {
     color: rgb(25, 179, 25);
     font-weight: bold;
 }
@@ -481,98 +529,125 @@
     background-color: white;
 
 }
-.flightticketboxHED{
+
+.flightticketboxHED {
     display: flex;
     justify-content: space-between;
     color: #0a325f;
     background-color: #dcdcdc54;
     padding: 0px 10px;
+    align-items: center;
 }
-.passengerDetailTable{
+
+.passengerDetailTable {
     color: #0a325f;
     background-color: #dcdcdc54;
 }
-.flightticketboxHED p{
+
+.flightticketboxHED p {
     margin: 0px;
     font-size: 14px;
     font-weight: 500;
 }
-.flightticketboxHEDDestinatin{
+.flightticketboxHED h6 {
+    margin: 5px;
+}
+
+.flightticketboxHEDDestinatin {
     display: flex;
     justify-content: space-around;
 }
-.flightticketboxTravelDetails{
+
+.flightticketboxTravelDetails {
     display: flex;
     justify-content: space-between;
     padding: 10px 10px;
     margin-bottom: 15px;
 }
-.flightIndigodet{
+
+.flightIndigodet {
     color: #0a325f;
 }
-.flightIndigodet p{
+
+.flightIndigodet p {
     margin-bottom: 0px;
     font-size: 14px;
 }
-.flightSaver{
+
+.flightSaver {
     margin-top: 20px;
     color: #2e5e94;
 }
-.ffbox2{
+
+.ffbox2 {
     text-align: right;
     padding: 0px 30px;
 }
-.ffbox4{
+
+.ffbox4 {
     padding: 0px 30px;
 }
-.ffbox2 p{
+
+.ffbox2 p {
     margin: 0px;
 }
-.ffbox1{
+
+.ffbox1 {
     margin-right: 20px;
 }
-.ffbox3{
+
+.ffbox3 {
     margin: 10px 50px;
 }
-.ffbox3 p{
+
+.ffbox3 p {
     margin: 0px;
     font-size: 14px;
 }
-.ffbox2 p{
+
+.ffbox2 p {
     margin: 0px;
     font-size: 14px;
 }
-.ffbox4 p{
+
+.ffbox4 p {
     margin: 0px;
     font-size: 14px;
 }
-.ffbox4 p{
+
+.ffbox4 p {
     margin: 0px;
 }
+
 .ffbox2Time,
-.ffbox4Time{
+.ffbox4Time {
     border-top: 1px solid rgba(199, 194, 194, 0.514);
     border-bottom: 1px solid rgba(199, 194, 194, 0.514);
     margin-bottom: 5px !important;
 }
+
 .ffbox2 h4,
-.ffbox4 h4{
+.ffbox4 h4 {
     color: #0a325f;
     margin-bottom: 0px;
 }
+
 .ffbox4P1,
-.ffbox2P1{
+.ffbox2P1 {
     color: #0a325f;
     font-weight: 600;
     margin-bottom: 10px !important;
 }
-.ffbox3TImeborder{
+
+.ffbox3TImeborder {
     border-bottom: 1px solid rgba(199, 194, 194, 0.514);
 }
-.ffbox3{
+
+.ffbox3 {
     color: rgba(153, 143, 143, 0.884);
 }
-.ffbox3 svg{
+
+.ffbox3 svg {
     color: black;
     font-size: 20px;
     margin-left: 10px;
@@ -606,95 +681,122 @@
         text-align: right;
         padding: 0px 0px;
     }
+
     .ffbox4 {
         padding: 0px 0px;
     }
-    .flightSaver{
+
+    .flightSaver {
         margin-top: 5px;
     }
-    .flightSaver h6{
+
+    .flightSaver h6 {
         font-size: 14px;
     }
+
     .ffbox3 {
         margin: 10px 25px;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .passengerTable th{
+    .passengerTable th {
         font-size: 11px;
     }
-    .passengerTable td{
+
+    .passengerTable td {
         font-size: 11px;
     }
+
+    .tabletikcett th {
+        font-size: 11px;
+    }
+
+    .tabletikcett td {
+        font-size: 11px;
+    }
+
     .ffbox2 p,
     .ffbox4 p {
         margin: 0px;
         font-size: 11px;
     }
-    .flightIndigodet p{
+
+    .flightIndigodet p {
         font-size: 12px;
     }
-    .flightSaver{
+
+    .flightSaver {
         margin-top: 15px;
     }
+
     .flightSaver h6 {
         font-size: 13px;
     }
+
     .ffbox3 p {
         margin: 0px;
         font-size: 12px;
     }
-    .ffbox2Time{
-        font-size: 10px !important;
+
+    .ffbox2Time {
+        font-size: 9px !important;
     }
+
     .flightticketboxTravelDetails {
         padding: 10px 2px;
     }
-    .flightticketboxHED h6{
+
+    .flightticketboxHED h6 {
         font-size: 14px;
     }
-    .flightticketboxHED p{
+
+    .flightticketboxHED p {
         font-size: 12px !important;
         margin: 0px !important;
     }
-    .ffbox2 h4, .ffbox4 h4 {
-       font-size: 20px;
-       margin-bottom: 4px;
+
+    .ffbox2 h4,
+    .ffbox4 h4 {
+        font-size: 20px;
+        margin-bottom: 4px;
     }
 }
 
 
 
-.ftickethed{
+.ftickethed {
     display: flex;
     justify-content: space-between;
     font-size: 12px;
     padding: 0px 5px;
 }
 
-.impotantNotmain{
-    margin-top: 15vmax;
+.impotantNotmain {
+    margin-top: 250px;
 }
 
-.impotantNothed{
+.impotantNothed {
     background-color: #dcdcdc54;
     color: #0a325f;
     padding: 10px 10px;
 }
-.impotantNotmain ul li{
+
+.impotantNotmain ul li {
     margin-bottom: 10px;
     font-size: 14px;
 }
-.qq{
+
+.qq {
     display: flex;
     justify-content: space-between;
 }
 
-.sajyatraticketmain img{
+.sajyatraticketmain img {
     height: 30px;
 }
-.sajyatratickethed{
+
+.sajyatratickethed {
     background-color: #dcdcdc54;
     color: #0a325f;
     padding: 10px 10px;
@@ -702,14 +804,15 @@
     justify-content: space-between;
 
 }
-.sajyatraticketmainDiv{
+
+.sajyatraticketmainDiv {
     background-color: rgba(177, 230, 177, 0.527);
     padding: 10px 20px;
     font-size: 14px;
 }
 
 .ticketpart{
-    display: none;
+    display: block;
 }
 .items-not-allowed-container {
     padding: 20px;
@@ -721,7 +824,8 @@
 }
 
 .header {
-    background-color: #d32f2f; /* Red color for the header */
+    background-color: #d32f2f;
+    /* Red color for the header */
     padding: 10px;
     text-align: center;
     color: white;
@@ -730,8 +834,9 @@
 
 .items-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 items per line */
-    gap: 20px;
+    /* grid-template-columns: repeat(5, 1fr); */
+    /* 5 items per line */
+    gap: 15px;
     padding: 20px;
     background-color: white;
     border-radius: 0 0 8px 8px;
@@ -750,8 +855,10 @@
     position: relative;
     width: 60px;
     height: 60px;
-    background-color: #fff5f5; /* Light red background */
-    border: 2px solid #d32f2f; /* Red border matching the screenshot */
+    background-color: #fff5f5;
+    /* Light red background */
+    border: 2px solid #d32f2f;
+    /* Red border matching the screenshot */
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -761,8 +868,10 @@
 }
 
 .main-icon {
-    font-size: 24px; /* Size of the main icon */
-    color: #333; /* Main icon color */
+    font-size: 24px;
+    /* Size of the main icon */
+    color: #333;
+    /* Main icon color */
 }
 
 .cross-line {
@@ -772,20 +881,24 @@
     background-color: transparent;
 }
 
-.cross-line::before, .cross-line::after {
+.cross-line::before,
+.cross-line::after {
     content: '';
     position: absolute;
     width: 2px;
     height: 100%;
-    background-color: #d32f2f; /* Red color for the prohibition cross */
-    transform: rotate(45deg); /* 45 degrees for the cross effect */
+    background-color: #d32f2f;
+    /* Red color for the prohibition cross */
+    transform: rotate(45deg);
+    /* 45 degrees for the cross effect */
     top: 0;
     left: 50%;
     transform-origin: center;
 }
 
 .cross-line::after {
-    transform: rotate(-45deg); /* Opposite direction for the second line */
+    transform: rotate(-45deg);
+    /* Opposite direction for the second line */
 }
 
 .item-name {
@@ -797,16 +910,19 @@
 }
 
 
-.supportDivCOl{
+.supportDivCOl {
     border: 1px solid rgba(182, 174, 174, 0.534);
 }
-.supportDiv{
+
+.supportDiv {
     padding: 10px 10px;
 }
-.supportDivCOlText{
+
+.supportDivCOlText {
     padding: 10px 20px;
 }
-.convenFee{
+
+.convenFee {
     color: red;
     padding: 10px 10px;
     font-size: 15px;
