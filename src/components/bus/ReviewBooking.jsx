@@ -25,28 +25,34 @@ const ReviewBooking = () => {
   const [payLoading, setPayLoading] = useState(false);
   const [loading, setLoading] = useState(false)
 
+  // const [passengerCountt, setPassengerCountt] = useState(() => Number(localStorage.getItem('passengerCount')) || 0);
+  // const [selectedSeatsCountt, setSelectedSeatsCountt] = useState(() => Number(localStorage.getItem('selectedSeatsCount')) || 0);
 
-//  -------------------------------------------get seat and passenger counts ---------------------------------------------------------------
+  const [passengerCountt, setPassengerCountt] = useState(0);
+  const [selectedSeatsCountt, setSelectedSeatsCountt] = useState(0);
 
-useEffect(() => {
-  const passengerCountStr = localStorage.getItem('passengerCount');
-  const selectedSeatsCountStr = localStorage.getItem('selectedSeatsCount');
-  
-  const passengerCount = passengerCountStr ? JSON.parse(passengerCountStr) : null;
-  const selectedSeatsCount = selectedSeatsCountStr ? JSON.parse(selectedSeatsCountStr) : null;
-  
-  console.log('Passenger Count:', passengerCount !== null ? passengerCount : 'No data');
-  console.log('Selected Seats Count:', selectedSeatsCount !== null ? selectedSeatsCount : 'No data');
+  //  -------------------------------------------get seat and passenger counts ---------------------------------------------------------------
 
-  // Compare and log whether they are equal
-  if (passengerCount !== null && selectedSeatsCount !== null) {
-    console.log('Are Passenger Count and Selected Seats Count equal?', passengerCount === selectedSeatsCount);
-  } else {
-    console.log('Cannot compare values as one or both are missing.');
-  }
-}, []);
+  // useEffect(() => {
+  //   const passengerCountStr = localStorage.getItem('passengerCount');
+  //   const selectedSeatsCountStr = localStorage.getItem('selectedSeatsCount');
+  //   const passengerCount = passengerCountStr ? JSON.parse(passengerCountStr) : null;
+  //   const selectedSeatsCount = selectedSeatsCountStr ? JSON.parse(selectedSeatsCountStr) : null;
 
-// -----------------------------------------------------------------------------------------------------------------------------------------
+  //   console.log('Passenger Count:', passengerCount !== null ? passengerCount : 'No data');
+  //   console.log('Selected Seats Count:', selectedSeatsCount !== null ? selectedSeatsCount : 'No data');
+
+  //   // Compare and log whether they are equal
+  //   if (passengerCount !== null && selectedSeatsCount !== null) {
+  //     console.log('Are Passenger Count and Selected Seats Count equal?', passengerCount === selectedSeatsCount);
+  //   } else {
+  //     console.log('Cannot compare values as one or both are missing.');
+  //   }
+  // }, []);
+
+
+
+  // -----------------------------------------------------------------------------------------------------------------------------------------
 
   const [paymentDetails, setPaymentDetails] = useState(null);
   // const [email, setEmail] = useState('');
@@ -66,8 +72,8 @@ useEffect(() => {
   }, []);
 
 
-  
-   
+
+
 
   const timerEndTime = localStorage.getItem('timerEndTime')
   // ---------------------------new payment ---------------------------
@@ -97,7 +103,7 @@ useEffect(() => {
         ...prevData,
         name: loginData.name || '',
         email: loginData.email || '',
-        contact: loginData.mobile || '' 
+        contact: loginData.mobile || ''
       }));
     }
   }, []);
@@ -163,33 +169,68 @@ useEffect(() => {
 
 
 
+  useEffect(() => {
+    const updateCounts = () => {
+      const passengerCount = Number(localStorage.getItem('passengerCount')) || 0;
+      const selectedSeatsCount = Number(localStorage.getItem('selectedSeatsCount')) || 0;
+
+      // Log values to ensure they are correctly retrieved
+      console.log("Parsed selectedSeatsCount:", selectedSeatsCount);
+      console.log("Parsed passengerCount:", passengerCount);
+
+      setPassengerCountt(passengerCount);
+      setSelectedSeatsCountt(selectedSeatsCount);
+    };
+
+    updateCounts(); // Initial fetch
+
+    const intervalId = setInterval(updateCounts, 1000); // Poll every second (adjust as needed)
+
+    return () => clearInterval(intervalId); // Clean up interval on component unmount
+  }, []); // Empty dependency array means this runs once when the component mounts
+
+  // Check if form data is valid
+  const isFormValid = newContactData.name && newContactData.email && newContactData.contact;
+  // Check if counts are equal
+  const areCountsEqual = passengerCountt === selectedSeatsCountt;
+  console.log("areCountsEqual:", areCountsEqual);
+
+  // Button is disabled if form is invalid or counts are not equal
+  const isButtonDisabled = !isFormValid || !areCountsEqual;
+  console.log("isButtonDisabled:", isButtonDisabled);
 
   // --------------------------------
 
 
   const handlePayment = async () => {
+    const passengerCount = Number(localStorage.getItem('passengerCount')) || 0;
+    const selectedSeatsCount = Number(localStorage.getItem('selectedSeatsCount')) || 0;
 
+    console.log("Parsed selectedSeatsCount:", selectedSeatsCount);
+    console.log("Parsed passengerCount:", passengerCount);
 
+    // Check if values are equal
+    if (passengerCount !== selectedSeatsCount) {
+      alert('Please add Passenger details according to seats selected.');
+      return;
+    }
+
+    // Check if contact details are filled
     if (!newContactData.name || !newContactData.email || !newContactData.contact) {
       alert('Please fill in your contact details before proceeding to payment.');
       return;
     }
 
-
     const loginId = localStorage.getItem('loginId');
-
-
     if (!loginId) {
       navigate('/enter-number', { state: { from: location } });
       return;
     }
 
     try {
-
       setLoading(true);
 
       const paymentData = await fetchPaymentDetails();
-
       if (!paymentData) return;
 
       const options = {
@@ -203,8 +244,7 @@ useEffect(() => {
         handler: async function (response) {
           console.log('Payment successful', response);
 
-          localStorage.setItem('payment_id', response.razorpay_payment_id
-          );
+          localStorage.setItem('payment_id', response.razorpay_payment_id);
           localStorage.setItem('transaction_id', options.transaction_id);
 
           setLoading(true);
@@ -216,7 +256,7 @@ useEffect(() => {
 
             await bookHandler();
             await busPaymentStatus();
-            
+
           } catch (error) {
             console.error('Error during updateHandlePayment or bookHandler:', error.message);
             alert('An error occurred during processing. Please try again.');
@@ -224,11 +264,10 @@ useEffect(() => {
             setLoading(false);
           }
         },
-
         prefill: {
-          username: 'pallavi',
-          email: 'pallavi@gmail.com',
-          mobile: '9999999999',
+          username: newContactData.name || 'pallavi',
+          email: newContactData.email || 'pallavi@gmail.com',
+          mobile: newContactData.contact || '9999999999',
         },
         notes: {
           address: 'Indore',
@@ -249,6 +288,7 @@ useEffect(() => {
       alert('An error occurred during payment setup. Please try again.');
     }
   };
+
 
 
   // ---------------------------update payment api------------------------------
@@ -502,7 +542,7 @@ useEffect(() => {
     }
   }, []);
 
-  
+
 
 
   const totalPayment = Math.round(totalFare + taxes + (totalFare * 0.18) - discount);
@@ -615,20 +655,20 @@ useEffect(() => {
                         />
                       </div>
                       <div className="cont">
-                      <input
-          type="text"
-          name="contact"
-          value={newContactData.contact}
-          onChange={(e) => {
-            const value = e.target.value;
-            if (/^\d*$/.test(value) && value.length <= 10) {
-              handleInputChange(e);
-            }
-          }}
-          placeholder="Enter Your Contact"
-          maxLength="10"
-          required
-        />
+                        <input
+                          type="text"
+                          name="contact"
+                          value={newContactData.contact}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (/^\d*$/.test(value) && value.length <= 10) {
+                              handleInputChange(e);
+                            }
+                          }}
+                          placeholder="Enter Your Contact"
+                          maxLength="10"
+                          required
+                        />
                       </div>
 
 
@@ -643,10 +683,15 @@ useEffect(() => {
                         <small >₹{totalPayment}</small>
                       </div>
                       <div className="review-pay">
-                        <button
+                        {/* <button
                           style={{ backgroundColor: (!newContactData.name || !newContactData.email || !newContactData.contact) ? '#ccc' : '' }}
                           onClick={handlePayment}
                           disabled={!newContactData.name || !newContactData.email || !newContactData.contact}
+                        > */}
+                        <button
+                          style={{ backgroundColor: isButtonDisabled ? '#ccc' : '' }}
+                          onClick={handlePayment}
+                          disabled={isButtonDisabled}
                         >
                           Proceed To Pay
                         </button>
@@ -654,11 +699,11 @@ useEffect(() => {
                     </div>
 
 
-{/* ------------------------------------------- new condition wala code count ka-------------------------------------- */}
+                    {/* ------------------------------------------- new condition wala code count ka-------------------------------------- */}
 
 
 
-{/* -------------------------------------------------------------------------------------------------------------------- */}
+                    {/* -------------------------------------------------------------------------------------------------------------------- */}
 
                   </form>
                 </div>
