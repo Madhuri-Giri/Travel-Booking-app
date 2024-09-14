@@ -29,6 +29,10 @@ const CustomNavbar = () => {
         navigate('/');
         localStorage.removeItem('loginId');
         localStorage.removeItem('loginData');
+        localStorage.removeItem('transactionNum');
+        localStorage.removeItem('transactionNum-Flight');
+        localStorage.removeItem('transactionNum-bus');
+        localStorage.removeItem('transactionNumHotel');
     };
 
     const loginId = localStorage.getItem("loginId")
