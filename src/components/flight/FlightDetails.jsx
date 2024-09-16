@@ -81,7 +81,7 @@ export default function FlightDetails() {
 
 
     const segment = fareDataDetails.Segments[0][0];
-    // console.log("segment", segment);
+    console.log("segment", segment);
 
     const origin = segment.Origin;
     const destination = segment.Destination;
@@ -946,7 +946,7 @@ export default function FlightDetails() {
                                             <div className="col-8 mt-3 fligthReviewBoxHedText">
                                                 <MdOutlineFlightTakeoff />
                                                 <h6>{origin.CityName} - {destination.CityName}</h6>
-                                                <p>{segment.Duration}m</p>
+                                                <p>{convertMinutesToHoursAndMinutes(segment.Duration)}</p>
                                             </div>
                                             <div className="col-4 fligthReviewBoxHedbttn">
                                                 <button>Regular Deal</button>
