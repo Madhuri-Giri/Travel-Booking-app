@@ -28,6 +28,33 @@ const ReviewBooking = () => {
   // const [passengerCountt, setPassengerCountt] = useState(() => Number(localStorage.getItem('passengerCount')) || 0);
   // const [selectedSeatsCountt, setSelectedSeatsCountt] = useState(() => Number(localStorage.getItem('selectedSeatsCount')) || 0);
 
+
+//  -------------------------------------------get seat and passenger counts ---------------------------------------------------------------
+
+const [seatCount, setSeatCount] = useState(null);
+  const [passengerCount, setPassengerCount] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    const passengerCountStr = localStorage.getItem('passengerCount');
+    const selectedSeatsCountStr = localStorage.getItem('selectedSeatsCount');
+
+    const passengerCount = passengerCountStr ? JSON.parse(passengerCountStr) : null;
+    const selectedSeatsCount = selectedSeatsCountStr ? JSON.parse(selectedSeatsCountStr) : null;
+
+    setPassengerCount(passengerCount);
+    setSeatCount(selectedSeatsCount);
+
+    console.log('Passenger Count:', passengerCount !== null ? passengerCount : 'No data');
+    console.log('Selected Seats Count:', selectedSeatsCount !== null ? selectedSeatsCount : 'No data');
+
+    if (passengerCount !== null && selectedSeatsCount !== null) {
+      console.log('Are Passenger Count and Selected Seats Count equal?', passengerCount === selectedSeatsCount);
+    } else {
+      console.log('Cannot compare values as one or both are missing.');
+    }
+  }, []);
+
   const [passengerCountt, setPassengerCountt] = useState(0);
   const [selectedSeatsCountt, setSelectedSeatsCountt] = useState(0);
 
@@ -49,6 +76,7 @@ const ReviewBooking = () => {
   //     console.log('Cannot compare values as one or both are missing.');
   //   }
   // }, []);
+
 
 
 
@@ -215,7 +243,29 @@ const ReviewBooking = () => {
       return;
     }
 
+
+    if (!seatCount || !passengerCount) {
+      setErrorMessage('Please complete all passenger details.');
+      return;
+    }
+    
+    if (passengerCount !== seatCount) {
+      setErrorMessage('Passenger count and seat count must be equal.');
+      return;
+    }
+
+    if (!newContactData.name || !newContactData.email || !newContactData.contact) {
+      setErrorMessage('Please fill in all contact details.');
+      return;
+    }
+
+    // Proceed with payment logic here
+    setErrorMessage('');
+
+
+
     // Check if contact details are filled
+
     if (!newContactData.name || !newContactData.email || !newContactData.contact) {
       alert('Please fill in your contact details before proceeding to payment.');
       return;
@@ -567,8 +617,7 @@ const ReviewBooking = () => {
 
 
 
-
-
+  
   // ----------------------------------------------------------------------------------------------------
 
   return (
@@ -702,8 +751,12 @@ const ReviewBooking = () => {
                     {/* ------------------------------------------- new condition wala code count ka-------------------------------------- */}
 
 
+{/* -------------------------------------------------------------------------------------------------------------------- */}
+
+
 
                     {/* -------------------------------------------------------------------------------------------------------------------- */}
+
 
                   </form>
                 </div>
