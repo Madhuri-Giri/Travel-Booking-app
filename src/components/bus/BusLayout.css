@@ -1,3 +1,20 @@
+.sit-img .seat-details {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.sit-img:hover .seat-details {
+  opacity: 1;
+}
+
+.sit-img {
+  position: relative;
+}
+
+
+
+
+
 .BusLayout {
   width: 100%;
 }
