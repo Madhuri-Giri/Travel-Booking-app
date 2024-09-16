@@ -153,7 +153,10 @@ const toggleDropVisibility = () => {
   const addSeatLayout = async () => {
     try {
       const traceId = localStorage.getItem('traceId');
+      console.log('trace bus', traceId)
       const resultIndex = localStorage.getItem('resultIndex');
+      console.log('resultIndex bus', resultIndex)
+
 
       if (!traceId || !resultIndex) {
         throw new Error('TraceId or ResultIndex not found in localStorage');
@@ -247,14 +250,14 @@ const toggleDropVisibility = () => {
               <h6>{from} - {to}</h6>
             </div>
           </h5>
-          <span>
+          {/* <span>
             <i style={{ color: "#fff" }} className="ri-calendar-line"></i>
             Depart Date: {selectedBusDate && (
               <>
                 {selectedBusDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })}{' '}
               </>
             )}
-          </span>
+          </span> */}
           <div className="search-functinality">
             <button onClick={responsiveFilter} className='filter-bus'><i className="ri-equalizer-line"></i> Filter</button>
             <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>

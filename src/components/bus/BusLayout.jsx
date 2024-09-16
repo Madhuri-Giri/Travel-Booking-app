@@ -215,21 +215,7 @@ const BusLayout = () => {
     ['31', '32', '33', '34', '35', '36'],
   ];
 
-  // const busLayoutUpper2 = [
-  //   ['11', '12', '13', '14', '15'],
-  //   [null, null, null, null, '16'],
-  //   ['17', '18', '19', '20', '21'],
-  // ];
-  // const busLayoutUpper = [
-  //   ['21', '22', '23', '24', '25'],
-  //   [null, null, null, null, '26'],
-  //   ['27', '28', '29', '30', '31'],
-  // ];
-  // const getBusLayout = (seatName) => {
-  //   const seatNumber = parseInt(seatName, 10);
-  //   return seatNumber >= 21 ? busLayoutUpper2 : busLayoutUpper;
-  // };
-  // const UpeerSeatbusLayout = getBusLayout(busLayoutUpper.flat().find(Boolean));
+ 
 
   const busLayoutUpper2 = [
     ['11', '12', '13', '14', '15'],
@@ -252,7 +238,6 @@ const BusLayout = () => {
     return [];
   };
 
-  // Use the seat name you need to decide which layout to show. Here it's an example seat name.
   const seatName = '21'; // Example seatName, replace with your actual logic.
   const UpeerSeatbusLayout = getBusLayout(seatName);
 
