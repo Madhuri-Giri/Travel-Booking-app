@@ -1,29 +1,46 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to, departDate }) => {
+export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to, departDate, fromCode, toCode }) => {
+  const currentDate = new Date();
+  const departureDate = new Date(departDate);
+
+  currentDate.setHours(0, 0, 0, 0);
+  departureDate.setHours(0, 0, 0, 0);
+
+  if (departureDate <= currentDate) {
+    throw new Error('Date of journey should be greater than the current date');
+  }
+
+  const requestPayload = { 
+    source_city: from,
+    destination_city: to,
+    depart_date: departDate,
+    source_code: fromCode,
+    destination_code: toCode, 
+  };
+
+  console.log('Request Payload:', requestPayload);
+
   const response = await fetch('https://sajyatra.sajpe.in/admin/api/search-bus', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ 
-     source_city: from,
-     destination_city: to,
-     depart_date: departDate,
-      
-    }),
+    body: JSON.stringify(requestPayload),
   });
-  const data = await response.json();
 
+  const data = await response.json();
+  console.log('bus search', data);
   return data;
-}
-);
+});
 
 const busSlice = createSlice({
   name: 'bus',
   initialState: {
     from: '',
     to: '',
+    fromCode: '',
+    toCode: '',
     fromSuggestions: [],
     toSuggestions: [],
     selectedBusDate: null,
@@ -43,6 +60,12 @@ const busSlice = createSlice({
     setTo: (state, action) => {
       state.to = action.payload;
     },
+    setFromCode: (state, action) => {
+      state.fromCode = action.payload;
+    },
+    setToCode: (state, action) => {
+      state.toCode = action.payload;
+    },
     setFromSuggestions: (state, action) => {
       state.fromSuggestions = action.payload;
     },
@@ -61,54 +84,46 @@ const busSlice = createSlice({
       .addCase(searchBuses.fulfilled, (state, action) => {
         state.status = 'succeeded';
         const { data } = action.payload;
-        if (data && data.Result && data.Result.length > 0) {
+
+        if (data && data.Result && data.Result.BusResults && data.Result.BusResults.length > 0) {
           state.traceId = data.TraceId;
-          state.resultIndex = data.Result[0].ResultIndex;
-          state.searchResults = data.Result;
+          state.resultIndex = data.Result.BusResults[0]?.ResultIndex || null;
+          state.searchResults = data.Result.BusResults;
 
+          localStorage.setItem('traceId', data.Result.TraceId);
+          console.log('bus trace id',  data.Result.TraceId)
+          localStorage.setItem('resultIndex', data.Result.BusResults[0]?.ResultIndex || null);
 
-          localStorage.setItem('traceId', data.TraceId);
-          localStorage.setItem('resultIndex', data.Result[0].ResultIndex);
-          console.log('Search API Response :', data);
-         
           const saveDataToLocalStorage = (data) => {
             const jsonData = JSON.stringify(data);
-        
             localStorage.setItem('busSearchStore', jsonData);
-        };
+          };
 
-        saveDataToLocalStorage(data);
+          saveDataToLocalStorage(data);
 
-          // Process BoardingPoints with CityPointIndex
-          const boardingPoints = data.Result.flatMap(bus =>
-            bus.BoardingPoints.map(point => ({
-              ...point,
-              CityPointName: point.CityPointName,
-              CityPointIndex: point.CityPointIndex
+          const boardingPoints = data.Result.BusResults.flatMap(bus =>
+            (bus.BoardingPoints || []).map(point => ({
+              CityPointName: point?.CityPointName || 'Unknown',
+              CityPointIndex: point?.CityPointIndex || 'Unknown',
+              CityPointLocation: point?.CityPointLocation || 'Unknown',
+              CityPointTime: point?.CityPointTime || 'Unknown',
             }))
           );
+          console.log('Boarding Points:', boardingPoints); // Log boarding points
           state.boardingPoints = boardingPoints;
-          // console.log('Boarding Points CityPointNames:', boardingPoints.map(point => point.CityPointName));
 
-          boardingPoints.forEach(point => {
-            (`CityPointIndex: ${point.CityPointIndex}`, point);
-          });
-
-          const droppingPoints = data.Result.flatMap(bus =>
-            bus.DroppingPoints.map(point => ({
-              ...point,
-              CityPointName: point.CityPointName,
-              CityPointIndex: point.CityPointIndex
+          const droppingPoints = data.Result.BusResults.flatMap(bus =>
+            (bus.DroppingPoints || []).map(point => ({
+              CityPointName: point?.CityPointName || 'Unknown',
+              CityPointIndex: point?.CityPointIndex || 'Unknown',
+              CityPointLocation: point?.CityPointLocation || 'Unknown',
+              CityPointTime: point?.CityPointTime || 'Unknown',
             }))
           );
+          console.log('Dropping Points:', droppingPoints); // Log dropping points
           state.droppingPoints = droppingPoints;
-          droppingPoints.forEach(point => {
-            (`CityPointIndex: ${point.CityPointIndex}`, point);
-          });
         }
       })
-
-
       .addCase(searchBuses.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
@@ -116,12 +131,6 @@ const busSlice = createSlice({
   },
 });
 
-export const {
-  setFrom,
-  setTo,
-  setFromSuggestions,
-  setToSuggestions,
-  setSelectedBusDate,
-} = busSlice.actions;
+export const { setFrom, setTo, setFromCode, setToCode, setFromSuggestions, setToSuggestions, setSelectedBusDate } = busSlice.actions;
 
 export default busSlice.reducer;
