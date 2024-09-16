@@ -20,7 +20,11 @@ import 'swiper/swiper-bundle.css';
 import { Navigation } from 'swiper/modules'; // Note the updated import path in newer versions
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 // import TimerFlight from '../timmer/TimerFlight';
+
+
 export default function FlightLists() {
     const swiperRef = useRef(null);
 
@@ -410,7 +414,9 @@ export default function FlightLists() {
     };
 
 
-
+    const handleCheckboxChange = (order) => {
+        setSortOrder(prevOrder => (prevOrder === order ? '' : order));
+    };
 
     const sortFlights = (flights) => {
         if (sortOrder === 'lowToHigh') {
@@ -540,42 +546,52 @@ export default function FlightLists() {
                             <div className="col-12 flightlistsec2col1 flightlistsec2col1MobileView">
                                 <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
                                     <Accordion.Item eventKey="0">
-                                        <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
+                                        <Accordion.Header className="flightlistaccordian-header">
+                                            <span className="header-title">Price</span>
+                                        </Accordion.Header>
                                         <Accordion.Body className="flightpriceaccordian">
                                             <div className="row">
-                                                <div className="col-5 flightstopaccordian">
+                                                <div className="col-12 flightstopaccordian">
                                                     <div>
+                                                        <h6>
+                                                            <FontAwesomeIcon icon={faArrowDown} className="me-2" /> {/* Icon for Low to High */}
+                                                            Low to High
+                                                        </h6>
                                                         <span className="custom-checkbox">
                                                             <input
                                                                 type="checkbox"
                                                                 id="checkbox1"
                                                                 checked={sortOrder === 'lowToHigh'}
-                                                                onChange={() => setSortOrder('lowToHigh')}
+                                                                onChange={() => handleCheckboxChange('lowToHigh')}
                                                             />
                                                             <label htmlFor="checkbox1"></label>
                                                         </span>
                                                     </div>
-                                                    <h6>Low to High</h6>
                                                 </div>
-                                                <div className="col-5 flightstopaccordian">
+                                                <div className="col-12 flightstopaccordian">
                                                     <div>
+                                                        <h6>
+                                                            <FontAwesomeIcon icon={faArrowUp} className="me-2" /> {/* Icon for High to Low */}
+                                                            High to Low
+                                                        </h6>
                                                         <span className="custom-checkbox">
                                                             <input
                                                                 type="checkbox"
                                                                 id="checkbox2"
                                                                 checked={sortOrder === 'highToLow'}
-                                                                onChange={() => setSortOrder('highToLow')}
+                                                                onChange={() => handleCheckboxChange('highToLow')}
                                                             />
                                                             <label htmlFor="checkbox2"></label>
                                                         </span>
                                                     </div>
-                                                    <h6>High to Low</h6>
                                                 </div>
                                             </div>
                                         </Accordion.Body>
                                     </Accordion.Item>
                                     <Accordion.Item eventKey="1">
-                                        <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
+                                        <Accordion.Header className="flightlistaccordian-header">
+                                            <span className="header-title">Airlines</span>
+                                        </Accordion.Header>
                                         <Accordion.Body>
                                             <div className="airlineFilters mobileAirlines">
                                                 <ul style={{ listStyleType: 'none', padding: 0 }}>
@@ -596,7 +612,6 @@ export default function FlightLists() {
                                             </div>
                                         </Accordion.Body>
                                     </Accordion.Item>
-
                                 </Accordion>
                             </div>
                         </div>
@@ -609,42 +624,54 @@ export default function FlightLists() {
                     <div className="col-lg-3 flightlistsec2col1 flightlistsec2col1DeskView">
                         <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
                             <Accordion.Item eventKey="0">
-                                <Accordion.Header className="flightlistaccordian">Price</Accordion.Header>
+                                <Accordion.Header className="flightlistaccordian-header">
+                                    <span className="header-title">Price</span>
+                                    {/* <FontAwesomeIcon icon={faChevronDown} className="header-icon" /> */}
+                                </Accordion.Header>
                                 <Accordion.Body className="flightpriceaccordian">
                                     <div className="row">
-                                        <div className="col-5 flightstopaccordian">
+                                        <div className="col-12 flightstopaccordian">
                                             <div>
+                                                <h6>
+                                                    <FontAwesomeIcon icon={faArrowDown} className="me-2" /> {/* Icon for Low to High */}
+                                                    Low to High
+                                                </h6>
                                                 <span className="custom-checkbox">
                                                     <input
                                                         type="checkbox"
                                                         id="checkbox1"
                                                         checked={sortOrder === 'lowToHigh'}
-                                                        onChange={() => setSortOrder('lowToHigh')}
+                                                        onChange={() => handleCheckboxChange('lowToHigh')}
                                                     />
                                                     <label htmlFor="checkbox1"></label>
                                                 </span>
                                             </div>
-                                            <h6>Low to High</h6>
                                         </div>
-                                        <div className="col-5 flightstopaccordian">
+                                        <div className="col-12 flightstopaccordian">
                                             <div>
+                                                <h6>
+                                                    <FontAwesomeIcon icon={faArrowUp} className="me-2" /> {/* Icon for High to Low */}
+                                                    High to Low
+                                                </h6>
                                                 <span className="custom-checkbox">
                                                     <input
                                                         type="checkbox"
                                                         id="checkbox2"
                                                         checked={sortOrder === 'highToLow'}
-                                                        onChange={() => setSortOrder('highToLow')}
+                                                        onChange={() => handleCheckboxChange('highToLow')}
                                                     />
                                                     <label htmlFor="checkbox2"></label>
                                                 </span>
                                             </div>
-                                            <h6>High to Low</h6>
                                         </div>
                                     </div>
                                 </Accordion.Body>
                             </Accordion.Item>
                             <Accordion.Item eventKey="1">
-                                <Accordion.Header className="flightlistaccordian">Airlines</Accordion.Header>
+                                <Accordion.Header className="flightlistaccordian-header">
+                                    <span className="header-title">Airlines</span>
+                                    {/* <FontAwesomeIcon icon={faChevronDown} className="header-icon" /> */}
+                                </Accordion.Header>
                                 <Accordion.Body>
                                     <div className="desktopAirlines">
                                         <ul style={{ listStyleType: 'none', padding: 0 }}>
@@ -663,7 +690,6 @@ export default function FlightLists() {
                                             ))}
                                         </ul>
                                     </div>
-
                                 </Accordion.Body>
                             </Accordion.Item>
                         </Accordion>
@@ -743,7 +769,7 @@ export default function FlightLists() {
                                                     </div>
                                                 );
                                             });
-                                            
+
                                         });
                                     })
                                 ) : (

@@ -129,6 +129,10 @@ const Profile = () => {
 
       localStorage.removeItem('loginData');
       localStorage.removeItem('loginId');
+      localStorage.removeItem('transactionNum');
+      localStorage.removeItem('transactionNum-Flight');
+      localStorage.removeItem('transactionNum-bus');
+      localStorage.removeItem('transactionNumHotel');
 
       setIsLoggedIn(false);
       setMessage('Logged out successfully.');
@@ -289,10 +293,10 @@ const Profile = () => {
                                 <div className="text-danger">{formik.errors.name}</div>
                               )}
                             </div>
-                          
+
                           </div>
                           <div className="detail row form-group">
-                          <div className='col-lg-6'>
+                            <div className='col-lg-6'>
                               <label className="" htmlFor="email">
                                 Email
                               </label>

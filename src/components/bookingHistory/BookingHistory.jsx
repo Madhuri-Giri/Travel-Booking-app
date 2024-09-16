@@ -104,12 +104,18 @@ function BookingHistory() {
             console.log('Passenger Data:', passengers);
     
             const ticketData = {
-                hotelBook: res.hotelBook || {},
-                bookingStatus: res.booking_status || {},
-                passenger: passengers
+                hotelBook: res.hotelBook || [],
+                bookingStatus: res.booking_status || [],
+                passenger: passengers,
+                policy: res.policy || []
             };
     
-            if (!Object.keys(ticketData.hotelBook).length && !Object.keys(ticketData.bookingStatus).length && !ticketData.passenger.length) {
+            if (
+                (!Array.isArray(ticketData.hotelBook) || !ticketData.hotelBook.length) &&
+                (!Array.isArray(ticketData.bookingStatus) || !ticketData.bookingStatus.length) &&
+                (!Array.isArray(ticketData.passenger) || !ticketData.passenger.length) &&
+                (!Array.isArray(ticketData.policy) || !ticketData.policy.length)
+            ) {
                 console.error('No relevant ticket data found in the response:', ticketData);
                 throw new Error('No relevant ticket data found in the response.');
             }
@@ -121,6 +127,7 @@ function BookingHistory() {
             console.error('Error fetching hotel ticket:', error);
         }
     };
+    
     
     // ----------------------hotel ticket API End-------------------------------
 
@@ -259,10 +266,10 @@ function BookingHistory() {
                                     <div key={index} className="row busTabContentROW">
                                         <div className="col-md-6">
                                             <p><strong>Bus Booking ID : </strong> {booking.bus_booking_id || "N/A"}</p>
-                                            <p><strong>Bus Trace ID : </strong> <span>{booking.id || "N/A"}</span></p>
+                                            <p><strong>User Id : </strong> <span>{booking.transaction_num || "N/A"}</span></p>
                                         </div>
                                         <div className="col-md-6">
-                                            <p><strong>Transaction Number : </strong> <span>{booking.transaction_num || "N/A"}</span></p>
+                                            <p><strong>Bus Trace ID : </strong> <span>{booking.id || "N/A"}</span></p>
                                             <p className="busBookingsamount"><strong>Amount : </strong> <span>₹{booking.amount || "0"}</span></p>
                                         </div>
                                         <div className="viewbttn">
@@ -289,7 +296,7 @@ function BookingHistory() {
                                         <div key={index} className="row flightTabContentROW">
                                             <div className="col-md-6">
                                                 <p><strong>Booking ID : </strong> <span>{booking.booking_id}</span></p>
-                                                <p><strong>Transaction No : </strong> <span>{booking.transaction_num}</span></p>
+                                                <p><strong>User Id : </strong> <span>{booking.transaction_num}</span></p>
                                             </div>
                                             <div className="col-md-6">
                                                 <p className='bookingStats'><strong>Payment Status : </strong> <span>{booking.payment_status}</span></p>
@@ -318,11 +325,11 @@ function BookingHistory() {
                                 <div key={`hotelTabContentROW-${index}`} className="row hotelTabContentROW">
                                     <div className="col-md-6">
                                         {/* <p><strong>Hotel Name : </strong> {booking.hotel_name || "N/A"}</p> */}
-                                        <p><strong>Transaction No : </strong> {booking.transaction_num || "N/A"}</p>
+                                        <p><strong>Booking Id : </strong> {booking.booking_id}</p>
+                                        <p><strong>User Id : </strong> {booking.transaction_num || "N/A"}</p>
                                         {/* <p><strong>Mobile No : </strong> {booking.userdetails?.mobile || "N/A"}</p> */}
                                     </div>
                                     <div className="col-md-6">
-                                        <p><strong>Hotel Id : </strong> {booking.booking_id}</p>
                                         <p className='bookingStats'><strong>Status : </strong> <span>{booking.status}</span></p>
                                         <p className='hotlamount'><strong>Amount : </strong> <span>₹{Math.round(booking.amount)}</span></p>
                                     </div>
