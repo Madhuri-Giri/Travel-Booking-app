@@ -54,6 +54,8 @@ const HotelList = () => {
   
   useEffect(() => {
     const totalPages = Math.ceil(hotels.length / hotelsPerPage);
+    console.log("hotels",hotels);
+    
     setPageCount(totalPages);
   }, [hotels]);
 

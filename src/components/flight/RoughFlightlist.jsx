@@ -461,12 +461,19 @@ export default function FlightLists() {
             )
         ).filter(segment => segment.length > 0) // Filter out empty segments
         : dd;
-        console.log("filteredFlights----",filteredFlights);
-        
+    console.log("filteredFlights----", filteredFlights);
+
 
     // flight filter logics END------------------------
+    const ITEMS_PER_PAGE = 2; // Number of items per page
+    const [currentPage, setCurrentPage] = useState(0);
+    const handlePageClick = (event) => {
+        setCurrentPage(event.selected);
+    };
 
-
+    // Sort and paginate flights
+    const sortedFlights = sortFlights(filteredFlights.flat());
+    const paginatedFlights = sortedFlights.slice(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE);
     // flight list pagination logics -------------
 
 
@@ -725,63 +732,69 @@ export default function FlightLists() {
 
                         <div className="f-lists">
                             <div className="flight-content">
-                                {filteredFlights && filteredFlights.length > 0 ? (
-                                    filteredFlights.map((flightSegments, index) => {
-                                        // Sort the flight segments based on the selected sort order
-                                        const sortedFlights = sortFlights([...flightSegments]);
-                                        return sortedFlights.map((flight, segmentIndex) => {
-                                            return flight?.Segments?.[0].map((option, optionIndex) => {
-                                                const airlineCode = option.Airline.AirlineCode;
-                                                const logoUrl = logos[airlineCode] || ''; // Get logo URL from local storage
-                                                return (
-                                                    <div key={`${index}-${segmentIndex}-${optionIndex}`}>
-                                                        <div className="row" key={`${index}-${segmentIndex}-${optionIndex}`}>
-                                                            <div className="pricebtnsmobil">
-                                                                <p>₹{flight?.OfferedFare || "Unknown Airline"}</p>
-                                                                <button onClick={() => handleSelectSeat(flight)}>SELECT</button>
+                                {paginatedFlights.length > 0 ? (
+                                    paginatedFlights.map((flight, index) => (
+                                        flight.Segments[0].map((option, optionIndex) => {
+                                            const airlineCode = option.Airline.AirlineCode;
+                                            const logoUrl = logos[airlineCode] || '';
+                                            return (
+                                                <div key={`${index}-${optionIndex}`}>
+                                                    <div className="row">
+                                                        <div className="pricebtnsmobil">
+                                                            <p>₹{flight?.OfferedFare || "Unknown Airline"}</p>
+                                                            <button onClick={() => handleSelectSeat(flight)}>SELECT</button>
+                                                        </div>
+                                                        <p className="regulrdeal"><span>Regular Deal</span></p>
+                                                        <p className="f-listAirlinesNameMOB">{option.Airline.AirlineName}</p><br />
+                                                        <div className="col-2 col-sm-3 f-listCol1">
+                                                            <div className="f-listAirlines">
+                                                                <img src={logoUrl} className="img-fluid" alt={`${option.Airline.AirlineName} Logo`} />
+                                                                <p className="f-listAirlinesNameWEb">{option.Airline.AirlineName}</p><br />
                                                             </div>
-                                                            <p className="regulrdeal"><span>Regular Deal</span></p>
-                                                            <p className="f-listAirlinesNameMOB">{option.Airline.AirlineName}</p><br />
-
-                                                            <div className="col-2 col-sm-3 f-listCol1">
-                                                                <div className="f-listAirlines">
-                                                                    <img src={logoUrl} className="img-fluid" alt={`${option.Airline.AirlineName} Logo`} />
-                                                                    <p className="f-listAirlinesNameWEb">{option.Airline.AirlineName}</p><br />
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="col-sm-6 col-10 f-listCol2">
-                                                                <div className="flistname">
-                                                                    <p className="flistnamep1">{option.Origin.CityCode}</p>
-                                                                    <div>
-                                                                        <p className="flistnamep2">{convertUTCToIST(option.DepTime)}</p>
-                                                                        <p className="flistnamep4">{option.Origin.CityName}</p>
-                                                                    </div>
-                                                                    <p className="flistnamep3">{convertMinutesToHoursAndMinutes(option.Duration)}</p>
-                                                                    <div>
-                                                                        <p className="flistnamep2">{convertUTCToIST(option.ArrTime)}</p>
-                                                                        <p className="flistnamep4">{option.Destination.CityName}</p>
-                                                                    </div>
-                                                                    <p className="flistnamep5">{option.Destination.CityCode}</p>
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="col-md-3 pricebtns f-listCol3">
-                                                                <div><p>₹{flight?.OfferedFare}</p></div>
+                                                        </div>
+                                                        <div className="col-sm-6 col-10 f-listCol2">
+                                                            <div className="flistname">
+                                                                <p className="flistnamep1">{option.Origin.CityCode}</p>
                                                                 <div>
-                                                                    <button onClick={() => handleSelectSeat(flight)}>SELECT</button>
+                                                                    <p className="flistnamep2">{convertUTCToIST(option.DepTime)}</p>
+                                                                    <p className="flistnamep4">{option.Origin.CityName}</p>
                                                                 </div>
+                                                                <p className="flistnamep3">{convertMinutesToHoursAndMinutes(option.Duration)}</p>
+                                                                <div>
+                                                                    <p className="flistnamep2">{convertUTCToIST(option.ArrTime)}</p>
+                                                                    <p className="flistnamep4">{option.Destination.CityName}</p>
+                                                                </div>
+                                                                <p className="flistnamep5">{option.Destination.CityCode}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-3 pricebtns f-listCol3">
+                                                            <div><p>₹{flight?.OfferedFare}</p></div>
+                                                            <div>
+                                                                <button onClick={() => handleSelectSeat(flight)}>SELECT</button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                );
-                                            });
-
-                                        });
-                                    })
+                                                </div>
+                                            );
+                                        })
+                                    ))
                                 ) : (
                                     <p>No flights available.</p>
                                 )}
+                            </div>
+                            <div className="paginationContainer">
+
+                            <ReactPaginate
+                                previousLabel={"Previous"}
+                                nextLabel={"Next"}
+                                breakLabel={"..."}
+                                pageCount={Math.ceil(filteredFlights.flat().length / ITEMS_PER_PAGE)}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                onPageChange={handlePageClick}
+                                containerClassName={"pagination"}
+                                activeClassName={"active"}
+                            />
                             </div>
                         </div>
 
