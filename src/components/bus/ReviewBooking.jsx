@@ -28,23 +28,29 @@ const ReviewBooking = () => {
 
 //  -------------------------------------------get seat and passenger counts ---------------------------------------------------------------
 
-useEffect(() => {
-  const passengerCountStr = localStorage.getItem('passengerCount');
-  const selectedSeatsCountStr = localStorage.getItem('selectedSeatsCount');
-  
-  const passengerCount = passengerCountStr ? JSON.parse(passengerCountStr) : null;
-  const selectedSeatsCount = selectedSeatsCountStr ? JSON.parse(selectedSeatsCountStr) : null;
-  
-  console.log('Passenger Count:', passengerCount !== null ? passengerCount : 'No data');
-  console.log('Selected Seats Count:', selectedSeatsCount !== null ? selectedSeatsCount : 'No data');
+const [seatCount, setSeatCount] = useState(null);
+  const [passengerCount, setPassengerCount] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // Compare and log whether they are equal
-  if (passengerCount !== null && selectedSeatsCount !== null) {
-    console.log('Are Passenger Count and Selected Seats Count equal?', passengerCount === selectedSeatsCount);
-  } else {
-    console.log('Cannot compare values as one or both are missing.');
-  }
-}, []);
+  useEffect(() => {
+    const passengerCountStr = localStorage.getItem('passengerCount');
+    const selectedSeatsCountStr = localStorage.getItem('selectedSeatsCount');
+
+    const passengerCount = passengerCountStr ? JSON.parse(passengerCountStr) : null;
+    const selectedSeatsCount = selectedSeatsCountStr ? JSON.parse(selectedSeatsCountStr) : null;
+
+    setPassengerCount(passengerCount);
+    setSeatCount(selectedSeatsCount);
+
+    console.log('Passenger Count:', passengerCount !== null ? passengerCount : 'No data');
+    console.log('Selected Seats Count:', selectedSeatsCount !== null ? selectedSeatsCount : 'No data');
+
+    if (passengerCount !== null && selectedSeatsCount !== null) {
+      console.log('Are Passenger Count and Selected Seats Count equal?', passengerCount === selectedSeatsCount);
+    } else {
+      console.log('Cannot compare values as one or both are missing.');
+    }
+  }, []);
 
 // -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -168,6 +174,25 @@ useEffect(() => {
 
 
   const handlePayment = async () => {
+
+
+    if (!seatCount || !passengerCount) {
+      setErrorMessage('Please complete all passenger details.');
+      return;
+    }
+    
+    if (passengerCount !== seatCount) {
+      setErrorMessage('Passenger count and seat count must be equal.');
+      return;
+    }
+
+    if (!newContactData.name || !newContactData.email || !newContactData.contact) {
+      setErrorMessage('Please fill in all contact details.');
+      return;
+    }
+
+    // Proceed with payment logic here
+    setErrorMessage('');
 
 
     if (!newContactData.name || !newContactData.email || !newContactData.contact) {
@@ -527,8 +552,7 @@ useEffect(() => {
 
 
 
-
-
+  
   // ----------------------------------------------------------------------------------------------------
 
   return (
@@ -655,8 +679,6 @@ useEffect(() => {
 
 
 {/* ------------------------------------------- new condition wala code count ka-------------------------------------- */}
-
-
 
 {/* -------------------------------------------------------------------------------------------------------------------- */}
 
