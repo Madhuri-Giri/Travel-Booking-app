@@ -49,7 +49,7 @@ const BoardAndDrop = ({ onBoardingSelect, onDroppingSelect }) => {
         }
 
         const data = await response.json();
-        console.log('bord and drop', data);
+        // console.log('bord and drop', data);
 
         setBoardingPoints(data.GetBusRouteDetailResult?.BoardingPointsDetails || []);
         setDroppingPoints(data.GetBusRouteDetailResult?.DroppingPointsDetails || []);

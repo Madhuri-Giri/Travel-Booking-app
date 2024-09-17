@@ -346,6 +346,7 @@ const ReviewBooking = () => {
       const selectedBusSeatData = JSON.parse(localStorage.getItem('selectedBusSeatData')) || [];
       const busPassengerData = JSON.parse(localStorage.getItem('busPassengerData')) || [];
 
+
       const seatDataMap = new Map();
       selectedBusSeatData.forEach(seat => {
         seatDataMap.set(seat.ColumnNo, seat);
@@ -356,7 +357,7 @@ const ReviewBooking = () => {
         return {
           LeadPassenger: passenger.LeadPassenger,
           PassengerId: 0,
-          Title: null,
+          Title: "null",
           FirstName: passenger.FirstName,
           LastName: passenger.LastName,
           Email: passenger.Email,
@@ -408,11 +409,41 @@ const ReviewBooking = () => {
         };
       });
 
+
+      const traceId = localStorage.getItem('traceId');
+      const storedBusDetails = localStorage.getItem('selectedBusDetails');
+      const BoardingPointId = localStorage.getItem('selectedBoardingPointIndex')
+      const DroppingPointId = localStorage.getItem('selectedDroppingPointIndex')
+      // console.log('BoardingPointId', BoardingPointId)
+
+
+      if (!traceId) {
+        throw new Error('TraceId not found in localStorage');
+      }
+
+      let selectedBusResult = null;
+
+      if (storedBusDetails) {
+        const parsedBusDetails = JSON.parse(storedBusDetails);
+        selectedBusResult = parsedBusDetails.selctedBusResult;
+
+        console.log('Selected Bus Result:', selectedBusResult);
+      } else {
+        throw new Error('No bus details found in localStorage');
+      }
+
+      if (!selectedBusResult) {
+        throw new Error('SelectedBusResult not found in bus details');
+      }
+
+
+
+
       const requestData = {
-        ResultIndex: "1",
-        TraceId: "1",
-        BoardingPointId: 1,
-        DroppingPointId: 1,
+        ResultIndex: selectedBusResult,
+        TraceId: traceId,
+        BoardingPointId: BoardingPointId,
+        DroppingPointId: DroppingPointId,
         RefID: "1",
         transaction_num: transactionNoBus,
         bus_booking_id: [busSavedId],
