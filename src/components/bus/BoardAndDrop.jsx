@@ -8,43 +8,121 @@ const BoardAndDrop = ({ onBoardingSelect, onDroppingSelect }) => {
   const [selectedDroppingPoint, setSelectedDroppingPoint] = useState('');
   const [error, setError] = useState(null);
 
+
+ 
   useEffect(() => {
     const fetchBoardingData = async () => {
       try {
         const traceId = localStorage.getItem('traceId');
-        const resultIndex = localStorage.getItem('resultIndex');
-
-        if (!traceId || !resultIndex) {
-          throw new Error('TraceId or ResultIndex not found in localStorage');
+        const storedBusDetails = localStorage.getItem('selectedBusDetails');
+  
+        if (!traceId) {
+          throw new Error('TraceId not found in localStorage');
         }
-
+  
+        let selectedBusResult = null;
+  
+        if (storedBusDetails) {
+          const parsedBusDetails = JSON.parse(storedBusDetails);
+          selectedBusResult = parsedBusDetails.selctedBusResult;
+  
+          console.log('Selected Bus Result:', selectedBusResult);
+        } else {
+          throw new Error('No bus details found in localStorage');
+        }
+  
+        if (!selectedBusResult) {
+          throw new Error('SelectedBusResult not found in bus details');
+        }
+  
         const response = await fetch('https://sajyatra.sajpe.in/admin/api/add-boarding-point', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            ResultIndex: resultIndex,
+            ResultIndex: selectedBusResult,
             TraceId: traceId,
           }),
         });
-
+  
         if (!response.ok) {
           throw new Error('Failed to fetch boarding data.');
         }
-
+  
         const data = await response.json();
-        setBoardingPoints(data.BoardingPoints || []);
-        setDroppingPoints(data.DroppingPoints || []);
+        console.log('bord and drop', data);
+  
+        setBoardingPoints(data.GetBusRouteDetailResult?.BoardingPointsDetails || []);
+        setDroppingPoints(data.GetBusRouteDetailResult?.DroppingPointsDetails || []);
         setError(null);
       } catch (error) {
         console.error('Error fetching boarding data:', error);
         setError('Failed to fetch boarding data. Please try again later.');
       }
     };
-
+  
     fetchBoardingData();
   }, []);
+  
+   
+
+
+  // useEffect(() => {
+  //   const fetchBoardingData = async () => {
+  //     try {
+  //       const traceId = localStorage.getItem('traceId');
+  //       const storedBusDetails = localStorage.getItem('selectedBusDetails');
+  
+  //       if (!traceId) {
+  //         throw new Error('TraceId not found in localStorage');
+  //       }
+  
+  //       let selectedBusResult = null;
+  
+  //       if (storedBusDetails) {
+  //         const parsedBusDetails = JSON.parse(storedBusDetails);
+  //         selectedBusResult = parsedBusDetails.selctedBusResult;
+  
+  //         console.log('Selected Bus Result:', selectedBusResult);
+  //       } else {
+  //         throw new Error('No bus details found in localStorage');
+  //       }
+  
+  //       if (!selectedBusResult) {
+  //         throw new Error('SelectedBusResult not found in bus details');
+  //       }
+  
+  //       const response = await fetch('https://sajyatra.sajpe.in/admin/api/add-boarding-point', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({
+  //           ResultIndex: selectedBusResult,
+  //           TraceId: traceId,
+  //         }),
+  //       });
+  
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch boarding data.');
+  //       }
+  
+  //       const data = await response.json();
+  //       console.log('bord and drop', data)
+  //       setBoardingPoints(data.BoardingPoints || []);
+  //       setDroppingPoints(data.DroppingPoints || []);
+  //       setError(null);
+  //     } catch (error) {
+  //       console.error('Error fetching boarding data:', error);
+  //       setError('Failed to fetch boarding data. Please try again later.');
+  //     }
+  //   };
+  
+  //   fetchBoardingData();
+  // }, []);
+  
+
 
   const handleBoardingSelect = (point) => {
     if (point) {
