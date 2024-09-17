@@ -122,6 +122,7 @@ const BusLayout = () => {
     setTotalPrice(0);
   }, []);
 
+
   const handleSeatSelect = (seatName) => {
     const seatObject = [...lowerSeatsBus, ...upperSeatsBus].find(seat => seat.SeatName === seatName);
     if (seatObject) {
@@ -199,7 +200,6 @@ const BusLayout = () => {
   const handleDroppingSelect = (point) => {
     setDroppingSelected(true);
   };
-
 
 
   // ------------------seat Type condition---------------

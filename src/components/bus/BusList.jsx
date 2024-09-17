@@ -61,10 +61,11 @@ const BusLists = () => {
 
   const storeSelectedBusDetails = (bus) => {
     const selectedBusDetails = {
+      selctedBusResult: bus.ResultIndex,    
       busName: bus.TravelName,
       boardingPoints: bus.BoardingPoints,
       droppingPoints: bus.DroppingPoints,
-
+      
     };
 
     localStorage.setItem('selectedBusDetails', JSON.stringify(selectedBusDetails));
