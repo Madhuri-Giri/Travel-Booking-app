@@ -589,9 +589,9 @@ const ReviewBooking = () => {
   }, [totalPayment]);
 
 
-  
- const BoardingPoint =  localStorage.getItem('BordCityPointLocation');
- const Droppingpoint =  localStorage.getItem('DropCityPointLocation');
+
+  const BoardingPoint = localStorage.getItem('BordCityPointLocation');
+  const Droppingpoint = localStorage.getItem('DropCityPointLocation');
 
 
   // -------------------------------------------------------------------------------------------------
@@ -635,19 +635,8 @@ const ReviewBooking = () => {
                   <div className="line-btm">
                     <p>Travel Name <br /> <span> {selectedBusDetails ? selectedBusDetails.busName : 'N/A'}</span></p>
                     <p>Selected Seats <br /> <span> ({selectedSeats})</span></p>
-
-                   
-                      <p>Boarding Points <br /> <span>{BoardingPoint}</span></p>
-
-                   
-
-                   
-                      <p>Dropping Points <br /> <span>{Droppingpoint}</span></p>
-
-                   
-
-
-
+                    <p>Boarding Points <br /> <span>{BoardingPoint}</span></p>
+                    <p>Dropping Points <br /> <span>{Droppingpoint}</span></p>
                   </div>
 
                 </div>
