@@ -98,7 +98,7 @@ const PassangerInfo = () => {
 
       const passengersData = selectedBusSeatData.map(seat => ({
         LeadPassenger: true,
-        Title: null,
+        Title: "null",
         FirstName: formData.firstName,
         LastName: formData.lastName,
         Email: 'tani@gmail.com',
@@ -142,11 +142,40 @@ const PassangerInfo = () => {
       localStorage.setItem('busPassengerData', JSON.stringify(passengersData));
       console.log('busPassengerData', passengersData)
 
+      const traceId = localStorage.getItem('traceId');
+      const storedBusDetails = localStorage.getItem('selectedBusDetails');
+      const BoardingPointId = localStorage.getItem('selectedBoardingPointIndex')
+      const DroppingPointId = localStorage.getItem('selectedDroppingPointIndex')
+      // console.log('BoardingPointId', BoardingPointId)
+
+
+      if (!traceId) {
+        throw new Error('TraceId not found in localStorage');
+      }
+
+      let selectedBusResult = null;
+
+      if (storedBusDetails) {
+        const parsedBusDetails = JSON.parse(storedBusDetails);
+        selectedBusResult = parsedBusDetails.selctedBusResult;
+
+        console.log('Selected Bus Result:', selectedBusResult);
+      } else {
+        throw new Error('No bus details found in localStorage');
+      }
+
+      if (!selectedBusResult) {
+        throw new Error('SelectedBusResult not found in bus details');
+      }
+
+
+
+
       const requestData = {
-        ResultIndex: '1',
-        TraceId: '1',
-        BoardingPointId: 1,
-        DroppingPointId: 1,
+        ResultIndex: selectedBusResult,
+        TraceId: traceId,
+        BoardingPointId: BoardingPointId,
+        DroppingPointId: DroppingPointId,
         RefID: '1',
         Passenger: passengersData,
       };
@@ -198,6 +227,8 @@ const PassangerInfo = () => {
       alert("All selected seats must have corresponding passengers.");
     }
   };
+
+
 
   useEffect(() => {
     localStorage.setItem('selectedSeatsCount', selectedSeats.length);

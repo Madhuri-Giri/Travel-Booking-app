@@ -169,13 +169,13 @@ const BusSearch = () => {
                     </div>
 
                     {fromSuggestions.length > 0 && (
-                      <ul className="suggestions-list-from">
+                      <div className="suggestions-list-from">
                         {fromSuggestions.map((suggestion) => (
-                          <li key={suggestion.busodma_destination_code} onClick={() => handleFromSelect(suggestion)}>
+                          <span key={suggestion.busodma_destination_code} onClick={() => handleFromSelect(suggestion)}>
                             {suggestion.busodma_destination_name}
-                          </li>
+                          </span>
                         ))}
-                      </ul>
+                      </div>
                     )}
 
                    

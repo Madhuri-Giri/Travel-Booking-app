@@ -13,7 +13,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(164, 164, 164, 0.021);
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
@@ -259,23 +259,61 @@ margin-top: 1vmax;
  }
  .bus-sidebar .busSide .Travel-operator h6 .down-aro{
         font-size: 1.5vmax;
- }
- .bus-sidebar .busSide .Travel-operator .travel-list{
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          color: #000000b9; 
-          margin-top: 1vmax;
- }
- .bus-sidebar .busSide .Travel-operator .travel-list p{
+ }/* Main container styling */
+.bus-sidebar .busSide .Travel-operator .travel-fixed {
+        height: 400px; 
+        position: relative;
+        overflow: hidden;
+        box-shadow: 2px 2px 5px 2px rgb(165, 165, 165);
+        border-radius: 10px;
+    }
+    
+    /* Scrollable content styling */
+    .bus-sidebar .busSide .Travel-operator .travel-fixed .fix-trav {
+        height: 100%; 
+        overflow-y: auto;
+        position: absolute; 
+        top: 0;
+        bottom: 0; 
+        width: 100%;
+        padding-right: 10px; /* Add some padding for better spacing from scrollbar */
+    }
+    
+    /* Scrollbar styling */
+    .bus-sidebar .busSide .Travel-operator .travel-fixed .fix-trav::-webkit-scrollbar {
+        width: 8px; /* Width of the scrollbar */
+    }
+    
+    .bus-sidebar .busSide .Travel-operator .travel-fixed .fix-trav::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.3); /* Color of the scrollbar thumb */
+        border-radius: 10px; /* Rounded corners */
+    }
+    
+    .bus-sidebar .busSide .Travel-operator .travel-fixed .fix-trav::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Background of the scrollbar track */
+        border-radius: 10px;
+    }
+    
+    /* Travel list styling */
+    .bus-sidebar .busSide .Travel-operator .travel-list {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: #000000b9; 
+        margin-top: 0.2vmax;
+        padding: 0.5vmax;
+    }
+    
+ .bus-sidebar .busSide .Travel-operator .travel-list small{
         cursor: pointer;
         border: 1px solid #00000022;
         border-radius: 5px;
-        padding: 0.4vmax;
+        padding: 0.3vmax;
         font-size: 0.9vmax;
+        margin-top: 0.3vmax;
  }
- .bus-sidebar .busSide .Travel-operator .travel-list p:hover{
+ .bus-sidebar .busSide .Travel-operator .travel-list small:hover{
         color: rgba(0, 0, 255, 0.628);
         border-color: rgba(0, 0, 255, 0.628);
  }
@@ -299,7 +337,21 @@ margin-top: 1vmax;
 .bus-sidebar .busSide .pick-up h6:hover{
         color: rgba(0, 0, 255, 0.628);
   }
-.bus-sidebar .busSide .pick-up .pick-list{
+  .bus-sidebar .busSide .pick-up .pick-fixed-main {
+        height: 300px;
+        overflow: hidden; /* Hide overflow content here */
+        position: relative;
+        box-shadow: 2px 2px 5px 2px gray;
+    }
+    
+    .bus-sidebar .busSide .pick-up .pick-list {
+        width: 100%;
+        display: flex;
+        flex-direction: column; /* Change to column for vertical scrolling */
+        overflow-y: auto; /* Enable vertical scrolling */
+        height: 100%; /* Ensure it takes up the available height */
+    }
+.bus-sidebar .busSide .pick-up .pick-list .pickfixed{
         width: 100%;
        display: flex;
        flex-direction: row;
@@ -749,7 +801,38 @@ font-weight: 700;
 .bus-sidebar-responsive .busSide .Travel-operator h6 .down-aro{
       font-size: 4vmax;
 }
-.bus-sidebar-responsive .busSide .Travel-operator .travel-list{
+
+.travel-fixed-responsive {
+        height: 400px; 
+        position: relative;
+        overflow: hidden;
+        box-shadow: 2px 2px 5px 2px rgb(165, 165, 165);
+        border-radius: 10px;
+    }
+    .fix-trav {
+        height: 100%; 
+        overflow-y: auto;
+        position: absolute; 
+        top: 0;
+        bottom: 0; 
+        width: 100%;
+        padding-right: 10px; /* Add some padding for better spacing from scrollbar */
+    }
+    .fix-trav::-webkit-scrollbar {
+        width: 8px; 
+    }
+    
+    .fix-trav::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+    }
+    
+     .fix-trav::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+        border-radius: 10px;
+    }
+    
+ .travel-list{
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -757,17 +840,74 @@ font-weight: 700;
         color: #000000b9; 
         margin-top: 1vmax;
 }
-.bus-sidebar-responsive .busSide .Travel-operator .travel-list p{
+ .travel-list small{
       cursor: pointer;
       border: 1px solid #00000022;
       border-radius: 5px;
-      padding: 1vmax;
+      padding: 0.6vmax;
       font-size: 2vmax;
+      margin-top: 0.4vmax;
 }
-.bus-sidebar-responsive .busSide .Travel-operator .travel-list p:hover{
+ .travel-list small:hover{
       color: rgba(0, 0, 255, 0.628);
       border-color: rgba(0, 0, 255, 0.628);
 }
+/* ------------------------------ */
+
+/* 
+.bus-sidebar .busSide .Travel-operator .travel-fixed {
+      height: 300px; 
+      position: relative;
+      overflow: hidden;
+      box-shadow: 2px 2px 5px 2px rgb(165, 165, 165);
+      border-radius: 10px;
+  }
+  
+  .bus-sidebar .busSide .Travel-operator .travel-fixed .fix-trav {
+      height: 100%; 
+      overflow-y: auto;
+      position: absolute; 
+      top: 0;
+      bottom: 0; 
+      width: 100%;
+      padding-right: 10px; 
+  }
+  
+  .bus-sidebar .busSide .Travel-operator .travel-fixed .fix-trav::-webkit-scrollbar {
+      width: 8px; 
+  }
+  
+  .bus-sidebar .busSide .Travel-operator .travel-fixed .fix-trav::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+  }
+  
+  .bus-sidebar .busSide .Travel-operator .travel-fixed .fix-trav::-webkit-scrollbar-track {
+      background: #f1f1f1; 
+      border-radius: 10px;
+  }
+  
+  .bus-sidebar .busSide .Travel-operator .travel-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #000000b9; 
+      margin-top: 0.2vmax;
+      padding: 0.5vmax;
+  }
+  
+.bus-sidebar .busSide .Travel-operator .travel-list small{
+      cursor: pointer;
+      border: 1px solid #00000022;
+      border-radius: 5px;
+      padding: 0.3vmax;
+      font-size: 0.9vmax;
+      margin-top: 0.3vmax;
+} */
+
+/* --------------------------------- */
+
 .bus-sidebar-responsive .busSide .pick-up{
       width: 100%;
        padding: 1vmax;
@@ -1134,7 +1274,38 @@ font-weight: 700;
 .bus-sidebar-responsive .busSide .Travel-operator h6 .down-aro{
       font-size: 4vmax;
 }
-.bus-sidebar-responsive .busSide .Travel-operator .travel-list{
+
+.travel-fixed-responsive {
+        height: 400px; 
+        position: relative;
+        overflow: hidden;
+        box-shadow: 2px 2px 5px 2px rgb(165, 165, 165);
+        border-radius: 10px;
+    }
+    .fix-trav {
+        height: 100%; 
+        overflow-y: auto;
+        position: absolute; 
+        top: 0;
+        bottom: 0; 
+        width: 100%;
+        padding-right: 10px; /* Add some padding for better spacing from scrollbar */
+    }
+    .fix-trav::-webkit-scrollbar {
+        width: 8px; 
+    }
+    
+    .fix-trav::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+    }
+    
+     .fix-trav::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+        border-radius: 10px;
+    }
+    
+ .travel-list{
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -1142,14 +1313,15 @@ font-weight: 700;
         color: #000000b9; 
         margin-top: 1vmax;
 }
-.bus-sidebar-responsive .busSide .Travel-operator .travel-list p{
+ .travel-list small{
       cursor: pointer;
       border: 1px solid #00000022;
       border-radius: 5px;
-      padding: 1vmax;
+      padding: 0.6vmax;
       font-size: 2vmax;
+      margin-top: 0.4vmax;
 }
-.bus-sidebar-responsive .busSide .Travel-operator .travel-list p:hover{
+ .travel-list small:hover{
       color: rgba(0, 0, 255, 0.628);
       border-color: rgba(0, 0, 255, 0.628);
 }

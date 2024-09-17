@@ -477,7 +477,9 @@
 }
 
 
-
+.seat-type-dropdown p{
+  font-size: 11px;
+}
 .busseatpricee span {
   color: #00e100;
   font-weight: bold;

@@ -61,10 +61,11 @@ const BusLists = () => {
 
   const storeSelectedBusDetails = (bus) => {
     const selectedBusDetails = {
+      selctedBusResult: bus.ResultIndex,    
       busName: bus.TravelName,
       boardingPoints: bus.BoardingPoints,
       droppingPoints: bus.DroppingPoints,
-
+      
     };
 
     localStorage.setItem('selectedBusDetails', JSON.stringify(selectedBusDetails));
@@ -199,18 +200,25 @@ const toggleDropVisibility = () => {
     return `${hours}h ${minutes}m`;
   };
 
-  const [price, setPrice] = useState(10); // Default value is 10
+  const [price, setPrice] = useState(10000); // Default value is 10
 
   const handlePriceChange = (event) => {
     setPrice(event.target.value);
   };
 
 
-  const [priceFilter, setPriceFilter] = useState(10000); // Default max value
+  // const [priceFilter, setPriceFilter] = useState(10000); // Default max value
   const [operatorFilter, setOperatorFilter] = useState('');
 
+  // const filteredResults = searchResults.filter(bus => {
+  //   const withinPrice = bus.Price.BasePrice <= priceFilter;
+  //   const matchesOperator = operatorFilter ? bus.TravelName === operatorFilter : true;
+  //   return withinPrice && matchesOperator;
+  // });
+
   const filteredResults = searchResults.filter(bus => {
-    const withinPrice = bus.Price.BasePrice <= priceFilter;
+    // Ensure the Price and BasePrice exist before filtering
+    const withinPrice = bus.Price && bus.Price.BasePrice <= price;
     const matchesOperator = operatorFilter ? bus.TravelName === operatorFilter : true;
     return withinPrice && matchesOperator;
   });
@@ -292,36 +300,64 @@ const toggleDropVisibility = () => {
                 <span>{price} INR</span>
               </div>
             </div>
-            <div className="Travel-operator">
+            {/* <div className="Travel-operator">
               <h6 onClick={toggleTravelList}>
                 <span> Travel Operators</span> <i className={`ri-arrow-${isTravelListVisible ? 'up' : 'down'}-s-line down-aro`}></i>
               </h6>
-              {isTravelListVisible && (
+             
+              <div className="travel-fixed">
+                 <div className="fix-trav">
+                 {isTravelListVisible && (
                 <div className="travel-list">
                   {searchResults.map((bus, index) => (
                     <p key={index} onClick={() => setOperatorFilter(bus.TravelName)}>{bus.TravelName}</p>
                   ))}
                 </div>
               )}
-            </div>
+                 </div>
+              </div>
+            </div> */}
+            <div className="Travel-operator">
+  <h6 onClick={toggleTravelList}>
+    <span>Travel Operators</span>
+    <i className={`ri-arrow-${isTravelListVisible ? 'up' : 'down'}-s-line down-aro`}></i>
+  </h6>
+  {isTravelListVisible && (
+    <div className="travel-fixed">
+      <div className="fix-trav">
+      <div className="travel-list">
+                  {searchResults.map((bus, index) => (
+                    <small key={index} onClick={() => setOperatorFilter(bus.TravelName)}>{bus.TravelName}</small>
+                  ))}
+                </div>
+      </div>
+    </div>
+  )}
+</div>
+
              
-            <div className="pick-up">
+            {/* <div className="pick-up">
   <h6 onClick={togglePickupVisibility}>
     <span>{from} </span>
     <i className={`ri-arrow-${isPickupVisible ? 'up' : 'down'}-s-line down-aro`}></i>
   </h6>
-  {isPickupVisible && searchResults.map((bus, index) => (
+    <div className="pick-fixed-main">
+    {isPickupVisible && searchResults.map((bus, index) => (
     <div key={index} className="pick-list">
-      <p>
+        <div className="pickfixed">
+           <p>
         <span style={{ fontWeight: "600" }}>Pick-Up Point & Time:</span>
         <small style={{ fontSize: '0.8vmax' }}>{bus.BoardingPoints.map((point, i) => (
           <div key={i}>
             {point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})
           </div>
-        ))}</small>
+        ))}
+        </small>
       </p>
+        </div>
     </div>
   ))}
+    </div>
 </div>
 
 <div className="drop-up">
@@ -341,7 +377,7 @@ const toggleDropVisibility = () => {
       </p>
     </div>
   ))}
-</div>
+</div> */}
 
 
 
@@ -378,20 +414,23 @@ const toggleDropVisibility = () => {
                 </div>
               </div>
               <div className="Travel-operator">
-                <h6 onClick={toggleTravelList}>
-                  <span>Travel Operators</span>
-                  <i className={`ri-arrow-${isTravelListVisible ? 'up' : 'down'}-s-line down-aro`}></i>
-                </h6>
-                {isTravelListVisible && (
-                  <div className="travel-list">
-                    {searchResults.map((bus, index) => (
-                      <p key={index} onClick={() => setOperatorFilter(bus.TravelName)}>{bus.TravelName}</p>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="pick-up">
+  <h6 onClick={toggleTravelList}>
+    <span>Travel Operators</span>
+    <i className={`ri-arrow-${isTravelListVisible ? 'up' : 'down'}-s-line down-aro`}></i>
+  </h6>
+  {isTravelListVisible && (
+    <div className="travel-fixed-responsive">
+      <div className="fix-trav">
+      <div className="travel-list">
+                  {searchResults.map((bus, index) => (
+                    <small key={index} onClick={() => setOperatorFilter(bus.TravelName)}>{bus.TravelName}</small>
+                  ))}
+                </div>
+      </div>
+    </div>
+  )}
+</div>
+              {/* <div className="pick-up">
                 <h6 onClick={togglePickupVisibility}>
                   <span>Pick-Up Point</span>
                   <i className={`ri-arrow-${isPickupVisible ? 'up' : 'down'}-s-line down-aro`}></i>
@@ -427,7 +466,7 @@ const toggleDropVisibility = () => {
                     </p>
                   </div>
                 ))}
-              </div>
+              </div> */}
 
             </div>
           </div>
