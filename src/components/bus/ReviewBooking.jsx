@@ -636,15 +636,15 @@ const ReviewBooking = () => {
                     <p>Travel Name <br /> <span> {selectedBusDetails ? selectedBusDetails.busName : 'N/A'}</span></p>
                     <p>Selected Seats <br /> <span> ({selectedSeats})</span></p>
 
-                    <div>
+                   
                       <p>Boarding Points <br /> <span>{BoardingPoint}</span></p>
 
-                    </div>
+                   
 
-                    <div>
+                   
                       <p>Dropping Points <br /> <span>{Droppingpoint}</span></p>
 
-                    </div>
+                   
 
 
 

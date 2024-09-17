@@ -511,6 +511,7 @@ border-radius: 10px;
 }
 .ReviewBooking .main-branch .r-left .left-main .line-btm p{
       font-size: 2vmax;
+      width: 20%;
 }
 .ReviewBooking .main-branch .r-left .left-main .line-btm span{
      font-size: 1.7vmax;
