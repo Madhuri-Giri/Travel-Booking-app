@@ -175,8 +175,8 @@ const ReviewBooking = () => {
       const selectedSeatsCount = Number(localStorage.getItem('selectedSeatsCount')) || 0;
 
       // Log values to ensure they are correctly retrieved
-      console.log("Parsed selectedSeatsCount:", selectedSeatsCount);
-      console.log("Parsed passengerCount:", passengerCount);
+      // console.log("Parsed selectedSeatsCount:", selectedSeatsCount);
+      // console.log("Parsed passengerCount:", passengerCount);
 
       setPassengerCountt(passengerCount);
       setSelectedSeatsCountt(selectedSeatsCount);
@@ -193,11 +193,11 @@ const ReviewBooking = () => {
   const isFormValid = newContactData.name && newContactData.email && newContactData.contact;
   // Check if counts are equal
   const areCountsEqual = passengerCountt === selectedSeatsCountt;
-  console.log("areCountsEqual:", areCountsEqual);
+  // console.log("areCountsEqual:", areCountsEqual);
 
   // Button is disabled if form is invalid or counts are not equal
   const isButtonDisabled = !isFormValid || !areCountsEqual;
-  console.log("isButtonDisabled:", isButtonDisabled);
+  // console.log("isButtonDisabled:", isButtonDisabled);
 
   // --------------------------------
 
@@ -525,6 +525,10 @@ const ReviewBooking = () => {
   }, []);
 
 
+
+
+
+
   useEffect(() => {
     const busLayoutResponse = localStorage.getItem('BuslayoutResponse');
     if (busLayoutResponse) {
@@ -553,6 +557,10 @@ const ReviewBooking = () => {
     }
   }, [totalPayment]);
 
+
+  
+ const BoardingPoint =  localStorage.getItem('BordCityPointLocation');
+ const Droppingpoint =  localStorage.getItem('DropCityPointLocation');
 
 
   // -------------------------------------------------------------------------------------------------
@@ -598,26 +606,17 @@ const ReviewBooking = () => {
                     <p>Selected Seats <br /> <span> ({selectedSeats})</span></p>
 
                     <div>
-                      <p>Boarding Points <br /> <span>{selectedBusDetails && selectedBusDetails.boardingPoints.length > 0 ? (
-                        selectedBusDetails.boardingPoints.map((point) => (
-                          <span key={point.CityPointIndex}>{point.CityPointName}</span>
-                        ))
-                      ) : (
-                        <p>No Boarding Points Available</p>
-                      )}</span></p>
+                      <p>Boarding Points <br /> <span>{BoardingPoint}</span></p>
 
                     </div>
 
                     <div>
-                      <p>Dropping Points <br /> <span>{selectedBusDetails && selectedBusDetails.droppingPoints.length > 0 ? (
-                        selectedBusDetails.droppingPoints.map((point) => (
-                          <span key={point.CityPointIndex}>{point.CityPointName}</span>
-                        ))
-                      ) : (
-                        <p>No Dropping Points Available</p>
-                      )}</span></p>
+                      <p>Dropping Points <br /> <span>{Droppingpoint}</span></p>
 
                     </div>
+
+
+
                   </div>
 
                 </div>

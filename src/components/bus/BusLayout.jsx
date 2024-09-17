@@ -159,11 +159,26 @@ const BusLayout = () => {
     setLoading(true);
     try {
       const traceId = localStorage.getItem('traceId');
-      const resultIndex = localStorage.getItem('resultIndex');
-
-      if (!traceId || !resultIndex) {
-        throw new Error('TraceId or ResultIndex not found in localStorage');
-      }
+      const storedBusDetails = localStorage.getItem('selectedBusDetails');
+  
+        if (!traceId) {
+          throw new Error('TraceId not found in localStorage');
+        }
+  
+        let selectedBusResult = null;
+  
+        if (storedBusDetails) {
+          const parsedBusDetails = JSON.parse(storedBusDetails);
+          selectedBusResult = parsedBusDetails.selctedBusResult;
+  
+          console.log('Selected Bus Result:', selectedBusResult);
+        } else {
+          throw new Error('No bus details found in localStorage');
+        }
+  
+        if (!selectedBusResult) {
+          throw new Error('SelectedBusResult not found in bus details');
+        }
 
       localStorage.setItem('selectedSeats', JSON.stringify(selectedSeats));
       localStorage.setItem('totalPrice', totalPrice);
@@ -174,7 +189,7 @@ const BusLayout = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ResultIndex: resultIndex,
+          ResultIndex:selectedBusResult ,
           TraceId: traceId,
         }),
       });

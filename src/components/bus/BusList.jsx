@@ -327,7 +327,7 @@ const toggleDropVisibility = () => {
       <div className="fix-trav">
       <div className="travel-list">
                   {searchResults.map((bus, index) => (
-                    <p key={index} onClick={() => setOperatorFilter(bus.TravelName)}>{bus.TravelName}</p>
+                    <small key={index} onClick={() => setOperatorFilter(bus.TravelName)}>{bus.TravelName}</small>
                   ))}
                 </div>
       </div>
