@@ -305,14 +305,15 @@ margin-top: 1vmax;
         padding: 0.5vmax;
     }
     
- .bus-sidebar .busSide .Travel-operator .travel-list p{
+ .bus-sidebar .busSide .Travel-operator .travel-list small{
         cursor: pointer;
         border: 1px solid #00000022;
         border-radius: 5px;
-        padding: 0.4vmax;
+        padding: 0.3vmax;
         font-size: 0.9vmax;
+        margin-top: 0.3vmax;
  }
- .bus-sidebar .busSide .Travel-operator .travel-list p:hover{
+ .bus-sidebar .busSide .Travel-operator .travel-list small:hover{
         color: rgba(0, 0, 255, 0.628);
         border-color: rgba(0, 0, 255, 0.628);
  }
