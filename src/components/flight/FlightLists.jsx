@@ -415,6 +415,7 @@ export default function FlightLists() {
     };
 
 
+    console.log("dd", dd);
 
     // flight filter logics START--------------------
     // filter for flight price
@@ -461,8 +462,8 @@ export default function FlightLists() {
             )
         ).filter(segment => segment.length > 0) // Filter out empty segments
         : dd;
-        console.log("filteredFlights----",filteredFlights);
-        
+    console.log("filteredFlights----", filteredFlights);
+
 
     // flight filter logics END------------------------
 
@@ -784,6 +785,28 @@ export default function FlightLists() {
                                 )}
                             </div>
                         </div>
+
+                        {/* <div className="paginationContainer">
+                            <ReactPaginate
+                                previousLabel={'previous'}
+                                nextLabel={'next'}
+                                breakLabel={'...'}
+                                pageCount={pageCount}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                onPageChange={handlePageClick}
+                                containerClassName={'pagination'}
+                                activeClassName={'active'}
+                                pageClassName={'page-item'}
+                                pageLinkClassName={'page-link'}
+                                previousClassName={'page-item'}
+                                previousLinkClassName={'page-link'}
+                                nextClassName={'page-item'}
+                                nextLinkClassName={'page-link'}
+                                breakClassName={'page-item'}
+                                breakLinkClassName={'page-link'}
+                            />
+                        </div> */}
 
 
                     </div>
