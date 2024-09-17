@@ -34,8 +34,8 @@ const GuestDetails = () => {
     age: "",
     passportNo: "",
     pan: "",
-    // paxType: "",
-    // leadPassenger: "",
+    paxType: "",
+    leadPassenger: "",
     // passportIssueDate: "",
     // passportExpDate: "",
    
@@ -433,6 +433,12 @@ setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are fil
           if (formData.age === '' || isNaN(formData.age) || formData.age < 18 || formData.age > 100) {
             errors.push(`Age must be between 18 and 100 at index ${index}`);
           }
+          if (!["Yes", "No"].includes(formData.leadPassenger)) {
+            errors.push(`Lead Passenger must be 'Yes' or 'No' at index ${index}`);
+          }
+          if (![1, 2].includes(Number(formData.paxType))) {
+            errors.push(`Pax Type must be '1' (for Adult) or '2' (for Child) at index ${index}`);
+          }
         });
       
         if (errors.length > 0) {
@@ -494,8 +500,8 @@ setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are fil
                   Phoneno: guest.mobile || "",
                   Email: guest.email || "",
                   Age: guest.age || "",
-                  PaxType: "Adult",         
-                  LeadPassenger: "No",     
+                  PaxType: guest.paxType || "",         
+                  LeadPassenger: guest.leadPassenger || "",     
                   PassportNo: guest.passportNo || "",
                   PassportIssueDate: "",   
                   PassportExpDate: "",     
@@ -830,7 +836,20 @@ setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are fil
         required
       />
     </div>
-              </div>
+    <div className="mb-3 req_field">
+      <label className="required_field">Age</label>
+      <input
+        type="number"
+        className="form-control"
+        placeholder="Age"
+        name="age"
+        value={formData.age}
+        onChange={(e) => handleFormChange(index, e)}
+        min={0}
+      />
+    </div>
+     </div>
+
               <div className="col-md-6">
               <div className="mb-3 req_field">
       <label className="required_field">Contact Number</label>
@@ -858,18 +877,7 @@ setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are fil
       />
     </div>
 
-      <div className="mb-3 req_field">
-      <label className="required_field">Age</label>
-      <input
-        type="number"
-        className="form-control"
-        placeholder="Age"
-        name="age"
-        value={formData.age}
-        onChange={(e) => handleFormChange(index, e)}
-        min={0}
-      />
-    </div>
+    
 
       <div className="mb-3 passport_field">
       <label>Passport No.</label>
@@ -906,28 +914,33 @@ setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are fil
   {/* </div> */}
 
 
-              {/* <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Lead Passenger (Yes/No)"
-                  name="leadPassenger"
-                  value={formData.leadPassenger}
-                  onChange={(e) => handleFormChange(index, e)}
-                  pattern="^(Yes|No|yes|no)$"
-                />
-               
-              </div>
-              <div className="mb-3">
-                <input
-                  type="number"
-                  className="form-control"
-                  placeholder="Pax Type"
-                  name="paxType"
-                  value={formData.paxType}
-                  onChange={(e) => handleFormChange(index, e)}
-                />
-              </div> */}
+              <div className="mb-3 req_field">
+              <label className="required_field">Lead Passenger</label>
+              <select
+              className="form-control"
+              name="leadPassenger"
+              value={formData.leadPassenger}
+              onChange={(e) => handleFormChange(index, e)}
+            >
+              <option value="">Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div className="mb-3 req_field">
+            <label className="required_field">Pax Type</label>
+            <select
+              className="form-control"
+              name="paxType"
+              value={formData.paxType}
+              onChange={(e) => handleFormChange(index, e)}
+            >
+              <option value="">Select</option>
+              <option value="1">Adult</option>
+              <option value="2">Child</option>
+            </select>
+          </div> 
             </div>
           </div>
           <button className='submit-btn' type="submit">Save</button>

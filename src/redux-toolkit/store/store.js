@@ -1,16 +1,27 @@
 import { configureStore } from '@reduxjs/toolkit'
 import busReducer from "../slices/busSlice"
 import profileReducer from "../slices/profileSlice"
-import  hotelSearchReducer from "../slices/hotelSlice"
 import timerReducer from "../slices/timerSlice"
-const store = configureStore ({
-          reducer:{
-                    bus: busReducer,
 
+import  hotelSearchReducer from "../slices/hotelSlice"
+import hotelDetailsReducer from "../slices/hotelInfoSlice"
+import hotelRoomsReducer from "../slices/hotelRoomSlice"
+import hotelBlockReducer from '../slices/hotelBlockSlice'
+import bookingReducer from "../slices/hotelBookSlice"
+
+const store = configureStore ({
+
+          reducer:{
+
+                    bus: busReducer,
                     profile: profileReducer,   
-                    hotelSearch: hotelSearchReducer,
                     timer: timerReducer,
 
+                    hotelSearch: hotelSearchReducer,
+                    hotelDetails: hotelDetailsReducer,
+                    hotelRooms: hotelRoomsReducer,
+                    hotelBlock: hotelBlockReducer,
+                    booking: bookingReducer,
 
           }
 })
