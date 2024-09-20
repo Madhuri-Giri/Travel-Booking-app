@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { TiPlane } from "react-icons/ti";
@@ -9,6 +10,7 @@ import { LuDot } from "react-icons/lu";
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
+import { FaArrowRightLong } from 'react-icons/fa6';
 // impor TimerFlight from '../timmer/TimerFlight';
 
 
@@ -17,13 +19,17 @@ const FareQuote = () => {
     const [loading, setLoading] = useState(false); // Add loading state
 
     const location = useLocation();
-    const fareData = location.state?.fareData;
-    const segmentss = fareData.Segments;
-    // console.log("segmentss", segmentss);
-
     const formData = location.state?.formData;  // Using optional chaining to prevent errors if state is undefined
+    const dataToPass = location.state?.dataToPass;
+    const fareQuoteAPIData = location.state?.fareQuoteAPIData;
+    const segmentss = fareQuoteAPIData.Segments;
 
-    // console.log("formData", formData.Segments[0].PreferredDepartureTime)
+    // selected flight data get------
+    const { flightSelectedDATA } = location?.state || {};
+    console.log('flightSelectedDATA', flightSelectedDATA);
+
+    const publishedFare = flightSelectedDATA?.flight?.OfferedFare;
+
     // function for date convert into day month date--------------------------------------
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -58,23 +64,22 @@ const FareQuote = () => {
     // Check if formData exists
     if (!formData) {
         console.error('formData is undefined');
-        return <div>Loading...</div>; 
+        return <div>Loading...</div>;
     }
-
-    const publishedFare = fareData?.Fare?.BaseFare;
-    // console.log("fareData", fareData);
-    // console.log("publishedFare", publishedFare);
 
     const flightDeatilsFun = () => {
         setLoading(true);
         setTimeout(() => {
-            navigate('/flight-details', { state: { fareData: fareData, formData: formData } });
-        }, 1000); 
+            navigate('/flight-details', {
+                state: {
+                    fareQuoteAPIData: fareQuoteAPIData,
+                    formData: formData,
+                    flightSelectedDATA: flightSelectedDATA,
+                    dataToPass: dataToPass,
+                }
+            });
+        }, 1000);
     }
-
-    const navigateSearch = () => {
-        navigate('/flight-search');
-    };
 
     // for timerss----------------------------------
     // const [timer, setTimer] = useState(0);
@@ -96,12 +101,12 @@ const FareQuote = () => {
     //     }
     //   };
     //   updateTimer();
-  
+
     //   const interval = setInterval(updateTimer, 1000); 
-  
+
     //   return () => clearInterval(interval);
     // }, [navigate]);
-  
+
     // const formatTimers = (milliseconds) => {
     //   const totalSeconds = Math.floor(milliseconds / 1000);
     //   const minutes = Math.floor(totalSeconds / 60);
@@ -159,7 +164,7 @@ const FareQuote = () => {
 
                                     <div className='col-12 fareQuoteHed'>
                                         <h6>Departing Flight  : <span>{formattedDate}</span></h6>
-                                        <p> <span>Delhi</span> <span>Mumbai</span> </p>
+                                        <p> <span>{formData.Segments[0].Origin}</span> <FaArrowRightLong />  <span>{formData.Segments[0].Destination}</span> </p>
                                     </div>
                                     {segmentss.map((segmentGroup, groupIndex) => (
                                         <React.Fragment key={groupIndex}>

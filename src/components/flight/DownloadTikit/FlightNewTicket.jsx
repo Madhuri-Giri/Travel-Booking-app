@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState, useRef } from 'react';
 import jsPDF from 'jspdf';
 import "jspdf-autotable";
@@ -13,7 +14,7 @@ import LootiAnim from '../../../assets/images/Anim.json';
 import html2canvas from 'html2canvas';
 import FooterLogo from "../../../assets/images/main logo.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import { faFire, faBiohazard, faFlask, faSprayCan, faGasPump, faSmoking, faVirus, faRadiation, faBomb } from '@fortawesome/free-solid-svg-icons';
 import { FaArrowRightLong } from "react-icons/fa6";
 
@@ -28,6 +29,11 @@ const FlightNewTikit = () => {
   const [flightticketPassengerDetails, setFlightticketPassengerDetails] = useState(null);
   const navigate = useNavigate();
   const [buttonsVisible, setButtonsVisible] = useState(true); // State to manage button visibility
+
+  const location = useLocation();
+  const { flightSelectedDATA} = location.state || {};
+  console.log("flightSelectedDATA", flightSelectedDATA);
+  console.log("logo", flightSelectedDATA.logoUrl);
 
   // Convert the stored value to a boolean
   const islcc = localStorage.getItem('F-IsLcc');
@@ -272,7 +278,8 @@ const FlightNewTikit = () => {
                         <div className="flightticketboxTravelDetails">
                           <div className="ffbox1">
                             <div className='flightIndigodet'>
-                              <p>{booking_status.airline || 'Logo null'}</p>
+                              <img src={flightSelectedDATA.logoUrl} className="img-fluid "/>
+                              {/* <p>{booking_status.airline || 'Logo null'}</p> */}
                               <p>{booking_status.airline || 'Airline Name null'}</p>
                               <p>{booking_status.airline_code || 'Airline code null'}</p>
                             </div>
