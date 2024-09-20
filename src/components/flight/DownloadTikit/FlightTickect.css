@@ -1,6 +1,6 @@
-/* .ticketpart{
-    display: block;
-} */
+.ticketpart{
+    display: none;
+}
 .supportDiv .col-md-6 {
     margin-bottom: 10px;
 }

@@ -568,7 +568,10 @@
 .flightIndigodet {
     color: #0a325f;
 }
-
+.flightIndigodet img{
+    border-radius: 10px;
+    height: 40px;
+}
 .flightIndigodet p {
     margin-bottom: 0px;
     font-size: 14px;

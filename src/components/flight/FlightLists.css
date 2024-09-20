@@ -533,7 +533,7 @@
 /* farequote css start-------- */
 .fare-quote-main {
     background-color: #dddddd;
-    padding: 30px 1px;
+    padding: 15px 1px;
 }
 
 .fare-quote-box {
@@ -550,16 +550,16 @@
 .fareQuoteHed {
     border: 1px solid gainsboro;
     border-radius: 10px;
-    padding: 10px 20px;
-    margin-bottom: 15px;
+    padding: 7px 20px;
+    margin-bottom: 5px;
 }
 
 .fareQuoteHed p {
     margin: 0px;
 }
 
-.fareQuoteHed p span {
-    margin-right: 20px;
+.fareQuoteHed p svg {
+    margin: 0px 20px;
 }
 
 .fareQuotemain p {
@@ -580,8 +580,8 @@
 .fareQuotemain {
     border: 1px solid gainsboro;
     border-radius: 10px;
-    padding: 10px 20px;
-    margin-bottom: 15px;
+    padding: 7px 20px;
+    margin-bottom: 5px;
 }
 
 .fareQuotemainh6 {
