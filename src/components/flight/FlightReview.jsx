@@ -26,6 +26,8 @@ const FlightReview = () => {
   const [payLoading, setPayLoading] = useState(false);
   const [loader, setLoader] = useState(false);
   const [holdAPIDATA, setholdAPIDATA] = useState();
+  const [razorPayPAYMENT_Id, setRazorPayPAYMENT_Id] = useState();
+  const [razorPayTRANSACTION_Id, setRazorPayTRANSACTION_Id] = useState();
   console.log('holdAPIDATA', holdAPIDATA);
 
   const location = useLocation();
@@ -177,6 +179,8 @@ const FlightReview = () => {
 
           localStorage.setItem('flight_payment_id', response.razorpay_payment_id);
           localStorage.setItem('flight_transaction_id', options.transaction_id);
+          setRazorPayPAYMENT_Id(response.razorpay_payment_id)
+          setRazorPayTRANSACTION_Id(options.transaction_id)
           // alert('Flight Payment successful!');
           setLoader(true);
           try {
@@ -235,8 +239,11 @@ const FlightReview = () => {
 
   const flightpayUpdate = async () => {
     try {
+      // const payment_id = razorPayPAYMENT_Id;
+      // const transaction_id = razorPayTRANSACTION_Id;
       const payment_id = localStorage.getItem('flight_payment_id');
       const transaction_id = localStorage.getItem('flight_transaction_id');
+
       // const transaction_num = localStorage.getItem('transactionNum');
       // console.log('transaction_num',transaction_num)
 
@@ -322,7 +329,9 @@ const FlightReview = () => {
   const bookLccApi = async () => {
     try {
       const transactionFlightNo = localStorage.getItem('transactionNum');
+      // const transaction_id = razorPayTRANSACTION_Id;
       const transaction_id = localStorage.getItem('flight_transaction_id');
+      
       console.log("transaction_id", transaction_id);
 
       // const adultPassengerDetails = localStorage.getItem('adultPassengerDetails');
@@ -410,6 +419,8 @@ const FlightReview = () => {
 
   const bookHoldApi = async () => {
     const transaction_id = localStorage.getItem('flight_transaction_id');
+    // const transaction_id = razorPayTRANSACTION_Id;
+
     const storedPassengers = confirmedAdults;
     console.log("transaction_id", transaction_id)
 
