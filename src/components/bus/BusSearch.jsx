@@ -10,7 +10,7 @@ import {
   setToSuggestions,
   setSelectedBusDate,
   searchBuses
-} from '../../redux-toolkit/slices/busSlice';
+} from '../../redux-toolkit/bus/busSlice';
 import busAnim from "../../assets/images/mainBus.json";
 import Lottie from 'lottie-react';
 import "./BusSearch.css";
@@ -60,7 +60,7 @@ const BusSearch = () => {
       });
       const data = await response.json();
   
-      console.log('Suggestions Data:', data); // Debugging
+      // console.log('Suggestions Data:', data); 
   
       const filteredSuggestions = data.data.filter(suggestion =>
         suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
@@ -106,14 +106,14 @@ const BusSearch = () => {
   };
 
   const handleFromSelect = (suggestion) => {
-    console.log('Selected From Suggestion:', suggestion); // Debugging
+    // console.log('Selected From Suggestion:', suggestion); 
     dispatch(setFrom(suggestion.busodma_destination_name));
     dispatch(setFromCode(suggestion.busodma_origin_code));
     dispatch(setFromSuggestions([]));
   };
 
   const handleToSelect = (suggestion) => {
-    console.log('Selected To Suggestion:', suggestion); // Debugging
+    // console.log('Selected To Suggestion:', suggestion); 
     dispatch(setTo(suggestion.busodma_destination_name));
     dispatch(setToCode(suggestion.busodma_origin_code));
     dispatch(setToSuggestions([]));

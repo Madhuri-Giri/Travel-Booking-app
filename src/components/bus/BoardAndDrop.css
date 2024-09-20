@@ -14,3 +14,38 @@
 .bording .select .form-select{
   width: unset !important;
 }
+
+.bord-click{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5vmax;
+}
+.bord-click .b-click{
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #9a9a9a;
+  border-radius: 5px;
+  padding: 0.5vmax;
+}
+.bord-click .b-click i{
+    font-size: 1.4vmax;
+    cursor: pointer;
+}
+.bording{
+  margin-top: 1vmax;
+  width: 95%;
+}
+@media (max-width:600px) {
+  .bord-click .b-click{
+    margin-top: 4vmax;
+    padding: 1vmax;
+
+  }
+  .bord-click .b-click i{
+    font-size: 2vmax;
+}
+}
