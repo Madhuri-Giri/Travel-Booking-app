@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import "./FlightLists.css"
 import "./FlightDetails.css"
 import React from 'react'
@@ -19,66 +20,31 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default function FlightDetails() {
     const navigate = useNavigate();
+    const location = useLocation();
+
     const [loading, setLoading] = useState(false); // Add loading state
-    const [selectedDate, setSelectedDate] = useState(null);
+
+    const dataToPass = location.state?.dataToPass;
+
+    // selected flight data get------
+    const { flightSelectedDATA } = location?.state || {};
+    console.log('flightSelectedDATA', flightSelectedDATA);
 
     //   ----------------------------------------------------
     const [totalPrice, setTotalPrice] = useState(0);
 
     useEffect(() => {
-        // Retrieve the base fare from local storage
-        const savedFare = localStorage.getItem('selectedFlightBaseFare');
-
-        // Set the totalFare state, converting it to a number
+        const savedFare = flightSelectedDATA?.flight.OfferedFare
         if (savedFare) {
             setTotalPrice(parseFloat(savedFare));
         }
-    }, []);
+    }, [flightSelectedDATA]);
 
-    const location = useLocation();
-    const fareData = location.state?.fareData;
+    const fareData = location.state?.fareQuoteAPIData;
     const formData = location.state?.formData;
 
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
-    // console.log("fareDataDetails", fareDataDetails);
-
-    // function for date convert into day month date--------------------------------------
-    const convertformatDate = (dateString) => {
-        const date = new Date(dateString);
-        return new Intl.DateTimeFormat('en-US', { day: 'numeric', weekday: 'long', month: 'long' }).format(date);
-    };
-
-    const departDatee = formData.Segments[0].PreferredDepartureTime;
-    const convertformattedDate = convertformatDate(departDatee);
-    // console.log("Formatted Date:", convertformattedDate);
-    // function for date convert into day month date--------------------------------------
-
-    // func for duration convert hpur minute---------------------
-    const convertMinutesToHoursAndMinutes = (minutes) => {
-        const hours = Math.floor(minutes / 60);
-        const remainingMinutes = minutes % 60;
-        return `${hours}h ${remainingMinutes}m`;
-    };
-    // func for duration convert hpur minute---------------------
-
-    useEffect(() => {
-        if (fareData) {
-            setFareDataDetails(fareData);
-            localStorage.setItem('fareDataDetails', JSON.stringify(fareData));
-        } else {
-            const savedFareData = localStorage.getItem('fareDataDetails');
-            if (savedFareData) {
-                setFareDataDetails(JSON.parse(savedFareData));
-            }
-        }
-    }, [fareData]);
-
-    useEffect(() => {
-        if (!fareDataDetails) {
-            console.error('fareDataDetails is undefined');
-        }
-    }, [fareDataDetails]);
-
+    console.log("fareDataDetails", fareDataDetails);
 
     const segment = fareDataDetails.Segments[0][0];
     console.log("segment", segment);
@@ -93,6 +59,24 @@ export default function FlightDetails() {
     const tax = fare.Tax;
     const totalFare = baseFare + tax;
 
+    // function for date convert into day month date--------------------------------------
+    const convertformatDate = (dateString) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('en-US', { day: 'numeric', weekday: 'long', month: 'long' }).format(date);
+    };
+
+    const departDatee = formData.Segments[0].PreferredDepartureTime;
+    const convertformattedDate = convertformatDate(departDatee);
+    // function for date convert into day month date--------------------------------------
+
+    // func for duration convert hpur minute---------------------
+    const convertMinutesToHoursAndMinutes = (minutes) => {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        return `${hours}h ${remainingMinutes}m`;
+    };
+    // func for duration convert hpur minute---------------------
+
     const formatTime = (date) => {
         return `${date.getHours()}:${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
     };
@@ -106,10 +90,18 @@ export default function FlightDetails() {
     const reviewHandler = () => {
         // Ensure fareDataDetails is defined before navigating
         if (fareDataDetails) {
-            console.log('Navigating to flight-review with fareDataDetails:', fareDataDetails); // Debugging log
             setLoading(true);
             setTimeout(() => {
-                navigate('/flight-review', { state: { fareDataDetails } });
+                navigate('/flight-review', {
+                    state: {
+                        fareQuoteAPIData: fareDataDetails,
+                        flightSelectedDATA: flightSelectedDATA,
+                        dataToPass: dataToPass,
+                        confirmedAdults: confirmedAdultDetails,
+                        confirmedChildren: confirmedChildDetails,
+                        confirmedInfants: confirmedInfantDetails,
+                    }
+                });
             }, 1000);
         } else {
             console.error('fareDataDetails is undefined');
@@ -118,33 +110,27 @@ export default function FlightDetails() {
     };
 
 
-
     const toggleSelect = (index, type) => {
+        let updatedDetails;
+
         if (type === 'adult') {
-            const updatedDetails = confirmedAdultDetails.map((detail, i) =>
+            updatedDetails = confirmedAdultDetails.map((detail, i) =>
                 i === index ? { ...detail, selected: !detail.selected } : detail
             );
             setConfirmedAdultDetails(updatedDetails);
-            console.log("adultPassengerDetails", updatedDetails);
-            localStorage.setItem('adultPassengerDetails', JSON.stringify(updatedDetails));
-
-
         } else if (type === 'child') {
-            const updatedDetails = confirmedChildDetails.map((detail, i) =>
+            updatedDetails = confirmedChildDetails.map((detail, i) =>
                 i === index ? { ...detail, selected: !detail.selected } : detail
             );
             setConfirmedChildDetails(updatedDetails);
-            console.log("childPassengerDetails", updatedDetails);
-            localStorage.setItem('childPassengerDetails', JSON.stringify(updatedDetails));
-
         } else if (type === 'infant') {
-            const updatedDetails = confirmedInfantDetails.map((detail, i) =>
+            updatedDetails = confirmedInfantDetails.map((detail, i) =>
                 i === index ? { ...detail, selected: !detail.selected } : detail
             );
             setConfirmedInfantDetails(updatedDetails);
-            console.log("infantPassengerDetails", updatedDetails);
-            localStorage.setItem('infantPassengerDetails', JSON.stringify(updatedDetails));
         }
+
+        // Check button disabled state after selection change
         checkButtonDisabled();
     };
 
@@ -178,21 +164,23 @@ export default function FlightDetails() {
     const [confirmedInfantDetails, setConfirmedInfantDetails] = useState([]);
     const [error, setError] = useState('');
 
-    const [isContinueDisabled, setIsContinueDisabled] = useState(true);
+    const [isContinueDisabled, setIsContinueDisabled] = useState(true); // Start with disabled
 
     const checkButtonDisabled = () => {
-        const allAdultsConfirmed = confirmedAdultDetails.every(detail => detail.selected);
-        const allChildrenConfirmed = confirmedChildDetails.every(detail => detail.selected);
-        const allInfantsConfirmed = confirmedInfantDetails.every(detail => detail.selected);
+        const anyAdultSelected = confirmedAdultDetails.some(detail => detail.selected);
+        const anyChildSelected = confirmedChildDetails.some(detail => detail.selected);
+        const anyInfantSelected = confirmedInfantDetails.some(detail => detail.selected);
 
-        // Set the button disabled state based on the confirmation status of all details
-        setIsContinueDisabled(!(allAdultsConfirmed && allChildrenConfirmed && allInfantsConfirmed));
+        // Enable the button if at least one checkbox in any category is selected
+        setIsContinueDisabled(!(anyAdultSelected || anyChildSelected || anyInfantSelected));
     };
+
 
     // Use useEffect to call checkButtonDisabled whenever confirmed details change
     useEffect(() => {
         checkButtonDisabled();
     }, [confirmedAdultDetails, confirmedChildDetails, confirmedInfantDetails]);
+
 
     const handleInputChange = (e, index, type, field) => {
         const { value } = e.target;
@@ -666,7 +654,7 @@ export default function FlightDetails() {
                 return <div>
                     <div className="row flighttTabContent">
                         <div className="col-md-2 col-2 flighttTabContentCol1">
-                            <img src="https://imgak.mmtcdn.com/flights/assets/media/dt/common/icons/AI.png?v=19" className="img-fluid" />
+                            <img src={flightSelectedDATA?.logoUrl || 'null'} className="img-fluid" />
                             <p>{airline.AirlineName}</p>
                         </div>
                         <div className="col-md-4 col-3 flighttTabContentCol2">
@@ -842,7 +830,16 @@ export default function FlightDetails() {
         if (showTabs) {
             setLoading(true);
             setTimeout(() => {
-                navigate('/seat-meal-baggage', { state: { fareDataDetails } });
+                navigate('/seat-meal-baggage', {
+                    state: {
+                        fareDataDetails,
+                        flightSelectedDATA: flightSelectedDATA,
+                        dataToPass: dataToPass,
+                        confirmedAdults: confirmedAdultDetails,
+                        confirmedChildren: confirmedChildDetails,
+                        confirmedInfants: confirmedInfantDetails,
+                    }
+                });
             }, 1000);
         } else {
             reviewHandler();

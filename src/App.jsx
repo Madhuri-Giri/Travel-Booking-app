@@ -48,6 +48,7 @@ import PayloaderHotel from "./pages/loading/PayloaderHotel";
 import PayloaderBus from './pages/loading/PayloaderBus';
 import FlightNewTicket from './components/flight/DownloadTikit/FlightNewTicket';
 import PayloaderFlight from './pages/loading/PayloaderFlight';
+import PassangerInfo from './components/bus/PassangerInfo';
 
 // import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
 // import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
@@ -79,6 +80,8 @@ const App = () => {
           <Route path='/bus-tikit-download' element={<BusTikit />} />
           <Route path='busBookTicket' element={<TicketBookBus/>} />
           <Route path='/review-booking' element={<ReviewBooking />} />
+          <Route path='/passenger' element={<PassangerInfo />} />
+
         
           <Route path='/hotel-search' element={<HotelSearch />} />
           <Route path='/hotel-list' element={<HotelList />} />
@@ -119,6 +122,9 @@ const App = () => {
           <Route path='/flight-payload' element={<PayloaderFlight/>}/>
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
+
+
+
        
         
         </Routes>

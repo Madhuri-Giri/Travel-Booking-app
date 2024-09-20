@@ -1,6 +1,6 @@
-// import "./Home.css"
+/* eslint-disable no-unused-vars */
 import '../flight/FlightSearch.css';
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Carousel } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaAngleDown } from 'react-icons/fa';
@@ -18,16 +18,19 @@ import 'slick-carousel/slick/slick-theme.css';
 import PropTypes from 'prop-types';
 import home_insta from "../../../src/assets/images/home-insta.jpg";
 import home_newsletter from "../../../src/assets/images/home-yotube.jpg";
-import Loading from '../../pages/loading/Loading'; 
-import CustomNavbar from '../../pages/navbar/CustomNavbar';
-import Footer from '../../pages/footer/Footer';
+import Loading from '../../pages/loading/Loading';
+import Footer from "../../pages/footer/Footer"
+import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
   const [loading, setLoading] = useState(false); // Add loading state
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // states-------------------------------------------
   const [from, setFrom] = useState();
@@ -287,7 +290,7 @@ const Home = () => {
         }
       ]);
 
-      
+
     } else if (tabValue === 2) {
       // Two-Way: Add a second segment
       setSegments([
@@ -307,7 +310,7 @@ const Home = () => {
         }
       ]);
 
-      
+
     }
   }, [tabValue, departureDate, returnDateDep, selectedflightClass]);
 
@@ -343,118 +346,30 @@ const Home = () => {
     return valid;
   };
 
-  const getFlightList = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/flight-search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`HTTP error! Status: ${response.status}, Response: ${errorText}`);
-        alert(`Failed to fetch flight data: ${errorText}`);
-        setLoading(false);
-        return;
-      }
 
-      const data = await response.json();
-      console.log("Flight search API response: ", data);
-
-      if (!data.Results) {
-        console.error("No results found in the API response");
-        alert("No flights found. Please try again later.");
-        setLoading(false);
-        return;
-      }
-
-      localStorage.setItem('Flight-search', JSON.stringify(data));
-
-      const airlineCodes = data.Results.flatMap(result =>
-        result.flatMap(fareData =>
-          fareData.FareDataMultiple.flatMap(fare =>
-            fare.FareSegments.map(segment => segment.AirlineCode)
-          )
-        )
-      );
-      const filteredAirlineCodes = airlineCodes.filter(code => code !== "");
-
-      console.log("Airline Codes: ", filteredAirlineCodes);
-
-      const logos = await fetchAirlineLogos(filteredAirlineCodes);
-      console.log("Fetched Airline Logos: ", logos);
-
-      const logoMap = filteredAirlineCodes.reduce((acc, code, index) => {
-        acc[code] = logos[index] || '';
-        return acc;
-      }, {});
-
-      localStorage.setItem('Airline-Logos', JSON.stringify(logoMap));
-
-      const firstResult = data?.Results?.[0]?.[0];
-      if (firstResult && firstResult.FareDataMultiple?.[0]) {
-        const { SrdvIndex, ResultIndex, IsLCC } = firstResult.FareDataMultiple[0];
-        const { TraceId, SrdvType } = data;
-        localStorage.setItem("F-SrdvIndex", SrdvIndex);
-        localStorage.setItem("F-ResultIndex", ResultIndex);
-        localStorage.setItem("F-TraceId", TraceId);
-        localStorage.setItem("F-SrdvType", SrdvType);
-        localStorage.setItem("F-IsLcc", IsLCC);
-      } else {
-        console.log("SrdvIndex or FareDataMultiple not found");
-      }
-
-      setLoading(false);
-      navigate("/flight-list", { state: { data: data, formData: formData } });
-
-    } catch (error) {
-      console.error('Error fetching flight data:', error.message);
-      alert(`An error occurred: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch airline logos by codes
-  const fetchAirlineLogos = async (airlineCodes) => {
-    try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/airline-logo', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("Airline logo API response: ", data);
-
-      const logoMap = data.data.reduce((acc, curr) => {
-        acc[curr.airline_code] = curr.airline_log;
-        return acc;
-      }, {});
-
-      return airlineCodes.map(code => logoMap[code] || null);
-    } catch (error) {
-      console.error('Error fetching airline logos:', error);
-      return airlineCodes.map(() => null);
-    }
-  };
   // Search flight handler
   const searchFlightHandler = async () => {
     if (!validateForm()) {
       return;
     }
 
+
+    // =========Using params strat=========
+    // const params = new URLSearchParams({
+    //   formData: JSON.stringify(formData)
+    // }).toString();
+    // navigate(`/flight-list?${params}`)
+    // =========Using params ends=========
+
+
+    navigate(`/flight-list`, { state: { formData: formData } })
+
+    // navigate(`/flight-list?${params}`, { state: { data: data, formData: formData } })
     // Call the function to get flight list if validation passes
-    await getFlightList();
+    // dispatch(getFlightList({ setLoading, formData, navigate }));
+    // console.log("formDataformDataformData", formData);
+
   };
   // ------------------------------------------------------------------------------------------------------------
 

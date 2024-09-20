@@ -86,20 +86,24 @@ const busSlice = createSlice({
         const { data } = action.payload;
 
         if (data && data.Result && data.Result.BusResults && data.Result.BusResults.length > 0) {
-          state.traceId = data.TraceId;
+          state.traceId = data.Result.TraceId;
           state.resultIndex = data.Result.BusResults[0]?.ResultIndex || null;
           state.searchResults = data.Result.BusResults;
 
-          localStorage.setItem('traceId', data.Result.TraceId);
-          console.log('bus trace id',  data.Result.TraceId)
-          localStorage.setItem('resultIndex', data.Result.BusResults[0]?.ResultIndex || null);
+           
 
-          const saveDataToLocalStorage = (data) => {
-            const jsonData = JSON.stringify(data);
-            localStorage.setItem('busSearchStore', jsonData);
-          };
+          console.log('redux result ', state.resultIndex)
 
-          saveDataToLocalStorage(data);
+          // localStorage.setItem('traceId', data.Result.TraceId);
+          // console.log('bus trace id',  data.Result.TraceId)
+          // localStorage.setItem('resultIndex', data.Result.BusResults[0]?.ResultIndex || null);
+
+          // const saveDataToLocalStorage = (data) => {
+          //   const jsonData = JSON.stringify(data);
+          //   localStorage.setItem('busSearchStore', jsonData);
+          // };
+
+          // saveDataToLocalStorage(data);
 
           const boardingPoints = data.Result.BusResults.flatMap(bus =>
             (bus.BoardingPoints || []).map(point => ({
@@ -109,7 +113,7 @@ const busSlice = createSlice({
               CityPointTime: point?.CityPointTime || 'Unknown',
             }))
           );
-          console.log('Boarding Points:', boardingPoints); // Log boarding points
+          // console.log('Boarding Points:', boardingPoints); 
           state.boardingPoints = boardingPoints;
 
           const droppingPoints = data.Result.BusResults.flatMap(bus =>
@@ -120,7 +124,7 @@ const busSlice = createSlice({
               CityPointTime: point?.CityPointTime || 'Unknown',
             }))
           );
-          console.log('Dropping Points:', droppingPoints); // Log dropping points
+          // console.log('Dropping Points:', droppingPoints); 
           state.droppingPoints = droppingPoints;
         }
       })
@@ -134,3 +138,4 @@ const busSlice = createSlice({
 export const { setFrom, setTo, setFromCode, setToCode, setFromSuggestions, setToSuggestions, setSelectedBusDate } = busSlice.actions;
 
 export default busSlice.reducer;
+

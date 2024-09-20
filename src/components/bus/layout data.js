@@ -6,8 +6,32 @@ import { useNavigate } from 'react-router-dom';
 import { MdAirlineSeatReclineNormal } from "react-icons/md";
 import Loading from '../../pages/loading/Loading';
 import BoardAndDrop from "../bus/BoardAndDrop";
+import { useSelector } from 'react-redux';
+
+
+import { useDispatch } from 'react-redux';
+import { fetchSeatLayout } from '../../redux-toolkit/bus/seatLayoutSlice';
+
 
 const BusLayout = () => {
+
+
+
+
+
+
+  // const YourComponent = () => {
+  //   const seatLayout = useSelector((state) => state.seatLayout.layout);
+  //   const status = useSelector((state) => state.seatLayout.status);
+  //   const error = useSelector((state) => state.seatLayout.error);
+  
+  //   // Render your component based on the state
+  // };
+
+
+
+
+
   const navigate = useNavigate();
   const [lowerSeatsBus, setlowerSeatsBus] = useState([]);
   const [upperSeatsBus, setupperSeatsBus] = useState([]);
@@ -29,52 +53,61 @@ const BusLayout = () => {
     setActiveTab(tab);
   };
 
-  useEffect(() => {
-    const busLayoutResponse = JSON.parse(localStorage.getItem('BuslayoutResponse')) || {};
-
-    // console.log("BuslayoutResponse", busLayoutResponse);
-    // console.log("BuslayoutResponse Result", busLayoutResponse.Result);
+// --------------------------------------------------------------------------------
 
 
+const { layout, status, error } = useSelector((state) => state.seatLayout);
+ 
+if (status === 'loading') {
+      return <div>Loading...</div>;
+    }
+  
+    if (status === 'failed') {
+      return <div>Error: {error}</div>;
+    }
 
-    // if (busLayoutResponse && busLayoutResponse.Result) {
-    //   console.log("SeatLayout", busLayoutResponse.Result.SeatLayout);
-    // } else {
-    //   console.log("busLayoutResponse or busLayoutResponse.Result is null or undefined");
-    // }
+      const seatDetails = layout?.Result?.SeatLayout?.SeatLayoutDetails?.Layout?.seatDetails?.[0];
+      // console.log('seatDetails', seatDetails)
+  
+  // const firstSeatName = seatDetails && seatDetails.length > 0 ? seatDetails[0].SeatName : 'No Seat Available';
+  // console.log('firstSeatName', firstSeatName)
 
-    // const lowerSeats = (busLayoutResponse.Result || []).flat();
-    // const upperSeats = (busLayoutResponse.ResultUpperSeat || []).flat();
-    const availableSeats = busLayoutResponse.Result.SeatLayout.SeatLayoutDetails.AvailableSeats;
-    setAvailableSeats(availableSeats);
-    // Arrays to store upper and lower seats
-    const seatDetails = busLayoutResponse.Result.SeatLayout.SeatLayoutDetails.Layout.seatDetails
-    let upperSeats = [];
-    let lowerSeats = [];
+// --------------------------------------------------------------------------------
 
-    // Process each array in seatDetails
-    seatDetails.forEach(seatArray => {
-      seatArray.forEach(seat => {
-        if (seat.IsUpper) {
-          upperSeats.push(seat);
-        } else {
-          lowerSeats.push(seat);
-        }
-      });
-    });
-    setlowerSeatsBus(lowerSeats);
-    setupperSeatsBus(upperSeats);
 
-    const extractedLowerBasePrices = lowerSeats.map(seat => seat.Price.BasePrice);
-    const extractedLowerSeatNames = lowerSeats.map(seat => seat.SeatName);
-    const extractedUpperBasePrices = upperSeats.map(seat => seat.Price.BasePrice);
-    const extractedUpperSeatNames = upperSeats.map(seat => seat.SeatName);
+  // useEffect(() => {
+  //   const busLayoutResponse = JSON.parse(localStorage.getItem('BuslayoutResponse')) || {};
 
-    setLowerBasePrices(extractedLowerBasePrices);
-    setLowerSeatNames([...new Set(extractedLowerSeatNames)]); // Remove duplicates
-    setUpperBasePrices(extractedUpperBasePrices);
-    setUpperSeatNames([...new Set(extractedUpperSeatNames)]); // Remove duplicates
-  }, []);
+  //   const availableSeats = busLayoutResponse.Result.SeatLayout.SeatLayoutDetails.AvailableSeats;
+  //   setAvailableSeats(availableSeats);
+  //   // Arrays to store upper and lower seats
+  //   const seatDetails = busLayoutResponse.Result.SeatLayout.SeatLayoutDetails.Layout.seatDetails
+  //   let upperSeats = [];
+  //   let lowerSeats = [];
+
+  //   // Process each array in seatDetails
+  //   seatDetails.forEach(seatArray => {
+  //     seatArray.forEach(seat => {
+  //       if (seat.IsUpper) {
+  //         upperSeats.push(seat);
+  //       } else {
+  //         lowerSeats.push(seat);
+  //       }
+  //     });
+  //   });
+  //   setlowerSeatsBus(lowerSeats);
+  //   setupperSeatsBus(upperSeats);
+
+  //   const extractedLowerBasePrices = lowerSeats.map(seat => seat.Price.BasePrice);
+  //   const extractedLowerSeatNames = lowerSeats.map(seat => seat.SeatName);
+  //   const extractedUpperBasePrices = upperSeats.map(seat => seat.Price.BasePrice);
+  //   const extractedUpperSeatNames = upperSeats.map(seat => seat.SeatName);
+
+  //   setLowerBasePrices(extractedLowerBasePrices);
+  //   setLowerSeatNames([...new Set(extractedLowerSeatNames)]); // Remove duplicates
+  //   setUpperBasePrices(extractedUpperBasePrices);
+  //   setUpperSeatNames([...new Set(extractedUpperSeatNames)]); // Remove duplicates
+  // }, []);
 
   const getLowerBasePrice = (seatName) => {
     const index = lowerSeatNames.indexOf(seatName);
