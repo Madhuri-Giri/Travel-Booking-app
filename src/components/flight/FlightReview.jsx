@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from 'react-toastify';
@@ -24,12 +25,28 @@ const FlightReview = () => {
 
   const [payLoading, setPayLoading] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [holdAPIDATA, setholdAPIDATA] = useState();
+  const [razorPayPAYMENT_Id, setRazorPayPAYMENT_Id] = useState();
+  const [razorPayTRANSACTION_Id, setRazorPayTRANSACTION_Id] = useState();
+  console.log('holdAPIDATA', holdAPIDATA);
 
   const location = useLocation();
-  const { fareDataDetails } = location.state || {};
+  const { fareQuoteAPIData, flightSelectedDATA, confirmedAdults, confirmedChildren, confirmedInfants } = location.state || {};
+  console.log('fareQuoteAPIData', fareQuoteAPIData);
+  // console.log('alololo', fareQuoteAPIData.Fare || {});
+  console.log('confirmedAdults', confirmedAdults);
+  console.log('confirmedChildren', confirmedChildren);
+  console.log('confirmedInfants', confirmedInfants);
 
+  // selected flight data get------
+  // const { flightSelectedDATA , } = location?.state || {};
+  console.log('flightSelectedDATA', flightSelectedDATA);
 
-  const IsLCC = localStorage.getItem('F-IsLcc')
+  const dataToPass = location.state?.dataToPass;
+  console.log('dataToPass', dataToPass);
+
+  const IsLCC = dataToPass?.IsLCC
+  // const IsLCC = localStorage.getItem('F-IsLcc')
   console.log("F-IsLcc", IsLCC);
 
   // -----------------------------------------------------------------------
@@ -40,13 +57,13 @@ const FlightReview = () => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    const savedFare = localStorage.getItem('selectedFlightBaseFare');
-
+    const savedFare = flightSelectedDATA?.flight.OfferedFare
     if (savedFare) {
       setTotalPrice(parseFloat(savedFare));
     }
-  }, []);
+  }, [flightSelectedDATA]);
 
+  // const finalTotalPrice = location.state?.seatMealBaggagePriceTotal;
   const finalTotalPrice = parseFloat(localStorage.getItem('finalTotalPrice')) || 0;
 
   // Calculate the grand total
@@ -54,18 +71,18 @@ const FlightReview = () => {
 
 
 
-  if (!fareDataDetails) {
-    console.error('fareDataDetails is undefined in FlightReview component');
+  if (!fareQuoteAPIData) {
+    console.error('fareQuoteAPIData is undefined in FlightReview component');
   }
 
   useEffect(() => {
-    if (!fareDataDetails) {
-      console.error('fareDataDetails is undefined');
+    if (!fareQuoteAPIData) {
+      console.error('fareQuoteAPIData is undefined');
     }
-  }, [fareDataDetails]);
+  }, [fareQuoteAPIData]);
 
 
-  const segment = fareDataDetails.Segments[0][0];
+  const segment = fareQuoteAPIData.Segments[0][0];
   console.log("segment", segment);
 
   const origin = segment.Origin;
@@ -73,7 +90,7 @@ const FlightReview = () => {
   const airline = segment.Airline;
   const depTime = new Date(segment.DepTime);
   const arrTime = new Date(segment.ArrTime);
-  const fare = fareDataDetails.Fare;
+  const fare = fareQuoteAPIData.Fare;
   const baseFaree = fare.BaseFare;
   const taxx = fare.Tax;
   const totalFare = baseFaree + taxx;
@@ -102,7 +119,7 @@ const FlightReview = () => {
   };
 
   // func for duration convert hpur minute---------------------
-  // console.log("fareDataDetails", fareDataDetails);
+  // console.log("fareQuoteAPIData", fareQuoteAPIData);
 
   const roundedGrandTotal = Math.round(grandTotal);
 
@@ -162,13 +179,16 @@ const FlightReview = () => {
 
           localStorage.setItem('flight_payment_id', response.razorpay_payment_id);
           localStorage.setItem('flight_transaction_id', options.transaction_id);
+          setRazorPayPAYMENT_Id(response.razorpay_payment_id)
+          setRazorPayTRANSACTION_Id(options.transaction_id)
           // alert('Flight Payment successful!');
           setLoader(true);
           try {
             // setLoader(true)
             await flightpayUpdate();
             setLoader(true)
-            const IsLCC = localStorage.getItem('F-IsLcc') === 'true';
+            const IsLCC = dataToPass?.IsLCC
+            // const IsLCC = localStorage.getItem('F-IsLcc') === 'true';
             setPayLoading(true);
 
             if (IsLCC === true) {
@@ -219,8 +239,11 @@ const FlightReview = () => {
 
   const flightpayUpdate = async () => {
     try {
+      // const payment_id = razorPayPAYMENT_Id;
+      // const transaction_id = razorPayTRANSACTION_Id;
       const payment_id = localStorage.getItem('flight_payment_id');
       const transaction_id = localStorage.getItem('flight_transaction_id');
+
       // const transaction_num = localStorage.getItem('transactionNum');
       // console.log('transaction_num',transaction_num)
 
@@ -258,151 +281,107 @@ const FlightReview = () => {
 
   }
 
-  // -----------------------flight LcC Api----------------------------------------------
+  // -----------------------flight LcC Api---------------------------------------------
 
-  const FtraceId = localStorage.getItem('F-TraceId');
-  const FresultIndex = localStorage.getItem('F-ResultIndex');
-  const FsrdvType = localStorage.getItem('F-SrdvType');
-  const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
+  // ------farequotre data for payload of llc and hold--
+  const FtraceId = dataToPass.TraceId;
+  const FresultIndex = dataToPass.ResultIndex;
+  const FsrdvType = dataToPass.SrdvType;
+  const FsrdvIndex = dataToPass.SrdvIndex;
 
+  const baseFare = fareQuoteAPIData.Fare.BaseFare;
+  const yqTax = fareQuoteAPIData.Fare.YQTax;
+  const tax = fareQuoteAPIData.Fare.Tax;
+  const AdditionalTxnFeeOfrd = fareQuoteAPIData.Fare.AdditionalTxnFeeOfrd;
+  const AdditionalTxnFeePub = fareQuoteAPIData.Fare.AdditionalTxnFeePub;
+  const AirTransFee = fareQuoteAPIData.Fare.AirTransFee;
+  const OtherCharges = fareQuoteAPIData.Fare.OtherCharges;
+  const TransactionFee = fareQuoteAPIData.Fare.TransactionFee;
+  const Currency = fareQuoteAPIData.Fare.Currency;
+  const CommissionEarned = fareQuoteAPIData.Fare.CommissionEarned;
+  const Discount = fareQuoteAPIData.Fare.Discount;
+  const TdsOnCommission = fareQuoteAPIData.Fare.TdsOnCommission;
+  const PublishedFare = fareQuoteAPIData.Fare.PublishedFare;
+  const OfferedFare = fareQuoteAPIData.Fare.OfferedFare;
 
-  const AdditionalTxnFeeOfrd = localStorage.getItem('AdditionalTxnFeeOfrd');
-  const AdditionalTxnFeePub = localStorage.getItem('AdditionalTxnFeePub');
-  const AirTransFee = localStorage.getItem('AirTransFee');
-  const OtherCharges = localStorage.getItem('OtherCharges');
-  const TransactionFee = localStorage.getItem('TransactionFee');
-  const Currency = localStorage.getItem('Currency');
-  const CommissionEarned = localStorage.getItem('CommissionEarned');
-  const Discount = localStorage.getItem('Discount');
-  const PublishedFare = localStorage.getItem('PublishedFare');
-  const TdsOnCommission = localStorage.getItem('TdsOnCommission');
-  const OfferedFare = localStorage.getItem('OfferedFare');
+  console.log('FtraceId', FtraceId);
+  console.log('FresultIndex', FresultIndex);
+  console.log('FsrdvType', FsrdvType);
+  console.log('FsrdvIndex', FsrdvIndex);
 
-  const baseFare = localStorage.getItem('BaseFare');
-  const tax = localStorage.getItem('Tax');
-  const yqTax = localStorage.getItem('YQTax');
-
-  const passengerDetails = JSON.parse(localStorage.getItem('adultPassengerDetails'));
-  // const title = passengerDetails[0].gender;
-
-
-
-  // const bookLccApi = async () => {
-  //   try {
-  //     const transactionFlightNo = localStorage.getItem('transactionNum');
-  //     const transaction_id = localStorage.getItem('flight_transaction_id');
-  //     console.log("transaction_id", transaction_id)
-
-  //     const adultPassengerDetails = localStorage.getItem('adultPassengerDetails');
-  //     const parsedAdultPassengerDetails = JSON.parse(adultPassengerDetails);
-
-  //     if (!parsedAdultPassengerDetails || parsedAdultPassengerDetails.length === 0) {
-  //       console.error('No adult passenger details found in localStorage');
-  //       return;
-  //     }
-
-  //     const bookingResponses = await Promise.all(parsedAdultPassengerDetails.map(async (passenger) => {
-  //       const llcPayload = {
-  //         "SrdvType": FsrdvType,
-  //         "transaction_num": transactionFlightNo,
-  //         "transaction_id": transaction_id,
-  //         "SrdvIndex": FsrdvIndex,
-  //         "TraceId": FtraceId,
-  //         "ResultIndex": FresultIndex,
-  //         "Title": passenger.gender === "male" ? "Mr" : "Ms" || null,
-  //         "FirstName": passenger.firstName,
-  //         "LastName": passenger.lastName,
-  //         "PaxType": 1,
-  //         "DateOfBirth": passenger.dateOfBirth,
-  //         "Gender": passenger.gender === "male" ? "1" : "2",
-  //         "PassportNo": passenger.passportNo || "null",
-  //         "PassportExpiry": passenger.passportExpiry || null,
-  //         "PassportIssueDate": passenger.passportIssueDate || null,
-  //         "AddressLine1": passenger.addressLine1,
-  //         "City": passenger.city,
-  //         "CountryCode": passenger.countryCode || null,
-  //         "CountryName": passenger.countryName,
-  //         "ContactNo": passenger.contactNo,
-  //         "Email": passenger.email,
-  //         "IsLeadPax": passenger.isLeadPax || 0,
-  //         "BaseFare": parseFloat(baseFare),
-  //         "Tax": parseFloat(tax),
-  //         "TransactionFee": TransactionFee,
-  //         "YQTax": parseFloat(yqTax),
-  //         "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
-  //         "AdditionalTxnFeePub": AdditionalTxnFeePub,
-  //         "AirTransFee": AirTransFee
-  //       };
-
-  //       const response = await fetch('https://sajyatra.sajpe.in/admin/api/bookllc', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify(llcPayload),
-  //       });
-
-  //       const responseBody = await response.json();
-  //       return responseBody;
-  //     }));
-
-  //     console.log('LLC Responses:', bookingResponses);
-
-  //     localStorage.setItem('flightTikitDetails', JSON.stringify(bookingResponses));
-  //     navigate('/flightNewTicket', { state: { flightbookingDetails: bookingResponses } });
-
-  //   } catch (error) {
-  //     console.error('LLC API error:', error.message);
-  //     toast.error('An error occurred during booking. Please try again.');
-  //   }
-  // };
+  console.log('baseFareA', parseFloat(baseFare));
+  console.log('baseFareB', baseFare);
+  console.log('yqTax', yqTax);
+  console.log('tax', tax);
+  console.log('AdditionalTxnFeeOfrd', AdditionalTxnFeeOfrd);
+  console.log('AdditionalTxnFeePub', AdditionalTxnFeePub);
+  console.log('AirTransFee', AirTransFee);
+  console.log('OtherCharges', OtherCharges);
+  console.log('TransactionFee', TransactionFee);
+  console.log('Currency', Currency);
+  console.log('CommissionEarned', CommissionEarned);
+  console.log('Discount', Discount);
+  console.log('TdsOnCommission', TdsOnCommission);
+  console.log('PublishedFare', PublishedFare);
+  console.log('OfferedFare', OfferedFare);
+  // ------farequotre data for payload of llc and hold--
 
   const bookLccApi = async () => {
     try {
       const transactionFlightNo = localStorage.getItem('transactionNum');
+      // const transaction_id = razorPayTRANSACTION_Id;
       const transaction_id = localStorage.getItem('flight_transaction_id');
+      
       console.log("transaction_id", transaction_id);
 
-      const adultPassengerDetails = localStorage.getItem('adultPassengerDetails');
-      const parsedAdultPassengerDetails = JSON.parse(adultPassengerDetails);
-
-      if (!parsedAdultPassengerDetails || parsedAdultPassengerDetails.length === 0) {
-        console.error('No adult passenger details found in localStorage');
-        toast.error('No adult passenger details found in localStorage');
-        return;
-      }
+      // const adultPassengerDetails = localStorage.getItem('adultPassengerDetails');
+      // const parsedAdultPassengerDetails = JSON.parse(adultPassengerDetails);
+      const parsedAdultPassengerDetails = confirmedAdults;
 
       const bookingResponses = await Promise.all(parsedAdultPassengerDetails.map(async (passenger) => {
         const llcPayload = {
-          "SrdvType": FsrdvType,
-          "transaction_num": transactionFlightNo,
-          "transaction_id": transaction_id,
-          "SrdvIndex": FsrdvIndex,
-          "TraceId": FtraceId,
-          "ResultIndex": FresultIndex,
-          "Title": passenger.gender === "male" ? "Mr" : "Ms" || null,
-          "FirstName": passenger.firstName,
-          "LastName": passenger.lastName,
-          "PaxType": 1,
-          "DateOfBirth": passenger.dateOfBirth,
-          "Gender": passenger.gender === "male" ? "1" : "2",
-          "PassportNo": passenger.passportNo || "null",
-          "PassportExpiry": passenger.passportExpiry || null,
-          "PassportIssueDate": passenger.passportIssueDate || null,
-          "AddressLine1": passenger.addressLine1,
-          "City": passenger.city,
-          "CountryCode": passenger.countryCode || null,
-          "CountryName": passenger.countryName,
-          "ContactNo": passenger.contactNo,
-          "Email": passenger.email,
-          "IsLeadPax": passenger.isLeadPax || 0,
-          "BaseFare": parseFloat(baseFare),
-          "Tax": parseFloat(tax),
-          "TransactionFee": TransactionFee,
-          "YQTax": parseFloat(yqTax),
-          "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
-          "AdditionalTxnFeePub": AdditionalTxnFeePub,
-          "AirTransFee": AirTransFee
+          SrdvType: FsrdvType,
+          transaction_num: transactionFlightNo,
+          transaction_id: transaction_id,
+          SrdvIndex: FsrdvIndex,
+          TraceId: FtraceId,
+          ResultIndex: FresultIndex,
+          Passengers: [
+            {
+              Title: passenger.gender === "male" ? "Mr" : "Ms" || null,
+              FirstName: passenger.firstName,
+              LastName: passenger.lastName,
+              PaxType: 1,
+              DateOfBirth: passenger.dateOfBirth,
+              Gender: passenger.gender === "male" ? "1" : "2",
+              PassportNo: passenger.passportNo || "null",
+              PassportExpiry: passenger.passportExpiry || null,
+              PassportIssueDate: passenger.passportIssueDate || null,
+              AddressLine1: passenger.addressLine1,
+              City: passenger.city,
+              CountryCode: passenger.countryCode || null,
+              CountryName: passenger.countryName,
+              ContactNo: passenger.contactNo,
+              Email: passenger.email,
+              IsLeadPax: passenger.isLeadPax || 0,
+              Seat: [],
+              MealDynamic: [],
+              Baggage: [],
+              Fare: [
+                {
+                  BaseFare: parseFloat(baseFare),
+                  Tax: parseFloat(tax),
+                  YQTax: parseFloat(yqTax),
+                  TransactionFee: TransactionFee,
+                  AdditionalTxnFeeOfrd: AdditionalTxnFeeOfrd,
+                  AdditionalTxnFeePub: AdditionalTxnFeePub,
+                  AirTransFee: AirTransFee,
+                  Currency: Currency,
+                  OtherCharges: OfferedFare,
+                }
+              ]
+            }
+          ]
         };
 
         const response = await fetch('https://sajyatra.sajpe.in/admin/api/bookllc', {
@@ -424,7 +403,9 @@ const FlightReview = () => {
       console.log('LLC Responses:', bookingResponses);
 
       localStorage.setItem('flightTikitDetails', JSON.stringify(bookingResponses));
-      navigate('/flightNewTicket', { state: { flightbookingDetails: bookingResponses } });
+      navigate('/flightNewTicket', { state: { 
+        flightSelectedDATA: flightSelectedDATA ,  
+      } });
 
     } catch (error) {
       console.error('LLC API error:', error.message);
@@ -437,57 +418,50 @@ const FlightReview = () => {
 
 
   const bookHoldApi = async () => {
-    const storedPassengers = JSON.parse(localStorage.getItem('adultPassengerDetails')) || [];
     const transaction_id = localStorage.getItem('flight_transaction_id');
+    // const transaction_id = razorPayTRANSACTION_Id;
+
+    const storedPassengers = confirmedAdults;
     console.log("transaction_id", transaction_id)
 
-    if (!storedPassengers.length || !transaction_id) {
-      console.error('Required data is missing from local storage');
-      toast.error('Required data is missing from local storage');
-      setLoader(false);
-      return;
-    }
-
     const passengers = storedPassengers.map(passenger => ({
-      "Title": passenger.gender === "male" ? "Mr" : "Ms",
-      "FirstName": passenger.firstName,
-      "LastName": passenger.lastName,
-      "PaxType": 1,
-      "DateOfBirth": passenger.dateOfBirth,
-      "Gender": passenger.gender === "male" ? "1" : "2",
-      "PassportNo": passenger.passportNo || "abc12345",
-      "PassportExpiry": passenger.passportExpiry || null,
-      "PassportIssueDate": passenger.passportIssueDate || null,
-      "AddressLine1": passenger.addressLine1,
-      "City": passenger.city,
-      "CountryCode": passenger.countryCode || null,
-      "CountryName": passenger.countryName,
-      "ContactNo": passenger.contactNo,
-      "Email": passenger.email,
-      "IsLeadPax": passenger.isLeadPax || 0,
-      "Fare": [
+      Title: passenger.gender === "male" ? "Mr" : "Ms" || null,
+      FirstName: passenger.firstName,
+      LastName: passenger.lastName,
+      PaxType: 1,
+      DateOfBirth: passenger.dateOfBirth,
+      Gender: passenger.gender === "male" ? "1" : "2",
+      PassportNo: passenger.passportNo || "null",
+      PassportExpiry: passenger.passportExpiry || null,
+      PassportIssueDate: passenger.passportIssueDate || null,
+      AddressLine1: passenger.addressLine1,
+      City: passenger.city,
+      CountryCode: passenger.countryCode || null,
+      CountryName: passenger.countryName,
+      ContactNo: passenger.contactNo,
+      Email: passenger.email,
+      IsLeadPax: passenger.isLeadPax || 0,
+      Seat: [],
+      MealDynamic: [],
+      Baggage: [],
+      Fare: [
         {
-          "Currency": Currency,
-          "BaseFare": parseFloat(baseFare),
-          "Tax": parseFloat(tax),
-          "YQTax": parseFloat(yqTax),
-          "OtherCharges": OtherCharges,
-          "TransactionFee": TransactionFee,
-          "AdditionalTxnFeeOfrd": AdditionalTxnFeeOfrd,
-          "AdditionalTxnFeePub": AdditionalTxnFeePub,
-          "AirTransFee": AirTransFee,
-          "Discount": Discount,
-          "PublishedFare": PublishedFare,
-          "OfferedFare": OfferedFare,
-          "CommissionEarned": CommissionEarned,
-          "TdsOnCommission": TdsOnCommission
+          BaseFare: parseFloat(baseFare),
+          Tax: parseFloat(tax),
+          YQTax: parseFloat(yqTax),
+          TransactionFee: TransactionFee,
+          AdditionalTxnFeeOfrd: AdditionalTxnFeeOfrd,
+          AdditionalTxnFeePub: AdditionalTxnFeePub,
+          AirTransFee: AirTransFee,
+          Currency: Currency,
+          OtherCharges: OfferedFare,
         }
       ],
-      "GSTCompanyAddress": "",
-      "GSTCompanyContactNumber": "",
-      "GSTCompanyName": "",
-      "GSTNumber": "",
-      "GSTCompanyEmail": ""
+      GSTCompanyAddress: "",
+      GSTCompanyContactNumber: "",
+      GSTCompanyName: "",
+      GSTNumber: "",
+      GSTCompanyEmail: ""
     }));
 
 
@@ -522,7 +496,8 @@ const FlightReview = () => {
 
       const holdData = await response.json();
       console.log('Hold Response:', holdData);
-      localStorage.setItem('HolApiData', JSON.stringify(holdData));
+      setholdAPIDATA(holdData)
+      // localStorage.setItem('HolApiData', JSON.stringify(holdData));
 
     } catch (error) {
       console.error('API call failed:', error.message || error);
@@ -536,7 +511,8 @@ const FlightReview = () => {
 
   const sendTicketGDSRequest = async () => {
 
-    const savedData = JSON.parse(localStorage.getItem('HolApiData'));
+    const savedData = holdAPIDATA;
+    // const savedData = JSON.parse(localStorage.getItem('HolApiData'));
 
     const pnr = savedData.data.pnr;
     const bookingId = savedData.data.booking_id;
@@ -565,7 +541,11 @@ const FlightReview = () => {
       const data = await response.json();
       console.log('GDS Api:', data);
 
-      navigate('/flightNewTicket');
+      // navigate('/flightNewTicket');
+      navigate('/flightNewTicket', { state: { 
+        // flightbookingDetails: bookingResponses ,
+        flightSelectedDATA: flightSelectedDATA ,  
+      } });
     } catch (error) {
       console.error('Error:', error);
     }
