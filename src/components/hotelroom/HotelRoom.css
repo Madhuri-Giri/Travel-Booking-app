@@ -16,6 +16,10 @@
   gap: 20px;
 }
 
+.room_heading h1{
+  color: #007bff;
+}
+
 /* 
 .room_heading {
   margin-bottom: 20px;

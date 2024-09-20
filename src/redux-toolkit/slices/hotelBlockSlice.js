@@ -1,5 +1,3 @@
-// features/hotelBlock/hotelBlockSlice.js
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 // Async thunk for posting hotel block request
@@ -15,11 +13,14 @@ export const blockHotelRooms = createAsyncThunk(
         body: JSON.stringify(hotelRoomsDetails),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const res = await response.json();
+      console.log('API Response:', res); // Log the entire response
+
+      // Check for success
+      if (!response.ok || res.result !== true) {
+        return rejectWithValue(res.data.Error.ErrorMessage || 'Something went wrong');
       }
 
-      const res = await response.json();
       return res;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -54,14 +55,23 @@ const hotelBlockSlice = createSlice({
       })
       .addCase(blockHotelRooms.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.rooms = action.payload.data.BlockRoomResult;
-        state.bookingId = action.payload.booking_status.id;
-        state.igst = action.payload.booking_status.igst;
-        state.discount = action.payload.booking_status.discount;
+        state.rooms = action.payload.data?.BlockRoomResult || null;
+
+        if (!action.payload.booking_status) {
+          console.error('booking_status is missing from the response');
+          state.bookingId = null;
+          state.igst = null;
+          state.discount = null;
+        } else {
+          state.bookingId = action.payload.booking_status.id || null;
+          state.igst = action.payload.booking_status.igst || null;
+          state.discount = action.payload.booking_status.discount || null;
+        }
       })
       .addCase(blockHotelRooms.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload;
+        state.error = action.payload; 
+        console.error('Error blocking hotel rooms:', action.payload);
       });
   },
 });

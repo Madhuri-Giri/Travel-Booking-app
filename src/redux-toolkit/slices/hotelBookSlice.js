@@ -1,7 +1,6 @@
-// features/booking/bookingSlice.js
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+// Async thunk for posting hotel booking request
 export const bookHotel = createAsyncThunk(
   'booking/bookHotel',
   async (bookingPayload, { rejectWithValue }) => {
@@ -14,13 +13,12 @@ export const bookHotel = createAsyncThunk(
         body: JSON.stringify(bookingPayload),
       });
 
+      const res = await response.json();
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText);
+        return rejectWithValue(res.Error?.ErrorMessage || 'Booking failed');
       }
 
-      const responseBody = await response.json();
-      return responseBody;
+      return res; // return booking data if successful
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -30,13 +28,13 @@ export const bookHotel = createAsyncThunk(
 const bookingSlice = createSlice({
   name: 'booking',
   initialState: {
-    bookingDetails: null,
-    status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+    bookingData: null,
+    status: 'idle',
     error: null,
   },
   reducers: {
     clearBookingState: (state) => {
-      state.bookingDetails = null;
+      state.bookingData = null;
       state.status = 'idle';
       state.error = null;
     },
@@ -48,11 +46,11 @@ const bookingSlice = createSlice({
       })
       .addCase(bookHotel.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.bookingDetails = action.payload;
+        state.bookingData = action.payload; // Store booking data
       })
       .addCase(bookHotel.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload;
+        state.error = action.payload; // Store error message
       });
   },
 });
