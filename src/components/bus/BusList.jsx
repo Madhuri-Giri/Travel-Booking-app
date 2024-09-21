@@ -183,7 +183,7 @@ const handleSelectSeat = async (index) => {
   
       const data = await response.json();
       console.log('User details:', data);
-      // console.log('trans', data.transaction.transaction_num)
+      console.log('trans', data.transaction.transaction_num)
       if (data.result && data.transaction) {
         localStorage.setItem('transactionIdBus', data.transaction.id);
         localStorage.setItem('transactionNum', data.transaction.transaction_num);
@@ -401,52 +401,6 @@ const addSeatLayout = async () => {
   )}
 </div>
 
-             
-            {/* <div className="pick-up">
-  <h6 onClick={togglePickupVisibility}>
-    <span>{from} </span>
-    <i className={`ri-arrow-${isPickupVisible ? 'up' : 'down'}-s-line down-aro`}></i>
-  </h6>
-    <div className="pick-fixed-main">
-    {isPickupVisible && searchResults.map((bus, index) => (
-    <div key={index} className="pick-list">
-        <div className="pickfixed">
-           <p>
-        <span style={{ fontWeight: "600" }}>Pick-Up Point & Time:</span>
-        <small style={{ fontSize: '0.8vmax' }}>{bus.BoardingPoints.map((point, i) => (
-          <div key={i}>
-            {point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})
-          </div>
-        ))}
-        </small>
-      </p>
-        </div>
-    </div>
-  ))}
-    </div>
-</div>
-
-<div className="drop-up">
-  <h6 onClick={toggleDropVisibility}>
-    <span>{to} </span>
-    <i className={`ri-arrow-${isDropVisible ? 'up' : 'down'}-s-line down-aro`}></i>
-  </h6>
-  {isDropVisible && searchResults.map((bus, index) => (
-    <div key={index} className="drop-list">
-      <p>
-        <span style={{ fontWeight: "500" }}>Drop Points & Time:</span>
-        <small style={{ fontSize: '0.8vmax' }}>{bus.DroppingPoints.map((point, i) => (
-          <div key={i}>
-            {point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})
-          </div>
-        ))}</small>
-      </p>
-    </div>
-  ))}
-</div> */}
-
-
-
 
           </div>
         </div>
@@ -534,7 +488,7 @@ const addSeatLayout = async () => {
                     </h6>
                   </div>
                   <div className="price">
-                    <h4>₹{Math.round(bus.Price.BasePrice * (1 - 0.18))}</h4>
+                    <h4>₹{Math.round(bus.Price.PublishedPrice * (1 - 0.18))}</h4>
                     <h6 style={{ textDecorationLine: 'line-through', color: "green" }}>₹1000</h6>
                   </div>
                 </div>
@@ -565,68 +519,6 @@ const addSeatLayout = async () => {
         )}
       </div>
     </div>
-
-         
-
-        {/* Bus lists */}
-        {/* <div className="btm-lists">
-          <div className="bus-divs">
-            {status === 'loading' && <p>Loading...</p>}
-            {status === 'failed' && <p className='text-danger'>{error}</p>}
-            {status === 'succeeded' && (
-              <>
-                {filteredResults.map((bus, index) => (
-                  <div className="one" key={index}>
-                    <div className="one-top">
-                      <div className="name">
-                        <span>{bus.BusType}</span>
-                        <img width={40} src={busImg} alt="Bus" />
-                        <h5>{bus.TravelName}</h5>
-                      </div>
-                      <div className="drop-time">
-                        <h6><small>ARRIVAL TIME: </small><span style={{ fontSize: "1.2vmax" }}>
-                          {convertUTCToIST(bus.ArrivalTime)}
-                        </span></h6>
-                        <p style={{ fontSize: "1.2vmax", color: "red", borderBottom: "1px solid red" }}>
-                          {calculateTimeDifference(bus.ArrivalTime, bus.DepartureTime)}
-                        </p>
-                        <h6><small>DROP TIME: </small><span style={{ fontSize: "1.2vmax" }}>
-                          {convertUTCToIST(bus.DepartureTime)}
-                        </span></h6>
-                      </div>
-                      <div className="price">
-                      <h4>₹{Math.round(bus.Price.BasePrice * (1 - 0.18))}</h4>
-                    <h6 style={{ textDecorationLine: 'line-through', color: "green" }}>₹1000</h6>
-                      </div>
-                    </div>
-
-                    <div className="one-btm">
-                      <div className="rating">
-                        <a style={{ textDecoration: "none", color: 'green' }}>Available Seats {bus.AvailableSeats                        }</a>
-                      </div>
-                      <button className="btn btn-primary" onClick={() => handleSelectSeat(index)}>Select Seat</button>
-                    </div>
-
-                    {visibleLayout !== null && (
-                      <div className="overlay" onClick={() => setVisibleLayout(null)}>
-                        <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
-                          <div className="tppp">
-                            <h5>{from}-{to} <br />
-                              <span style={{ fontSize: "0.8vmax", color: "green" }}>({bus.TravelName})</span>
-                            </h5>
-                            <i onClick={() => setVisibleLayout(null)} className="ri-close-line"></i>
-                          </div>
-                          <BusLayout layoutResponse={layoutResponse} />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </>
-            )}
-          </div>
-        </div> */}
-
 
 
       </div>
