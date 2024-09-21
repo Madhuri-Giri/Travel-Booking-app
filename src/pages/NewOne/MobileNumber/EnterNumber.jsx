@@ -38,7 +38,7 @@ const EnterNumber = () => {
       const data = await response.json();
       console.log(data);
 
-      localStorage.setItem('otpResponse', JSON.stringify(data));
+      // localStorage.setItem('otpResponse', JSON.stringify(data));
 
       if (data.user_registered) {
         navigate('/login'); 
