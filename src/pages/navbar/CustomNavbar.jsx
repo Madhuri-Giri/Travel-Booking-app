@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import "./CustomNavbar.css"
 import { Container, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
@@ -20,19 +21,22 @@ import HotelLogo from "../../assets/images/five-stars.png"
 import { IoBusOutline } from "react-icons/io5";
 import { RiHotelLine } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
+import { userLogout } from "../../API/loginAction";
+import { useDispatch } from "react-redux";
 
 
 const CustomNavbar = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch();
 
     const handleLogout = async () => {
-        navigate('/');
-        localStorage.removeItem('loginId');
-        localStorage.removeItem('loginData');
-        localStorage.removeItem('transactionNum');
-        // localStorage.removeItem('transactionNum-Flight');
-        localStorage.removeItem('transactionNum-bus');
-        localStorage.removeItem('transactionNumHotel');
+        dispatch(userLogout({ navigate }));
+        // localStorage.removeItem('loginId');
+        // localStorage.removeItem('loginData');
+        // localStorage.removeItem('transactionNum');
+        // // localStorage.removeItem('transactionNum-Flight');
+        // localStorage.removeItem('transactionNum-bus');
+        // localStorage.removeItem('transactionNumHotel');
     };
 
     const loginId = localStorage.getItem("loginId")
