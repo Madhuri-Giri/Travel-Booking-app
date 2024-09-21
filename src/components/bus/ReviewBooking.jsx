@@ -28,7 +28,10 @@ const ReviewBooking = () => {
 
   const selectedSeatCount = localStorage.getItem('selectedSeatCount') || 0;
 
-  const travelName = localStorage.getItem('selectedTravelName')
+
+  
+
+  const travelName = localStorage.getItem('travelName')
   const [storedPassengerDetails, setStoredPassengerDetails] = useState([]);
   const traceId = useSelector((state) => state.bus.traceId);
   // const resultIndex = useSelector((state) => state.bus.resultIndex);
@@ -148,20 +151,21 @@ const ReviewBooking = () => {
     const requestData = {
       TraceId: "1",
       ResultIndex: "1",
+      BoardingPointId: "1",
+      DroppingPointId: "1",
       // TraceId: traceId,
       // ResultIndex: selectedBusIndex,
       // BoardingPointId: selectedBoardingPoint.index, 
       // DroppingPointId: selectedDroppingPoint.index, 
-      BoardingPointId: "1",
-      DroppingPointId: "1",
+     
       RefID: "1",
       Passenger: passengers,
     };
 
-    console.log("Payload to be sent:", JSON.stringify(requestData, null, 2));
+    // console.log("Payload to be sent:", JSON.stringify(requestData, null, 2));
 
     try {
-      console.log("Sending request to API with payload:", JSON.stringify(requestData, null, 2));
+      // console.log("Sending request to API with payload:", JSON.stringify(requestData, null, 2));
 
       const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-block", {
         method: "POST",
@@ -190,10 +194,10 @@ const ReviewBooking = () => {
 
       const id = result.result.Booking_Status[0]?.id;
       setBookingId(id);
-      console.log("Stored Booking ID:", id);
+      // console.log("Stored Booking ID:", id);
 
       setStoredPassengerDetails([...passengers]);
-      console.log("Stored Passenger Details:", passengers);
+      // console.log("Stored Passenger Details:", passengers);
 
     } catch (error) {
       console.error("Error adding passengers:", error);
@@ -211,7 +215,7 @@ const ReviewBooking = () => {
   // -----------------------------------------------------------------------------------------------------------------------------------------
 
   const [paymentDetails, setPaymentDetails] = useState(null);
-  const [totalFare, setTotalFare] = useState(0);
+  // const [totalFare, setTotalFare] = useState(0);
   const navigate = useNavigate();
 
   const timerEndTime = localStorage.getItem('timerEndTime')
@@ -270,7 +274,7 @@ const ReviewBooking = () => {
       const loginId = localStorage.getItem('loginId');
       const transactionNoBus = localStorage.getItem('transactionNum');
 
-      console.log('priceWithIGST', priceWithIGST)
+      // console.log('priceWithIGST', priceWithIGST)
 
       // console.log('Sending data to API:', { amount: roundedAmount, user_id: loginId });
 
@@ -303,29 +307,32 @@ const ReviewBooking = () => {
   // --------------------------------
 
 
-  const handlePayment = async () => {
-    if (!newContactData.name || !newContactData.email || !newContactData.contact) {
-      alert('Please fill in your contact details before proceeding to payment.');
-      return;
-    }
+  const handlePayment = async (e) => {
+     e.preventDefault()
 
+
+    // Get the login ID from localStorage
     const loginId = localStorage.getItem('loginId');
     if (!loginId) {
       navigate('/enter-number', { state: { from: location } });
       return;
     }
-
+  
     setLoading(true); // Start loading
-
+  
     try {
       const paymentData = await fetchPaymentDetails();
       console.log('Payment Data:', paymentData);
-
-      if (!paymentData) return;
-
+  
+      // Validate payment data
+      if (!paymentData) {
+        alert('Failed to fetch payment details.');
+        return;
+      }
+  
       const options = {
         key: paymentData.razorpay_key,
-        amount: paymentData.payment_details.amount * 100,
+        amount: paymentData.payment_details.amount * 100, // Amount in paise
         currency: 'INR',
         transaction_id: paymentData.payment_details.id,
         name: 'SRN Infotech',
@@ -333,26 +340,27 @@ const ReviewBooking = () => {
         image: 'https://your-logo-url.com/logo.png',
         handler: async function (response) {
           console.log('Payment successful', response);
-
+  
+          // Store payment IDs in localStorage
           localStorage.setItem('payment_id', response.razorpay_payment_id);
           localStorage.setItem('transaction_id', options.transaction_id);
-
+  
           setLoading(true); // Start loading for further actions
-
+  
           try {
             console.log('Updating payment...');
             await updateHandlePayment();
-
+  
             console.log('Booking...');
             await bookHandler();
-
+  
             console.log('Updating bus payment status...');
             await busPaymentStatus();
-
+  
             alert('Booking successful!');
           } catch (error) {
-            console.error('Error during updateHandlePayment, bookHandler, or busPaymentStatus:', error.message);
-            alert('An error occurred during processing. Please try again.');
+            console.error('Error during payment update:', error.message);
+            alert(`An error occurred: ${error.message}`);
           } finally {
             setLoading(false); // Stop loading
           }
@@ -369,12 +377,12 @@ const ReviewBooking = () => {
           color: '#3399cc',
         },
       };
-
+  
       const rzp1 = new window.Razorpay(options);
       rzp1.on('payment.failed', function (response) {
         alert(`Payment failed: ${response.error.description}`);
       });
-
+  
       rzp1.open();
     } catch (error) {
       console.error('Error during payment setup:', error.message);
@@ -383,7 +391,7 @@ const ReviewBooking = () => {
       setLoading(false); // Ensure loading is stopped
     }
   };
-
+  
 
 
 
@@ -421,9 +429,6 @@ const ReviewBooking = () => {
 
       const data = await response.json();
       console.log('Update successful:', data);
-      // const status = data.data.status;
-      // console.log('statusBus', status);
-
       return data;
 
     } catch (error) {
@@ -552,11 +557,16 @@ const ReviewBooking = () => {
     setPassengers(updatedPassengers);
   };
 
+// ---------------------------------------------------------count Condition--------------------------------------------
+  const passNumber = passengers.length;
+  const seatCount = selectedSeatCount;
+  // console.log('passNumber:', passNumber, 'Type:', typeof passNumber);
+  // console.log('seatCount:', seatCount, 'Type:', typeof seatCount);
 
+  const countsEqual = passNumber === Number(seatCount); // Convert seatCount to a number
+  // console.log('countsEqual:', countsEqual);
 
-
-
-  // ----------------------------------------------------------------------------------------------------
+  // --------------------------------------------------------------------------------------------------------------------
 
   return (
     <>
@@ -604,7 +614,7 @@ const ReviewBooking = () => {
                       <div className="p-upr">
                         <h6><i className="ri-user-add-line"></i>Traveller Details <br /></h6>
                         <p>
-                          <span>Passenger Added: {passengers.length}   </span> / Seat Selected: {selectedSeatCount}
+                          <span>Passenger Added: {passNumber}   </span> / Seat Selected: {seatCount}
                         </p>
                       </div>
 
@@ -727,69 +737,69 @@ const ReviewBooking = () => {
                 </div>
 
                 <div className="new-contact">
-                  <h6><i className="ri-user-add-line"></i> Contact Details </h6>
-                  <p>Your booking details will be sent to this email address and mobile number.</p>
-                  <form onSubmit={newcontactHandler}>
-                    <div className="c-detail">
-                      <div className="cont">
-                        <input
-                          type="text"
-                          name="name"
-                          value={newContactData.name}
-                          onChange={handleInputChange}
-                          placeholder="Enter Your Name"
-                          required
-                        />
-                      </div>
-                      <div className="cont">
-                        <input
-                          type="email"
-                          name="email"
-                          value={newContactData.email}
-                          onChange={handleInputChange}
-                          placeholder="Enter Your Email"
-                          required
-                        />
-                      </div>
-                      <div className="cont">
-                        <input
-                          type="text"
-                          name="contact"
-                          value={newContactData.contact}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            if (/^\d*$/.test(value) && value.length <= 10) {
-                              handleInputChange(e);
-                            }
-                          }}
-                          placeholder="Enter Your Contact"
-                          maxLength="10"
-                          required
-                        />
-                      </div>
-                    </div>
+      <h6><i className="ri-user-add-line"></i> Contact Details </h6>
+      <p>Your booking details will be sent to this email address and mobile number.</p>
+      <form onSubmit={newcontactHandler}>
+        <div className="c-detail">
+          <div className="cont">
+            <input
+              type="text"
+              name="name"
+              value={newContactData.name}
+              onChange={handleInputChange}
+              placeholder="Enter Your Name"
+              required
+            />
+          </div>
+          <div className="cont">
+            <input
+              type="email"
+              name="email"
+              value={newContactData.email}
+              onChange={handleInputChange}
+              placeholder="Enter Your Email"
+              required
+            />
+          </div>
+          <div className="cont">
+            <input
+              type="text"
+              name="contact"
+              value={newContactData.contact}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/^\d*$/.test(value) && value.length <= 10) {
+                  handleInputChange(e);
+                }
+              }}
+              placeholder="Enter Your Contact"
+              maxLength="10"
+              required
+            />
+          </div>
+        </div>
 
-                    <div className="last-pay">
-                      <div className="fare">
-                        <h6><i className="ri-price-tag-2-line"></i>Total Ticket Amount</h6>
-                        <small>₹{priceWithIGST}</small>
-                      </div>
-                      <div className="review-pay">
-                        <button
-                          onClick={handlePayment}
-                          disabled={!newContactData.name || !newContactData.email || !newContactData.contact}
-                          style={{
-                            backgroundColor: !newContactData.name || !newContactData.email || !newContactData.contact ? '#ccc' : undefined,
-                            cursor: !newContactData.name || !newContactData.email || !newContactData.contact ? 'not-allowed' : 'pointer',
-                          }}
-                        >
-                          Proceed To Pay
-                        </button>
-
-                      </div>
-                    </div>
-                  </form>
-                </div>
+        <div className="last-pay">
+          <div className="fare">
+            <h6><i className="ri-price-tag-2-line"></i>Total Ticket Amount</h6>
+            <small>₹{priceWithIGST}</small>
+          </div>
+          <div className="review-pay">
+            <button
+              type="button" // Changed to prevent form submission
+              onClick={handlePayment}
+              disabled={!newContactData.name || !newContactData.email || !newContactData.contact || !countsEqual}
+              style={{
+                backgroundColor: !newContactData.name || !newContactData.email || !newContactData.contact || !countsEqual ? '#ccc' : undefined,
+                cursor: !newContactData.name || !newContactData.email || !newContactData.contact || !countsEqual ? 'not-allowed' : 'pointer',
+              }}
+            >
+              Proceed To Pay
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
 
 
 
