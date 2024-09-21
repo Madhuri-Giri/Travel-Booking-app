@@ -99,7 +99,6 @@
     box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
 }
 
-
 .Description_hotel h5 {
     margin-top: 10px;
     margin-bottom: 0;
@@ -117,8 +116,6 @@
     /* height: 320px !important; */
     /* max-height:500px;  */
     /* object-fit: cover;  */
-
-
 }
 
 .Header_hotel {
@@ -207,7 +204,17 @@
     margin: 0;
     font-family: sans-serif;
 }
-
+.hotel_des_Btn{
+    background-color: #00b7eb;
+    color: white;
+    font-weight: bold;
+    padding: 3px 6px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0;
+    font-family: sans-serif; 
+}
 .timer {
     position: sticky;
     top: 0;

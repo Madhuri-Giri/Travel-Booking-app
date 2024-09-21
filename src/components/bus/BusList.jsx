@@ -10,6 +10,9 @@ import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import EnterOtp from '../popUp/EnterOtp';
 import TimerBus from '../timmer/TimerBus';
 
+// import Loading from '../../pages/loading/Loading';
+
+
 import { setSelectedBusIndex } from '../../redux-toolkit/bus/busSelectionSlice';
 import { fetchSeatLayout } from '../../redux-toolkit/bus/seatLayoutSlice';
 // import BoardAndDrop from './BoardAndDrop';
@@ -120,6 +123,9 @@ const BusLists = () => {
   const handleSelectSeat = async (index) => {
     console.log('Index clicked:', index);
     console.log('Filtered Results:', filteredResults);
+const handleSelectSeat = async (index) => {
+  // console.log('Index clicked:', index);
+  // console.log('Filtered Results:', filteredResults);
 
     if (index < 0 || index >= filteredResults.length) {
       console.error("Index out of bounds:", index);
@@ -131,6 +137,20 @@ const BusLists = () => {
     localStorage.setItem('selectedBusIndex', selectedBusIndex);
 
     if (selectedBusIndex === undefined) {
+  const selectedBusIndex = filteredResults[index]?.ResultIndex;
+  // console.log("Selected ResultIndex:", selectedBusIndex);
+  localStorage.setItem('selectedBusIndex', selectedBusIndex);
+
+
+   const travelName = filteredResults[index]?.TravelName;
+   if (travelName) {
+     localStorage.setItem('travelName', travelName);
+    //  console.log("Travel name saved:", travelName);
+   }
+
+
+
+  if (selectedBusIndex === undefined) {
       console.error("Selected Bus Index is undefined for index:", index);
       return;
     }
@@ -153,6 +173,11 @@ const BusLists = () => {
 
     await addSeatLayout();
   };
+  const selectedBus = searchResults[index];
+  storeSelectedBusDetails(selectedBus);
+      
+  await addSeatLayout(); 
+};
 
 
 
@@ -183,7 +208,7 @@ const BusLists = () => {
 
       const data = await response.json();
       console.log('User details:', data);
-      // console.log('trans', data.transaction.transaction_num)
+      console.log('trans', data.transaction.transaction_num)
       if (data.result && data.transaction) {
         localStorage.setItem('transactionIdBus', data.transaction.id);
         localStorage.setItem('transactionNum', data.transaction.transaction_num);
@@ -271,6 +296,8 @@ const BusLists = () => {
 
 
 
+ 
+  
   const calculateTimeDifference = (arrivalTime, dropTime) => {
     const arrivalDate = new Date(arrivalTime);
     const dropDate = new Date(dropTime);
@@ -292,11 +319,7 @@ const BusLists = () => {
   // const [priceFilter, setPriceFilter] = useState(10000); // Default max value
   const [operatorFilter, setOperatorFilter] = useState('');
 
-  // const filteredResults = searchResults.filter(bus => {
-  //   const withinPrice = bus.Price.BasePrice <= priceFilter;
-  //   const matchesOperator = operatorFilter ? bus.TravelName === operatorFilter : true;
-  //   return withinPrice && matchesOperator;
-  // });
+ 
 
   const filteredResults = searchResults.filter(bus => {
     // Ensure the Price and BasePrice exist before filtering
@@ -351,6 +374,15 @@ const BusLists = () => {
               <div className="search-functinality">
                 <button onClick={responsiveFilter} className='filter-bus'><i className="ri-equalizer-line"></i> Filter</button>
                 <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
+          <h5>
+            <div className="destination">
+              <h6>{from} - {to}</h6>
+            </div>
+          </h5>
+         
+          <div className="search-functinality">
+            <button onClick={responsiveFilter} className='filter-bus'><i className="ri-equalizer-line"></i> Filter</button>
+            <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
 
               </div>
             </div>
@@ -496,6 +528,9 @@ const BusLists = () => {
                         </div>
                       )}
                     </div>
+                  <div className="price">
+                    <h4>₹{Math.round(bus.Price.PublishedPrice * (1 - 0.18))}</h4>
+                    <h6 style={{ textDecorationLine: 'line-through', color: "green" }}>₹1000</h6>
                   </div>
                 </div>
               </div>
@@ -626,6 +661,7 @@ const BusLists = () => {
             )}
           </div>
         </div> */}
+
 
 
 

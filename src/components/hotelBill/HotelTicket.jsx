@@ -63,111 +63,85 @@ const BookingBill = () => {
     }
   }, []);
 
-  // const handleDownloadPDF = () => {
-  //   if (!ticketElementRef.current) {
-  //     toast.error('No content available for download.');
-  //     return;
-  //   }
-
-  //   const buttonContainer = document.querySelector('.button-container-h');
-  //   if (buttonContainer) {
-  //     buttonContainer.style.display = 'none';
-  //   }
-
-  //   html2canvas(ticketElementRef.current, { scale: 2 }).then((canvas) => {
-  //     const imgData = canvas.toDataURL('image/png');
-  //     const pdf = new jsPDF('p', 'mm', 'a4');
-
-  //     const pdfWidth = pdf.internal.pageSize.getWidth();
-  //     const pdfHeight = pdf.internal.pageSize.getHeight();
-  //     const imgWidth = canvas.width;
-  //     const imgHeight = canvas.height;
-
-  //     const widthRatio = pdfWidth / imgWidth;
-  //     const heightRatio = pdfHeight / imgHeight;
-  //     const scale = widthRatio;
-
-  //     const newImgWidth = imgWidth * scale;
-  //     const newImgHeight = imgHeight * scale;
-
-  //     pdf.addImage(imgData, 'PNG', 0, 0, newImgWidth, newImgHeight);
-  //     pdf.save('hotel_booking_details.pdf');
-  //   }).catch((error) => {
-  //     console.error('Error generating PDF:', error);
-  //     toast.error('Error generating PDF.');
-  //   }).finally(() => {
-  //     if (buttonContainer) {
-  //       buttonContainer.style.display = '';
-  //     }
-  //   });
-  // };
-
   const handleDownloadPDF = () => {
     if (!ticketElementRef.current) {
       toast.error('No content available for download.');
       return;
     }
-  
+
+    const policySections = document.querySelectorAll('.section_cp');
     const buttonContainer = document.querySelector('.button-container-h');
+    const ticketElement = ticketElementRef.current;
+
+    // Temporarily show policy sections for PDF generation
+    policySections.forEach(section => {
+      section.style.display = 'block'; 
+    });
+
     if (buttonContainer) {
-      buttonContainer.style.display = 'none';
+      buttonContainer.style.display = 'none'; // Hide buttons
     }
-  
-    const originalWidth = ticketElementRef.current.style.width; // Store original width
-    const fixedWidth = 1440; // Fixed width of 1280px for PDF
-  
-    // Temporarily set the element width to 1280px for PDF rendering
-    ticketElementRef.current.style.width = `${fixedWidth}px`;
-  
+
+    const originalWidth = ticketElement.style.width; // Store original width
+    const fixedWidth = 1440; // Fixed width for the PDF rendering
+
+    // Temporarily set the element width to fixedWidth for PDF rendering
+    ticketElement.style.width = `${fixedWidth}px`;
+
     const a4HeightInPx = 297 / 25.4 * 72; // A4 height (297mm) in pixels, considering 72 DPI
-  
-    html2canvas(ticketElementRef.current, {
-      width: fixedWidth, // Ensure canvas is rendered at 1280px width
+
+    html2canvas(ticketElement, {
+      width: fixedWidth, // Ensure canvas is rendered at fixedWidth
       scale: 4, // Increase scale for better quality
     }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
-  
+
       const imgWidth = fixedWidth;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  
+
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
-  
-      const scale = pdfWidth / imgWidth; // Keep width within A4 size
-  
+
+      const scale = pdfWidth / imgWidth; // Scale image to fit A4 width
+
       const newImgWidth = imgWidth * scale;
       const newImgHeight = imgHeight * scale;
-  
+
       // Limit height to fit A4 page dimensions
       const finalHeight = newImgHeight > pdfHeight ? a4HeightInPx : newImgHeight;
-  
+
       pdf.addImage(imgData, 'PNG', 0, 0, newImgWidth, finalHeight);
       pdf.save('hotel_booking_details.pdf');
     }).catch((error) => {
       console.error('Error generating PDF:', error);
       toast.error('Error generating PDF.');
     }).finally(() => {
-      // Revert the element back to its original width
-      ticketElementRef.current.style.width = originalWidth;
-  
+      // Restore original styles
+      ticketElement.style.width = originalWidth;
+
       if (buttonContainer) {
-        buttonContainer.style.display = '';
+        buttonContainer.style.display = ''; // Show buttons again
       }
+
+      // Hide policy sections again
+      policySections.forEach(section => {
+        section.style.display = 'none';
+      });
     });
   };
-  
+
   const bookingCancel = async (event) => {
     event.preventDefault();
 
     const hotelBookingId = localStorage.getItem('hotel_booking_id');
     const transactionNum = localStorage.getItem('transactionNum');
-    
+
     if (!hotelBookingId || !transactionNum) {
-        const message = !hotelBookingId ? 'No hotel booking ID available' : 'No transaction number available';
-        setError(message);
-        toast.error(message);
-        return;
+      const message = !hotelBookingId ? 'No hotel booking ID available' : 'No transaction number available';
+      setError(message);
+      toast.error(message);
+      return;
     }
 
     const requestData = {
@@ -323,14 +297,14 @@ const BookingBill = () => {
                 <p><strong>Total Price:</strong> ₹{bookingDetails?.booking?.[0]?.publishedprice || 'N/A'}</p>
               </div>
 
-              <div className="section_cp">
+              <div className="section_cp hidden-policy" >
                 <div>
                   <h2>Hotel Policy:</h2>
                   <div className="section_hp" dangerouslySetInnerHTML={{ __html: cleanUpDescription(bookingDetails?.booking?.[0]?.hotelpolicy) }} />
                 </div>
               </div>
 
-              <div className="section_cp">
+              <div className="section_cp hidden-policy">
                 <div>
                   <h2>Cancellation Policy</h2>
                   <ul className="section_hp">
