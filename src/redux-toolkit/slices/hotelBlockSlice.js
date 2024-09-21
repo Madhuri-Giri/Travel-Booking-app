@@ -1,80 +1,46 @@
+// features/hotelBlockSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-// Async thunk for posting hotel block request
-export const blockHotelRooms = createAsyncThunk(
-  'hotelBlock/blockHotelRooms',
-  async (hotelRoomsDetails, { rejectWithValue }) => {
-    try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-block', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(hotelRoomsDetails),
-      });
+// Define the initial state
+const initialState = {
+    blockRoomResult: null,
+    bookingStatus: null,
+    loading: false,
+    error: null,
+};
 
-      const res = await response.json();
-      console.log('API Response:', res); // Log the entire response
-
-      // Check for success
-      if (!response.ok || res.result !== true) {
-        return rejectWithValue(res.data.Error.ErrorMessage || 'Something went wrong');
-      }
-
-      return res;
-    } catch (error) {
-      return rejectWithValue(error.message);
+// Create an async thunk for the API call
+export const blockHotelRooms = createAsyncThunk( 
+    'hotelBlock/blockRoom',
+    async (requestData) => {
+        const response = await axios.post('https://sajyatra.sajpe.in/admin/api/hotel-block', requestData);
+        return response.data;
     }
-  }
 );
 
+// Create the slice
 const hotelBlockSlice = createSlice({
-  name: 'hotelBlock',
-  initialState: {
-    rooms: null,
-    bookingId: null,
-    igst: null,
-    discount: null,
-    status: 'idle',
-    error: null,
-  },
-  reducers: {
-    clearBlockState: (state) => {
-      state.rooms = null;
-      state.bookingId = null;
-      state.igst = null;
-      state.discount = null;
-      state.status = 'idle';
-      state.error = null;
+    name: 'hotelBlock',
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(blockHotelRooms.pending, (state) => {  
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(blockHotelRooms.fulfilled, (state, action) => {  
+                state.loading = false;
+                state.blockRoomResult = action.payload.data.BlockRoomResult; // Store BlockRoomResult
+                state.bookingStatus = action.payload.booking_status; // Store booking_status
+            })
+            .addCase(blockHotelRooms.rejected, (state, action) => { 
+                state.loading = false;
+                state.error = action.error.message;
+            });
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(blockHotelRooms.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(blockHotelRooms.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.rooms = action.payload.data?.BlockRoomResult || null;
-
-        if (!action.payload.booking_status) {
-          console.error('booking_status is missing from the response');
-          state.bookingId = null;
-          state.igst = null;
-          state.discount = null;
-        } else {
-          state.bookingId = action.payload.booking_status.id || null;
-          state.igst = action.payload.booking_status.igst || null;
-          state.discount = action.payload.booking_status.discount || null;
-        }
-      })
-      .addCase(blockHotelRooms.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload; 
-        console.error('Error blocking hotel rooms:', action.payload);
-      });
-  },
 });
 
-export const { clearBlockState } = hotelBlockSlice.actions;
+// Export the reducer
 export default hotelBlockSlice.reducer;

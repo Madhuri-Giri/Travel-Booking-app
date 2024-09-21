@@ -48,6 +48,13 @@ const HotelSearch = () => {
   const inputRef = useRef(null);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   // const [inputs, setInputs] = React.useState({ NoOfNights: "" });
+  
+  const [childAges, setChildAges] = useState([]);
+  const handleChildAgeChange = (index, age) => {
+    const newChildAges = [...childAges];
+    newChildAges[index] = age;
+    setChildAges(newChildAges);
+  };
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -223,35 +230,54 @@ const HotelSearch = () => {
     }
 
     const selectedCity = cityList[0];
+
+  
+ // Create the roomGuestsArray based on inputs
+ const roomGuestsArray = [];
+ let remainingAdults = inputs.adults;
+ const roomsCount = inputs.rooms;
+ const childrenCount = inputs.children;
+
+   // Validate child ages
+    for (const age of childAges) {
+      if (age === "" || Number(age) >= 18) {
+        alert("Child age must be less than 18 and cannot be empty.");
+        return;
+      }
+    }
+
+ for (let i = 0; i < roomsCount; i++) {
+   let adultsInRoom = Math.ceil(remainingAdults / (roomsCount - i));
+   roomGuestsArray.push({
+     NoOfAdults: adultsInRoom,
+     NoOfChild: childrenCount,
+     ChildAge: childAges.slice(0, childrenCount), 
+   });
+   remainingAdults -= adultsInRoom;
+ }
+
     const requestData = {
-      BookingMode: "5",
-      CheckInDate: format(inputs.checkIn, "dd/MM/yyyy"),
-      NoOfNights: inputs.NoOfNights,
-      CountryCode: selectedCity.countrycode,
-      CityId: selectedCity.cityid,
-      ResultCount: null,
-      // PreferredCurrency: selectedCity.countrycode,
-      PreferredCurrency: "INR",
-      GuestNationality: selectedCity.countrycode,
-      NoOfRooms: inputs.rooms,
-      RoomGuests: [
-        {
-          NoOfAdults: inputs.adults,
-          NoOfChild: inputs.children.toString(),
-          ChildAge: [],
-        },
-      ],
-      PreferredHotel: "",
-      MaxRating: "5",
-      MinRating: "0",
-      ReviewScore: null,
-      IsNearBySearchAllowed: false,
-    };
+     BookingMode: "5",
+    CheckInDate: format(inputs.checkIn, "dd/MM/yyyy"),
+    NoOfNights: inputs.NoOfNights,
+    CountryCode: selectedCity.countrycode,
+    CityId: selectedCity.cityid,
+    ResultCount: null,
+    PreferredCurrency: "INR",
+    GuestNationality: selectedCity.countrycode,
+    NoOfRooms: inputs.rooms,
+    RoomGuests: roomGuestsArray, 
+    PreferredHotel: "",
+    MaxRating: "5",
+    MinRating: "0",
+    ReviewScore: null,
+    IsNearBySearchAllowed: false,
+  };
 
     try {
       // Dispatch the searchHotels action
       await dispatch(searchHotels(requestData)).unwrap();
-      navigate("/hotel-list", { state: { searchResults: hotels } }); // Use Redux state for results
+      navigate("/hotel-list", { state: { searchResults: hotels } }); 
     } catch (error) {
       alert("Error searching hotel. Please try again later.");
     }
@@ -273,9 +299,9 @@ const HotelSearch = () => {
                 <div className="content_box">
                   <h1>
                     Discover <span className="luxury-font">luxury</span> and
-                    comfort in the heart of the city. Choose your{" "}
+                    comfort in the heart of the city. Choose your
                     <span className="luxury-font"> perfect room </span> and
-                    enjoy top-notch amenities and{" "}
+                    enjoy top-notch amenities and
                     <span className="luxury-font">services</span>.
                   </h1>
                 </div>
@@ -390,9 +416,6 @@ const HotelSearch = () => {
   </div>
 </div>
 
-
-
-                
                 <div className="form-field guest_field">
                   <label className="form_label" htmlFor="guestField">
                     Guests:
@@ -416,6 +439,28 @@ const HotelSearch = () => {
                           className="close_icon"
                           onClick={handleClose}
                         />
+
+                        <div className="guest_option">
+                          <label htmlFor="room">Room:</label>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleGuestChange("rooms", "decrement")
+                            }
+                          >
+                            -
+                          </button>
+                          <span>{inputs.rooms}</span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleGuestChange("rooms", "increment")
+                            }
+                          >
+                            +
+                          </button>
+                        </div>
+
                         <div className="guest_option">
                           <label htmlFor="adults">Adults:</label>
                           <button
@@ -455,27 +500,24 @@ const HotelSearch = () => {
                           >
                             +
                           </button>
-                        </div>
-                        <div className="guest_option">
-                          <label htmlFor="room">Room:</label>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleGuestChange("rooms", "decrement")
-                            }
-                          >
-                            -
-                          </button>
-                          <span>{inputs.rooms}</span>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleGuestChange("rooms", "increment")
-                            }
-                          >
-                            +
-                          </button>
-                        </div>
+                          </div>
+                            {/* Dynamic child age inputs */}
+                  {Array.from({ length: inputs.children }).map((_, index) => (
+                    <div className="child-age" key={index}>
+                      <label className="form_label" htmlFor={`childAge${index}`}>
+                        Child {index + 1} Age:
+                      </label>
+                      <input
+                        type="number"
+                        id={`childAge${index}`}
+                        value={childAges[index] || ""}
+                        onChange={(e) => handleChildAgeChange(index, e.target.value)}
+                        min="0"
+                         className="child-age-input"
+                      />
+                    </div>
+                  ))}
+                       
                       </div>
                     )}
                   </div>

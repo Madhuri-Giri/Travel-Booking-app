@@ -77,19 +77,21 @@ const HotelList = () => {
   };
 
   const offset = currentPage * hotelsPerPage;
-  const currentHotels = hotels.slice(offset, offset + hotelsPerPage);
+  // const currentHotels = hotels.slice(offset, offset + hotelsPerPage);
   // ---------------------------------------------
   
   // ----------------for filter----------------
 
+ 
   const filterHotelsByDestination = (hotels, destination) => {
     if (!destination) return hotels;
     return hotels.filter(hotel =>
       hotel.HotelName.toLowerCase().includes(destination.toLowerCase())
     );
   };
-  
-  const filteredHotels = filterHotelsByDestination(searchResults || [], destination);
+
+  const filteredHotels = filterHotelsByDestination(hotels, destination);
+
   const sortedHotels = [...filteredHotels].sort((a, b) => {
     switch (sortOption) {
       case 'name':
@@ -102,7 +104,7 @@ const HotelList = () => {
         return (b.Price?.OfferedPriceRoundedOff || 0) - (a.Price?.OfferedPriceRoundedOff || 0);
       case 'distance':
         if (userPosition) {
-          return haversineDistance(userPosition, { latitude: parseFloat(a.Latitude), longitude: parseFloat(a.Longitude) }) - 
+          return haversineDistance(userPosition, { latitude: parseFloat(a.Latitude), longitude: parseFloat(a.Longitude) }) -
                  haversineDistance(userPosition, { latitude: parseFloat(b.Latitude), longitude: parseFloat(b.Longitude) });
         }
         return 0;
@@ -110,27 +112,14 @@ const HotelList = () => {
         return 0;
     }
   });
-  
-  // const { hotels, srdvType, srdvIndex, traceId } = useSelector((state) => state.hotels || {});
-  // const traceId = useSelector((state) => state.hotels.traceId);
-  // const srdvIndex = useSelector((state) => state.hotels.srdvIndex);
- 
-  // -----------API start --------------------
-  // const fetchHotelInfo = async (index) => {
-  //   const hotel = hotels[index];
-  
-  //   const requestData = {
-  //     ResultIndex: resultIndex, 
-  //     SrdvIndex: srdvIndex,
-  //     SrdvType: srdvType ,
-  //     HotelCode: HotelCode,
-  //     TraceId: traceId,
-  //   };
-  
-  //   const hotelDetails = await dispatch(fetchHotelDetails(requestData)).unwrap();
-  //   navigate("/hotel-description", { state: { hotelDetails } });
-  // };
-  
+
+// Calculate pagination based on sorted and filtered hotels
+const totalFilteredHotels = sortedHotels.length;
+// const pageCount = Math.ceil(totalFilteredHotels / hotelsPerPage);
+
+// Current hotels for the current page
+const currentHotels = sortedHotels.slice(offset, offset + hotelsPerPage);
+
   const fetchHotelInfo = async (index) => {
     console.log('Fetching hotel info for list index:', index);
 
@@ -195,7 +184,7 @@ const HandelHotelInfo = async (index) => {
     return;
   }
 
-  await fetchHotelInfo(destination, index);
+  await fetchHotelInfo(index);
 };
 
   const closeOtpOverlay = () => {
@@ -400,7 +389,7 @@ const HandelHotelInfo = async (index) => {
                 <Col lg={9} className="listResultcol">
                   <div className="listResult">
                     {geoError && <p className="errorMessage">{geoError}</p>}
-                    {error && <p className="errorMessage">{error}</p>}
+                    {/* {error && <p className="errorMessage">{error}</p>} */}
                     {hotels.length > 0 ? (
                       currentHotels.map((hotel, index) => (
                         <div key={hotel.HotelCode} className="searchItem">
@@ -441,7 +430,7 @@ const HandelHotelInfo = async (index) => {
                               {/* <button onClick={()=>HandelHotelInfo(index)} className="CheckButton">
                                 See Details
                               </button> */}
-                    <button key={hotel.id} onClick={() => fetchHotelInfo(index)}className="CheckButton">
+                    <button key={hotel.id} onClick={() =>HandelHotelInfo (index)}className="CheckButton">
                       View Details
                           </button>
 

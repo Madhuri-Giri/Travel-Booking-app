@@ -48,14 +48,14 @@ const HotelRoom = () => {
         isProcessing = true;
 
         const hotelRoomsDetails = {
-            ResultIndex: resultIndex || '9',
-            // ResultIndex: '9',
+            // ResultIndex: resultIndex || '9',
+            ResultIndex: '9',
             SrdvIndex: srdvIndex,
             SrdvType: srdvType,
-            HotelCode: hotelCode || "92G|DEL",
-            // HotelCode:  "92G|DEL",
-            TraceId: traceId,
-            // TraceId: '1',
+            // HotelCode: hotelCode || "92G|DEL",
+            HotelCode:  "92G|DEL",
+            // TraceId: traceId,
+            TraceId: '1',
             GuestNationality: "IN",
             HotelName: 'The Manor',
             NoOfRooms: '1',
@@ -145,14 +145,22 @@ const HotelRoom = () => {
         console.log("Request data block:", hotelRoomsDetails);
         
         try {
-            await dispatch(blockHotelRooms(hotelRoomsDetails)).unwrap();
+            const response = await dispatch(blockHotelRooms(hotelRoomsDetails)).unwrap();
             alert('Room reserved successfully!');
-
-            navigate('/hotel-guest');
-
+        
+            // Pass BlockRoomResult and bookingStatus to the next page
+            navigate('/hotel-guest', {
+                state: { 
+                    hotelRoomsDetails: response.data.BlockRoomResult,
+                    bookingStatus: response.booking_status 
+                }
+            });
+        
         } catch (error) {
             console.error('Error:', error);
         }
+        
+        
         isProcessing = false;
     };
 
@@ -183,7 +191,7 @@ const HotelRoom = () => {
                 <h1>Available Hotel Rooms</h1>
                 </div>
                 {loading && <p>Loading hotel rooms...</p>}
-                {error && <p>Error: {error}</p>}
+                {/* {error && <p>Error: {error}</p>} */}
                 {hotelRooms.length === 0 && !loading && <p>No hotel room data available.</p>}
                 {hotelRooms.map((room, index) => (
                     <Card key={index} className="mb-4">

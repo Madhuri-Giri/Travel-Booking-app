@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './GuestDetails.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Accordion from 'react-bootstrap/Accordion';
@@ -50,12 +50,12 @@ const GuestDetails = () => {
   const [isFormComplete, setIsFormComplete] = useState(false);
   const [payLoading, setPayLoading] = useState(false);
   
-  const dispatch = useDispatch();
-  const blockHotelRooms = location.state?.blockHotelRooms || [];
+  const location = useLocation();
+  const { hotelRoomsDetails, bookingStatus } = location.state || {};
 
-  useEffect(() => {
-    dispatch(blockHotelRooms());
-}, [dispatch]);
+  console.log('Booking status from block API:', bookingStatus);
+
+    const { HotelName, AddressLine1, checkInDate, checkOutDate, HotelPolicyDetail, HotelNorms } = hotelRoomsDetails || {};
 
   const [errors, setErrors] = useState({});
 
@@ -110,43 +110,47 @@ setCheckboxChecked(allFilled);
   // ---------------- RozarPay Payment Gateway  Integration start -------------------
   const fetchPaymentDetails = async () => {
     try {
-      const loginId = localStorage.getItem('loginId');
-      const transactionNum = localStorage.getItem('transactionNum');
-      const hotel_booking_id = localStorage.getItem('hotelBlockId');
+        const loginId = localStorage.getItem('loginId');
+        const transactionNum = localStorage.getItem('transactionNum');
+        // Get the ID from bookingStatus if it exists
+        const bookingId = bookingStatus && bookingStatus.length > 0 ? bookingStatus[0].id : null;
 
-      if (!loginId || !transactionNum || !hotel_booking_id) {
-        throw new Error('Login ID or Transaction Number or Hotel booking Id is missing.');
-      }
+        console.log('loginId:', loginId);
+        console.log('transactionNum:', transactionNum);
+        console.log('hotel_booking_id:', bookingId); // Use bookingId here
 
-      // Construct the payload with necessary fields
-      const payload = {
-        amount: 10,
-        user_id: loginId,
-        transaction_num: transactionNum,
-        hotel_booking_id: [hotel_booking_id]
-      };
+        if (!loginId || !transactionNum || !bookingId) { // Check bookingId instead of hotel_booking_id
+            throw new Error('Login ID, Transaction Number, or Hotel Booking ID is missing.');
+        }
 
-      console.log('Sending payload:', payload);
+        const payload = {
+            amount: 100,
+            user_id: loginId,
+            transaction_num: transactionNum,
+            hotel_booking_id: [bookingId], // Use bookingId in payload
+        };
 
-      // API call
-      const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-payment', payload);
+        console.log('Sending payload:', payload);
 
-      if (response.data.status === 'success') {
-        setPaymentDetails(response.data.payment_details);
-        console.log('Payment details fetched:', response.data);
-        return response.data;
-      } else {
-        throw new Error(response.data.message || 'Failed to fetch payment details');
-      }
+        const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-payment', payload);
+
+        if (response.data.status === 'success') {
+            setPaymentDetails(response.data.payment_details);
+            console.log('Payment details fetched:', response.data);
+            return response.data;
+        } else {
+            throw new Error(response.data.message || 'Failed to fetch payment details');
+        }
     } catch (error) {
-      console.error('Error fetching payment details:', error);
-      if (error.response) {
-        console.error('Error response data:', error.response.data);
-      }
-      alert('Failed to initiate payment. Please try again.');
-      return null;
+        console.error('Error fetching payment details:', error);
+        if (error.response) {
+            console.error('Error response data:', error.response.data);
+        }
+        alert('Failed to initiate payment. Please try again.');
+        return null;
     }
-  };
+};
+
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -273,7 +277,7 @@ setCheckboxChecked(allFilled);
       // Construct the booking payload
       let isProcessing = false;
 
-      const bookHandler = async () => {
+      const bookHandler = async (index) => {
 
         if (index < 0 || index >= hotels.length) {
           console.error('Invalid hotel index:', index);
@@ -283,6 +287,10 @@ setCheckboxChecked(allFilled);
       const resultIndex = resultIndexes[index];
       const srdvIndex = srdvIndexes[index];
       const hotelCode = hotelCodes[index];
+
+       console.log('Result Index:', resultIndex);
+    console.log('SRDV Index:', srdvIndex);
+    console.log('Hotel Code:', hotelCode);
 
       if (resultIndex === undefined || srdvIndex === undefined || hotelCode === undefined) {
           console.error('One or more values are undefined. Check your data arrays.');
@@ -333,16 +341,18 @@ setCheckboxChecked(allFilled);
           return;
         }
         try {
+
+          const bookingId = bookingStatus && bookingStatus.length > 0 ? bookingStatus[0].id : null;
+
           const transactionNum = localStorage.getItem('transactionNum');
           const transaction_id = localStorage.getItem('transaction_id');
-          const hotel_booking_id = localStorage.getItem('hotelBlockId');
+          // const hotel_booking_id = localStorage.getItem('hotelBlockId');
       
-          if (!transactionNum || !transaction_id || !hotel_booking_id) {
+          if (!transactionNum || !transaction_id || !bookingId) {
             throw new Error('Required data missing for booking.');
           }
       
           const guestDetails = guestForms;
-    
           const bookingPayload = {
             ResultIndex: "9",
             HotelCode: "92G|DEL",
@@ -353,8 +363,7 @@ setCheckboxChecked(allFilled);
             IsVoucherBooking: true,
             transaction_num: transactionNum,
             transaction_id: transaction_id,
-            hotel_booking_id: hotel_booking_id,
-      
+            bookingId: bookingId,
             HotelRoomsDetails: [
               {
                   ChildCount: selectedRoom.ChildCount || 0,
@@ -484,11 +493,267 @@ setCheckboxChecked(allFilled);
     }
   }
   // -------------------------------End Book API--------------------------------------------
+
+
+  const cleanUpDescription = (description) => {
+    if (!description) return '';
+    let cleanedDescription = he.decode(description);
+    cleanedDescription = cleanedDescription.replace(/<\/?(ul|li|b|i|strong|em|span)\b[^>]*>/gi, '');
+    cleanedDescription = cleanedDescription.replace(/<br\s*\/?>|<p\s*\/?>|<\/p>/gi, '\n');
+    cleanedDescription = cleanedDescription.replace(/\\|\|/g, '');
+    cleanedDescription = cleanedDescription.replace(/\s{2,}/g, ' ');
+    cleanedDescription = cleanedDescription.replace(/\n{2,}/g, '\n');
+    cleanedDescription = cleanedDescription.replace(/\/\/+|\\|\|/g, '');
+    cleanedDescription = cleanedDescription.trim();
+    cleanedDescription = cleanedDescription.replace(/"/g, '');
+    cleanedDescription = cleanedDescription.replace(/<\/li>/gi, '\n');
+    cleanedDescription = cleanedDescription.replace(/<\/?ul>/gi, '\n');
+    cleanedDescription = cleanedDescription.replace(/<br\s*\/?>|<\/p>|<p\s*\/?>/gi, '\n');
+    cleanedDescription = cleanedDescription.replace(/<\/?(b|i|strong|em|span)\b[^>]*>/gi, '');
+    cleanedDescription = cleanedDescription.replace(/\\|\|/g, '');
+    cleanedDescription = cleanedDescription.replace(/\s{2,}/g, ' ');
+    cleanedDescription = cleanedDescription.replace(/\n{2,}/g, '\n');
+    cleanedDescription = cleanedDescription.trim();
+    cleanedDescription = cleanedDescription.replace(/(?:Valid From|Check-in hour|Identification card at arrival)/gi, '\n$&');
+    cleanedDescription = cleanedDescription.replace(/<li>/gi, (match, offset, string) => {
+      const listItems = string.split('</li>');
+      const index = listItems.indexOf(match);
+      return `${index + 1}. `;
+    });
+    return cleanedDescription;
+  };
+
   return (
     <>
       <CustomNavbar />
       <Timer />
-     
+      <div className="guest_bg">
+      <div className="guest-details-container">
+        <h2 className="section-title">Guest <span style={{ color: "#00b7eb" }}>Details</span></h2>
+        <div className="details-wrapper">
+          <div className="left-side">
+            <h3>{hotelRoomsDetails.HotelName}</h3>
+            <h5>{hotelRoomsDetails.AddressLine1}</h5>
+          </div>
+          <div className="right-side">
+            <p><strong>Check-in Date:</strong> {checkInDate}</p>
+            <p><strong>Check-out Date:</strong> {checkOutDate}</p>
+          </div>
+        </div>
+        
+        <div className="guest-details-card">
+          <div className="hotel-policies">
+            <Accordion className="accordian_space">
+              <Accordion.Item eventKey="0">
+                <Accordion.Header><b>Hotel Policies:</b></Accordion.Header>
+                <Accordion.Body>
+                  {hotelRoomsDetails.HotelPolicyDetail ? (
+                    <div className="hotel-policy">
+                      <h4>Policy Details</h4>
+                      <div dangerouslySetInnerHTML={{ __html: cleanUpDescription(hotelRoomsDetails.HotelPolicyDetail) }} />
+                    </div>
+                  ) : (
+                    <p>No hotel policy details available.</p>
+                  )}
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+
+            <Accordion className="accordian_space">
+              <Accordion.Item eventKey="1">
+                <Accordion.Header><b>Hotel Norms:</b></Accordion.Header>
+                <Accordion.Body>
+                  {hotelRoomsDetails.HotelNorms ? (
+                    <div className="hotel-policy">
+                      <h4>Hotel Norms</h4>
+                      <div dangerouslySetInnerHTML={{ __html: cleanUpDescription(hotelRoomsDetails.HotelNorms) }} />
+                    </div>
+                  ) : (
+                    <p>No hotel norms available.</p>
+                  )}
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+          </div>
+        </div>
+        
+
+        {!showForm && (
+          <button className='submit-btn' onClick={() => setShowForm(true)}>Add Details</button>
+        )}
+
+        {showForm && !formSubmitted && (
+          <div className="form-container">
+            <div className="form-content">
+              <h2 className="text-center">Enter Your Details</h2>
+              <form onSubmit={handleFormSubmit}>
+                {guestForms.map((formData, index) => (
+                  <div key={index} className="guest-form">
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="mb-3 req_field">
+                          <label className="required_field">First Name</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="First Name"
+                            name="fname"
+                            value={formData.fname}
+                            onChange={(e) => handleFormChange(index, e)}
+                            required
+                            minLength={2}
+                            maxLength={30}
+                          />
+                        </div>
+
+                        <div className="mb-3 req_field">
+                          <label>Middle Name (Optional)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Middle Name (Optional)"
+                            name="mname"
+                            value={formData.mname}
+                            onChange={(e) => handleFormChange(index, e)}
+                          />
+                        </div>
+
+                        <div className="mb-3 req_field">
+                          <label className="required_field">Last Name</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Last Name"
+                            name="lname"
+                            value={formData.lname}
+                            onChange={(e) => handleFormChange(index, e)}
+                            required
+                            minLength={2}
+                            maxLength={30}
+                          />
+                        </div>
+
+                        <div className="mb-3 req_field">
+                          <label className="required_field">Email</label>
+                          <input
+                            type="email"
+                            className="form-control"
+                            placeholder="Email"
+                            name="email"
+                            value={formData.email}
+                            onChange={(e) => handleFormChange(index, e)}
+                            required
+                          />
+                        </div>
+                        <div className="mb-3 req_field">
+                          <label className="required_field">Contact Number</label>
+                          <input
+                            type="tel"
+                            className="form-control"
+                            placeholder="Contact Number"
+                            name="mobile"
+                            value={formData.mobile}
+                            onChange={(e) => handleFormChange(index, e)}
+                            required
+                            pattern="[0-9]{10}"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-md-6">
+                        
+
+                        <div className="mb-3 req_field">
+                          <label className="required_field">PAN No.</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="PAN No."
+                            name="pan"
+                            value={formData.pan}
+                            onChange={(e) => handleFormChange(index, e)}
+                          />
+                        </div>
+
+                        <div className="mb-3 req_field">
+                          <label className="required_field">Age</label>
+                          <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Age"
+                            name="age"
+                            value={formData.age}
+                            onChange={(e) => handleFormChange(index, e)}
+                            min={0}
+                          />
+                        </div>
+
+                        <div className="mb-3 passport_field">
+                          <label>Passport No.</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Passport No."
+                            name="passportNo"
+                            value={formData.passportNo}
+                            onChange={(e) => handleFormChange(index, e)}
+                          />
+                        </div>
+                        <div className="mb-3 req_field">
+              <label className="required_field">Lead Passenger</label>
+              <select
+              className="form-control"
+              name="leadPassenger"
+              value={formData.leadPassenger}
+              onChange={(e) => handleFormChange(index, e)}
+            >
+              <option value="">Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div className="mb-3 req_field">
+            <label className="required_field">Pax Type</label>
+            <select
+              className="form-control"
+              name="paxType"
+              value={formData.paxType}
+              onChange={(e) => handleFormChange(index, e)}
+            >
+              <option value="">Select</option>
+              <option value="1">Adult</option>
+              <option value="2">Child</option>
+            </select>
+          </div> 
+                      </div>
+                    </div>
+                    <button className='submit-btn' type="submit">Save</button>
+                  </div>
+                ))}
+              </form>
+            </div>
+          </div>
+        )}
+
+        {formSubmitted && (
+          <div>
+            <Popup show={showPopup} onClose={handleClosePopup} formData={guestForms} />
+            <label className='check_btn'>
+              <input
+                type="checkbox"
+                checked={checkboxChecked}
+                onChange={handleCheckboxChange}
+              />
+              Confirm details are correct
+            </label>
+            {isFormComplete && (
+              <button className='submit-btn' onClick={handlePayment}>Proceed to Payment</button>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
       <Footer />
     </>
   );

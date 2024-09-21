@@ -254,7 +254,22 @@
   border-color: #58585a;
   outline: none; 
 }
+.child-age-input {
+  
+  padding: 5px;
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  width: 50%; 
+}
 
+.child-age{
+  margin-left: 12px;
+  padding: 5px;
+  /* border: 1px solid #ccc; 
+  border-radius: 4px;  */
+  width: 50%; 
+  
+}
 .btn-sub {
   padding: 10px;
   background-color: #00b7eb;
