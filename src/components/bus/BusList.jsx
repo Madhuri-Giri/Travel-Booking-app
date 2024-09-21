@@ -10,6 +10,9 @@ import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import EnterOtp from '../popUp/EnterOtp';
 import TimerBus from '../timmer/TimerBus';
 
+// import Loading from '../../pages/loading/Loading';
+
+
 import { setSelectedBusIndex } from '../../redux-toolkit/bus/busSelectionSlice';
 import { fetchSeatLayout } from '../../redux-toolkit/bus/seatLayoutSlice';
 // import BoardAndDrop from './BoardAndDrop';
@@ -84,42 +87,12 @@ const BusLists = () => {
   
   const [selectedBusIndex, setSelectedBusIndex] = useState(null);
 
-//   const handleSelectSeat = async (index) => {
-
-//     const selectedBusIndex = filteredResults[index].ResultIndex;
-
-//     // localStorage.setItem('selectedTravelName', travelName);
-//     // console.log("Selected TravelName:", travelName);
-
-
-//     console.log("Selccted ResultIndex:", selectedBusIndex);
-      
-//      setSelectedBusIndex(selectedBusIndex);
-    
-//     const loginId = localStorage.getItem('loginId');
-
-//      await useridHandler();
-
-
-//     if (!loginId) {
-//         console.log('No loginId found, showing OTP overlay'); 
-//         setShowOtpOverlay(true); 
-//         return;
-//     }
-
-//     setVisibleLayout(index); 
-
-//     const selectedBus = searchResults[index];
-//     storeSelectedBusDetails(selectedBus);
-
-//     await addSeatLayout(); 
-// };
 
  
 
 const handleSelectSeat = async (index) => {
-  console.log('Index clicked:', index);
-  console.log('Filtered Results:', filteredResults);
+  // console.log('Index clicked:', index);
+  // console.log('Filtered Results:', filteredResults);
 
   if (index < 0 || index >= filteredResults.length) {
       console.error("Index out of bounds:", index);
@@ -127,8 +100,17 @@ const handleSelectSeat = async (index) => {
   }
 
   const selectedBusIndex = filteredResults[index]?.ResultIndex;
-  console.log("Selected ResultIndex:", selectedBusIndex);
+  // console.log("Selected ResultIndex:", selectedBusIndex);
   localStorage.setItem('selectedBusIndex', selectedBusIndex);
+
+
+   const travelName = filteredResults[index]?.TravelName;
+   if (travelName) {
+     localStorage.setItem('travelName', travelName);
+    //  console.log("Travel name saved:", travelName);
+   }
+
+
 
   if (selectedBusIndex === undefined) {
       console.error("Selected Bus Index is undefined for index:", index);
@@ -150,7 +132,7 @@ const handleSelectSeat = async (index) => {
 
   const selectedBus = searchResults[index];
   storeSelectedBusDetails(selectedBus);
-
+      
   await addSeatLayout(); 
 };
 
@@ -231,45 +213,7 @@ const addSeatLayout = async () => {
   }
 };
 
-  // const addSeatLayout = async () => {
-  //   try {
-  //     const traceId = localStorage.getItem('traceId');
-  //     console.log('trace bus', traceId)
-  //     const resultIndex = localStorage.getItem('resultIndex');
-  //     console.log('resultIndex bus', resultIndex)
-
-
-  //     if (!traceId || !resultIndex) {
-  //       throw new Error('TraceId or ResultIndex not found in localStorage');
-  //     }
-
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/add-seat-layout', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         ResultIndex: resultIndex,
-  //         TraceId: traceId,
-  //       }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Failed to add seat layout');
-  //     }
-
-  //     const data = await response.json();
-  //      console.log('seat layoout', data)
-
-  //     localStorage.setItem('BuslayoutResponse', JSON.stringify(data));
-  //     setLayoutResponse(data);
-
-  //   } catch (error) {
-  //     console.error('Error adding seat layout:', error.message);
-  //   }
-  // };
-
-
+ 
   
   const calculateTimeDifference = (arrivalTime, dropTime) => {
     const arrivalDate = new Date(arrivalTime);
@@ -292,11 +236,7 @@ const addSeatLayout = async () => {
   // const [priceFilter, setPriceFilter] = useState(10000); // Default max value
   const [operatorFilter, setOperatorFilter] = useState('');
 
-  // const filteredResults = searchResults.filter(bus => {
-  //   const withinPrice = bus.Price.BasePrice <= priceFilter;
-  //   const matchesOperator = operatorFilter ? bus.TravelName === operatorFilter : true;
-  //   return withinPrice && matchesOperator;
-  // });
+ 
 
   const filteredResults = searchResults.filter(bus => {
     // Ensure the Price and BasePrice exist before filtering
@@ -340,14 +280,7 @@ const addSeatLayout = async () => {
               <h6>{from} - {to}</h6>
             </div>
           </h5>
-          {/* <span>
-            <i style={{ color: "#fff" }} className="ri-calendar-line"></i>
-            Depart Date: {selectedBusDate && (
-              <>
-                {selectedBusDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })}{' '}
-              </>
-            )}
-          </span> */}
+         
           <div className="search-functinality">
             <button onClick={responsiveFilter} className='filter-bus'><i className="ri-equalizer-line"></i> Filter</button>
             <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
