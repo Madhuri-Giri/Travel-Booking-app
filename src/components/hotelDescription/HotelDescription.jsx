@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react"; 
 import { useLocation, useNavigate } from "react-router-dom";
-import { Container, Row, Col, Carousel,  Modal} from "react-bootstrap";
+import { Container, Row, Col, Carousel, Modal } from "react-bootstrap";
 import "./HotelDescription.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
-import { RiTimerLine } from "react-icons/ri";
 import Timer from '../timmer/Timer';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchHotelRooms } from '../../redux-toolkit/slices/hotelRoomSlice';
 
 const renderStar = (rating) => {
   const totalStars = 5;
@@ -24,222 +25,213 @@ const renderStar = (rating) => {
 const HotelDescription = () => {
   const location = useLocation();
   const navigate = useNavigate(); 
-  const [error, setError] = useState(null); 
   const hotelDetails = location.state?.hotelDetails;
-  const [showModal, setShowModal] = useState(false); // For modal visibility
-
-  // --------------------------------------------------------
-
-
-  // const [timer, setTimer] = useState(0);
-
-  // useEffect(() => {
-  //   const updateTimer = () => {
-  //     // Retrieve end time from localStorage
-  //     const endTime = localStorage.getItem('h-timerEndTime');
-  //     const now = Date.now();
-      
-  //     if (endTime) {
-  //       const remainingTime = endTime - now;
-        
-  //       if (remainingTime <= 0) {
-  //         localStorage.removeItem('h-timerEndTime');
-  //         navigate('/hotel-search');
-  //       } else {
-  //         setTimer(remainingTime);
-  //       }
-  //     } else {
-  //       navigate('/hotel-search');
-  //     }
-  //   };
-
-  //   updateTimer();
-
-  //   const interval = setInterval(updateTimer, 1000); 
-
-  //   return () => clearInterval(interval);
-  // }, [navigate]);
-
-  // const formatTime = (milliseconds) => {
-  //   const totalSeconds = Math.floor(milliseconds / 1000);
-  //   const minutes = Math.floor(totalSeconds / 60);
-  //   const seconds = totalSeconds % 60;
-  //   return `${minutes} min ${seconds} sec left`;
-  // };
-
-  // --------------------------------------------------------
-
-  const navigateSearch = () => {
-    navigate('/hotel-list');
+  const hotelIndex = location.state?.hotelIndex; // Get the hotel index from state
+  const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  const handleToggle = () => {
+    setIsExpanded(!isExpanded);
   };
-  
 
-  // ------------Start Api Integration--------------
+  const lines = hotelDetails.Description.split('\n');
+  const shortDescription = lines.slice(0, 6).join('\n');
+
+  const parseFacilities = (facilitiesString) => {
+    return facilitiesString.split(',').map(item => item.trim());
+  };
+
+  const facilities = hotelDetails?.HotelFacilities ? parseFacilities(hotelDetails.HotelFacilities[0]) : [];
+
+  const dispatch = useDispatch(); 
+  const { hotels = [], srdvType, resultIndexes, srdvIndexes, hotelCodes, traceId } = useSelector((state) => state.hotelSearch || {});
+
+  if (!hotelDetails || !hotels.length) {
+    return <div>Loading...</div>;
+  }
+
   const fetchHotelRoom = async () => {
+    console.log('Current hotel index:', hotelIndex);
+
+    if (hotelIndex === undefined) {
+        console.error('hotelIndex is undefined');
+        return;
+    }
+
+    console.log('Result Indexes Length:', resultIndexes.length);
+    console.log('SRDV Indexes Length:', srdvIndexes.length);
+    console.log('Hotel Codes Length:', hotelCodes.length);
+
+    // Check if the hotel index is valid
+    if (hotelIndex < 0 || hotelIndex >= hotels.length) {
+        console.error('Invalid hotel index:', hotelIndex);
+        return;
+    }
+
+    // Accessing hotel data
+    const resultIndex = resultIndexes[hotelIndex];
+    const srdvIndex = srdvIndexes[hotelIndex];
+    const hotelCode = hotelCodes[hotelIndex];
+
+    console.log('Accessing resultIndexes[hotelIndex]:', resultIndex);
+    console.log('Accessing srdvIndexes[hotelIndex]:', srdvIndex);
+    console.log('Accessing hotelCodes[hotelIndex]:', hotelCode);
+
+    // Ensure values are defined
+    if (resultIndex === undefined || srdvIndex === undefined || hotelCode === undefined) {
+        console.error('One or more values are undefined. Check your data arrays.');
+        return;
+    }
+
+    // Prepare request data
+    const requestData = {
+        ResultIndex: resultIndex,
+        SrdvIndex: srdvIndex,
+        SrdvType: srdvType,
+        HotelCode: hotelCode,
+        TraceId: traceId,
+    };
+
+    console.log("Request data room:", requestData);
+    // Proceed with API call...
+
+
+
+
     try {
-      const requestData = {
-        ResultIndex: "9",
-        SrdvIndex: "SrdvTB",
-        SrdvType: "SingleTB",
-        HotelCode: "92G|DEL",
-        TraceId: "1",
-      };
-  
-      console.log("Request data:", requestData);
-  
-      const response = await fetch("https://sajyatra.sajpe.in/admin/api/hotel-room", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      console.log("Hotel room details response:", data);
-  
-      if (data && data.GetHotelRoomResult && data.GetHotelRoomResult.HotelRoomsDetails) {
-        console.log("hotel-room API response:", data.GetHotelRoomResult.HotelRoomsDetails);
-        
-        // Save the hotel room details in local storage
-        localStorage.setItem("hotelRooms", JSON.stringify(data.GetHotelRoomResult.HotelRoomsDetails));
-        navigate("/hotel-room", { state: { hotelRooms: data.GetHotelRoomResult.HotelRoomsDetails } });
-  
+      const hotelRooms = await dispatch(fetchHotelRooms(requestData)).unwrap();
+
+      if (hotelRooms) {
+        console.log("Hotel room details:", hotelRooms);
+        navigate("/hotel-room", { state: { hotelRooms } });
       } else {
-        console.log("Data received is not in the expected format");
-        setError(data.message || "No hotel room data available.");
+        console.error("No hotel room data received.");
+        setError("No hotel room data available.");
       }
     } catch (error) {
       console.error("Error fetching hotel room details:", error);
       setError("Failed to fetch hotel room details. Please try again later.");
     }
   };
-  // -----------------------End Api Integration--------------------
+
   return (
     <>
-     <CustomNavbar />
-     <Timer />
-     {/* <div className="timer">
-          
-          <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
-        </div> */}
-    <section className="hotelDescriptionSection">
-    <Container>
-    {/* -----start new section---------- */}
-    <div className="ro">
-     <Container className="hotelName">
-     <h3>{hotelDetails.HotelName} Hotel 
-     <span> {renderStar(hotelDetails.StarRating)}   </span>
-     </h3>
-    
-     <Row>
-        <Col md={7}>
-          <Carousel className="hotelCarousel">
-            {hotelDetails.Images && hotelDetails.Images.map((image, index) => (
-              image && (
-                <Carousel.Item key={index}>
-                  <img
-                    className="hotel_Img img-fluid"
-                    src={image}
-                    alt={`${hotelDetails.HotelName} ${index + 1}`}
-                  />
-                </Carousel.Item>
-              )
-            ))}
-          </Carousel>
-        </Col>
-        <Col md={5}>
-          {hotelDetails.Images && hotelDetails.Images.length > 0 && (
-            <img
-              className="hotel_Img_single"
-              src={hotelDetails.Images[0]}
-              alt={`${hotelDetails.HotelName} Thumbnail`}
-              onClick={() => setShowModal(true)} 
-              style={{ cursor: "pointer" }} 
-            />
-          )}
-          {hotelDetails.Images && hotelDetails.Images.length > 1 && (
+      <CustomNavbar />
+      <Timer />
+      <section className="hotelDescriptionSection">
+        <Container>
+          <div className="ro">
+            <Container className="hotelName">
+              <h3>{hotelDetails.HotelName} Hotel 
+                <span> {renderStar(hotelDetails.StarRating)} </span>
+              </h3>
+              <Row>
+                <Col md={7}>
+                  <Carousel className="hotelCarousel">
+                    {hotelDetails.Images && hotelDetails.Images.map((image, index) => (
+                      image && (
+                        <Carousel.Item key={index}>
+                          <img
+                            className="hotel_Img img-fluid"
+                            src={image}
+                            alt={`${hotelDetails.HotelName} ${index + 1}`}
+                          />
+                        </Carousel.Item>
+                      )
+                    ))}
+                  </Carousel>
+                </Col>
+                <Col md={5}>
+                  {hotelDetails.Images && hotelDetails.Images.length > 0 && (
+                    <img
+                      className="hotel_Img_single"
+                      src={hotelDetails.Images[0]}
+                      alt={`${hotelDetails.HotelName} Thumbnail`}
+                      onClick={() => setShowModal(true)} 
+                      style={{ cursor: "pointer" }} 
+                    />
+                  )}
+                  {hotelDetails.Images && hotelDetails.Images.length > 1 && (
                     <img
                       className="hotel_Img_single_above"
-                      src={hotelDetails.Images[2]}
+                      src={hotelDetails.Images[1]}
                       alt={`${hotelDetails.HotelName} Second Thumbnail`}
                       style={{ marginBottom: "15px", cursor: "pointer" }} 
                       onClick={() => setShowModal(true)} 
                     />
                   )}
-        </Col>
-      </Row>
-     </Container>
-      {/* Modal for showing all images */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
-        <Modal.Header closeButton>
-          <Modal.Title>{hotelDetails.HotelName} - All Images</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Carousel>
-            {hotelDetails.Images && hotelDetails.Images.map((image, index) => (
-              image && (
-                <Carousel.Item key={index}>
-                  <img
-                    className="hotel_Img_modal"
-                    src={image}
-                    alt={`${hotelDetails.HotelName} ${index + 1}`}
-                  />
-                </Carousel.Item>
-              )
-            ))}
-          </Carousel>
-        </Modal.Body>
-      </Modal>
-      </div>
-      </Container>
-{/* -----------end section */}
+                </Col>
+              </Row>
+            </Container>
 
-{/* -------------start new section-------------- */}
-      <Container>
-      <Row>
-        <Col>
-          <div className="search_Item">
-            <div className="Description_hotel">
-              <div className="Header_hotel">
-                <h1 className="Title_hotel">{hotelDetails.HotelName}</h1>
-                <div className="Rating_hotel">
-                  {renderStar(hotelDetails.StarRating)}
-                </div>
-              </div>
-              <span className="Distance_hotel">{hotelDetails.Address}</span>
-              <div className="Description_hotel">
-                <h5>Description :</h5>
-                <p dangerouslySetInnerHTML={{ __html: hotelDetails.Description }}></p>
-              </div>
-              <h5>Facilities:</h5>
-              <div className="Features_hotel">
-                
-                {hotelDetails.HotelFacilities && hotelDetails.HotelFacilities.map((facility, index) => (
-                  <div className="Feature_item" key={index}>
-                    {facility}
-                  </div>
-                ))}
-              </div>
-              <div className="PriceButton">
-                <div className="Price_hotel">
-                  {/* INR {hotelDetails.Price?.OfferedPriceRoundedOff || "N/A"} */}
-                </div>
-                <button onClick={fetchHotelRoom} className="hotel_Button">Book Now</button>
-              </div>{error && <div className="error-message">{error}</div>} 
-            </div>
+            <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
+              <Modal.Header closeButton>
+                <Modal.Title>{hotelDetails.HotelName} - All Images</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Carousel>
+                  {hotelDetails.Images && hotelDetails.Images.map((image, index) => (
+                    image && (
+                      <Carousel.Item key={index}>
+                        <img
+                          className="hotel_Img_modal"
+                          src={image}
+                          alt={`${hotelDetails.HotelName} ${index + 1}`}
+                        />
+                      </Carousel.Item>
+                    )
+                  ))}
+                </Carousel>
+              </Modal.Body>
+            </Modal>
           </div>
-        </Col>
-      </Row>
-    </Container>
-    {/*------------- End section----------- */}
-    </section>
-    <Footer />
+        </Container>
 
+        <Container>
+          <Row>
+            <Col>
+              <div className="search_Item">
+                <div className="Description_hotel">
+                  <div className="Header_hotel">
+                    <h1 className="Title_hotel">{hotelDetails.HotelName}</h1>
+                    <div className="Rating_hotel">
+                      {renderStar(hotelDetails.StarRating)}
+                    </div>
+                  </div>
+                  <span className="Distance_hotel">{hotelDetails.Address}</span>
+                  <div className="Description_hotel">
+                    <h5>Description :</h5>
+                    <p 
+                      dangerouslySetInnerHTML={{ __html: isExpanded ? hotelDetails.Description : shortDescription }} 
+                      style={{ overflow: 'hidden', maxHeight: isExpanded ? 'none' : '10em' }} 
+                    />
+                    <button className="hotel_des_Btn" onClick={handleToggle}>
+                      {isExpanded ? 'Read Less' : 'Read More'}
+                    </button>
+                  </div>
+                  <h5>Facilities:</h5>
+                  <div className="Features_hotel">
+                    {facilities.map((item, index) => (
+                      <div key={index} className="Feature_item">
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="PriceButton">
+                    <div className="Price_hotel">
+                      {/* INR {hotelDetails.Price?.OfferedPriceRoundedOff || "N/A"} */}
+                    </div>
+                    <button onClick={fetchHotelRoom} className="hotel_Button">Book Now</button>
+                  </div>
+                  {error && <div className="error-message">{error}</div>} 
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+      <Footer />
     </>
   );
 };
