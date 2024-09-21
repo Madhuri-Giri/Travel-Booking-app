@@ -10,6 +10,9 @@ import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import EnterOtp from '../popUp/EnterOtp';
 import TimerBus from '../timmer/TimerBus';
 
+// import Loading from '../../pages/loading/Loading';
+
+
 import { setSelectedBusIndex } from '../../redux-toolkit/bus/busSelectionSlice';
 import { fetchSeatLayout } from '../../redux-toolkit/bus/seatLayoutSlice';
 // import BoardAndDrop from './BoardAndDrop';
@@ -84,42 +87,12 @@ const BusLists = () => {
   
   const [selectedBusIndex, setSelectedBusIndex] = useState(null);
 
-//   const handleSelectSeat = async (index) => {
-
-//     const selectedBusIndex = filteredResults[index].ResultIndex;
-
-//     // localStorage.setItem('selectedTravelName', travelName);
-//     // console.log("Selected TravelName:", travelName);
-
-
-//     console.log("Selccted ResultIndex:", selectedBusIndex);
-      
-//      setSelectedBusIndex(selectedBusIndex);
-    
-//     const loginId = localStorage.getItem('loginId');
-
-//      await useridHandler();
-
-
-//     if (!loginId) {
-//         console.log('No loginId found, showing OTP overlay'); 
-//         setShowOtpOverlay(true); 
-//         return;
-//     }
-
-//     setVisibleLayout(index); 
-
-//     const selectedBus = searchResults[index];
-//     storeSelectedBusDetails(selectedBus);
-
-//     await addSeatLayout(); 
-// };
 
  
 
 const handleSelectSeat = async (index) => {
-  console.log('Index clicked:', index);
-  console.log('Filtered Results:', filteredResults);
+  // console.log('Index clicked:', index);
+  // console.log('Filtered Results:', filteredResults);
 
   if (index < 0 || index >= filteredResults.length) {
       console.error("Index out of bounds:", index);
@@ -127,8 +100,17 @@ const handleSelectSeat = async (index) => {
   }
 
   const selectedBusIndex = filteredResults[index]?.ResultIndex;
-  console.log("Selected ResultIndex:", selectedBusIndex);
+  // console.log("Selected ResultIndex:", selectedBusIndex);
   localStorage.setItem('selectedBusIndex', selectedBusIndex);
+
+
+   const travelName = filteredResults[index]?.TravelName;
+   if (travelName) {
+     localStorage.setItem('travelName', travelName);
+    //  console.log("Travel name saved:", travelName);
+   }
+
+
 
   if (selectedBusIndex === undefined) {
       console.error("Selected Bus Index is undefined for index:", index);
@@ -150,7 +132,7 @@ const handleSelectSeat = async (index) => {
 
   const selectedBus = searchResults[index];
   storeSelectedBusDetails(selectedBus);
-
+      
   await addSeatLayout(); 
 };
 
@@ -183,7 +165,7 @@ const handleSelectSeat = async (index) => {
   
       const data = await response.json();
       console.log('User details:', data);
-      // console.log('trans', data.transaction.transaction_num)
+      console.log('trans', data.transaction.transaction_num)
       if (data.result && data.transaction) {
         localStorage.setItem('transactionIdBus', data.transaction.id);
         localStorage.setItem('transactionNum', data.transaction.transaction_num);
@@ -231,45 +213,7 @@ const addSeatLayout = async () => {
   }
 };
 
-  // const addSeatLayout = async () => {
-  //   try {
-  //     const traceId = localStorage.getItem('traceId');
-  //     console.log('trace bus', traceId)
-  //     const resultIndex = localStorage.getItem('resultIndex');
-  //     console.log('resultIndex bus', resultIndex)
-
-
-  //     if (!traceId || !resultIndex) {
-  //       throw new Error('TraceId or ResultIndex not found in localStorage');
-  //     }
-
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/add-seat-layout', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         ResultIndex: resultIndex,
-  //         TraceId: traceId,
-  //       }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Failed to add seat layout');
-  //     }
-
-  //     const data = await response.json();
-  //      console.log('seat layoout', data)
-
-  //     localStorage.setItem('BuslayoutResponse', JSON.stringify(data));
-  //     setLayoutResponse(data);
-
-  //   } catch (error) {
-  //     console.error('Error adding seat layout:', error.message);
-  //   }
-  // };
-
-
+ 
   
   const calculateTimeDifference = (arrivalTime, dropTime) => {
     const arrivalDate = new Date(arrivalTime);
@@ -292,11 +236,7 @@ const addSeatLayout = async () => {
   // const [priceFilter, setPriceFilter] = useState(10000); // Default max value
   const [operatorFilter, setOperatorFilter] = useState('');
 
-  // const filteredResults = searchResults.filter(bus => {
-  //   const withinPrice = bus.Price.BasePrice <= priceFilter;
-  //   const matchesOperator = operatorFilter ? bus.TravelName === operatorFilter : true;
-  //   return withinPrice && matchesOperator;
-  // });
+ 
 
   const filteredResults = searchResults.filter(bus => {
     // Ensure the Price and BasePrice exist before filtering
@@ -340,14 +280,7 @@ const addSeatLayout = async () => {
               <h6>{from} - {to}</h6>
             </div>
           </h5>
-          {/* <span>
-            <i style={{ color: "#fff" }} className="ri-calendar-line"></i>
-            Depart Date: {selectedBusDate && (
-              <>
-                {selectedBusDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })}{' '}
-              </>
-            )}
-          </span> */}
+         
           <div className="search-functinality">
             <button onClick={responsiveFilter} className='filter-bus'><i className="ri-equalizer-line"></i> Filter</button>
             <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
@@ -400,52 +333,6 @@ const addSeatLayout = async () => {
     </div>
   )}
 </div>
-
-             
-            {/* <div className="pick-up">
-  <h6 onClick={togglePickupVisibility}>
-    <span>{from} </span>
-    <i className={`ri-arrow-${isPickupVisible ? 'up' : 'down'}-s-line down-aro`}></i>
-  </h6>
-    <div className="pick-fixed-main">
-    {isPickupVisible && searchResults.map((bus, index) => (
-    <div key={index} className="pick-list">
-        <div className="pickfixed">
-           <p>
-        <span style={{ fontWeight: "600" }}>Pick-Up Point & Time:</span>
-        <small style={{ fontSize: '0.8vmax' }}>{bus.BoardingPoints.map((point, i) => (
-          <div key={i}>
-            {point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})
-          </div>
-        ))}
-        </small>
-      </p>
-        </div>
-    </div>
-  ))}
-    </div>
-</div>
-
-<div className="drop-up">
-  <h6 onClick={toggleDropVisibility}>
-    <span>{to} </span>
-    <i className={`ri-arrow-${isDropVisible ? 'up' : 'down'}-s-line down-aro`}></i>
-  </h6>
-  {isDropVisible && searchResults.map((bus, index) => (
-    <div key={index} className="drop-list">
-      <p>
-        <span style={{ fontWeight: "500" }}>Drop Points & Time:</span>
-        <small style={{ fontSize: '0.8vmax' }}>{bus.DroppingPoints.map((point, i) => (
-          <div key={i}>
-            {point.CityPointLocation} ({convertUTCToIST(bus.ArrivalTime)})
-          </div>
-        ))}</small>
-      </p>
-    </div>
-  ))}
-</div> */}
-
-
 
 
           </div>
@@ -534,7 +421,7 @@ const addSeatLayout = async () => {
                     </h6>
                   </div>
                   <div className="price">
-                    <h4>₹{Math.round(bus.Price.BasePrice * (1 - 0.18))}</h4>
+                    <h4>₹{Math.round(bus.Price.PublishedPrice * (1 - 0.18))}</h4>
                     <h6 style={{ textDecorationLine: 'line-through', color: "green" }}>₹1000</h6>
                   </div>
                 </div>
@@ -565,68 +452,6 @@ const addSeatLayout = async () => {
         )}
       </div>
     </div>
-
-         
-
-        {/* Bus lists */}
-        {/* <div className="btm-lists">
-          <div className="bus-divs">
-            {status === 'loading' && <p>Loading...</p>}
-            {status === 'failed' && <p className='text-danger'>{error}</p>}
-            {status === 'succeeded' && (
-              <>
-                {filteredResults.map((bus, index) => (
-                  <div className="one" key={index}>
-                    <div className="one-top">
-                      <div className="name">
-                        <span>{bus.BusType}</span>
-                        <img width={40} src={busImg} alt="Bus" />
-                        <h5>{bus.TravelName}</h5>
-                      </div>
-                      <div className="drop-time">
-                        <h6><small>ARRIVAL TIME: </small><span style={{ fontSize: "1.2vmax" }}>
-                          {convertUTCToIST(bus.ArrivalTime)}
-                        </span></h6>
-                        <p style={{ fontSize: "1.2vmax", color: "red", borderBottom: "1px solid red" }}>
-                          {calculateTimeDifference(bus.ArrivalTime, bus.DepartureTime)}
-                        </p>
-                        <h6><small>DROP TIME: </small><span style={{ fontSize: "1.2vmax" }}>
-                          {convertUTCToIST(bus.DepartureTime)}
-                        </span></h6>
-                      </div>
-                      <div className="price">
-                      <h4>₹{Math.round(bus.Price.BasePrice * (1 - 0.18))}</h4>
-                    <h6 style={{ textDecorationLine: 'line-through', color: "green" }}>₹1000</h6>
-                      </div>
-                    </div>
-
-                    <div className="one-btm">
-                      <div className="rating">
-                        <a style={{ textDecoration: "none", color: 'green' }}>Available Seats {bus.AvailableSeats                        }</a>
-                      </div>
-                      <button className="btn btn-primary" onClick={() => handleSelectSeat(index)}>Select Seat</button>
-                    </div>
-
-                    {visibleLayout !== null && (
-                      <div className="overlay" onClick={() => setVisibleLayout(null)}>
-                        <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
-                          <div className="tppp">
-                            <h5>{from}-{to} <br />
-                              <span style={{ fontSize: "0.8vmax", color: "green" }}>({bus.TravelName})</span>
-                            </h5>
-                            <i onClick={() => setVisibleLayout(null)} className="ri-close-line"></i>
-                          </div>
-                          <BusLayout layoutResponse={layoutResponse} />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </>
-            )}
-          </div>
-        </div> */}
-
 
 
       </div>
