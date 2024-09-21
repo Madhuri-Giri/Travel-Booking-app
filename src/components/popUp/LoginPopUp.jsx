@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 // LoginPopUp Component
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
@@ -6,6 +8,8 @@ import { Link } from 'react-router-dom';
 import "../popUp/LoginPopUp.css";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch , useSelector } from 'react-redux'; // <-- Import useDispatch from Redux
+import { setLoginData , setTransactionDetails } from '../../redux-toolkit/slices/loginSlice'; // <-- Import the setLoginData action
 
 const LoginPopUp = ({ showModal, onClose, prefilledMobile }) => {
   const [otpShown, setOtpShown] = useState(false);
@@ -15,6 +19,7 @@ const LoginPopUp = ({ showModal, onClose, prefilledMobile }) => {
   });
 
   const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Update formData.mobile if prefilledMobile changes
@@ -41,6 +46,14 @@ const LoginPopUp = ({ showModal, onClose, prefilledMobile }) => {
       if (response.ok) {
         localStorage.setItem('loginId', data.data.id);
         localStorage.setItem('loginData', JSON.stringify(data.data));
+
+         // save login API data on the Redux
+         dispatch(setLoginData({
+          // userData: data.data,
+          loginId: data.data.id,
+          loginData: data.data,
+          // transactionDetails: null, // To be updated after userDetailsHandler
+        }));
 
         toast.success('Login successful!', {
           position: "top-right",

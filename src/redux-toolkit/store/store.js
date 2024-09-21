@@ -9,6 +9,7 @@ import selectedSeatsReducer from '../bus/selectedSeatsSlice';
 import boardingReducer from "../bus/boardingSlice"
 import busSelectionReducer from "../bus/busSelectionSlice"
 import borddropReducer from "../../redux-toolkit/bus/borddropSlice"
+import loginSlice from '../slices/loginSlice'
 
 const store = configureStore ({
           reducer:{
@@ -22,6 +23,7 @@ const store = configureStore ({
                     boarding: boardingReducer,
                     busSelection: busSelectionReducer,
                     borddrop: borddropReducer,
+                    login: loginSlice,
                     }
 })
 export default store;

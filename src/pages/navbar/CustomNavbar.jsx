@@ -30,7 +30,7 @@ const CustomNavbar = () => {
         localStorage.removeItem('loginId');
         localStorage.removeItem('loginData');
         localStorage.removeItem('transactionNum');
-        localStorage.removeItem('transactionNum-Flight');
+        // localStorage.removeItem('transactionNum-Flight');
         localStorage.removeItem('transactionNum-bus');
         localStorage.removeItem('transactionNumHotel');
     };

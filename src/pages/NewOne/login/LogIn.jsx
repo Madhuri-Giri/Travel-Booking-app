@@ -1,12 +1,23 @@
+/* eslint-disable react/no-unescaped-entities */
 
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux'; // <-- Import useDispatch from Redux
 import "./LogIn.css";
 import loginLogo from "../../../assets/images/main logo.png"
 import { Link, useNavigate } from 'react-router-dom';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
 import { useLocation } from 'react-router-dom';
+import { setLoginData, setTransactionDetails } from '../../../redux-toolkit/slices/loginSlice'; // <-- Import the setLoginData action
 
 const LogIn = () => {
+
+  const loginData = useSelector((state) => state.login); // Assuming the slice is named 'login'
+  console.log('slice login data:', loginData);
+  console.log('usedetailss:', loginData.userData);
+  console.log('transactions details:', loginData.transactionDetails);
+  console.log('login id:', loginData.loginId);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [otpShown, setOtpShown] = useState(false);
@@ -20,14 +31,11 @@ const LogIn = () => {
     setOtpShown(!otpShown);
   };
 
-  
-
-
   const loginHandler = async (e) => {
     e.preventDefault();
-  
+
     const { state } = location;
-  
+
     try {
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/login', {
         method: 'POST',
@@ -36,17 +44,26 @@ const LogIn = () => {
         },
         body: JSON.stringify(formData)
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         console.log('login successful:', data);
         localStorage.setItem('loginId', data.data.id);
         localStorage.setItem('loginData', JSON.stringify(data.data));
-  
+
+        // save login datas on the Redux
+        dispatch(setLoginData({
+          // userData: data.data,
+          loginId: data.data.id,
+          loginData: data.data,
+          transactionDetails: null, // To be updated after userDetailsHandler
+        }));
+
+
         // Call the userDetailsHandler after setting the loginId
         await userDetailsHandler();
-  
+
         const redirectTo = state?.from ? state.from : '/flight-search';
         navigate(redirectTo);
       } else {
@@ -58,10 +75,12 @@ const LogIn = () => {
       setError('An error occurred. Please try again later.');
     }
   };
-  
+
 
   const userDetailsHandler = async () => {
     const loginId = localStorage.getItem('loginId');
+    // const loginId = loginData.loginId;   // get loginId from Redux (login API data) 
+    
     try {
       const requestBody = {
         user_id: loginId,
@@ -84,9 +103,13 @@ const LogIn = () => {
       if (data.result && data.transaction) {
         localStorage.setItem('transactionId', data.transaction.id);
         localStorage.setItem('transactionNum', data.transaction.transaction_num);
-        localStorage.setItem('transactionNum-Flight', data.transaction.transaction_num);
+        // localStorage.setItem('transactionNum-Flight', data.transaction.transaction_num);
         localStorage.setItem('transactionNum-bus', data.transaction.transaction_num);
         localStorage.setItem('transactionNumHotel', data.transaction.transaction_num);
+
+        // userdetails transaction data save on the redux
+        dispatch(setTransactionDetails(data.transaction));
+
       }
     } catch (error) {
       console.error('Error fetching user details:', error.message);
