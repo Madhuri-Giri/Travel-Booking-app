@@ -363,7 +363,7 @@ setCheckboxChecked(allFilled);
             IsVoucherBooking: true,
             transaction_num: transactionNum,
             transaction_id: transaction_id,
-            bookingId: bookingId,
+            bookingId: [bookingId],
             HotelRoomsDetails: [
               {
                   ChildCount: selectedRoom.ChildCount || 0,
