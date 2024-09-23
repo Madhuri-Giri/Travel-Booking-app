@@ -14,6 +14,13 @@
   margin: 0 auto;
 }
 
+.form-container{
+  /* background-color: #f8f9fa; */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
 .details-wrapper {
   display: flex;
   justify-content: space-between;
@@ -51,7 +58,13 @@
   margin-bottom: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+.booking-detail{
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 .card-title {
   font-size: 1.5em;
   margin-bottom: 10px;
@@ -176,13 +189,25 @@
   font-size: 1.2em;
 }
 
-.req_field label .passport_field label{
+.req_field .required_field {
   margin-left: 5px;
   font-weight: 500;
 }
+
+.passport_field label{
+  margin-left: 5px;
+  font-weight: 500;
+}
+
+.mid_name label{
+  margin-left: 5px;
+  font-weight: 500;
+}
+
 .passport_field label:after {
   content: none; 
 }
+
 .custom-placeholder {
   position: absolute;
   top: 0;

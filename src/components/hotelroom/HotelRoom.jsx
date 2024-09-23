@@ -5,7 +5,8 @@ import './HotelRoom.css';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import Timer from '../timmer/Timer';
-
+import { ToastContainer, toast } from 'react-toastify';  
+import 'react-toastify/dist/ReactToastify.css';  
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchHotelRooms } from '../../redux-toolkit/slices/hotelRoomSlice';
 import { blockHotelRooms } from '../../redux-toolkit/slices/hotelBlockSlice';
@@ -146,21 +147,24 @@ const HotelRoom = () => {
         
         try {
             const response = await dispatch(blockHotelRooms(hotelRoomsDetails)).unwrap();
-            alert('Room reserved successfully!');
+            
+            // Show success message
+            toast.success('Room reserved successfully!');  
         
-            // Pass BlockRoomResult and bookingStatus to the next page
+            // Pass the entire response to navigate
             navigate('/hotel-guest', {
                 state: { 
-                    hotelRoomsDetails: response.data.BlockRoomResult,
-                    bookingStatus: response.booking_status 
+                    blockRoomResult: response.data.BlockRoomResult, // Pass the BlockRoomResult
+                    bookingStatus: response.booking_status // Pass the booking_status
                 }
             });
         
         } catch (error) {
             console.error('Error:', error);
+            toast.error('Failed to reserve the room. Please try again.');
         }
         
-        
+    
         isProcessing = false;
     };
 
@@ -186,41 +190,49 @@ const HotelRoom = () => {
             <CustomNavbar />
             <Timer />
             <div className='room_bg'>
-            <Container>
-            <div className='room_heading'>
-                <h1>Available Hotel Rooms</h1>
-                </div>
-                {loading && <p>Loading hotel rooms...</p>}
-                {/* {error && <p>Error: {error}</p>} */}
-                {hotelRooms.length === 0 && !loading && <p>No hotel room data available.</p>}
-                {hotelRooms.map((room, index) => (
-                    <Card key={index} className="mb-4">
-                        <Card.Body>
-                            <h4>{room.RoomTypeName}</h4>
-                            <Card.Text>
-                                <p><b>Price:</b> INR {room.Price.RoomPrice.toFixed(2)}</p>
-                                <p><b>Amenities:</b> {room.Amenities.join(', ')}</p>
-                                <p><b>Smoking Preference:</b> {room.SmokingPreference}</p>
-                                <Accordion>
-                                    <Accordion.Item eventKey="0">
-                                        <Accordion.Header><b>Cancellation Policy</b></Accordion.Header>
-                                        <Accordion.Body>
-                                            <p>{cleanCancellationPolicy(room.CancellationPolicy)}</p>
-                                        </Accordion.Body>
-                                    </Accordion.Item>
-                                </Accordion>
-                            </Card.Text>
-                            <button className='reserve_button' onClick={(event) => { 
-                                setSelectedRoom(room); 
-                                roomblockHandler(event, index); 
-                            }}>
-                                Reserve
-                            </button>
-                        </Card.Body>
-                    </Card>
-                ))}
-            </Container>
+                <Container className='room-card-bg'>
+                    <div className='room_heading'>
+                        <h3>Available Hotel Rooms</h3>
+                    </div>
+                    {loading && <p>Loading hotel rooms...</p>}
+                    {hotelRooms.length === 0 && !loading && <p>No hotel room data available.</p>}
+                    {hotelRooms.map((room, index) => (
+                        <div key={index}>
+                            <Card className="mb-4">
+                                <Card.Body>
+                                    <h4>{room.RoomTypeName}</h4>
+                                    <Card.Text>
+                                        <div className="room-price">
+                                            <p><b>Price:{room.Price.RoomPrice.toFixed(2)}</b></p>
+                                        </div>
+                                        <p><b>Amenities:</b> {room.Amenities.join(', ') || 'None'}</p>
+                                        <p><b>Smoking Preference:</b> {room.SmokingPreference || 'No Preference'}</p>
+                                        {/* <p><b>Bed Types:</b> {room.BedTypes.length > 0 ? room.BedTypes.map(bed => bed.BedTypeDescription).join(', ') : 'None'}</p>
+                                        <p><b>Included:</b> {room.Inclusion.join(', ') || 'None'}</p>
+                                        <p><b>Last Cancellation Date:</b> {new Date(room.LastCancellationDate).toLocaleDateString()}</p> */}
+                                        <Accordion>
+                                            <Accordion.Item eventKey="0">
+                                                <Accordion.Header><b>Cancellation Policy</b></Accordion.Header>
+                                                <Accordion.Body>
+                                                    <p>{cleanCancellationPolicy(room.CancellationPolicy)}</p>
+                                                </Accordion.Body>
+                                            </Accordion.Item>
+                                        </Accordion>
+                                    </Card.Text>
+
+                                    <button className='reserve_button' onClick={(event) => { 
+                                        setSelectedRoom(room); 
+                                        roomblockHandler(event, index); 
+                                    }}>
+                                        Reserve
+                                    </button>
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    ))}
+                </Container>
             </div>
+
             <Footer />
         </>
     );
