@@ -222,6 +222,18 @@
   background-color: #004d40;
   transform: scale(1.05);
 }
+
+.hidden-policy {
+  display: none;
+}
+
+@media print {
+  .hidden-policy {
+    display: block;
+  }
+}
+
+
 /* Media Queries for Responsive Design */
 @media (max-width: 768px) {
   .section_r{

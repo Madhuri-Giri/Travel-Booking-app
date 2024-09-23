@@ -14,7 +14,9 @@ import Footer from "../../pages/footer/Footer";
 import { RiTimerLine } from "react-icons/ri";
 import EnterOtp from '../popUp/EnterOtp';
 import Timer from '../timmer/Timer';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { searchHotels} from '../../redux-toolkit/slices/hotelSlice';
+import {fetchHotelDetails} from '../../redux-toolkit/slices/hotelInfoSlice';
 // Rating star Logic
 const renderStar = (rating) => {
   const totalStars = 5;
@@ -32,15 +34,26 @@ const renderStar = (rating) => {
 const HotelList = () => {
   const location = useLocation();
   const { searchResults } = location.state || {};
-  const [hotels, setHotels] = useState([]);
-  const [error, setError] = useState(null);
-  // const navigate = useNavigate();
+  // const [hotels, setHotels] = useState([]);
+  // const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const [sortOption, setSortOption] = useState('name');
   const { position: userPosition, error: geoError } = useGeolocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [startDate, setStartDate] = useState(null);
   const [destination, setDestination] = useState("");
+  
+  const dispatch = useDispatch();
+  // Updated selector to access hotelSearch state
+  const { hotels = [], srdvType, resultIndexes, srdvIndexes, hotelCodes, traceId,  
+     loading = false, error = null } = useSelector((state) => state.hotelSearch || {});
+
+  console.log('hotels data', hotels);
+
+  useEffect(() => {
+    dispatch(searchHotels());
+}, [dispatch]);
 
   // IGST Rate
   // const IGST_RATE = 0.18; // 18% IGST
@@ -64,171 +77,101 @@ const HotelList = () => {
   };
 
   const offset = currentPage * hotelsPerPage;
-  const currentHotels = hotels.slice(offset, offset + hotelsPerPage);
-
-
+  // const currentHotels = hotels.slice(offset, offset + hotelsPerPage);
   // ---------------------------------------------
-
-  // const [timer, setTimer] = useState(600000); // 10 minutes in milliseconds
-  const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const endTime = localStorage.getItem('h-timerEndTime');
-  //   const now = Date.now();
-    
-  //   let remainingTime = endTime ? parseInt(endTime) - now : 600000;
-
-  //   // Log the remaining time to check if it's calculated correctly
-  //   console.log('Initial remaining time:', remainingTime);
-
-  //   if (remainingTime <= 0) {
-  //     navigate('/hotel-search'); // Redirect if the timer has already expired
-  //     return;
-  //   }
-
-  //   setTimer(remainingTime);
-
-  //   const countdown = setInterval(() => {
-  //     setTimer((prev) => {
-  //       const updatedTime = prev - 1000;
-
-  //       // Log the updated time to check if it's decreasing as expected
-  //       console.log('Updated time:', updatedTime);
-
-  //       if (updatedTime <= 0) {
-  //         clearInterval(countdown);
-  //         localStorage.removeItem('h-timerEndTime'); // Clean up localStorage
-  //         navigate('/hotel-search'); // Redirect when the timer expires
-  //         return 0;
-  //       }
-
-  //       // Update end time in localStorage
-  //       localStorage.setItem('h-timerEndTime', Date.now() + updatedTime);
-  //       return updatedTime;
-  //     });
-  //   }, 1000);
-
-  //   return () => clearInterval(countdown); // Clean up interval on component unmount
-  // }, [navigate]);
-
-  // const formatTime = (milliseconds) => {
-  //   const totalSeconds = Math.floor(milliseconds / 1000);
-  //   const minutes = Math.floor(totalSeconds / 60);
-  //   const seconds = totalSeconds % 60;
-  //   return `${minutes} min ${seconds} sec left`;
-  // };
-
-
-  // ----------------------------------------------
-
-  const navigateSearch = () => {
-    navigate('/hotel-search');
-  };
-
+  
   // ----------------for filter----------------
 
+ 
   const filterHotelsByDestination = (hotels, destination) => {
     if (!destination) return hotels;
     return hotels.filter(hotel =>
       hotel.HotelName.toLowerCase().includes(destination.toLowerCase())
     );
   };
-  
 
-  useEffect(() => {
-    let filteredHotels = filterHotelsByDestination(searchResults || [], destination);
-    
-    // Sort the filtered hotels based on the selected option
-    const sortedHotels = [...filteredHotels];
+  const filteredHotels = filterHotelsByDestination(hotels, destination);
+
+  const sortedHotels = [...filteredHotels].sort((a, b) => {
     switch (sortOption) {
       case 'name':
-        sortedHotels.sort((a, b) => a.HotelName.localeCompare(b.HotelName));
-        break;
+        return a.HotelName.localeCompare(b.HotelName);
       case 'rating':
-        sortedHotels.sort((a, b) => b.StarRating - a.StarRating);
-        break;
+        return b.StarRating - a.StarRating;
       case 'price-asc':
-        sortedHotels.sort((a, b) => (a.Price?.OfferedPriceRoundedOff || 0) - (b.Price?.OfferedPriceRoundedOff || 0));
-        break;
+        return (a.Price?.OfferedPriceRoundedOff || 0) - (b.Price?.OfferedPriceRoundedOff || 0);
       case 'price-desc':
-        sortedHotels.sort((a, b) => (b.Price?.OfferedPriceRoundedOff || 0) - (a.Price?.OfferedPriceRoundedOff || 0));
-        break;
+        return (b.Price?.OfferedPriceRoundedOff || 0) - (a.Price?.OfferedPriceRoundedOff || 0);
       case 'distance':
         if (userPosition) {
-          sortedHotels.sort((a, b) => {
-            const distanceA = haversineDistance(userPosition, {
-              latitude: parseFloat(a.Latitude),
-              longitude: parseFloat(a.Longitude),
-            });
-            const distanceB = haversineDistance(userPosition, {
-              latitude: parseFloat(b.Latitude),
-              longitude: parseFloat(b.Longitude),
-            });
-            return distanceA - distanceB;
-          });
+          return haversineDistance(userPosition, { latitude: parseFloat(a.Latitude), longitude: parseFloat(a.Longitude) }) -
+                 haversineDistance(userPosition, { latitude: parseFloat(b.Latitude), longitude: parseFloat(b.Longitude) });
         }
-        break;
+        return 0;
       default:
-        break;
+        return 0;
     }
-    setHotels(sortedHotels);
-  }, [searchResults, destination, sortOption, userPosition]);
-  
+  });
 
-  useEffect(() => {
-    if (searchResults && searchResults.length > 0) {
-      setHotels(searchResults);
-    } else {
-      setError("No hotel details found.");
-    }
-  }, [searchResults]);
+// Calculate pagination based on sorted and filtered hotels
+const totalFilteredHotels = sortedHotels.length;
+// const pageCount = Math.ceil(totalFilteredHotels / hotelsPerPage);
 
-  // -----------API start --------------------
+// Current hotels for the current page
+const currentHotels = sortedHotels.slice(offset, offset + hotelsPerPage);
 
   const fetchHotelInfo = async (index) => {
+    console.log('Fetching hotel info for list index:', index);
 
-    const hotel = hotels[index];
-    try {
-      const requestData = {
-        ResultIndex: "9",
-        SrdvIndex: "SrdvTB",
-        SrdvType: "SingleTB",
-        HotelCode: "92G|DEL",
-        TraceId: "1",
-      };
-
-      const response = await fetch("https://sajyatra.sajpe.in/admin/api/hotel-info", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data && data.HotelInfoResult && data.HotelInfoResult.HotelDetails) {
-        console.log('hotel-info API Response:', data.HotelInfoResult.HotelDetails);
-        // Save hotel details in local storage
-        localStorage.setItem("hotelDetails", JSON.stringify(data.HotelInfoResult.HotelDetails));
-
-        navigate("/hotel-description", { state: { hotelDetails: data.HotelInfoResult.HotelDetails } });
-      } else {
-        setError(data.message || "No hotel details found.");
-      }
-    } catch (error) {
-      setError("Failed to fetch hotel details. Please try again later.");
+    // Check if index is valid
+    if (index < 0 || index >= hotels.length) {
+        console.error('Invalid hotel index:', index);
+        return;
     }
-  };
 
-// --------------
+    // Accessing values from the arrays
+    const resultIndex = resultIndexes[index];
+    const srdvIndex = srdvIndexes[index];
+    const hotelCode = hotelCodes[index];
+    
+    // Log the accessed values
+    console.log('Accessing values at index:', index);
+    console.log('ResultIndex:', resultIndex);
+    console.log('SrdvIndex:', srdvIndex);
+    console.log('HotelCode:', hotelCode);
 
+    // Ensure values are defined
+    if (resultIndex === undefined || srdvIndex === undefined || hotelCode === undefined) {
+        console.error('One or more values are undefined. Check your data arrays.');
+        return;
+    }
 
+    const requestData = {
+        ResultIndex: resultIndex,
+        SrdvIndex: srdvIndex,
+        SrdvType: srdvType,
+        HotelCode: hotelCode,
+        TraceId: traceId,
+    };
 
+    console.log('Request Data:', requestData); 
+
+    try {
+        const hotelDetails = await dispatch(fetchHotelDetails(requestData)).unwrap();
+        navigate("/hotel-description", { 
+          state: { 
+            hotelDetails, 
+            hotelIndex: index 
+          } 
+        });;
+    } catch (error) {
+        console.error('Failed to fetch hotel details:', error);
+        if (error.response) {
+            console.error('Server responded with:', error.response.data);
+        }
+    }
+};
+// ----------------------------------------------------------------
 const HandelHotelInfo = async (index) => {
   const loginId = localStorage.getItem('loginId');
   console.log('Current loginId:', loginId);
@@ -241,9 +184,8 @@ const HandelHotelInfo = async (index) => {
     return;
   }
 
-  await fetchHotelInfo(destination, index);
+  await fetchHotelInfo(index);
 };
-
 
   const closeOtpOverlay = () => {
     setShowOtpOverlay(false); 
@@ -321,16 +263,11 @@ const HandelHotelInfo = async (index) => {
     setInputs((values) => ({ ...values, [name]: date }));
   };
 
-
   return (
     <>
       <CustomNavbar />
-      
       <Timer />
-      {/* <div className="timer">
-          <div> <p><RiTimerLine /> Redirecting in {formatTime(timer)}...</p> </div>
-        </div> */}
-
+      
       <section className="hotelMainsec">
         
         <div className="listContainer">
@@ -350,7 +287,6 @@ const HandelHotelInfo = async (index) => {
                        value={destination}
                         onChange={(e) => setDestination(e.target.value)}
                                   />
-
                     </div>
 
                     <div className="listItem">
@@ -453,7 +389,7 @@ const HandelHotelInfo = async (index) => {
                 <Col lg={9} className="listResultcol">
                   <div className="listResult">
                     {geoError && <p className="errorMessage">{geoError}</p>}
-                    {error && <p className="errorMessage">{error}</p>}
+                    {/* {error && <p className="errorMessage">{error}</p>} */}
                     {hotels.length > 0 ? (
                       currentHotels.map((hotel, index) => (
                         <div key={hotel.HotelCode} className="searchItem">
@@ -491,9 +427,13 @@ const HandelHotelInfo = async (index) => {
                               </span>
                                 <div>
                               <span className="hotelTax"> No Includes taxes and fees</span>
-                              <button onClick={()=>HandelHotelInfo(index)} className="CheckButton">
+                              {/* <button onClick={()=>HandelHotelInfo(index)} className="CheckButton">
                                 See Details
-                              </button>
+                              </button> */}
+                    <button key={hotel.id} onClick={() =>HandelHotelInfo (index)}className="CheckButton">
+                      View Details
+                          </button>
+
                               </div>
                             </div>
                           </div>

@@ -1,3 +1,6 @@
+
+
+
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -25,25 +28,33 @@ const ReviewBooking = () => {
 
   const selectedSeatCount = localStorage.getItem('selectedSeatCount') || 0;
 
-   const travelName = localStorage.getItem('selectedTravelName')
-
+  const travelName = localStorage.getItem('travelName')
+  const [storedPassengerDetails, setStoredPassengerDetails] = useState([]);
   const traceId = useSelector((state) => state.bus.traceId);
   // const resultIndex = useSelector((state) => state.bus.resultIndex);
 
- const selectedBusIndex = localStorage.getItem('selectedBusIndex')
- 
- 
+  const selectedBusIndex = localStorage.getItem('selectedBusIndex')
+
+
   const location = useLocation();
-  const { selectedBoardingPoint, selectedDroppingPoint, selectedBusSeatData, totalPrice  } = location.state || {};
+  const { selectedBoardingPoint, selectedDroppingPoint, selectedBusSeatData, totalPrice } = location.state || {};
+
+  const [bookingId, setBookingId] = useState(null);
+
+  const igstRate = selectedBusSeatData[0]?.Price?.GST?.IGSTRate || 0;
+
+  const igstAmount = Math.round((totalPrice * igstRate) / 100);
+  const priceWithIGST = totalPrice + igstAmount;
+
+
+  // console.log("Price with IGST:", priceWithIGST);
+
+
+  // ---------------------------------------------------------------------------------------------------------
 
   const boardingPointIndex = selectedBoardingPoint || null;
   const droppingPointIndex = selectedDroppingPoint || null;
- console.log('boardingPointIndex', boardingPointIndex)
- console.log('droppingPointIndex', droppingPointIndex)
-
-
-
-  console.log('selectedBusSeatData review',selectedBusSeatData )
+  
   const seatNames = selectedBusSeatData?.map(seat => seat.SeatName).join(', ') || 'No seats selected';
 
 
@@ -52,13 +63,6 @@ const ReviewBooking = () => {
 
   const [payLoading, setPayLoading] = useState(false);
   const [loading, setLoading] = useState(false)
-
-  // const [passengerCountt, setPassengerCountt] = useState(() => Number(localStorage.getItem('passengerCount')) || 0);
-  // const [selectedSeatsCountt, setSelectedSeatsCountt] = useState(() => Number(localStorage.getItem('selectedSeatsCount')) || 0);
-
-  const [passengerCountt, setPassengerCountt] = useState(0);
-  const [selectedSeatsCountt, setSelectedSeatsCountt] = useState(0);
-
   //  -------------------------------------------get seat and passenger counts ---------------------------------------------------------------
 
   const initialFormData = {
@@ -82,25 +86,25 @@ const ReviewBooking = () => {
 
 
   const blockHandler = async (e) => {
-    e.preventDefault(); 
-  
+    e.preventDefault();
+
     const passengers = (selectedBusSeatData || []).map((seat, index) => ({
       LeadPassenger: index === 0,
       PassengerId: index,
       Title: "null",
       FirstName: formData.firstName || '',
       LastName: formData.lastName || '',
-      Email: "example@example.com", 
-      Phoneno: "9643737502", 
+      Email: newContactData.email,
+      Phoneno: newContactData.contact,
       Gender: formData.gender || '',
       IdType: null,
       IdNumber: null,
       Address: formData.address || '',
       Age: formData.age || '',
       Seat: {
-        ColumnNo: seat.ColumnNo, 
-        RowNo: seat.RowNo, 
-        SeatName: seat.SeatName, 
+        ColumnNo: seat.ColumnNo,
+        RowNo: seat.RowNo,
+        SeatName: seat.SeatName,
         Height: seat.Height,
         IsLadiesSeat: seat.IsLadiesSeat,
         IsMalesSeat: seat.IsMalesSeat,
@@ -137,21 +141,25 @@ const ReviewBooking = () => {
         },
       },
     }));
-  
+
     const requestData = {
+      // TraceId: "1",
+      // ResultIndex: "1",
+      // BoardingPointId: "1",
+      // DroppingPointId: "1",
       TraceId: traceId,
       ResultIndex: selectedBusIndex,
       BoardingPointId: selectedBoardingPoint.index, 
       DroppingPointId: selectedDroppingPoint.index, 
-      RefID: "1", 
+     
+      RefID: "1",
       Passenger: passengers,
     };
-  
-    console.log("Payload to be sent:", JSON.stringify(requestData, null, 2));
-  
+
+
     try {
-      console.log("Sending request to API with payload:", JSON.stringify(requestData, null, 2));
-      
+      // console.log("Sending request to API with payload:", JSON.stringify(requestData, null, 2));
+
       const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-block", {
         method: "POST",
         headers: {
@@ -159,54 +167,47 @@ const ReviewBooking = () => {
         },
         body: JSON.stringify(requestData),
       });
-  
+
       if (!response.ok) {
-        const errorMessage = result.result.api_response.Error.ErrorMessage;
+        const errorResult = await response.json();
+        const errorMessage = errorResult.api_response.Error.ErrorMessage || 'Booking failed';
         console.error("Booking error:", errorMessage);
-        alert(errorMessage); 
-        return; 
+        alert(errorMessage);
+        return;
       }
-  
-  
+
       const result = await response.json();
       console.log("Block Response:", result);
-  
+
+
       setPassengers((prev) => [...prev, ...passengers]);
       setFormData(initialFormData);
-      setPassengerCount((prev) => prev + passengers.length); 
+      setPassengerCount((prev) => prev + passengers.length);
+
+
+      const id = result.result.Booking_Status[0]?.id;
+      setBookingId(id);
+
+      setStoredPassengerDetails([...passengers]);
+
     } catch (error) {
       console.error("Error adding passengers:", error);
     }
   };
-  
-  
-  
-  
+
+
+
+
+
+
+
 
 
   // -----------------------------------------------------------------------------------------------------------------------------------------
 
   const [paymentDetails, setPaymentDetails] = useState(null);
-  // const [email, setEmail] = useState('');
-  // const [phone, setPhone] = useState('');
-  const [totalFare, setTotalFare] = useState(0);
+  // const [totalFare, setTotalFare] = useState(0);
   const navigate = useNavigate();
-
-
-  // const [passengerData, setPassengerData] = useState([]);
-
-  // useEffect(() => {
-  //   const storedData = JSON.parse(localStorage.getItem('passengerData'));
-  //   if (storedData && Array.isArray(storedData) && storedData.length > 0) {
-  //     setPassengerData(storedData);
-  //   } else {
-  //     setPassengerData([]);
-  //   }
-  // }, []);
-
-
-
-
 
   const timerEndTime = localStorage.getItem('timerEndTime')
   // ---------------------------new payment ---------------------------
@@ -244,22 +245,13 @@ const ReviewBooking = () => {
 
   const newcontactHandler = (e) => {
     e.preventDefault();
-
     localStorage.setItem('newContactData', JSON.stringify(newContactData));
-
     setNewContactData(newContactInitialData);
     setIsContactSubmitted(true);
-    // toast.success("Contact details submitted successfully!");
   }
 
   //  ------------------------------------------------------------------
 
-  useEffect(() => {
-    const savedTotalPrice = localStorage.getItem('totalPrice');
-    if (savedTotalPrice) {
-      setTotalFare(parseFloat(savedTotalPrice));
-    }
-  }, []);
 
   const back = () => {
     navigate('/bus-list');
@@ -269,18 +261,14 @@ const ReviewBooking = () => {
   const fetchPaymentDetails = async () => {
     try {
       const loginId = localStorage.getItem('loginId');
-      const roundedAmount = Math.round(totalPayment);
       const transactionNoBus = localStorage.getItem('transactionNum');
-      const busSavedId = localStorage.getItem('busSavedId');
 
-
-      // console.log('Sending data to API:', { amount: roundedAmount, user_id: loginId });
 
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
-        amount: roundedAmount,
+        amount: priceWithIGST,
         user_id: loginId,
         transaction_num: transactionNoBus,
-        bus_booking_id: [busSavedId],
+        bus_booking_id: [bookingId],
       });
 
       console.log('API response:', response.data);
@@ -300,61 +288,24 @@ const ReviewBooking = () => {
     }
   };
 
-
-
-  // useEffect(() => {
-  //   const updateCounts = () => {
-  //     const passengerCount = Number(localStorage.getItem('passengerCount')) || 0;
-  //     const selectedSeatsCount = Number(localStorage.getItem('selectedSeatsCount')) || 0;
-
-
-  //     setPassengerCountt(passengerCount);
-  //     setSelectedSeatsCountt(selectedSeatsCount);
-  //   };
-
-  //   updateCounts(); // Initial fetch
-
-  //   const intervalId = setInterval(updateCounts, 1000);
-
-  //   return () => clearInterval(intervalId); 
-  // }, []);
-
-  // const isFormValid = newContactData.name && newContactData.email && newContactData.contact;
-  // const areCountsEqual = passengerCountt === selectedSeatsCountt;
-
-  // const isButtonDisabled = !isFormValid || !areCountsEqual;
-
   // --------------------------------
 
-
   const handlePayment = async () => {
-    // const passengerCount = Number(localStorage.getItem('passengerCount')) || 0;
-    // const selectedSeatsCount = Number(localStorage.getItem('selectedSeatsCount')) || 0;
-
-   
-
-    // Check if values are equal
-    // if (passengerCount !== selectedSeatsCount) {
-    //   alert('Please add Passenger details according to seats selected.');
-    //   return;
-    // }
-
-    // Check if contact details are filled
-    if (!newContactData.name || !newContactData.email || !newContactData.contact) {
-      alert('Please fill in your contact details before proceeding to payment.');
-      return;
-    }
 
     const loginId = localStorage.getItem('loginId');
+
+
     if (!loginId) {
       navigate('/enter-number', { state: { from: location } });
       return;
     }
 
     try {
+         
       setLoading(true);
-
+       
       const paymentData = await fetchPaymentDetails();
+
       if (!paymentData) return;
 
       const options = {
@@ -368,30 +319,30 @@ const ReviewBooking = () => {
         handler: async function (response) {
           console.log('Payment successful', response);
 
-          localStorage.setItem('payment_id', response.razorpay_payment_id);
+          localStorage.setItem('payment_id', response.razorpay_payment_id
+          );
           localStorage.setItem('transaction_id', options.transaction_id);
 
           setLoading(true);
 
-          try {
-            await updateHandlePayment();
+        try {
+          await updateHandlePayment();
 
-            setPayLoading(true);
 
-            await bookHandler();
-            await busPaymentStatus();
+          await bookHandler();
+          await busPaymentStatus();
+        } catch (error) {
+          console.error('Error during updateHandlePayment or bookHandler:', error.message);
+          alert('An error occurred during processing. Please try again.');
+        } finally {
+          setLoading(false);
+        }
+      },
 
-          } catch (error) {
-            console.error('Error during updateHandlePayment or bookHandler:', error.message);
-            alert('An error occurred during processing. Please try again.');
-          } finally {
-            setLoading(false);
-          }
-        },
         prefill: {
-          username: newContactData.name || 'pallavi',
-          email: newContactData.email || 'pallavi@gmail.com',
-          mobile: newContactData.contact || '9999999999',
+          username: 'pallavi',
+          email: 'pallavi@gmail.com',
+          mobile: '9999999999',
         },
         notes: {
           address: 'Indore',
@@ -412,6 +363,7 @@ const ReviewBooking = () => {
       alert('An error occurred during payment setup. Please try again.');
     }
   };
+  
 
 
 
@@ -452,162 +404,82 @@ const ReviewBooking = () => {
       const status = data.data.status;
       console.log('statusBus', status);
 
-
+    
     } catch (error) {
       console.error('Error updating payment details:', error.message);
       throw error;
     }
   };
 
-
   //  ----------------------------book api-----------------------------------
 
-  // const bookHandler = async () => {
-  //   try {
-  //     const transactionNoBus = localStorage.getItem('transactionNum');
-  //     const busSavedId = localStorage.getItem('busSavedId');
-  //     const transaction_id = localStorage.getItem('transaction_id');
-  //     const selectedBusSeatData = JSON.parse(localStorage.getItem('selectedBusSeatData')) || [];
-  //     const busPassengerData = JSON.parse(localStorage.getItem('busPassengerData')) || [];
 
-
-  //     const seatDataMap = new Map();
-  //     selectedBusSeatData.forEach(seat => {
-  //       seatDataMap.set(seat.ColumnNo, seat);
-  //     });
-
-  //     const passengersData = busPassengerData.map(passenger => {
-  //       const seat = seatDataMap.get(passenger.Seat.ColumnNo) || {};
-  //       return {
-  //         LeadPassenger: passenger.LeadPassenger,
-  //         PassengerId: 0,
-  //         Title: "null",
-  //         FirstName: passenger.FirstName,
-  //         LastName: passenger.LastName,
-  //         Email: passenger.Email,
-  //         Phoneno: passenger.Phoneno,
-  //         Gender: passenger.Gender,
-  //         IdType: passenger.IdType,
-  //         IdNumber: passenger.Idnumber,
-  //         Address: passenger.Address,
-  //         Age: passenger.Age,
-  //         Seat: {
-  //           ColumnNo: seat.ColumnNo,
-  //           Height: seat.Height,
-  //           IsLadiesSeat: seat.IsLadiesSeat,
-  //           IsMalesSeat: seat.IsMalesSeat,
-  //           IsUpper: seat.IsUpper,
-  //           RowNo: seat.RowNo,
-  //           SeatFare: seat.SeatFare,
-  //           SeatIndex: seat.SeatIndex,
-  //           SeatName: seat.SeatName,
-  //           SeatStatus: seat.SeatStatus,
-  //           SeatType: seat.SeatType,
-  //           Width: seat.Width,
-  //           Price: {
-  //             CurrencyCode: seat.Price?.CurrencyCode,
-  //             BasePrice: seat.Price?.BasePrice,
-  //             Tax: seat.Price?.Tax,
-  //             OtherCharges: seat.Price?.OtherCharges,
-  //             Discount: seat.Price?.Discount,
-  //             PublishedPrice: seat.Price?.PublishedPrice,
-  //             PublishedPriceRoundedOff: seat.Price?.PublishedPriceRoundedOff,
-  //             OfferedPrice: seat.Price?.OfferedPrice,
-  //             OfferedPriceRoundedOff: seat.Price?.OfferedPriceRoundedOff,
-  //             AgentCommission: seat.Price?.AgentCommission,
-  //             AgentMarkUp: seat.Price?.AgentMarkUp,
-  //             TDS: seat.Price?.TDS,
-  //             GST: seat.Price?.GST || {
-  //               CGSTAmount: 0,
-  //               CGSTRate: 0,
-  //               CessAmount: 0,
-  //               CessRate: 0,
-  //               IGSTAmount: 0,
-  //               IGSTRate: 18,
-  //               SGSTAmount: 0,
-  //               SGSTRate: 0,
-  //               TaxableAmount: 0
-  //             }
-  //           },
-  //         },
-  //       };
-  //     });
-
-
-  //     const traceId = localStorage.getItem('traceId');
-  //     const storedBusDetails = localStorage.getItem('selectedBusDetails');
-  //     const BoardingPointId = localStorage.getItem('selectedBoardingPointIndex')
-  //     const DroppingPointId = localStorage.getItem('selectedDroppingPointIndex')
-  //     // console.log('BoardingPointId', BoardingPointId)
-
-
-  //     if (!traceId) {
-  //       throw new Error('TraceId not found in localStorage');
-  //     }
-
-  //     let selectedBusResult = null;
-
-  //     if (storedBusDetails) {
-  //       const parsedBusDetails = JSON.parse(storedBusDetails);
-  //       selectedBusResult = parsedBusDetails.selctedBusResult;
-
-  //       console.log('Selected Bus Result:', selectedBusResult);
-  //     } else {
-  //       throw new Error('No bus details found in localStorage');
-  //     }
-
-  //     if (!selectedBusResult) {
-  //       throw new Error('SelectedBusResult not found in bus details');
-  //     }
+  
 
 
 
 
-  //     const requestData = {
-  //       ResultIndex: selectedBusResult,
-  //       TraceId: traceId,
-  //       BoardingPointId: BoardingPointId,
-  //       DroppingPointId: DroppingPointId,
-  //       RefID: "1",
-  //       transaction_num: transactionNoBus,
-  //       bus_booking_id: [busSavedId],
-  //       transaction_id: transaction_id,
-  //       Passenger: passengersData,
-  //     };
-
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/seat-book', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(requestData),
-  //     });
-
-  //     const responseBody = await response.json();
-  //     console.log('Bus Book Response:', responseBody);
-
-  //     if (!response.ok) {
-  //       console.error('Failed to book seats. Status:', response.status, 'Response:', responseBody);
-  //       throw new Error(`Failed to book seats. Status: ${response.status}`);
-  //     }
-
-  //     if (responseBody.Error && responseBody.Error.ErrorCode !== 0) {
-  //       console.error('Booking failed:', responseBody.Error.ErrorMessage);
-  //       toast.error(`Booking failed: ${responseBody.Error.ErrorMessage}`);
-  //     } else {
-  //       toast.success('Booking successful!');
-  //       localStorage.setItem('busTikitDetails', JSON.stringify(responseBody));
-
-  //     }
-
-  //   } catch (error) {
-  //     console.error('Error during booking:', error.message);
-  //     toast.error('An error occurred during booking. Please try again.');
-  //   }
-  // };
 
 
 
+
+
+  const bookHandler = async () => {
+
+    const transactionNoBus = localStorage.getItem('transactionNum');
+    const transaction_id = localStorage.getItem('transaction_id');
+
+    console.log('transaction_id:', transaction_id);
+
+    const requestData = {
+      TraceId: '1',
+      ResultIndex: '1',
+      BoardingPointId: '1',
+      DroppingPointId: '1',
+      RefID: "1",
+      transaction_num: transactionNoBus,
+      bus_booking_id: [bookingId], 
+      transaction_id: transaction_id,
+      Passenger: storedPassengerDetails, // Ensure this is correctly populated
+    };
+
+    console.log('Request Data for Booking:', requestData);
+
+    try {
+      const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-book", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      const result = await response.json();
+      console.log("Booking Response:", result);
+
+
+      if (!response.ok) {
+        // Handle HTTP errors
+        throw new Error(`HTTP Error: ${response.status}`);
+      }
+
+      if (result.Error && result.Error.ErrorCode !== 0) {
+        // Handle API-specific errors
+        const errorMessage = result.Error.ErrorMessage || 'Booking failed due to an unknown error.';
+        console.error("Booking error:", errorMessage);
+        toast.error(errorMessage); // Show error message to the user
+        return;
+      }
+
+      toast.success('Booking successful!');
+      localStorage.setItem('busTikitDetails', JSON.stringify(result));
+
+    } catch (error) {
+      // General error handling
+      console.error("Error during booking:", error.message);
+      toast.error(`An error occurred during booking: ${error.message}`);
+    }
+  };
 
 
   // ------------------------------status api--------------------------------------------------------
@@ -618,7 +490,6 @@ const ReviewBooking = () => {
       if (!transaction_id) {
         throw new Error('Transaction ID is missing.');
       }
-
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus-payment-status', {
         method: 'POST',
         headers: {
@@ -638,7 +509,6 @@ const ReviewBooking = () => {
       // Save to localStorage
       localStorage.setItem("buspaymentStatusRes", JSON.stringify(responseBody));
 
-      // Navigate with state
       navigate('/busBookTicket', { state: { buspaymentStatus: responseBody } });
 
       return responseBody;
@@ -650,65 +520,6 @@ const ReviewBooking = () => {
     }
   };
 
-  // -------------------------------------------------------------------------------------------------
-
-
-
-  // --------------------------------------------------------------------------------------------------
-
-  // const [seatPrices, setSeatPrices] = useState([]);
-  // const [taxes, setTaxes] = useState(0);
-  // const [igst, setIgst] = useState(0);
-  // const [offeredPrice, setOfferedPrice] = useState(0);
-  // const [discount, setDiscount] = useState(0)
-
-  // const [selectedBusDetails, setSelectedBusDetails] = useState(null);
-
-
-  // useEffect(() => {
-  //   const seats = JSON.parse(localStorage.getItem('selectedSeats')) || [];
-  //   setSelectedSeats(seats);
-  // }, []);
-
-  // useEffect(() => {
-  //   const storedBusDetails = localStorage.getItem('selectedBusDetails');
-  //   if (storedBusDetails) {
-  //     setSelectedBusDetails(JSON.parse(storedBusDetails));
-  //   }
-  // }, []);
-
-
-  // useEffect(() => {
-  //   const busLayoutResponse = localStorage.getItem('BuslayoutResponse');
-  //   if (busLayoutResponse) {
-  //     const parsedResponse = JSON.parse(busLayoutResponse);
-  //     const result = parsedResponse.Result;
-  //     if (result && Array.isArray(result)) {
-  //       const prices = result.flat().map(seat => ({
-  //         offeredPrice: seat.Price.OfferedPrice,
-  //         tax: seat.Price.Tax,
-  //         igstRate: seat.Price.GST.IGSTRate,
-  //         discount: seat.Price.Discount,
-  //       }));
-  //       setSeatPrices(prices);
-  //     }
-  //   }
-  // }, []);
-
-
-
-
-  // const totalPayment = Math.round(totalFare + taxes + (totalFare * 0.18) - discount);
-
-  // useEffect(() => {
-  //   if (totalPayment) {
-  //     localStorage.setItem('bus-totalPayment', totalPayment); // Store the value
-  //   }
-  // }, [totalPayment]);
-
-
-
-  
 
 
   // -------------------------------------------------------------------------------------------------
@@ -728,8 +539,16 @@ const ReviewBooking = () => {
     setPassengers(updatedPassengers);
   };
 
+// ---------------------------------------------------------count Condition--------------------------------------------
+  const passNumber = passengers.length;
+  const seatCount = selectedSeatCount;
+  // console.log('passNumber:', passNumber, 'Type:', typeof passNumber);
+  // console.log('seatCount:', seatCount, 'Type:', typeof seatCount);
 
-  // ----------------------------------------------------------------------------------------------------
+  const countsEqual = passNumber === Number(seatCount); // Convert seatCount to a number
+  // console.log('countsEqual:', countsEqual);
+
+  // --------------------------------------------------------------------------------------------------------------------
 
   return (
     <>
@@ -756,222 +575,212 @@ const ReviewBooking = () => {
                   <div className="line-btm">
                     <p>Travel Name <br /> <span> {travelName}</span></p>
                     <p>Selected Seats <br /> <span> ({seatNames})</span></p>
-        <p>Boarding Point: <br /> <span> {selectedBoardingPoint.name}
-           {/* (Index: {selectedBoardingPoint.index}) */}
-           </span></p>
-        <p>Dropping Point: <br /> <span> {selectedDroppingPoint.name}
-           {/* (Index: {selectedDroppingPoint.index}) */}
-           </span> </p>
-    
+                    <p>Boarding Point: <br /> <span> {selectedBoardingPoint.name}
+                      {/* (Index: {selectedBoardingPoint.index}) */}
+                    </span></p>
+                    <p>Dropping Point: <br /> <span> {selectedDroppingPoint.name}
+                      {/* (Index: {selectedDroppingPoint.index}) */}
+                    </span> </p>
+
                   </div>
 
                 </div>
 
 
+                {/* <button onClick={bookHandler}>fcgvhb</button> */}
+
+
                 <div className="passnger-Info-page">
-                <>
-  <div className='PassangerInfo'>
-    <div className="p-upr">
-      <h6><i className="ri-user-add-line"></i>Traveller Details <br /></h6>
-      <p>
-        <span>Passenger Added: {passengers.length}   </span> / Seat Selected: {selectedSeatCount}
-      </p>
-    </div>
+                  <>
+                    <div className='PassangerInfo'>
+                      <div className="p-upr">
+                        <h6><i className="ri-user-add-line"></i>Traveller Details <br /></h6>
+                        <p>
+                          <span>Passenger Added: {passNumber}   </span> / Seat Selected: {seatCount}
+                        </p>
+                      </div>
 
-    <div className='pbh'>It is compulsory to add passengers as per the number of seats.</div>
+                      <div className='pbh'>It is compulsory to add passengers as per the number of seats.</div>
 
-    <div className="pessanger-main">
-      <form onSubmit={blockHandler}>
-        <div className="travelller">
-          <div className="p-top">
-            <div className="pas">
-              <div className="ipt">
-                <label>Male</label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="1"
-                  checked={formData.gender === '1'}
-                  onChange={passInputChange}
-                />
-              </div>
-              <div className="ipt">
-                <label>Female</label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="2"
-                  checked={formData.gender === '2'}
-                  onChange={passInputChange}
-                />
-              </div>
-            </div>
-            <p className="p-mid">
-              <div className="p-form">
-                <label htmlFor="firstName">First Name <span className="text-danger">*</span></label>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={passInputChange}
-                  placeholder="Enter First Name"
-                  className="form-control"
-                />
-              </div>
-              <div className="p-form">
-                <label htmlFor="lastName">Last Name <span className="text-danger">*</span></label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={passInputChange}
-                  placeholder="Enter Last Name"
-                  className="form-control"
-                />
-              </div>
-              <div className="p-form">
-                <label htmlFor="address">Address <span className="text-danger">*</span></label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={passInputChange}
-                  placeholder="Address"
-                  className="form-control"
-                />
-              </div>
-              <div className="p-form">
-                <label htmlFor="age">Age <span className="text-danger">*</span></label>
-                <input
-                  type="text"
-                  name="age"
-                  value={formData.age}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (/^\d*$/.test(value) && (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 120))) {
-                      passInputChange(e);
-                    }
-                  }}
-                  placeholder="Age"
-                  className="form-control"
-                />
-              </div>
-            </p>
+                      <div className="pessanger-main">
+                        <form onSubmit={blockHandler}>
+                          <div className="travelller">
+                            <div className="p-top">
+                              <div className="pas">
+                                <div className="ipt">
+                                  <label>Male</label>
+                                  <input
+                                    type="radio"
+                                    name="gender"
+                                    value="1"
+                                    checked={formData.gender === '1'}
+                                    onChange={passInputChange}
+                                  />
+                                </div>
+                                <div className="ipt">
+                                  <label>Female</label>
+                                  <input
+                                    type="radio"
+                                    name="gender"
+                                    value="2"
+                                    checked={formData.gender === '2'}
+                                    onChange={passInputChange}
+                                  />
+                                </div>
+                              </div>
+                              <p className="p-mid">
+                                <div className="p-form">
+                                  <label htmlFor="firstName">First Name <span className="text-danger">*</span></label>
+                                  <input
+                                    type="text"
+                                    name="firstName"
+                                    value={formData.firstName}
+                                    onChange={passInputChange}
+                                    placeholder="Enter First Name"
+                                    className="form-control"
+                                  />
+                                </div>
+                                <div className="p-form">
+                                  <label htmlFor="lastName">Last Name <span className="text-danger">*</span></label>
+                                  <input
+                                    type="text"
+                                    name="lastName"
+                                    value={formData.lastName}
+                                    onChange={passInputChange}
+                                    placeholder="Enter Last Name"
+                                    className="form-control"
+                                  />
+                                </div>
+                                <div className="p-form">
+                                  <label htmlFor="address">Address <span className="text-danger">*</span></label>
+                                  <input
+                                    type="text"
+                                    name="address"
+                                    value={formData.address}
+                                    onChange={passInputChange}
+                                    placeholder="Address"
+                                    className="form-control"
+                                  />
+                                </div>
+                                <div className="p-form">
+                                  <label htmlFor="age">Age <span className="text-danger">*</span></label>
+                                  <input
+                                    type="text"
+                                    name="age"
+                                    value={formData.age}
+                                    onChange={(e) => {
+                                      const value = e.target.value;
+                                      if (/^\d*$/.test(value) && (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 120))) {
+                                        passInputChange(e);
+                                      }
+                                    }}
+                                    placeholder="Age"
+                                    className="form-control"
+                                  />
+                                </div>
+                              </p>
+                            </div>
+                          </div>
+                          <div className="p-btn">
+                            <button type='submit'>Add Passenger</button>
+                          </div>
+                        </form>
+                      </div>
+
+                      <div className="passenger-details-display">
+                        <h6>Added Passengers:</h6>
+                        <div className="passenger-list">
+                          <div className="passenger-headings">
+                            <span>Name</span>
+                            <span>Age</span>
+                            <span>Gender</span>
+                            <span>Address</span>
+                            <span>Action</span>
+                          </div>
+                          {passengers.map((passenger, index) => (
+                            <div key={index} className="passenger-item">
+                              <span>{passenger.FirstName} {passenger.LastName}</span>
+                              <span>{passenger.Age}</span>
+                              <span>{passenger.Gender === '1' ? 'Male' : 'Female'}</span>
+                              <span>{passenger.Address}</span>
+                              <span>
+                                <i
+                                  style={{ cursor: "pointer", color: "red" }}
+                                  className="ri-delete-bin-6-line"
+                                  onClick={() => handleDeletePassenger(index)}></i>
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+
+                </div>
+
+                <div className="new-contact">
+      <h6><i className="ri-user-add-line"></i> Contact Details </h6>
+      <p>Your booking details will be sent to this email address and mobile number.</p>
+      <form onSubmit={newcontactHandler}>
+        <div className="c-detail">
+          <div className="cont">
+            <input
+              type="text"
+              name="name"
+              value={newContactData.name}
+              onChange={handleInputChange}
+              placeholder="Enter Your Name"
+              required
+            />
+          </div>
+          <div className="cont">
+            <input
+              type="email"
+              name="email"
+              value={newContactData.email}
+              onChange={handleInputChange}
+              placeholder="Enter Your Email"
+              required
+            />
+          </div>
+          <div className="cont">
+            <input
+              type="text"
+              name="contact"
+              value={newContactData.contact}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/^\d*$/.test(value) && value.length <= 10) {
+                  handleInputChange(e);
+                }
+              }}
+              placeholder="Enter Your Contact"
+              maxLength="10"
+              required
+            />
           </div>
         </div>
-        <div className="p-btn">
-          <button type='submit'>Add Passenger</button>
+
+        <div className="last-pay">
+          <div className="fare">
+            <h6><i className="ri-price-tag-2-line"></i>Total Ticket Amount</h6>
+            <small>₹{priceWithIGST}</small>
+          </div>
+          <div className="review-pay">
+            <button
+              onClick={handlePayment}
+              disabled={!newContactData.name || !newContactData.email || !newContactData.contact || !countsEqual}
+              style={{
+                backgroundColor: !newContactData.name || !newContactData.email || !newContactData.contact || !countsEqual ? '#ccc' : undefined,
+                cursor: !newContactData.name || !newContactData.email || !newContactData.contact || !countsEqual ? 'not-allowed' : 'pointer',
+              }}
+            >
+              Proceed To Pay
+            </button>
+          </div>
         </div>
       </form>
     </div>
-
-    <div className="passenger-details-display">
-      <h6>Added Passengers:</h6>
-      <div className="passenger-list">
-        <div className="passenger-headings">
-          <span>Name</span>
-          <span>Age</span>
-          <span>Gender</span>
-          <span>Address</span>
-          <span>Action</span>
-        </div>
-        {passengers.map((passenger, index) => (
-          <div key={index} className="passenger-item">
-            <span>{passenger.FirstName} {passenger.LastName}</span>
-            <span>{passenger.Age}</span>
-            <span>{passenger.Gender === '1' ? 'Male' : 'Female'}</span>
-            <span>{passenger.Address}</span>
-            <span>
-              <i
-                style={{ cursor: "pointer", color: "red" }}
-                className="ri-delete-bin-6-line"
-                onClick={() => handleDeletePassenger(index)}></i>
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-</>
-
-             </div>
-
-                <div className="new-contact">
-                  <h6><i className="ri-user-add-line"></i> Contact Details </h6>
-                  <p>Your booking details will be sent to this email address and mobile number.</p>
-                  <form onSubmit={newcontactHandler}>
-                    <div className="c-detail">
-                      <div className="cont">
-                        <input
-                          type="text"
-                          name="name"
-                          value={newContactData.name}
-                          onChange={handleInputChange}
-                          placeholder="Enter Your Name"
-                          required
-                        />
-                      </div>
-                      <div className="cont">
-                        <input
-                          type="email"
-                          name="email"
-                          value={newContactData.email}
-                          onChange={handleInputChange}
-                          placeholder="Enter Your Email"
-                          required
-                        />
-                      </div>
-                      <div className="cont">
-                        <input
-                          type="text"
-                          name="contact"
-                          value={newContactData.contact}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            if (/^\d*$/.test(value) && value.length <= 10) {
-                              handleInputChange(e);
-                            }
-                          }}
-                          placeholder="Enter Your Contact"
-                          maxLength="10"
-                          required
-                        />
-                      </div>
-
-
-
-
-                    </div>
-
-
-                    <div className="last-pay">
-                      <div className="fare">
-                        <h6><i className="ri-price-tag-2-line"></i>Total Ticket Amount</h6>
-                        <small >₹{totalPrice}</small>
-                      </div>
-                      <div className="review-pay">
-                        {/* <button
-                          style={{ backgroundColor: (!newContactData.name || !newContactData.email || !newContactData.contact) ? '#ccc' : '' }}
-                          onClick={handlePayment}
-                          disabled={!newContactData.name || !newContactData.email || !newContactData.contact}
-                        > */}
-                        <button
-                          onClick={handlePayment}
-                          disabled={passengers.length !== selectedSeatCount}
-                        >
-                          Proceed To Pay
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* ------------------------------------------- new condition wala code count ka-------------------------------------- */}
-
-
-
-                    {/* -------------------------------------------------------------------------------------------------------------------- */}
-
-                  </form>
-                </div>
 
 
 
@@ -986,15 +795,15 @@ const ReviewBooking = () => {
                 <div className="price">
                   <div className="p-line">
                     <span>Base Fare</span>
-                    <small>{}</small>
+                    <small>₹{totalPrice}</small>
                   </div>
                   <div className="p-line">
                     <span>Taxes</span>
-                    <small>{}</small>
+                    <small>{0}</small>
                   </div>
                   <div className="total-fare">
                     <span>Total Price</span>
-                    <small>{}</small>
+                    <small>{0}</small>
                   </div>
                   <div className="p-line">
                     <span>Convenience Fee</span>
@@ -1002,19 +811,19 @@ const ReviewBooking = () => {
                   </div>
                   <div className="p-line">
                     <span>Discount</span>
-                    <small>{}</small>
+                    <small>{0}</small>
                   </div>
                   <div className="p-line">
-                    <span>IGST (18%)</span>
-                    <small>{}</small>
+                    <span>IGST </span>
+                    <small>(18%)</small>
                   </div>
                   <div className="coupen">
                     <span>Offered Price</span>
-                    <small>{}</small>
+                    <small>{0}</small>
                   </div>
                   <div className="final-pay">
                     <span>Total Payment</span>
-                    <small>₹{totalPrice}</small>
+                    <small>₹{priceWithIGST}</small>
                   </div>
                 </div>
               </div>
@@ -1024,18 +833,6 @@ const ReviewBooking = () => {
           </div>
 
           {/* ------------------------------------------------------------------------------------------------------------------------------- */}
-
-
-
-
-
-
-
-
-
-
-
-
 
         </div>
       </div>

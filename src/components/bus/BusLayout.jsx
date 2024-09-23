@@ -124,40 +124,6 @@ const BusLayout = ({selectedBusIndex}) => {
 
 
 
-  // const handleSeatSelect = (seatName) => {
-  //   const seatObject = [...lowerSeatsBus, ...upperSeatsBus].find(seat => seat.SeatName === seatName);
-  //   // console.log('seatObject', seatObject);
-
-  //   if (seatObject) {
-  //     let updatedBusSeatData = [...selectedBusSeatData];
-
-  //     // If the seat is already selected, remove it from selectedBusSeatData
-  //     if (selectedSeats.includes(seatName)) {
-  //       updatedBusSeatData = updatedBusSeatData.filter(seat => seat.SeatName !== seatName);
-  //     } else {
-  //       updatedBusSeatData.push(seatObject);
-  //     }
-  //     setSelectedBusSeatData(updatedBusSeatData);
-  //   }
-
-  //   const isSelected = selectedSeats.includes(seatName);
-  //   const price = getLowerBasePrice(seatName) || getUpperBasePrice(seatName) || 0;
-
-  //   // Update the selected seats state
-  //   setSelectedSeats((prevSeats) => {
-  //     if (isSelected) {
-  //       return prevSeats.filter((seat) => seat !== seatName);
-  //     } else {
-  //       return [...prevSeats, seatName];
-  //     }
-  //   });
-
-  //   // Update the total price state
-  //   setTotalPrice((prevTotal) => {
-  //     return isSelected ? prevTotal - price : prevTotal + price;
-  //   });
-  // };
-
 
   const handleSeatSelect = (seatName) => {
     const seatObject = [...lowerSeatsBus, ...upperSeatsBus].find(seat => seat.SeatName === seatName);
@@ -365,12 +331,15 @@ const handleProceed = () => {
   const UpeerSeatbusLayout = getBusLayout(seatName);
 
 
-  if (loading) {
+  if (loading ) {
     return <Loading />;
   }
 
 
- 
+  // if (status === 'loading') {
+  //   return <Loading />;
+  // }
+
 
 
   const [showPoints, setShowPoints] = useState(false); // State to manage visibility
