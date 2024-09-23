@@ -10,6 +10,7 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { userLogout } from '../../API/loginAction';
+import Swal from 'sweetalert2';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -98,57 +99,25 @@ const Profile = () => {
   };
 
   const handleLogout = async () => {
-    dispatch(userLogout({ navigate }));
-    // const loginData = JSON.parse(localStorage.getItem('loginData'));
-    // const token = loginData?.token;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you really want to logout?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, logout!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(userLogout({ navigate }));
+        // localStorage.removeItem('loginId');
+        // localStorage.removeItem('loginData');
+        // localStorage.removeItem('transactionNum');
+        // localStorage.removeItem('transactionNum-bus');
+        // localStorage.removeItem('transactionNumHotel');
+      }
+    });
 
-    // if (!token) {
-    //   setMessage('No token found. Please log in again.');
-    //   setMessageType('danger');
-    //   return;
-    // }
-
-    // const loginId = localStorage.getItem('loginId');
-
-    // if (!loginId) {
-    //   navigate('/enter-number', { state: { from: location } });
-    //   return;
-    // }
-
-    // try {
-    //   const response = await fetch('https://new.sajpe.in/api/v1/user/logout', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Accept': 'application/json',
-    //       'Authorization': `Bearer ${token}`,
-    //       'app-package': 'com.sajyatra',
-    //       'app-version': '1.0',
-    //     },
-    //   });
-
-    //   console.log('Logout response:', response);
-
-    //   if (!response.ok) {
-    //     const errorData = await response.json();
-    //     throw new Error(errorData.message || 'Failed to log out');
-    //   }
-
-    //   localStorage.removeItem('loginData');
-    //   localStorage.removeItem('loginId');
-    //   localStorage.removeItem('transactionNum');
-    //   localStorage.removeItem('transactionNum-Flight');
-    //   localStorage.removeItem('transactionNum-bus');
-    //   localStorage.removeItem('transactionNumHotel');
-
-    //   setIsLoggedIn(false);
-    //   setMessage('Logged out successfully.');
-    //   setMessageType('success');
-
-    //   navigate('/flight-search');
-    // } catch (error) {
-    //   setMessage(`Error logging out: ${error.message}`);
-    //   setMessageType('danger');
-    // }
   };
 
   useEffect(() => {

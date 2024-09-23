@@ -328,46 +328,13 @@ export default function FlightLists() {
 
     // -------------------------------------user detailsss------------------------------------
 
-    const useridHandler = async () => {
-        const loginId = localStorage.getItem('loginId');
-        try {
-            const requestBody = {
-                user_id: loginId,
-            };
-            const response = await fetch('https://sajyatra.sajpe.in/admin/api/user-detail', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch user details');
-            }
-
-            const data = await response.json();
-            console.log('User details:', data);
-            if (data.result && data.transaction) {
-                localStorage.setItem('transactionId', data.transaction.id);
-                localStorage.setItem('transactionNum', data.transaction.transaction_num);
-            }
-        } catch (error) {
-            console.error('Error fetching user details:', error.message);
-        }
-    };
-
-
     const handleSelectSeat = async (flight, logoUrl) => {
         const flightSelectedDATA = {
             flight: flight,
             logoUrl: logoUrl
         }
-
         const loginId = localStorage.getItem('loginId');
-
         console.log('Current loginId:', loginId)
-        await useridHandler();
         if (!loginId) {
             console.log('No loginId found, showing OTP overlay');
             setShowOtpOverlay(true);

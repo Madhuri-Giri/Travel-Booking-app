@@ -55,7 +55,7 @@ export const userLogin = createAsyncThunk(
 // Logout
 export const userLogout = createAsyncThunk(
     "auth/logout",
-    async ({ navigate }, { rejectWithValue }) => {
+    async ({ navigate }, { rejectWithValue ,dispatch}) => {
         const loginData = JSON.parse(localStorage.getItem('loginData'));
         const token = loginData?.token;
 
@@ -76,16 +76,18 @@ export const userLogout = createAsyncThunk(
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to log out');
             }
-
             localStorage.removeItem('loginData');
             localStorage.removeItem('loginId');
             localStorage.removeItem('transactionNum');
             localStorage.removeItem('transactionNum-Flight');
             localStorage.removeItem('transactionNum-bus');
             localStorage.removeItem('transactionNumHotel');
-            // toast.success('Logged out successfully.');
+
+            toast.success('Logged out successfully.');
+            dispatch(setIsLogout())
             navigate('/');
         } catch (error) {
+            dispatch(setIsLogout())
             //   setMessage(`Error logging out: ${error.message}`);
             //   setMessageType('danger');
         }
