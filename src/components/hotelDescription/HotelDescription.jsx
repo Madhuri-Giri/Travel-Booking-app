@@ -94,11 +94,7 @@ const HotelDescription = () => {
     };
 
     console.log("Request data room:", requestData);
-    // Proceed with API call...
-
-
-
-
+    
     try {
       const hotelRooms = await dispatch(fetchHotelRooms(requestData)).unwrap();
 
@@ -199,11 +195,11 @@ const HotelDescription = () => {
                       {renderStar(hotelDetails.StarRating)}
                     </div>
                   </div>
-                  <span className="Distance_hotel">{hotelDetails.Address}</span>
+                  <span className="Distance_hotel">{hotelDetails.Address || N/A}</span>
                   <div className="Description_hotel">
                     <h5>Description :</h5>
                     <p 
-                      dangerouslySetInnerHTML={{ __html: isExpanded ? hotelDetails.Description : shortDescription }} 
+                      dangerouslySetInnerHTML={{ __html: isExpanded ? hotelDetails.Description : shortDescription || "Description not available" }} 
                       style={{ overflow: 'hidden', maxHeight: isExpanded ? 'none' : '10em' }} 
                     />
                     <button className="hotel_des_Btn" onClick={handleToggle}>

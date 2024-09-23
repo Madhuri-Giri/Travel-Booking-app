@@ -15,15 +15,11 @@ import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import Loading from "../../pages/loading/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCalendarDays,
-  faUser,
-  faHotel,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import {faCalendarDays, faUser, faHotel, faXmark,} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { searchHotels } from "../../redux-toolkit/slices/hotelSlice";
+import Swal from 'sweetalert2';
 
 const HotelSearch = () => {
   const navigate = useNavigate();
@@ -274,16 +270,39 @@ const HotelSearch = () => {
     IsNearBySearchAllowed: false,
   };
 
-    try {
-      // Dispatch the searchHotels action
-      await dispatch(searchHotels(requestData)).unwrap();
-      navigate("/hotel-list", { state: { searchResults: hotels } }); 
-    } catch (error) {
-      alert("Error searching hotel. Please try again later.");
+  try {
+    // Dispatch the searchHotels action
+    const response = await dispatch(searchHotels(requestData)).unwrap();
+  
+    if (response.Results && response.Results.length > 0) {
+      const hotels = response.Results; // Ensure you extract hotels from the response
+      navigate("/hotel-list", { 
+        state: { 
+          searchResults: hotels 
+        } 
+      }); 
+    } else {
+      // Use SweetAlert for no hotel found
+      Swal.fire({
+        title: "No Hotels Found",
+        text: "Please select a correct city.",
+        icon: "warning",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK"
+      });
     }
-    finally {
-      setLoading(false); // Hide loader
-    }
+  } catch (error) {
+    // Use SweetAlert for error handling
+    Swal.fire({
+      title: "Error!",
+      text: "No Hotel found. Please select correct city.",
+      icon: "error",
+      confirmButtonColor: "#d33",
+      confirmButtonText: "OK"
+    });
+  } finally {
+    setLoading(false); // Hide loader
+  }
   };
 
   if (loading) {
@@ -394,7 +413,7 @@ const HotelSearch = () => {
                 </div>
 
                 <div className="form-field custom-dropdown">
-  <label className="form_label" htmlFor="NoOfNights">No of nights:</label>
+  <label className="form_label" htmlFor="NoOfNights">No of Days:</label>
   <div className="input-with-icon">
     <input
       className="form_in"

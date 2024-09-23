@@ -82,7 +82,6 @@ const HotelList = () => {
   
   // ----------------for filter----------------
 
- 
   const filterHotelsByDestination = (hotels, destination) => {
     if (!destination) return hotels;
     return hotels.filter(hotel =>
@@ -120,60 +119,44 @@ const totalFilteredHotels = sortedHotels.length;
 // Current hotels for the current page
 const currentHotels = sortedHotels.slice(offset, offset + hotelsPerPage);
 
-  const fetchHotelInfo = async (index) => {
-    console.log('Fetching hotel info for list index:', index);
+const fetchHotelInfo = async (hotel) => {
+  console.log('Fetching hotel info for:', hotel.HotelCode);
 
-    // Check if index is valid
-    if (index < 0 || index >= hotels.length) {
-        console.error('Invalid hotel index:', index);
-        return;
+  // Retrieve hotel details directly from the hotel object passed
+  const resultIndex = resultIndexes[hotels.indexOf(hotel)]; 
+  const srdvIndex = srdvIndexes[hotels.indexOf(hotel)]; 
+  const hotelCode = hotelCodes[hotels.indexOf(hotel)]; 
+
+  const requestData = {
+    ResultIndex: resultIndex,
+    SrdvIndex: srdvIndex,
+    SrdvType: srdvType,
+    HotelCode: hotelCode,
+    TraceId: traceId,
+  };
+
+  console.log('Request Data:', requestData);
+
+  try {
+    const hotelDetails = await dispatch(fetchHotelDetails(requestData)).unwrap();
+    navigate("/hotel-description", {
+      state: {
+        hotelDetails,
+        resultIndex,
+        hotelCode,
+        srdvType,
+        srdvIndex,
+      }
+    });
+  } catch (error) {
+    console.error('Failed to fetch hotel details:', error);
+    if (error.response) {
+      console.error('Server responded with:', error.response.data);
     }
-
-    // Accessing values from the arrays
-    const resultIndex = resultIndexes[index];
-    const srdvIndex = srdvIndexes[index];
-    const hotelCode = hotelCodes[index];
-    
-    // Log the accessed values
-    console.log('Accessing values at index:', index);
-    console.log('ResultIndex:', resultIndex);
-    console.log('SrdvIndex:', srdvIndex);
-    console.log('HotelCode:', hotelCode);
-
-    // Ensure values are defined
-    if (resultIndex === undefined || srdvIndex === undefined || hotelCode === undefined) {
-        console.error('One or more values are undefined. Check your data arrays.');
-        return;
-    }
-
-    const requestData = {
-        ResultIndex: resultIndex,
-        SrdvIndex: srdvIndex,
-        SrdvType: srdvType,
-        HotelCode: hotelCode,
-        TraceId: traceId,
-    };
-
-    console.log('Request Data:', requestData); 
-
-    try {
-        const hotelDetails = await dispatch(fetchHotelDetails(requestData)).unwrap();
-        navigate("/hotel-description", { 
-          state: { 
-            hotelDetails, 
-            hotelIndex: index 
-          } 
-        });;
-    } catch (error) {
-        console.error('Failed to fetch hotel details:', error);
-        if (error.response) {
-            console.error('Server responded with:', error.response.data);
-        }
-        
-    }
+  }
 };
 // ----------------------------------------------------------------
-const HandelHotelInfo = async (index) => {
+const HandelHotelInfo = async (hotel) => {
   const loginId = localStorage.getItem('loginId');
   console.log('Current loginId:', loginId);
   
@@ -185,7 +168,7 @@ const HandelHotelInfo = async (index) => {
     return;
   }
 
-  await fetchHotelInfo(index);
+  await fetchHotelInfo(hotel);
 };
 
   const closeOtpOverlay = () => {
@@ -431,7 +414,7 @@ const HandelHotelInfo = async (index) => {
                               {/* <button onClick={()=>HandelHotelInfo(index)} className="CheckButton">
                                 See Details
                               </button> */}
-                    <button key={hotel.id} onClick={() =>HandelHotelInfo (index)}className="CheckButton">
+                    <button key={hotel.id} onClick={() =>HandelHotelInfo (hotel)}className="CheckButton">
                       View Details
                           </button>
 

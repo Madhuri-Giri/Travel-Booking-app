@@ -116,7 +116,7 @@ const GuestDetails = () => {
 
       console.log("loginId:", loginId);
       console.log("transactionNum:", transactionNum);
-      console.log("hotel_booking_id:", bookingId); // Use bookingId here
+      console.log("hotel_booking_id:", bookingId); 
 
       if (!loginId || !transactionNum || !bookingId) {
         // Check bookingId instead of hotel_booking_id
@@ -126,10 +126,10 @@ const GuestDetails = () => {
       }
 
       const payload = {
-        amount: 100,
+        amount: totalPrice,
         user_id: loginId,
         transaction_num: transactionNum,
-        hotel_booking_id: [bookingId], // Use bookingId in payload
+        hotel_booking_id: [bookingId], 
       };
 
       console.log("Sending payload:", payload);
@@ -764,8 +764,8 @@ const GuestDetails = () => {
                             />
                           </div>
 
-                          <div className="mb-3 req_field">
-                            <label className="required_field">PAN No.</label>
+                          <div className="mb-3 passport_field">
+                            <label>PAN No.</label>
                             <input
                               type="text"
                               className="form-control"

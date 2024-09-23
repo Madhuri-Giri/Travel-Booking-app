@@ -123,7 +123,7 @@ const BookingBill = () => {
     }
 
     const requestData = {
-      BookingId: hotelBookingId, // Use the correct value here
+      BookingId: hotelBookingId, 
       RequestType: 4,
       BookingMode: 5,
       SrdvType: "SingleTB",
