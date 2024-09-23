@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+// import { Navigate } from 'react-router-dom';
 
 export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to, departDate, fromCode, toCode }) => {
   const currentDate = new Date();
@@ -15,15 +16,15 @@ export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to
     throw new Error('Date of journey should be greater than the current date');
   }
 
-  const requestPayload = { 
+  const requestPayload = {
     source_city: from,
     destination_city: to,
     depart_date: departDate,
     source_code: fromCode,
-    destination_code: toCode, 
+    destination_code: toCode,
   };
 
-  console.log('Request Payload:', requestPayload);
+  // console.log('Request Payload:', requestPayload);
 
   const response = await fetch('https://sajyatra.sajpe.in/admin/api/search-bus', {
     method: 'POST',
@@ -35,6 +36,23 @@ export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to
 
   const data = await response.json();
   console.log('bus search', data);
+
+  // Check if the response contains results
+  // if (!data || !data.Results || data.Results.length === 0) {
+  //   console.error("No results found in the API response");
+  //   return null; // Return null to indicate no results
+  // }
+
+  // if (!data) {
+  //   console.error("No results found in the API response");
+  //   alert("No bus found. Please try again later.");
+  //   // setLoading(false);
+  //   Navigate("/bus-search");
+  //   return;
+  // }else{
+  //   Navigate("/bus-list");
+  // }
+
   return data;
 });
 
@@ -94,7 +112,7 @@ const busSlice = createSlice({
           state.resultIndex = data.Result.BusResults[0]?.ResultIndex || null;
           state.searchResults = data.Result.BusResults;
 
-           
+
 
           // console.log('redux result ', state.resultIndex)
 

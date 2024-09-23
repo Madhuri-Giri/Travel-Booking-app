@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import { faFire, faBiohazard, faFlask, faSprayCan, faGasPump, faSmoking, faVirus, faRadiation, faBomb } from '@fortawesome/free-solid-svg-icons';
 import { FaArrowRightLong } from "react-icons/fa6";
+import Swal from 'sweetalert2';
 
 // Helper function to generate a passcode
 const generatePasscode = () => {
@@ -31,7 +32,7 @@ const FlightNewTikit = () => {
   const [buttonsVisible, setButtonsVisible] = useState(true); // State to manage button visibility
 
   const location = useLocation();
-  const { flightSelectedDATA , dataToPass } = location.state || {};
+  const { flightSelectedDATA, dataToPass } = location.state || {};
   console.log("dataToPass", dataToPass);
   console.log("flightSelectedDATA", flightSelectedDATA);
   console.log("logo", flightSelectedDATA.logoUrl);
@@ -146,8 +147,18 @@ const FlightNewTikit = () => {
   };
 
   const handleCancelTicket = async () => {
-    const confirmation = window.confirm("Are you sure you want to cancel?");
-    if (confirmation) {
+    // const confirmation = window.confirm("Are you sure you want to cancel?");
+    const confirmation = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to cancel your ticket?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      cancelButtonText: 'No, keep it',
+      reverseButtons: true,
+    });
+
+    if (confirmation.isConfirmed) {
       try {
         const response = await fetch("https://sajyatra.sajpe.in/admin/api/flight-cancel", {
           method: "POST",
@@ -167,7 +178,7 @@ const FlightNewTikit = () => {
           setTimeout(() => {
             // Navigate to the flight-search page
             navigate('/flight-search');
-          }, 2000); // 2-second delay for the toast message to be visible
+          }, 500); // 2-second delay for the toast message to be visible
         } else {
           toast.error("Failed to cancel the ticket");
         }
@@ -279,7 +290,7 @@ const FlightNewTikit = () => {
                         <div className="flightticketboxTravelDetails">
                           <div className="ffbox1">
                             <div className='flightIndigodet'>
-                              <img src={flightSelectedDATA.logoUrl} className="img-fluid "/>
+                              <img src={flightSelectedDATA.logoUrl} className="img-fluid " />
                               {/* <p>{booking_status.airline || 'Logo null'}</p> */}
                               <p>{booking_status.airline || 'Airline Name null'}</p>
                               <p>{booking_status.airline_code || 'Airline code null'}</p>
@@ -395,7 +406,7 @@ const FlightNewTikit = () => {
                               Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, aperiam veniam quisquam vel doloribus iure pariatur, sunt est temporibus rem
                             </li>
                             <li>
-                            <strong>You have Paid :  {payment.amount || 'Amount null'} Rs.</strong>
+                              <strong>You have Paid :  {payment.amount || 'Amount null'} Rs.</strong>
                             </li>
 
                           </ul>
