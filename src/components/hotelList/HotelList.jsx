@@ -169,6 +169,7 @@ const currentHotels = sortedHotels.slice(offset, offset + hotelsPerPage);
         if (error.response) {
             console.error('Server responded with:', error.response.data);
         }
+        
     }
 };
 // ----------------------------------------------------------------

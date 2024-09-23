@@ -27,10 +27,10 @@ import { searchHotels } from "../../redux-toolkit/slices/hotelSlice";
 
 const HotelSearch = () => {
   const navigate = useNavigate();
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // Add loading state
   const [startDate, setStartDate] = useState(null);
   const dispatch = useDispatch();
-  const { hotels, loading, error } = useSelector((state) => state.hotels || {});
+  const { hotels,  error } = useSelector((state) => state.hotels || {});
 
   const [inputs, setInputs] = useState({
     cityOrHotel: "",
@@ -219,7 +219,7 @@ const HotelSearch = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // setLoading(true);
+    setLoading(true);
 
     const citylistres = localStorage.getItem("CityListRes");
     const cityList = citylistres ? JSON.parse(citylistres) : [];
@@ -280,6 +280,9 @@ const HotelSearch = () => {
       navigate("/hotel-list", { state: { searchResults: hotels } }); 
     } catch (error) {
       alert("Error searching hotel. Please try again later.");
+    }
+    finally {
+      setLoading(false); // Hide loader
     }
   };
 

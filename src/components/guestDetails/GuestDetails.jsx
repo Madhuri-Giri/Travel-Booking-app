@@ -83,8 +83,8 @@ const GuestDetails = () => {
         formData.email &&
         formData.mobile &&
         formData.age &&
-        formData.passportNo &&
-        formData.pan
+        formData.leadPassenger &&
+        formData.paxType
     );
 
     setIsFormComplete(allFilled);

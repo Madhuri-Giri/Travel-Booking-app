@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import './BookingHistory.css';
-import Loading from '../../pages/loading/Loading'; // Import the Loading component
+import Loading from '../../pages/loading/Loading'; 
+import { useDispatch, useSelector } from 'react-redux';
 
 function BookingHistory() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState('hotel'); // Initialize with 'hotel' tab
+    const [activeTab, setActiveTab] = useState('hotel'); 
     const [hotelBookings, setHotelBookings] = useState([]);
     const [busBookings, setBusBookings] = useState([]);
     const [flightBookings, setFlightBookings] = useState([]);
@@ -17,7 +18,8 @@ function BookingHistory() {
     console.log("busBookings", busBookings);
     console.log("hotelBookings", hotelBookings);
 
-
+    const dispatch = useDispatch();
+    const { bookings, status } = useSelector((state) => state.bookingHistory);
 
     // ----------------------hotel history API-------------------------------
     useEffect(() => {
@@ -74,17 +76,20 @@ function BookingHistory() {
     // ----------------------hotel history API-------------------------------
 
     // ----------------------hotel ticket API-------------------------------
+    const { blockRoomResult, bookingStatus } = location.state || {};
+  const bookingDetails = bookingStatus?.[0] || {};
+
     const handleBookingClick = async () => {
-        const hotelBookingId = localStorage.getItem('hotel_booking_id');
-        console.log('handleBookingClick called with:', hotelBookingId);
+        const bookingId = bookingStatus && bookingStatus.length > 0 ? bookingStatus[0].id : null; 
+        console.log('handleBookingClick called with:',  bookingId);
     
         try {
-            if (typeof hotelBookingId !== 'string') {
-                console.error('Invalid hotel booking ID:', hotelBookingId);
+            if (typeof  bookingId !== 'string') {
+                console.error('Invalid hotel booking ID:',  bookingId);
                 throw new Error('Invalid hotel booking ID.');
             }
     
-            const requestData = { hotel_booking_id: hotelBookingId };
+            const requestData = { hotel_booking_id:  bookingId };
     
             const response = await fetch('https://sajyatra.sajpe.in/admin/api/hotel-ticket', {
                 method: 'POST',
