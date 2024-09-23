@@ -6,6 +6,7 @@ import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import './BookingHistory.css';
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
+import { useDispatch, useSelector } from 'react-redux';
 
 function BookingHistory() {
     const navigate = useNavigate();

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
+import Swal from "sweetalert2";
 
 export const getFlightList =
     async ({ setListingData, setDataToPass, setLogos, setLoading, formData, navigate }) => {
@@ -33,15 +34,26 @@ export const getFlightList =
 
             // const data = await response.json();
             const data = response.data;
+            console.log('flight search response',data);
+            console.log('errrr',data.ErrorMessage);
+            
 
             if (!data.Results) {
                 console.error("No results found in the API response");
-                alert("No flights found. Please try again later.");
-                setLoading(false);
-                navigate("/flight-search");
+                // Use SweetAlert2 for the alert instead of a simple alert
+                Swal.fire({
+                    title: "No flights found",
+                    text: data.ErrorMessage || "Please try again later.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                }).then(() => {
+                    setLoading(false);
+                    navigate("/flight-search");
+                });
+            
                 return;
             }
-
+            
             setListingData(data);
 
             const firstResult = data?.Results?.[0]?.[0];
@@ -141,9 +153,3 @@ const fetchAirlineLogos = async (airlineCodes) => {
     }
 };
 
-
-
-
-
-
-// userdetails api call 

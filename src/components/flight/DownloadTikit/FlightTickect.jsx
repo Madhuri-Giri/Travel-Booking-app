@@ -18,7 +18,8 @@ import html2canvas from 'html2canvas';
 import FooterLogo from "../../../assets/images/main logo.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFire, faBiohazard, faFlask, faSprayCan, faGasPump, faSmoking, faVirus, faRadiation, faBomb } from '@fortawesome/free-solid-svg-icons';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 const generatePasscode = () => {
@@ -26,6 +27,7 @@ const generatePasscode = () => {
 };
 
 const FlightTickect = () => {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
   const passcode = generatePasscode();
   const ticketElementRef = useRef(null);
   const [flightticketPassengerDetails, setflightticketPassengerDetails] = useState(null);
@@ -130,8 +132,18 @@ const FlightTickect = () => {
 
 
   const handleCancelTicket = async () => {
-    const confirmation = window.confirm("Are you sure you want to cancel?");
-    if (confirmation) {
+    // const confirmation = window.confirm("Are you sure you want to cancel?");
+    const confirmation = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to cancel your ticket?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      cancelButtonText: 'No, keep it',
+      reverseButtons: true,
+    });
+
+    if (confirmation.isConfirmed) {
       try {
         const response = await fetch("https://sajyatra.sajpe.in/admin/api/flight-cancel", {
           method: "POST",
@@ -146,6 +158,10 @@ const FlightTickect = () => {
 
         if (response.ok) {
           toast.success("Your ticket is canceled");
+          setTimeout(() => {
+            // Navigate to the flight-search page
+            navigate('/flight-search');
+          }, 500); // 2-second delay for the toast message to be visible
         } else {
           toast.error("Failed to cancel the ticket");
         }
@@ -193,8 +209,8 @@ const FlightTickect = () => {
   };
 
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error: {error}</p>;
 
   const items = [
     // { id: 1, name: 'Lighters, Matchsticks', icon: faLighter },
