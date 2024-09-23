@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import "./CustomNavbar.css"
 import { Container, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
@@ -20,20 +21,39 @@ import HotelLogo from "../../assets/images/five-stars.png"
 import { IoBusOutline } from "react-icons/io5";
 import { RiHotelLine } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
+import { userLogout } from "../../API/loginAction";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 
 const CustomNavbar = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const { isLogin, } = useSelector((state) => state.loginReducer);
 
     const handleLogout = async () => {
-        navigate('/');
-        localStorage.removeItem('loginId');
-        localStorage.removeItem('loginData');
-        localStorage.removeItem('transactionNum');
-        // localStorage.removeItem('transactionNum-Flight');
-        localStorage.removeItem('transactionNum-bus');
-        localStorage.removeItem('transactionNumHotel');
-    };
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "Do you really want to logout?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, logout!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            dispatch(userLogout({ navigate }));
+            // localStorage.removeItem('loginId');
+            // localStorage.removeItem('loginData');
+            // localStorage.removeItem('transactionNum');
+            // localStorage.removeItem('transactionNum-bus');
+            // localStorage.removeItem('transactionNumHotel');
+          }
+        });
+    
+      };
+    console.log('navisLogin', isLogin);
+
 
     const loginId = localStorage.getItem("loginId")
     const loginData = localStorage.getItem("loginData")
@@ -105,7 +125,7 @@ const CustomNavbar = () => {
                                     <FaPhoneAlt /> <span> +91 8447906804 </span>
                                 </Nav.Link>
                                 <div className="mobileLoginSignup">
-                                    {loginId ? (
+                                    {isLogin ? (
                                         <Nav.Link onClick={handleLogout} className="mobileLoginNavbar">
                                             <span><MdLogin size={20} /> Logout</span>
                                         </Nav.Link>
@@ -121,13 +141,16 @@ const CustomNavbar = () => {
                                     )}
                                 </div>
                                 <NavDropdown title={<FaCircleUser />} id="basic-nav-dropdown" className="userDropdown">
-                                    <NavDropdown.Item href="/profile">
-                                        <FaRegUser size={20} /> Profile
-                                    </NavDropdown.Item>
+                                    {isLogin &&
+                                        (<NavDropdown.Item href="/profile">
+                                            <FaRegUser size={20} /> Profile
+                                        </NavDropdown.Item>)
+                                    }
+
                                     <NavDropdown.Item href="/setting">
                                         <IoSettingsOutline size={20} /> Settings
                                     </NavDropdown.Item>
-                                    {loginId ? (
+                                    {isLogin ? (
                                         <NavDropdown.Item onClick={handleLogout}>
                                             <MdLogin size={20} /> Logout
                                         </NavDropdown.Item>

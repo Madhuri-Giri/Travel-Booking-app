@@ -21,7 +21,8 @@ import loginSlice from '../slices/loginSlice'
 
 const store = configureStore ({
 
-          reducer:{
+    reducer: {
+
 
                     bus: busReducer,
                     busList: busListReducer,
@@ -45,6 +46,8 @@ const store = configureStore ({
                     borddrop: borddropReducer,
                     login: loginSlice,
                     }
+
+      
 
 })
 export default store;

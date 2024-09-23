@@ -27,7 +27,7 @@ import { faChevronDown, faArrowUp, faArrowDown } from '@fortawesome/free-solid-s
 import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from "react-redux";
 import { getFlightList } from "../../API/action";
-import { setLoginData, setTransactionDetails } from '../../redux-toolkit/slices/loginSlice';
+
 
 export default function FlightLists() {
     const location = useLocation();
@@ -36,10 +36,6 @@ export default function FlightLists() {
     const [listingData, setListingData] = useState(null);
     const [formDataNew, setFormDataNew] = useState(location?.state?.formData || null);
     const [dataToPass, setDataToPass] = useState(null);
-
-    // get login data from Redux
-    const loginData = useSelector((state) => state.login); // Assuming the slice is named 'login'
-    console.log('Redux login data:', loginData);
 
     useEffect(() => {
         if (dataToPass) {
@@ -332,49 +328,13 @@ export default function FlightLists() {
 
     // -------------------------------------user detailsss------------------------------------
 
-    const useridHandler = async () => {
-        // const loginId = localStorage.getItem('loginId');
-        const loginId = loginData.loginId;   // get loginId from Redux (login API data) 
-        try {
-            const requestBody = {
-                user_id: loginId,
-            };
-            const response = await fetch('https://sajyatra.sajpe.in/admin/api/user-detail', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch user details');
-            }
-
-            const data = await response.json();
-            console.log('User details:', data);
-            if (data.result && data.transaction) {
-                localStorage.setItem('transactionId', data.transaction.id);
-                localStorage.setItem('transactionNum', data.transaction.transaction_num);
-                //save userdetails API transaction data on the redux
-                dispatch(setTransactionDetails(data.transaction));
-
-            }
-        } catch (error) {
-            console.error('Error fetching user details:', error.message);
-        }
-    };
-
-
     const handleSelectSeat = async (flight, logoUrl) => {
         const flightSelectedDATA = {
             flight: flight,
             logoUrl: logoUrl
         }
-
         const loginId = localStorage.getItem('loginId');
         console.log('Current loginId:', loginId)
-        await useridHandler();
         if (!loginId) {
             console.log('No loginId found, showing OTP overlay');
             setShowOtpOverlay(true);

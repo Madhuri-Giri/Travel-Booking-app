@@ -1,17 +1,21 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 // LoginPopUp Component
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "../popUp/LoginPopUp.css";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch , useSelector } from 'react-redux'; // <-- Import useDispatch from Redux
-import { setLoginData , setTransactionDetails } from '../../redux-toolkit/slices/loginSlice'; // <-- Import the setLoginData action
+import { useDispatch } from 'react-redux';
+import { userLogin } from '../../API/loginAction';
+
 
 const LoginPopUp = ({ showModal, onClose, prefilledMobile }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [otpShown, setOtpShown] = useState(false);
   const [formData, setFormData] = useState({
     mobile: prefilledMobile || '',  // Initialize with prop value
@@ -19,7 +23,6 @@ const LoginPopUp = ({ showModal, onClose, prefilledMobile }) => {
   });
 
   const [error, setError] = useState('');
-  const dispatch = useDispatch();
 
   useEffect(() => {
     // Update formData.mobile if prefilledMobile changes
@@ -32,46 +35,41 @@ const LoginPopUp = ({ showModal, onClose, prefilledMobile }) => {
 
   const loginHandler = async (e) => {
     e.preventDefault();
+    let isNavigate = false;
 
-    try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
+    dispatch(userLogin({ formData, isNavigate, setError, navigate, onClose }))
 
-      const data = await response.json();
-      if (response.ok) {
-        localStorage.setItem('loginId', data.data.id);
-        localStorage.setItem('loginData', JSON.stringify(data.data));
+    // try {
+    //   const response = await fetch('https://sajyatra.sajpe.in/admin/api/login', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(formData)
+    //   });
 
-         // save login API data on the Redux
-         dispatch(setLoginData({
-          // userData: data.data,
-          loginId: data.data.id,
-          loginData: data.data,
-          // transactionDetails: null, // To be updated after userDetailsHandler
-        }));
+    //   const data = await response.json();
+    //   if (response.ok) {
+    //     localStorage.setItem('loginId', data.data.id);
+    //     localStorage.setItem('loginData', JSON.stringify(data.data));
 
-        toast.success('Login successful!', {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+    //     toast.success('Login successful!', {
+    //       position: "top-right",
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //     });
 
-        onClose();
-      } else {
-        setError(data.message || 'Login failed. Please try again.');
-      }
-    } catch (error) {
-      setError('An unexpected error occurred. Please try again.');
-    }
+    //     onClose();
+    //   } else {
+    //     setError(data.message || 'Login failed. Please try again.');
+    //   }
+    // } catch (error) {
+    //   setError('An unexpected error occurred. Please try again.');
+    // }
   };
 
   const handleInputChange = (e) => {
@@ -82,11 +80,11 @@ const LoginPopUp = ({ showModal, onClose, prefilledMobile }) => {
   return (
     <>
       {showModal && <div className="custom-overlay"></div>}
-      <Modal 
-        show={showModal} 
-        onHide={onClose} 
-        size="md" 
-        centered 
+      <Modal
+        show={showModal}
+        onHide={onClose}
+        size="md"
+        centered
         className="small-popup-modal"
         backdrop="static"
       >
@@ -99,28 +97,28 @@ const LoginPopUp = ({ showModal, onClose, prefilledMobile }) => {
               <form onSubmit={loginHandler}>
                 <div className="one">
                   <label htmlFor="mobile">Enter Your Mobile No</label>
-                  <input 
-                    type="tel" 
-                    placeholder='Enter Your Mobile Number' 
-                    name='mobile' 
+                  <input
+                    type="tel"
+                    placeholder='Enter Your Mobile Number'
+                    name='mobile'
                     id="mobileNo"
-                    value={formData.mobile} 
-                    onChange={handleInputChange} 
-                    required 
+                    value={formData.mobile}
+                    onChange={handleInputChange}
+                    required
                     pattern="[0-9]{10}"
                   />
                 </div>
                 <div className="one">
                   <label htmlFor="otp">OTP</label>
                   <div className="password-container">
-                    <input 
-                      type={otpShown ? 'text' : 'password'} 
-                      placeholder='Enter Your OTP' 
-                      name='otp'  
+                    <input
+                      type={otpShown ? 'text' : 'password'}
+                      placeholder='Enter Your OTP'
+                      name='otp'
                       id="otp"
-                      value={formData.otp} 
-                      onChange={handleInputChange} 
-                      required 
+                      value={formData.otp}
+                      onChange={handleInputChange}
+                      required
                     />
                     <span onClick={toggleOtpVisibility} className="password-toggle-icon">
                       {otpShown ? <RiEyeFill /> : <RiEyeOffFill />}

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import './EnterNumber.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
@@ -8,7 +9,7 @@ const EnterNumber = () => {
   const [mobile, setMobile] = useState('');
   const navigate = useNavigate(); // Initialize useNavigate
   const deviceId = isBrowser ? 'browser' : isMobile ? 'mobile' : 'unknown'; 
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,12 +37,14 @@ const EnterNumber = () => {
       }
 
       const data = await response.json();
-      console.log(data);
+      console.log('enter otp data',data);
 
-      localStorage.setItem('otpResponse', JSON.stringify(data));
+      // localStorage.setItem('otpResponse', JSON.stringify(data));
 
       if (data.user_registered) {
-        navigate('/login'); 
+        navigate('/login', { state: { mobileNumber: mobile } }); 
+        
+
       } else {
         navigate('/signup'); 
       }

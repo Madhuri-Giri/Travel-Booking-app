@@ -45,7 +45,7 @@ const EnterOtp = ({ showModal, onClose }) => {
       const data = await response.json();
       console.log('send otp', data);
 
-      localStorage.setItem("otpResponse", JSON.stringify(data));
+      // localStorage.setItem("otpResponse", JSON.stringify(data));
       setLoginMobile(formData.mobile);  // Set the mobile number for LoginPopUp
       onClose();
 

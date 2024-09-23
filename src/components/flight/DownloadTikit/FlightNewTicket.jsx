@@ -31,12 +31,13 @@ const FlightNewTikit = () => {
   const [buttonsVisible, setButtonsVisible] = useState(true); // State to manage button visibility
 
   const location = useLocation();
-  const { flightSelectedDATA} = location.state || {};
+  const { flightSelectedDATA , dataToPass } = location.state || {};
+  console.log("dataToPass", dataToPass);
   console.log("flightSelectedDATA", flightSelectedDATA);
   console.log("logo", flightSelectedDATA.logoUrl);
 
-  // Convert the stored value to a boolean
-  const islcc = localStorage.getItem('F-IsLcc');
+  const islcc = dataToPass?.IsLCC
+  // const islcc = localStorage.getItem('F-IsLcc');
   console.log("islcc", islcc);
 
   useEffect(() => {

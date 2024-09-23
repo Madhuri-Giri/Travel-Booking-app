@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 
 import { useState } from 'react';
@@ -8,23 +9,27 @@ import { Link, useNavigate } from 'react-router-dom';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
 import { useLocation } from 'react-router-dom';
 import { setLoginData, setTransactionDetails } from '../../../redux-toolkit/slices/loginSlice'; // <-- Import the setLoginData action
+import { userLogin } from '../../../API/loginAction';
 
 const LogIn = () => {
 
-  const loginData = useSelector((state) => state.login); // Assuming the slice is named 'login'
-  console.log('slice login data:', loginData);
-  console.log('usedetailss:', loginData.userData);
-  console.log('transactions details:', loginData.transactionDetails);
-  console.log('login id:', loginData.loginId);
+  // const loginData = useSelector((state) => state.loginReducer); // Assuming the slice is named 'login'
+  // console.log('slice login data:', loginData);
+  // console.log('usedetailss:', loginData.userData);
+  // console.log('transactions details:', loginData.transactionDetails);
+  // console.log('login id:', loginData.loginId);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const { mobileNumber } = location.state || {};
   const [otpShown, setOtpShown] = useState(false);
   const [formData, setFormData] = useState({
-    mobile: '',
+    // mobile: '',
+    mobile: mobileNumber || '',  // Initialize with prop value
     otp: ''
   });
+
   const [error, setError] = useState('');
 
   const toggleOtpVisibility = () => {
@@ -34,87 +39,48 @@ const LogIn = () => {
   const loginHandler = async (e) => {
     e.preventDefault();
 
-    const { state } = location;
+    dispatch(userLogin({ formData, setError, navigate }))
+    // try {
+    //   const response = await fetch('https://sajyatra.sajpe.in/admin/api/login', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(formData)
+    //   });
 
-    try {
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
+    //   const data = await response.json();
 
-      const data = await response.json();
+    //   if (response.ok) {
+    //     console.log('login successful:', data);
+    //     localStorage.setItem('loginId', data.data.id);
+    //     localStorage.setItem('loginData', JSON.stringify(data.data));
 
-      if (response.ok) {
-        console.log('login successful:', data);
-        localStorage.setItem('loginId', data.data.id);
-        localStorage.setItem('loginData', JSON.stringify(data.data));
-
-        // save login datas on the Redux
-        dispatch(setLoginData({
-          // userData: data.data,
-          loginId: data.data.id,
-          loginData: data.data,
-          transactionDetails: null, // To be updated after userDetailsHandler
-        }));
+    //     // save login datas on the Redux
+    //     dispatch(setLoginData({
+    //       // userData: data.data,
+    //       loginId: data.data.id,
+    //       loginData: data.data,
+    //       transactionDetails: null, // To be updated after userDetailsHandler
+    //     }));
 
 
-        // Call the userDetailsHandler after setting the loginId
-        await userDetailsHandler();
+    //     // Call the userDetailsHandler after setting the loginId
+    //     await userDetailsHandler();
 
-        const redirectTo = state?.from ? state.from : '/flight-search';
-        navigate(redirectTo);
-      } else {
-        console.log('login failed:', data);
-        setError('Login failed. Please check your credentials.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setError('An error occurred. Please try again later.');
-    }
+    //     const redirectTo = state?.from ? state.from : '/flight-search';
+    //     navigate(redirectTo);
+    //   } else {
+    //     console.log('login failed:', data);
+    //     setError('Login failed. Please check your credentials.');
+    //   }
+    // } catch (error) {
+    //   console.error('Error:', error);
+    //   setError('An error occurred. Please try again later.');
+    // }
   };
 
 
-  const userDetailsHandler = async () => {
-    const loginId = localStorage.getItem('loginId');
-    // const loginId = loginData.loginId;   // get loginId from Redux (login API data) 
-    
-    try {
-      const requestBody = {
-        user_id: loginId,
-      };
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/user-detail', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch user details');
-      }
-
-      const data = await response.json();
-      console.log('Main LOGIN User details:', data);
-      console.log('flight transcNo', data.transaction.transaction_num)
-      if (data.result && data.transaction) {
-        localStorage.setItem('transactionId', data.transaction.id);
-        localStorage.setItem('transactionNum', data.transaction.transaction_num);
-        // localStorage.setItem('transactionNum-Flight', data.transaction.transaction_num);
-        localStorage.setItem('transactionNum-bus', data.transaction.transaction_num);
-        localStorage.setItem('transactionNumHotel', data.transaction.transaction_num);
-
-        // userdetails transaction data save on the redux
-        dispatch(setTransactionDetails(data.transaction));
-
-      }
-    } catch (error) {
-      console.error('Error fetching user details:', error.message);
-    }
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
