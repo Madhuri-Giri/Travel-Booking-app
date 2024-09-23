@@ -28,9 +28,6 @@ const ReviewBooking = () => {
 
   const selectedSeatCount = localStorage.getItem('selectedSeatCount') || 0;
 
-
-  
-
   const travelName = localStorage.getItem('travelName')
   const [storedPassengerDetails, setStoredPassengerDetails] = useState([]);
   const traceId = useSelector((state) => state.bus.traceId);
@@ -57,10 +54,7 @@ const ReviewBooking = () => {
 
   const boardingPointIndex = selectedBoardingPoint || null;
   const droppingPointIndex = selectedDroppingPoint || null;
-  // console.log('boardingPointIndex', boardingPointIndex)
-  // console.log('droppingPointIndex', droppingPointIndex)
-  // console.log('selectedBusSeatData review', selectedBusSeatData)
-  // console.log("IGST Rate:", selectedBusSeatData[0].Price.GST.IGSTRate);
+  
   const seatNames = selectedBusSeatData?.map(seat => seat.SeatName).join(', ') || 'No seats selected';
 
 
@@ -149,20 +143,19 @@ const ReviewBooking = () => {
     }));
 
     const requestData = {
-      TraceId: "1",
-      ResultIndex: "1",
-      BoardingPointId: "1",
-      DroppingPointId: "1",
-      // TraceId: traceId,
-      // ResultIndex: selectedBusIndex,
-      // BoardingPointId: selectedBoardingPoint.index, 
-      // DroppingPointId: selectedDroppingPoint.index, 
+      // TraceId: "1",
+      // ResultIndex: "1",
+      // BoardingPointId: "1",
+      // DroppingPointId: "1",
+      TraceId: traceId,
+      ResultIndex: selectedBusIndex,
+      BoardingPointId: selectedBoardingPoint.index, 
+      DroppingPointId: selectedDroppingPoint.index, 
      
       RefID: "1",
       Passenger: passengers,
     };
 
-    // console.log("Payload to be sent:", JSON.stringify(requestData, null, 2));
 
     try {
       // console.log("Sending request to API with payload:", JSON.stringify(requestData, null, 2));
@@ -194,10 +187,8 @@ const ReviewBooking = () => {
 
       const id = result.result.Booking_Status[0]?.id;
       setBookingId(id);
-      // console.log("Stored Booking ID:", id);
 
       setStoredPassengerDetails([...passengers]);
-      // console.log("Stored Passenger Details:", passengers);
 
     } catch (error) {
       console.error("Error adding passengers:", error);
@@ -254,9 +245,7 @@ const ReviewBooking = () => {
 
   const newcontactHandler = (e) => {
     e.preventDefault();
-
     localStorage.setItem('newContactData', JSON.stringify(newContactData));
-
     setNewContactData(newContactInitialData);
     setIsContactSubmitted(true);
   }
@@ -274,9 +263,6 @@ const ReviewBooking = () => {
       const loginId = localStorage.getItem('loginId');
       const transactionNoBus = localStorage.getItem('transactionNum');
 
-      // console.log('priceWithIGST', priceWithIGST)
-
-      // console.log('Sending data to API:', { amount: roundedAmount, user_id: loginId });
 
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
         amount: priceWithIGST,
@@ -302,37 +288,29 @@ const ReviewBooking = () => {
     }
   };
 
-
-
   // --------------------------------
 
+  const handlePayment = async () => {
 
-  const handlePayment = async (e) => {
-     e.preventDefault()
-
-
-    // Get the login ID from localStorage
     const loginId = localStorage.getItem('loginId');
+
+
     if (!loginId) {
       navigate('/enter-number', { state: { from: location } });
       return;
     }
-  
-    setLoading(true); // Start loading
-  
+
     try {
+         
+      setLoading(true);
+       
       const paymentData = await fetchPaymentDetails();
-      console.log('Payment Data:', paymentData);
-  
-      // Validate payment data
-      if (!paymentData) {
-        alert('Failed to fetch payment details.');
-        return;
-      }
-  
+
+      if (!paymentData) return;
+
       const options = {
         key: paymentData.razorpay_key,
-        amount: paymentData.payment_details.amount * 100, // Amount in paise
+        amount: paymentData.payment_details.amount * 100,
         currency: 'INR',
         transaction_id: paymentData.payment_details.id,
         name: 'SRN Infotech',
@@ -340,35 +318,31 @@ const ReviewBooking = () => {
         image: 'https://your-logo-url.com/logo.png',
         handler: async function (response) {
           console.log('Payment successful', response);
-  
-          // Store payment IDs in localStorage
-          localStorage.setItem('payment_id', response.razorpay_payment_id);
+
+          localStorage.setItem('payment_id', response.razorpay_payment_id
+          );
           localStorage.setItem('transaction_id', options.transaction_id);
-  
-          setLoading(true); // Start loading for further actions
-  
-          try {
-            console.log('Updating payment...');
-            await updateHandlePayment();
-  
-            console.log('Booking...');
-            await bookHandler();
-  
-            console.log('Updating bus payment status...');
-            await busPaymentStatus();
-  
-            alert('Booking successful!');
-          } catch (error) {
-            console.error('Error during payment update:', error.message);
-            alert(`An error occurred: ${error.message}`);
-          } finally {
-            setLoading(false); // Stop loading
-          }
-        },
+
+          setLoading(true);
+
+        try {
+          await updateHandlePayment();
+
+
+          await bookHandler();
+          await busPaymentStatus();
+        } catch (error) {
+          console.error('Error during updateHandlePayment or bookHandler:', error.message);
+          alert('An error occurred during processing. Please try again.');
+        } finally {
+          setLoading(false);
+        }
+      },
+
         prefill: {
-          username: newContactData.name || 'pallavi',
-          email: newContactData.email || 'pallavi@gmail.com',
-          mobile: newContactData.contact || '9999999999',
+          username: 'pallavi',
+          email: 'pallavi@gmail.com',
+          mobile: '9999999999',
         },
         notes: {
           address: 'Indore',
@@ -377,18 +351,16 @@ const ReviewBooking = () => {
           color: '#3399cc',
         },
       };
-  
+
       const rzp1 = new window.Razorpay(options);
       rzp1.on('payment.failed', function (response) {
         alert(`Payment failed: ${response.error.description}`);
       });
-  
+
       rzp1.open();
     } catch (error) {
       console.error('Error during payment setup:', error.message);
       alert('An error occurred during payment setup. Please try again.');
-    } finally {
-      setLoading(false); // Ensure loading is stopped
     }
   };
   
@@ -429,34 +401,44 @@ const ReviewBooking = () => {
 
       const data = await response.json();
       console.log('Update successful:', data);
-      return data;
+      const status = data.data.status;
+      console.log('statusBus', status);
 
+    
     } catch (error) {
       console.error('Error updating payment details:', error.message);
       throw error;
     }
   };
 
-
   //  ----------------------------book api-----------------------------------
 
-  const bookHandler = async (e) => {
-    e.preventDefault();
+
+  
+
+
+
+
+
+
+
+
+
+  const bookHandler = async () => {
 
     const transactionNoBus = localStorage.getItem('transactionNum');
     const transaction_id = localStorage.getItem('transaction_id');
 
     console.log('transaction_id:', transaction_id);
 
-    // Prepare requestData with dummy/default values for now
     const requestData = {
-      TraceId: '1', // Temporarily hardcoded, replace with real data
+      TraceId: '1',
       ResultIndex: '1',
-      BoardingPointId: '1', // Temporarily hardcoded, replace with real data
-      DroppingPointId: '1', // Temporarily hardcoded, replace with real data
+      BoardingPointId: '1',
+      DroppingPointId: '1',
       RefID: "1",
       transaction_num: transactionNoBus,
-      bus_booking_id: [bookingId], // Ensure bookingId is defined
+      bus_booking_id: [bookingId], 
       transaction_id: transaction_id,
       Passenger: storedPassengerDetails, // Ensure this is correctly populated
     };
@@ -786,7 +768,6 @@ const ReviewBooking = () => {
           </div>
           <div className="review-pay">
             <button
-              type="button" // Changed to prevent form submission
               onClick={handlePayment}
               disabled={!newContactData.name || !newContactData.email || !newContactData.contact || !countsEqual}
               style={{
