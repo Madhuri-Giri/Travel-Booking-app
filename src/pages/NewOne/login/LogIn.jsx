@@ -22,11 +22,14 @@ const LogIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const { mobileNumber } = location.state || {};
   const [otpShown, setOtpShown] = useState(false);
   const [formData, setFormData] = useState({
-    mobile: '',
+    // mobile: '',
+    mobile: mobileNumber || '',  // Initialize with prop value
     otp: ''
   });
+
   const [error, setError] = useState('');
 
   const toggleOtpVisibility = () => {

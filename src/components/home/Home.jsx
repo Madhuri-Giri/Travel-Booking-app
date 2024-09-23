@@ -464,7 +464,6 @@ const Home = () => {
     <>
 
       <CustomNavbar />
-
       <section className='flightPageBanner'>
         <div className="container-fluid ">
           <div className="row">
@@ -1018,8 +1017,6 @@ const Home = () => {
         </div>
       </section>
 
-
-
       <section className='exictingOffers'>
         <div className="container-fluid">
           <h5 className=''>Exclusive Offers</h5>
@@ -1037,7 +1034,67 @@ const Home = () => {
       </section>
 
 
-
+      <section className="exclusive-dealsSec">
+        <div className="container-fluid mb-5">
+          <div className="row mb-4">
+            <h2>Exclusive Deals</h2>
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
+                <img src="https://www.vimaansafar.com/img/city/delhi.jpg" className="img-fluid" alt="Bangkok" />
+                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
+                  <h3>Delhi</h3>
+                  <p>Rs 2200</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
+                <img src="https://www.vimaansafar.com/img/city/amritsar.jpg" className="img-fluid" alt="Bangkok" />
+                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
+                  <h3>Amritsar</h3>
+                  <p>Rs 1900</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
+                <img src="https://www.vimaansafar.com/img/city/srinagar.jpg" className="img-fluid" alt="Bangkok" />
+                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
+                  <h3>Srinagar</h3>
+                  <p>Rs 2400</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
+                <img src="https://www.vimaansafar.com/img/city/bangkok.jpg" className="img-fluid" alt="Bangkok" />
+                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
+                  <h3>Bangkok</h3>
+                  <p>Rs 7000</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
+                <img src="https://www.vimaansafar.com/img/city/dubai.jpg" className="img-fluid" alt="Bangkok" />
+                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
+                  <h3>Dubai</h3>
+                  <p>Rs 11000</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 exclusivecol">
+              <div className="position-relative">
+                <img src="https://www.vimaansafar.com/img/city/hongkong.jpg" className="img-fluid" alt="Bangkok" />
+                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
+                  <h3>Hong Kong</h3>
+                  <p>Rs 13000</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="flightsec7 bg-light">
         <div className="container">

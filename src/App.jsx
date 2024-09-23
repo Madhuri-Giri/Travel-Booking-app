@@ -60,7 +60,7 @@ import { userDetailsHandler } from './API/loginAction';
 
 const App = () => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number', '/load'];
   const { isLogin, loginId } = useSelector((state) => state.loginReducer);
@@ -79,7 +79,7 @@ const App = () => {
 
   return (
     <div>
-      <Router>
+      {/* <Router> */}
         {/* {!noNavbarFooterRoutes.includes(window.location.pathname) && <CustomNavbar />} */}
         <Routes>
           <Route path='/' element={<Home />} />
@@ -157,7 +157,7 @@ const App = () => {
           draggable
           pauseOnFocusLoss
         />
-      </Router>
+      {/* </Router> */}
     </div>
   );
 };
