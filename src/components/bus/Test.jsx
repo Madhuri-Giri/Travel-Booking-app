@@ -1,156 +1,7 @@
-// const bookHandler = async () => {
-  //   try {
-  //     const transactionNoBus = localStorage.getItem('transactionNum');
-  //     const busSavedId = localStorage.getItem('busSavedId');
-  //     const transaction_id = localStorage.getItem('transaction_id');
-  //     const selectedBusSeatData = JSON.parse(localStorage.getItem('selectedBusSeatData')) || [];
-  //     const busPassengerData = JSON.parse(localStorage.getItem('busPassengerData')) || [];
-
-
-  //     const seatDataMap = new Map();
-  //     selectedBusSeatData.forEach(seat => {
-  //       seatDataMap.set(seat.ColumnNo, seat);
-  //     });
-
-  //     const passengersData = busPassengerData.map(passenger => {
-  //       const seat = seatDataMap.get(passenger.Seat.ColumnNo) || {};
-  //       return {
-  //         LeadPassenger: passenger.LeadPassenger,
-  //         PassengerId: 0,
-  //         Title: "null",
-  //         FirstName: passenger.FirstName,
-  //         LastName: passenger.LastName,
-  //         Email: passenger.Email,
-  //         Phoneno: passenger.Phoneno,
-  //         Gender: passenger.Gender,
-  //         IdType: passenger.IdType,
-  //         IdNumber: passenger.Idnumber,
-  //         Address: passenger.Address,
-  //         Age: passenger.Age,
-  //         Seat: {
-  //           ColumnNo: seat.ColumnNo,
-  //           Height: seat.Height,
-  //           IsLadiesSeat: seat.IsLadiesSeat,
-  //           IsMalesSeat: seat.IsMalesSeat,
-  //           IsUpper: seat.IsUpper,
-  //           RowNo: seat.RowNo,
-  //           SeatFare: seat.SeatFare,
-  //           SeatIndex: seat.SeatIndex,
-  //           SeatName: seat.SeatName,
-  //           SeatStatus: seat.SeatStatus,
-  //           SeatType: seat.SeatType,
-  //           Width: seat.Width,
-  //           Price: {
-  //             CurrencyCode: seat.Price?.CurrencyCode,
-  //             BasePrice: seat.Price?.BasePrice,
-  //             Tax: seat.Price?.Tax,
-  //             OtherCharges: seat.Price?.OtherCharges,
-  //             Discount: seat.Price?.Discount,
-  //             PublishedPrice: seat.Price?.PublishedPrice,
-  //             PublishedPriceRoundedOff: seat.Price?.PublishedPriceRoundedOff,
-  //             OfferedPrice: seat.Price?.OfferedPrice,
-  //             OfferedPriceRoundedOff: seat.Price?.OfferedPriceRoundedOff,
-  //             AgentCommission: seat.Price?.AgentCommission,
-  //             AgentMarkUp: seat.Price?.AgentMarkUp,
-  //             TDS: seat.Price?.TDS,
-  //             GST: seat.Price?.GST || {
-  //               CGSTAmount: 0,
-  //               CGSTRate: 0,
-  //               CessAmount: 0,
-  //               CessRate: 0,
-  //               IGSTAmount: 0,
-  //               IGSTRate: 18,
-  //               SGSTAmount: 0,
-  //               SGSTRate: 0,
-  //               TaxableAmount: 0
-  //             }
-  //           },
-  //         },
-  //       };
-  //     });
-
-
-  //     const traceId = localStorage.getItem('traceId');
-  //     const storedBusDetails = localStorage.getItem('selectedBusDetails');
-  //     const BoardingPointId = localStorage.getItem('selectedBoardingPointIndex')
-  //     const DroppingPointId = localStorage.getItem('selectedDroppingPointIndex')
-  //     // console.log('BoardingPointId', BoardingPointId)
-
-
-  //     if (!traceId) {
-  //       throw new Error('TraceId not found in localStorage');
-  //     }
-
-  //     let selectedBusResult = null;
-
-  //     if (storedBusDetails) {
-  //       const parsedBusDetails = JSON.parse(storedBusDetails);
-  //       selectedBusResult = parsedBusDetails.selctedBusResult;
-
-  //       console.log('Selected Bus Result:', selectedBusResult);
-  //     } else {
-  //       throw new Error('No bus details found in localStorage');
-  //     }
-
-  //     if (!selectedBusResult) {
-  //       throw new Error('SelectedBusResult not found in bus details');
-  //     }
 
 
 
-
-  //     const requestData = {
-  //       ResultIndex: selectedBusResult,
-  //       TraceId: traceId,
-  //       BoardingPointId: BoardingPointId,
-  //       DroppingPointId: DroppingPointId,
-  //       RefID: "1",
-  //       transaction_num: transactionNoBus,
-  //       bus_booking_id: [busSavedId],
-  //       transaction_id: transaction_id,
-  //       Passenger: passengersData,
-  //     };
-
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/seat-book', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(requestData),
-  //     });
-
-  //     const responseBody = await response.json();
-  //     console.log('Bus Book Response:', responseBody);
-
-  //     if (!response.ok) {
-  //       console.error('Failed to book seats. Status:', response.status, 'Response:', responseBody);
-  //       throw new Error(`Failed to book seats. Status: ${response.status}`);
-  //     }
-
-  //     if (responseBody.Error && responseBody.Error.ErrorCode !== 0) {
-  //       console.error('Booking failed:', responseBody.Error.ErrorMessage);
-  //       toast.error(`Booking failed: ${responseBody.Error.ErrorMessage}`);
-  //     } else {
-  //       toast.success('Booking successful!');
-  //       localStorage.setItem('busTikitDetails', JSON.stringify(responseBody));
-
-  //     }
-
-  //   } catch (error) {
-  //     console.error('Error during booking:', error.message);
-  //     toast.error('An error occurred during booking. Please try again.');
-  //   }
-  // };
-
-
-
-
-
-
-
-
-
-  import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
@@ -177,8 +28,8 @@ const ReviewBooking = () => {
 
   const selectedSeatCount = localStorage.getItem('selectedSeatCount') || 0;
 
-  const travelName = localStorage.getItem('selectedTravelName')
-
+  const travelName = localStorage.getItem('travelName')
+  const [storedPassengerDetails, setStoredPassengerDetails] = useState([]);
   const traceId = useSelector((state) => state.bus.traceId);
   // const resultIndex = useSelector((state) => state.bus.resultIndex);
 
@@ -188,23 +39,22 @@ const ReviewBooking = () => {
   const location = useLocation();
   const { selectedBoardingPoint, selectedDroppingPoint, selectedBusSeatData, totalPrice } = location.state || {};
 
+  const [bookingId, setBookingId] = useState(null);
+
   const igstRate = selectedBusSeatData[0]?.Price?.GST?.IGSTRate || 0;
 
   const igstAmount = Math.round((totalPrice * igstRate) / 100);
   const priceWithIGST = totalPrice + igstAmount;
 
 
-  console.log("Price with IGST:", priceWithIGST);
+  // console.log("Price with IGST:", priceWithIGST);
 
 
   // ---------------------------------------------------------------------------------------------------------
 
   const boardingPointIndex = selectedBoardingPoint || null;
   const droppingPointIndex = selectedDroppingPoint || null;
-  // console.log('boardingPointIndex', boardingPointIndex)
-  // console.log('droppingPointIndex', droppingPointIndex)
-  // console.log('selectedBusSeatData review', selectedBusSeatData)
-  // console.log("IGST Rate:", selectedBusSeatData[0].Price.GST.IGSTRate);
+  
   const seatNames = selectedBusSeatData?.map(seat => seat.SeatName).join(', ') || 'No seats selected';
 
 
@@ -244,8 +94,8 @@ const ReviewBooking = () => {
       Title: "null",
       FirstName: formData.firstName || '',
       LastName: formData.lastName || '',
-      Email: "example@example.com",
-      Phoneno: "9643737502",
+      Email: newContactData.email,
+      Phoneno: newContactData.contact,
       Gender: formData.gender || '',
       IdType: null,
       IdNumber: null,
@@ -293,18 +143,23 @@ const ReviewBooking = () => {
     }));
 
     const requestData = {
-      TraceId: traceId,
-      ResultIndex: selectedBusIndex,
-      BoardingPointId: selectedBoardingPoint.index,
-      DroppingPointId: selectedDroppingPoint.index,
+      TraceId: "1",
+      ResultIndex: "1",
+      BoardingPointId: "1",
+      DroppingPointId: "1",
+      // TraceId: traceId,
+      // ResultIndex: selectedBusIndex,
+      // BoardingPointId: selectedBoardingPoint.index, 
+      // DroppingPointId: selectedDroppingPoint.index, 
+     
       RefID: "1",
       Passenger: passengers,
     };
 
-    console.log("Payload to be sent:", JSON.stringify(requestData, null, 2));
+    // console.log("Payload to be sent:", JSON.stringify(requestData, null, 2));
 
     try {
-      console.log("Sending request to API with payload:", JSON.stringify(requestData, null, 2));
+      // console.log("Sending request to API with payload:", JSON.stringify(requestData, null, 2));
 
       const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-block", {
         method: "POST",
@@ -315,19 +170,29 @@ const ReviewBooking = () => {
       });
 
       if (!response.ok) {
-        const errorMessage = result.result.api_response.Error.ErrorMessage;
+        const errorResult = await response.json();
+        const errorMessage = errorResult.api_response.Error.ErrorMessage || 'Booking failed';
         console.error("Booking error:", errorMessage);
         alert(errorMessage);
         return;
       }
 
-
       const result = await response.json();
       console.log("Block Response:", result);
+
 
       setPassengers((prev) => [...prev, ...passengers]);
       setFormData(initialFormData);
       setPassengerCount((prev) => prev + passengers.length);
+
+
+      const id = result.result.Booking_Status[0]?.id;
+      setBookingId(id);
+      // console.log("Stored Booking ID:", id);
+
+      setStoredPassengerDetails([...passengers]);
+      // console.log("Stored Passenger Details:", passengers);
+
     } catch (error) {
       console.error("Error adding passengers:", error);
     }
@@ -338,10 +203,13 @@ const ReviewBooking = () => {
 
 
 
+
+
+
   // -----------------------------------------------------------------------------------------------------------------------------------------
 
   const [paymentDetails, setPaymentDetails] = useState(null);
-  const [totalFare, setTotalFare] = useState(0);
+  // const [totalFare, setTotalFare] = useState(0);
   const navigate = useNavigate();
 
   const timerEndTime = localStorage.getItem('timerEndTime')
@@ -380,9 +248,7 @@ const ReviewBooking = () => {
 
   const newcontactHandler = (e) => {
     e.preventDefault();
-
     localStorage.setItem('newContactData', JSON.stringify(newContactData));
-
     setNewContactData(newContactInitialData);
     setIsContactSubmitted(true);
   }
@@ -398,18 +264,14 @@ const ReviewBooking = () => {
   const fetchPaymentDetails = async () => {
     try {
       const loginId = localStorage.getItem('loginId');
-      const roundedAmount = Math.round(totalPayment);
       const transactionNoBus = localStorage.getItem('transactionNum');
-      const busSavedId = localStorage.getItem('busSavedId');
 
-
-      // console.log('Sending data to API:', { amount: roundedAmount, user_id: loginId });
 
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
-        amount: roundedAmount,
+        amount: priceWithIGST,
         user_id: loginId,
         transaction_num: transactionNoBus,
-        bus_booking_id: [busSavedId],
+        bus_booking_id: [bookingId],
       });
 
       console.log('API response:', response.data);
@@ -429,33 +291,35 @@ const ReviewBooking = () => {
     }
   };
 
-
-
   // --------------------------------
 
 
-  const handlePayment = async () => {
-    // Check if contact details are filled
-    if (!newContactData.name || !newContactData.email || !newContactData.contact) {
-      alert('Please fill in your contact details before proceeding to payment.');
-      return;
-    }
+  const handlePayment = async (e) => {
+     e.preventDefault()
 
+
+    // Get the login ID from localStorage
     const loginId = localStorage.getItem('loginId');
     if (!loginId) {
       navigate('/enter-number', { state: { from: location } });
       return;
     }
-
+  
+    setLoading(true); // Start loading
+  
     try {
-      setLoading(true);
-
       const paymentData = await fetchPaymentDetails();
-      if (!paymentData) return;
-
+      console.log('Payment Data:', paymentData);
+  
+      // Validate payment data
+      if (!paymentData) {
+        alert('Failed to fetch payment details.');
+        return;
+      }
+  
       const options = {
         key: paymentData.razorpay_key,
-        amount: paymentData.payment_details.amount * 100,
+        amount: paymentData.payment_details.amount * 100, // Amount in paise
         currency: 'INR',
         transaction_id: paymentData.payment_details.id,
         name: 'SRN Infotech',
@@ -463,25 +327,29 @@ const ReviewBooking = () => {
         image: 'https://your-logo-url.com/logo.png',
         handler: async function (response) {
           console.log('Payment successful', response);
-
+  
+          // Store payment IDs in localStorage
           localStorage.setItem('payment_id', response.razorpay_payment_id);
           localStorage.setItem('transaction_id', options.transaction_id);
-
-          setLoading(true);
-
+  
+          setLoading(true); // Start loading for further actions
+  
           try {
+            console.log('Updating payment...');
             await updateHandlePayment();
-
-            setPayLoading(true);
-
+  
+            console.log('Booking...');
             await bookHandler();
+  
+            console.log('Updating bus payment status...');
             await busPaymentStatus();
-
+  
+            alert('Booking successful!');
           } catch (error) {
-            console.error('Error during updateHandlePayment or bookHandler:', error.message);
-            alert('An error occurred during processing. Please try again.');
+            console.error('Error during payment update:', error.message);
+            alert(`An error occurred: ${error.message}`);
           } finally {
-            setLoading(false);
+            setLoading(false); // Stop loading
           }
         },
         prefill: {
@@ -496,18 +364,21 @@ const ReviewBooking = () => {
           color: '#3399cc',
         },
       };
-
+  
       const rzp1 = new window.Razorpay(options);
       rzp1.on('payment.failed', function (response) {
         alert(`Payment failed: ${response.error.description}`);
       });
-
+  
       rzp1.open();
     } catch (error) {
       console.error('Error during payment setup:', error.message);
       alert('An error occurred during payment setup. Please try again.');
+    } finally {
+      setLoading(false); // Ensure loading is stopped
     }
   };
+  
 
 
 
@@ -545,9 +416,7 @@ const ReviewBooking = () => {
 
       const data = await response.json();
       console.log('Update successful:', data);
-      const status = data.data.status;
-      console.log('statusBus', status);
-
+      return data;
 
     } catch (error) {
       console.error('Error updating payment details:', error.message);
@@ -558,110 +427,64 @@ const ReviewBooking = () => {
 
   //  ----------------------------book api-----------------------------------
 
+  const bookHandler = async (e) => {
+    e.preventDefault();
+
+    const transactionNoBus = localStorage.getItem('transactionNum');
+    const transaction_id = localStorage.getItem('transaction_id');
+
+    console.log('transaction_id:', transaction_id);
+
+    // Prepare requestData with dummy/default values for now
+    const requestData = {
+      TraceId: '1', // Temporarily hardcoded, replace with real data
+      ResultIndex: '1',
+      BoardingPointId: '1', // Temporarily hardcoded, replace with real data
+      DroppingPointId: '1', // Temporarily hardcoded, replace with real data
+      RefID: "1",
+      transaction_num: transactionNoBus,
+      bus_booking_id: [bookingId], // Ensure bookingId is defined
+      transaction_id: transaction_id,
+      Passenger: storedPassengerDetails, // Ensure this is correctly populated
+    };
+
+    console.log('Request Data for Booking:', requestData);
+
+    try {
+      const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-book", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      const result = await response.json();
+      console.log("Booking Response:", result);
 
 
+      if (!response.ok) {
+        // Handle HTTP errors
+        throw new Error(`HTTP Error: ${response.status}`);
+      }
 
-  // const bookHandler = async (e) => {
-  //   e.preventDefault();
+      if (result.Error && result.Error.ErrorCode !== 0) {
+        // Handle API-specific errors
+        const errorMessage = result.Error.ErrorMessage || 'Booking failed due to an unknown error.';
+        console.error("Booking error:", errorMessage);
+        toast.error(errorMessage); // Show error message to the user
+        return;
+      }
 
-  //   const passengers = (selectedBusSeatData || []).map((seat, index) => ({
-  //     LeadPassenger: index === 0,
-  //     PassengerId: index,
-  //     Title: "null",
-  //     FirstName: ,
-  //     LastName:,
-  //     Email: "example@example.com",
-  //     Phoneno: "9643737502",
-  //     Gender:  ,
-  //     IdType: null,
-  //     IdNumber: null,
-  //     Address: ,
-  //     Age: ,
-  //     Seat: {
-  //       ColumnNo: seat.ColumnNo,
-  //       RowNo: seat.RowNo,
-  //       SeatName: seat.SeatName,
-  //       Height: seat.Height,
-  //       IsLadiesSeat: seat.IsLadiesSeat,
-  //       IsMalesSeat: seat.IsMalesSeat,
-  //       IsUpper: seat.IsUpper,
-  //       SeatFare: seat.SeatFare,
-  //       SeatIndex: seat.SeatIndex,
-  //       SeatStatus: seat.SeatStatus,
-  //       SeatType: seat.SeatType,
-  //       Width: seat.Width,
-  //       Price: {
-  //         CurrencyCode: seat.Price.CurrencyCode,
-  //         BasePrice: seat.Price.BasePrice,
-  //         Tax: seat.Price.Tax,
-  //         OtherCharges: seat.Price.OtherCharges,
-  //         Discount: seat.Price.Discount,
-  //         PublishedPrice: seat.Price.PublishedPrice,
-  //         PublishedPriceRoundedOff: seat.Price.PublishedPriceRoundedOff,
-  //         OfferedPrice: seat.Price.OfferedPrice,
-  //         OfferedPriceRoundedOff: seat.Price.OfferedPriceRoundedOff,
-  //         AgentCommission: seat.Price.AgentCommission,
-  //         AgentMarkUp: seat.Price.AgentMarkUp,
-  //         TDS: seat.Price.TDS,
-  //         GST: {
-  //           CGSTAmount: seat.Price.GST.CGSTAmount,
-  //           CGSTRate: seat.Price.GST.CGSTRate,
-  //           CessAmount: seat.Price.GST.CessAmount,
-  //           CessRate: seat.Price.GST.CessRate,
-  //           IGSTAmount: seat.Price.GST.IGSTAmount,
-  //           IGSTRate: seat.Price.GST.IGSTRate,
-  //           SGSTAmount: seat.Price.GST.SGSTAmount,
-  //           SGSTRate: seat.Price.GST.SGSTRate,
-  //           TaxableAmount: seat.Price.GST.TaxableAmount,
-  //         },
-  //       },
-  //     },
-  //   }));
+      toast.success('Booking successful!');
+      localStorage.setItem('busTikitDetails', JSON.stringify(result));
 
-  //   const requestData = {
-  //     TraceId: traceId,
-  //     // ResultIndex: selectedBusIndex,
-  //     ResultIndex: '1',
-  //     BoardingPointId: selectedBoardingPoint.index,
-  //     DroppingPointId: selectedDroppingPoint.index,
-  //     RefID: "1",
-  //     transaction_num: transactionNoBus,
-  //     bus_booking_id: [busSavedId],
-  //     // transaction_id: transaction_id,
-  //     transaction_id: "1",
-
-  //     Passenger: passengers,
-  //   };
-
-
-  //   try {
-
-  //     const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-book", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(requestData),
-  //     });
-
-
-  //     const result = await response.json();
-  //     console.log("Book Response:", result);
-
-  //     if (!response.ok || (result.Error && result.Error.ErrorCode !== 0)) {
-  //       const errorMessage = result.Error ? result.Error.ErrorMessage : 'Booking failed';
-  //       console.error("Booking error:", errorMessage);
-  //       toast.error(errorMessage);
-  //       return;
-  //     }
-
-  //     toast.success('Booking successful!');
-  //     localStorage.setItem('busTikitDetails', JSON.stringify(result));
-  //   } catch (error) {
-  //     console.error("Error during booking:", error.message);
-  //     toast.error('An error occurred during booking. Please try again.');
-  //   }
-  // };
+    } catch (error) {
+      // General error handling
+      console.error("Error during booking:", error.message);
+      toast.error(`An error occurred during booking: ${error.message}`);
+    }
+  };
 
 
   // ------------------------------status api--------------------------------------------------------
@@ -672,7 +495,6 @@ const ReviewBooking = () => {
       if (!transaction_id) {
         throw new Error('Transaction ID is missing.');
       }
-
       const response = await fetch('https://sajyatra.sajpe.in/admin/api/bus-payment-status', {
         method: 'POST',
         headers: {
@@ -692,7 +514,6 @@ const ReviewBooking = () => {
       // Save to localStorage
       localStorage.setItem("buspaymentStatusRes", JSON.stringify(responseBody));
 
-      // Navigate with state
       navigate('/busBookTicket', { state: { buspaymentStatus: responseBody } });
 
       return responseBody;
@@ -723,8 +544,16 @@ const ReviewBooking = () => {
     setPassengers(updatedPassengers);
   };
 
+// ---------------------------------------------------------count Condition--------------------------------------------
+  const passNumber = passengers.length;
+  const seatCount = selectedSeatCount;
+  // console.log('passNumber:', passNumber, 'Type:', typeof passNumber);
+  // console.log('seatCount:', seatCount, 'Type:', typeof seatCount);
 
-  // ----------------------------------------------------------------------------------------------------
+  const countsEqual = passNumber === Number(seatCount); // Convert seatCount to a number
+  // console.log('countsEqual:', countsEqual);
+
+  // --------------------------------------------------------------------------------------------------------------------
 
   return (
     <>
@@ -763,13 +592,16 @@ const ReviewBooking = () => {
                 </div>
 
 
+                {/* <button onClick={bookHandler}>fcgvhb</button> */}
+
+
                 <div className="passnger-Info-page">
                   <>
                     <div className='PassangerInfo'>
                       <div className="p-upr">
                         <h6><i className="ri-user-add-line"></i>Traveller Details <br /></h6>
                         <p>
-                          <span>Passenger Added: {passengers.length}   </span> / Seat Selected: {selectedSeatCount}
+                          <span>Passenger Added: {passNumber}   </span> / Seat Selected: {seatCount}
                         </p>
                       </div>
 
@@ -892,65 +724,69 @@ const ReviewBooking = () => {
                 </div>
 
                 <div className="new-contact">
-                  <h6><i className="ri-user-add-line"></i> Contact Details </h6>
-                  <p>Your booking details will be sent to this email address and mobile number.</p>
-                  <form onSubmit={newcontactHandler}>
-                    <div className="c-detail">
-                      <div className="cont">
-                        <input
-                          type="text"
-                          name="name"
-                          value={newContactData.name}
-                          onChange={handleInputChange}
-                          placeholder="Enter Your Name"
-                          required
-                        />
-                      </div>
-                      <div className="cont">
-                        <input
-                          type="email"
-                          name="email"
-                          value={newContactData.email}
-                          onChange={handleInputChange}
-                          placeholder="Enter Your Email"
-                          required
-                        />
-                      </div>
-                      <div className="cont">
-                        <input
-                          type="text"
-                          name="contact"
-                          value={newContactData.contact}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            if (/^\d*$/.test(value) && value.length <= 10) {
-                              handleInputChange(e);
-                            }
-                          }}
-                          placeholder="Enter Your Contact"
-                          maxLength="10"
-                          required
-                        />
-                      </div>
+      <h6><i className="ri-user-add-line"></i> Contact Details </h6>
+      <p>Your booking details will be sent to this email address and mobile number.</p>
+      <form onSubmit={newcontactHandler}>
+        <div className="c-detail">
+          <div className="cont">
+            <input
+              type="text"
+              name="name"
+              value={newContactData.name}
+              onChange={handleInputChange}
+              placeholder="Enter Your Name"
+              required
+            />
+          </div>
+          <div className="cont">
+            <input
+              type="email"
+              name="email"
+              value={newContactData.email}
+              onChange={handleInputChange}
+              placeholder="Enter Your Email"
+              required
+            />
+          </div>
+          <div className="cont">
+            <input
+              type="text"
+              name="contact"
+              value={newContactData.contact}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/^\d*$/.test(value) && value.length <= 10) {
+                  handleInputChange(e);
+                }
+              }}
+              placeholder="Enter Your Contact"
+              maxLength="10"
+              required
+            />
+          </div>
+        </div>
 
-                    </div>
-
-
-                    <div className="last-pay">
-                      <div className="fare">
-                        <h6><i className="ri-price-tag-2-line"></i>Total Ticket Amount</h6>
-                        <small >₹{priceWithIGST}</small>
-                      </div>
-                      <div className="review-pay">
-                        <button
-                          onClick={handlePayment}
-                        >
-                          Proceed To Pay
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
+        <div className="last-pay">
+          <div className="fare">
+            <h6><i className="ri-price-tag-2-line"></i>Total Ticket Amount</h6>
+            <small>₹{priceWithIGST}</small>
+          </div>
+          <div className="review-pay">
+            <button
+              type="button" // Changed to prevent form submission
+              onClick={handlePayment}
+              disabled={!newContactData.name || !newContactData.email || !newContactData.contact || !countsEqual}
+              style={{
+                backgroundColor: !newContactData.name || !newContactData.email || !newContactData.contact || !countsEqual ? '#ccc' : undefined,
+                cursor: !newContactData.name || !newContactData.email || !newContactData.contact || !countsEqual ? 'not-allowed' : 'pointer',
+              }}
+            >
+              Proceed To Pay
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
 
 
 
