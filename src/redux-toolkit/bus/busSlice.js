@@ -7,7 +7,11 @@ export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to
   currentDate.setHours(0, 0, 0, 0);
   departureDate.setHours(0, 0, 0, 0);
 
-  if (departureDate <= currentDate) {
+  console.log('Current Date:', currentDate);
+  console.log('Departure Date:', departureDate);
+
+
+  if (departureDate < currentDate) {
     throw new Error('Date of journey should be greater than the current date');
   }
 
@@ -92,7 +96,7 @@ const busSlice = createSlice({
 
            
 
-          console.log('redux result ', state.resultIndex)
+          // console.log('redux result ', state.resultIndex)
 
           // localStorage.setItem('traceId', data.Result.TraceId);
           // console.log('bus trace id',  data.Result.TraceId)

@@ -204,7 +204,7 @@ const toggleDropVisibility = () => {
 const addSeatLayout = async () => {
   try {
     const selectedBusIndex = localStorage.getItem('selectedBusIndex');
-    console.log('Selected Bus Index layout function:', selectedBusIndex); 
+    // console.log('Selected Bus Index layout function:', selectedBusIndex); 
 
     await dispatch(fetchSeatLayout({ traceId, selectedBusIndex }));
 

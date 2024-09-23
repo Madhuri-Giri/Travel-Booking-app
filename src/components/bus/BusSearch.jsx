@@ -47,7 +47,9 @@ const BusSearch = () => {
     dateInputRef.current.showPicker();
   };
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set time to midnight to avoid time issues
+  const minDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
   const fetchSuggestions = async (query, setSuggestions, isFromField) => {
     try {
@@ -216,7 +218,7 @@ const BusSearch = () => {
                         className="date-input"
                         value={selectedBusDate ? selectedBusDate.toISOString().split('T')[0] : ''}
                         onChange={(e) => dispatch(setSelectedBusDate(new Date(e.target.value)))}
-                        min={today}
+                        min={minDate} 
                       />
                     </div>
                   </div>
