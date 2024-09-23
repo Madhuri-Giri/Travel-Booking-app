@@ -15,7 +15,7 @@ export const blockHotelRooms = createAsyncThunk(
     'hotelBlock/blockRoom',
     async (requestData) => {
         const response = await axios.post('https://sajyatra.sajpe.in/admin/api/hotel-block', requestData);
-        return response.data;
+        return response.data; // Return the full response
     }
 );
 
@@ -27,17 +27,22 @@ const hotelBlockSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(blockHotelRooms.pending, (state) => {  
-                state.loading = true;
-                state.error = null;
+                state.loading = true; // Set loading to true
+                state.error = null; // Clear any previous errors
             })
             .addCase(blockHotelRooms.fulfilled, (state, action) => {  
-                state.loading = false;
-                state.blockRoomResult = action.payload.data.BlockRoomResult; // Store BlockRoomResult
-                state.bookingStatus = action.payload.booking_status; // Store booking_status
+                state.loading = false; // Set loading to false on success
+                // Store the BlockRoomResult and booking_status
+                state.blockRoomResult = action.payload.data.BlockRoomResult; 
+                state.bookingStatus = action.payload.booking_status; 
+
+                // Log the entire response for debugging
+                console.log('Full Response:', action.payload); 
             })
             .addCase(blockHotelRooms.rejected, (state, action) => { 
-                state.loading = false;
-                state.error = action.error.message;
+                state.loading = false; // Set loading to false on error
+                state.error = action.error.message; // Store error message
+                console.error('Error:', action.error.message); // Log error for debugging
             });
     },
 });

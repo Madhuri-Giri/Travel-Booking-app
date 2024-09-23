@@ -17,6 +17,8 @@ const BookingBill = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const ticketElementRef = useRef(null);
+  const { blockRoomResult, bookingStatus } = location.state || {};
+ 
 
   useEffect(() => {
     const fetchBookingDetails = async () => {
