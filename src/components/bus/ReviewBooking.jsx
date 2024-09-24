@@ -26,6 +26,15 @@ import './PassangerInfo.css';
 const ReviewBooking = () => {
 
 
+
+  const { transactionDetails } = useSelector((state) => state.loginReducer);
+  console.log('transactionDetails', transactionDetails);
+  const transaction_num = transactionDetails?.transaction_num
+  console.log('transaction_num sb', transaction_num);
+
+  // -------------------------------------------------------------------------------
+
+
   const selectedSeatCount = localStorage.getItem('selectedSeatCount') || 0;
 
   const travelName = localStorage.getItem('travelName')
@@ -143,14 +152,14 @@ const ReviewBooking = () => {
     }));
 
     const requestData = {
-      // TraceId: "1",
-      // ResultIndex: "1",
-      // BoardingPointId: "1",
-      // DroppingPointId: "1",
-      TraceId: traceId,
-      ResultIndex: selectedBusIndex,
-      BoardingPointId: selectedBoardingPoint.index, 
-      DroppingPointId: selectedDroppingPoint.index, 
+      TraceId: "1",
+      ResultIndex: "1",
+      BoardingPointId: "1",
+      DroppingPointId: "1",
+      // TraceId: traceId,
+      // ResultIndex: selectedBusIndex,
+      // BoardingPointId: selectedBoardingPoint.index, 
+      // DroppingPointId: selectedDroppingPoint.index, 
      
       RefID: "1",
       Passenger: passengers,
@@ -261,13 +270,13 @@ const ReviewBooking = () => {
   const fetchPaymentDetails = async () => {
     try {
       const loginId = localStorage.getItem('loginId');
-      const transactionNoBus = localStorage.getItem('transactionNum');
+      // const transactionNoBus = localStorage.getItem('transactionNum');
 
 
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-bus-payment', {
         amount: priceWithIGST,
         user_id: loginId,
-        transaction_num: transactionNoBus,
+        transaction_num: transaction_num,
         bus_booking_id: [bookingId],
       });
 
@@ -426,7 +435,7 @@ const ReviewBooking = () => {
 
   const bookHandler = async () => {
 
-    const transactionNoBus = localStorage.getItem('transactionNum');
+    // const transactionNoBus = localStorage.getItem('transactionNum');
     const transaction_id = localStorage.getItem('transaction_id');
 
     console.log('transaction_id:', transaction_id);
@@ -437,7 +446,7 @@ const ReviewBooking = () => {
       BoardingPointId: '1',
       DroppingPointId: '1',
       RefID: "1",
-      transaction_num: transactionNoBus,
+      transaction_num: transaction_num,
       bus_booking_id: [bookingId], 
       transaction_id: transaction_id,
       Passenger: storedPassengerDetails, // Ensure this is correctly populated
