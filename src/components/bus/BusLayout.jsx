@@ -357,7 +357,11 @@ const handleProceed = () => {
   return (
      <>
 
-       
+        {loading ?(
+          <>
+           <Loading />
+          </>
+        ):(
           <div className="BusLayout">
           <div className="Seat-layout">
             <div className="seats">
@@ -1041,6 +1045,7 @@ const handleProceed = () => {
             </div>
           </div>
         </div>
+        )} 
 
      </>
   );
