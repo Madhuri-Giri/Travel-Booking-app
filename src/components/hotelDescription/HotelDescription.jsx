@@ -45,56 +45,29 @@ const HotelDescription = () => {
   const facilities = hotelDetails?.HotelFacilities ? parseFacilities(hotelDetails.HotelFacilities[0]) : [];
 
   const dispatch = useDispatch(); 
-  const { hotels = [], srdvType, resultIndexes, srdvIndexes, hotelCodes, traceId } = useSelector((state) => state.hotelSearch || {});
+  // const { hotels = [], srdvType, resultIndexes, srdvIndexes, hotelCodes, traceId } = useSelector((state) => state.hotelSearch || {});
 
-  if (!hotelDetails || !hotels.length) {
-    return <div>Loading...</div>;
-  }
-
+  // if (!hotelDetails || !hotels.length) {
+  //   return <div>Loading...</div>;
+  // }
+  const {  resultIndex, hotelCode, srdvType, srdvIndex, traceId } = location.state || {};
   const fetchHotelRoom = async () => {
-    console.log('Current hotel index:', hotelIndex);
-
-    if (hotelIndex === undefined) {
-        console.error('hotelIndex is undefined');
-        return;
+    if (!resultIndex || !srdvIndex || !hotelCode || !srdvType || !traceId) {
+      console.error("Missing required parameters for fetching hotel room.");
+      return;
     }
 
-    console.log('Result Indexes Length:', resultIndexes.length);
-    console.log('SRDV Indexes Length:', srdvIndexes.length);
-    console.log('Hotel Codes Length:', hotelCodes.length);
-
-    // Check if the hotel index is valid
-    if (hotelIndex < 0 || hotelIndex >= hotels.length) {
-        console.error('Invalid hotel index:', hotelIndex);
-        return;
-    }
-
-    // Accessing hotel data
-    const resultIndex = resultIndexes[hotelIndex];
-    const srdvIndex = srdvIndexes[hotelIndex];
-    const hotelCode = hotelCodes[hotelIndex];
-
-    console.log('Accessing resultIndexes[hotelIndex]:', resultIndex);
-    console.log('Accessing srdvIndexes[hotelIndex]:', srdvIndex);
-    console.log('Accessing hotelCodes[hotelIndex]:', hotelCode);
-
-    // Ensure values are defined
-    if (resultIndex === undefined || srdvIndex === undefined || hotelCode === undefined) {
-        console.error('One or more values are undefined. Check your data arrays.');
-        return;
-    }
-
-    // Prepare request data
+    // Prepare request data using the extracted values
     const requestData = {
-        ResultIndex: resultIndex,
-        SrdvIndex: srdvIndex,
-        SrdvType: srdvType,
-        HotelCode: hotelCode,
-        TraceId: traceId,
+      ResultIndex: resultIndex,
+      SrdvIndex: srdvIndex,
+      SrdvType: srdvType,
+      HotelCode: hotelCode,
+      TraceId: traceId, // Assuming TraceId is part of hotelDetails
     };
 
     console.log("Request data room:", requestData);
-    
+
     try {
       const hotelRooms = await dispatch(fetchHotelRooms(requestData)).unwrap();
 
@@ -110,7 +83,6 @@ const HotelDescription = () => {
       setError("Failed to fetch hotel room details. Please try again later.");
     }
   };
-
   return (
     <>
       <CustomNavbar />

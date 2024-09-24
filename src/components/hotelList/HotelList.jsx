@@ -146,6 +146,7 @@ const fetchHotelInfo = async (hotel) => {
         hotelCode,
         srdvType,
         srdvIndex,
+        traceId,
       }
     });
   } catch (error) {

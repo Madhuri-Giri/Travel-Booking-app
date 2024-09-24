@@ -22,7 +22,7 @@ import { fetchHotelRooms } from "../../redux-toolkit/slices/hotelRoomSlice";
 import { blockHotelRooms } from "../../redux-toolkit/slices/hotelBlockSlice";
 import { bookHotel } from "../../redux-toolkit/slices/hotelBookSlice";
 
-const GuestDetails = () => {
+const GuestDetails = () => {                               
   const [hotelBlock, setHotelBlock] = useState([]);
   const [selectedRoomsData, setSelectedRoomsData] = useState(null);
   const dispatch = useDispatch();
