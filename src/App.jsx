@@ -54,6 +54,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { setIslogin } from './redux-toolkit/slices/loginSlice';
 import { userDetailsHandler } from './API/loginAction';
+import Test from './components/bus/Test';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -131,11 +132,13 @@ const App = () => {
           <Route path='/payload' element={<Payloader />} />
           <Route path='/hotel-payload' element={<PayloaderHotel />} />
           <Route path='/bus-payload' element={<PayloaderBus />} />
+
           <Route path='/flight-payload' element={<PayloaderFlight />} />
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
 
 
+          <Route path='/testp' element={<Test />} />
 
 
 

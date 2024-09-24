@@ -238,14 +238,12 @@ const TicketBookBus = () => {
 
                             <p>
                               <strong>Boarding Point -: </strong>
-                              <span>{}</span>
+                              <span>{dd.city_point_name}</span>
                             </p>
                             <p>
                               <strong>Dropping Point -: </strong>
-                              <span>{}</span>
+                              <span>{dd.drop_city_point_name}</span>
                             </p>
-
-
                           </div>
                           <div className="col-md-4 ticktbordr">
                             <p>

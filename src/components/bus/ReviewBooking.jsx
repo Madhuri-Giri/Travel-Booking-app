@@ -25,12 +25,16 @@ import './PassangerInfo.css';
 
 const ReviewBooking = () => {
 
+  const [paymentId, setPaymentId] = useState('');
+  const [transactionId, setTransactionId] = useState('');
 
+
+// -----------------------------------------------------------------------------------
 
   const { transactionDetails } = useSelector((state) => state.loginReducer);
-  console.log('transactionDetails', transactionDetails);
+  // console.log('transactionDetails', transactionDetails);
   const transaction_num = transactionDetails?.transaction_num
-  console.log('transaction_num sb', transaction_num);
+  // console.log('transaction_num sb', transaction_num);
 
   // -------------------------------------------------------------------------------
 
@@ -328,17 +332,30 @@ const ReviewBooking = () => {
         handler: async function (response) {
           console.log('Payment successful', response);
 
-          localStorage.setItem('payment_id', response.razorpay_payment_id
-          );
+          // localStorage.setItem('payment_id', response.razorpay_payment_id
+          // );
           localStorage.setItem('transaction_id', options.transaction_id);
+
+
+          const paymentId = response.razorpay_payment_id;
+          const transactionId = options.transaction_id;
+
+          console.log('payment state id',paymentId )
+          console.log('payment trans id', transactionId)
+
+
+          setPaymentId(paymentId);
+          setTransactionId(transactionId);
+
+         
 
           setLoading(true);
 
         try {
-          await updateHandlePayment();
+          await updateHandlePayment(paymentId, transactionId);
 
 
-          await bookHandler();
+          await bookHandler(transactionId);
           await busPaymentStatus();
         } catch (error) {
           console.error('Error during updateHandlePayment or bookHandler:', error.message);
@@ -378,21 +395,23 @@ const ReviewBooking = () => {
 
   // ---------------------------update payment api------------------------------
 
-  const updateHandlePayment = async () => {
+  const updateHandlePayment = async (paymentId, transactionId) => {
 
     try {
-      const payment_id = localStorage.getItem('payment_id');
-      const transaction_id = localStorage.getItem('transaction_id');
+      // const payment_id = localStorage.getItem('payment_id');
+      // const transaction_id = localStorage.getItem('transaction_id');
 
-      if (!payment_id || !transaction_id) {
+      if (!paymentId || !transactionId) {
         throw new Error('Missing payment details');
       }
 
       const url = 'https://sajyatra.sajpe.in/admin/api/update-bus-payment';
       const payload = {
-        payment_id,
-        transaction_id,
+        payment_id: paymentId,  
+        transaction_id: transactionId, 
       };
+
+      console.log("update payload",payload)
 
       const response = await fetch(url, {
         method: 'POST',
@@ -433,12 +452,12 @@ const ReviewBooking = () => {
 
 
 
-  const bookHandler = async () => {
+  const bookHandler = async (transactionId) => {
 
     // const transactionNoBus = localStorage.getItem('transactionNum');
-    const transaction_id = localStorage.getItem('transaction_id');
+    // const transaction_id = localStorage.getItem('transaction_id');
 
-    console.log('transaction_id:', transaction_id);
+    // console.log('transaction_id:', transaction_id);
 
     const requestData = {
       TraceId: '1',
@@ -448,7 +467,7 @@ const ReviewBooking = () => {
       RefID: "1",
       transaction_num: transaction_num,
       bus_booking_id: [bookingId], 
-      transaction_id: transaction_id,
+      transaction_id:transactionId, 
       Passenger: storedPassengerDetails, // Ensure this is correctly populated
     };
 
