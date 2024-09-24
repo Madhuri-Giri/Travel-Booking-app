@@ -55,17 +55,11 @@ import { useEffect } from 'react';
 import { setIslogin } from './redux-toolkit/slices/loginSlice';
 import { userDetailsHandler } from './API/loginAction';
 
-// import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
-// import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
-
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number', '/load'];
-  const { isLogin, loginId } = useSelector((state) => state.loginReducer);
-
-  console.log("loginId", loginId);
+  const { isLogin } = useSelector((state) => state.loginReducer);
 
   useEffect(() => {
     dispatch(setIslogin());
@@ -79,8 +73,6 @@ const App = () => {
 
   return (
     <div>
-      {/* <Router> */}
-        {/* {!noNavbarFooterRoutes.includes(window.location.pathname) && <CustomNavbar />} */}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/flight-search' element={<FlightSearch />} />
@@ -157,7 +149,6 @@ const App = () => {
           draggable
           pauseOnFocusLoss
         />
-      {/* </Router> */}
     </div>
   );
 };

@@ -110,11 +110,6 @@ const Profile = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(userLogout({ navigate }));
-        // localStorage.removeItem('loginId');
-        // localStorage.removeItem('loginData');
-        // localStorage.removeItem('transactionNum');
-        // localStorage.removeItem('transactionNum-bus');
-        // localStorage.removeItem('transactionNumHotel');
       }
     });
 

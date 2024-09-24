@@ -99,7 +99,6 @@ export const userDetailsHandler = createAsyncThunk(
     "auth/userDetailsHandler",
     async ({ }, { rejectWithValue, dispatch }) => {
         const loginId = localStorage.getItem('loginId');
-        // const loginId = loginData.loginId;   // get loginId from Redux (login API data) 
         try {
             const requestBody = {
                 user_id: loginId,
@@ -128,11 +127,11 @@ export const userDetailsHandler = createAsyncThunk(
             console.log('flight transcNo', data.transaction.transaction_num);
 
             if (data.result && data.transaction) {
-                localStorage.setItem('transactionId', data.transaction.id);
-                localStorage.setItem('transactionNum', data.transaction.transaction_num);
-                // localStorage.setItem('transactionNum-Flight', data.transaction.transaction_num);
-                localStorage.setItem('transactionNum-bus', data.transaction.transaction_num);
-                localStorage.setItem('transactionNumHotel', data.transaction.transaction_num);
+                // localStorage.setItem('transactionId', data.transaction.id);
+                // localStorage.setItem('transactionNum', data.transaction.transaction_num);
+                // // localStorage.setItem('transactionNum-Flight', data.transaction.transaction_num);
+                // localStorage.setItem('transactionNum-bus', data.transaction.transaction_num);
+                // localStorage.setItem('transactionNumHotel', data.transaction.transaction_num);
                 // userdetails transaction data save on the redux
             };
 

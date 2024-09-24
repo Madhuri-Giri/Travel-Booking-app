@@ -19,8 +19,6 @@ import Loading from '../../pages/loading/Loading';
 import PayloaderFlight from "../../pages/loading/PayloaderFlight";
 import { useSelector } from "react-redux";
 
-
-
 const FlightReview = () => {
   const navigate = useNavigate();
 
@@ -36,20 +34,17 @@ const FlightReview = () => {
   const transaction_num = transactionDetails?.transaction_num
   console.log('transaction_num', transaction_num);
 
-
   const location = useLocation();
   const { fareQuoteAPIData, flightSelectedDATA, confirmedAdults, confirmedChildren, confirmedInfants } = location.state || {};
   const dataToPass = location.state?.dataToPass;
+  const selectedSeats = location.state?.selectedSeats;
+  const finalTotalPrice = location.state?.finalTotalPrice;
   const IsLCC = dataToPass?.IsLCC
-  console.log("F-IsLcc", IsLCC);
-
-  // -----------------------------------------------------------------------
-
-  // -----------------------------------------------------------------------
-
-
+  
   const [totalPrice, setTotalPrice] = useState(0);
-
+  // Calculate the grand total
+  const grandTotal = totalPrice + finalTotalPrice;
+  
   useEffect(() => {
     const savedFare = flightSelectedDATA?.flight.OfferedFare
     if (savedFare) {
@@ -57,28 +52,8 @@ const FlightReview = () => {
     }
   }, [flightSelectedDATA]);
 
-  // const finalTotalPrice = location.state?.seatMealBaggagePriceTotal;
-  const finalTotalPrice = parseFloat(localStorage.getItem('finalTotalPrice')) || 0;
-
-  // Calculate the grand total
-  const grandTotal = totalPrice + finalTotalPrice;
-
-
-
-  if (!fareQuoteAPIData) {
-    console.error('fareQuoteAPIData is undefined in FlightReview component');
-  }
-
-  useEffect(() => {
-    if (!fareQuoteAPIData) {
-      console.error('fareQuoteAPIData is undefined');
-    }
-  }, [fareQuoteAPIData]);
-
 
   const segment = fareQuoteAPIData.Segments[0][0];
-  // console.log("segment", segment);
-
   const origin = segment.Origin;
   const destination = segment.Destination;
   const airline = segment.Airline;
@@ -118,7 +93,8 @@ const FlightReview = () => {
 
 
   //-----------------------------Payment apis--------------------------------------------------------------------------------------
-  const [flightpayDetails, setFlightpayDetails] = useState(null);
+  const [flightpaymentAPIResponse, setFlightpaymentAPIResponse] = useState(null);
+console.log('flightpaymentAPIResponse',flightpaymentAPIResponse);
 
   const flightPayCreate = async () => {
     try {
@@ -130,7 +106,7 @@ const FlightReview = () => {
       });
 
       if (response.data.status === 'success') {
-        setFlightpayDetails(response.data.payment_details);
+        setFlightpaymentAPIResponse(response.data.payment_details);
         console.log('flight response', response.data);
         return response.data;
       } else {
@@ -166,7 +142,6 @@ const FlightReview = () => {
         image: 'https://your-logo-url.com/logo.png',
         handler: async function (response) {
           console.log('Payment successful', response);
-
           localStorage.setItem('flight_payment_id', response.razorpay_payment_id);
           localStorage.setItem('flight_transaction_id', options.transaction_id);
           setRazorPayPAYMENT_Id(response?.razorpay_payment_id)
@@ -318,9 +293,7 @@ const FlightReview = () => {
       // const transactionFlightNo = localStorage.getItem('transactionNum');
       // const transaction_id = razorPayTRANSACTION_Id;
       const transaction_id = localStorage.getItem('flight_transaction_id');
-
       console.log("transaction_id", transaction_id);
-
       // const adultPassengerDetails = localStorage.getItem('adultPassengerDetails');
       // const parsedAdultPassengerDetails = JSON.parse(adultPassengerDetails);
       const parsedAdultPassengerDetails = confirmedAdults;

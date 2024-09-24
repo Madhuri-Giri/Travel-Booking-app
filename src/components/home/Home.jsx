@@ -41,7 +41,7 @@ const Home = () => {
   const toInputRef = useRef(null);
   const fromSuggestionsRef = useRef(null);
   const toSuggestionsRef = useRef(null);
-  const mainCityNames = ['Delhi', 'Mumbai', 'Bhopal', 'Indore'];
+  const mainCityNames = ['Delhi', 'Mumbai', 'Bhopal', 'Indore', 'Jaipur',];
   const [originCode, setOriginCode] = useState(''); // State for origin code
   const [desctinationCode, setDesctinationCode] = useState(''); // State for origin code
   const [departureDate, setDepartureDate] = useState();
@@ -100,17 +100,13 @@ const Home = () => {
       console.error('Error fetching suggestions:', error);
     }
   };
-
-
   // Function to handle input focus
   const handleFromInputFocus = () => {
     fetchSuggestions('', setFromSuggestions, true);
   };
-
   const handleToInputFocus = () => {
     fetchSuggestions('', setToSuggestions, true);
   };
-
   // Function to handle "From" input change  
   const handleFromChange = (event) => {
     const value = event.target.value;
@@ -120,6 +116,16 @@ const Home = () => {
       fetchSuggestions(value, setFromSuggestions);
     } else {
       setFromSuggestions([]);
+    }
+    // Auto-fill logic: Check if the input exactly matches any suggestion
+    if (fromSuggestions.length > 0) {
+      const exactMatch = fromSuggestions.find((suggestion) =>
+        suggestion.airport_city_name.toLowerCase() === value.toLowerCase()
+      );
+
+      if (exactMatch) {
+        handleSuggestionClick(exactMatch, setFrom, setFromSuggestions, setOriginCode);
+      }
     }
   };
   // Function to handle "To" input change
@@ -132,7 +138,18 @@ const Home = () => {
     } else {
       setToSuggestions([]);
     }
+      // Auto-fill logic: Check if the input exactly matches any suggestion
+  if (toSuggestions.length > 0) {
+    const exactMatch = toSuggestions.find((suggestion) =>
+      suggestion.airport_city_name.toLowerCase() === value.toLowerCase()
+    );
+
+    if (exactMatch) {
+      handleSuggestionClick(exactMatch, setTo, setToSuggestions, setDesctinationCode);
+    }
+  }
   };
+
   const handleSuggestionClick = (suggestion, setFunction, setSuggestions, setValuee) => {
     setFunction(suggestion.airport_city_name);
     setValuee(suggestion.airport_city_code); // Update with airport city code
@@ -464,6 +481,7 @@ const Home = () => {
     <>
 
       <CustomNavbar />
+
       <section className='flightPageBanner'>
         <div className="container-fluid ">
           <div className="row">
@@ -1017,6 +1035,8 @@ const Home = () => {
         </div>
       </section>
 
+
+
       <section className='exictingOffers'>
         <div className="container-fluid">
           <h5 className=''>Exclusive Offers</h5>
@@ -1034,67 +1054,7 @@ const Home = () => {
       </section>
 
 
-      <section className="exclusive-dealsSec">
-        <div className="container-fluid mb-5">
-          <div className="row mb-4">
-            <h2>Exclusive Deals</h2>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/delhi.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Delhi</h3>
-                  <p>Rs 2200</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/amritsar.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Amritsar</h3>
-                  <p>Rs 1900</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/srinagar.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Srinagar</h3>
-                  <p>Rs 2400</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/bangkok.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Bangkok</h3>
-                  <p>Rs 7000</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/dubai.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Dubai</h3>
-                  <p>Rs 11000</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 exclusivecol">
-              <div className="position-relative">
-                <img src="https://www.vimaansafar.com/img/city/hongkong.jpg" className="img-fluid" alt="Bangkok" />
-                <div className="overlay-text position-absolute top-0 start-0 p-3 text-white">
-                  <h3>Hong Kong</h3>
-                  <p>Rs 13000</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       <section className="flightsec7 bg-light">
         <div className="container">

@@ -38,8 +38,8 @@
 .flightPayDivhed{
     border: 1px solid #80808036;
     border-radius: 7px;
-    padding: 10px 10px;
-    margin-bottom: 15px;
+    padding: 7px 10px;
+    margin-bottom: 8px;
 }
 .flightPayDivhed p{
     padding: 0px;
@@ -62,11 +62,11 @@
 .flightPayDivMain{
     border: 1px solid #80808036;
     border-radius: 7px;
-    padding: 10px 10px;
+    padding: 6px 10px;
     /* margin-bottom: 15px; */
 }
 .flightPayDivMain p{
-    margin: 8px 0px;
+    margin: 0px 0px;
 }
 .flightPayDivMainP2 svg,
 .flightPayDivMainP3 svg{
