@@ -76,7 +76,7 @@
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-         width: 30%; 
+         width: 50%; 
       }
       .overlay-content .tppp {
        width: 100%;
