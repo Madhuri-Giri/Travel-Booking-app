@@ -1,20 +1,14 @@
 /* eslint-disable no-unused-vars */
 import "./CustomNavbar.css"
 import { Container, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
-import { NavLink, useNavigate, Link } from 'react-router-dom';
-import { FaPhoneAlt, FaHistory } from "react-icons/fa";
+import { NavLink, useNavigate } from 'react-router-dom';
+import { FaPhoneAlt } from "react-icons/fa";
 import { FaCircleUser, FaRegUser } from "react-icons/fa6";
 import { MdLogin } from "react-icons/md";
 import { LuUserPlus } from "react-icons/lu";
-import { RiBookmark3Fill, RiHotelBedFill } from "react-icons/ri";
 import { GiCommercialAirplane } from 'react-icons/gi';
-import { TbBus } from "react-icons/tb";
-import { PiSuitcaseSimpleDuotone } from "react-icons/pi";
 import { BsBookmarkStarFill } from "react-icons/bs";
 import MainLogo from "../../assets/images/main logo.png"
-import { FaDownload } from "react-icons/fa6";
-import { FaPlaneDeparture } from "react-icons/fa";
-import { FaBusAlt } from "react-icons/fa";
 import BusLogo from "../../assets/images/bus.png"
 import FlightLogo from "../../assets/images/plane.png"
 import HotelLogo from "../../assets/images/five-stars.png"
@@ -33,30 +27,23 @@ const CustomNavbar = () => {
 
     const handleLogout = async () => {
         Swal.fire({
-          title: 'Are you sure?',
-          text: "Do you really want to logout?",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, logout!'
+            title: 'Are you sure?',
+            text: "Do you really want to logout?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, logout!'
         }).then((result) => {
-          if (result.isConfirmed) {
-            dispatch(userLogout({ navigate }));
-            // localStorage.removeItem('loginId');
-            // localStorage.removeItem('loginData');
-            // localStorage.removeItem('transactionNum');
-            // localStorage.removeItem('transactionNum-bus');
-            // localStorage.removeItem('transactionNumHotel');
-          }
+            if (result.isConfirmed) {
+                dispatch(userLogout({ navigate }));
+            }
         });
-    
-      };
+
+    };
     console.log('navisLogin', isLogin);
+    const loginData = JSON.parse(localStorage.getItem("loginData"))
 
-
-    const loginId = localStorage.getItem("loginId")
-    const loginData = localStorage.getItem("loginData")
     return (
         <>
             <Navbar expand="lg" className="mainNavbar">
@@ -77,10 +64,6 @@ const CustomNavbar = () => {
                         </Offcanvas.Header>
                         <Offcanvas.Body>
                             <Nav className="mx-auto navmenuss">
-                                {/* <Nav.Link
-                                    href="/flight-search"
-                                    className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/flight-search' || location.pathname === '/flight-list' || location.pathname === '/flight-Farequote' || location.pathname === '/flight-details' || location.pathname === '/seat-meal-baggage' || location.pathname === '/flight-review' || location.pathname === '/flight-ticket-download' ? 'active' : ''}`}
-                                > */}
                                 <Nav.Link
                                     href="/flight-search"
                                     className={`homnavbbookingicon homvanlinkss align-items-center ${location.pathname === '/flight-search' || location.pathname === '/flight-list' || location.pathname === '/flight-Farequote' || location.pathname === '/flight-details' || location.pathname === '/seat-meal-baggage' || location.pathname === '/flight-review' || location.pathname === '/flight-ticket-download' ? 'active' : ''}`}
@@ -121,9 +104,15 @@ const CustomNavbar = () => {
                                         <span className="mobtextNav">Settings</span>
                                     </Nav.Link>
                                 </div>
-                                <Nav.Link href="" className="numNavbar">
-                                    <FaPhoneAlt /> <span> +91 8447906804 </span>
-                                </Nav.Link>
+
+                                {isLogin &&
+                                    (
+                                        <Nav.Link href="" className="numNavbar">
+                                            <span> {loginData?.mobile} </span>
+                                        </Nav.Link>
+                                    )
+                                }
+
                                 <div className="mobileLoginSignup">
                                     {isLogin ? (
                                         <Nav.Link onClick={handleLogout} className="mobileLoginNavbar">
