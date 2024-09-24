@@ -269,15 +269,18 @@
 
 .fligthPriceDetailsBoxDiv1 p {
     color: gray;
+    margin: 0px;
 }
 
 .fligthPriceDetailsBoxDiv2 p {
     color: gray;
+    margin: 0px;
 }
 
 .fligthPriceDetailsBoxDiv3 h6,
 .fligthPriceDetailsBoxDiv3 p {
     font-weight: bold;
+    margin: 0px;
 }
 
 .fligthPriceDetailsBoxDiv4 h6,

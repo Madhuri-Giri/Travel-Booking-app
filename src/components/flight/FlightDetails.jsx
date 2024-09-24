@@ -100,6 +100,7 @@ export default function FlightDetails() {
                         confirmedAdults: confirmedAdultDetails,
                         confirmedChildren: confirmedChildDetails,
                         confirmedInfants: confirmedInfantDetails,
+                        totalFare: totalFare,
                     }
                 });
             }, 1000);
@@ -838,6 +839,7 @@ export default function FlightDetails() {
                         confirmedAdults: confirmedAdultDetails,
                         confirmedChildren: confirmedChildDetails,
                         confirmedInfants: confirmedInfantDetails,
+                        totalFare: totalFare,
                     }
                 });
             }, 1000);
@@ -1024,7 +1026,8 @@ export default function FlightDetails() {
                                             </div>
 
                                             <div className="col-12 lastBtnssContinue">
-                                                <h5>Fare Breakup <span>₹{totalPrice.toFixed(2)}</span></h5>                                                <button
+                                                <h5>Fare Breakup <span>₹{totalFare.toFixed(2)}</span></h5>                                                <button
+                                                // <h5>Fare Breakup <span>₹{totalPrice.toFixed(2)}</span></h5>                                                <button
                                                     onClick={handleButtonClick}
                                                     disabled={isContinueDisabled}
                                                     style={{
@@ -1065,23 +1068,15 @@ export default function FlightDetails() {
                                             <p>Taxes</p>
                                             <p>₹{tax.toFixed(2)}</p>
                                         </div>
+                                        <div className="fligthPriceDetailsBoxDiv2">
+                                            <p>Sajyatra Discount</p>
+                                            <p>₹0</p>
+                                        </div>
                                         <hr></hr>
                                         <div className="fligthPriceDetailsBoxDiv3">
                                             <h6>Total Fare</h6>
                                             <p>₹{totalFare.toFixed(2)}</p>
                                         </div>
-                                        {/* <div className="fligthPriceDetailsBoxDiv4">
-                                            <h6>Insurance (All Traveller)</h6>
-                                            <p>₹249</p>
-                                        </div> */}
-                                        {/* <div className="fligthPriceDetailsBoxDiv5">
-                                            <h6>Sub Total</h6>
-                                            <p>₹249</p>
-                                        </div> */}
-                                        {/* <div className="fligthPriceDetailsBoxDiv6">
-                                            <h6>Coupon Applied</h6>
-                                            <p>₹100 OFF</p>
-                                        </div> */}
                                         <div className="fligthPriceDetailsBoxDiv7">
                                             <h5>You Pay</h5>
                                             <p>₹{totalFare.toFixed(2)}</p>

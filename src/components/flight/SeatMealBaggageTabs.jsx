@@ -24,35 +24,33 @@ const SeatMealBaggageTabs = () => {
     const [seatMealBaggagePriceTotal, setseatMealBaggagePriceTotal] = useState(0);
     // const [timer, setTimer] = useState(600000);
 
-    console.log('totalPrice', totalPrice);
+    // console.log('totalPrice', totalPrice);
     console.log('seatData', seatData);
     console.log('ssrAPIData', ssrAPIData);
     // console.log('Baggage', ssrAPIData.Baggage);
     // console.log('Meal', ssrAPIData.MealDynamic);
 
     console.log('selectedSeats', selectedSeats);
-    console.log('selectedBaggage', selectedSeats);
-    console.log('selectedMeal', selectedMeal);
-
+    // console.log('selectedBaggage', selectedSeats);
+    // console.log('selectedMeal', selectedMeal);
 
     // selected flight data get------
     const { fareQuoteAPIData, dataToPass , flightSelectedDATA, confirmedAdults, confirmedChildren, confirmedInfants } = location.state || {};
-
-    console.log('flightSelectedDATA', flightSelectedDATA);
-    console.log('fareQuoteAPIData', fareQuoteAPIData);
-    console.log('dataToPass', dataToPass);
-    console.log('confirmedAdults', confirmedAdults);
-    console.log('confirmedChildren', confirmedChildren);
-    console.log('confirmedInfants', confirmedInfants);
+    // console.log('flightSelectedDATA', flightSelectedDATA);
+    // console.log('fareQuoteAPIData', fareQuoteAPIData);
+    // console.log('dataToPass', dataToPass);
+    // console.log('confirmedAdults', confirmedAdults);
+    // console.log('confirmedChildren', confirmedChildren);
+    // console.log('confirmedInfants', confirmedInfants);
 
     const FtraceId = dataToPass.TraceId;
     const FresultIndex = dataToPass.ResultIndex;
     const FsrdvType = dataToPass.SrdvType;
     const FsrdvIndex = dataToPass.SrdvIndex;
-    console.log('TraceId', FtraceId);
-    console.log('ResultIndex', FresultIndex);
-    console.log('SrdvType', FsrdvType);
-    console.log('SrdvIndex', FsrdvIndex);
+    console.log('TraceId---', FtraceId);
+    console.log('ResultIndex---', FresultIndex);
+    console.log('SrdvType---', FsrdvType);
+    console.log('SrdvIndex----', FsrdvIndex);
 
     useEffect(() => {
         const savedFare = flightSelectedDATA?.flight.OfferedFare
@@ -63,9 +61,9 @@ const SeatMealBaggageTabs = () => {
 
     useEffect(() => {
         // Clear selections and prices from local storage
-        localStorage.removeItem('flightSelectedSeats');
-        localStorage.removeItem('selectedBaggage');
-        localStorage.removeItem('selectedMeal');
+        // localStorage.removeItem('flightSelectedSeats');
+        // localStorage.removeItem('selectedBaggage');
+        // localStorage.removeItem('selectedMeal');
         // localStorage.removeItem('finalTotalPrice');
 
         // Reset state
@@ -84,44 +82,35 @@ const SeatMealBaggageTabs = () => {
     const mealPrice = selectedMeal?.Price || 0;
     const baggagePrice = selectedBaggage?.Price || 0;
 
-    const calculateFinalTotalPrice = () => {
-        const totalSeatMealBagPrice = seatPrice + mealPrice + baggagePrice;
-        setseatMealBaggagePriceTotal(totalSeatMealBagPrice);
-        console.log('totalSeatMealBagPrice', totalSeatMealBagPrice);
-    };
-    useEffect(() => {
-        calculateFinalTotalPrice();
-    }, [seatPrice, mealPrice, baggagePrice]);
-    
+    // const calculateFinalTotalPrice = () => {
+    //     const totalSeatMealBagPrice = seatPrice + mealPrice + baggagePrice;
+    //     setseatMealBaggagePriceTotal(totalSeatMealBagPrice);
+    //     console.log('totalSeatMealBagPrice', totalSeatMealBagPrice);
+    // };
+    // useEffect(() => {
+    //     calculateFinalTotalPrice();
+    // }, [seatPrice, mealPrice, baggagePrice]);
 
-    // const finalTotalPrice = seatPrice + mealPrice + baggagePrice;
-    // console.log('finalTotalPrice', finalTotalPrice);
+    const finalTotalPrice = seatPrice + mealPrice + baggagePrice;
+    console.log('finalTotalPrice', finalTotalPrice);
     // // setseatPriceTotal(finalTotalPrice)
 
     // // Save the final total price to local storage
     // localStorage.setItem('finalTotalPrice', finalTotalPrice.toFixed(2));
 
-    const formData = {
-        AdultCount: 1,
-        ChildCount: 0,
-        InfantCount: 0
-    };
-
-    const totalCount = formData.AdultCount + formData.ChildCount + formData.InfantCount;
-
     useEffect(() => {
         handleSeatMapApi();
     }, []);
 
-    useEffect(() => {
-        const savedSeats = JSON.parse(localStorage.getItem('flightSelectedSeats')) || [];
-        setSelectedSeats(savedSeats);
-    }, []);
+    // useEffect(() => {
+    //     const savedSeats = JSON.parse(localStorage.getItem('flightSelectedSeats')) || [];
+    //     setSelectedSeats(savedSeats);
+    // }, []);
 
-    useEffect(() => {
-        const savedBaggage = JSON.parse(localStorage.getItem('selectedBaggage')) || null;
-        setSelectedBaggage(savedBaggage);
-    }, []);
+    // useEffect(() => {
+    //     const savedBaggage = JSON.parse(localStorage.getItem('selectedBaggage')) || null;
+    //     setSelectedBaggage(savedBaggage);
+    // }, []);
 
     //  ------------------------------------
 
@@ -136,9 +125,11 @@ const SeatMealBaggageTabs = () => {
                     seatMealBaggagePriceTotal,
                     flightSelectedDATA: flightSelectedDATA,
                     dataToPass: dataToPass,
-                    // confirmedAdults: confirmedAdultDetails,
-                    // confirmedChildren: confirmedChildDetails,
-                    // confirmedInfants: confirmedInfantDetails
+                    selectedSeats: selectedSeats,
+                    finalTotalPrice: finalTotalPrice,
+                    confirmedAdults: confirmedAdults,
+                    confirmedChildren: confirmedChildren,
+                    confirmedInfants: confirmedInfants
                 } });
             }, 1000);
         } else {
@@ -154,16 +145,10 @@ const SeatMealBaggageTabs = () => {
     };
 
     const seatMapApi = async () => {
-        const FtraceId = dataToPass.TraceId;
-        const FresultIndex = dataToPass.ResultIndex;
-        const FsrdvType = dataToPass.SrdvType;
-        const FsrdvIndex = dataToPass.SrdvIndex;
-
-
-        // const FtraceId = localStorage.getItem('F-TraceId');
-        // const FresultIndex = localStorage.getItem('F-ResultIndex');
-        // const FsrdvType = localStorage.getItem('F-SrdvType');
-        // const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
+        const FtraceId = dataToPass?.TraceId;
+        const FresultIndex = dataToPass?.ResultIndex;
+        const FsrdvType = dataToPass?.SrdvType;
+        const FsrdvIndex = dataToPass?.SrdvIndex;
 
         const url = 'https://sajyatra.sajpe.in/admin/api/seatmap';
         const payload = {
@@ -196,10 +181,10 @@ const SeatMealBaggageTabs = () => {
         }
     };
 
-    const getSeatMapDataFromLocalStorage = () => {
-        const data = localStorage.getItem('seatMapData');
-        return data ? JSON.parse(data) : null;
-    };
+    // const getSeatMapDataFromLocalStorage = () => {
+    //     const data = localStorage.getItem('seatMapData');
+    //     return data ? JSON.parse(data) : null;
+    // };
 
     const handleSsrApi = async () => {
         const result = await ssrApiHandler();
@@ -209,15 +194,10 @@ const SeatMealBaggageTabs = () => {
     };
 
     const ssrApiHandler = async () => {
-        // const FtraceId = localStorage.getItem('F-TraceId');
-        // const FresultIndex = localStorage.getItem('F-ResultIndex');
-        // const FsrdvType = localStorage.getItem('F-SrdvType');
-        // const FsrdvIndex = localStorage.getItem('F-SrdvIndex');
-
-        const FtraceId = dataToPass.TraceId;
-        const FresultIndex = dataToPass.ResultIndex;
-        const FsrdvType = dataToPass.SrdvType;
-        const FsrdvIndex = dataToPass.SrdvIndex;
+        const FtraceId = dataToPass?.TraceId;
+        const FresultIndex = dataToPass?.ResultIndex;
+        const FsrdvType = dataToPass?.SrdvType;
+        const FsrdvIndex = dataToPass?.SrdvIndex;
 
         const url = 'https://sajyatra.sajpe.in/admin/api/ssr';
         const payload = {
@@ -288,15 +268,9 @@ const SeatMealBaggageTabs = () => {
         return seats;
     };
 
-
-
     const calculateTotalPrice = () => {
         return selectedSeats.reduce((total, seat) => total + seat.price, 0);
     };
-
-
-
-
 
     const handleSeatClick = (seat) => {
         console.log('flightseatselect', seat);
@@ -310,14 +284,12 @@ const SeatMealBaggageTabs = () => {
             updatedSeats = [...selectedSeats, seat];
         }
         setSelectedSeats(updatedSeats);
-        localStorage.setItem('flightSelectedSeats', JSON.stringify(updatedSeats));
-        console.log('ll', localStorage.setItem('flightSelectedSeats', JSON.stringify(updatedSeats)));
-
+        // localStorage.setItem('flightSelectedSeats', JSON.stringify(updatedSeats));
+        // console.log('ll', localStorage.setItem('flightSelectedSeats', JSON.stringify(updatedSeats)));
     };
 
-
     useEffect(() => {
-        localStorage.removeItem('flightSelectedSeats');
+        // localStorage.removeItem('flightSelectedSeats');
         setSelectedSeats([]);
     }, []);
 
@@ -371,9 +343,6 @@ const SeatMealBaggageTabs = () => {
     );
 
     // -------------------------------------------------------------------------------------------------------------------------
-
-
-
 
     const [mealData, setMealData] = useState([]);
     console.log('mealData', mealData);
@@ -440,15 +409,12 @@ const SeatMealBaggageTabs = () => {
         // Toggle the baggage selection
         if (selectedBaggage?.Weight === baggage.Weight) {
             setSelectedBaggage(null);
-            localStorage.removeItem('selectedBaggage');
+            // localStorage.removeItem('selectedBaggage');
         } else {
             setSelectedBaggage(baggage); // Select the clicked baggage
-            localStorage.setItem('selectedBaggage', JSON.stringify(baggage));
+            // localStorage.setItem('selectedBaggage', JSON.stringify(baggage));
         }
     };
-
-
-
 
     const renderBaggageTab = () => {
         const baggageData = getSsrApiData();
@@ -552,7 +518,7 @@ const SeatMealBaggageTabs = () => {
                                 <p>Baggage: ₹{selectedBaggage?.Price || '0'}</p>
                             </div>
                             <div className="col-md-3">
-                                <p style={{ fontWeight: "500" }}>Total Price (Seat, Meal, Baggage): ₹{seatMealBaggagePriceTotal.toFixed(2)}</p>
+                                <p style={{ fontWeight: "500" }}>Total Price (Seat, Meal, Baggage): ₹{finalTotalPrice.toFixed(2)}</p>
                             </div>
                             <div>
                                 <div className="meal-last">

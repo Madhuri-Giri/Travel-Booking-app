@@ -27,6 +27,7 @@ const initialState = {
   error: null,
 };
 
+
 const profileSlice = createSlice({
   name: 'profile',
   initialState,

@@ -1,0 +1,41 @@
+/* Modal Overlay
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  text-align: center;
+  position: relative;
+  z-index: 1001;
+}
+
+.open-modal-btn, .close-modal-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.open-modal-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.close-modal-btn {
+  background-color: #dc3545;
+  color: white;
+  margin-top: 10px;
+} */

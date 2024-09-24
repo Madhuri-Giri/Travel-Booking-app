@@ -33,7 +33,7 @@ const BusLists = () => {
 
   // console.log('Redux ResultI:', resultIndex);
 
-  const [visibleLayout, setVisibleLayout] = useState(null);
+  // const [visibleLayout, setVisibleLayout] = useState(null);
   const [isTravelListVisible, setIsTravelListVisible] = useState(false);
 
 
@@ -129,7 +129,7 @@ const handleSelectSeat = async (index) => {
       return;
   }
 
-  setVisibleLayout(index); 
+  // setVisibleLayout(index); 
 
   const selectedBus = searchResults[index];
   storeSelectedBusDetails(selectedBus);
@@ -281,6 +281,8 @@ const addSeatLayout = async () => {
               <h6>{from} - {to}</h6>
             </div>
           </h5>
+
+
          
           <div className="search-functinality">
             <button onClick={responsiveFilter} className='filter-bus'><i className="ri-equalizer-line"></i> Filter</button>
@@ -292,6 +294,12 @@ const addSeatLayout = async () => {
 
       {/* Bottom section */}
       <div className="B-lists-Btm">
+                   
+
+
+
+{/* -------------------------------------------------------------------------- */}
+
 
 
         <div className="bus-sidebar">
@@ -434,7 +442,9 @@ const addSeatLayout = async () => {
                   <button className="btn btn-primary" onClick={() => handleSelectSeat(index)}>Select Seat</button>
                 </div>
 
-                {visibleLayout !== null && (
+
+
+                {/* {visibleLayout !== null && (
                   <div className="overlay" onClick={() => setVisibleLayout(null)}>
                     <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
                       <div className="tppp">
@@ -446,7 +456,9 @@ const addSeatLayout = async () => {
                       <BusLayout          selectedBusIndex={selectedBusIndex}  layoutResponse={layoutResponse} />
                     </div>
                   </div>
-                )}
+                )} */}
+
+
               </div>
             ))}
           </>

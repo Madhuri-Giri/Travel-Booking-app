@@ -42,7 +42,7 @@ const FlightSearch = () => {
   const toInputRef = useRef(null);
   const fromSuggestionsRef = useRef(null);
   const toSuggestionsRef = useRef(null);
-  const mainCityNames = ['Delhi', 'Mumbai', 'Bhopal', 'Indore'];
+  const mainCityNames = ['Delhi', 'Mumbai', 'Bhopal', 'Indore', 'Jaipur',];
   const [originCode, setOriginCode] = useState(''); // State for origin code
   const [desctinationCode, setDesctinationCode] = useState(''); // State for origin code
   const [departureDate, setDepartureDate] = useState();
@@ -101,17 +101,13 @@ const FlightSearch = () => {
       console.error('Error fetching suggestions:', error);
     }
   };
-
-
   // Function to handle input focus
   const handleFromInputFocus = () => {
     fetchSuggestions('', setFromSuggestions, true);
   };
-
   const handleToInputFocus = () => {
     fetchSuggestions('', setToSuggestions, true);
   };
-
   // Function to handle "From" input change  
   const handleFromChange = (event) => {
     const value = event.target.value;
@@ -121,6 +117,16 @@ const FlightSearch = () => {
       fetchSuggestions(value, setFromSuggestions);
     } else {
       setFromSuggestions([]);
+    }
+    // Auto-fill logic: Check if the input exactly matches any suggestion
+    if (fromSuggestions.length > 0) {
+      const exactMatch = fromSuggestions.find((suggestion) =>
+        suggestion.airport_city_name.toLowerCase() === value.toLowerCase()
+      );
+
+      if (exactMatch) {
+        handleSuggestionClick(exactMatch, setFrom, setFromSuggestions, setOriginCode);
+      }
     }
   };
   // Function to handle "To" input change
@@ -133,7 +139,18 @@ const FlightSearch = () => {
     } else {
       setToSuggestions([]);
     }
+      // Auto-fill logic: Check if the input exactly matches any suggestion
+  if (toSuggestions.length > 0) {
+    const exactMatch = toSuggestions.find((suggestion) =>
+      suggestion.airport_city_name.toLowerCase() === value.toLowerCase()
+    );
+
+    if (exactMatch) {
+      handleSuggestionClick(exactMatch, setTo, setToSuggestions, setDesctinationCode);
+    }
+  }
   };
+
   const handleSuggestionClick = (suggestion, setFunction, setSuggestions, setValuee) => {
     setFunction(suggestion.airport_city_name);
     setValuee(suggestion.airport_city_code); // Update with airport city code

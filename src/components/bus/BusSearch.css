@@ -1,3 +1,8 @@
+div:where(.swal2-icon).swal2-warning {
+  border-color: red !important;
+  color: red !important;
+}
+
 .BusSearch {
   width: 100%;
 }
