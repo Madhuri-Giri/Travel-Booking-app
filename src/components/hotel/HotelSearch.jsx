@@ -44,12 +44,31 @@ const HotelSearch = () => {
   const inputRef = useRef(null);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   // const [inputs, setInputs] = React.useState({ NoOfNights: "" });
-  
+  const dropdownRef = useRef(null);
+
   const [childAges, setChildAges] = useState([]);
+
   const handleChildAgeChange = (index, age) => {
-    const newChildAges = [...childAges];
-    newChildAges[index] = age;
-    setChildAges(newChildAges);
+    if (Number(age) >= 18) {
+      // Show SweetAlert if the child age is 18 or greater
+      Swal.fire({
+        title: "Invalid Age",
+        text: "Child age must be less than 18.",
+        icon: "warning",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK"
+      }).then(() => {
+        // Reset the specific child age input field after pressing OK
+        const newChildAges = [...childAges];
+        newChildAges[index] = ""; // Reset to empty
+        setChildAges(newChildAges);
+      });
+    } else {
+      // If age is valid, update the state
+      const newChildAges = [...childAges];
+      newChildAges[index] = age;
+      setChildAges(newChildAges);
+    }
   };
 
   const toggleDropdown = () => {
@@ -58,8 +77,21 @@ const HotelSearch = () => {
 
   const handleSelect = (value) => {
     setInputs({ ...inputs, NoOfNights: value });
-    setDropdownOpen(false); // Close the dropdown after selection
+    setDropdownOpen(false); 
   };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false); 
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Carousel logic
   const slideRef = useRef(null);
@@ -144,6 +176,8 @@ const HotelSearch = () => {
         handleClose();
       }
     };
+
+    
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -275,7 +309,7 @@ const HotelSearch = () => {
     const response = await dispatch(searchHotels(requestData)).unwrap();
   
     if (response.Results && response.Results.length > 0) {
-      const hotels = response.Results; // Ensure you extract hotels from the response
+      const hotels = response.Results;
       navigate("/hotel-list", { 
         state: { 
           searchResults: hotels 
@@ -412,7 +446,7 @@ const HotelSearch = () => {
                   </div>
                 </div>
 
-                <div className="form-field custom-dropdown">
+                <div className="form-field custom-dropdown" ref={dropdownRef}>
   <label className="form_label" htmlFor="NoOfNights">No of Days:</label>
   <div className="input-with-icon">
     <input
