@@ -27,6 +27,7 @@ const Profile = () => {
   }); // Store original form values to revert on cancel
   const [activeTab, setActiveTab] = useState('view'); // Manage active tab state
 
+  const loginData = JSON.parse(localStorage.getItem('loginData'));
 
   const initialValues = {
     name: '',
@@ -117,11 +118,7 @@ const Profile = () => {
 
   useEffect(() => {
     const checkLoginStatus = () => {
-      const loginData = JSON.parse(localStorage.getItem('loginData'));
-      console.log("loginData", loginData);
-
       const token = loginData?.token;
-
       if (token) {
         setIsLoggedIn(true);
         fetchProfileData(); // Fetch profile data if logged in
@@ -129,11 +126,8 @@ const Profile = () => {
         setIsLoggedIn(false);
       }
     };
-
     const fetchProfileData = async () => {
-      const loginData = JSON.parse(localStorage.getItem('loginData'));
       const token = loginData?.token;
-
       if (!token) {
         setMessage('No token found. Please log in again.');
         setMessageType('danger');
@@ -176,11 +170,11 @@ const Profile = () => {
     <>
       <CustomNavbar isLoggedIn={isLoggedIn} />
       <section className='profileSectionbg'>
-        {message && (
+        {/* {message && (
           <Alert variant={messageType} onClose={() => setMessage('')} dismissible>
             {message}
           </Alert>
-        )}
+        )} */}
         <Container>
           <Row className='profileROW'>
             <Col md={10} className='profilesboxx'>
