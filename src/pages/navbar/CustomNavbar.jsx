@@ -19,7 +19,6 @@ import { userLogout } from "../../API/loginAction";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
-
 const CustomNavbar = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
@@ -108,7 +107,7 @@ const CustomNavbar = () => {
                                 {isLogin &&
                                     (
                                         <Nav.Link href="" className="numNavbar">
-                                            <span> {loginData?.mobile} </span>
+                                            <span> {loginData?.name} </span>
                                         </Nav.Link>
                                     )
                                 }
