@@ -121,7 +121,7 @@ const handleSelectSeat = async (index) => {
   setSelectedBusIndex(selectedBusIndex);
   
   const loginId = localStorage.getItem('loginId');
-  await useridHandler();
+  // await useridHandler();
 
   if (!loginId) {
       console.log('No loginId found, showing OTP overlay'); 
@@ -143,38 +143,38 @@ const handleSelectSeat = async (index) => {
     setShowOtpOverlay(false); 
   };
 
-  const useridHandler = async () => {
+  // const useridHandler = async () => {
 
-  const loginId = localStorage.getItem('loginId');
+  // const loginId = localStorage.getItem('loginId');
      
-    try {
-      const requestBody = {
-        user_id:loginId , 
-      };
+  //   try {
+  //     const requestBody = {
+  //       user_id:loginId , 
+  //     };
   
-      const response = await fetch('https://sajyatra.sajpe.in/admin/api/user-detail', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
+  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/user-detail', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(requestBody),
+  //     });
   
-      if (!response.ok) {
-        throw new Error('Failed to fetch user details');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch user details');
+  //     }
   
-      const data = await response.json();
-      console.log('User details:', data);
-      console.log('trans', data.transaction.transaction_num)
-      if (data.result && data.transaction) {
-        localStorage.setItem('transactionIdBus', data.transaction.id);
-        localStorage.setItem('transactionNum', data.transaction.transaction_num);
-      }
-    } catch (error) {
-      console.error('Error fetching user details:', error.message);
-    }
-  };
+  //     const data = await response.json();
+  //     console.log('User details:', data);
+  //     console.log('trans', data.transaction.transaction_num)
+  //     if (data.result && data.transaction) {
+  //       localStorage.setItem('transactionIdBus', data.transaction.id);
+  //       localStorage.setItem('transactionNum', data.transaction.transaction_num);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching user details:', error.message);
+  //   }
+  // };
   
 
 
