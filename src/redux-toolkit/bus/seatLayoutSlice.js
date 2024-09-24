@@ -34,6 +34,7 @@ const seatLayoutSlice = createSlice({
     layout: null,
     status: 'idle',
     error: null,
+    loadingg: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -41,15 +42,18 @@ const seatLayoutSlice = createSlice({
       .addCase(fetchSeatLayout.pending, (state) => {
         console.log('Fetching seat layout: loading');
         state.status = 'loading';
+        state.loadingg = true; // Start loading
       })
       .addCase(fetchSeatLayout.fulfilled, (state, action) => {
         console.log('Fetching seat layout: succeeded', action.payload);
         state.status = 'succeeded';
         state.layout = action.payload;
+        state.loadingg = false; // Stop loading
       })
       .addCase(fetchSeatLayout.rejected, (state, action) => {
         console.error('Fetching seat layout: failed', action.error.message);
         state.status = 'failed';
+        state.loadingg = false; // Stop loading
         state.error = action.error.message;
       });
   },
