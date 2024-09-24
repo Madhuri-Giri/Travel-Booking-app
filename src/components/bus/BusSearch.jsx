@@ -49,9 +49,21 @@ const BusSearch = () => {
     dateInputRef.current.showPicker();
   };
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set time to midnight to avoid time issues
-  const minDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+  // const today = new Date();
+  // today.setHours(0, 0, 0, 0); // Set time to midnight to avoid time issues
+  // const minDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+  const now = new Date();
+  let minDate;
+
+  // Check if the current time is after 12 AM
+  if (now.getHours() >= 0) {
+    now.setHours(24, 0, 0, 0); // Set the time to midnight (12:00 AM) of the next day
+  } else {
+    now.setHours(0, 0, 0, 0); // If it's before midnight, allow today
+  }
+
+  minDate = now.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
   const fetchSuggestions = async (query, setSuggestions, isFromField) => {
     try {
@@ -122,25 +134,6 @@ const BusSearch = () => {
     dispatch(setToCode(suggestion.busodma_origin_code));
     dispatch(setToSuggestions([]));
   };
-
-  // const handleSearch = () => {
-  //   setLoading(true);
-  //   dispatch(searchBuses({
-  //     from,
-  //     to,
-  //     departDate: selectedBusDate ? selectedBusDate.toISOString().split('T')[0] : null,
-  //     fromCode,
-  //     toCode
-  //   }))
-  //     .then(() => {
-  //       setLoading(false);
-  //       navigate('/bus-list');
-  //     })
-  //     .catch((error) => {
-  //       setLoading(false);
-  //       console.error('Error searching buses:', error);
-  //     });
-  // };
 
   const handleSearch = () => {
     setLoading(true);
