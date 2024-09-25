@@ -1,56 +1,4 @@
-.sit-img .seat-details {
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.sit-img:hover .seat-details {
-  opacity: 1;
-}
-
-.sit-img {
-  position: relative;
-}
-
-
-
-
-
-.BusLayout {
-  width: 100%;
-}
-
-.busseatTabs {
-  display: none;
-}
-
-.busseatTabsBTN {
-  display: flex;
-  justify-content: center;
-  font-size: 17px;
-  background: #9daaab3b;
-}
-
-.busseatTabsBTN button.active {
-  background-color: skyblue !important;
-  color: white;
-  font-weight: bold;
-  border: 2px solid #80808040;
-  font-size: 13px !important;
-  padding: 2px 35px !important;
-  text-transform: uppercase !important;
-
-}
-
-.busseatTabsBTN button {
-  font-size: 13px !important;
-  background-color: #ccc !important;
-  padding: 2px 35px !important;
-  border: 2px solid #80808040 !important;
-  text-transform: uppercase !important;
-
-}
-
-.BusLayout .Seat-layout {
+.Buslayout-Main {
   width: 100%;
   display: flex;
   align-items: center;
@@ -58,16 +6,7 @@
   flex-direction: column;
 }
 
-.BusLayout .Seat-layout .seats {
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-  /* box-shadow: 2px 2px 5px 2px rgb(211, 211, 211); */
-}
-
-.BusLayout .Seat-layout .seats .left {
+.Buslayout-Main .Bus-layout-new {
   width: 100%;
   display: flex;
   align-items: center;
@@ -75,626 +14,190 @@
   flex-direction: column;
 }
 
-.BusLayout .Seat-layout .seats .left-top {
+.Buslayout-Main .Bus-layout-new .layout-bus {
   width: 100%;
-  padding: 0.5vmax;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.Buslayout-Main .Bus-layout-new .layout-bus .top-main-seat{
+  width: 95%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: -1vmax;
-  /* background: linear-gradient(90deg, #f2f2f2, hsla(0, 0%, 94.9%, 0)); */
-}
-
-.BusLayout .Seat-layout .seats .left-top h6 {
-  font-size: 1vmax;
-  letter-spacing: 1px;
-}
-
-.BusLayout .Seat-layout .seats .left-top p {
-  letter-spacing: 1px;
-  color: green;
-}
-
-.BusLayout .sel {
-  width: 98%;
-  margin-bottom: 1vmax;
-  font-size: 13px;
-}
-
-.BusLayout .Seat-layout .seats .left-btm {
-  width: 100%;
-  /* display: flex; */
-  align-items: flex-start;
-  justify-content: space-evenly;
   flex-direction: row;
-  /* background: #fafafa; */
+  margin-top: 0.1vmax;
+  color: green;
+  font-size: 0.8vmax;
+  text-transform: uppercase;
 }
+.Buslayout-Main .Bus-layout-new .layout-bus .bord-drop-point{
+  width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5vmax;
 
-.BusLayout .Seat-layout .seats .left-btm .lower {
+}
+.Buslayout-Main .Bus-layout-new .layout-bus .bord-drop-point   .bor-dro{
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: column;
-  margin-bottom: 1vmax;
+}
+
+.Buslayout-Main .Bus-layout-new .layout-bus .bord-drop-point   .bor-dro  .b-ipts{
+  width: 100%;
+  margin: 0.3vmax;
+}
+
+.Buslayout-Main .Bus-layout-new .layout-bus .bord-drop-point   .bor-dro  .b-ipts .boarding-select,
+.Buslayout-Main .Bus-layout-new .layout-bus .bord-drop-point   .bor-dro  .b-ipts .dropping-select{
+ width: 100%;
+ padding: 0.5vmax;
+ outline: none;
+ border: 1px solid #56565641;
+
+}
+ 
+.Buslayout-Main .Bus-layout-new .layout-bus  .seat-Price{
+  width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-top: 0.8vmax;
+  background: #4848481b;
+  padding: 0.6vmax;
+  
+}
+.Buslayout-Main .Bus-layout-new .layout-bus .seat-Price   .price-seats{
+  width: 50%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+.Buslayout-Main .Bus-layout-new .layout-bus .seat-Price   .price-seats h6{
+   color: green;
+   font-size: 0.8vmax;
+}
+.Buslayout-Main .Bus-layout-new .layout-bus .seat-Price   .price-seats h5{
+  font-size: 1.3vmax;
+  color: #000;
+  font-weight: 700;
+}
+.Buslayout-Main .Bus-layout-new .layout-bus .seat-Price .proceed-btm{
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.Buslayout-Main .Bus-layout-new .layout-bus .seat-Price .proceed-btm button{
+  width: 50%;
+  padding: 0.7vmax 0.6vmax;
+  border: none;
+  background-color:#00b7eb ;
+  font-weight: 600;
+  color: #fff;
   border-radius: 15px;
 }
 
-.BusLayout .Seat-layout .seats .left-btm .lower h6 {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* font-weight: 700; */
-  /* text-transform: uppercase; */
-  color: gray;
+
+.alert-msg{
+  width: 95%;
+  font-size: 1vmax;
+  color: green;
 }
 
-.BusLayout .Seat-layout .seats .left-btm .lower .sit {
-  width: 90%;
-  display: flex;
-  align-items: center;
-  border-radius: 10px;
-  justify-content: center;
-  /* border: 1px solid #9999; */
-  box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.582);
-  flex-wrap: wrap;
-  /* gap: 0.5vmax; */
-  padding: 0px 0px;
 
-}
 
-.BusLayout .Seat-layout .seats .left-btm .upper {
+
+.Seats-layout {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-bottom: 1vmax;
-
 }
 
-.BusLayout .Seat-layout .seats .left-btm .upper h6 {
-  width: 100%;
-  display: flex;
-  /* align-items: center; */
-  justify-content: center;
-  /* text-transform: uppercase; */
-  /* font-weight: 700; */
-  color: gray;
-}
-
-.BusLayout .Seat-layout .seats .left-btm .upper .sit {
-  width: 90%;
-  display: flex;
-  align-items: center;
-  border-radius: 10px;
-  justify-content: center;
-  /* border: 1px solid #9999; */
-  /* background: #000; */
-  box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.582);
-  flex-wrap: wrap;
-  /* gap: 0.5vmax; */
-  padding: 10px 0px;
-}
-
-.lower,
-.upper {
-  margin-bottom: 20px;
-}
-
-
-.seat {
-  width: 50px;
-  height: 50px;
-  margin: 5px;
-  background-color: #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sit-img {
-  height: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0.9vmax;
-  cursor: pointer;
-}
-
-
-.sit-img.aisle {
-  margin-left: 6vmax;
-}
-
-.sit-img.last-row {
-  flex: 1 1 16%;
-}
-
-/* ------------------------ */
-
-.BusLayout .Seat-layout .seats .right {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.Seats-layout .lower-seats,
+.Seats-layout .upper-seats {
+  width: 95%;
+  border: 1px solid #56565641;
   margin-top: 1vmax;
+  padding: 0.4vmax;
 }
 
-.BusLayout .Seat-layout .seats .right .right-btm {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  width: 90%;
-}
-
-.BusLayout .Seat-layout .seats .right .right-btm .tax {
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  font-weight: 600;
-  flex-direction: row;
-}
-
-.BusLayout .Seat-layout .seats .right .right-btm .proceed {
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  width: 100%;
-  margin-bottom: 1vmax;
-}
-
-.BusLayout .Seat-layout .seats .right .right-btm .proceed button {
-  border: none;
-  width: 20%;
-  padding: 0.7vmax 1vmax;
-  color: #ffff;
-  font-weight: 600;
-  background-color: #00b7eb;
-  border-radius: 10px;
-}
-
-.BusLayout .bord-drop {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-}
-
-
-@media (max-width:600px) {
-  .busseatTabs {
-    display: block;
-    margin-bottom: -15px;
-  }
-
-  .lowerSeatWEB,
-  .upperSeatWEB {
-    display: none !important;
-  }
-
-  .BusLayout {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout .seats {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout .seats .left {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout .seats .left-top {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout .seats .left-top h6 {
-    font-size: 2vmax;
-    text-transform: capitalize;
-  }
-
-
-  .BusLayout .Seat-layout .seats .left-btm {
-    width: 100%;
-    /* display: flex;
-  align-items: center;
-  justify-content: space-evenly; */
-    /* flex-direction: column; */
-  }
-
-  .BusLayout .Seat-layout .seats .left-btm .lower {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout .seats .left-btm .lower .sit {
-    width: 95%;
-    flex-wrap: wrap;
-    gap: 0.3vmax;
-    flex-direction: row;
-    display: flex;
-  }
-
-  .BusLayout .Seat-layout .seats .left-btm .upper {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout .seats .left-btm .upper .sit {
-    width: 95%;
-    flex-wrap: wrap;
-    gap: 0.3vmax;
-  }
-
-  .lower,
-  .upper {
-    margin-bottom: 20px;
-  }
-
-  .seat {
-    width: 30px;
-    height: 40px;
-    margin: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .sit-img {
-    height: 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2.4vmax;
-    cursor: pointer;
-  }
-
-  .sit-img.aisle {
-    margin-left: 9vmax;
-  }
-
-  .sit-img.last-row {
-    flex: 1 1 16%;
-  }
-
-  /* ------------------------ */
-
-  .BusLayout .Seat-layout .seats .right .right-btm .proceed button {
-    width: 100%;
-    padding: 2vmax 1vmax;
-  }
-
-}
-
-
-
-@media (min-width:600px) and (max-width:2000px) {
-  .BusLayout .Seat-layout .seats .left-btm .upper {
-    display: flex;
-  }
-
-  .BusLayout {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout .seats {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout .seats .left {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout .seats .left-top {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout .seats .left-top h6 {
-    font-size: 1vmax;
-    text-transform: capitalize;
-  }
-
-
-  .BusLayout .Seat-layout .seats .left-btm {
-    width: 100%;
-
-    flex-direction: column;
-  }
-
-  .BusLayout .Seat-layout .seats .left-btm .lower {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout .seats .left-btm .lower .sit {
-    /* width: 95%; */
-    flex-wrap: wrap;
-    gap: 0.3vmax;
-    flex-direction: row;
-    display: flex;
-  }
-
-  .BusLayout .Seat-layout .seats .left-btm .upper {
-    width: 100%;
-  }
-
-  .BusLayout .Seat-layout .seats .left-btm .upper .sit {
-    /* width: 95%; */
-    flex-wrap: wrap;
-    gap: 0.3vmax;
-  }
-
-  .lower,
-  .upper {
-    margin-bottom: 20px;
-  }
-
-
-  .seat {
-    width: 40px;
-    height: 50px;
-    margin: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .sit-img {
-    /* height: 90px; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /* padding: 2.1vmax; */
-  }
-
-  .sit-img.aisle {
-    margin-left: 31vmax;
-  }
-
-  .sit-img.last-row {
-    flex: 1 1 10%;
-  }
-
-  /* ------------------------ */
-
-  .BusLayout .Seat-layout .seats .right .right-btm .proceed button {
-    width: 100%;
-    /* padding: 1vmax 1vmax; */
-  }
-
-}
-
-
-.seat-type-dropdown p{
-  font-size: 11px;
-}
-.busseatpricee span {
-  color: #00e100;
-  font-weight: bold;
-}
-
-.seat-type-dropdown {
-  display: flex;
-  align-items: center;
-  margin: 10px 5px;
-}
-
-.seat-type-dropdown label {
-  font-size: 16px;
-  font-weight: 500;
-  margin-right: 10px;
-  color: #00b7eb
-}
-
-.seat-type-dropdown select {
-  padding: 0px 6px;
-  font-size: 14px;
-  font-weight: 400;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  color: #333;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-}
-
-.seat-type-select:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-.seat-type-select option {
-  font-size: 16px;
-  padding: 10px;
-}
-
-.seat-image-container {
-  position: relative;
-  display: inline-block;
-}
-
-.seat-details {
-  position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: white;
-    padding: 5px;
-    border-radius: 4px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s;
-    z-index: 10;
-    display: flex;
-    font-weight: bold;
-    box-shadow: 2px 2px 3px 4px #f0ededa6;
-    border: 1px solid rgba(0, 0, 0, 0.493);
-}
-
-
-
-.seat-details span {
-  font-size: 19px;
-  color: black;
-  font-size: 12px !important;
-}
-
-.seat-details p {
-  margin: 0px;
-  font-size: 12px !important;
-}
-
-.seat-image-container:hover .seat-details {
+.seat-available {
   opacity: 1;
-  visibility: visible;
+  pointer-events: auto;
 }
 
-
-.upperSeatWEB .sit-img {
-  width: 50px;
-  height: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background-color: white;
-  position: relative;
-  margin: 4px 0px;
-  border-radius: 4px;
-}
-
-
-
-
-
-.bus-layout {
-  display: grid;
-  grid-template-columns: repeat(6, 25px); 
-  gap: 0px 25px; 
-  align-items: center; 
-  justify-content: center; 
-  padding: 5px 0px;
-  background-color: white; 
-  margin-bottom: 20px; 
-  position: relative; 
-}
-
-.bus-upperlayout {
-  display: grid;
-  grid-template-columns: repeat(5, 45px); 
-  gap: 10px 10px; 
-  align-items: center; 
-  justify-content: center; 
-  padding: 5px 0px;
-  background-color: white; 
-  margin-bottom: 20px; 
-  position: relative; 
-}
-
-.sit-img {
-  width: 50px;
-  height: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background-color: white; 
-  position: relative;
-  margin: 0px 1px;
-  border-radius: 4px;
-}
-
-.disabled {
+.seat-disabled {
   opacity: 0.5;
   pointer-events: none;
 }
 
-.aisle {
-  margin-right: 20px; 
-}
-
-.empty-space {
-  width: 50px; 
-  height: 30px; 
-  background-color: transparent; 
-}
-
-.bus-upperlayout .sit-img {
-  width: 40px; 
-  height: 20px !important; 
-  margin: 2px 1px; 
-}
-
-.bus-layout .sit-img {
-  width: 50px; 
-  height: 30px; 
-  margin: 5px 2px; 
-}
-
-
-.sit-img {
-  width: 50px; 
-  height: 30px; 
+/* Shared seat styles */
+.seat {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  margin: 5px;
+  background: none;
+  border: none;
   cursor: pointer;
-  background-color: white; 
-  position: relative;
-  margin: 0px 1px;
-  border-radius: 4px;
+}
+.seat-price-main {
+  font-size: 10px;
+  color: #333;
+  margin-top: 2px;
+  font-weight: 400;
 }
 
-
-.disabled {
-  opacity: 0.5;
-  pointer-events: none;
+/* Sitting seats: smaller size */
+.sitting-seat {
+  width: 25px; /* Reduced size for sitting seats */
 }
 
-.aisle {
-  margin-right: 20px; 
+.sitting-seat img {
+  width: 100%;
+  max-width: 30px; /* Smaller size for sitting seat image */
 }
 
-.empty-space {
-  width: 50px; 
-  height: 30px;
-  background-color: transparent; 
+/* Sleeper seats: keep current size */
+.sleeper-seat {
+  width: 40px; /* Keep original size for sleeper seats */
 }
 
-
-.vertical-seat {
-  transform: rotate(90deg);
-  margin-left: 25px;
+.sleeper-seat img {
+  width: 100%;
+  max-width: 40px; /* Keep original size for sleeper seat image */
 }
 
+.seat-name {
+  font-size: 10px;
+  margin-top: 3px;
+}
 
-/* CSS styles for different seat states */
+.seat-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
 .selected-seat {
-  background-color: #5cb85c; /* Green for selected seats */
-}
-
-.booked-seat {
-  background-color: #d9534f; /* Red for booked seats */
+  background-color: #ccc;
 }
 
 
-
-
-
+/* ------------------loader----------------------- */
