@@ -9,6 +9,9 @@ import './BookingHistory.css';
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
 import { useDispatch, useSelector } from 'react-redux';
 
+
+
+
 function BookingHistory() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('hotel'); 
@@ -84,16 +87,14 @@ function BookingHistory() {
     // ----------------------hotel history API-------------------------------
 
     // ----------------------hotel ticket API-------------------------------
-    const { blockRoomResult, bookingStatus } = location.state || {};
-  const bookingDetails = bookingStatus?.[0] || {};
-
+   
     const handleBookingClick = async () => {
         const hotelBookingId = localStorage.getItem('hotel_booking_id');
         console.log('handleBookingClick called with:', hotelBookingId);
     
         try {
-            if (typeof  bookingId !== 'string') {
-                console.error('Invalid hotel booking ID:',  bookingId);
+            if (typeof  hotelBookingId!== 'string') {
+                console.error('Invalid hotel booking ID:',  hotelBookingId);
                 throw new Error('Invalid hotel booking ID.');
             }
     

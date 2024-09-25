@@ -39,65 +39,38 @@ const HotelDescription = () => {
   const shortDescription = lines.slice(0, 6).join('\n');
 
   const parseFacilities = (facilitiesString) => {
-    return facilitiesString.split(',').map(item => item.trim());
+    if (!facilitiesString) {
+      return []; // Return an empty array if facilitiesString is not available
+    }
+    // Split by comma or space, handle multiple spaces or commas using regex
+    return facilitiesString.split(/[\s,]+/).map(item => item.trim());
   };
-
-  const facilities = hotelDetails?.HotelFacilities ? parseFacilities(hotelDetails.HotelFacilities[0]) : [];
-
+  
+  const facilities = hotelDetails?.HotelFacilities?.length > 0 ? parseFacilities(hotelDetails.HotelFacilities[0]) : [];
+  
   const dispatch = useDispatch(); 
-  const { hotels = [], srdvType, resultIndexes, srdvIndexes, hotelCodes, traceId } = useSelector((state) => state.hotelSearch || {});
+  // const { hotels = [], srdvType, resultIndexes, srdvIndexes, hotelCodes, traceId } = useSelector((state) => state.hotelSearch || {});
 
-  if (!hotelDetails || !hotels.length) {
-    return <div>Loading...</div>;
-  }
-
+  // if (!hotelDetails || !hotels.length) {
+  //   return <div>Loading...</div>;
+  // }
+  const {  resultIndex, hotelCode, srdvType, srdvIndex, traceId } = location.state || {};
   const fetchHotelRoom = async () => {
-    console.log('Current hotel index:', hotelIndex);
-
-    if (hotelIndex === undefined) {
-        console.error('hotelIndex is undefined');
-        return;
+    if (!resultIndex || !srdvIndex || !hotelCode || !srdvType || !traceId) {
+      console.error("Missing required parameters for fetching hotel room.");
+      return;
     }
 
-    console.log('Result Indexes Length:', resultIndexes.length);
-    console.log('SRDV Indexes Length:', srdvIndexes.length);
-    console.log('Hotel Codes Length:', hotelCodes.length);
-
-    // Check if the hotel index is valid
-    if (hotelIndex < 0 || hotelIndex >= hotels.length) {
-        console.error('Invalid hotel index:', hotelIndex);
-        return;
-    }
-
-    // Accessing hotel data
-    const resultIndex = resultIndexes[hotelIndex];
-    const srdvIndex = srdvIndexes[hotelIndex];
-    const hotelCode = hotelCodes[hotelIndex];
-
-    console.log('Accessing resultIndexes[hotelIndex]:', resultIndex);
-    console.log('Accessing srdvIndexes[hotelIndex]:', srdvIndex);
-    console.log('Accessing hotelCodes[hotelIndex]:', hotelCode);
-
-    // Ensure values are defined
-    if (resultIndex === undefined || srdvIndex === undefined || hotelCode === undefined) {
-        console.error('One or more values are undefined. Check your data arrays.');
-        return;
-    }
-
-    // Prepare request data
+    // Prepare request data using the extracted values
     const requestData = {
-        ResultIndex: resultIndex,
-        SrdvIndex: srdvIndex,
-        SrdvType: srdvType,
-        HotelCode: hotelCode,
-        TraceId: traceId,
+      ResultIndex: resultIndex,
+      SrdvIndex: srdvIndex,
+      SrdvType: srdvType,
+      HotelCode: hotelCode,
+      TraceId: traceId, // Assuming TraceId is part of hotelDetails
     };
 
     console.log("Request data room:", requestData);
-    // Proceed with API call...
-
-
-
 
     try {
       const hotelRooms = await dispatch(fetchHotelRooms(requestData)).unwrap();
@@ -114,7 +87,6 @@ const HotelDescription = () => {
       setError("Failed to fetch hotel room details. Please try again later.");
     }
   };
-
   return (
     <>
       <CustomNavbar />
@@ -189,44 +161,56 @@ const HotelDescription = () => {
         </Container>
 
         <Container>
-          <Row>
+          <Row> 
             <Col>
-              <div className="search_Item">
-                <div className="Description_hotel">
-                  <div className="Header_hotel">
-                    <h1 className="Title_hotel">{hotelDetails.HotelName}</h1>
-                    <div className="Rating_hotel">
-                      {renderStar(hotelDetails.StarRating)}
-                    </div>
-                  </div>
-                  <span className="Distance_hotel">{hotelDetails.Address}</span>
-                  <div className="Description_hotel">
-                    <h5>Description :</h5>
-                    <p 
-                      dangerouslySetInnerHTML={{ __html: isExpanded ? hotelDetails.Description : shortDescription }} 
-                      style={{ overflow: 'hidden', maxHeight: isExpanded ? 'none' : '10em' }} 
-                    />
-                    <button className="hotel_des_Btn" onClick={handleToggle}>
-                      {isExpanded ? 'Read Less' : 'Read More'}
-                    </button>
-                  </div>
-                  <h5>Facilities:</h5>
-                  <div className="Features_hotel">
-                    {facilities.map((item, index) => (
-                      <div key={index} className="Feature_item">
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="PriceButton">
-                    <div className="Price_hotel">
-                      {/* INR {hotelDetails.Price?.OfferedPriceRoundedOff || "N/A"} */}
-                    </div>
-                    <button onClick={fetchHotelRoom} className="hotel_Button">Book Now</button>
-                  </div>
-                  {error && <div className="error-message">{error}</div>} 
-                </div>
-              </div>
+            <div className="search_Item">
+  {hotelDetails ? (
+    <div className="Description_hotel">
+      <div className="Header_hotel">
+        <h1 className="Title_hotel">{hotelDetails.HotelName || "Hotel Name Not Available"}</h1>
+        <div className="Rating_hotel">
+          {renderStar(hotelDetails.StarRating) || "Rating Not Available"}
+        </div>
+      </div>
+      <span className="Distance_hotel">{hotelDetails.Address || "Address Not Available"}</span>
+      <div className="Description_hotel">
+        <h5>Description:</h5>
+        <p 
+          dangerouslySetInnerHTML={{ __html: isExpanded ? hotelDetails.Description : shortDescription || "Description Not Available" }} 
+          style={{ overflow: 'hidden', maxHeight: isExpanded ? 'none' : '10em' }} 
+        />
+        <button className="hotel_des_Btn" onClick={handleToggle}>
+          {isExpanded ? 'Read Less' : 'Read More'}
+        </button>
+      </div>
+      <h5>Facilities:</h5>
+      <div className="Features_hotel">
+        {facilities && facilities.length > 0 ? (
+          facilities.map((item, index) => (
+            <div key={index} className="Feature_item">
+              <span>{item}</span>
+            </div>
+          ))
+        ) : (
+          <span>No Facilities Available</span>
+        )}
+      </div>
+      <div className="PriceButton">
+        <div className="Price_hotel">
+          INR {hotelDetails.Price?.OfferedPriceRoundedOff || "Price Not Available"}
+        </div>
+        <button onClick={fetchHotelRoom} className="hotel_Button">Book Now</button>
+      </div>
+      {error && <div className="error-message">{error}</div>}
+    </div>
+  ) : (
+    <div className="no-results">
+      <h3>No Hotel Details Available</h3>
+      <p>Please try searching again or check the details you provided.</p>
+    </div>
+  )}
+</div>
+
             </Col>
           </Row>
         </Container>
