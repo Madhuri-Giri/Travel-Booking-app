@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-extra-semi */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
@@ -7,6 +8,10 @@ import Footer from '../../pages/footer/Footer';
 import './BookingHistory.css';
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
 import { useDispatch, useSelector } from 'react-redux';
+
+
+
+
 function BookingHistory() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('hotel'); 

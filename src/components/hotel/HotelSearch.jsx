@@ -15,7 +15,7 @@ import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import Loading from "../../pages/loading/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faCalendarDays, faUser, faHotel, faXmark,} from "@fortawesome/free-solid-svg-icons";
+import {faCalendarDays, faUser, faHotel, faXmark, faTimes} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { searchHotels } from "../../redux-toolkit/slices/hotelSlice";
@@ -84,6 +84,10 @@ const HotelSearch = () => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setDropdownOpen(false); 
     }
+  };
+
+  const handleCloseClick = () => {
+    setIsSuggestionVisible(false);
   };
 
   useEffect(() => {
@@ -410,19 +414,30 @@ const HotelSearch = () => {
                     <FontAwesomeIcon icon={faHotel} className="calendar-icon" />
                   </div>
                   {isSuggestionVisible && suggestions.length > 0 && (
-                    <ul className="suggestions_hotel">
-                      {suggestions.map((suggestion) => (
-                        <li
-                          key={suggestion.busodma_id}
-                          onClick={() =>
-                            handleSuggestionClick(suggestion.Destination)
-                          }
-                          style={{ cursor: "pointer" }}
-                        >
-                          {suggestion.Destination}
-                        </li>
-                      ))}
-                    </ul>
+        <div className="suggestions_hotel_container">
+          <ul className="suggestions_hotel">
+            <FontAwesomeIcon
+              icon={faTimes}
+              className="close-icon"
+              onClick={handleCloseClick}
+              style={{
+                position: 'absolute',
+                right: '10px',
+                top: '10px',
+                cursor: 'pointer',
+              }}
+            />
+            {suggestions.map((suggestion) => (
+              <li
+                key={suggestion.busodma_id}
+                onClick={() => handleSuggestionClick(suggestion.Destination)}
+                style={{ cursor: 'pointer' }}
+              >
+                {suggestion.Destination}
+              </li>
+            ))}
+          </ul>
+          </div>
                   )}
                 </div>
 

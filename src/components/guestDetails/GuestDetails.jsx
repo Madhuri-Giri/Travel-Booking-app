@@ -21,15 +21,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchHotelRooms } from "../../redux-toolkit/slices/hotelRoomSlice";
 import { blockHotelRooms } from "../../redux-toolkit/slices/hotelBlockSlice";
 import { bookHotel } from "../../redux-toolkit/slices/hotelBookSlice";
+import { searchHotels} from '../../redux-toolkit/slices/hotelSlice';
 
-const GuestDetails = () => {                               
+const GuestDetails = () => {      
+  const navigate = useNavigate();  
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { searchResults, TotalGuests } = location.state || {};    
+  console.log('total guest',TotalGuests );                  
   const [hotelBlock, setHotelBlock] = useState([]);
   const [selectedRoomsData, setSelectedRoomsData] = useState(null);
-  const dispatch = useDispatch();
   const [paymentDetails, setPaymentDetails] = useState(null);
-  const NoOfAdults = parseInt(localStorage.getItem("numberOfAdults"), 10) || 1;
+ 
   const [guestForms, setGuestForms] = useState(
-    Array(NoOfAdults).fill({
+    Array(TotalGuests).fill({
       fname: "",
       mname: "",
       lname: "",
@@ -45,7 +50,6 @@ const GuestDetails = () => {
     })
   );
 
-  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
@@ -53,7 +57,6 @@ const GuestDetails = () => {
   const [isFormComplete, setIsFormComplete] = useState(false);
   const [payLoading, setPayLoading] = useState(false);
 
-  const location = useLocation();
   const { blockRoomResult, bookingStatus } = location.state || {};
   const bookingDetails = bookingStatus?.[0] || {};
   const [errors, setErrors] = useState({});

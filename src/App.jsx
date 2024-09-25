@@ -33,6 +33,7 @@ import SeatMealBaggageTabs from './components/flight/SeatMealBaggageTabs';
 import Profile from './pages/Profile/Profile';
 import Loading from './pages/loading/Loading';
 import SajyatraLogin from './components/popUp/LoginPopUp';
+import Sajyatra from './components/Sajyatra';
 import EnterOtp from '../src/components/popUp/EnterOtp'
 import RegisterModal from './components/popUp/RegisterPopup';
 import LoginPopUp from './components/popUp/LoginPopUp';
@@ -54,18 +55,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { setIslogin } from './redux-toolkit/slices/loginSlice';
 import { userDetailsHandler } from './API/loginAction';
-
-// import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
-// import TicketBookFlight from './components/flight/DownloadTikit/TicketBookFlight';
+import Test from './components/bus/Test';
 
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const noNavbarFooterRoutes = ['/signup', '/login', '/login-otp', '/enter-number', '/load'];
-  const { isLogin, loginId } = useSelector((state) => state.loginReducer);
-
-  console.log("loginId", loginId);
+  const { isLogin } = useSelector((state) => state.loginReducer);
 
   useEffect(() => {
     dispatch(setIslogin());
@@ -79,8 +75,6 @@ const App = () => {
 
   return (
     <div>
-      {/* <Router> */}
-        {/* {!noNavbarFooterRoutes.includes(window.location.pathname) && <CustomNavbar />} */}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/flight-search' element={<FlightSearch />} />
@@ -124,6 +118,7 @@ const App = () => {
           <Route path='/signup' element={<SignUp />} />
 
           <Route path='/sajyatra-login' element={<SajyatraLogin />} />
+          <Route path='/sajyatra' element={<Sajyatra />} />
           <Route path='/enterOtp' element={<EnterOtp />} />
           <Route path='/login-popup' element={<LoginPopUp />} />
           <Route path='/register' element={<RegisterModal />} />
@@ -139,11 +134,13 @@ const App = () => {
           <Route path='/payload' element={<Payloader />} />
           <Route path='/hotel-payload' element={<PayloaderHotel />} />
           <Route path='/bus-payload' element={<PayloaderBus />} />
+
           <Route path='/flight-payload' element={<PayloaderFlight />} />
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
 
 
+          <Route path='/testp' element={<Test />} />
 
 
 
@@ -157,7 +154,6 @@ const App = () => {
           draggable
           pauseOnFocusLoss
         />
-      {/* </Router> */}
     </div>
   );
 };

@@ -197,7 +197,7 @@ const HotelDescription = () => {
       </div>
       <div className="PriceButton">
         <div className="Price_hotel">
-          INR {hotelDetails.Price?.OfferedPriceRoundedOff || "Price Not Available"}
+          {/* INR {hotelDetails.Price?.OfferedPriceRoundedOff || "Price Not Available"} */}
         </div>
         <button onClick={fetchHotelRoom} className="hotel_Button">Book Now</button>
       </div>

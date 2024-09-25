@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +20,7 @@ import Loading from '../../pages/loading/Loading';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const BusSearch = () => {
   const [loading, setLoading] = useState(false);
@@ -47,9 +49,21 @@ const BusSearch = () => {
     dateInputRef.current.showPicker();
   };
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set time to midnight to avoid time issues
-  const minDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+  // const today = new Date();
+  // today.setHours(0, 0, 0, 0); // Set time to midnight to avoid time issues
+  // const minDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+  const now = new Date();
+  let minDate;
+
+  // Check if the current time is after 12 AM
+  if (now.getHours() >= 0) {
+    now.setHours(24, 0, 0, 0); // Set the time to midnight (12:00 AM) of the next day
+  } else {
+    now.setHours(0, 0, 0, 0); // If it's before midnight, allow today
+  }
+
+  minDate = now.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
   const fetchSuggestions = async (query, setSuggestions, isFromField) => {
     try {
@@ -61,19 +75,19 @@ const BusSearch = () => {
         body: JSON.stringify({ query })
       });
       const data = await response.json();
-  
+
       // console.log('Suggestions Data:', data); 
-  
+
       const filteredSuggestions = data.data.filter(suggestion =>
         suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
       );
-  
+
       if (isFromField) {
         dispatch(setFromSuggestions(filteredSuggestions.slice(0, 7)));
       } else {
         dispatch(setToSuggestions(filteredSuggestions.slice(0, 7)));
       }
-  
+
     } catch (error) {
       console.error('Error fetching suggestions:', error);
     }
@@ -130,15 +144,38 @@ const BusSearch = () => {
       fromCode,
       toCode
     }))
-      .then(() => {
+      .then((response) => {
         setLoading(false);
-        navigate('/bus-list');
+        console.log('responseeeee', response.payload );
+        
+        // Check if the result is false and show the SweetAlert if no results are found
+        if (response.payload.result === false) {
+          console.log('responseeeee', response.payload );
+          Swal.fire({
+            title: "No buses found",
+            text: response.payload.message || "Please try again later.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+        } else {
+          // If buses are found, navigate to the bus list
+          navigate('/bus-list');
+        }
       })
       .catch((error) => {
         setLoading(false);
         console.error('Error searching buses:', error);
+  
+        // Show an error SweetAlert if the API call fails
+        Swal.fire({
+          title: "Error",
+          text: "There was an error searching buses. Please try again.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       });
   };
+  
 
   if (loading) {
     return <Loading />;
@@ -180,7 +217,7 @@ const BusSearch = () => {
                       </div>
                     )}
 
-                   
+
                   </div>
                 </div>
                 <div className="one">
@@ -192,8 +229,8 @@ const BusSearch = () => {
                         type="text"
                         placeholder='Destination'
                         value={to}
-                      onChange={handleToChange}
-                      onFocus={handleToFocus}
+                        onChange={handleToChange}
+                        onFocus={handleToFocus}
                       />
                     </div>
                     {toSuggestions.length > 0 && (
@@ -218,7 +255,7 @@ const BusSearch = () => {
                         className="date-input"
                         value={selectedBusDate ? selectedBusDate.toISOString().split('T')[0] : ''}
                         onChange={(e) => dispatch(setSelectedBusDate(new Date(e.target.value)))}
-                        min={minDate} 
+                        min={minDate}
                       />
                     </div>
                   </div>

@@ -36,6 +36,7 @@ export default function FlightLists() {
     const [listingData, setListingData] = useState(null);
     const [formDataNew, setFormDataNew] = useState(location?.state?.formData || null);
     const [dataToPass, setDataToPass] = useState(null);
+    const { isLogin } = useSelector((state) => state.loginReducer);
 
     useEffect(() => {
         if (dataToPass) {
@@ -261,13 +262,11 @@ export default function FlightLists() {
     // ------------------------------------------------fare-Quote-api-----------------------------------------
     const fareQuoteHandler = async (flightSelectedDATA) => {
         setLoading(true);
-
         if (!dataToPass.TraceId || !dataToPass.ResultIndex || !dataToPass.SrdvType || !dataToPass.SrdvIndex) {
             console.error('TraceId, ResultIndex, SrdvType, not found');
             setLoading(false);
             return;
         }
-
         const payload = {
             SrdvIndex: dataToPass.SrdvIndex,
             ResultIndex: dataToPass.ResultIndex,
@@ -289,23 +288,19 @@ export default function FlightLists() {
             }
 
             const data = await response.json();
-            console.log('FareQuote API Response:', data);
-            console.log('FareQuote API Response:', data);
-            console.log('aaaaaaa:', data.Results);
-
 
             if (data.Results && formData) {
                 setLoading(false);
-                setTimeout(() => {
-                    navigate('/flight-Farequote', {
-                        state: {
-                            fareQuoteAPIData: data.Results,
-                            formData: formData,
-                            flightSelectedDATA: flightSelectedDATA, // Pass selected seat data here
-                            dataToPass: dataToPass  // Pass selected seat data here
-                        }
-                    });
-                }, 1000);
+                // setTimeout(() => {
+                navigate('/flight-Farequote', {
+                    state: {
+                        fareQuoteAPIData: data.Results,
+                        formData: formData,
+                        flightSelectedDATA: flightSelectedDATA, // Pass selected seat data here
+                        dataToPass: dataToPass  // Pass selected seat data here
+                    }
+                });
+                // }, 1000);
             } else {
                 setLoading(false);
                 if (!data.Results) {
@@ -324,28 +319,22 @@ export default function FlightLists() {
         }
     };
 
-    // -------------------------------------------------fare-Quote-api----------------------------------------
-
-    // -------------------------------------user detailsss------------------------------------
-
     const handleSelectSeat = async (flight, logoUrl) => {
         const flightSelectedDATA = {
             flight: flight,
             logoUrl: logoUrl
         }
-        const loginId = localStorage.getItem('loginId');
-        console.log('Current loginId:', loginId)
-        if (!loginId) {
-            console.log('No loginId found, showing OTP overlay');
+        if (!isLogin) {
+            console.log(isLogin);
             setShowOtpOverlay(true);
             return;
         }
         await fareQuoteHandler(flightSelectedDATA);  // Pass flightSelectedDATA
     };
 
+    // -------------------------------------------------fare-Quote-api----------------------------------------
 
 
-    // -------------------------------------user detailsss------------------------------------
 
     // -----------------mobile view filter side bar------------------------ 
     const [isSidebarOpen, setSidebarOpen] = useState(false);
