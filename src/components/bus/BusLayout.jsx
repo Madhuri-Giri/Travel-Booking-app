@@ -17,7 +17,7 @@ const BusLayout = () => {
   const [droppingPoints, setDroppingPoints] = useState([]);
   const [loading, setLoading] = useState(false);
   const { layout, loadingg } = useSelector((state) => state.seatLayout);
-  const [errorMessage, setErrorMessage] = useState(""); // State for error message
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -96,11 +96,7 @@ const BusLayout = () => {
         >
           <div className="seat-name">{seat.SeatName}</div>
           <img src={seatImg} alt={seat.SeatName} />
-          {/* <div className="seat-price-main">₹{Math.round(seat.Price.BasePrice)}</div> */}
-          <div className="seat-price-main">
-  ₹{Math.round(seat.Price.BasePrice - (seat.Price.BasePrice * 0.18))}
-</div>
-
+          <div className="seat-price-main">₹{Math.round(seat.Price.BasePrice - (seat.Price.BasePrice * 0.18))}</div>
         </div>
       );
     });
@@ -148,7 +144,7 @@ const BusLayout = () => {
             index: droppingIndex,
           },
           selectedBusSeatData,
-          totalPrice: Math.round(totalPrice),
+          totalPrice: Math.round(totalPrice - (totalPrice * 0.18)), 
         },
       });
     } else {
@@ -157,38 +153,7 @@ const BusLayout = () => {
   };
   
 
-  // const handleProceed = () => {
 
-  //   setErrorMessage(""); 
-
-  //   if (selectedSeats.length === 0) {
-  //     setErrorMessage("Please select at least one seat.");
-  //     return;
-  //   }
-
-  //   if (!selectedBoardingPoint || !selectedDroppingPoint) {
-  //     setErrorMessage("Please select both boarding and dropping points.");
-  //     return;
-  //   }
-
-  //   if (selectedBoardingPoint && selectedDroppingPoint) {
-  //     console.log('Selected Boarding Point:', selectedBoardingPoint);
-  //     console.log('Selected Dropping Point:', selectedDroppingPoint);
-  //     console.log('Selected Bus Seat Data:', selectedBusSeatData);
-  //     console.log('Total Price:', totalPrice);
-
-  //     navigate('/review-booking', {
-  //       state: {
-  //         selectedBoardingPoint,
-  //         selectedDroppingPoint,
-  //         selectedBusSeatData,
-  //         totalPrice: Math.round(totalPrice)
-  //       }
-  //     });
-  //   } else {
-  //     console.error('Please select both boarding and dropping points');
-  //   }
-  // };
 
   const traceId = useSelector((state) => state.bus.traceId);
   const boardHandler = () => {
@@ -215,7 +180,6 @@ const BusLayout = () => {
       })
       .then(responseData => {
         console.log('Boarding Response:', responseData);
-        // Update boarding points from the API response
         setBoardingPoints(responseData.GetBusRouteDetailResult.BoardingPointsDetails);
         setDroppingPoints(responseData.GetBusRouteDetailResult.DroppingPointsDetails);
       })
@@ -302,8 +266,7 @@ const BusLayout = () => {
             <div className="seat-Price">
               <div className="price-seats">
                 <h6>Total Price: </h6> 
-                <h5>₹{Math.round(totalPrice)}</h5>
-              </div>
+                <h5>₹{Math.round(totalPrice - (totalPrice * 0.18))}</h5>              </div>
 
               
               <div className="proceed-btm">
