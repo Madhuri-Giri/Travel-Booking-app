@@ -51,6 +51,12 @@ const ReviewBooking = () => {
 
   const location = useLocation();
   const { selectedBoardingPoint, selectedDroppingPoint, selectedBusSeatData, totalPrice } = location.state || {};
+  console.log('selectedBusSeatData', selectedBusSeatData)
+
+  const boardingPointName = selectedBoardingPoint.name;
+const boardingPointIndex = selectedBoardingPoint.index;
+const droppingPointName = selectedDroppingPoint.name;
+const droppingPointIndex = selectedDroppingPoint.index;
 
   const [bookingId, setBookingId] = useState(null);
 
@@ -65,8 +71,8 @@ const ReviewBooking = () => {
 
   // ---------------------------------------------------------------------------------------------------------
 
-  const boardingPointIndex = selectedBoardingPoint || null;
-  const droppingPointIndex = selectedDroppingPoint || null;
+  // const boardingPointIndex = selectedBoardingPoint || null;
+  // const droppingPointIndex = selectedDroppingPoint || null;
   
   const seatNames = selectedBusSeatData?.map(seat => seat.SeatName).join(', ') || 'No seats selected';
 
@@ -162,8 +168,8 @@ const ReviewBooking = () => {
       DroppingPointId: "1",
       // TraceId: traceId,
       // ResultIndex: selectedBusIndex,
-      // BoardingPointId: selectedBoardingPoint.index, 
-      // DroppingPointId: selectedDroppingPoint.index, 
+      // BoardingPointId: boardingPointIndex , 
+      // DroppingPointId: droppingPointIndex, 
      
       RefID: "1",
       Passenger: passengers,
@@ -603,11 +609,9 @@ const ReviewBooking = () => {
                   <div className="line-btm">
                     <p>Travel Name <br /> <span> {travelName}</span></p>
                     <p>Selected Seats <br /> <span> ({seatNames})</span></p>
-                    <p>Boarding Point: <br /> <span> {selectedBoardingPoint.name}
-                      {/* (Index: {selectedBoardingPoint.index}) */}
+                    <p>Boarding Point: <br /> <span> {boardingPointName}
                     </span></p>
-                    <p>Dropping Point: <br /> <span> {selectedDroppingPoint.name}
-                      {/* (Index: {selectedDroppingPoint.index}) */}
+                    <p>Dropping Point: <br /> <span> {droppingPointName}
                     </span> </p>
 
                   </div>

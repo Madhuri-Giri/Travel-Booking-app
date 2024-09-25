@@ -51,10 +51,12 @@
 
 
 
-
+/* .no-scroll {
+        overflow: hidden;
+      } */
+      
 
 /* Add these styles to BusList.css */
-
 .overlay {
         position: fixed;
         top: 0;
@@ -65,40 +67,43 @@
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
-        z-index: 1000; 
+        z-index: 9999; /* Reduced z-index to avoid conflicts */
       }
       
       .overlay-content {
         background-color: #fff;
         border-radius: 10px;
-        max-width: 50%;
+        max-width: 45%;
         height: 100%;
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-         width: 50%; 
+        width: 50%;
       }
+      
       .overlay-content .tppp {
-       width: 100%;
-       display: flex;
-       align-items: center;
-       justify-content: space-between;
-       flex-direction: row;
-       padding-left: 1vmax;
-       padding-right: 1vmax;
-       background:#fafafa;
-       border-bottom-color: #eee;
-       color: #000000bc;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row;
+        padding-left: 1vmax;
+        padding-right: 1vmax;
+        background: #fafafa;
+        border-bottom: 1px solid #eee;
+        color: #000000bc;
       }
-      .overlay-content .tppp h5{
-       font-size: 1.2vmax;
-       margin-top: 0.2vmax;
-       }
-      .overlay-content .tppp i{
+      
+      .overlay-content .tppp h5 {
+        font-size: 1.2vmax;
+        margin-top: 0.2vmax;
+      }
+      
+      .overlay-content .tppp i {
         font-size: 1.5vmax;
         font-weight: 700;
         cursor: pointer;
-       }
+      }
       
 
 
