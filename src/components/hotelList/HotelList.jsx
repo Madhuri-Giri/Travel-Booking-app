@@ -33,6 +33,7 @@ const renderStar = (rating) => {
 
 const HotelList = () => {
   const location = useLocation();
+  const { persons } = location.state || {};
   const { searchResults } = location.state || {};
   // const [hotels, setHotels] = useState([]);
   // const [error, setError] = useState(null);
@@ -54,6 +55,14 @@ const HotelList = () => {
   useEffect(() => {
     dispatch(searchHotels());
 }, [dispatch]);
+
+useEffect(() => {
+  console.log("persons in hotel list", persons)
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
 
   // IGST Rate
   // const IGST_RATE = 0.18; // 18% IGST
@@ -147,6 +156,7 @@ const fetchHotelInfo = async (hotel) => {
         srdvType,
         srdvIndex,
         traceId,
+        persons,
       }
     });
   } catch (error) {

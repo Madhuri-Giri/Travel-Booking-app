@@ -21,15 +21,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchHotelRooms } from "../../redux-toolkit/slices/hotelRoomSlice";
 import { blockHotelRooms } from "../../redux-toolkit/slices/hotelBlockSlice";
 import { bookHotel } from "../../redux-toolkit/slices/hotelBookSlice";
+import { searchHotels} from '../../redux-toolkit/slices/hotelSlice';
 
-const GuestDetails = () => {                               
+const GuestDetails = () => {      
+  const navigate = useNavigate();  
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { persons } = location.state || {};              
   const [hotelBlock, setHotelBlock] = useState([]);
   const [selectedRoomsData, setSelectedRoomsData] = useState(null);
-  const dispatch = useDispatch();
   const [paymentDetails, setPaymentDetails] = useState(null);
-  const NoOfAdults = parseInt(localStorage.getItem("numberOfAdults"), 10) || 1;
+ 
   const [guestForms, setGuestForms] = useState(
-    Array(NoOfAdults).fill({
+    Array.from({ length: persons[0].NoOfAdults }).map(() => ({
       fname: "",
       mname: "",
       lname: "",
@@ -40,20 +44,19 @@ const GuestDetails = () => {
       pan: "",
       paxType: "",
       leadPassenger: "",
-      // passportIssueDate: "",
-      // passportExpDate: "",
-    })
+    }))
   );
-
-  const navigate = useNavigate();
+  
+  // Track the current guest form being filled
+  const [currentGuestIndex, setCurrentGuestIndex] = useState(0); // Start with the first guest
   const [showForm, setShowForm] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [isFormComplete, setIsFormComplete] = useState(false);
+  const [guestsRemaining, setGuestsRemaining] = useState(persons[0].NoOfAdults); // Initially all guests need forms
   const [payLoading, setPayLoading] = useState(false);
 
-  const location = useLocation();
   const { blockRoomResult, bookingStatus } = location.state || {};
   const bookingDetails = bookingStatus?.[0] || {};
   const [errors, setErrors] = useState({});
@@ -67,44 +70,67 @@ const GuestDetails = () => {
     setGuestForms(newGuestForms);
   };
 
-  const handleFormChange = (index, e) => {
-    const { name, value } = e.target;
-    const newGuestForms = [...guestForms];
-    newGuestForms[index] = {
-      ...newGuestForms[index],
-      [name]: value,
-    };
-    setGuestForms(newGuestForms);
-    // Check if all fields are filled
-    const allFilled = newGuestForms.every(
-      (formData) =>
-        formData.fname &&
-        formData.lname &&
-        formData.email &&
-        formData.mobile &&
-        formData.age &&
-        formData.leadPassenger &&
-        formData.paxType
-    );
+  useEffect(() => {
+    console.log("persons in guest details", persons[0].NoOfAdults)
+  }, []);
 
-    setIsFormComplete(allFilled);
-    setCheckboxChecked(allFilled); // Auto-tick the checkbox when all fields are filled
-  };
+ // Check if the current form is complete
+const checkCurrentFormCompletion = (formData) => {
+  return !(
+    formData.fname &&
+    formData.lname &&
+    formData.email &&
+    formData.mobile &&
+    formData.age &&
+    formData.leadPassenger &&
+    formData.paxType
+  );
+};
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
+// Handle form submission
+const handleFormSubmit = (e) => {
+  e.preventDefault();
+
+  if (checkCurrentFormCompletion(guestForms[currentGuestIndex])) {
+    alert("Please complete all required fields for the current guest.");
+    return;
+  }
+
+  // After the current form is completed, go to the next form
+  const newGuestIndex = currentGuestIndex + 1;
+
+  if (newGuestIndex < guestForms.length) {
+    setCurrentGuestIndex(newGuestIndex);
+  } else {
+    // All forms are completed
     setFormSubmitted(true);
-    localStorage.setItem("guestDetails", JSON.stringify(guestForms));
     setShowPopup(true);
-  };
+  }
 
-  const handleCheckboxChange = () => {
-    setCheckboxChecked(!checkboxChecked);
-  };
+  // Update remaining guests count
+  setGuestsRemaining(guestsRemaining - 1);
+};
 
-  const handleClosePopup = () => {
-    setShowPopup(false);
+// Handle form changes and update the current guest's form data
+const handleFormChange = (e) => {
+  const { name, value } = e.target;
+  const updatedForms = [...guestForms];
+  updatedForms[currentGuestIndex] = {
+    ...updatedForms[currentGuestIndex],
+    [name]: value,
   };
+  setGuestForms(updatedForms);
+};
+
+// Close the popup
+const handleClosePopup = () => {
+  setShowPopup(false);
+};
+
+// Handle checkbox change for confirmation
+const handleCheckboxChange = (e) => {
+  setCheckboxChecked(e.target.checked);
+};
   // ---------------- RozarPay Payment Gateway  Integration start -------------------
   const fetchPaymentDetails = async () => {
     try {
@@ -664,193 +690,192 @@ const GuestDetails = () => {
           </div>
 
           {!showForm && (
-            <button className="submit-btn" onClick={() => setShowForm(true)}>
-              Add Details
-            </button>
-          )}
+      <button className="submit-btn" onClick={() => setShowForm(true)}>
+        Add Details
+      </button>
+    )}
 
-          {showForm && !formSubmitted && (
-            <div className="form-container">
-              <div className="form-content">
-                <h2 className="text-center">Enter Your Details</h2>
-                <form onSubmit={handleFormSubmit}>
-                  {guestForms.map((formData, index) => (
-                    <div key={index} className="guest-form">
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="mb-3 req_field">
-                            <label className="required_field">First Name</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="First Name"
-                              name="fname"
-                              value={formData.fname}
-                              onChange={(e) => handleFormChange(index, e)}
-                              required
-                              minLength={2}
-                              maxLength={30}
-                            />
-                          </div>
+    {showForm && !formSubmitted && (
+      <div className="form-container">
+        <div className="form-content">
+          <h2 className="text-center">Enter Guest {currentGuestIndex + 1} Details</h2>
+          <form onSubmit={handleFormSubmit}>
+            <div className="guest-form">
+              <div className="row">
+                <div className="col-md-6">
+                  {/* First Name */}
+                  <div className="mb-3 req_field">
+                    <label className="required_field">First Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="First Name"
+                      name="fname"
+                      value={guestForms[currentGuestIndex].fname}
+                      onChange={handleFormChange}
+                      required
+                      minLength={2}
+                      maxLength={30}
+                    />
+                  </div>
 
-                          <div className="mb-3 req_field">
-                            <label>Middle Name (Optional)</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Middle Name (Optional)"
-                              name="mname"
-                              value={formData.mname}
-                              onChange={(e) => handleFormChange(index, e)}
-                            />
-                          </div>
+                  {/* Middle Name */}
+                  <div className="mb-3 req_field">
+                    <label>Middle Name (Optional)</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Middle Name"
+                      name="mname"
+                      value={guestForms[currentGuestIndex].mname}
+                      onChange={handleFormChange}
+                    />
+                  </div>
 
-                          <div className="mb-3 req_field">
-                            <label className="required_field">Last Name</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Last Name"
-                              name="lname"
-                              value={formData.lname}
-                              onChange={(e) => handleFormChange(index, e)}
-                              required
-                              minLength={2}
-                              maxLength={30}
-                            />
-                          </div>
+                  {/* Last Name */}
+                  <div className="mb-3 req_field">
+                    <label className="required_field">Last Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Last Name"
+                      name="lname"
+                      value={guestForms[currentGuestIndex].lname}
+                      onChange={handleFormChange}
+                      required
+                      minLength={2}
+                      maxLength={30}
+                    />
+                  </div>
 
-                          <div className="mb-3 req_field">
-                            <label className="required_field">Email</label>
-                            <input
-                              type="email"
-                              className="form-control"
-                              placeholder="Email"
-                              name="email"
-                              value={formData.email}
-                              onChange={(e) => handleFormChange(index, e)}
-                              required
-                            />
-                          </div>
+                  {/* Email */}
+                  <div className="mb-3 req_field">
+                    <label className="required_field">Email</label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      placeholder="Email"
+                      name="email"
+                      value={guestForms[currentGuestIndex].email}
+                      onChange={handleFormChange}
+                      required
+                    />
+                  </div>
 
-                          <div className="mb-3 req_field">
-                            <label className="required_field">Age</label>
-                            <input
-                              type="number"
-                              className="form-control"
-                              placeholder="Age"
-                              name="age"
-                              value={formData.age}
-                              onChange={(e) => handleFormChange(index, e)}
-                              min={0}
-                            />
-                          </div>
-                        </div>
+                  {/* Age */}
+                  <div className="mb-3 req_field">
+                    <label className="required_field">Age</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="Age"
+                      name="age"
+                      value={guestForms[currentGuestIndex].age}
+                      onChange={handleFormChange}
+                      min={0}
+                    />
+                  </div>
+                </div>
 
-                        <div className="col-md-6">
-                          <div className="mb-3 req_field">
-                            <label className="required_field">
-                              Contact Number
-                            </label>
-                            <input
-                              type="tel"
-                              className="form-control"
-                              placeholder="Contact Number"
-                              name="mobile"
-                              value={formData.mobile}
-                              onChange={(e) => handleFormChange(index, e)}
-                              required
-                              pattern="[0-9]{10}"
-                            />
-                          </div>
+                <div className="col-md-6">
+                  {/* Contact Number */}
+                  <div className="mb-3 req_field">
+                    <label className="required_field">Contact Number</label>
+                    <input
+                      type="tel"
+                      className="form-control"
+                      placeholder="Contact Number"
+                      name="mobile"
+                      value={guestForms[currentGuestIndex].mobile}
+                      onChange={handleFormChange}
+                      required
+                      pattern="[0-9]{10}"
+                    />
+                  </div>
 
-                          <div className="mb-3 passport_field">
-                            <label>PAN No.</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="PAN No."
-                              name="pan"
-                              value={formData.pan}
-                              onChange={(e) => handleFormChange(index, e)}
-                            />
-                          </div>
+                  {/* PAN No. */}
+                  <div className="mb-3 passport_field">
+                    <label>PAN No.</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="PAN No."
+                      name="pan"
+                      value={guestForms[currentGuestIndex].pan}
+                      onChange={handleFormChange}
+                    />
+                  </div>
 
-                          <div className="mb-3 passport_field">
-                            <label>Passport No.</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Passport No."
-                              name="passportNo"
-                              value={formData.passportNo}
-                              onChange={(e) => handleFormChange(index, e)}
-                            />
-                          </div>
+                  {/* Passport No. */}
+                  <div className="mb-3 passport_field">
+                    <label>Passport No.</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Passport No."
+                      name="passportNo"
+                      value={guestForms[currentGuestIndex].passportNo}
+                      onChange={handleFormChange}
+                    />
+                  </div>
 
-                          <div className="mb-3 req_field">
-                            <label className="required_field">
-                              Lead Passenger
-                            </label>
-                            <select
-                              className="form-control"
-                              name="leadPassenger"
-                              value={formData.leadPassenger}
-                              onChange={(e) => handleFormChange(index, e)}
-                            >
-                              <option value="">Select</option>
-                              <option value="Yes">Yes</option>
-                              <option value="No">No</option>
-                            </select>
-                          </div>
+                  {/* Lead Passenger */}
+                  <div className="mb-3 req_field">
+                    <label className="required_field">Lead Passenger</label>
+                    <select
+                      className="form-control"
+                      name="leadPassenger"
+                      value={guestForms[currentGuestIndex].leadPassenger}
+                      onChange={handleFormChange}
+                    >
+                      <option value="">Select</option>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                  </div>
 
-                          <div className="mb-3 req_field">
-                            <label className="required_field">Pax Type</label>
-                            <select
-                              className="form-control"
-                              name="paxType"
-                              value={formData.paxType}
-                              onChange={(e) => handleFormChange(index, e)}
-                            >
-                              <option value="">Select</option>
-                              <option value="1">Adult</option>
-                              <option value="2">Child</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <button className="submit-btn" type="submit">
-                        Save
-                      </button>
-                    </div>
-                  ))}
-                </form>
+                  {/* Pax Type */}
+                  <div className="mb-3 req_field">
+                    <label className="required_field">Pax Type</label>
+                    <select
+                      className="form-control"
+                      name="paxType"
+                      value={guestForms[currentGuestIndex].paxType}
+                      onChange={handleFormChange}
+                    >
+                      <option value="">Select</option>
+                      <option value="1">Adult</option>
+                      <option value="2">Child</option>
+                    </select>
+                  </div>
+                </div>
               </div>
+              <button className="submit-btn" type="submit">
+                {currentGuestIndex + 1 < guestForms.length ? 'Save and Next' : 'Save and Finish'}
+              </button>
             </div>
-          )}
+          </form>
+        </div>
+      </div>
+    )}
 
-          {formSubmitted && (
-            <div>
-              <Popup
-                show={showPopup}
-                onClose={handleClosePopup}
-                formData={guestForms}
-              />
-              <label className="check_btn">
-                <input
-                  type="checkbox"
-                  checked={checkboxChecked}
-                  onChange={handleCheckboxChange}
-                />
-                Confirm details are correct
-              </label>
-              {isFormComplete && (
-                <button className="submit-btn" onClick={handlePayment}>
-                  Proceed to Payment
-                </button>
-              )}
-            </div>
-          )}
+    {formSubmitted && (
+      <div>
+        <Popup show={showPopup} onClose={handleClosePopup} formData={guestForms} />
+        <label className="check_btn">
+          <input
+            type="checkbox"
+            checked={checkboxChecked}
+            onChange={handleCheckboxChange}
+          />
+          Confirm details are correct
+        </label>
+        <button  disabled={!checkboxChecked} className="submit-btn" onClick={handlePayment}>
+          Proceed to Payment
+        </button>
+      </div>
+    )}
+
         </div>
       </div>
 

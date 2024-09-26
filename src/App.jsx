@@ -33,6 +33,7 @@ import SeatMealBaggageTabs from './components/flight/SeatMealBaggageTabs';
 import Profile from './pages/Profile/Profile';
 import Loading from './pages/loading/Loading';
 import SajyatraLogin from './components/popUp/LoginPopUp';
+import Sajyatra from './components/Sajyatra';
 import EnterOtp from '../src/components/popUp/EnterOtp'
 import RegisterModal from './components/popUp/RegisterPopup';
 import LoginPopUp from './components/popUp/LoginPopUp';
@@ -117,6 +118,7 @@ const App = () => {
           <Route path='/signup' element={<SignUp />} />
 
           <Route path='/sajyatra-login' element={<SajyatraLogin />} />
+          <Route path='/sajpe-login' element={<Sajyatra />} />
           <Route path='/enterOtp' element={<EnterOtp />} />
           <Route path='/login-popup' element={<LoginPopUp />} />
           <Route path='/register' element={<RegisterModal />} />
