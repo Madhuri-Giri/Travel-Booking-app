@@ -1,3 +1,144 @@
+.changePlaneDiv {
+    padding: 10px 6px;
+    border-top: 1px solid rgba(128, 128, 128, 0.397);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.397);
+    display: flex;
+    justify-content: space-between;
+}
+
+.changePlaneDiv p {
+    margin: 0px;
+    padding: 0px 0px;
+    color: rgb(149, 101, 196);
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.flightlistatbborder div {
+    border: 1px solid rgba(128, 128, 128, 0.486);
+    margin-top: 20px;
+}
+
+.fligthListModal .modal-content {
+    padding: 0px !important;
+}
+
+.fligthListModal .modal-body {
+    padding: 0px !important;
+    margin: 10px 10px;
+    border: 1px solid #80808036;
+
+}
+
+.fligthListModal .modal-lg {
+    max-width: 80% !important;
+    /* max-height: 80% !important; */
+    /* Adjust this value as needed */
+}
+
+.flightBaggagee .col-12 {
+    padding: 0px 10px;
+}
+
+.flightfaretab td {
+    text-align: end;
+}
+
+.fligtDurationdiv {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.fligtDurationdiv .line-container {
+    position: relative;
+    width: 100%;
+    height: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fligtDurationdiv .line-with-dot {
+    width: 100%;
+    height: 2px;
+    background-color: #333;
+    /* Line color */
+    border: none;
+    position: relative;
+}
+
+.fligtDurationdiv .dot {
+    position: absolute;
+    top: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 7px;
+    height: 8px;
+    background-color: #ccc;
+    border-radius: 50%;
+}
+
+.Flightbtnsss {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Flightbtnsss .pricefarebtn button {
+    border: 1px solid #80808036;
+    font-size: 13px;
+    color: red;
+    font-weight: bold;
+}
+
+
+.flightListDetailsBUtton {
+    background: no-repeat;
+    border: none;
+    text-decoration: underline;
+    color: #00b7eb;
+    text-align: start;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.listDataMain {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.flightsLIstdata {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.priceradiotbtnn {
+    display: flex;
+    justify-content: space-around;
+}
+
+.priceradiotbtnn button {
+    border: none;
+    background: none;
+    color: red;
+    text-decoration: underline;
+}
+
+.priceradiotbtnn span {
+    background-color: #00b7eb;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    border-radius: 5px;
+    padding: 2px 6px;
+
+}
+
+.listDataMain p {
+    margin: 0px;
+
+}
 
 
 
@@ -7,8 +148,10 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background-color: #f8f9fa; /* Background color for header */
-    border: 1px solid #dee2e6; /* Border color for header */
+    background-color: #f8f9fa;
+    /* Background color for header */
+    border: 1px solid #dee2e6;
+    /* Border color for header */
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
@@ -17,8 +160,10 @@
 }
 
 .flightlistaccordian-header:hover {
-    background-color: #e9ecef; /* Hover background color */
-    border-color: #ced4da; /* Hover border color */
+    background-color: #e9ecef;
+    /* Hover background color */
+    border-color: #ced4da;
+    /* Hover border color */
 }
 
 .header-title {
@@ -31,7 +176,8 @@
 }
 
 .accordion-button:not(.collapsed) .header-icon {
-    transform: rotate(180deg); /* Rotate icon when expanded */
+    transform: rotate(180deg);
+    /* Rotate icon when expanded */
 }
 
 
@@ -41,10 +187,12 @@
 
 /* styles.css */
 .mobileAirlines {
-    display: block !important; /* Ensure it's visible */
+    display: block !important;
+    /* Ensure it's visible */
     /* Remove any potential display: none or visibility: hidden rules */
 }
-.flight-custom-checkbox{
+
+.flight-custom-checkbox {
     display: flex !important;
     justify-content: space-between !important;
 }
@@ -275,7 +423,8 @@
     color: white;
     display: none;
 }
-.flightlistsec1Mobile .row{
+
+.flightlistsec1Mobile .row {
     margin-bottom: -10px;
 }
 
@@ -336,16 +485,18 @@
     border-radius: 12px;
     margin-right: 15px;
 }
-.f-listAirlinesNameMOB{
+
+.f-listAirlinesNameMOB {
     display: none;
 }
-.flight-content .row {
+
+.flight-content .flight-contentRow {
     box-shadow: 2px 3px 4px 3px gray;
     background-color: white;
-    padding: 10px 10px;
+    padding: 5px 3px;
     padding-bottom: 20px;
     border-radius: 20px;
-    margin-top: 25px;
+    margin-top: 10px;
 }
 
 .f-listAirlines {
@@ -444,10 +595,6 @@
     color: green;
 }
 
-.regulrdeal {
-    margin-bottom: 30px;
-}
-
 .regulrdeal span {
     background-color: #fffa9a;
     color: #0666cd;
@@ -512,20 +659,22 @@
 }
 
 .pricebtnsmobil {
-    display: none;
+    display: flex;
+    justify-content: space-between;
 }
 
 .pricebtnsmobil p {
     font-weight: bold;
     font-size: 22px;
     color: #00e100;
+    margin: 0px;
 }
 
 .pricebtnsmobil button {
     background-color: #00b7eb;
     border: none;
     color: white;
-    padding: 7px 20px;
+    padding: 3px 20px;
     border-radius: 17px;
     font-weight: bold;
 }
@@ -725,26 +874,33 @@
     .flight-slide h6 {
         font-size: 10px;
     }
+
     .flight-slide p {
         font-size: 10px;
     }
-    .flight-slide{
+
+    .flight-slide {
         padding: 10px 0px !important;
     }
+
     .regulrdeal {
         margin-bottom: 10px;
     }
-    .f-listAirlinesNameWEb{
+
+    .f-listAirlinesNameWEb {
         display: none;
     }
-    .f-listAirlinesNameMOB{
+
+    .f-listAirlinesNameMOB {
         display: block;
         margin: 0px;
         margin-bottom: 7px;
     }
-    .flight-content .row{
+
+    .flight-content .row {
         padding: 13px 0px;
     }
+
     .f-lists img {
         height: 30px;
         border-radius: 11px;
@@ -802,12 +958,13 @@
 
 
 
-.flightstopaccordian div{
+.flightstopaccordian div {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.flightstopaccordian{
+
+.flightstopaccordian {
     margin-bottom: 15px !important;
 }
 
@@ -836,12 +993,12 @@
     cursor: pointer;
 }
 
-.custom-checkbox input[type="checkbox"]:checked + label {
+.custom-checkbox input[type="checkbox"]:checked+label {
     background-color: #007bff;
     border-color: #007bff;
 }
 
-.flightpriceaccordian .custom-checkbox input[type="checkbox"]:checked + label::after {
+.flightpriceaccordian .custom-checkbox input[type="checkbox"]:checked+label::after {
     content: "";
     position: absolute;
     left: 4px;
@@ -857,6 +1014,7 @@
 .slick-slide {
     transform: none !important;
 }
+
 .flight-slide {
     display: flex;
     flex-direction: column;
@@ -865,11 +1023,7 @@
     padding: 10px;
     box-sizing: border-box;
 }
+
 .slick-slide {
     display: inline-block;
 }
-
-
-
-
-

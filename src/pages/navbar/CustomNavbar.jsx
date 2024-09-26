@@ -40,7 +40,6 @@ const CustomNavbar = () => {
         });
 
     };
-    console.log('navisLogin', isLogin);
     const loginData = JSON.parse(localStorage.getItem("loginData"))
 
     return (
