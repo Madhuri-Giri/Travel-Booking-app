@@ -1,4 +1,4 @@
-import React, { useState } from "react"; 
+import React, { useState, useEffect } from "react"; 
 import { useLocation, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Carousel, Modal } from "react-bootstrap";
 import "./HotelDescription.css";
@@ -27,10 +27,16 @@ const HotelDescription = () => {
   const navigate = useNavigate(); 
   const hotelDetails = location.state?.hotelDetails;
   const hotelIndex = location.state?.hotelIndex; // Get the hotel index from state
+  const { persons } = location.state || {};
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   
+  useEffect(() => {
+    console.log("persons in hotel desc", persons)
+  }, []);
+
+
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
   };
@@ -77,7 +83,7 @@ const HotelDescription = () => {
 
       if (hotelRooms) {
         console.log("Hotel room details:", hotelRooms);
-        navigate("/hotel-room", { state: { hotelRooms } });
+        navigate("/hotel-room", { state: { hotelRooms, persons } });
       } else {
         console.error("No hotel room data received.");
         setError("No hotel room data available.");

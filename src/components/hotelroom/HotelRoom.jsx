@@ -19,13 +19,18 @@ const HotelRoom = () => {
     
     const [selectedRoom, setSelectedRoom] = useState(null);
     const hotelRooms = location.state?.hotelRooms || [];
-    
+    const { persons } = location.state || {};
+
     const { loading, error } = useSelector((state) => state.hotelRooms || {});
     const { hotels = [], srdvType, resultIndexes, srdvIndexes, hotelCodes, traceId } = useSelector((state) => state.hotelSearch || {});
 
     useEffect(() => {
         dispatch(fetchHotelRooms());
     }, [dispatch]);
+
+    useEffect(() => {
+        console.log("persons in hotel room", persons)
+      }, []);
 
     let isProcessing = false;
 
@@ -155,7 +160,8 @@ const HotelRoom = () => {
             navigate('/hotel-guest', {
                 state: { 
                     blockRoomResult: response.data.BlockRoomResult, // Pass the BlockRoomResult
-                    bookingStatus: response.booking_status // Pass the booking_status
+                    bookingStatus: response.booking_status, // Pass the booking_status
+                    persons
                 }
             });
         

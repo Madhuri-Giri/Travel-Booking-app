@@ -314,9 +314,12 @@ const HotelSearch = () => {
   
     if (response.Results && response.Results.length > 0) {
       const hotels = response.Results;
+      const persons = response.NoOfRooms; 
       navigate("/hotel-list", { 
         state: { 
-          searchResults: hotels 
+          searchResults: hotels,
+          persons: persons,
+         
         } 
       }); 
     } else {

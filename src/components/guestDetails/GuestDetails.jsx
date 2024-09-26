@@ -27,14 +27,13 @@ const GuestDetails = () => {
   const navigate = useNavigate();  
   const location = useLocation();
   const dispatch = useDispatch();
-  const { searchResults, TotalGuests } = location.state || {};    
-  console.log('total guest',TotalGuests );                  
+  const { persons } = location.state || {};              
   const [hotelBlock, setHotelBlock] = useState([]);
   const [selectedRoomsData, setSelectedRoomsData] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
  
   const [guestForms, setGuestForms] = useState(
-    Array(TotalGuests).fill({
+    Array( persons ).fill({
       fname: "",
       mname: "",
       lname: "",
@@ -69,6 +68,10 @@ const GuestDetails = () => {
     };
     setGuestForms(newGuestForms);
   };
+
+  useEffect(() => {
+    console.log("persons in guest details", persons[0].NoOfAdults)
+  }, []);
 
   const handleFormChange = (index, e) => {
     const { name, value } = e.target;
