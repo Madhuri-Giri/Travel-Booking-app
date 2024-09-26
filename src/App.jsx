@@ -118,7 +118,7 @@ const App = () => {
           <Route path='/signup' element={<SignUp />} />
 
           <Route path='/sajyatra-login' element={<SajyatraLogin />} />
-          <Route path='/sajyatra' element={<Sajyatra />} />
+          <Route path='/sajpe-login' element={<Sajyatra />} />
           <Route path='/enterOtp' element={<EnterOtp />} />
           <Route path='/login-popup' element={<LoginPopUp />} />
           <Route path='/register' element={<RegisterModal />} />

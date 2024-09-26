@@ -1,72 +1,34 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import './BusLayout.css';
 import BusSeatImg from '../../assets/images/bussittt.png';
 import BusSeatImgSleeper from '../../assets/images/sleepImg.png';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { MdAirlineSeatReclineNormal } from "react-icons/md";
-import Loading from '../../pages/loading/Loading';
-import BoardAndDrop from "../bus/BoardAndDrop";
-import { useSelector, useDispatch } from 'react-redux';
-import "./BoardAndDrop.css"
-import { setBoardingData, setSelectedBoardingPoint, setSelectedDroppingPoint } from '../../redux-toolkit/bus/borddropSlice';
-import LoaderBus from './LoaderBus';
 
-// import { setSelectedBusSeatData } from '../../redux-toolkit/bus/selectedSeatsSlice';
-
-const BusLayout = ({ selectedBusIndex }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  // console.log('layout result index prop',selectedBusIndex )
-
-  const { boardingData } = useSelector((state) => state.borddrop);
-
-  const boardingPoints = boardingData?.GetBusRouteDetailResult?.BoardingPointsDetails || [];
-  const droppingPoints = boardingData?.GetBusRouteDetailResult?.DroppingPointsDetails || [];
-
-  // -------------------------------------------------------------------------------------------------------------
-  const [lowerSeatsBus, setlowerSeatsBus] = useState([]);
-  const [upperSeatsBus, setupperSeatsBus] = useState([]);
-
+const BusLayout = () => {
+  const [lowerSeatsBus, setLowerSeatsBus] = useState([]);
+  const [upperSeatsBus, setUpperSeatsBus] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [selectedBusSeatData, setSelectedBusSeatData] = useState([]); 
   const [totalPrice, setTotalPrice] = useState(0);
-  const [lowerBasePrices, setLowerBasePrices] = useState([]);
-  const [lowerSeatNames, setLowerSeatNames] = useState([]);
-  const [upperBasePrices, setUpperBasePrices] = useState([]);
-  const [upperSeatNames, setUpperSeatNames] = useState([]);
-  const [availableSeats, setAvailableSeats] = useState(0);
+  const [selectedBoardingPoint, setSelectedBoardingPoint] = useState(null);
+  const [selectedDroppingPoint, setSelectedDroppingPoint] = useState(null);
+  const [boardingPoints, setBoardingPoints] = useState([]);
+  const [droppingPoints, setDroppingPoints] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { layout, loadingg } = useSelector((state) => state.seatLayout);
+  const [errorMessage, setErrorMessage] = useState("");
 
+  const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState('lower');
-
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
-
-  // console.log('lowerSeatsBus', lowerSeatsBus)
-
-  const { layout, status, error , loadingg} = useSelector((state) => state.seatLayout);
-  console.log('loadingg ', loadingg)
-
-  const seatDetails = layout?.Result?.SeatLayout?.SeatLayoutDetails?.Layout?.seatDetails;
-  // console.log('seatDetails', seatDetails)
-
-  const availableSeatss = layout?.Result?.SeatLayout?.SeatLayoutDetails?.AvailableSeats;
-  // console.log('AvailableSeats', availableSeatss)
-  // bus seard list redux data -------
+  const seatDetails = layout?.Result?.SeatLayout?.SeatLayoutDetails?.Layout?.seatDetails || [];
+  const totalAvailableSeats = layout?.Result?.SeatLayout?.SeatLayoutDetails?.AvailableSeats || 0;
 
   useEffect(() => {
-    if (layout && layout.Result) {
-      const availableSeats = layout?.Result?.SeatLayout?.SeatLayoutDetails?.AvailableSeats || [];
-      setAvailableSeats(availableSeats);
-
-      const seatDetails = layout?.Result?.SeatLayout?.SeatLayoutDetails?.Layout?.seatDetails || [];
+    if (seatDetails.length > 0) {
       let upperSeats = [];
       let lowerSeats = [];
 
-      // Process each array in seatDetails
       seatDetails.forEach(seatArray => {
         seatArray.forEach(seat => {
           if (seat.IsUpper) {
@@ -77,60 +39,23 @@ const BusLayout = ({ selectedBusIndex }) => {
         });
       });
 
-      setlowerSeatsBus(lowerSeats);
-      setupperSeatsBus(upperSeats);
+      lowerSeats.sort((a, b) => a.SeatName.localeCompare(b.SeatName));
+      upperSeats.sort((a, b) => a.SeatName.localeCompare(b.SeatName));
 
-      // Extract prices and seat names
-      const extractedLowerBasePrices = lowerSeats.map(seat => seat.Price.BasePrice);
-      const extractedLowerSeatNames = lowerSeats.map(seat => seat.SeatName);
-      const extractedUpperBasePrices = upperSeats.map(seat => seat.Price.BasePrice);
-      const extractedUpperSeatNames = upperSeats.map(seat => seat.SeatName);
-
-      setLowerBasePrices(extractedLowerBasePrices);
-      setLowerSeatNames([...new Set(extractedLowerSeatNames)]); // Remove duplicates
-      setUpperBasePrices(extractedUpperBasePrices);
-      setUpperSeatNames([...new Set(extractedUpperSeatNames)]); // Remove duplicates
+      setLowerSeatsBus(lowerSeats);
+      setUpperSeatsBus(upperSeats);
     }
-  }, [layout]);
+  }, [seatDetails]);
 
+  const handleSeatSelect = (seat) => {
+    if (!seat.SeatStatus) return;
 
-
-  const getLowerBasePrice = (seatName) => {
-    const index = lowerSeatNames.indexOf(seatName);
-    if (index !== -1) {
-      const basePrice = lowerBasePrices[index];
-      return basePrice - (basePrice * 0.18);
-    }
-    return null;
-  };
-
-  const getUpperBasePrice = (seatName) => {
-    const index = upperSeatNames.indexOf(seatName);
-    if (index !== -1) {
-      const basePrice = upperBasePrices[index];
-      return basePrice - (basePrice * 0.18);
-    }
-    return null;
-  };
-
-  const [selectedBusSeatData, setSelectedBusSeatData] = useState([]);
-
-  useEffect(() => {
-    setSelectedSeats([]);
-    setSelectedBusSeatData([]);
-    setTotalPrice(0);
-  }, []);
-
-
-
-
-  const handleSeatSelect = (seatName) => {
+    const seatName = seat.SeatName;
     const seatObject = [...lowerSeatsBus, ...upperSeatsBus].find(seat => seat.SeatName === seatName);
 
     if (seatObject) {
       let updatedBusSeatData = [...selectedBusSeatData];
 
-      // If the seat is already selected, remove it from selectedBusSeatData
       if (selectedSeats.includes(seatName)) {
         updatedBusSeatData = updatedBusSeatData.filter(seat => seat.SeatName !== seatName);
       } else {
@@ -140,38 +65,100 @@ const BusLayout = ({ selectedBusIndex }) => {
     }
 
     const isSelected = selectedSeats.includes(seatName);
-    const price = getLowerBasePrice(seatName) || getUpperBasePrice(seatName) || 0;
+    const price = seat.Price.BasePrice;
 
-    // Update the selected seats state
     setSelectedSeats((prevSeats) => {
       const newSeats = isSelected
         ? prevSeats.filter((seat) => seat !== seatName)
         : [...prevSeats, seatName];
 
-      // Store the count of selected seats in local storage
       localStorage.setItem('selectedSeatCount', newSeats.length);
-
       return newSeats;
     });
 
-    // Update the total price state
     setTotalPrice((prevTotal) => {
       return isSelected ? prevTotal - price : prevTotal + price;
     });
   };
 
+  const renderSeats = (seats) => {
+    return seats.map((seat) => {
+      const seatClass = seat.SeatStatus ? 'seat-available' : 'seat-disabled';
+      const seatTypeClass = seat.SeatType === 2 ? 'sleeper-seat' : 'sitting-seat';
+      const seatImg = seat.SeatType === 2 ? BusSeatImgSleeper : BusSeatImg;
+      const isSelected = selectedSeats.includes(seat.SeatName); 
+
+      return (
+        <div
+          key={seat.SeatIndex}
+          className={`seat ${seatClass} ${seatTypeClass} ${isSelected ? 'selected-seat' : ''}`}
+          onClick={() => handleSeatSelect(seat)}
+        >
+          <div className="seat-name">{seat.SeatName}</div>
+          <img src={seatImg} alt={seat.SeatName} />
+          <div className="seat-price-main">₹{Math.round(seat.Price.BasePrice - (seat.Price.BasePrice * 0.18))}</div>
+        </div>
+      );
+    });
+  };
+
+
+  const handleProceed = () => {
+    setErrorMessage("");
+  
+    if (selectedSeats.length === 0) {
+      setErrorMessage("Please select at least one seat.");
+      return;
+    }
+  
+    if (!selectedBoardingPoint || !selectedDroppingPoint) {
+      setErrorMessage("Please select both boarding and dropping points.");
+      return;
+    }
+  
+    const selectedBoardingPointDetail = boardingPoints.find(
+      (point) => point.CityPointName === selectedBoardingPoint
+    );
+    
+    const selectedDroppingPointDetail = droppingPoints.find(
+      (point) => point.CityPointName === selectedDroppingPoint
+    );
+  
+    if (selectedBoardingPointDetail && selectedDroppingPointDetail) {
+      const boardingIndex = selectedBoardingPointDetail.CityPointIndex;
+      const droppingIndex = selectedDroppingPointDetail.CityPointIndex;
+  
+      console.log('Selected Boarding Point:', selectedBoardingPoint);
+      console.log('Selected Dropping Point:', selectedDroppingPoint);
+      console.log('Selected Bus Seat Data:', selectedBusSeatData);
+      console.log('Total Price:', totalPrice);
+  
+      navigate('/review-booking', {
+        state: {
+          selectedBoardingPoint: {
+            name: selectedBoardingPoint,
+            index: boardingIndex,
+          },
+          selectedDroppingPoint: {
+            name: selectedDroppingPoint,
+            index: droppingIndex,
+          },
+          selectedBusSeatData,
+          totalPrice: Math.round(totalPrice - (totalPrice * 0.18)), 
+        },
+      });
+    } else {
+      console.error('Please select both boarding and dropping points');
+    }
+  };
+  
 
 
 
-
-
-
-  // --------------------------------------------
   const traceId = useSelector((state) => state.bus.traceId);
-  // const resultIndex = useSelector((state) => state.bus.resultIndex);
-
   const boardHandler = () => {
-    const selectedBusIndex = localStorage.getItem('selectedBusIndex')
+    const selectedBusIndex = localStorage.getItem('selectedBusIndex');
+    setLoading(true);
     const url = 'https://sajyatra.sajpe.in/admin/api/add-boarding-point';
     const data = {
       TraceId: traceId,
@@ -193,9 +180,8 @@ const BusLayout = ({ selectedBusIndex }) => {
       })
       .then(responseData => {
         console.log('Boarding Response:', responseData);
-
-        console.log('Dispatching to Redux:', responseData);
-        dispatch(setBoardingData(responseData));
+        setBoardingPoints(responseData.GetBusRouteDetailResult.BoardingPointsDetails);
+        setDroppingPoints(responseData.GetBusRouteDetailResult.DroppingPointsDetails);
       })
       .catch(error => {
         console.error('Error:', error);
@@ -205,838 +191,105 @@ const BusLayout = ({ selectedBusIndex }) => {
       });
   };
 
-  const [selectedBoardingPoint, setSelectedBoardingPoint] = useState({ name: '', index: null });
-  const [selectedDroppingPoint, setSelectedDroppingPoint] = useState({ name: '', index: null });
-
-  const handleBoardingSelect = (point) => {
-    setSelectedBoardingPoint({ name: point.CityPointName, index: point.CityPointIndex });
-  };
-
-  const handleDroppingSelect = (point) => {
-    setSelectedDroppingPoint({ name: point.CityPointName, index: point.CityPointIndex });
-  };
-
-  const handleProceed = () => {
-    if (selectedBoardingPoint.index !== null && selectedDroppingPoint.index !== null) {
-      console.log('Selected Boarding Point:', selectedBoardingPoint);
-      console.log('Selected Dropping Point:', selectedDroppingPoint);
-      console.log('Selected Bus Seat Data:', selectedBusSeatData);
-      console.log('Total Price:', totalPrice);
-
-      navigate('/review-booking', {
-        state: {
-          selectedBoardingPoint,
-          selectedDroppingPoint,
-          selectedBusSeatData,
-          totalPrice: Math.round(totalPrice)
-        }
-      });
-    } else {
-      console.error('Please select both boarding and dropping points');
-    }
-  };
-  // -------------------------------------------------------------------------------------------------------------------------------
-
-
-
-  // ------------------seat Type condition---------------
-  const [seatType, setSeatType] = useState('Sitting');
-  const [seatTypeAvailable, setSeatTypeAvailable] = useState(1);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [gender, setGender] = useState(''); // Gender state for Male/Female filtering
-  const [genderErrorMessage, setGenderErrorMessage] = useState(''); // New state for gender error message
-
-  useEffect(() => {
-    const selectedSeatsData = JSON.parse(localStorage.getItem('selectedBusSeatData'));
-    if (selectedSeatsData && selectedSeatsData.length > 0) {
-      const seat = selectedSeatsData[0];
-      setSeatTypeAvailable(seat.SeatType);
-
-      if (seat.SeatType === 1) {
-        setSeatType('Sitting');
-      } else if (seat.SeatType === 2) {
-        setSeatType('Sleeper');
-      }
-    }
-  }, []);
-
-  const handleSeatTypeChange = (e) => {
-    const selectedValue = e.target.value;
-
-    if (selectedValue === 'Sleeper' && seatTypeAvailable !== 2) {
-      setErrorMessage('Sleeper seats are not available.');
-    } else {
-      setErrorMessage('');
-      setSeatType(selectedValue);
-    }
-  };
-
-  const handleGenderChange = (e) => {
-    const selectedGender = e.target.value;
-    setGender(selectedGender);
-
-    const availableSeats = [...lowerSeatsBus, ...upperSeatsBus]; // Combine lower and upper seats
-
-    const genderSpecificSeats = availableSeats.filter(seat => {
-      if (selectedGender === 'Male') return seat.IsMalesSeat;
-      if (selectedGender === 'Female') return seat.IsLadiesSeat;
-      return true;
-    });
-
-    if (selectedGender !== '' && genderSpecificSeats.length === 0) {
-      setGenderErrorMessage(`${selectedGender} seats are not available.`);
-    } else {
-      setGenderErrorMessage('');
-    }
-  };
-
-  // ---------------------------------------------------------------
-
-  const busLayout = [
-    ['1', '2', '3', '4', '5', '6'],
-    ['7', '8', '9', '10', '11', '12'],
-    [null, null, null, null, null, '13'],
-    ['14', '15', '16', '17', '19', '20'],
-    ['31', '32', '33', '34', '35', '36'],
-  ];
-
-
-
-  const busLayoutUpper2 = [
-    ['11', '12', '13', '14', '15'],
-    [null, null, null, null, '16'],
-    ['17', '18', '19', '20', '21'],
-  ];
-  const busLayoutUpper = [
-    ['21', '22', '23', '24', '25'],
-    [null, null, null, null, '26'],
-    ['27', '28', '29', '30', '31'],
-  ];
-
-  // Function to select the correct bus layout based on seatName range.
-  const getBusLayout = (seatName) => {
-    if (seatName >= '11' && seatName <= '21') {
-      return busLayoutUpper2;
-    } else if (seatName >= '21' && seatName <= '31') {
-      return busLayoutUpper;
-    }
-    return [];
-  };
-
-  const seatName = '21'; // Example seatName, replace with your actual logic.
-  const UpeerSeatbusLayout = getBusLayout(seatName);
-
-  const [showPoints, setShowPoints] = useState(false); // State to manage visibility
-
-  const boardClick = () => {
-    setShowPoints((prev) => !prev); // Toggle visibility
-  };
-
-  const handleClick = (e) => {
-    e.stopPropagation();
-    boardHandler();
-    boardClick();
-  };
-
-  // if (loadingg ) {
-  //   return <Loading />;
-  // }
-
-
-
   return (
-    <>
-      {loadingg ? (
-        <>
-          <LoaderBus />
-        </>
-      ) : (
-        <div className="BusLayout">
-          <div className="Seat-layout">
-            <div className="seats">
-              <div className="seat-type-dropdown">
-                <div>
-                  <label htmlFor="seatType">Seat Type: </label>
-                  <select id="seatType" value={seatType} onChange={handleSeatTypeChange}>
-                    <option value="Sitting">Sitting</option>
-                    <option value="Sleeper">Sleeper</option>
-                  </select>
-
-                  {errorMessage && <p style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</p>}
-
-                  {seatType === 'Sleeper' && seatTypeAvailable !== 2 && (
-                    <p style={{ color: 'red', marginTop: '10px' }}>
-                      Sleeper seats are not available.
-                    </p>
-                  )}
-
-                </div>
-                <div>
-                  {/* Gender Dropdown */}
-                  <label htmlFor="gender">Gender: </label>
-                  <select id="gender" value={gender} onChange={handleGenderChange}>
-                    <option value="">All</option> {/* Default shows all seats */}
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-
-                  {/* Display error message if no seats available for the selected gender */}
-                  {genderErrorMessage && (
-                    <p style={{ color: 'red', marginTop: '10px' }}>{genderErrorMessage}</p>
-                  )}
-
-                </div>
-
-              </div>
-
-
-              <div className="left">
-                <div className="left-top">
-                  <h6>SELECT BUS SEATS</h6>
-                  <p><MdAirlineSeatReclineNormal /> available seats ({availableSeats})</p>
-                </div>
-                <div className='sel'>please selct seats and boarding droping points before proceed.</div>
-
-                <div className="left-btm">
-
-
-                  <div className='busseatTabs'>
-                    {/* Tab Buttons */}
-                    <div className="tabs busseatTabsBTN">
-                      <button
-                        className={activeTab === 'lower' ? 'active' : ''}
-                        onClick={() => handleTabClick('lower')}
-                      >
-                        Lower Deck
-                      </button>
-                      <button
-                        className={activeTab === 'upper' ? 'active' : ''}
-                        onClick={() => handleTabClick('upper')}
-                      >
-                        Upper Deck
-                      </button>
-                    </div>
-
-                    {/* Tab Content */}
-                    {/* MobileSitting lower seats logic ------------ START */}
-                    {activeTab === 'lower' && seatType === 'Sitting' && (
-                      <div className="lower sittingSeat  Mobil">
-                        <div className="sit">
-                          <div className="bus-layout">
-                            {lowerSeatsBus?.length === 0 ? (
-                              <p className='text-danger' style={{ fontSize: 10, textAlign: 'center' }} > not available</p>
-                            ) : (
-                              lowerSeatsBus.map((seatObject, seatIndex) => {
-                                const seatName = seatObject?.SeatName || null;
-
-                                // Gender-based filtering
-                                const isMaleSeat = seatObject.IsMalesSeat;
-                                const isFemaleSeat = seatObject.IsLadiesSeat;
-                                const isSeatStatus = seatObject.SeatStatus; // Seat availability status
-
-                                const isGenderAllowed =
-                                  gender === '' || // Show all if no gender selected
-                                  (gender === 'Male' && isMaleSeat) || // Show Male seats
-                                  (gender === 'Female' && isFemaleSeat); // Show Female seats
-
-                                // Check if seatName exists and gender is allowed
-                                if (!seatName || !isGenderAllowed) {
-                                  return (
-                                    <div
-                                      className="sit-img disabled"
-                                      style={{
-                                        backgroundColor: 'transparent',
-                                        pointerEvents: 'none',
-                                        position: 'relative',
-                                      }}
-                                      key={`empty-${seatIndex}`}
-                                    >
-                                      <div className="seat-image-container">
-                                        <img width={25} src={BusSeatImg} alt="disabled seat" />
-                                        <div className="seat-details">
-                                          <span>Seat Unavailable</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                }
-
-                                // Determine if the seat should be disabled
-                                const isSelected = selectedSeats.includes(seatName);
-                                const basePrice = getLowerBasePrice(seatName);
-                                const isDisabled = basePrice === null || !isSeatStatus; // Disable if price is null or seat is unavailable
-
-                                return (
-                                  <div
-                                    onClick={!isDisabled ? () => handleSeatSelect(seatName) : undefined}
-                                    style={{
-                                      backgroundColor: isDisabled
-                                        ? 'transparent'
-                                        : isSelected
-                                          ? '#ccc'
-                                          : 'transparent',
-                                      pointerEvents: isDisabled ? 'none' : 'auto',
-                                      position: 'relative',
-                                    }}
-                                    className={`sit-img ${seatObject.isLastRow
-                                      ? 'last-row'
-                                      : seatIndex % 4 === 2
-                                        ? 'aisle'
-                                        : ''
-                                      } ${isDisabled ? 'disabled' : ''}`}
-                                    key={seatName}
-                                  >
-                                    <div className="seat-image-container">
-                                      <img width={25} src={BusSeatImg} alt="seat" />
-                                      <div className="seat-details">
-                                        <span>Seat No {seatName} </span>
-                                        <p>
-                                          <span>, Fare :</span> ₹{basePrice !== null ? Math.round(basePrice) : 'N/A'}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                );
-                              })
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    {/* MobileSitting lower seats logic ------------ END */}
-
-                    {/* MobileSleeper lower seats logic ------------ START */}
-                    {activeTab === 'lower' && seatType === 'Sleeper' && (
-                      <div className="lower sleeperSeat">
-                        <div className="sit">
-                          {lowerSeatNames.map((seatName) => {
-                            const seatObject = lowerSeatsBus.find(seat => seat.SeatName === seatName);
-                            if (!seatObject) return null;
-
-                            const isSelected = selectedSeats.includes(seatName);
-                            const basePrice = getLowerBasePrice(seatName);
-                            const isDisabled = basePrice === null;
-
-                            return (
-                              <div
-                                onClick={!isDisabled ? () => handleSeatSelect(seatName) : undefined}
-                                style={{
-                                  backgroundColor: isSelected ? '#ccc' : isDisabled ? '#f0f0f0' : 'transparent',
-                                  pointerEvents: isDisabled ? 'none' : 'auto',
-                                  position: 'relative',
-                                }}
-                                className={`sit-img ${seatObject.isLastRow ? 'last-row' : seatObject.seatIndex % 4 === 2 ? 'aisle' : ''} ${isDisabled ? 'disabled' : ''}`}
-                                key={seatName}
-                              >
-                                <div className="seat-image-container">
-                                  <img width={25} src={BusSeatImgSleeper} alt="seat" />
-                                  <div className="seat-details">
-                                    <span>Seat No {seatName}  </span>
-                                    <p> <span> , Fare :</span> ₹{basePrice !== null ? `${Math.round(basePrice)}` : 'N/A'}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                    {/* MobileSleeper lower seats logic ------------ END */}
-
-
-                    {/* MobileSitting upper seats logic ------------ START */}
-                    {activeTab === 'upper' && seatType === 'Sitting' && (
-                      <div className="upper sittingSeat Mobil">
-                        <div className="sit">
-                          <div className="bus-upperlayout">
-                            {upperSeatsBus?.length === 0 ? (
-                              <p className='text-danger' style={{ fontSize: 10, textAlign: 'center' }}>Upper seats not available</p>
-                            ) : (
-                              upperSeatsBus.map((seatObject, seatIndex) => {
-                                const seatName = seatObject?.SeatName || null;
-
-                                // Gender-based filtering
-                                const isMaleSeat = seatObject.IsMalesSeat;
-                                const isFemaleSeat = seatObject.IsLadiesSeat;
-                                const isSeatStatus = seatObject.SeatStatus; // Seat availability status
-
-                                const isGenderAllowed =
-                                  gender === '' || // Show all if no gender selected
-                                  (gender === 'Male' && isMaleSeat) || // Show Male seats
-                                  (gender === 'Female' && isFemaleSeat); // Show Female seats
-
-                                // If seatName is unavailable or gender-based filter doesn't match, display a disabled seat
-                                if (!seatName || !isGenderAllowed) {
-                                  return (
-                                    <div
-                                      className="sit-img disabled"
-                                      style={{
-                                        backgroundColor: 'transparent',
-                                        pointerEvents: 'none',
-                                        position: 'relative',
-                                      }}
-                                      key={`empty-${seatIndex}`}
-                                    >
-                                      <div className="seat-image-container">
-                                        <img width={40} src={BusSeatImgSleeper} alt="disabled seat" />
-                                        <div className="seat-details">
-                                          <span>Seat Unavailable</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                }
-
-                                // Determine if the seat should be disabled
-                                const isSelected = selectedSeats.includes(seatName);
-                                const basePrice = getUpperBasePrice(seatName);
-                                const isDisabled = basePrice === null || !isSeatStatus; // Disable seat if price is null or seat status is false
-
-                                // Check if the seat should be vertical
-                                const isVerticalSeat = ['', ''].includes(seatName);
-
-                                return (
-                                  <div
-                                    onClick={!isDisabled ? () => handleSeatSelect(seatName) : undefined}
-                                    style={{
-                                      backgroundColor: isDisabled
-                                        ? 'transparent'
-                                        : isSelected
-                                          ? '#ccc'
-                                          : 'transparent',
-                                      pointerEvents: isDisabled ? 'none' : 'auto',
-                                      position: 'relative',
-                                    }}
-                                    className={`sit-img ${seatObject.isLastRow
-                                      ? 'last-row'
-                                      : seatIndex % 4 === 2
-                                        ? 'aisle'
-                                        : ''
-                                      } ${isDisabled ? 'disabled' : ''}`}
-                                    key={seatName}
-                                  >
-                                    <div className="seat-image-container">
-                                      <img
-                                        width={40}
-                                        src={BusSeatImgSleeper}
-                                        alt="seat"
-                                        style={{
-                                          transform: isVerticalSeat ? 'rotate(90deg)' : 'none',
-                                        }}
-                                        className={isVerticalSeat ? 'vertical-seat' : 'horizontal-seat'}
-                                      />
-                                      <div className="seat-details">
-                                        <span>Seat No {seatName}</span>
-                                        <p>
-                                          <span>, Fare :</span> ₹{basePrice !== null ? `${Math.round(basePrice)}` : 'N/A'}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                );
-                              })
-                            )}
-                          </div>
-
-                        </div>
-                      </div>
-                    )}
-                    {/* MobileSitting upper seats logic ------------ END */}
-
-                    {/* MobileSleeper upper seats logic ------------ START */}
-                    {activeTab === 'upper' && seatType === 'Sleeper' && (
-                      <div className="upper sleeperSeat">
-                        <div className="sit">
-                          {upperSeatNames.map((seatName) => {
-                            const seatObject = upperSeatsBus.find(seat => seat.SeatName === seatName);
-                            if (!seatObject) return null;
-
-                            const isSelected = selectedSeats.includes(seatName);
-                            const basePrice = getUpperBasePrice(seatName);
-                            const isDisabled = basePrice === null;
-
-                            return (
-                              <div
-                                onClick={!isDisabled ? () => handleSeatSelect(seatName) : undefined}
-                                style={{
-                                  backgroundColor: isSelected ? '#ccc' : isDisabled ? '#f0f0f0' : 'transparent',
-                                  pointerEvents: isDisabled ? 'none' : 'auto',
-                                  position: 'relative',
-                                }}
-                                className={`sit-img ${seatObject.isLastRow ? 'last-row' : seatObject.seatIndex % 4 === 2 ? 'aisle' : ''} ${isDisabled ? 'disabled' : ''}`}
-                                key={seatName}
-                              >
-                                <div className="seat-image-container">
-                                  <img width={25} src={BusSeatImgSleeper} alt="seat" />
-                                  <div className="seat-details">
-                                    <span>Seat No {seatName}  </span>
-                                    <p> <span> , Fare :</span> ₹{basePrice !== null ? `${Math.round(basePrice)}` : 'N/A'}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                    {/* MobileSleeper upper seats logic ------------ END */}
-
-
+    <div className="Buslayout-Main">
+      <div className="Bus-layout-new">
+        {loadingg ? (
+          <div style={{ marginTop: "2vmax" }} className="loading-spinner">Loading Seats...</div> 
+        ) : (
+          <div className="layout-bus">
+              {errorMessage && <div className="error-message">{errorMessage}</div>}
+              <div className='alert-msg'>please selct seats and boarding droping points before proceed.</div>
+            <div className="top-main-seat">
+              <span>Selected Seats: {selectedSeats.join(', ')}</span>
+              <span>Available Seats: {totalAvailableSeats}</span>
+            </div>
+            <div className="Seats-layout">
+              <div className="lower-seats">
+                <h6>Lower Seats</h6>
+                {lowerSeatsBus.length > 0 ? (
+                  <div className="seat-row">
+                    {renderSeats(lowerSeatsBus)}
                   </div>
-
-                  {/* WebSitting lower and upper seats logic ------------ START */}
-                  {seatType === 'Sitting' && (
-                    <>
-                      <div className="lower lowerSeatWEB sittingSeat">
-                        <h6>Lower Deck</h6>
-                        <div className="sit">
-                          <div className="bus-layout">
-                            {lowerSeatsBus?.length === 0 ? (
-                              <p className='text-danger' style={{ fontSize: 10, textAlign: 'center' }} > not available</p>
-                            ) : (
-                              lowerSeatsBus.map((seatObject, seatIndex) => {
-                                const seatName = seatObject?.SeatName || null;
-
-                                // Gender-based filtering
-                                const isMaleSeat = seatObject.IsMalesSeat;
-                                const isFemaleSeat = seatObject.IsLadiesSeat;
-                                const isSeatStatus = seatObject.SeatStatus; // Seat availability status
-
-                                const isGenderAllowed =
-                                  gender === '' || // Show all if no gender selected
-                                  (gender === 'Male' && isMaleSeat) || // Show Male seats
-                                  (gender === 'Female' && isFemaleSeat); // Show Female seats
-
-                                // Check if seatName exists and gender is allowed
-                                if (!seatName || !isGenderAllowed) {
-                                  return (
-                                    <div
-                                      className="sit-img disabled"
-                                      style={{
-                                        backgroundColor: 'transparent',
-                                        pointerEvents: 'none',
-                                        position: 'relative',
-                                      }}
-                                      key={`empty-${seatIndex}`}
-                                    >
-                                      <div className="seat-image-container">
-                                        <img width={25} src={BusSeatImg} alt="disabled seat" />
-                                        <div className="seat-details">
-                                          <span>Seat Unavailable</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                }
-
-                                // Determine if the seat should be disabled
-                                const isSelected = selectedSeats.includes(seatName);
-                                const basePrice = getLowerBasePrice(seatName);
-                                const isDisabled = basePrice === null || !isSeatStatus; // Disable if price is null or seat is unavailable
-
-                                return (
-                                  <div
-                                    onClick={!isDisabled ? () => handleSeatSelect(seatName) : undefined}
-                                    style={{
-                                      backgroundColor: isDisabled
-                                        ? 'transparent'
-                                        : isSelected
-                                          ? '#ccc'
-                                          : 'transparent',
-                                      pointerEvents: isDisabled ? 'none' : 'auto',
-                                      position: 'relative',
-                                    }}
-                                    className={`sit-img ${seatObject.isLastRow
-                                      ? 'last-row'
-                                      : seatIndex % 4 === 2
-                                        ? 'aisle'
-                                        : ''
-                                      } ${isDisabled ? 'disabled' : ''}`}
-                                    key={seatName}
-                                  >
-                                    <div className="seat-image-container">
-                                      <img width={25} src={BusSeatImg} alt="seat" />
-                                      <div className="seat-details">
-                                        <span>Seat No {seatName} </span>
-                                        <p>
-                                          <span>, Fare :</span> ₹{basePrice !== null ? Math.round(basePrice) : 'N/A'}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                );
-                              })
-                            )}
-                          </div>
-
-
-                        </div>
-                      </div>
-
-                      <div className="upper upperSeatWEB sittingSeat">
-                        <h6>Upper Deck</h6>
-                        <div className="sit">
-                          <div className="bus-upperlayout">
-                            {upperSeatsBus?.length === 0 ? (
-                              <p className='text-danger' style={{ fontSize: 10, textAlign: 'center' }}>Upper seats not available</p>
-                            ) : (
-                              upperSeatsBus.map((seatObject, seatIndex) => {
-                                const seatName = seatObject?.SeatName || null;
-
-                                // Gender-based filtering
-                                const isMaleSeat = seatObject.IsMalesSeat;
-                                const isFemaleSeat = seatObject.IsLadiesSeat;
-                                const isSeatStatus = seatObject.SeatStatus; // Seat availability status
-
-                                const isGenderAllowed =
-                                  gender === '' || // Show all if no gender selected
-                                  (gender === 'Male' && isMaleSeat) || // Show Male seats
-                                  (gender === 'Female' && isFemaleSeat); // Show Female seats
-
-                                // If seatName is unavailable or gender-based filter doesn't match, display a disabled seat
-                                if (!seatName || !isGenderAllowed) {
-                                  return (
-                                    <div
-                                      className="sit-img disabled"
-                                      style={{
-                                        backgroundColor: 'transparent',
-                                        pointerEvents: 'none',
-                                        position: 'relative',
-                                      }}
-                                      key={`empty-${seatIndex}`}
-                                    >
-                                      <div className="seat-image-container">
-                                        <img width={40} src={BusSeatImgSleeper} alt="disabled seat" />
-                                        <div className="seat-details">
-                                          <span>Seat Unavailable</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                }
-
-                                // Determine if the seat should be disabled
-                                const isSelected = selectedSeats.includes(seatName);
-                                const basePrice = getUpperBasePrice(seatName);
-                                const isDisabled = basePrice === null || !isSeatStatus; // Disable seat if price is null or seat status is false
-
-                                // Check if the seat should be vertical
-                                const isVerticalSeat = ['', ''].includes(seatName);
-
-                                return (
-                                  <div
-                                    onClick={!isDisabled ? () => handleSeatSelect(seatName) : undefined}
-                                    style={{
-                                      backgroundColor: isDisabled
-                                        ? 'transparent'
-                                        : isSelected
-                                          ? '#ccc'
-                                          : 'transparent',
-                                      pointerEvents: isDisabled ? 'none' : 'auto',
-                                      position: 'relative',
-                                    }}
-                                    className={`sit-img ${seatObject.isLastRow
-                                      ? 'last-row'
-                                      : seatIndex % 4 === 2
-                                        ? 'aisle'
-                                        : ''
-                                      } ${isDisabled ? 'disabled' : ''}`}
-                                    key={seatName}
-                                  >
-                                    <div className="seat-image-container">
-                                      <img
-                                        width={40}
-                                        src={BusSeatImgSleeper}
-                                        alt="seat"
-                                        style={{
-                                          transform: isVerticalSeat ? 'rotate(90deg)' : 'none',
-                                        }}
-                                        className={isVerticalSeat ? 'vertical-seat' : 'horizontal-seat'}
-                                      />
-                                      <div className="seat-details">
-                                        <span>Seat No {seatName}</span>
-                                        <p>
-                                          <span>, Fare :</span> ₹{basePrice !== null ? `${Math.round(basePrice)}` : 'N/A'}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                );
-                              })
-                            )}
-                          </div>
-
-                        </div>
-
-                      </div>
-                    </>
-                  )}
-                  {/* WebSitting lower and upper seats logic ------------ END */}
-
-
-                  {seatType === 'Sleeper' && (
-                    <>
-                      <div className="lower lowerSeatWEB sleeperSeat">
-                        <h6>Lower Deck</h6>
-                        <div className="sit">
-                          {lowerSeatNames.map((seatName) => {
-                            const seatObject = lowerSeatsBus.find(seat => seat.SeatName === seatName);
-                            if (!seatObject) return null;
-
-                            const isSelected = selectedSeats.includes(seatName);
-                            const basePrice = getLowerBasePrice(seatName);
-                            const isDisabled = basePrice === null;
-
-                            return (
-                              <div
-                                onClick={!isDisabled ? () => handleSeatSelect(seatName) : undefined}
-                                style={{
-                                  backgroundColor: isSelected ? '#ccc' : isDisabled ? '#f0f0f0' : 'transparent',
-                                  pointerEvents: isDisabled ? 'none' : 'auto',
-                                  position: 'relative',
-                                }}
-                                className={`sit-img ${seatObject.isLastRow ? 'last-row' : seatObject.seatIndex % 4 === 2 ? 'aisle' : ''} ${isDisabled ? 'disabled' : ''}`}
-                                key={seatName}
-                              >
-                                <div className="seat-image-container">
-                                  <img width={25} src={BusSeatImgSleeper} alt="seat" />
-                                  <div className="seat-details">
-                                    <span>Seat No {seatName}  </span>
-                                    <p> <span> , Fare :</span> ₹{basePrice !== null ? `${Math.round(basePrice)}` : 'N/A'}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      <div className="upper upperSeatWEB sleeperSeat">
-                        <h6>Upper Deck</h6>
-                        <div className="sit">
-                          {upperSeatNames.map((seatName) => {
-                            const seatObject = upperSeatsBus.find(seat => seat.SeatName === seatName);
-                            if (!seatObject) return null;
-
-                            const isSelected = selectedSeats.includes(seatName);
-                            const basePrice = getUpperBasePrice(seatName);
-                            const isDisabled = basePrice === null;
-
-                            return (
-                              <div
-                                onClick={!isDisabled ? () => handleSeatSelect(seatName) : undefined}
-                                style={{
-                                  backgroundColor: isSelected ? '#ccc' : isDisabled ? '#f0f0f0' : 'transparent',
-                                  pointerEvents: isDisabled ? 'none' : 'auto',
-                                  position: 'relative',
-                                }}
-                                className={`sit-img ${seatObject.isLastRow ? 'last-row' : seatObject.seatIndex % 4 === 2 ? 'aisle' : ''} ${isDisabled ? 'disabled' : ''}`}
-                                key={seatName}
-                              >
-                                <div className="seat-image-container">
-                                  <img width={25} src={BusSeatImgSleeper} alt="seat" />
-                                  <div className="seat-details">
-                                    <span>Seat No {seatName}  </span>
-                                    <p> <span> , Fare :</span> ₹{basePrice !== null ? `${Math.round(basePrice)}` : 'N/A'}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </>
-                  )}
-
-                </div>
-
-              </div>
-
-              <div className="bord-drop">
-                <div className="bord-click">
-                  <div className="b-click" style={{ cursor: "pointer" }} onClick={handleClick}>
-                    <h6>Boarding Dropping Points</h6>
-                    <i className="ri-arrow-down-s-line"></i>
-                  </div>
-                </div>
-                {showPoints && ( // Conditional rendering based on showPoints state
-                  <div className="bording">
-                    <div className="container">
-                      <div className="row">
-                        {/* Boarding Point Select */}
-                        <div className="select col-12">
-                          <select
-                            id="boarding-select"
-                            className="form-select"
-                            value={selectedBoardingPoint.name}
-                            onChange={(e) => handleBoardingSelect(boardingPoints.find((point) => point.CityPointName === e.target.value))}
-                          >
-                            <option value="" disabled>
-                              Select Boarding Point
-                            </option>
-                            {boardingPoints.map((point) => (
-                              <option key={point.CityPointIndex} value={point.CityPointName}>
-                                {point.CityPointName}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        {/* Dropping Point Select */}
-                        <div className="select col-12 mt-2">
-                          <select
-                            id="dropping-select"
-                            className="form-select"
-                            value={selectedDroppingPoint.name}
-                            onChange={(e) => handleDroppingSelect(droppingPoints.find((point) => point.CityPointName === e.target.value))}
-                          >
-                            <option value="" disabled>
-                              Select Dropping Point
-                            </option>
-                            {droppingPoints.map((point) => (
-                              <option key={point.CityPointIndex} value={point.CityPointName}>
-                                {point.CityPointName}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                ) : (
+                  <div className="error-message">No Lower Seats Available</div>
                 )}
-
-
               </div>
+              <div className="upper-seats">
+                <h6>Upper Seats</h6>
+                {upperSeatsBus.length > 0 ? (
+                  <div className="seat-row">
+                    {renderSeats(upperSeatsBus)}
+                  </div>
+                ) : (
+                  <div className="error-message">No Upper Seats Available</div>
+                )}
+              </div>
+            </div>
 
-              <div className="right">
-                <div className="right-btm">
-                  <div className="tax">
-                    <p><MdAirlineSeatReclineNormal /> Selected Seats: {selectedSeats.join(', ')}</p>
-                    <p className='busseatpricee'>Total Price: <span>₹{Math.round(totalPrice)}</span></p>
-                  </div>
-                  <div className="proceed">
-                    <button
-                      onClick={handleProceed}
-                      disabled={selectedSeats.length === 0 || selectedBoardingPoint.index === null || selectedDroppingPoint.index === null}
-                      style={{
-                        backgroundColor: selectedSeats.length === 0 || selectedBoardingPoint.index === null || selectedDroppingPoint.index === null ? '#ccc' : '#007bff',
-                        color: selectedSeats.length === 0 || selectedBoardingPoint.index === null || selectedDroppingPoint.index === null ? '#666' : '#fff',
-                        cursor: selectedSeats.length === 0 || selectedBoardingPoint.index === null || selectedDroppingPoint.index === null ? 'not-allowed' : 'pointer',
-                        padding: '10px 20px',
-                        border: 'none',
-                        borderRadius: '4px'
-                      }}
-                    >
-                      Proceed
-                    </button>
-                  </div>
+            <div className="bord-drop-point">
+              <div className="bor-dro">
+                <div className="b-ipts">
+                  <select
+                    value={selectedBoardingPoint}
+                    onChange={(e) => setSelectedBoardingPoint(e.target.value)}
+                    onFocus={boardHandler} 
+                    className="boarding-select"
+                  >
+                    <option value="">Select Boarding Point</option>
+                    {boardingPoints.map((point, index) => (
+                      <option key={index} value={point.CityPointName}>
+                        {point.CityPointName} 
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="b-ipts">
+                  <select
+                    value={selectedDroppingPoint}
+                    onChange={(e) => setSelectedDroppingPoint(e.target.value)}
+                    onFocus={boardHandler} 
+                    className="dropping-select"
+                  >
+                    <option value="">Select Dropping Point</option>
+                    {droppingPoints.map((point, index) => (
+                      <option key={index} value={point.CityPointName}>
+                        {point.CityPointName} 
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
 
-    </>
+            <div className="seat-Price">
+              <div className="price-seats">
+                <h6>Total Price: </h6> 
+                <h5>₹{Math.round(totalPrice - (totalPrice * 0.18))}</h5>              </div>
+
+              
+              <div className="proceed-btm">
+                <button
+                  onClick={handleProceed}
+                  disabled={selectedSeats.length === 0 || !selectedBoardingPoint || !selectedDroppingPoint}
+                  style={{
+                    backgroundColor: selectedSeats.length === 0 || !selectedBoardingPoint || !selectedDroppingPoint ? '#ccc' : '#007bff',
+                    color: selectedSeats.length === 0 || !selectedBoardingPoint || !selectedDroppingPoint ? '#666' : '#fff',
+                    cursor: selectedSeats.length === 0 || !selectedBoardingPoint || !selectedDroppingPoint ? 'not-allowed' : 'pointer',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '4px'
+                  }}
+                >
+                  Proceed
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

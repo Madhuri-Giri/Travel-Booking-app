@@ -25,6 +25,7 @@ export const userLogin = createAsyncThunk(
                 console.log('login successful:', data);
                 localStorage.setItem('loginId', data.data.id);
                 localStorage.setItem('loginData', JSON.stringify(data.data));
+                toast.success('Logged in successfully!');
 
                 // Call the userDetailsHandler after setting the loginId
                 // await userDetailsHandler();
@@ -44,10 +45,12 @@ export const userLogin = createAsyncThunk(
             } else {
                 console.log('login failed:', data);
                 setError('Login failed. Please check your credentials.');
+                toast.error('Login failed. Please check your credentials.');
             }
         } catch (error) {
             console.error('Error:', error);
             setError('An error occurred. Please try again later.');
+            toast.error('An error occurred. Please try again later.');
         }
     }
 );
