@@ -40,11 +40,11 @@ const FlightReview = () => {
   const selectedSeats = location.state?.selectedSeats;
   const finalTotalPrice = location.state?.finalTotalPrice;
   const IsLCC = dataToPass?.IsLCC
-  
+
   const [totalPrice, setTotalPrice] = useState(0);
   // Calculate the grand total
   const grandTotal = totalPrice + finalTotalPrice;
-  
+
   useEffect(() => {
     const savedFare = flightSelectedDATA?.flight.OfferedFare
     if (savedFare) {
@@ -94,7 +94,7 @@ const FlightReview = () => {
 
   //-----------------------------Payment apis--------------------------------------------------------------------------------------
   const [flightpaymentAPIResponse, setFlightpaymentAPIResponse] = useState(null);
-console.log('flightpaymentAPIResponse',flightpaymentAPIResponse);
+  console.log('flightpaymentAPIResponse', flightpaymentAPIResponse);
 
   const flightPayCreate = async () => {
     try {
@@ -204,7 +204,7 @@ console.log('flightpaymentAPIResponse',flightpaymentAPIResponse);
 
   const flightpayUpdate = async () => {
     try {
-      
+
       const payment_id = localStorage.getItem('flight_payment_id');
       const transaction_id = localStorage.getItem('flight_transaction_id');
 
@@ -506,7 +506,7 @@ console.log('flightpaymentAPIResponse',flightpaymentAPIResponse);
 
       navigate('/flightNewTicket', {
         state: {
-          dataToPass: dataToPass ,
+          dataToPass: dataToPass,
           flightSelectedDATA: flightSelectedDATA,
         }
       });
@@ -550,7 +550,8 @@ console.log('flightpaymentAPIResponse',flightpaymentAPIResponse);
                     </div>
                     <div className="flightPayDivhed3">
                       <h5>Grand Total</h5>
-                      <p>₹{grandTotal.toFixed(2)}</p>
+                      <p>₹{grandTotal ? grandTotal.toFixed(2) : totalPrice.toFixed(2)}</p>
+
                     </div>
                   </div>
                   <div className="flightPayDivMain">

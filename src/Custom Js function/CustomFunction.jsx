@@ -9,7 +9,7 @@ export function calculateDuration(departureTime, arrivalTime) {
     // Calculate hours and remaining minutes
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
-    return `${hours}h ${minutes}m`;
+    return `${hours}h : ${minutes}m`;
 }
 
 // // Example usage:

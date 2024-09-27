@@ -69,13 +69,13 @@ export const getFlightList =
                     IsLCC: IsLCC,
                 });
 
-                // ===============Needs to remove later====
-                localStorage.setItem("F-SrdvIndex", SrdvIndex);
-                localStorage.setItem("F-ResultIndex", ResultIndex);
-                localStorage.setItem("F-TraceId", TraceId);
-                localStorage.setItem("F-SrdvType", SrdvType);
-                localStorage.setItem("F-IsLcc", IsLCC);
-                // ===============Needs to remove later====
+                // // ===============Needs to remove later====
+                // localStorage.setItem("F-SrdvIndex", SrdvIndex);
+                // localStorage.setItem("F-ResultIndex", ResultIndex);
+                // localStorage.setItem("F-TraceId", TraceId);
+                // localStorage.setItem("F-SrdvType", SrdvType);
+                // localStorage.setItem("F-IsLcc", IsLCC);
+                // // ===============Needs to remove later====
 
 
             } else {
