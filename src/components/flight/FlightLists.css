@@ -1,3 +1,30 @@
+
+
+.fligtDurationdiv p span svg{
+    margin-top: -6px;
+    font-size: 17px;
+    color: firebrick;
+}
+.fligtDurationdiv p{
+    font-size: 14px;
+    color: firebrick;
+}
+
+.flightOrigindiv{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+}
+
+.flightfDestinationDiv{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+}
+
+
 .flightStopsDIV{
     border: 1px solid #80808040;
     text-align: center;
@@ -36,7 +63,9 @@
 .fmodalcol3{
     text-align: center !important;
 }
-
+.flight-pricemodal-container{
+    margin: 20px 0px;
+}
 
 
 .flightSegmentsDataHED{
@@ -101,7 +130,7 @@
 }
 
 .fligthListModal .modal-lg {
-    max-width: 80% !important;
+    max-width: 60% !important;
     /* max-height: 80% !important; */
     /* Adjust this value as needed */
 }
@@ -116,7 +145,10 @@
 
 .fligtDurationdiv {
     text-align: center;
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin-bottom: 20px; */
 }
 
 .fligtDurationdiv .line-container {
@@ -154,9 +186,12 @@
 }
 
 .Flightbtnsss .pricefarebtn button {
-    border: 1px solid #80808036;
+    background: no-repeat;
+    border: none;
+    text-decoration: underline;
+    color: #00b7eb;
+    text-align: start;
     font-size: 13px;
-    color: red;
     font-weight: bold;
 }
 
@@ -182,7 +217,31 @@
     justify-content: space-between;
 
 }
+.flightsLIstdataDIV{
+    display: flex;
+}
+.flightLOGO{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.arlineanmescode{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.arlineanmescode p{
+    color: #746c6c;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: -6px !important;
+}
+.arlineanmescode span{
+    color: #746c6c;
+    font-size: 13px;
+    font-weight: 600;
 
+}
 .priceradiotbtnn {
     display: flex;
     justify-content: space-around;
@@ -551,9 +610,9 @@
 }
 
 .f-lists img {
-    height: 35px;
-    border-radius: 12px;
-    margin-right: 15px;
+    height: 45px;
+    border-radius: 11px;
+    margin-right: 6px;
 }
 
 .f-listAirlinesNameMOB {
@@ -668,7 +727,7 @@
 .regulrdeal span {
     background-color: #fffa9a;
     color: #0666cd;
-    padding: 5px 20px;
+    padding: 3px 18px;
     font-weight: bold;
     font-size: 13px;
     border-radius: 12px;
@@ -735,7 +794,7 @@
 
 .pricebtnsmobil p {
     font-weight: bold;
-    font-size: 22px;
+    font-size: 14px;
     color: #00e100;
     margin: 0px;
 }
@@ -911,7 +970,7 @@
     .pricebtnsmobil p {
         font-size: 17px;
         margin-left: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 0px;
     }
 
     .flistname p {
@@ -945,6 +1004,32 @@
 }
 
 @media screen and (max-width: 576px) {
+    .fligtDurationdiv {
+        text-align: center;
+        margin-bottom: 4px;
+    }
+    .priceradiotbtnn {
+        border-top: 1px solid gray;
+
+    }
+    .flightsLIstdataDIV {
+        display: unset;
+        text-align: center;
+        margin-top: -30px;
+    }
+    .publiceprices{
+        text-align: center;
+    }
+    .priceradiotbtnnDiv form{
+        display: inline-flex;
+    }
+    .priceradiotbtnnDiv{
+        display: flex;
+    }
+    .fligthListModal .modal-lg {
+        max-width: unset !important;
+        /* max-height: 80% !important; */
+    }
     .flight-slide h6 {
         font-size: 10px;
     }
@@ -972,7 +1057,7 @@
     }
 
     .flight-content .row {
-        padding: 13px 0px;
+        padding: 6px 0px;
     }
 
     .f-lists img {
