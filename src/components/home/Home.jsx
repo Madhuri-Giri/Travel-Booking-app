@@ -41,7 +41,7 @@ const Home = () => {
   const toInputRef = useRef(null);
   const fromSuggestionsRef = useRef(null);
   const toSuggestionsRef = useRef(null);
-  const mainCityNames = ['Delhi', 'Mumbai', 'Bhopal', 'Indore', 'Jaipur',];
+  const mainCityNames = ['Delhi', 'Mumbai', 'Bhopal', 'Indore', 'Jaipur','Riyadh','Goa In'];
   const [originCode, setOriginCode] = useState(''); // State for origin code
   const [desctinationCode, setDesctinationCode] = useState(''); // State for origin code
   const [departureDate, setDepartureDate] = useState();
@@ -138,16 +138,16 @@ const Home = () => {
     } else {
       setToSuggestions([]);
     }
-      // Auto-fill logic: Check if the input exactly matches any suggestion
-  if (toSuggestions.length > 0) {
-    const exactMatch = toSuggestions.find((suggestion) =>
-      suggestion.airport_city_name.toLowerCase() === value.toLowerCase()
-    );
+    // Auto-fill logic: Check if the input exactly matches any suggestion
+    if (toSuggestions.length > 0) {
+      const exactMatch = toSuggestions.find((suggestion) =>
+        suggestion.airport_city_name.toLowerCase() === value.toLowerCase()
+      );
 
-    if (exactMatch) {
-      handleSuggestionClick(exactMatch, setTo, setToSuggestions, setDesctinationCode);
+      if (exactMatch) {
+        handleSuggestionClick(exactMatch, setTo, setToSuggestions, setDesctinationCode);
+      }
     }
-  }
   };
 
   const handleSuggestionClick = (suggestion, setFunction, setSuggestions, setValuee) => {
@@ -541,7 +541,9 @@ const Home = () => {
                                       key={index}
                                       onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions, setOriginCode)}
                                     >
-                                      {suggestion.airport_city_name}
+                                      <span>[{suggestion.airport_city_code}] </span> 
+                                       { suggestion.airport_city_name} - { suggestion.airport_name} - { suggestion.airport_country_name}
+                                       
                                     </li>
                                   ))}
                                 </ul>
@@ -575,7 +577,8 @@ const Home = () => {
                                       key={index}
                                       onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions, setDesctinationCode)}
                                     >
-                                      {suggestion.airport_city_name}
+                                       <span>[{suggestion.airport_city_code}] </span> 
+                                       { suggestion.airport_city_name} - { suggestion.airport_name} - { suggestion.airport_country_name}
                                     </li>
                                   ))}
                                 </ul>
@@ -620,7 +623,7 @@ const Home = () => {
                               </span>
                               <div className="flightTravellerclss">
                                 <p> Traveller - <span>{adultCount + childCount + infantCount}</span> , </p>
-                                <p> Class - <span>{selectedflightClass}</span>  </p>
+                                <p><span>{selectedflightClass}</span>  </p>
                                 <FaAngleDown className="downarrrow" />
                               </div>
                               <label className="flight-input-labelTravel" htmlFor="text">Travellers $ Cabin</label>
@@ -756,7 +759,8 @@ const Home = () => {
                                       key={index}
                                       onClick={() => handleSuggestionClick(suggestion, setFrom, setFromSuggestions, setOriginCode)}
                                     >
-                                      {suggestion.airport_city_name}
+                                      <span>[{suggestion.airport_city_code}] </span> 
+                                      { suggestion.airport_city_name} - { suggestion.airport_name} - { suggestion.airport_country_name}
                                     </li>
                                   ))}
                                 </ul>
@@ -790,8 +794,8 @@ const Home = () => {
                                       key={index}
                                       onClick={() => handleSuggestionClick(suggestion, setTo, setToSuggestions, setDesctinationCode)}
                                     >
-                                      {suggestion.airport_city_name}
-                                    </li>
+                                       <span>[{suggestion.airport_city_code}] </span> 
+                                       { suggestion.airport_city_name} - { suggestion.airport_name} - { suggestion.airport_country_name}                                   </li>
                                   ))}
                                 </ul>
                               )}

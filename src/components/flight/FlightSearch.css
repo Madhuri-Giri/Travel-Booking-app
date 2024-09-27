@@ -172,15 +172,19 @@
 .flight-suggestions-listTo li {
     width: 100%;
     padding: 5px 15px;
-    font-size: 17px;
-    font-weight: bold;
+    font-size: 14px;
+    font-weight: 600;
     list-style: none;
-    /* cursor: pointer;
-    margin-bottom: 0.2vmax;
+    cursor: pointer;
+    /* margin-bottom: 0.2vmax;
     font-weight: 500;
      padding: 0.2vmax;
     font-family: Georgia, 'Times New Roman', Times, serif;
-    padding-left: 1vmax; */
+    padding-left: 1vmax; */ 
+}
+.flight-suggestions-listFrom li span,
+.flight-suggestions-listTo li span{
+    font-weight: bold;
 }
 /* .suggestions-list-from li {
    
@@ -398,7 +402,7 @@
     justify-content: space-evenly;
     align-items: center;
     padding-top: 16px;
-    padding-left: 14px;
+    padding-left: 20px;
     padding-right: 14px;
     cursor: pointer;
 }
@@ -757,6 +761,11 @@
 
 /* responsive css */
 @media screen and (max-width: 576px) {
+    .flight-suggestions-listFrom li,
+.flight-suggestions-listTo li {
+    padding: 5px 5px;
+    font-size: 12px;
+}
     .flightsec6 {
         height: 470px;
         padding-top: 20px;
@@ -999,10 +1008,10 @@
 
 .travellerplane-icon {
     position: absolute;
-    top: 45%;
-    left: 10px;
+    top: 50%;
+    left: 4px;
     transform: translateY(-50%);
     color: #999;
     pointer-events: none;
-    font-size: 30px;
+    font-size: 10px;
 }
