@@ -3,10 +3,8 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
-const PriceModal = ({ isModalOpen, closeModal, OfferPriceData }) => {
+const PriceModal = ({ isModalOpen, closeModal, OfferPriceData , logoUrl}) => {
   const [activeTab, setActiveTab] = useState('flight');
-  console.log('OfferPriceData', OfferPriceData);
-  console.log('FareSegments', OfferPriceData?.FareSegments);
 
 
   const renderTabContent = () => {
@@ -20,10 +18,15 @@ const PriceModal = ({ isModalOpen, closeModal, OfferPriceData }) => {
                 return (
                   <>
                     <div className="row flightSegmentsData">
+                      <div className='flightSegmentsDataHED'> 
+                      <p>
+                      {valueSegments.FromAirportCode} - {valueSegments.ToAirportCode}
+                      </p>
+
+                      </div>
                       <div className="col-md-2 col-2 flighttTabContentCol1">
                         <p>
-                          {/* <img src={logoUrl} className="img-fluid" alt="" /> */}
-
+                        {/* <img src={logoUrl} className="img-fluid" alt="" /> */}
                         </p>
                         <p>{valueSegments.AirlineName}</p>
                         <p>{valueSegments.AirlineCode} - {valueSegments.FlightNumber}</p>
@@ -139,12 +142,12 @@ const PriceModal = ({ isModalOpen, closeModal, OfferPriceData }) => {
       </Modal.Header>
       <Modal.Body>
 
-        <div className="tabs">
+        <div className="tabs flightPriceTabs">
           <button onClick={() => setActiveTab('flight')} className={activeTab === 'flight' ? 'active' : ''}>
-            Flight
+            Flight Details
           </button>
           <button onClick={() => setActiveTab('fare')} className={activeTab === 'fare' ? 'active' : ''}>
-            Fare
+            Fare Summary
           </button>
           <button onClick={() => setActiveTab('baggage')} className={activeTab === 'baggage' ? 'active' : ''}>
             Baggage

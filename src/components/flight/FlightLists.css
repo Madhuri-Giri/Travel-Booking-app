@@ -1,3 +1,32 @@
+.flightSegmentsDataHED{
+    background: #dad2d24a;
+    padding: 10px 20px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 0, 0, 0.311);
+    border-bottom: 1px solid rgba(255, 0, 0, 0.311);
+}
+
+.flightPriceTabs button {
+    padding: 5px 9px;
+    margin-right: 1px !important;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    background: #edf3f3 !important;
+}
+.flightPriceTabs button.active {
+    background-color: skyblue !important;
+    color: white;
+    font-weight: bold;
+    border: none !important;
+    /* border: 2px solid #80808040; */
+}
+.flightPriceTabs{
+    border-bottom: 1px solid rgba(201, 26, 26, 0.358) ;
+}
+.tab-content {
+    padding: 0px 20px;
+}
 .changePlaneDiv {
     padding: 10px 6px;
     border-top: 1px solid rgba(128, 128, 128, 0.397);
@@ -819,6 +848,10 @@
 
 /* responsive css */
 @media screen and (max-width: 768px) {
+    .priceradiotbtnn {
+        display: flex;
+        justify-content: end;
+    }
 
     .date-left,
     .date-right {
