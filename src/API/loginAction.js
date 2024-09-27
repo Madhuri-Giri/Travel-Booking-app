@@ -22,7 +22,7 @@ export const userLogin = createAsyncThunk(
             const data = await response.json();
 
             if (response.ok) {
-                console.log('login successful:', data);
+                // console.log('login successful:', data);
                 localStorage.setItem('loginId', data.data.id);
                 localStorage.setItem('loginData', JSON.stringify(data.data));
                 toast.success('Logged in successfully!');
@@ -43,7 +43,7 @@ export const userLogin = createAsyncThunk(
 
                 return data;
             } else {
-                console.log('login failed:', data);
+                // console.log('login failed:', data);
                 setError('Login failed. Please check your credentials.');
                 toast.error('Login failed. Please check your credentials.');
             }
@@ -73,18 +73,18 @@ export const userLogout = createAsyncThunk(
                 },
             });
 
-            console.log('Logout response:', response);
+            // console.log('Logout response:', response);
 
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to log out');
             }
-            localStorage.removeItem('loginData');
-            localStorage.removeItem('loginId');
-            localStorage.removeItem('transactionNum');
-            localStorage.removeItem('transactionNum-Flight');
-            localStorage.removeItem('transactionNum-bus');
-            localStorage.removeItem('transactionNumHotel');
+            // localStorage.removeItem('loginData');
+            // localStorage.removeItem('loginId');
+            // localStorage.removeItem('transactionNum');
+            // localStorage.removeItem('transactionNum-Flight');
+            // localStorage.removeItem('transactionNum-bus');
+            // localStorage.removeItem('transactionNumHotel');
 
             toast.success('Logged out successfully.');
             dispatch(setIsLogout())
@@ -127,20 +127,20 @@ export const userDetailsHandler = createAsyncThunk(
             }
 
             console.log('Main LOGIN User details:', data);
-            console.log('flight transcNo', data.transaction.transaction_num);
+            // console.log('flight transcNo', data.transaction.transaction_num);
 
-            if (data.result && data.transaction) {
-                // localStorage.setItem('transactionId', data.transaction.id);
-                // localStorage.setItem('transactionNum', data.transaction.transaction_num);
-                // // localStorage.setItem('transactionNum-Flight', data.transaction.transaction_num);
-                // localStorage.setItem('transactionNum-bus', data.transaction.transaction_num);
-                // localStorage.setItem('transactionNumHotel', data.transaction.transaction_num);
-                // userdetails transaction data save on the redux
-            };
+            // if (data.result && data.transaction) {
+            //     // localStorage.setItem('transactionId', data.transaction.id);
+            //     // localStorage.setItem('transactionNum', data.transaction.transaction_num);
+            //     // // localStorage.setItem('transactionNum-Flight', data.transaction.transaction_num);
+            //     // localStorage.setItem('transactionNum-bus', data.transaction.transaction_num);
+            //     // localStorage.setItem('transactionNumHotel', data.transaction.transaction_num);
+            //     // userdetails transaction data save on the redux
+            // };
 
             return data;
         } catch (error) {
-            console.log("error", error.message);
+            // console.log("error", error.message);
             console.error('Error fetching user details:', error.message);
         }
     }

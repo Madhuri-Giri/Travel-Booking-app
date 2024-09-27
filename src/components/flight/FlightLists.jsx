@@ -50,23 +50,31 @@ export default function FlightLists() {
     const [formDataNew, setFormDataNew] = useState(location?.state?.formData || null);
     const [dataToPass, setDataToPass] = useState(null);
     const [OfferPriceData, setOfferPriceData] = useState(null);
+    const [sEGMENTSData, setSEGMENTSData] = useState(null);
     const { isLogin } = useSelector((state) => state.loginReducer);
     // console.log('OfferPriceData', OfferPriceData);
 
     // // price modal----
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    // console.log('isModalOpen', isModalOpen);
-
     const openModal = () => {
         setIsModalOpen(true);
 
     };
-
     const closeModal = () => {
         setIsModalOpen(false);
     };
     // // price modal----
+
+
+    // =======stops checkbosxx
+    // State to track the selected filter
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    // Function to handle checkbox change
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
+    // =======stops checkbosxx
 
     // /======
 
@@ -387,18 +395,8 @@ export default function FlightLists() {
     };
 
     // flight filter logics START--------------------
-    // filter for flight price
-    const sortFlights = (flights) => {
-        if (sortOrder === 'lowToHigh') {
-            return flights.sort((a, b) => a.OfferedFare - b.OfferedFare);
-        } else if (sortOrder === 'highToLow') {
-            return flights.sort((a, b) => b.OfferedFare - a.OfferedFare);
-        }
-        return flights;
-    };
-    const handleCheckboxChange = (order) => {
-        setSortOrder(prevOrder => (prevOrder === order ? '' : order));
-    };
+
+
     const [selectedAirlines, setSelectedAirlines] = useState([]);
     const [availableAirlines, setAvailableAirlines] = useState([]);
     useEffect(() => {
@@ -424,6 +422,20 @@ export default function FlightLists() {
 
     // Filter flights based on selected airlines
 
+    // filter for flight price
+    const sortFlights = (flights) => {
+        if (sortOrder === 'lowToHigh') {
+            return flights.sort((a, b) => a.OfferedFare - b.OfferedFare);
+        } else if (sortOrder === 'highToLow') {
+            return flights.sort((a, b) => b.OfferedFare - a.OfferedFare);
+        }
+        return flights;
+    };
+
+    const handleCheckboxChange = (order) => {
+        setSortOrder(prevOrder => (prevOrder === order ? '' : order));
+    };
+
     const [filteredFlights, setfilteredFlights] = useState(null)
 
     useEffect(() => {
@@ -436,6 +448,7 @@ export default function FlightLists() {
                 )
             ).filter(segment => segment.length > 0) // Filter out empty segments
             : dd;
+
         setfilteredFlights(filteredFlightsNew)
 
     }, [dd, selectedAirlines]);
@@ -586,7 +599,52 @@ export default function FlightLists() {
                                 <div className="filterSidebarMain row">
                                     <div className="col-12 flightlistsec2col1 flightlistsec2col1MobileView">
                                         <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
+
                                             <Accordion.Item eventKey="0">
+                                                <Accordion.Header className="flightlistaccordian-header">
+                                                    <span className="header-title">Stops</span>
+                                                </Accordion.Header>
+                                                <Accordion.Body>
+                                                    <div className="checkbox-container row border-box">
+                                                        <div className="col-6">
+                                                            <div className="flightStopsDIV">
+                                                                <label className="square-checkbox">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        value="stop"
+                                                                        checked={selectedOption === 'stop'}
+                                                                        onChange={handleOptionChange}
+                                                                        onClick={() => setSelectedOption('stop')}
+                                                                    />
+                                                                    <br></br>
+                                                                    <span className="checkmark"></span>
+                                                                    Stop
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <div className="flightStopsDIV">
+                                                                <label className="square-checkbox">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        value="non-stop"
+                                                                        checked={selectedOption === 'non-stop'}
+                                                                        onChange={handleOptionChange}
+                                                                        onClick={() => setSelectedOption('non-stop')}
+                                                                    />
+                                                                    <br></br>
+                                                                    <span className="checkmark"></span>
+                                                                    Non-Stop
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </Accordion.Body>
+
+                                            </Accordion.Item>
+
+
+                                            <Accordion.Item eventKey="1">
                                                 <Accordion.Header className="flightlistaccordian-header">
                                                     <span className="header-title">Price</span>
                                                 </Accordion.Header>
@@ -629,7 +687,7 @@ export default function FlightLists() {
                                                     </div>
                                                 </Accordion.Body>
                                             </Accordion.Item>
-                                            <Accordion.Item eventKey="1">
+                                            <Accordion.Item eventKey="2">
                                                 <Accordion.Header className="flightlistaccordian-header">
                                                     <span className="header-title">Airlines</span>
                                                 </Accordion.Header>
@@ -665,6 +723,50 @@ export default function FlightLists() {
                             <div className="col-lg-3 flightlistsec2col1 flightlistsec2col1DeskView">
                                 <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
                                     <Accordion.Item eventKey="0">
+                                        <Accordion.Header className="flightlistaccordian-header">
+                                            <span className="header-title">Stops</span>
+                                        </Accordion.Header>
+                                        <Accordion.Body>
+                                            <div className="checkbox-container row border-box">
+                                                <div className="col-6">
+                                                    <div className="flightStopsDIV">
+                                                        <label className="square-checkbox">
+                                                            <input
+                                                                type="checkbox"
+                                                                value="stop"
+                                                                checked={selectedOption === 'stop'}
+                                                                onChange={handleOptionChange}
+                                                                onClick={() => setSelectedOption('stop')}
+                                                            />
+                                                            <br></br>
+                                                            <span className="checkmark"></span>
+                                                            Stop
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div className="col-6">
+                                                    <div className="flightStopsDIV">
+                                                        <label className="square-checkbox">
+                                                            <input
+                                                                type="checkbox"
+                                                                value="non-stop"
+                                                                checked={selectedOption === 'non-stop'}
+                                                                onChange={handleOptionChange}
+                                                                onClick={() => setSelectedOption('non-stop')}
+                                                            />
+                                                            <br></br>
+                                                            <span className="checkmark"></span>
+                                                            Non-Stop
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Accordion.Body>
+
+                                    </Accordion.Item>
+
+
+                                    <Accordion.Item eventKey="1">
                                         <Accordion.Header className="flightlistaccordian-header">
                                             <span className="header-title">Price</span>
                                             {/* <FontAwesomeIcon icon={faChevronDown} className="header-icon" /> */}
@@ -708,7 +810,7 @@ export default function FlightLists() {
                                             </div>
                                         </Accordion.Body>
                                     </Accordion.Item>
-                                    <Accordion.Item eventKey="1">
+                                    <Accordion.Item eventKey="2">
                                         <Accordion.Header className="flightlistaccordian-header">
                                             <span className="header-title">Airlines</span>
                                             {/* <FontAwesomeIcon icon={faChevronDown} className="header-icon" /> */}
@@ -762,8 +864,6 @@ export default function FlightLists() {
                                         filteredFlights?.[0].map((value, index) => {
                                             const airlineCode = value.Segments[0][0].Airline.AirlineCode
                                             const logoUrl = logos[airlineCode] || '';
-                                            // console.log('valueSegments', value);
-
                                             return (
                                                 <>
                                                     <div className="flight-content">
@@ -771,11 +871,10 @@ export default function FlightLists() {
                                                             <div className="row flight-contentRow">
                                                                 <div className="pricebtnsmobil">
                                                                     <p className="regulrdeal"><span>Regular Deal</span></p>
-                                                                    {/* <p className="f-listAirlinesNameMOB">Air india</p><br /> */}
                                                                     <div>
                                                                         <button onClick={() => handleSelectSeat(value, logoUrl)}>SELECT</button>
-                                                                        <div><p>₹{value?.OfferedFare}</p></div>
-
+                                                                        <div><p>₹{value?.OfferedFare}</p>
+                                                                        </div>
                                                                     </div>                                                                </div>
 
                                                                 <div className="listDataMain row">
@@ -839,7 +938,18 @@ export default function FlightLists() {
                                                                                                 type="radio"
                                                                                                 name="flightOption"  // Ensure all radios have the same name
                                                                                                 value={`option${fareIndex + 1}`}
-                                                                                                onClick={() => setOfferPriceData(fareValue)}
+                                                                                                onClick={() => {
+                                                                                                    // Create an object with fareValue, segments, and logoUrl
+                                                                                                    const offerData = {
+                                                                                                        fareValue,
+                                                                                                        segments: value.Segments,
+                                                                                                        logoUrl
+                                                                                                    };
+                                                                                                    setOfferPriceData(offerData); // Pass the object to setOfferPriceData
+                                                                                                }}
+                                                                                            // onClick={() => 
+                                                                                            //         setOfferPriceData(fareValue)
+                                                                                            // }
                                                                                             />
                                                                                             <strong> ₹ {fareValue.OfferedFare}</strong> <span>{fareValue.Source}</span>
                                                                                         </label>
@@ -847,37 +957,8 @@ export default function FlightLists() {
                                                                                 );
                                                                             })}
                                                                         </form>
-
-                                                                    </div>
-
-                                                                </div>
-
-
-                                                                {/* <div className="col-3 col-sm-3 f-listCol1">
-                                                                    <div className="f-listAirlines">
-                                                                       
-                                                                        <p className="f-listAirlinesNameWEb">LOGO</p><br />
-                                                                        <p className="f-listAirlinesNameWEb">Air india</p><br />
                                                                     </div>
                                                                 </div>
-
-                                                                <div className="col-sm-6 col-10 f-listCol2">
-                                                                    <div className="flistname">
-                                                                        <p className="flistnamep1">{listingData?.Origin}</p>
-                                                                        <div>
-                                                                        </div>
-                                                                        <p className="flistnamep3">3 hr </p>
-                                                                        <div>
-                                                                            <p className="flistnamep4">{listingData?.Destination}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div> */}
-
-                                                                {/* <div className=" pricebtns f-listCol3">
-                                                                    <div>
-                                                                        <button onClick={() => handleSelectSeat()}>SELECT</button>
-                                                                    </div>
-                                                                </div> */}
 
                                                                 <div className="Flightbtnsss">
                                                                     <span>
@@ -891,11 +972,9 @@ export default function FlightLists() {
                                                                             </button>
                                                                         }
                                                                     </span>
-
                                                                     <div className="pricefarebtn">
                                                                         <button onClick={() => openModal()}>View Prices Fare</button>
                                                                     </div>
-
                                                                 </div>
 
 
@@ -1013,7 +1092,12 @@ export default function FlightLists() {
                     </div>
                     <Footer />
 
-                    <PriceModal closeModal={closeModal} isModalOpen={isModalOpen} OfferPriceData={OfferPriceData} />
+                    <PriceModal
+                        closeModal={closeModal}
+                        isModalOpen={isModalOpen}
+                        OfferPriceData={OfferPriceData}
+                        listingData={listingData}
+                    />
 
 
                     {/* <Modal
