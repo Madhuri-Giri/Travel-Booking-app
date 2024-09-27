@@ -1,9 +1,24 @@
 /* -------------Image section-------- */
 
-.hotelDescriptionSection {
-    background-color: #dddddd;
-    padding: 30px 0px;
+.model_box{
+    width: 100%;
 }
+  .custom-modal{
+    width: 100%;
+  }
+  .custom-modal .modal-dialog {
+    max-width: 90%; 
+    width: 90%;
+  }
+  
+  .HotelListModal .modal-lg {
+    max-width: 50% !important;
+    height:50%;
+}
+
+
+
+p.facility {word-spacing: 4px;}
 
 .search_Item {
     display: flex;
@@ -12,8 +27,8 @@
     margin: 20px 0;
     padding: 20px;
     /* border: 1px solid #ccc; */
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
+    border-radius: 10px;
+    /*  box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386); */
     background-color: #f9f9f9;
 }
 
@@ -37,27 +52,35 @@
     margin-left: 10px;
 }
 
+.img_bg_box{
+    border-radius: 10px;
+     /* box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386); */
+    background-color: #fff; 
+}
+
+.hotel_Img {
+    width: 100%;
+    height: 515px; 
+    object-fit: cover; 
+    border-radius: 10px; 
+}
+
 .hotelCarousel {
     width: 100%;
-    /* max-width: 500px; */
     border-radius: 10px;
     overflow: hidden;
     margin-top: 20px;
 }
 
-.hotel_Img {
-    width: 100%;
-    max-height: 510px;
-    object-fit: cover;
-}
 
 .hotel_Img_single_above {
     width: 100%;
     height: 250px;
     object-fit: cover;
-    margin-top: 5px;
+    margin-top: 3px;
     border-radius: 8px;
     transition: transform 0.3s ease;
+    margin-bottom: 10px;
 }
 
 /* 
@@ -96,7 +119,10 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386);
+    /* box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.386); */
+}
+.Description_hotel h3{
+    color: #074180;
 }
 
 .Description_hotel h5 {
@@ -168,12 +194,12 @@
 }
 
 .Feature_item {
-    border: 1px solid rgb(69, 68, 68);
-    border-radius: 5px;
-    padding: 10px 11px;
-    background-color: #f9f9f9;
+    /* border: 1px solid rgb(69, 68, 68); */
+    /* border-radius: 5px; */
+    /* padding: 10px 11px; */
+    /* background-color: #f9f9f9; */
     flex: 1 0 auto;
-    margin: 2px;
+    /* margin: 2px; */
     /* letter-spacing: 0.5px; */
 }
 
@@ -198,6 +224,18 @@
     color: white;
     font-weight: bold;
     padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.hotel_Button_re{
+    background-color: #00b7eb;
+    color: white;
+    /* font-weight: bold; */
+    padding: 6px 8px;
     border: none;
     cursor: pointer;
     border-radius: 5px;

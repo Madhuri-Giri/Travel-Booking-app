@@ -55,6 +55,7 @@
        flex-direction: row;
        padding: 1vmax;
 }
+
 .ReviewBooking .main-branch .r-right{
        width: 30%;
        display: flex;

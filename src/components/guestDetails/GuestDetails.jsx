@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./GuestDetails.css";
 import axios from "axios";
+import { Row, Col } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,17 +22,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchHotelRooms } from "../../redux-toolkit/slices/hotelRoomSlice";
 import { blockHotelRooms } from "../../redux-toolkit/slices/hotelBlockSlice";
 import { bookHotel } from "../../redux-toolkit/slices/hotelBookSlice";
-import { searchHotels} from '../../redux-toolkit/slices/hotelSlice';
+import { searchHotels } from "../../redux-toolkit/slices/hotelSlice";
 
-const GuestDetails = () => {      
-  const navigate = useNavigate();  
+const GuestDetails = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { persons } = location.state || {};              
+  const { persons } = location.state || {};
   const [hotelBlock, setHotelBlock] = useState([]);
   const [selectedRoomsData, setSelectedRoomsData] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
- 
+  const [isPolicyExpanded, setIsPolicyExpanded] = useState(false);
+  const [isNormsExpanded, setIsNormsExpanded] = useState(false);
+
   const [guestForms, setGuestForms] = useState(
     Array.from({ length: persons[0].NoOfAdults }).map(() => ({
       fname: "",
@@ -46,7 +49,7 @@ const GuestDetails = () => {
       leadPassenger: "",
     }))
   );
-  
+
   // Track the current guest form being filled
   const [currentGuestIndex, setCurrentGuestIndex] = useState(0); // Start with the first guest
   const [showForm, setShowForm] = useState(false);
@@ -71,66 +74,66 @@ const GuestDetails = () => {
   };
 
   useEffect(() => {
-    console.log("persons in guest details", persons[0].NoOfAdults)
+    console.log("persons in guest details", persons[0].NoOfAdults);
   }, []);
 
- // Check if the current form is complete
-const checkCurrentFormCompletion = (formData) => {
-  return !(
-    formData.fname &&
-    formData.lname &&
-    formData.email &&
-    formData.mobile &&
-    formData.age &&
-    formData.leadPassenger &&
-    formData.paxType
-  );
-};
-
-// Handle form submission
-const handleFormSubmit = (e) => {
-  e.preventDefault();
-
-  if (checkCurrentFormCompletion(guestForms[currentGuestIndex])) {
-    alert("Please complete all required fields for the current guest.");
-    return;
-  }
-
-  // After the current form is completed, go to the next form
-  const newGuestIndex = currentGuestIndex + 1;
-
-  if (newGuestIndex < guestForms.length) {
-    setCurrentGuestIndex(newGuestIndex);
-  } else {
-    // All forms are completed
-    setFormSubmitted(true);
-    setShowPopup(true);
-  }
-
-  // Update remaining guests count
-  setGuestsRemaining(guestsRemaining - 1);
-};
-
-// Handle form changes and update the current guest's form data
-const handleFormChange = (e) => {
-  const { name, value } = e.target;
-  const updatedForms = [...guestForms];
-  updatedForms[currentGuestIndex] = {
-    ...updatedForms[currentGuestIndex],
-    [name]: value,
+  // Check if the current form is complete
+  const checkCurrentFormCompletion = (formData) => {
+    return !(
+      formData.fname &&
+      formData.lname &&
+      formData.email &&
+      formData.mobile &&
+      formData.age &&
+      formData.leadPassenger &&
+      formData.paxType
+    );
   };
-  setGuestForms(updatedForms);
-};
 
-// Close the popup
-const handleClosePopup = () => {
-  setShowPopup(false);
-};
+  // Handle form submission
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
 
-// Handle checkbox change for confirmation
-const handleCheckboxChange = (e) => {
-  setCheckboxChecked(e.target.checked);
-};
+    if (checkCurrentFormCompletion(guestForms[currentGuestIndex])) {
+      alert("Please complete all required fields for the current guest.");
+      return;
+    }
+
+    // After the current form is completed, go to the next form
+    const newGuestIndex = currentGuestIndex + 1;
+
+    if (newGuestIndex < guestForms.length) {
+      setCurrentGuestIndex(newGuestIndex);
+    } else {
+      // All forms are completed
+      setFormSubmitted(true);
+      setShowPopup(true);
+    }
+
+    // Update remaining guests count
+    setGuestsRemaining(guestsRemaining - 1);
+  };
+
+  // Handle form changes and update the current guest's form data
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    const updatedForms = [...guestForms];
+    updatedForms[currentGuestIndex] = {
+      ...updatedForms[currentGuestIndex],
+      [name]: value,
+    };
+    setGuestForms(updatedForms);
+  };
+
+  // Close the popup
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
+  // Handle checkbox change for confirmation
+  const handleCheckboxChange = (e) => {
+    setCheckboxChecked(e.target.checked);
+  };
   // ---------------- RozarPay Payment Gateway  Integration start -------------------
   const fetchPaymentDetails = async () => {
     try {
@@ -142,7 +145,7 @@ const handleCheckboxChange = (e) => {
 
       console.log("loginId:", loginId);
       console.log("transactionNum:", transactionNum);
-      console.log("hotel_booking_id:", bookingId); 
+      console.log("hotel_booking_id:", bookingId);
 
       if (!loginId || !transactionNum || !bookingId) {
         // Check bookingId instead of hotel_booking_id
@@ -155,7 +158,7 @@ const handleCheckboxChange = (e) => {
         amount: totalPrice,
         user_id: loginId,
         transaction_num: transactionNum,
-        hotel_booking_id: [bookingId], 
+        hotel_booking_id: [bookingId],
       };
 
       console.log("Sending payload:", payload);
@@ -395,7 +398,7 @@ const handleCheckboxChange = (e) => {
 
     try {
       const bookingId =
-        bookingStatus && bookingStatus.length > 0 ? bookingStatus[0].id : null; 
+        bookingStatus && bookingStatus.length > 0 ? bookingStatus[0].id : null;
       const transactionNum = localStorage.getItem("transactionNum");
       const transaction_id = localStorage.getItem("transaction_id");
 
@@ -414,7 +417,7 @@ const handleCheckboxChange = (e) => {
         transaction_num: transactionNum,
         transaction_id: transaction_id,
         hotel_booking_id: [bookingId],
- 
+
         HotelRoomsDetails: [
           {
             ChildCount: selectedRoom.ChildCount || 0,
@@ -557,33 +560,65 @@ const handleCheckboxChange = (e) => {
   const totalPrice = calculateTotalPrice(bookingDetails);
 
   const cleanUpDescription = (description) => {
-    if (!description) return '';
+    if (!description) return "";
     let cleanedDescription = he.decode(description);
-    cleanedDescription = cleanedDescription.replace(/<\/?(ul|li|b|i|strong|em|span)\b[^>]*>/gi, '');
-    cleanedDescription = cleanedDescription.replace(/<br\s*\/?>|<p\s*\/?>|<\/p>/gi, '\n');
-    cleanedDescription = cleanedDescription.replace(/\\|\|/g, '');
-    cleanedDescription = cleanedDescription.replace(/\s{2,}/g, ' ');
-    cleanedDescription = cleanedDescription.replace(/\n{2,}/g, '\n');
-    cleanedDescription = cleanedDescription.replace(/\/\/+|\\|\|/g, '');
+    cleanedDescription = cleanedDescription.replace(
+      /<\/?(ul|li|b|i|strong|em|span)\b[^>]*>/gi,
+      ""
+    );
+    cleanedDescription = cleanedDescription.replace(
+      /<br\s*\/?>|<p\s*\/?>|<\/p>/gi,
+      "\n"
+    );
+    cleanedDescription = cleanedDescription.replace(/\\|\|/g, "");
+    cleanedDescription = cleanedDescription.replace(/\s{2,}/g, " ");
+    cleanedDescription = cleanedDescription.replace(/\n{2,}/g, "\n");
+    cleanedDescription = cleanedDescription.replace(/\/\/+|\\|\|/g, "");
     cleanedDescription = cleanedDescription.trim();
-    cleanedDescription = cleanedDescription.replace(/"/g, '');
-    cleanedDescription = cleanedDescription.replace(/<\/li>/gi, '\n');
-    cleanedDescription = cleanedDescription.replace(/<\/?ul>/gi, '\n');
-    cleanedDescription = cleanedDescription.replace(/<br\s*\/?>|<\/p>|<p\s*\/?>/gi, '\n');
-    cleanedDescription = cleanedDescription.replace(/<\/?(b|i|strong|em|span)\b[^>]*>/gi, '');
-    cleanedDescription = cleanedDescription.replace(/\\|\|/g, '');
-    cleanedDescription = cleanedDescription.replace(/\s{2,}/g, ' ');
-    cleanedDescription = cleanedDescription.replace(/\n{2,}/g, '\n');
+    cleanedDescription = cleanedDescription.replace(/"/g, "");
+    cleanedDescription = cleanedDescription.replace(/<\/li>/gi, "\n");
+    cleanedDescription = cleanedDescription.replace(/<\/?ul>/gi, "\n");
+    cleanedDescription = cleanedDescription.replace(
+      /<br\s*\/?>|<\/p>|<p\s*\/?>/gi,
+      "\n"
+    );
+    cleanedDescription = cleanedDescription.replace(
+      /<\/?(b|i|strong|em|span)\b[^>]*>/gi,
+      ""
+    );
+    cleanedDescription = cleanedDescription.replace(/\\|\|/g, "");
+    cleanedDescription = cleanedDescription.replace(/\s{2,}/g, " ");
+    cleanedDescription = cleanedDescription.replace(/\n{2,}/g, "\n");
     cleanedDescription = cleanedDescription.trim();
-    cleanedDescription = cleanedDescription.replace(/(?:Valid From|Check-in hour|Identification card at arrival)/gi, '\n$&');
-    cleanedDescription = cleanedDescription.replace(/<li>/gi, (match, offset, string) => {
-      const listItems = string.split('</li>');
-      const index = listItems.indexOf(match);
-      return `${index + 1}. `;
-    });
+    cleanedDescription = cleanedDescription.replace(
+      /(?:Valid From|Check-in hour|Identification card at arrival)/gi,
+      "\n$&"
+    );
+    cleanedDescription = cleanedDescription.replace(
+      /<li>/gi,
+      (match, offset, string) => {
+        const listItems = string.split("</li>");
+        const index = listItems.indexOf(match);
+        return `${index + 1}. `;
+      }
+    );
     return cleanedDescription;
   };
-  
+
+  const togglePolicyExpand = () => {
+    setIsPolicyExpanded(!isPolicyExpanded);
+  };
+
+  const toggleNormsExpand = () => {
+    setIsNormsExpanded(!isNormsExpanded);
+  };
+
+  const truncateText = (text, maxLength) => {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return text.slice(0, maxLength) + "...";
+  };
 
   return (
     <>
@@ -591,75 +626,140 @@ const handleCheckboxChange = (e) => {
       <Timer />
       <div className="guest_bg">
         <div className="guest-details-container">
-          <h2 className="section-title">
-            Guest <span style={{ color: "#00b7eb" }}>Details</span>
-          </h2>
-          <div className="details-wrapper">
-            <div className="left-side">
-              <h3>{bookingDetails.hotelname || "Hotel Name not available"}</h3>
-              <h5>{bookingDetails.addressLine1 || "Address not available"}</h5>
-            </div>
-            <div className="right-side">
-              <p>
-                <strong>Check-in Date:</strong>{" "}
-                {bookingDetails.check_in_date || "Check-in date not available"}
-              </p>
-            </div>
-          </div>
+          <div>
+            <div className="hotel_left">
+              <h2 className="section-title">
+                Guest <span style={{ color: "#00b7eb" }}>Details</span>
+              </h2>
+              <div className="details-wrapper">
+                <div className="left-side">
+                  <h3>
+                    {bookingDetails.hotelname || "Hotel Name not available"}
+                  </h3>
+                  {/* <h5>{bookingDetails.addressLine1 || "Address not available"}</h5> */}
+                </div>
+                <div className="right-side">
+                  <p>
+                    <strong>Check-in Date:</strong>{" "}
+                    {bookingDetails.check_in_date ||
+                      "Check-in date not available"}
+                  </p>
+                </div>
+              </div>
+              <Row>
+                <Col></Col>
+              </Row>
 
-          <div className="guest-details-card">
-            <div className="hotel-policies">
-              <Accordion className="accordian_space">
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header>
-                    <b>Hotel Policies:</b>
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    {blockRoomResult?.HotelPolicyDetail ? (
-                      <div className="hotel-policy">
-                        <h4>Policy Details</h4>
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: cleanUpDescription(
-                              blockRoomResult.HotelPolicyDetail
-                            ),
-                          }}
-                        />
+              <div className="guest-details-card">
+                <div className="hotel-policies">
+                  {/* Hotel Policies Section */}
+                  {blockRoomResult?.HotelPolicyDetail ? (
+                    <div className="hotel-policy">
+                      <h4>Policy Details</h4>
+                      <div>
+                        {isPolicyExpanded ? (
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: cleanUpDescription(
+                                blockRoomResult.HotelPolicyDetail
+                              ),
+                            }}
+                          />
+                        ) : (
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: cleanUpDescription(
+                                truncateText(
+                                  blockRoomResult.HotelPolicyDetail,
+                                  200
+                                ) // Truncate after 200 characters
+                              ),
+                            }}
+                          />
+                        )}
                       </div>
-                    ) : (
-                      <p>No hotel policy details available.</p>
-                    )}
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
+                      <button
+                        className="btn btn-link"
+                        onClick={togglePolicyExpand}
+                      >
+                        {isPolicyExpanded ? "Show Less" : "Read More"}
+                      </button>
+                    </div>
+                  ) : (
+                    <p>No hotel policy details available.</p>
+                  )}
 
-              <Accordion className="accordian_space">
-                <Accordion.Item eventKey="1">
-                  <Accordion.Header>
-                    <b>Hotel Norms:</b>
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    {blockRoomResult?.HotelNorms ? (
-                      <div className="hotel-policy">
-                        <h4>Hotel Norms</h4>
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: cleanUpDescription(
-                              blockRoomResult.HotelNorms
-                            ),
-                          }}
-                        />
+                  {/* Hotel Norms Section */}
+                  {blockRoomResult?.HotelNorms ? (
+                    <div className="hotel-policy">
+                      <h4>Hotel Norms</h4>
+                      <div>
+                        {isNormsExpanded ? (
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: cleanUpDescription(
+                                blockRoomResult.HotelNorms
+                              ),
+                            }}
+                          />
+                        ) : (
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: cleanUpDescription(
+                                truncateText(blockRoomResult.HotelNorms, 200) // Truncate after 200 characters
+                              ),
+                            }}
+                          />
+                        )}
                       </div>
-                    ) : (
-                      <p>No hotel norms available.</p>
-                    )}
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
+                      <button
+                        className="btn btn-link"
+                        onClick={toggleNormsExpand}
+                      >
+                        {isNormsExpanded ? "Show Less" : "Read More"}
+                      </button>
+                    </div>
+                  ) : (
+                    <p>No hotel norms available.</p>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
+            <div className="hotel-right">
+              <div className="price-hotel">
+                <h6>
+                  <i className="room-price"></i> <span>Price Details</span>
+                </h6>
+                <div className="price_head">
+                  <div className="room_type">
+                    <span>Room type</span>
+                    <small>{bookingDetails.room_type_name || "N/A"}</small>
+                  </div>
 
-          <div className="booking-detail">
+                  <div className="total-hotel_price">
+                    <span>Total Price</span>
+                    <small> {bookingDetails.roomprice || "N/A"}</small>
+                  </div>
+
+                  <div className="room_type">
+                    <span>Discount</span>
+                    <small>{bookingDetails.discount || 0} %</small>
+                  </div>
+                  <div className="room_type">
+                    <span>IGST </span>
+                    <small> {bookingDetails.igst || "N/A"} %</small>
+                  </div>
+                  <div className="total_room">
+                    <span>Total Room</span>
+                    <small> {bookingDetails.noofrooms || "N/A"}</small>
+                  </div>
+                  <div className="final_price">
+                    <span>Total Payment</span>
+                    <small>₹{totalPrice}</small>
+                  </div>
+                </div>
+              </div>
+              {/* <div className="booking-detail">
             <p>
               <strong>Room Type:</strong>{" "}
               {bookingDetails.room_type_name || "N/A"}
@@ -679,203 +779,218 @@ const handleCheckboxChange = (e) => {
             </p>
             <p>
               <strong>Total Price:</strong> {totalPrice} INR
-            </p>
+            </p> */}
 
-            {/* <p>
+              {/* <p>
         <strong>Offered Price:</strong> {bookingDetails.offeredprice || "N/A"} INR
       </p>
       <p>
         <strong>Other Charges:</strong> {bookingDetails.othercharges || "N/A"} INR
       </p> */}
+            </div>
           </div>
-
           {!showForm && (
-      <button className="submit-btn" onClick={() => setShowForm(true)}>
-        Add Details
-      </button>
-    )}
+            <button className="submit-btn" onClick={() => setShowForm(true)}>
+              Add Details
+            </button>
+          )}
 
-    {showForm && !formSubmitted && (
-      <div className="form-container">
-        <div className="form-content">
-          <h2 className="text-center">Enter Guest {currentGuestIndex + 1} Details</h2>
-          <form onSubmit={handleFormSubmit}>
-            <div className="guest-form">
-              <div className="row">
-                <div className="col-md-6">
-                  {/* First Name */}
-                  <div className="mb-3 req_field">
-                    <label className="required_field">First Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="First Name"
-                      name="fname"
-                      value={guestForms[currentGuestIndex].fname}
-                      onChange={handleFormChange}
-                      required
-                      minLength={2}
-                      maxLength={30}
-                    />
-                  </div>
+          {showForm && !formSubmitted && (
+            <div className="form-container">
+              <div className="form-content">
+                <h2 className="text-center">
+                  Enter Guest {currentGuestIndex + 1} Details
+                </h2>
+                <form onSubmit={handleFormSubmit}>
+                  <div className="guest-form">
+                    <div className="row">
+                      <div className="col-md-6">
+                        {/* First Name */}
+                        <div className="mb-3 req_field">
+                          <label className="required_field">First Name</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="First Name"
+                            name="fname"
+                            value={guestForms[currentGuestIndex].fname}
+                            onChange={handleFormChange}
+                            required
+                            minLength={2}
+                            maxLength={30}
+                          />
+                        </div>
 
-                  {/* Middle Name */}
-                  <div className="mb-3 req_field">
-                    <label>Middle Name (Optional)</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Middle Name"
-                      name="mname"
-                      value={guestForms[currentGuestIndex].mname}
-                      onChange={handleFormChange}
-                    />
-                  </div>
+                        {/* Middle Name */}
+                        <div className="mb-3 req_field">
+                          <label>Middle Name (Optional)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Middle Name"
+                            name="mname"
+                            value={guestForms[currentGuestIndex].mname}
+                            onChange={handleFormChange}
+                          />
+                        </div>
 
-                  {/* Last Name */}
-                  <div className="mb-3 req_field">
-                    <label className="required_field">Last Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Last Name"
-                      name="lname"
-                      value={guestForms[currentGuestIndex].lname}
-                      onChange={handleFormChange}
-                      required
-                      minLength={2}
-                      maxLength={30}
-                    />
-                  </div>
+                        {/* Last Name */}
+                        <div className="mb-3 req_field">
+                          <label className="required_field">Last Name</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Last Name"
+                            name="lname"
+                            value={guestForms[currentGuestIndex].lname}
+                            onChange={handleFormChange}
+                            required
+                            minLength={2}
+                            maxLength={30}
+                          />
+                        </div>
 
-                  {/* Email */}
-                  <div className="mb-3 req_field">
-                    <label className="required_field">Email</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      placeholder="Email"
-                      name="email"
-                      value={guestForms[currentGuestIndex].email}
-                      onChange={handleFormChange}
-                      required
-                    />
-                  </div>
+                        {/* Email */}
+                        <div className="mb-3 req_field">
+                          <label className="required_field">Email</label>
+                          <input
+                            type="email"
+                            className="form-control"
+                            placeholder="Email"
+                            name="email"
+                            value={guestForms[currentGuestIndex].email}
+                            onChange={handleFormChange}
+                            required
+                          />
+                        </div>
 
-                  {/* Age */}
-                  <div className="mb-3 req_field">
-                    <label className="required_field">Age</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      placeholder="Age"
-                      name="age"
-                      value={guestForms[currentGuestIndex].age}
-                      onChange={handleFormChange}
-                      min={0}
-                    />
-                  </div>
-                </div>
+                        {/* Age */}
+                        <div className="mb-3 req_field">
+                          <label className="required_field">Age</label>
+                          <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Age"
+                            name="age"
+                            value={guestForms[currentGuestIndex].age}
+                            onChange={handleFormChange}
+                            min={0}
+                          />
+                        </div>
+                      </div>
 
-                <div className="col-md-6">
-                  {/* Contact Number */}
-                  <div className="mb-3 req_field">
-                    <label className="required_field">Contact Number</label>
-                    <input
-                      type="tel"
-                      className="form-control"
-                      placeholder="Contact Number"
-                      name="mobile"
-                      value={guestForms[currentGuestIndex].mobile}
-                      onChange={handleFormChange}
-                      required
-                      pattern="[0-9]{10}"
-                    />
-                  </div>
+                      <div className="col-md-6">
+                        {/* Contact Number */}
+                        <div className="mb-3 req_field">
+                          <label className="required_field">
+                            Contact Number
+                          </label>
+                          <input
+                            type="tel"
+                            className="form-control"
+                            placeholder="Contact Number"
+                            name="mobile"
+                            value={guestForms[currentGuestIndex].mobile}
+                            onChange={handleFormChange}
+                            required
+                            pattern="[0-9]{10}"
+                          />
+                        </div>
 
-                  {/* PAN No. */}
-                  <div className="mb-3 passport_field">
-                    <label>PAN No.</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="PAN No."
-                      name="pan"
-                      value={guestForms[currentGuestIndex].pan}
-                      onChange={handleFormChange}
-                    />
-                  </div>
+                        {/* PAN No. */}
+                        <div className="mb-3 passport_field">
+                          <label>PAN No.</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="PAN No."
+                            name="pan"
+                            value={guestForms[currentGuestIndex].pan}
+                            onChange={handleFormChange}
+                          />
+                        </div>
 
-                  {/* Passport No. */}
-                  <div className="mb-3 passport_field">
-                    <label>Passport No.</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Passport No."
-                      name="passportNo"
-                      value={guestForms[currentGuestIndex].passportNo}
-                      onChange={handleFormChange}
-                    />
-                  </div>
+                        {/* Passport No. */}
+                        <div className="mb-3 passport_field">
+                          <label>Passport No.</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Passport No."
+                            name="passportNo"
+                            value={guestForms[currentGuestIndex].passportNo}
+                            onChange={handleFormChange}
+                          />
+                        </div>
 
-                  {/* Lead Passenger */}
-                  <div className="mb-3 req_field">
-                    <label className="required_field">Lead Passenger</label>
-                    <select
-                      className="form-control"
-                      name="leadPassenger"
-                      value={guestForms[currentGuestIndex].leadPassenger}
-                      onChange={handleFormChange}
-                    >
-                      <option value="">Select</option>
-                      <option value="Yes">Yes</option>
-                      <option value="No">No</option>
-                    </select>
-                  </div>
+                        {/* Lead Passenger */}
+                        <div className="mb-3 req_field">
+                          <label className="required_field">
+                            Lead Passenger
+                          </label>
+                          <select
+                            className="form-control"
+                            name="leadPassenger"
+                            value={guestForms[currentGuestIndex].leadPassenger}
+                            onChange={handleFormChange}
+                          >
+                            <option value="">Select</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                          </select>
+                        </div>
 
-                  {/* Pax Type */}
-                  <div className="mb-3 req_field">
-                    <label className="required_field">Pax Type</label>
-                    <select
-                      className="form-control"
-                      name="paxType"
-                      value={guestForms[currentGuestIndex].paxType}
-                      onChange={handleFormChange}
-                    >
-                      <option value="">Select</option>
-                      <option value="1">Adult</option>
-                      <option value="2">Child</option>
-                    </select>
+                        {/* Pax Type */}
+                        <div className="mb-3 req_field">
+                          <label className="required_field">Pax Type</label>
+                          <select
+                            className="form-control"
+                            name="paxType"
+                            value={guestForms[currentGuestIndex].paxType}
+                            onChange={handleFormChange}
+                          >
+                            <option value="">Select</option>
+                            <option value="1">Adult</option>
+                            <option value="2">Child</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <button className="submit-btn" type="submit">
+                      {currentGuestIndex + 1 < guestForms.length
+                        ? "Save and Next"
+                        : "Save and Finish"}
+                    </button>
                   </div>
-                </div>
+                </form>
               </div>
-              <button className="submit-btn" type="submit">
-                {currentGuestIndex + 1 < guestForms.length ? 'Save and Next' : 'Save and Finish'}
+            </div>
+          )}
+
+          {formSubmitted && (
+            <div>
+              <Popup
+                show={showPopup}
+                onClose={handleClosePopup}
+                formData={guestForms}
+              />
+              <label className="check_btn">
+                <input
+                  type="checkbox"
+                  checked={checkboxChecked}
+                  onChange={handleCheckboxChange}
+                />
+                Confirm details are correct
+              </label>
+              <button
+                disabled={!checkboxChecked}
+                className="submit-btn"
+                onClick={handlePayment}
+              >
+                Proceed to Payment
               </button>
             </div>
-          </form>
-        </div>
-      </div>
-    )}
-
-    {formSubmitted && (
-      <div>
-        <Popup show={showPopup} onClose={handleClosePopup} formData={guestForms} />
-        <label className="check_btn">
-          <input
-            type="checkbox"
-            checked={checkboxChecked}
-            onChange={handleCheckboxChange}
-          />
-          Confirm details are correct
-        </label>
-        <button  disabled={!checkboxChecked} className="submit-btn" onClick={handlePayment}>
-          Proceed to Payment
-        </button>
-      </div>
-    )}
-
+          )}
         </div>
       </div>
 
@@ -884,3 +999,4 @@ const handleCheckboxChange = (e) => {
   );
 };
 export default GuestDetails;
+// -----------------------------------------------------
