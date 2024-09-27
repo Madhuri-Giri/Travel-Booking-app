@@ -780,27 +780,28 @@ export default function FlightLists() {
 
                                                                 <div className="listDataMain row">
                                                                     <div className="flightsLIstdata col-md-8">
-                                                                        <div>
-                                                                            <img src={logoUrl} className="img-fluid" alt="" />
-
-                                                                        </div>
-                                                                        <div>
-                                                                            <p>{value.Segments[0][0].Airline.AirlineName}</p>
-
-
+                                                                        <div className="d-flex">
                                                                             <div>
-                                                                                <span>{value.Segments[0][0].Airline.AirlineCode} - </span>
+                                                                                <img src={logoUrl} className="img-fluid" alt="" />
+                                                                            </div>
+                                                                            <div>
+                                                                                <p>{value.Segments[0][0].Airline.AirlineName}</p>
 
-                                                                                {
-                                                                                    value.Segments[0].map((valueSeg, index) => {
-                                                                                        return (
-                                                                                            <>
-                                                                                                <span>{valueSeg.Airline.FlightNumber},</span>
-                                                                                            </>
-                                                                                        )
+                                                                                <div>
+                                                                                    <span>{value.Segments[0][0].Airline.AirlineCode} - </span>
 
-                                                                                    })
-                                                                                }
+                                                                                    {
+                                                                                        value.Segments[0].map((valueSeg, index) => {
+                                                                                            return (
+                                                                                                <span key={index}>
+                                                                                                    {valueSeg.Airline.FlightNumber}
+                                                                                                    {index < value.Segments[0].length - 1 && ' ,'} {/* Add comma if not last item */}
+                                                                                                </span>
+                                                                                            );
+                                                                                        })
+                                                                                    }
+
+                                                                                </div>
                                                                             </div>
 
                                                                         </div>
