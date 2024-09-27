@@ -180,7 +180,7 @@ const HotelDescription = () => {
               <h6>Description</h6>
             <p dangerouslySetInnerHTML={{ __html: hotelDetails.Description }} />
              <h6> Facilities</h6>
-            <ul> <li>{hotelDetails.HotelFacilities}</li></ul>
+            <ul> <li>{hotelDetails.HotelFacilities || "Facilities Not Available"}</li></ul>
             </Modal.Body> 
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseDescriptionModal}>Close</Button>

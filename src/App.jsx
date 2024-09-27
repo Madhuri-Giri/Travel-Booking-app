@@ -57,6 +57,10 @@ import { setIslogin } from './redux-toolkit/slices/loginSlice';
 import { userDetailsHandler } from './API/loginAction';
 import Test from './components/bus/Test';
 
+import Token from './Token';
+import FlightSegments from './components/flight/FlightSegments';
+import PriceModal from './components/flight/PriceModal';
+
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -79,6 +83,8 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/flight-search' element={<FlightSearch />} />
           <Route path='/flight-list' element={<FlightLists />} />
+          <Route path='/flight-segments' element={<FlightSegments />} />
+          <Route path='/flightPrice-Modal' element={<PriceModal />} />
           <Route path='/flight-details' element={<FlightDetails />} />
           <Route path='/flight-Farequote' element={<FareQuote />} />
           <Route path='/flight-review' element={<FlightReview />} />
@@ -140,7 +146,7 @@ const App = () => {
           {/* <Route path='flightBookTicket' element={<TicketBookFlight/>}/> */}
 
 
-          <Route path='/testp' element={<Test />} />
+          <Route path='/token' element={<Token />} />
 
 
 

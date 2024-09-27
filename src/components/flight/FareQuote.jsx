@@ -29,6 +29,8 @@ const FareQuote = () => {
     console.log('flightSelectedDATA', flightSelectedDATA);
 
     const publishedFare = flightSelectedDATA?.flight?.OfferedFare;
+    console.log('publishedFare', publishedFare);
+
 
     // function for date convert into day month date--------------------------------------
     const formatDate = (dateString) => {

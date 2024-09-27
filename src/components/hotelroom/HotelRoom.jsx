@@ -250,7 +250,7 @@ const HotelRoom = () => {
                      
                         <span >{room.RoomTypeName}</span>
                         <small>
-                        ₹ {room.Price.RoomPrice.toFixed(2)}</small>
+                        ₹ {room.Price.RoomPrice.toFixed(0)}</small>
                         </div>
                         <ul className="hotel_a">
                           <li className="amenities">

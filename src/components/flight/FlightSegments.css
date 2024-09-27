@@ -1,0 +1,141 @@
+/* .segmentsMainSec{
+    background-color: #dddddd;
+    padding: 10px 20px;
+} */
+
+
+
+.flightSegmentsData{
+    display: flex;
+    justify-content: space-between;
+}
+.flightSegmentsData p{
+   margin: 0px;
+}
+
+.flight-segment-container {
+    border: 1px solid rgba(128, 128, 128, 0.194);
+    width: 100%;
+    max-width: 900px;
+    margin: 0px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.flight-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.airline-details {
+    display: flex;
+    align-items: center;
+}
+
+.airline-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.flight-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.airline-name {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.flight-number {
+    color: #555;
+}
+
+.route-duration {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+}
+
+.duration {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.stops {
+    font-size: 14px;
+    color: #ff5722;
+}
+
+.flight-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.flight-leg {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+}
+
+.time-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.city {
+    color: #555;
+}
+
+.flight-duration {
+    text-align: center;
+    color: #555;
+}
+
+.layover-info {
+    text-align: center;
+    font-size: 14px;
+    color: #888;
+    margin: 10px 0;
+}
+
+.price-select-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.select-btn {
+    background-color: #ff5722;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.select-btn:hover {
+    background-color: #e64a19;
+}
