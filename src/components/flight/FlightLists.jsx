@@ -1006,11 +1006,15 @@ export default function FlightLists() {
                                                                                             case 'SME':
                                                                                                 return '#2cc72c';
                                                                                             case 'Flexi':
-                                                                                                return 'gray';
+                                                                                                return 'darkgreen';
                                                                                             case 'Tactical':
                                                                                                 return 'lightcoral';
+                                                                                            case 'Corporate':
+                                                                                                return 'cadetblue';
+                                                                                            case 'Other':
+                                                                                                return 'gray';
                                                                                             default:
-                                                                                                return 'gray'; // Default color for other sources
+                                                                                                return 'cornflowerblue'; // Default color for other sources
                                                                                         }
                                                                                     };
 

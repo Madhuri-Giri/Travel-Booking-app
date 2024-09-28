@@ -8,7 +8,7 @@ const Sajyatra = () => {
 
     const handleNavigation = () => {
         const url = `/sajpe-login?token=${encodeURIComponent(token)}&appName=${encodeURIComponent(appName)}`;
-       
+        
       };
 
   return (

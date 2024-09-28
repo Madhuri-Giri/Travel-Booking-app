@@ -1,3 +1,75 @@
+
+p
+.guest-details-card {
+  padding: 1vmax;
+  background-color: #fff;
+  border-radius: 10px;
+  /* box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.176); */
+}
+
+.hotel-policies {
+  margin-bottom: 2vmax;
+}
+
+.hotel-policy {
+  padding: 1vmax;
+  background-color: #ebeef1;
+  border-radius: 10px;
+  margin-bottom: 1vmax;
+}
+
+.hotel-policy h4 {
+  font-size: 1.3vmax;
+  font-weight: bold;
+  margin-bottom: 0.5vmax;
+}
+
+.hotel-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width:100%
+}
+
+.price-hotel {
+  width: 100%;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 1vmax;
+  /* box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.176); */
+}
+
+.price-hotel h6 {
+  font-size: 1.3vmax;
+  font-weight: bold;
+  margin-bottom: 1vmax;
+}
+
+.price_head {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.room_type, .total-hotel_price, .total_room, .final_price {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1vmax;
+}
+
+.room_type span, .total-hotel_price span, .total_room span, .final_price span {
+  font-weight: 600;
+  font-size: 1.1vmax;
+}
+
+.room_type small, .total-hotel_price small, .total_room small, .final_price small {
+  font-size: 1.2vmax;
+}
+
+.final_price small {
+  color: #00e100;
+  font-weight: 700;
+}
 /* GuestDetails.css */
 .guest_bg{
   background-color: #dddddd;
@@ -8,7 +80,7 @@
   background-color: #f8f9fa;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); */
   margin-top: 20px;
   max-width: 1200px;
   margin: 0 auto;
@@ -18,7 +90,7 @@
   /* background-color: #f8f9fa; */
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); */
 }
 
 .details-wrapper {
@@ -322,4 +394,123 @@
     padding: 8px 16px;
     font-size: 14px;
   }
+}
+
+ .hotel-right{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+ .price-hotel {
+  width: 95%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+ padding: 1vmax;
+ border-radius: 10px;
+ background: #ffff;
+ box-shadow: 2px 2px 5px 2px rgba(128, 128, 128, 0.176);
+margin-top: 1vmax
+}
+ .price-hotel  h6{
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+ .hotel-right .price-hotel  .price_head{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  background: #f5f1f1;
+  border-radius: 15px;
+  margin-top: 0.5vmax;
+  padding: 0.5vmax;
+}
+   .price_head .room_type{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1vmax;
+  padding-right: 1vmax;
+  padding-top: 0.3vmax;
+
+}
+ .room_type span{
+  font-weight: 600;
+  font-size: 1.1vmax;
+}
+ .room_type small{
+  font-size: 1.2vmax;
+}
+
+.total-hotel_price{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1vmax;
+  padding-right: 1vmax;
+  border-top: 1px solid #0000002a;
+  padding-top: 0.2vmax;
+  margin-top: 1vmax;
+}
+ .total-hotel_price span{
+  font-weight: 700;
+  font-size: 1.1vmax;
+}
+ .total-hotel_price small{
+  font-size: 1.2vmax;
+  font-weight: 600;
+}
+ .total_room{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1vmax;
+  padding-right: 1vmax;
+  margin-bottom: 1vmax;
+
+}
+  .total_room span{
+  font-size: 1.1vmax;
+  color: green;
+}
+  .total_room small{
+  font-size: 1.2vmax;
+  color: green;
+
+}
+
+ .final_price{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1vmax;
+  padding-right: 1vmax;
+  margin-bottom: 1vmax;
+  border-top: 1px solid #0000002a;
+   padding-top: 0.5vmax;
+}
+ .final_price span{
+  font-size: 1.1vmax;
+  font-weight: 700;
+  font-size: 1.3vmax;
+}
+ .final_price small{
+  font-size: 1.2vmax;
+   font-weight: 700;
+   font-size: 1.3vmax;
+   color: #00e100;
+
 }
