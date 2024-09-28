@@ -647,147 +647,122 @@ const GuestDetails = () => {
                 </div>
               </div>
               <Row>
-                <Col></Col>
+                <Col md={6}>
+                  <div className="hotel-policies">
+                    {/* Hotel Policies Section */}
+                    {blockRoomResult?.HotelPolicyDetail ? (
+                      <div className="hotel-policy">
+                        <h4>Policy Details</h4>
+                        <div>
+                          {isPolicyExpanded ? (
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: cleanUpDescription(
+                                  blockRoomResult.HotelPolicyDetail
+                                ),
+                              }}
+                            />
+                          ) : (
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: cleanUpDescription(
+                                  truncateText(
+                                    blockRoomResult.HotelPolicyDetail,
+                                    200
+                                  ) // Truncate after 200 characters
+                                ),
+                              }}
+                            />
+                          )}
+                        </div>
+                        <button
+                          className="btn btn-link"
+                          onClick={togglePolicyExpand}
+                        >
+                          {isPolicyExpanded ? "Show Less" : "Read More"}
+                        </button>
+                      </div>
+                    ) : (
+                      <p>No hotel policy details available.</p>
+                    )}
+
+                    {/* Hotel Norms Section */}
+                    {blockRoomResult?.HotelNorms ? (
+                      <div className="hotel-policy">
+                        <h4>Hotel Norms</h4>
+                        <div>
+                          {isNormsExpanded ? (
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: cleanUpDescription(
+                                  blockRoomResult.HotelNorms
+                                ),
+                              }}
+                            />
+                          ) : (
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: cleanUpDescription(
+                                  truncateText(blockRoomResult.HotelNorms, 200) // Truncate after 200 characters
+                                ),
+                              }}
+                            />
+                          )}
+                        </div>
+                        <button
+                          className="btn btn-link"
+                          onClick={toggleNormsExpand}
+                        >
+                          {isNormsExpanded ? "Show Less" : "Read More"}
+                        </button>
+                      </div>
+                    ) : (
+                      <p>No hotel norms available.</p>
+                    )}
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <div className="hotel-right">
+                    <div className="price-hotel">
+                      <h6>
+                        <i className="room-price"></i> <span>Price Details</span>
+                      </h6>
+                      <div className="price_head">
+                        <div className="room_type">
+                          <span>Room type</span>
+                          <small>{bookingDetails.room_type_name || "N/A"}</small>
+                        </div>
+
+                        <div className="total-hotel_price">
+                          <span>Total Price</span>
+                          <small> {bookingDetails.roomprice || "N/A"}</small>
+                        </div>
+
+                        <div className="room_type">
+                          <span>Discount</span>
+                          <small>{bookingDetails.discount || 0} %</small>
+                        </div>
+                        <div className="room_type">
+                          <span>IGST </span>
+                          <small> {bookingDetails.igst || "N/A"} %</small>
+                        </div>
+                        <div className="total_room">
+                          <span>Total Room</span>
+                          <small> {bookingDetails.noofrooms || "N/A"}</small>
+                        </div>
+                        <div className="final_price">
+                          <span>Total Payment</span>
+                          <small>₹{totalPrice}</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Col>
               </Row>
-
-              <div className="guest-details-card">
-                <div className="hotel-policies">
-                  {/* Hotel Policies Section */}
-                  {blockRoomResult?.HotelPolicyDetail ? (
-                    <div className="hotel-policy">
-                      <h4>Policy Details</h4>
-                      <div>
-                        {isPolicyExpanded ? (
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: cleanUpDescription(
-                                blockRoomResult.HotelPolicyDetail
-                              ),
-                            }}
-                          />
-                        ) : (
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: cleanUpDescription(
-                                truncateText(
-                                  blockRoomResult.HotelPolicyDetail,
-                                  200
-                                ) // Truncate after 200 characters
-                              ),
-                            }}
-                          />
-                        )}
-                      </div>
-                      <button
-                        className="btn btn-link"
-                        onClick={togglePolicyExpand}
-                      >
-                        {isPolicyExpanded ? "Show Less" : "Read More"}
-                      </button>
-                    </div>
-                  ) : (
-                    <p>No hotel policy details available.</p>
-                  )}
-
-                  {/* Hotel Norms Section */}
-                  {blockRoomResult?.HotelNorms ? (
-                    <div className="hotel-policy">
-                      <h4>Hotel Norms</h4>
-                      <div>
-                        {isNormsExpanded ? (
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: cleanUpDescription(
-                                blockRoomResult.HotelNorms
-                              ),
-                            }}
-                          />
-                        ) : (
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: cleanUpDescription(
-                                truncateText(blockRoomResult.HotelNorms, 200) // Truncate after 200 characters
-                              ),
-                            }}
-                          />
-                        )}
-                      </div>
-                      <button
-                        className="btn btn-link"
-                        onClick={toggleNormsExpand}
-                      >
-                        {isNormsExpanded ? "Show Less" : "Read More"}
-                      </button>
-                    </div>
-                  ) : (
-                    <p>No hotel norms available.</p>
-                  )}
-                </div>
-              </div>
             </div>
-            <div className="hotel-right">
-              <div className="price-hotel">
-                <h6>
-                  <i className="room-price"></i> <span>Price Details</span>
-                </h6>
-                <div className="price_head">
-                  <div className="room_type">
-                    <span>Room type</span>
-                    <small>{bookingDetails.room_type_name || "N/A"}</small>
-                  </div>
 
-                  <div className="total-hotel_price">
-                    <span>Total Price</span>
-                    <small> {bookingDetails.roomprice || "N/A"}</small>
-                  </div>
 
-                  <div className="room_type">
-                    <span>Discount</span>
-                    <small>{bookingDetails.discount || 0} %</small>
-                  </div>
-                  <div className="room_type">
-                    <span>IGST </span>
-                    <small> {bookingDetails.igst || "N/A"} %</small>
-                  </div>
-                  <div className="total_room">
-                    <span>Total Room</span>
-                    <small> {bookingDetails.noofrooms || "N/A"}</small>
-                  </div>
-                  <div className="final_price">
-                    <span>Total Payment</span>
-                    <small>₹{totalPrice}</small>
-                  </div>
-                </div>
-              </div>
-              {/* <div className="booking-detail">
-            <p>
-              <strong>Room Type:</strong>{" "}
-              {bookingDetails.room_type_name || "N/A"}
-            </p>
-            <p>
-              <strong>Room Price:</strong> {bookingDetails.roomprice || "N/A"}{" "}
-              INR
-            </p>
-            <p>
-              <strong>GST:</strong> {bookingDetails.igst || "N/A"} %
-            </p>
-            <p>
-              <strong>Discount:</strong> {bookingDetails.discount || 0} %
-            </p>
-            <p>
-              <strong>Total Rooms:</strong> {bookingDetails.noofrooms || "N/A"}
-            </p>
-            <p>
-              <strong>Total Price:</strong> {totalPrice} INR
-            </p> */}
 
-              {/* <p>
-        <strong>Offered Price:</strong> {bookingDetails.offeredprice || "N/A"} INR
-      </p>
-      <p>
-        <strong>Other Charges:</strong> {bookingDetails.othercharges || "N/A"} INR
-      </p> */}
-            </div>
           </div>
           {!showForm && (
             <button className="submit-btn" onClick={() => setShowForm(true)}>
