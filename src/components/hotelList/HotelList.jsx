@@ -418,7 +418,7 @@ const HandelHotelInfo = async (hotel) => {
                             <div className="DetailTexts">
                               <span className="hotelPrice">
                                 {/* ₹{calculateTotalPrice(hotel.Price?.OfferedPriceRoundedOff || 0).toFixed(2)} */}
-                                ₹{(hotel.Price?.OfferedPriceRoundedOff || 0).toFixed(2)}
+                                ₹{(hotel.Price?.OfferedPriceRoundedOff || 0).toFixed(0)}
                               </span>
                                 <div>
                               <span className="hotelTax"> No Includes taxes and fees</span>
