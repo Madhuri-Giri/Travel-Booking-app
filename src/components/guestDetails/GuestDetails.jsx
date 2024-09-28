@@ -502,14 +502,14 @@ const GuestDetails = () => {
                 ToDate: formatDate(policy.ToDate || new Date()),
               })
             ) || [
-              {
-                Charge: 0,
-                ChargeType: 0,
-                Currency: "INR",
-                FromDate: formatDate(new Date()),
-                ToDate: formatDate(new Date()),
-              },
-            ],
+                {
+                  Charge: 0,
+                  ChargeType: 0,
+                  Currency: "INR",
+                  FromDate: formatDate(new Date()),
+                  ToDate: formatDate(new Date()),
+                },
+              ],
             CancellationPolicy: selectedRoom.CancellationPolicy || "No Policy",
             Inclusion: selectedRoom.Inclusion || ["None"],
             BedTypeCode: selectedRoom.BedTypeCode || "NA",
@@ -623,7 +623,7 @@ const GuestDetails = () => {
   return (
     <>
       <CustomNavbar />
-      <Timer />
+      {/* <Timer /> */}
       <div className="guest_bg">
         <div className="guest-details-container">
           <div>
