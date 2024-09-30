@@ -242,14 +242,14 @@ const BusTikit = () => {
                             <p><strong>Date -: </strong><span>{formatDate(busDetail.departure_time)}</span></p>
                             <div className='fromtoWEB'>
                               <div>
-                                <strong>Bhopal{from}</strong>
+                                <strong>{from}</strong>
                                 <p>{formatTime(busDetail.departure_time)}</p>
                               </div>
                               <div>
                                 <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
                               </div>
                               <div>
-                                <strong>{to}Indore</strong>
+                                <strong>{to}</strong>
                                 <p>{formatTime(busDetail.arrival_time)}</p>
                               </div>
                             </div>
@@ -266,8 +266,8 @@ const BusTikit = () => {
                             <div>
                               <p><strong>Seat No -: </strong><span>{seatDetail ? seatDetail.seat_name : 'N/A'}</span></p>
                               <p className='busbookconfrm'><strong>Booking -: </strong><span>{busticketPassengerDetails.booking_status[0].bus_status || 'N/A'}</span></p>
-                              <p><strong>Boarding Point -: </strong><span>{busDetail.boarding_point || 'N/A'}</span></p>
-                              <p><strong>Dropping Point -: </strong><span>{busDetail.dropping_point || 'N/A'}</span></p>
+                              <p><strong>Boarding Point -: </strong><span>{busDetail.city_point_name || 'N/A'}</span></p>
+                              <p><strong>Dropping Point -: </strong><span>{busDetail.drop_city_point_name || 'N/A'}</span></p>
                               <p className='busbookconfrm'><strong>Amount -: </strong><span>₹{seatDetail ? seatDetail.base_price : 'N/A'}</span></p>
                               <Barcode className="buspasscode" value={passcode} format="CODE128" />
                             </div>

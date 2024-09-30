@@ -36,23 +36,6 @@ export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to
 
   const data = await response.json();
   console.log('bus search', data);
-
-  // Check if the response contains results
-  // if (!data || !data.Results || data.Results.length === 0) {
-  //   console.error("No results found in the API response");
-  //   return null; // Return null to indicate no results
-  // }
-
-  // if (!data) {
-  //   console.error("No results found in the API response");
-  //   alert("No bus found. Please try again later.");
-  //   // setLoading(false);
-  //   Navigate("/bus-search");
-  //   return;
-  // }else{
-  //   Navigate("/bus-list");
-  // }
-
   return data;
 });
 
@@ -113,19 +96,6 @@ const busSlice = createSlice({
           state.searchResults = data.Result.BusResults;
 
 
-
-          // console.log('redux result ', state.resultIndex)
-
-          // localStorage.setItem('traceId', data.Result.TraceId);
-          // console.log('bus trace id',  data.Result.TraceId)
-          // localStorage.setItem('resultIndex', data.Result.BusResults[0]?.ResultIndex || null);
-
-          // const saveDataToLocalStorage = (data) => {
-          //   const jsonData = JSON.stringify(data);
-          //   localStorage.setItem('busSearchStore', jsonData);
-          // };
-
-          // saveDataToLocalStorage(data);
 
           const boardingPoints = data.Result.BusResults.flatMap(bus =>
             (bus.BoardingPoints || []).map(point => ({
