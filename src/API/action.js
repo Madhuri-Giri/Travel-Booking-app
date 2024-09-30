@@ -2,6 +2,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axios'
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 export const getFlightList =
     async ({ setListingData, setDataToPass, setLogos, setLoading, formData, navigate }) => {
@@ -27,7 +28,8 @@ export const getFlightList =
                 // alert(`Failed to fetch flight data: ${errorText}`);
 
                 console.error(`HTTP error! Status: ${response.status}, Response: ${response.statusText}`);
-                alert(`Failed to fetch flight data: ${response.statusText}`);
+                // alert(`Failed to fetch flight data: ${response.statusText}`);
+                toast.error(`Failed to fetch flight data: ${response.statusText}`);
                 setLoading(false);
                 return;
             }
@@ -35,7 +37,7 @@ export const getFlightList =
             // const data = await response.json();
             const data = response.data;
             console.log('flight search response',data);
-            console.log('errrr',data.ErrorMessage);
+            // console.log('errrr',data.ErrorMessage);
             
 
             if (!data.Results) {
@@ -81,8 +83,7 @@ export const getFlightList =
             } else {
                 console.log("SrdvIndex or FareDataMultiple not found");
             }
-
-            localStorage.setItem('Flight-search', JSON.stringify(data));
+            // localStorage.setItem('Flight-search', JSON.stringify(data));
             const airlineCodes = data.Results.flatMap(result =>
                 result.flatMap(fareData =>
                     fareData.FareDataMultiple.flatMap(fare =>
@@ -112,10 +113,10 @@ export const getFlightList =
 
         } catch (error) {
             console.log("calledError", error);
-            console.log("errorCheck", error.message);
             console.error('Error fetching flight data:', error.message);
             // // alert(`An error occurred: ${error.message}`);
-            alert(`failed: ${error.message}`);
+            // alert(`failed: ${error.message}`);
+            toast.error(`Error fetching flight data:: ${error.message}`);
             navigate("/flight-search");
         } finally {
             setLoading(false);
@@ -138,7 +139,7 @@ const fetchAirlineLogos = async (airlineCodes) => {
 
         // const data = await response.json();
         const data = response.data;
-        console.log("Airline logo API response: ", data);
+        // console.log("Airline logo API response: ", data);
 
         const logoMap = data.data.reduce((acc, curr) => {
             acc[curr.airline_code] = curr.airline_log;

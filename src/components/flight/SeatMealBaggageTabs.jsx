@@ -31,8 +31,8 @@ const SeatMealBaggageTabs = () => {
     // console.log('Meal', ssrAPIData.MealDynamic);
 
     console.log('selectedSeats', selectedSeats);
-    // console.log('selectedBaggage', selectedSeats);
-    // console.log('selectedMeal', selectedMeal);
+    console.log('selectedBaggage', selectedSeats);
+    console.log('selectedMeal', selectedMeal);
 
     // selected flight data get------
     const { fareQuoteAPIData, dataToPass , flightSelectedDATA, confirmedAdults, confirmedChildren, confirmedInfants } = location.state || {};
