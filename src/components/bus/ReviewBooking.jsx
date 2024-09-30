@@ -162,15 +162,14 @@ const droppingPointIndex = selectedDroppingPoint.index;
     }));
 
     const requestData = {
-      TraceId: "1",
-      ResultIndex: "1",
-      BoardingPointId: "1",
-      DroppingPointId: "1",
-      // TraceId: traceId,
-      // ResultIndex: selectedBusIndex,
-      // BoardingPointId: boardingPointIndex , 
-      // DroppingPointId: droppingPointIndex, 
-     
+      // TraceId: "1",
+      // ResultIndex: "1",
+      // BoardingPointId: "1",
+      // DroppingPointId: "1",
+      TraceId: traceId,
+      ResultIndex: selectedBusIndex,
+      BoardingPointId: boardingPointIndex , 
+      DroppingPointId: droppingPointIndex, 
       RefID: "1",
       Passenger: passengers,
     };
@@ -466,15 +465,19 @@ const droppingPointIndex = selectedDroppingPoint.index;
     // console.log('transaction_id:', transaction_id);
 
     const requestData = {
-      TraceId: '1',
-      ResultIndex: '1',
-      BoardingPointId: '1',
-      DroppingPointId: '1',
+      // TraceId: '1',
+      // ResultIndex: '1',
+      // BoardingPointId: '1',
+      // DroppingPointId: '1',
+      TraceId: traceId,
+      ResultIndex: selectedBusIndex,
+      BoardingPointId: boardingPointIndex , 
+      DroppingPointId: droppingPointIndex, 
       RefID: "1",
       transaction_num: transaction_num,
       bus_booking_id: [bookingId], 
       transaction_id:transactionId, 
-      Passenger: storedPassengerDetails, // Ensure this is correctly populated
+      Passenger: storedPassengerDetails, 
     };
 
     console.log('Request Data for Booking:', requestData);
