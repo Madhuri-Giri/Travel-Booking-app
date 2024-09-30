@@ -24,11 +24,13 @@ import { blockHotelRooms } from "../../redux-toolkit/slices/hotelBlockSlice";
 import { bookHotel } from "../../redux-toolkit/slices/hotelBookSlice";
 import { searchHotels } from "../../redux-toolkit/slices/hotelSlice";
 
+import { Modal, Button } from "react-bootstrap";
 const GuestDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const { persons } = location.state || {};
+  const { NoOfRooms, GuestNationality, hotelName, } = location.state || {};
   const [hotelBlock, setHotelBlock] = useState([]);
   const [selectedRoomsData, setSelectedRoomsData] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
@@ -59,10 +61,24 @@ const GuestDetails = () => {
   const [isFormComplete, setIsFormComplete] = useState(false);
   const [guestsRemaining, setGuestsRemaining] = useState(persons[0].NoOfAdults); // Initially all guests need forms
   const [payLoading, setPayLoading] = useState(false);
-
   const { blockRoomResult, bookingStatus } = location.state || {};
   const bookingDetails = bookingStatus?.[0] || {};
   const [errors, setErrors] = useState({});
+
+
+  const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+
+ 
+
+  const openModal = (content, title) => {
+    setModalContent(cleanUpDescription(content));
+    setModalTitle(title);
+    setShowModal(true);
+  };
+
+  const closeModal = () => setShowModal(false);
 
   const handleDateChange = (index, date, field) => {
     const newGuestForms = [...guestForms];
@@ -304,8 +320,15 @@ const GuestDetails = () => {
   // ----------------Payment Integration End -------------------
 
   const [selectedRoom, setSelectedRoom] = useState([]);
-  const hotelRooms = location.state?.hotelRooms || [];
+  // const hotelRooms = location.state?.hotelRooms || [];
+  // const { resultIndex, hotelCode, srdvType, srdvIndex, traceId } = location.state || {};
+  //   if (!resultIndex || !srdvIndex || !hotelCode || !srdvType || !traceId) {
+  //     console.error("Missing required parameters for fetching hotel room.");
+  //     return;
+  //   }
 
+  //   const requestData = { ResultIndex: resultIndex, SrdvIndex: srdvIndex, SrdvType: srdvType, HotelCode: hotelCode, TraceId: traceId };
+    
   const {
     hotels = [],
     srdvType,
@@ -412,6 +435,16 @@ const GuestDetails = () => {
         HotelName: "The Manor",
         GuestNationality: "IN",
         NoOfRooms: "1",
+
+        // ResultIndex: resultIndex ,
+        // SrdvIndex: srdvIndex,
+        // SrdvType: srdvType,
+        // HotelCode: hotelCode,
+        // TraceId: traceId,
+        // GuestNationality: GuestNationality,
+        // HotelName:  hotelName,
+        // NoOfRooms: NoOfRooms,
+
         ClientReferenceNo: 0,
         IsVoucherBooking: true,
         transaction_num: transactionNum,
@@ -561,50 +594,43 @@ const GuestDetails = () => {
 
   const cleanUpDescription = (description) => {
     if (!description) return "";
+    
     let cleanedDescription = he.decode(description);
-    cleanedDescription = cleanedDescription.replace(
-      /<\/?(ul|li|b|i|strong|em|span)\b[^>]*>/gi,
-      ""
-    );
-    cleanedDescription = cleanedDescription.replace(
-      /<br\s*\/?>|<p\s*\/?>|<\/p>/gi,
-      "\n"
-    );
-    cleanedDescription = cleanedDescription.replace(/\\|\|/g, "");
-    cleanedDescription = cleanedDescription.replace(/\s{2,}/g, " ");
-    cleanedDescription = cleanedDescription.replace(/\n{2,}/g, "\n");
-    cleanedDescription = cleanedDescription.replace(/\/\/+|\\|\|/g, "");
-    cleanedDescription = cleanedDescription.trim();
-    cleanedDescription = cleanedDescription.replace(/"/g, "");
-    cleanedDescription = cleanedDescription.replace(/<\/li>/gi, "\n");
-    cleanedDescription = cleanedDescription.replace(/<\/?ul>/gi, "\n");
-    cleanedDescription = cleanedDescription.replace(
-      /<br\s*\/?>|<\/p>|<p\s*\/?>/gi,
-      "\n"
-    );
+    
+    // Remove unwanted HTML tags
     cleanedDescription = cleanedDescription.replace(
       /<\/?(b|i|strong|em|span)\b[^>]*>/gi,
       ""
     );
+    
+    // Replace line breaks and paragraph tags with new lines
+    cleanedDescription = cleanedDescription.replace(/<br\s*\/?>|<\/p>|<p\s*\/?>/gi, "\n");
+    
+    // Remove additional unwanted characters
     cleanedDescription = cleanedDescription.replace(/\\|\|/g, "");
     cleanedDescription = cleanedDescription.replace(/\s{2,}/g, " ");
     cleanedDescription = cleanedDescription.replace(/\n{2,}/g, "\n");
     cleanedDescription = cleanedDescription.trim();
+  
+    // Handle <ul> and <li> tags to format as lists
+    cleanedDescription = cleanedDescription.replace(/<\/li>/gi, "</li>\n");
+    cleanedDescription = cleanedDescription.replace(/<\/ul>/gi, "</ul>\n");
+  
+    // Convert <ul> and <li> to React-friendly format
     cleanedDescription = cleanedDescription.replace(
-      /(?:Valid From|Check-in hour|Identification card at arrival)/gi,
-      "\n$&"
-    );
-    cleanedDescription = cleanedDescription.replace(
-      /<li>/gi,
-      (match, offset, string) => {
-        const listItems = string.split("</li>");
-        const index = listItems.indexOf(match);
-        return `${index + 1}. `;
+      /<ul>(.*?)<\/ul>/gi,
+      (match, contents) => {
+        const items = contents.match(/<li>(.*?)<\/li>/g);
+        return items ? `<ol>${items.map((item, index) => `<li>${index + 1}. ${item.replace(/<li>|<\/li>/g, '')}</li>`).join('')}</ol>` : '';
       }
     );
+  
+    // Remove any remaining HTML tags
+    cleanedDescription = cleanedDescription.replace(/<\/?ul>/gi, "");
+    
     return cleanedDescription;
   };
-
+  
   const togglePolicyExpand = () => {
     setIsPolicyExpanded(!isPolicyExpanded);
   };
@@ -620,10 +646,26 @@ const GuestDetails = () => {
     return text.slice(0, maxLength) + "...";
   };
 
+
+
   return (
     <>
       <CustomNavbar />
-      {/* <Timer /> */}
+      <Timer />
+
+ {/* Modal Component */}
+ <Modal show={showModal} onHide={closeModal}  className="policy-modal" >
+ <Modal.Header closeButton>
+   <Modal.Title>{modalTitle}</Modal.Title>
+ </Modal.Header>
+ <Modal.Body dangerouslySetInnerHTML={{ __html: modalContent }}  className="hotel-modal"/>
+ <Modal.Footer>
+   <Button variant="secondary" onClick={closeModal}>
+     Close
+   </Button>
+ </Modal.Footer>
+</Modal>
+
       <div className="guest_bg">
         <div className="guest-details-container">
           <div>
@@ -633,9 +675,9 @@ const GuestDetails = () => {
               </h2>
               <div className="details-wrapper">
                 <div className="left-side">
-                  <h3>
+                  <h4>
                     {bookingDetails.hotelname || "Hotel Name not available"}
-                  </h3>
+                  </h4>
                   {/* <h5>{bookingDetails.addressLine1 || "Address not available"}</h5> */}
                 </div>
                 <div className="right-side">
@@ -647,80 +689,57 @@ const GuestDetails = () => {
                 </div>
               </div>
               <Row>
-                <Col md={6}>
-                  <div className="hotel-policies">
-                    {/* Hotel Policies Section */}
-                    {blockRoomResult?.HotelPolicyDetail ? (
-                      <div className="hotel-policy">
-                        <h4>Policy Details</h4>
-                        <div>
-                          {isPolicyExpanded ? (
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: cleanUpDescription(
-                                  blockRoomResult.HotelPolicyDetail
-                                ),
-                              }}
-                            />
-                          ) : (
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: cleanUpDescription(
-                                  truncateText(
-                                    blockRoomResult.HotelPolicyDetail,
-                                    200
-                                  ) // Truncate after 200 characters
-                                ),
-                              }}
-                            />
-                          )}
-                        </div>
-                        <button
-                          className="btn btn-link"
-                          onClick={togglePolicyExpand}
-                        >
-                          {isPolicyExpanded ? "Show Less" : "Read More"}
-                        </button>
-                      </div>
-                    ) : (
-                      <p>No hotel policy details available.</p>
-                    )}
+              <Col md={6}>
+                <div className="hotel-policies">
+                  {/* Hotel Policies Section */}
+                  {blockRoomResult?.HotelPolicyDetail ? (
+                    <div className="hotel-policy">
+                      <h4>Policy Details</h4>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: truncateText(
+                            blockRoomResult.HotelPolicyDetail,
+                            200
+                          ),
+                        }}
+                      />
+                      <button
+                        className="btn btn-link"
+                        onClick={() =>
+                          openModal(blockRoomResult.HotelPolicyDetail, "Hotel Policy")
+                        }
+                      >
+                        Read More
+                      </button>
+                    </div>
+                  ) : (
+                    <p>No hotel policy details available.</p>
+                  )}
 
-                    {/* Hotel Norms Section */}
-                    {blockRoomResult?.HotelNorms ? (
-                      <div className="hotel-policy">
-                        <h4>Hotel Norms</h4>
-                        <div>
-                          {isNormsExpanded ? (
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: cleanUpDescription(
-                                  blockRoomResult.HotelNorms
-                                ),
-                              }}
-                            />
-                          ) : (
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: cleanUpDescription(
-                                  truncateText(blockRoomResult.HotelNorms, 200) // Truncate after 200 characters
-                                ),
-                              }}
-                            />
-                          )}
-                        </div>
-                        <button
-                          className="btn btn-link"
-                          onClick={toggleNormsExpand}
-                        >
-                          {isNormsExpanded ? "Show Less" : "Read More"}
-                        </button>
-                      </div>
-                    ) : (
-                      <p>No hotel norms available.</p>
-                    )}
-                  </div>
-                </Col>
+                  {/* Hotel Norms Section */}
+                  {blockRoomResult?.HotelNorms ? (
+                    <div className="hotel-policy">
+                      <h4>Hotel Norms</h4>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: truncateText(blockRoomResult.HotelNorms, 200),
+                        }}
+                      />
+                      <button
+                        className="btn btn-link"
+                        onClick={() =>
+                          openModal(blockRoomResult.HotelNorms, "Hotel Norms")
+                        }
+                      >
+                        Read More
+                      </button>
+                    </div>
+                  ) : (
+                    <p>No hotel norms available.</p>
+                  )}
+                </div>
+              </Col>
+                
                 <Col md={6}>
                   <div className="hotel-right">
                     <div className="price-hotel">
@@ -743,7 +762,7 @@ const GuestDetails = () => {
                           <small>{bookingDetails.discount || 0} %</small>
                         </div>
                         <div className="room_type">
-                          <span>IGST </span>
+                          <span>GST </span>
                           <small> {bookingDetails.igst || "N/A"} %</small>
                         </div>
                         <div className="total_room">
@@ -760,9 +779,6 @@ const GuestDetails = () => {
                 </Col>
               </Row>
             </div>
-
-
-
           </div>
           {!showForm && (
             <button className="submit-btn" onClick={() => setShowForm(true)}>

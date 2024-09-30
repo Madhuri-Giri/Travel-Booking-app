@@ -17,6 +17,8 @@ import Timer from '../timmer/Timer';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchHotels} from '../../redux-toolkit/slices/hotelSlice';
 import {fetchHotelDetails} from '../../redux-toolkit/slices/hotelInfoSlice';
+import Loading from "../../pages/loading/Loading";
+
 // Rating star Logic
 const renderStar = (rating) => {
   const totalStars = 5;
@@ -33,7 +35,7 @@ const renderStar = (rating) => {
 
 const HotelList = () => {
   const location = useLocation();
-  const { persons } = location.state || {};
+  const { persons,  NoOfRooms,  GuestNationality } = location.state || {};
   const { searchResults } = location.state || {};
   // const [hotels, setHotels] = useState([]);
   // const [error, setError] = useState(null);
@@ -44,11 +46,11 @@ const HotelList = () => {
   const dropdownRef = useRef(null);
   const [startDate, setStartDate] = useState(null);
   const [destination, setDestination] = useState("");
-  
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   // Updated selector to access hotelSearch state
   const { hotels = [], srdvType, resultIndexes, srdvIndexes, hotelCodes, traceId,  
-     loading = false, error = null } = useSelector((state) => state.hotelSearch || {});
+     error = null } = useSelector((state) => state.hotelSearch || {});
 
   console.log('hotels data', hotels);
 
@@ -57,7 +59,10 @@ const HotelList = () => {
 }, [dispatch]);
 
 useEffect(() => {
-  console.log("persons in hotel list", persons)
+  console.log("persons in hotel list", persons);
+  console.log("room in hotel list", NoOfRooms);
+
+  console.log("nationality in hotel list", GuestNationality);
   document.addEventListener("mousedown", handleClickOutside);
   return () => {
     document.removeEventListener("mousedown", handleClickOutside);
@@ -130,7 +135,8 @@ const currentHotels = sortedHotels.slice(offset, offset + hotelsPerPage);
 
 const fetchHotelInfo = async (hotel) => {
   console.log('Fetching hotel info for:', hotel.HotelCode);
-
+  
+  // setLoading(true);
   // Retrieve hotel details directly from the hotel object passed
   const resultIndex = resultIndexes[hotels.indexOf(hotel)]; 
   const srdvIndex = srdvIndexes[hotels.indexOf(hotel)]; 
@@ -148,6 +154,7 @@ const fetchHotelInfo = async (hotel) => {
 
   try {
     const hotelDetails = await dispatch(fetchHotelDetails(requestData)).unwrap();
+    const hotelName = hotelDetails.HotelName;
     navigate("/hotel-description", {
       state: {
         hotelDetails,
@@ -157,6 +164,9 @@ const fetchHotelInfo = async (hotel) => {
         srdvIndex,
         traceId,
         persons,
+        NoOfRooms,
+        GuestNationality,
+        hotelName,
       }
     });
   } catch (error) {
@@ -165,7 +175,14 @@ const fetchHotelInfo = async (hotel) => {
       console.error('Server responded with:', error.response.data);
     }
   }
+finally {
+  setLoading(false); // Hide loader
+}
 };
+
+if (loading) {
+  return <Loading />;
+}
 // ----------------------------------------------------------------
 const HandelHotelInfo = async (hotel) => {
   const loginId = localStorage.getItem('loginId');

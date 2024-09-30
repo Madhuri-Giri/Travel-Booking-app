@@ -6,9 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
-// import Timer from "../timmer/Timer";
+import Timer from "../timmer/Timer";
 import { useDispatch } from "react-redux";
 import { fetchHotelRooms } from "../../redux-toolkit/slices/hotelRoomSlice";
+import Loading from "../../pages/loading/Loading";
 
 const renderStar = (rating) => {
   const totalStars = 5;
@@ -26,11 +27,13 @@ const HotelDescription = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const hotelDetails = location.state?.hotelDetails;
-  const { persons } = location.state || {};
+  
+  const { persons, NoOfRooms, GuestNationality, hotelName } = location.state || {};
   const [showImageModal, setShowImageModal] = useState(false);
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [showFullFacilities, setShowFullFacilities] = useState(false);
   const maxFacilities = 5; 
@@ -61,6 +64,7 @@ const HotelDescription = () => {
   const dispatch = useDispatch();
 
   const fetchHotelRoom = async () => {
+    setLoading(true);
     const { resultIndex, hotelCode, srdvType, srdvIndex, traceId } = location.state || {};
     if (!resultIndex || !srdvIndex || !hotelCode || !srdvType || !traceId) {
       console.error("Missing required parameters for fetching hotel room.");
@@ -71,20 +75,35 @@ const HotelDescription = () => {
     
     try {
       const hotelRooms = await dispatch(fetchHotelRooms(requestData)).unwrap();
+      console.log("Hotel Rooms Response:", hotelRooms);
       if (hotelRooms) {
-        navigate("/hotel-room", { state: { hotelRooms, persons } });
+       
+        navigate("/hotel-room", { state: { hotelRooms, persons,  NoOfRooms, GuestNationality, hotelName,  resultIndex,
+          hotelCode,
+          srdvType,
+          srdvIndex,
+          traceId,
+        } });
       } else {
         setError("No hotel room data available.");
       }
     } catch (error) {
       setError("Failed to fetch hotel room details. Please try again later.");
     }
-  };
+    finally {
+      setLoading(false); // Hide loader
+    }
+    };
+  
+    if (loading) {
+      return <Loading />;
+    }
+ 
 
   return (
     <>
       <CustomNavbar />
-      {/* <Timer /> */}
+      <Timer />
       <section className="hotelDescriptionSection">
         <Container>
           <Row>

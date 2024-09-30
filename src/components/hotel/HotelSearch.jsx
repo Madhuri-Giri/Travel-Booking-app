@@ -314,15 +314,19 @@ const HotelSearch = () => {
   
     if (response.Results && response.Results.length > 0) {
       const hotels = response.Results;
-      const persons = response.NoOfRooms; 
+      const persons = response.NoOfRooms;
+      const GuestNationality = selectedCity.countrycode; 
       navigate("/hotel-list", { 
         state: { 
           searchResults: hotels,
           persons: persons,
+          NoOfRooms: inputs.rooms, 
+          GuestNationality: GuestNationality,
          
         } 
       }); 
-    } else {
+    }
+    else {
       // Use SweetAlert for no hotel found
       Swal.fire({
         title: "No Hotels Found",
@@ -341,7 +345,29 @@ const HotelSearch = () => {
       confirmButtonColor: "#d33",
       confirmButtonText: "OK"
     });
-  } finally {
+  }
+  //    else {
+  //     // Handle case where no hotels are found using SweetAlert
+  //     Swal.fire({
+  //       title: "No Hotels Found",
+  //       text: response?.Error?.ErrorMessage || "Please select a correct city.",
+  //       icon: "warning",
+  //       confirmButtonColor: "#3085d6",
+  //       confirmButtonText: "OK"
+  //     });
+  //   }
+    
+  //   } catch (error) {
+  //     // Use SweetAlert for error handling in case of an API error
+  //     Swal.fire({
+  //       title: "Error!",
+  //       text: response?.Error?.ErrorMessage || "No Hotel found. Please select a correct city.",
+  //       icon: "error",
+  //       confirmButtonColor: "#d33",
+  //       confirmButtonText: "OK"
+  //     });
+  // } 
+   {
     setLoading(false); // Hide loader
   }
   };

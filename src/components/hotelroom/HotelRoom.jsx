@@ -13,16 +13,28 @@ import { fetchHotelRooms } from "../../redux-toolkit/slices/hotelRoomSlice";
 import { blockHotelRooms } from "../../redux-toolkit/slices/hotelBlockSlice";
 import { useNavigate } from "react-router-dom";
 import image_room from "../../assets/images/hotel_dummy_img.png";
+import Loading from "../../pages/loading/Loading";
+import { fetchHotelDetails } from '../../redux-toolkit/slices/hotelInfoSlice';
 const HotelRoom = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
 
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const hotelRooms = location.state?.hotelRooms || [];
-  const { persons } = location.state || {};
 
-  const { loading, error } = useSelector((state) => state.hotelRooms || {});
+  const hotelDetails = location.state?.hotelDetails;
+  // const hotelName = useSelector((state) => state.hotelDetails.hotelName);
+  // const hotelName = useSelector((state) => state.hotelDetails.hotelName); 
+  // const { details, hotelName, status,  } = useSelector((state) => state.hotelDetails)
+// console.log("Hotel name",hotelName )
+
+  const hotelRooms = location.state?.hotelRooms || [];
+  const { persons,  NoOfRooms, GuestNationality, hotelName, } = location.state || {};
+  
+  const { searchResults } = location.state || {};
+  const [loading, setLoading] = useState(false);
+  const {  error } = useSelector((state) => state.hotelRooms || {});
+
   const {
     hotels = [],
     srdvType,
@@ -43,42 +55,34 @@ const HotelRoom = () => {
   let isProcessing = false;
 
   const roomblockHandler = async (event, index) => {
+    // setLoading(true);
     event.preventDefault();
-    if (index < 0 || index >= hotels.length) {
-      console.error("Invalid hotel index:", index);
+
+    const { resultIndex, hotelCode, srdvType, srdvIndex, traceId } = location.state || {};
+    if (!resultIndex || !srdvIndex || !hotelCode || !srdvType || !traceId) {
+      console.error("Missing required parameters for fetching hotel room.");
       return;
     }
 
-    const resultIndex = resultIndexes[index];
-    const srdvIndex = srdvIndexes[index];
-    const hotelCode = hotelCodes[index];
-
-    if (
-      resultIndex === undefined ||
-      srdvIndex === undefined ||
-      hotelCode === undefined
-    ) {
-      console.error(
-        "One or more values are undefined. Check your data arrays."
-      );
-      return;
-    }
-
+    const requestData = { ResultIndex: resultIndex, SrdvIndex: srdvIndex, SrdvType: srdvType, HotelCode: hotelCode, TraceId: traceId };
+    
     if (isProcessing || !selectedRoom) return;
     isProcessing = true;
 
     const hotelRoomsDetails = {
-      // ResultIndex: resultIndex || '9',
-      ResultIndex: "9",
+      
+      ResultIndex: resultIndex ,
+      // ResultIndex: "9",
       SrdvIndex: srdvIndex,
       SrdvType: srdvType,
-      // HotelCode: hotelCode || "92G|DEL",
-      HotelCode: "92G|DEL",
-      // TraceId: traceId,
-      TraceId: "1",
-      GuestNationality: "IN",
-      HotelName: "The Manor",
-      NoOfRooms: "1",
+      HotelCode: hotelCode,
+      // HotelCode: "92G|DEL",
+      TraceId: traceId,
+      // TraceId: "1",
+      GuestNationality: GuestNationality,
+      HotelName:  hotelName,
+      // NoOfRooms: "1",
+      NoOfRooms: NoOfRooms,
       HotelRoomsDetails: [
         {
           ChildCount: selectedRoom.ChildCount || 0,
@@ -204,6 +208,10 @@ const HotelRoom = () => {
 
     isProcessing = false;
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   const cleanCancellationPolicy = (text) => {
     if (!text) return "";
