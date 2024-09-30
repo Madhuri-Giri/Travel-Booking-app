@@ -106,6 +106,7 @@
   min-width: 200px;
 }
 
+
 .right-side {
   text-align: right;
   flex: 1;
@@ -119,9 +120,16 @@
   text-align: center;
 }
 
-.guest-details-container h3 {
-  color: #007bff;
+.guest-details-container h4 {
+  color: #35393d;
 }
+
+/* model css */
+.policy-modal .modal-dialog {
+  max-width: 50%; 
+  width: 80%;
+}
+
 
 .guest-details-card {
   background-color: white;
@@ -378,6 +386,11 @@
 }
 
 @media (max-width: 480px) {
+  .policy-modal .modal-dialog {
+    max-width: 100%; 
+    width: 100%;
+  }
+  
   .section-title {
     font-size: 1.2em;
   }
@@ -512,5 +525,5 @@ margin-top: 1vmax
    font-weight: 700;
    font-size: 1.3vmax;
    color: #00e100;
-
+ }
 
