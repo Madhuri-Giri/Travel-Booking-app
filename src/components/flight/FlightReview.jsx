@@ -44,14 +44,14 @@ const FlightReview = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   // Calculate the grand total
   const grandTotal = totalPrice + finalTotalPrice;
-
+  console.log('grandTotal',grandTotal.toFixed(2));
+  
   useEffect(() => {
     const savedFare = flightSelectedDATA?.flight.OfferedFare
     if (savedFare) {
       setTotalPrice(parseFloat(savedFare));
     }
   }, [flightSelectedDATA]);
-
 
   const segment = fareQuoteAPIData.Segments[0][0];
   const origin = segment.Origin;
@@ -89,7 +89,8 @@ const FlightReview = () => {
 
   // func for duration convert hpur minute---------------------
 
-  const roundedGrandTotal = Math.round(grandTotal);
+  const roundedGrandTotal = Math.round(grandTotal ? grandTotal : totalPrice);
+  // const roundedGrandTotal = Math.round(grandTotal);
 
 
   //-----------------------------Payment apis--------------------------------------------------------------------------------------
@@ -100,7 +101,7 @@ const FlightReview = () => {
     try {
       const loginId = localStorage.getItem('loginId')
       const response = await axios.post('https://sajyatra.sajpe.in/admin/api/create-flight-payment', {
-        amount: roundedGrandTotal,
+        amount: roundedGrandTotal  ,
         user_id: loginId,
         transaction_num,
       });
@@ -551,7 +552,6 @@ const FlightReview = () => {
                     <div className="flightPayDivhed3">
                       <h5>Grand Total</h5>
                       <p>₹{grandTotal ? grandTotal.toFixed(2) : totalPrice.toFixed(2)}</p>
-
                     </div>
                   </div>
                   <div className="flightPayDivMain">

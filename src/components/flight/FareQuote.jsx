@@ -23,12 +23,14 @@ const FareQuote = () => {
     const dataToPass = location.state?.dataToPass;
     const fareQuoteAPIData = location.state?.fareQuoteAPIData;
     const segmentss = fareQuoteAPIData.Segments;
+    console.log('fareQuoteAPIData', fareQuoteAPIData.Fare.PublishedFare);
 
     // selected flight data get------
     const { flightSelectedDATA } = location?.state || {};
     console.log('flightSelectedDATA', flightSelectedDATA);
 
-    const publishedFare = flightSelectedDATA?.flight?.OfferedFare;
+    const publishedFare = fareQuoteAPIData?.Fare.PublishedFare;
+    // const publishedFare = flightSelectedDATA?.flight?.OfferedFare;
     console.log('publishedFare', publishedFare);
 
 

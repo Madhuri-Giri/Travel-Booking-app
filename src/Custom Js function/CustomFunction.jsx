@@ -55,5 +55,5 @@ export function calculateWaitingTime(startTime, endTime) {
 }
 
 // Example usage
-const waitingTime = calculateWaitingTime("15:45", "20:55");
-console.log(`Waiting time: ${waitingTime}`);
+// const waitingTime = calculateWaitingTime("15:45", "20:55");
+// console.log(`Waiting time: ${waitingTime}`);
