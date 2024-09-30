@@ -10,8 +10,6 @@ import Loading from '../../pages/loading/Loading'; // Import the Loading compone
 import { useDispatch, useSelector } from 'react-redux';
 
 
-
-
 function BookingHistory() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('hotel'); 

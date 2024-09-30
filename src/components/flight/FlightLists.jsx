@@ -52,10 +52,12 @@ export default function FlightLists() {
     const [dataToPass, setDataToPass] = useState(null);
     const [OfferPriceData, setOfferPriceData] = useState(null);
     const [sEGMENTSData, setSEGMENTSData] = useState(null);
+    const [isRefundable, setIsRefundable] = useState(null);
     const { isLogin } = useSelector((state) => state.loginReducer);
     console.log('OfferPriceData', OfferPriceData?.fareValue);
-    console.log('ResultIndex', OfferPriceData?.fareValue.ResultIndex);
-    console.log('SrdvIndex', OfferPriceData?.fareValue.SrdvIndex);
+    console.log('isRefundable', isRefundable);
+    // console.log('ResultIndex', OfferPriceData?.fareValue.ResultIndex);
+    // console.log('SrdvIndex', OfferPriceData?.fareValue.SrdvIndex);
 
     // // price modal----
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -110,7 +112,7 @@ export default function FlightLists() {
         }
     }, [location]);
 
-    console.log("listingData", listingData);
+    // console.log("listingData", listingData);
 
     const swiperRef = useRef(null);
     // const { flightSearchData } = flightSearchReducer;
@@ -903,11 +905,6 @@ export default function FlightLists() {
                                     {
                                         filteredFlights?.[0].map((value, index) => {
                                             const airlineCode = value.Segments[0][0].Airline.AirlineCode
-                                            // console.log('value',value.Segments[0][0].Origin.CityName);
-                                            // console.log('value',value.Segments[0][0].Origin.AirportName);
-                                            // console.log('last',value.Segments[0][value.Segments.length-1].Destination.CityName);
-                                            // console.log('last',value.Segments[0][value.Segments.length-1].Origin.AirportName);
-                                            
                                             const logoUrl = logos[airlineCode] || '';
                                             return (
                                                 <>
@@ -918,9 +915,7 @@ export default function FlightLists() {
                                                                     <p className="regulrdeal"><span>Regular Deal</span></p>
                                                                     <div>
                                                                         <button onClick={() => handleSelectSeat(value, logoUrl)}>SELECT</button>
-                                                                        <div>
-                                                                            {/* <p>₹{value?.OfferedFare}</p> */}
-                                                                        </div>
+
                                                                     </div>                                                                </div>
 
                                                                 <div className="listDataMain row">
@@ -931,14 +926,14 @@ export default function FlightLists() {
                                                                             </div>
                                                                             <div className="arlineanmescode">
                                                                                 <div>
-                                                                                <p>{value.Segments[0][0].Airline.AirlineName}</p>
+                                                                                    <p>{value.Segments[0][0].Airline.AirlineName}</p>
                                                                                     <span>{value.Segments[0][0].Airline.AirlineCode} - </span>
                                                                                     {
                                                                                         value.Segments[0].map((valueSeg, index) => {
                                                                                             return (
                                                                                                 <span key={index}>
                                                                                                     {valueSeg.Airline.FlightNumber}
-                                                                                                    {index < value.Segments[0].length - 1 && ' ,'} {/* Add comma if not last item */}
+                                                                                                    {index < value.Segments[0].length - 1 && ' ,'}
                                                                                                 </span>
                                                                                             );
                                                                                         })
@@ -949,46 +944,37 @@ export default function FlightLists() {
 
                                                                         </div>
                                                                         <div className="flightOrigindiv">
-                                                                           <div>
-                                                                            {/* <div className="d-flex"> */}
-                                                                           <p className="me-1">{listingData?.Origin}</p>
-                                                                           <strong><p>{extractTime(value.Segments[0][0].DepTime)}</p></strong>
-                                                                            {/* </div> */}
-                                                                           {/* <p>
-                                                                            {value.Segments[0][0].Origin.CityName}
-                                                                           </p> */}
-                                                                           </div>
+                                                                            <div>
+                                                                                <p className="me-1">{listingData?.Origin}</p>
+                                                                                <strong><p>{extractTime(value.Segments[0][0].DepTime)}</p></strong>
+
+                                                                            </div>
                                                                         </div>
-                                                                        <div className="fligtDurationdiv">   
+                                                                        <div className="fligtDurationdiv">
                                                                             <div>
                                                                                 <p>
-                                                                                <span className=""><LuTimerReset /></span>
-                                                                                {calculateDuration(value.Segments[0][0].DepTime, value.Segments[0][value.Segments[0].length - 1].ArrTime)}
-                                                                            </p>
-                                                                            <div className="line-container">
-                                                                                <hr className="line-with-dot" />
-                                                                                <div className="dot"></div>
-                                                                            </div>
-                                                                            {
-                                                                                value.Segments[0].length > 1 &&
-                                                                                <p>{value.Segments[0].length - 1} stop</p>
-                                                                            }
+                                                                                    <span className=""><LuTimerReset /></span>
+                                                                                    {calculateDuration(value.Segments[0][0].DepTime, value.Segments[0][value.Segments[0].length - 1].ArrTime)}
+                                                                                </p>
+                                                                                <div className="line-container">
+                                                                                    <hr className="line-with-dot" />
+                                                                                    <div className="dot"></div>
+                                                                                </div>
+                                                                                {
+                                                                                    value.Segments[0].length > 1 &&
+                                                                                    <p>{value.Segments[0].length - 1} stop</p>
+                                                                                }
                                                                             </div>
                                                                         </div>
 
                                                                         <div className="flightfDestinationDiv">
-                                                                          <div>
-                                                                            {/* <div className="d-flex"> */}
-                                                                          <p className="me-1">{listingData?.Destination}</p>
-                                                                            <strong>                                                       <p>
-                                                                                {extractTime(value.Segments[0][value.Segments[0].length - 1].ArrTime)}
-                                                                            </p>
-                                                                            </strong>
-                                                                            {/* </div> */}
-                                                                            {/* <p>
-                                                                                {value.Segments[0][value.Segments.length-1].Destination.CityName}
-                                                                            </p> */}
-                                                                          </div>
+                                                                            <div>
+                                                                                <p className="me-1">{listingData?.Destination}</p>
+                                                                                <strong>                                                       <p>
+                                                                                    {extractTime(value.Segments[0][value.Segments[0].length - 1].ArrTime)}
+                                                                                </p>
+                                                                                </strong>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                     <div className="priceradiotbtnn col-md-4">
@@ -997,6 +983,9 @@ export default function FlightLists() {
                                                                                 {value?.FareDataMultiple.map((fareValue, fareIndex) => {
                                                                                     // Determine if the current option should be checked by default
                                                                                     const isChecked = fareValue.Source === 'Publish';
+                                                                                    // setIsRefundable(fareValue?.IsRefundable)
+                                                                                    const isRefundable = fareValue?.IsRefundable
+                                                                                    console.log('isRefundableeeeee', isRefundable);
 
                                                                                     // Function to determine the background color based on fareValue.Source
                                                                                     const getSourceBgColor = (source) => {
@@ -1022,7 +1011,6 @@ export default function FlightLists() {
                                                                                         <div
                                                                                             className="publiceprices"
                                                                                             key={fareIndex}
-                                                                                             // Set the background color
                                                                                         >
                                                                                             <label>
                                                                                                 <input
@@ -1031,20 +1019,59 @@ export default function FlightLists() {
                                                                                                     value={`option${fareIndex + 1}`}
                                                                                                     // Automatically check "Publish" by default
                                                                                                     defaultChecked={isChecked}
-                                                                                                    onClick={() => {
-                                                                                                        const offerData = {
-                                                                                                            fareValue,
-                                                                                                            segments: value.Segments,
-                                                                                                            logoUrl,
-                                                                                                        };
-                                                                                                        setOfferPriceData(offerData);
+                                                                                                    onChange={(event) => {
+                                                                                                        // Save the data only when the radio button is checked
+                                                                                                        if (event.target.checked) {
+                                                                                                            const offerData = {
+                                                                                                                fareValue,
+                                                                                                                segments: value.Segments,
+                                                                                                                logoUrl,
+                                                                                                            };
+                                                                                                            setOfferPriceData(offerData);
+                                                                                                        }
                                                                                                     }}
                                                                                                 />
-                                                                                                <strong> ₹ {fareValue.OfferedFare}</strong> <span style={{ backgroundColor: getSourceBgColor(fareValue.Source) }}>{fareValue.Source}</span>
+                                                                                                <strong> ₹ {fareValue.OfferedFare}</strong>
+                                                                                                <span style={{ backgroundColor: getSourceBgColor(fareValue.Source) }}>
+                                                                                                    {fareValue.Source}
+                                                                                                </span>
                                                                                             </label>
                                                                                         </div>
+
+                                                                                        // <div
+                                                                                        //     className="publiceprices"
+                                                                                        //     key={fareIndex}
+                                                                                        //      // Set the background color
+                                                                                        // >
+                                                                                        //     <label>
+                                                                                        //         <input
+                                                                                        //             type="radio"
+                                                                                        //             name="flightOption"
+                                                                                        //             value={`option${fareIndex + 1}`}
+                                                                                        //             // Automatically check "Publish" by default
+                                                                                        //             defaultChecked={isChecked}
+                                                                                        //             onClick={() => {
+                                                                                        //                 const offerData = {
+                                                                                        //                     fareValue,
+                                                                                        //                     segments: value.Segments,
+                                                                                        //                     logoUrl,
+                                                                                        //                 };
+                                                                                        //                 setOfferPriceData(offerData);
+                                                                                        //             }}
+                                                                                        //         />
+                                                                                        //         <strong> ₹ {fareValue.OfferedFare}</strong> <span style={{ backgroundColor: getSourceBgColor(fareValue.Source) }}>{fareValue.Source}</span>
+                                                                                        //     </label>
+                                                                                        // </div>
                                                                                     );
                                                                                 })}
+
+                                                                                {/* <div>
+                                                                                    {!isRefundable ? (
+                                                                                        <p style={{ color: 'green' }}>Refundable</p>
+                                                                                    ) : (
+                                                                                        <p style={{ color: 'red' }}>Non-refundable</p>
+                                                                                    )}
+                                                                                </div> */}
                                                                             </Form>
 
                                                                         </div>
@@ -1083,6 +1110,8 @@ export default function FlightLists() {
                                                                         />
                                                                     </div>
                                                                 )}
+
+
                                                             </div>
                                                         </div>
 
