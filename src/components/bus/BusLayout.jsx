@@ -5,7 +5,7 @@ import BusSeatImgSleeper from '../../assets/images/sleepImg.png';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const BusLayout = () => {
+const BusLayout = ({busType}) => {
   const [lowerSeatsBus, setLowerSeatsBus] = useState([]);
   const [upperSeatsBus, setUpperSeatsBus] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -20,6 +20,8 @@ const BusLayout = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
+
+  console.log('busType',busType)
 
   const seatDetails = layout?.Result?.SeatLayout?.SeatLayoutDetails?.Layout?.seatDetails || [];
   const totalAvailableSeats = layout?.Result?.SeatLayout?.SeatLayoutDetails?.AvailableSeats || 0;
@@ -214,13 +216,12 @@ const BusLayout = () => {
 
 
 
-
-{/*---------- ----------------------------------------seat code ------------------------------------------------------------------------------- */}
-
-
+      {/* ----------------------------------------seat code ---------------------------------------------------------------- */}
 
 
             <div className="Seats-layout">
+            <small>{busType}</small>
+
               <div className="lower-seats">
                 <h6>Lower Seats</h6>
                 {lowerSeatsBus.length > 0 ? (
@@ -231,6 +232,8 @@ const BusLayout = () => {
                   <div className="error-message">No Lower Seats Available</div>
                 )}
               </div>
+
+              
               <div className="upper-seats">
                 <h6>Upper Seats</h6>
                 {upperSeatsBus.length > 0 ? (
@@ -244,7 +247,7 @@ const BusLayout = () => {
             </div>
 
 
- {/* ---------------------------------------------------------------------------------------------------------------------------------------*/}
+ {/* ---------------------------------------------------------------------------------------------------------------------------------------            */}
 
             <div className="bord-drop-point">
               <div className="bor-dro">
