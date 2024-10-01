@@ -113,8 +113,12 @@
 }
 
 .reserve_button:hover {
-  background-color: #0056b3;
-}
+  color: #00b7eb;
+  border:1px solid  #00b7eb;
+  background: none;
+  }
+  
+
 
 .hotelbody {
   display: flex;

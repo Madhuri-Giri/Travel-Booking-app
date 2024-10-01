@@ -583,7 +583,7 @@ const GuestDetails = () => {
     const discountRate = details.discount || 0;
 
     const gstAmount = (roomPrice * gstRate) / 100;
-    const discountAmount = (roomPrice * discountRate) / 100;
+    const discountAmount = (roomPrice + discountRate) ;
 
     const totalPrice = roomPrice + gstAmount - discountAmount;
 
@@ -759,7 +759,7 @@ const GuestDetails = () => {
 
                         <div className="room_type">
                           <span>Discount</span>
-                          <small>{bookingDetails.discount || 0} %</small>
+                          <small>{bookingDetails.discount || 0} </small>
                         </div>
                         <div className="room_type">
                           <span>GST </span>
