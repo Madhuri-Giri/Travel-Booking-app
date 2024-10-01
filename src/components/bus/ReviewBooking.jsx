@@ -104,8 +104,12 @@ const droppingPointIndex = selectedDroppingPoint.index;
   };
 
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const blockHandler = async (e) => {
     e.preventDefault();
+  
+    setErrorMessage("");
 
     const passengers = (selectedBusSeatData || []).map((seat, index) => ({
       LeadPassenger: index === 0,
@@ -160,24 +164,18 @@ const droppingPointIndex = selectedDroppingPoint.index;
         },
       },
     }));
-
+  
     const requestData = {
-      // TraceId: "1",
-      // ResultIndex: "1",
-      // BoardingPointId: "1",
-      // DroppingPointId: "1",
       TraceId: traceId,
       ResultIndex: selectedBusIndex,
-      BoardingPointId: boardingPointIndex , 
-      DroppingPointId: droppingPointIndex, 
+      BoardingPointId: boardingPointIndex,
+      DroppingPointId: droppingPointIndex,
+      email: newContactData.email,
       RefID: "1",
       Passenger: passengers,
     };
-
-
+  
     try {
-      // console.log("Sending request to API with payload:", JSON.stringify(requestData, null, 2));
-
       const response = await fetch("https://sajyatra.sajpe.in/admin/api/seat-block", {
         method: "POST",
         headers: {
@@ -185,34 +183,35 @@ const droppingPointIndex = selectedDroppingPoint.index;
         },
         body: JSON.stringify(requestData),
       });
-
+  
       if (!response.ok) {
+        console.error("Response status code:", response.status);
         const errorResult = await response.json();
-        const errorMessage = errorResult.api_response.Error.ErrorMessage || 'Booking failed';
-        console.error("Booking error:", errorMessage);
-        alert(errorMessage);
+        console.error("Full error response:", errorResult); 
+        const errorMessage = errorResult.api_response?.Error?.ErrorMessage || 'Failed to Fetch ';
+        toast.error(errorMessage); 
+        setErrorMessage(errorMessage); 
         return;
       }
-
+      
+  
       const result = await response.json();
-      console.log("Block Response:", result);
-
-
       setPassengers((prev) => [...prev, ...passengers]);
       setFormData(initialFormData);
       setPassengerCount((prev) => prev + passengers.length);
-
-
+  
       const id = result.result.Booking_Status[0]?.id;
       setBookingId(id);
-
+  
       setStoredPassengerDetails([...passengers]);
-
+  
+      toast.success("Passenger added successfully!"); 
     } catch (error) {
+      toast.error("Failed to add passenger. Please try again."); 
       console.error("Error adding passengers:", error);
     }
   };
-
+  
 
 
 
@@ -289,7 +288,7 @@ const droppingPointIndex = selectedDroppingPoint.index;
         bus_booking_id: [bookingId],
       });
 
-      console.log('API response:', response.data);
+      // console.log('API response:', response.data);
 
       if (response.data.status === 'success') {
         setPaymentDetails(response.data.payment_details);
@@ -345,8 +344,8 @@ const droppingPointIndex = selectedDroppingPoint.index;
           const paymentId = response.razorpay_payment_id;
           const transactionId = options.transaction_id;
 
-          console.log('payment state id',paymentId )
-          console.log('payment trans id', transactionId)
+          // console.log('payment state id',paymentId )
+          // console.log('payment trans id', transactionId)
 
 
           setPaymentId(paymentId);
@@ -416,7 +415,7 @@ const droppingPointIndex = selectedDroppingPoint.index;
         transaction_id: transactionId, 
       };
 
-      console.log("update payload",payload)
+      // console.log("update payload",payload)
 
       const response = await fetch(url, {
         method: 'POST',
@@ -433,9 +432,9 @@ const droppingPointIndex = selectedDroppingPoint.index;
       }
 
       const data = await response.json();
-      console.log('Update successful:', data);
-      const status = data.data.status;
-      console.log('statusBus', status);
+      // console.log('Update successful:', data);
+      // const status = data.data.status;
+      // console.log('statusBus', status);
 
     
     } catch (error) {
@@ -465,14 +464,15 @@ const droppingPointIndex = selectedDroppingPoint.index;
     // console.log('transaction_id:', transaction_id);
 
     const requestData = {
-      // TraceId: '1',
-      // ResultIndex: '1',
-      // BoardingPointId: '1',
-      // DroppingPointId: '1',
-      TraceId: traceId,
-      ResultIndex: selectedBusIndex,
-      BoardingPointId: boardingPointIndex , 
-      DroppingPointId: droppingPointIndex, 
+      TraceId: '1',
+      ResultIndex: '1',
+      BoardingPointId: '1',
+      DroppingPointId: '1',
+      // TraceId: traceId,
+      // ResultIndex: selectedBusIndex,
+      // BoardingPointId: boardingPointIndex , 
+      // DroppingPointId: droppingPointIndex, 
+      email: newContactData.email,
       RefID: "1",
       transaction_num: transaction_num,
       bus_booking_id: [bookingId], 
@@ -627,6 +627,11 @@ const droppingPointIndex = selectedDroppingPoint.index;
 
                 <div className="passnger-Info-page">
                   <>
+                  {errorMessage && (
+    <div style={{ color: "red", marginBottom: "10px" }}>
+      {errorMessage}
+    </div>
+  )}
                     <div className='PassangerInfo'>
                       <div className="p-upr">
                         <h6><i className="ri-user-add-line"></i>Traveller Details <br /></h6>
