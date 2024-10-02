@@ -23,8 +23,8 @@ import { fetchHotelRooms } from "../../redux-toolkit/slices/hotelRoomSlice";
 import { blockHotelRooms } from "../../redux-toolkit/slices/hotelBlockSlice";
 import { bookHotel } from "../../redux-toolkit/slices/hotelBookSlice";
 import { searchHotels } from "../../redux-toolkit/slices/hotelSlice";
-
 import { Modal, Button } from "react-bootstrap";
+
 const GuestDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -64,13 +64,10 @@ const GuestDetails = () => {
   const { blockRoomResult, bookingStatus } = location.state || {};
   const bookingDetails = bookingStatus?.[0] || {};
   const [errors, setErrors] = useState({});
-
-
+  const [loading, setLoading] = useState(false)
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
-
- 
 
   const openModal = (content, title) => {
     setModalContent(cleanUpDescription(content));
@@ -171,7 +168,7 @@ const GuestDetails = () => {
       }
 
       const payload = {
-        amount: totalPrice,
+        amount: bookingDetails.publishedprice,
         user_id: loginId,
         transaction_num: transactionNum,
         hotel_booking_id: [bookingId],
@@ -213,6 +210,9 @@ const GuestDetails = () => {
     }
 
     try {
+
+      // setLoading(true);
+
       const paymentData = await fetchPaymentDetails();
       if (!paymentData) return;
 
@@ -233,20 +233,24 @@ const GuestDetails = () => {
           localStorage.setItem("payment_id", response.razorpay_payment_id);
           localStorage.setItem("transaction_id", options.transaction_id);
 
-          setPayLoading(true);
+          // setLoading(true);
 
           try {
             await updateHandlePayment();
 
-            setPayLoading(false);
+            // setLoading(true);
 
             await bookHandler();
+            setPayLoading(true);
           } catch (error) {
             console.error(
               "Error during updateHandlePayment or bookHandler:",
               error.message
             );
             alert("An error occurred during processing. Please try again.");
+          }
+          finally {
+            setLoading(false);
           }
         },
         prefill: {
@@ -317,18 +321,12 @@ const GuestDetails = () => {
       throw error;
     }
   };
+
+ 
   // ----------------Payment Integration End -------------------
 
   const [selectedRoom, setSelectedRoom] = useState([]);
-  // const hotelRooms = location.state?.hotelRooms || [];
-  // const { resultIndex, hotelCode, srdvType, srdvIndex, traceId } = location.state || {};
-  //   if (!resultIndex || !srdvIndex || !hotelCode || !srdvType || !traceId) {
-  //     console.error("Missing required parameters for fetching hotel room.");
-  //     return;
-  //   }
-
-  //   const requestData = { ResultIndex: resultIndex, SrdvIndex: srdvIndex, SrdvType: srdvType, HotelCode: hotelCode, TraceId: traceId };
-    
+ 
   const {
     hotels = [],
     srdvType,
@@ -549,7 +547,7 @@ const GuestDetails = () => {
             Supplements: selectedRoom.Supplements || ["None"],
           },
         ],
-        ArrivalTime: "2019-09-28T00:00:00",
+        ArrivalTime: selectedRoom.ArrivalTime,
         IsPackageFare: true,
         SrdvType: "SingleTB",
         SrdvIndex: "SrdvTB",
@@ -575,6 +573,14 @@ const GuestDetails = () => {
     }
   };
 
+
+  if (payLoading) {
+    return <PayloaderHotel />;
+  }
+
+  if (loading) {
+    return <Loading />;
+  }
   // -------------------------------End Book API--------------------------------------------
   // Function to calculate the total price after GST and discount
   const calculateTotalPrice = (details) => {
@@ -583,7 +589,7 @@ const GuestDetails = () => {
     const discountRate = details.discount || 0;
 
     const gstAmount = (roomPrice * gstRate) / 100;
-    const discountAmount = (roomPrice + discountRate) ;
+    const discountAmount = (roomPrice * discountRate) / 100;
 
     const totalPrice = roomPrice + gstAmount - discountAmount;
 
@@ -681,11 +687,19 @@ const GuestDetails = () => {
                   {/* <h5>{bookingDetails.addressLine1 || "Address not available"}</h5> */}
                 </div>
                 <div className="right-side">
-                  <p>
-                    <strong>Check-in Date:</strong>{" "}
-                    {bookingDetails.check_in_date ||
-                      "Check-in date not available"}
-                  </p>
+                <p>
+  <strong>Check-in Date:</strong>{" "}
+  {bookingDetails.check_in_date
+    ? new Date(bookingDetails.check_in_date)
+        .toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+    : "Check-in date not available"}
+</p>
+
+
                 </div>
               </div>
               <Row>
@@ -771,7 +785,7 @@ const GuestDetails = () => {
                         </div>
                         <div className="final_price">
                           <span>Total Payment</span>
-                          <small>₹{totalPrice}</small>
+                          <small>₹{bookingDetails.publishedprice}</small>
                         </div>
                       </div>
                     </div>

@@ -67,6 +67,8 @@ const BusLists = () => {
     return istTime;
   };
 
+  
+
   const toggleLayoutVisibility = (index) => {
     setVisibleLayout((prev) => ({
       ...prev,
@@ -144,38 +146,6 @@ const BusLists = () => {
     setShowOtpOverlay(false);
   };
 
-  // const useridHandler = async () => {
-
-  // const loginId = localStorage.getItem('loginId');
-
-  //   try {
-  //     const requestBody = {
-  //       user_id:loginId , 
-  //     };
-
-  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/user-detail', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(requestBody),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch user details');
-  //     }
-
-  //     const data = await response.json();
-  //     console.log('User details:', data);
-  //     console.log('trans', data.transaction.transaction_num)
-  //     if (data.result && data.transaction) {
-  //       localStorage.setItem('transactionIdBus', data.transaction.id);
-  //       localStorage.setItem('transactionNum', data.transaction.transaction_num);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching user details:', error.message);
-  //   }
-  // };
 
 
 
@@ -194,15 +164,6 @@ const BusLists = () => {
     setIsDropVisible((prev) => !prev);
   };
 
-  // const addSeatLayout = async () => {
-  //   try {
-  //     console.log('Selected Bus Index layout function:', selectedBusIndex); 
-  //     await dispatch(fetchSeatLayout({ traceId, selectedBusIndex }));
-
-  //   } catch (error) {
-  //     console.error('Error adding seat layout:', error.message);
-  //   }
-  // };
   const addSeatLayout = async () => {
     try {
       const selectedBusIndex = localStorage.getItem('selectedBusIndex');
@@ -259,15 +220,6 @@ const BusLists = () => {
   };
 
   // ----------------------------------// responsivesidebar----------------------------------
-
-
-  // useEffect(() => {
-  //   if (visibleLayout !== null) {
-  //     document.body.classList.add('no-scroll');
-  //   } else {
-  //     document.body.classList.remove('no-scroll');
-  //   }
-  // }, [visibleLayout]);
 
   return (
     <>
@@ -442,34 +394,24 @@ const BusLists = () => {
                           <button className="btn btn-primary" onClick={() => handleSelectSeat(index)}>Select Seat</button>
                         </div>
 
-                        {/* {visibleLayout !== null && (
-                  <div className="overlay" onClick={() => setVisibleLayout(null)}>
-                    <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
-                      <div className="tppp">
-                        <h5>{from}-{to} <br />
-                          <span style={{ fontSize: "0.8vmax", color: "green" }}>({bus.TravelName})</span>
-                        </h5>
-                        <i onClick={() => setVisibleLayout(null)} className="ri-close-line"></i>
-                      </div>
-                      <Test          selectedBusIndex={selectedBusIndex}  layoutResponse={layoutResponse} />
-                    </div>
-                  </div>
-                )} */}
 
                         {visibleLayout === index && ( // Show overlay only for the correct bus
-                          <div className="overlay" onClick={() => setVisibleLayout(null)}>
-                            <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
-                              <div className="tppp">
-                                <h5>{from} - {to} <br />
-                                  <span style={{ fontSize: "0.8vmax", color: "green" }}>({bus.TravelName})</span>
-                                </h5>
-                                <i onClick={() => setVisibleLayout(null)} className="ri-close-line"></i>
-                              </div>
-                              {/* Minimal props to avoid re-renders */}
-                              <BusLayout selectedBusIndex={selectedBusIndex} layoutResponse={layoutResponse} />
-                            </div>
-                          </div>
-                        )}
+  <div className="overlay" onClick={() => setVisibleLayout(null)}>
+    <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
+      <div className="tppp">
+        <h5>{from} - {to} <br />
+          <span style={{ fontSize: "0.8vmax", color: "green" }}>({bus.TravelName})</span>
+        </h5>
+        <i onClick={() => setVisibleLayout(null)} className="ri-close-line"></i>
+      </div>
+      <BusLayout 
+        selectedBusIndex={selectedBusIndex} 
+        layoutResponse={layoutResponse} 
+        busType={bus.BusType}  // Pass BusType here
+      />
+    </div>
+  </div>
+)}
 
 
 

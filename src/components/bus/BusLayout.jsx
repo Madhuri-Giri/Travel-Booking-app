@@ -5,7 +5,7 @@ import BusSeatImgSleeper from '../../assets/images/sleepImg.png';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const BusLayout = () => {
+const BusLayout = ({busType}) => {
   const [lowerSeatsBus, setLowerSeatsBus] = useState([]);
   const [upperSeatsBus, setUpperSeatsBus] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -21,31 +21,11 @@ const BusLayout = () => {
 
   const navigate = useNavigate();
 
+  console.log('busType',busType)
+
   const seatDetails = layout?.Result?.SeatLayout?.SeatLayoutDetails?.Layout?.seatDetails || [];
   const totalAvailableSeats = layout?.Result?.SeatLayout?.SeatLayoutDetails?.AvailableSeats || 0;
 
-  useEffect(() => {
-    if (seatDetails.length > 0) {
-      let upperSeats = [];
-      let lowerSeats = [];
-
-      seatDetails.forEach(seatArray => {
-        seatArray.forEach(seat => {
-          if (seat.IsUpper) {
-            upperSeats.push(seat);
-          } else {
-            lowerSeats.push(seat);
-          }
-        });
-      });
-
-      lowerSeats.sort((a, b) => a.SeatName.localeCompare(b.SeatName));
-      upperSeats.sort((a, b) => a.SeatName.localeCompare(b.SeatName));
-
-      setLowerSeatsBus(lowerSeats);
-      setUpperSeatsBus(upperSeats);
-    }
-  }, [seatDetails]);
 
   const handleSeatSelect = (seat) => {
     if (!seat.SeatStatus) return;
@@ -81,6 +61,33 @@ const BusLayout = () => {
     });
   };
 
+
+// ---------------------------------------seats code -------------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (seatDetails.length > 0) {
+      let upperSeats = [];
+      let lowerSeats = [];
+
+      seatDetails.forEach(seatArray => {
+        seatArray.forEach(seat => {
+          if (seat.IsUpper) {
+            upperSeats.push(seat);
+          } else {
+            lowerSeats.push(seat);
+          }
+        });
+      });
+
+      lowerSeats.sort((a, b) => a.SeatName.localeCompare(b.SeatName));
+      upperSeats.sort((a, b) => a.SeatName.localeCompare(b.SeatName));
+
+      setLowerSeatsBus(lowerSeats);
+      setUpperSeatsBus(upperSeats);
+    }
+  }, [seatDetails]);
+
+
   const renderSeats = (seats) => {
     return seats.map((seat) => {
       const seatClass = seat.SeatStatus ? 'seat-available' : 'seat-disabled';
@@ -102,6 +109,7 @@ const BusLayout = () => {
     });
   };
 
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
 
   const handleProceed = () => {
     setErrorMessage("");
@@ -204,7 +212,16 @@ const BusLayout = () => {
               <span>Selected Seats: {selectedSeats.join(', ')}</span>
               <span>Available Seats: {totalAvailableSeats}</span>
             </div>
+
+
+
+
+      {/* ----------------------------------------seat code ---------------------------------------------------------------- */}
+
+
             <div className="Seats-layout">
+            <small>{busType}</small>
+
               <div className="lower-seats">
                 <h6>Lower Seats</h6>
                 {lowerSeatsBus.length > 0 ? (
@@ -215,6 +232,8 @@ const BusLayout = () => {
                   <div className="error-message">No Lower Seats Available</div>
                 )}
               </div>
+
+              
               <div className="upper-seats">
                 <h6>Upper Seats</h6>
                 {upperSeatsBus.length > 0 ? (
@@ -226,6 +245,9 @@ const BusLayout = () => {
                 )}
               </div>
             </div>
+
+
+ {/* ---------------------------------------------------------------------------------------------------------------------------------------            */}
 
             <div className="bord-drop-point">
               <div className="bor-dro">

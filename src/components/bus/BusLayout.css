@@ -32,6 +32,8 @@
   font-size: 0.8vmax;
   text-transform: uppercase;
 }
+
+/* ------------------------------------------------------------------------------------ */
 .Buslayout-Main .Bus-layout-new .layout-bus .bord-drop-point{
   width: 95%;
   display: flex;
@@ -113,6 +115,7 @@
 }
 
 
+/* ------------------------------------------------------------------------------------ */
 
 
 .Seats-layout {
@@ -146,8 +149,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 5px;
-  background: none;
+  margin: 3px;
   border: none;
   cursor: pointer;
 }
@@ -170,7 +172,7 @@
 
 /* Sleeper seats: keep current size */
 .sleeper-seat {
-  width: 40px; /* Keep original size for sleeper seats */
+  width: 30px; /* Keep original size for sleeper seats */
 }
 
 .sleeper-seat img {
@@ -187,7 +189,7 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 5px;
 }
 .error-message {
   color: red;
@@ -198,6 +200,7 @@
 .selected-seat {
   background-color: #ccc;
 }
+
 
 
 /* ------------------loader----------------------- */
