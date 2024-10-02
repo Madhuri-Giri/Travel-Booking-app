@@ -165,32 +165,16 @@
   width: 25px; /* Reduced size for sitting seats */
 }
 
-.sitting-seat img {
-  width: 100%;
-  max-width: 30px; /* Smaller size for sitting seat image */
-}
 
-/* Sleeper seats: keep current size */
-.sleeper-seat {
-  width: 30px; /* Keep original size for sleeper seats */
-}
 
-.sleeper-seat img {
-  width: 100%;
-  max-width: 40px; /* Keep original size for sleeper seat image */
-}
+
 
 .seat-name {
   font-size: 10px;
   margin-top: 3px;
 }
 
-.seat-row {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 5px;
-}
+
 .error-message {
   color: red;
   font-weight: bold;
