@@ -253,7 +253,8 @@ const BookingBill = () => {
             </div>
             <div className="receipt-body">
               <div className="section_r">
-                <p><strong>Check-in Date:</strong> {booking[0].check_in_date}</p>
+              <p><strong>Check-in Date:</strong> {new Date(booking[0].check_in_date).toLocaleDateString('en-GB')}</p>
+
                 <p><strong>Invoice No:</strong> {hotel_status.InvoiceNumber}</p>
                 <p><strong>Ref No:</strong> {hotel_status.BookingRefNo}</p>
               </div>

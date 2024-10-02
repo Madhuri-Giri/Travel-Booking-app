@@ -266,7 +266,8 @@ const BookingBill = () => {
             </div>
             <div className="receipt-body">
               <div className="section_r">
-                <p><strong>Check-in Date:</strong> {bookingDetails?.booking?.[0]?.check_in_date || 'N/A'}</p>
+              <p><strong>Check-in Date:</strong> {bookingDetails?.booking?.[0]?.check_in_date ? new Date(bookingDetails.booking[0].check_in_date).toLocaleDateString('en-GB') : 'N/A'}</p>
+
                 <p><strong>Invoice No:</strong> {bookingDetails?.hotel_status?.InvoiceNumber || 'N/A'}</p>
                 <p><strong>Ref No:</strong> {bookingDetails?.hotel_status?.BookingRefNo || 'N/A'}</p>
               </div>

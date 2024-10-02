@@ -231,6 +231,14 @@ p.facility {word-spacing: 4px;}
     font-family: sans-serif;
 }
 
+.hotel_Button:hover{
+    color: #00b7eb;
+border:1px solid  #00b7eb;
+background: none;
+}
+
+
+
 .hotel_Button_re{
     background-color: #00b7eb;
     color: white;

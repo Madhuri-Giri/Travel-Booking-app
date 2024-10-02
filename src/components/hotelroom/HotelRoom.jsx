@@ -1,212 +1,157 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-
-import { Container, Card, Col, Row, Table, Accordion } from "react-bootstrap";
+import { Container, Card, Col, Row, Table } from "react-bootstrap";
 import "./HotelRoom.css";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 import Timer from "../timmer/Timer";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchHotelRooms } from "../../redux-toolkit/slices/hotelRoomSlice";
 import { blockHotelRooms } from "../../redux-toolkit/slices/hotelBlockSlice";
 import { useNavigate } from "react-router-dom";
 import image_room from "../../assets/images/hotel_dummy_img.png";
 import Loading from "../../pages/loading/Loading";
-import { fetchHotelDetails } from '../../redux-toolkit/slices/hotelInfoSlice';
+
 const HotelRoom = () => {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [selectedRoom, setSelectedRoom] = useState(null);
-
-  const hotelDetails = location.state?.hotelDetails;
-  // const hotelName = useSelector((state) => state.hotelDetails.hotelName);
-  // const hotelName = useSelector((state) => state.hotelDetails.hotelName); 
-  // const { details, hotelName, status,  } = useSelector((state) => state.hotelDetails)
-// console.log("Hotel name",hotelName )
+  const [loading, setLoading] = useState(false);
 
   const hotelRooms = location.state?.hotelRooms || [];
-  const { persons,  NoOfRooms, GuestNationality, hotelName, } = location.state || {};
-  
-  const { searchResults } = location.state || {};
-  const [loading, setLoading] = useState(false);
-  const {  error } = useSelector((state) => state.hotelRooms || {});
-
-  const {
-    hotels = [],
-    srdvType,
-    resultIndexes,
-    srdvIndexes,
-    hotelCodes,
-    traceId,
-  } = useSelector((state) => state.hotelSearch || {});
+  const { persons, NoOfRooms, GuestNationality, hotelName, resultIndex, hotelCode, srdvType, srdvIndex, traceId } = location.state || {};
 
   useEffect(() => {
     dispatch(fetchHotelRooms());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log("persons in hotel room", persons);
-  }, []);
-
   let isProcessing = false;
 
-  const roomblockHandler = async (event, index) => {
-    // setLoading(true);
+  const roomblockHandler = async (event, room) => {
     event.preventDefault();
+    setLoading(true);
+    if (isProcessing || !room) {
+      return;
+    }
 
-    const { resultIndex, hotelCode, srdvType, srdvIndex, traceId } = location.state || {};
+    setSelectedRoom(room);
+
     if (!resultIndex || !srdvIndex || !hotelCode || !srdvType || !traceId) {
       console.error("Missing required parameters for fetching hotel room.");
       return;
     }
 
-    const requestData = { ResultIndex: resultIndex, SrdvIndex: srdvIndex, SrdvType: srdvType, HotelCode: hotelCode, TraceId: traceId };
-    
-    if (isProcessing || !selectedRoom) return;
     isProcessing = true;
 
     const hotelRoomsDetails = {
-      
-      ResultIndex: resultIndex ,
-      // ResultIndex: "9",
+      ResultIndex: resultIndex,
+      HotelCode: hotelCode,
+      TraceId: traceId,
+      NoOfRooms: NoOfRooms,
       SrdvIndex: srdvIndex,
       SrdvType: srdvType,
-      HotelCode: hotelCode,
-      // HotelCode: "92G|DEL",
-      TraceId: traceId,
-      // TraceId: "1",
       GuestNationality: GuestNationality,
-      HotelName:  hotelName,
-      // NoOfRooms: "1",
-      NoOfRooms: NoOfRooms,
+      HotelName: hotelName,
       HotelRoomsDetails: [
         {
-          ChildCount: selectedRoom.ChildCount || 0,
-          RequireAllPaxDetails: selectedRoom.RequireAllPaxDetails || false,
-          RoomId: selectedRoom.RoomId || 0,
-          RoomStatus: selectedRoom.RoomStatus || 0,
-          RoomIndex: selectedRoom.RoomIndex || 0,
-          RoomTypeCode: selectedRoom.RoomTypeCode || "DEFAULT_CODE",
-          RoomTypeName: selectedRoom.RoomTypeName || "Unknown",
-          RatePlanCode: selectedRoom.RatePlanCode || "",
-          RatePlan: selectedRoom.RatePlan || 0,
-          InfoSource: selectedRoom.InfoSource || "Unknown",
-          SequenceNo: selectedRoom.SequenceNo || "0",
-          DayRates:
-            selectedRoom.DayRates && selectedRoom.DayRates.length > 0
-              ? selectedRoom.DayRates.map((dayRate) => ({
-                  Amount: dayRate.Amount || 0,
-                  Date: dayRate.Date || "Unknown",
-                }))
-              : [{ Amount: 0, Date: "Unknown" }],
+          ChildCount: room.ChildCount || 0,
+          RequireAllPaxDetails: room.RequireAllPaxDetails || false,
+          RoomId: room.RoomId || 0,
+          RoomStatus: room.RoomStatus || 0,
+          RoomIndex: room.RoomIndex || 0,
+          RoomTypeCode: room.RoomTypeCode || "DEFAULT_CODE",
+          RoomTypeName: room.RoomTypeName || "Unknown",
+          RatePlanCode: room.RatePlanCode || "",
+          RatePlan: room.RatePlan || 0,
+          InfoSource: room.InfoSource || "Unknown",
+          SequenceNo: room.SequenceNo || "0",
+          DayRates: room.DayRates?.map((dayRate) => ({
+            Amount: dayRate.Amount || 0,
+            Date: dayRate.Date || "Unknown",
+          })) || [{ Amount: 0, Date: "Unknown" }],
           Price: {
-            CurrencyCode: selectedRoom.Price?.CurrencyCode || "INR",
-            RoomPrice: selectedRoom.Price?.RoomPrice || 0,
-            Tax: selectedRoom.Price?.Tax || 0,
-            ExtraGuestCharge: selectedRoom.Price?.ExtraGuestCharge || 0,
-            ChildCharge: selectedRoom.Price?.ChildCharge || 0,
-            OtherCharges: selectedRoom.Price?.OtherCharges || 0,
-            Discount: selectedRoom.Price?.Discount || 0,
-            PublishedPrice: selectedRoom.Price?.PublishedPrice || 0,
-            PublishedPriceRoundedOff:
-              selectedRoom.Price?.PublishedPriceRoundedOff || 0,
-            OfferedPrice: selectedRoom.Price?.OfferedPrice || 0,
-            OfferedPriceRoundedOff:
-              selectedRoom.Price?.OfferedPriceRoundedOff || 0,
-            AgentCommission: selectedRoom.Price?.AgentCommission || 0,
-            AgentMarkUp: selectedRoom.Price?.AgentMarkUp || 0,
-            ServiceTax: selectedRoom.Price?.ServiceTax || 0,
-            TDS: selectedRoom.Price?.TDS || 0,
-            ServiceCharge: selectedRoom.Price?.ServiceCharge || 0,
-            TotalGSTAmount: selectedRoom.Price?.TotalGSTAmount || 0,
+            CurrencyCode: room.Price?.CurrencyCode || "INR",
+            RoomPrice: room.Price?.RoomPrice || 0,
+            Tax: room.Price?.Tax || 0,
+            ExtraGuestCharge: room.Price?.ExtraGuestCharge || 0,
+            ChildCharge: room.Price?.ChildCharge || 0,
+            OtherCharges: room.Price?.OtherCharges || 0,
+            Discount: room.Price?.Discount || 0,
+            PublishedPrice: room.Price?.PublishedPrice || 0,
+            PublishedPriceRoundedOff: room.Price?.PublishedPriceRoundedOff || 0,
+            OfferedPrice: room.Price?.OfferedPrice || 0,
+            OfferedPriceRoundedOff: room.Price?.OfferedPriceRoundedOff || 0,
+            AgentCommission: room.Price?.AgentCommission || 0,
+            AgentMarkUp: room.Price?.AgentMarkUp || 0,
+            ServiceTax: room.Price?.ServiceTax || 0,
+            TDS: room.Price?.TDS || 0,
+            ServiceCharge: room.Price?.ServiceCharge || 0,
+            TotalGSTAmount: room.Price?.TotalGSTAmount || 0,
             GST: {
-              CGSTAmount: selectedRoom.Price?.GST?.CGSTAmount || 0,
-              CGSTRate: selectedRoom.Price?.GST?.CGSTRate || 0,
-              CessAmount: selectedRoom.Price?.GST?.CessAmount || 0,
-              CessRate: selectedRoom.Price?.GST?.CessRate || 0,
-              IGSTAmount: selectedRoom.Price?.GST?.IGSTAmount || 0,
-              IGSTRate: selectedRoom.Price?.GST?.IGSTRate || 0,
-              SGSTAmount: selectedRoom.Price?.GST?.SGSTAmount || 0,
-              SGSTRate: selectedRoom.Price?.GST?.SGSTRate || 0,
-              TaxableAmount: selectedRoom.Price?.GST?.TaxableAmount || 0,
+              CGSTAmount: room.Price?.GST?.CGSTAmount || 0,
+              CGSTRate: room.Price?.GST?.CGSTRate || 0,
+              CessAmount: room.Price?.GST?.CessAmount || 0,
+              CessRate: room.Price?.GST?.CessRate || 0,
+              IGSTAmount: room.Price?.GST?.IGSTAmount || 0,
+              IGSTRate: room.Price?.GST?.IGSTRate || 0,
+              SGSTAmount: room.Price?.GST?.SGSTAmount || 0,
+              SGSTRate: room.Price?.GST?.SGSTRate || 0,
+              TaxableAmount: room.Price?.GST?.TaxableAmount || 0,
             },
           },
-          Amenities:
-            selectedRoom.Amenities && selectedRoom.Amenities.length > 0
-              ? selectedRoom.Amenities
-              : ["Unknown"],
-          SmokingPreference: selectedRoom.SmokingPreference || "NoPreference",
-          CancellationPolicies:
-            selectedRoom.CancellationPolicies &&
-            selectedRoom.CancellationPolicies.length > 0
-              ? selectedRoom.CancellationPolicies.map((policy) => ({
-                  Charge: policy.Charge || 0,
-                  ChargeType: policy.ChargeType || 0,
-                  Currency: policy.Currency || "INR",
-                  FromDate: policy.FromDate || "Unknown",
-                  ToDate: policy.ToDate || "Unknown",
-                }))
-              : [
-                  {
-                    Charge: 0,
-                    ChargeType: 0,
-                    Currency: "INR",
-                    FromDate: "Unknown",
-                    ToDate: "Unknown",
-                  },
-                ],
-          CancellationPolicy: selectedRoom.CancellationPolicy || "No Policy",
-          Inclusion:
-            selectedRoom.Inclusion && selectedRoom.Inclusion.length > 0
-              ? selectedRoom.Inclusion
-              : ["None"],
-          LastCancellationDate: selectedRoom.LastCancellationDate || "Unknown",
-          BedTypes:
-            selectedRoom.BedTypes && selectedRoom.BedTypes.length > 0
-              ? selectedRoom.BedTypes.map((bedType) => ({
-                  BedTypeCode: bedType.BedTypeCode || "DEFAULT_CODE",
-                  BedTypeDescription:
-                    bedType.BedTypeDescription || "Description not available",
-                }))
-              : [
-                  {
-                    BedTypeCode: "DEFAULT_CODE",
-                    BedTypeDescription: "Description not available",
-                  },
-                ],
+          Amenities: room.Amenities?.length > 0 ? room.Amenities : ["Unknown"],
+          SmokingPreference: room.SmokingPreference || "NoPreference",
+          CancellationPolicies: room.CancellationPolicies?.map((policy) => ({
+            Charge: policy.Charge || 0,
+            ChargeType: policy.ChargeType || 0,
+            Currency: policy.Currency || "INR",
+            FromDate: policy.FromDate || "Unknown",
+            ToDate: policy.ToDate || "Unknown",
+          })) || [{
+            Charge: 0,
+            ChargeType: 0,
+            Currency: "INR",
+            FromDate: "Unknown",
+            ToDate: "Unknown",
+          }],
+          CancellationPolicy: room.CancellationPolicy || "No Policy",
+          Inclusion: room.Inclusion?.length > 0 ? room.Inclusion : ["None"],
+          LastCancellationDate: room.LastCancellationDate || "Unknown",
+          BedTypes: room.BedTypes?.map((bedType) => ({
+            BedTypeCode: bedType.BedTypeCode || "DEFAULT_CODE",
+            BedTypeDescription: bedType.BedTypeDescription || "Description not available",
+          })) || [{
+            BedTypeCode: "DEFAULT_CODE",
+            BedTypeDescription: "Description not available",
+          }],
         },
       ],
       ArrivalTime: new Date().toISOString(),
       IsPackageFare: true,
     };
-    console.log("Request data block:", hotelRoomsDetails);
 
     try {
-      const response = await dispatch(
-        blockHotelRooms(hotelRoomsDetails)
-      ).unwrap();
-
-      // Show success message
+      const response = await dispatch(blockHotelRooms(hotelRoomsDetails)).unwrap();
       toast.success("Room reserved successfully!");
 
-      // Pass the entire response to navigate
       navigate("/hotel-guest", {
         state: {
-          blockRoomResult: response.data.BlockRoomResult, // Pass the BlockRoomResult
-          bookingStatus: response.booking_status, // Pass the booking_status
+          blockRoomResult: response.data.BlockRoomResult,
+          bookingStatus: response.booking_status,
           persons,
         },
       });
     } catch (error) {
       console.error("Error:", error);
       toast.error("Failed to reserve the room. Please try again.");
+    } finally {
+      setLoading(false);
+      isProcessing = false;
     }
-
-    isProcessing = false;
   };
 
   if (loading) {
@@ -224,14 +169,14 @@ const HotelRoom = () => {
       .replace(/(\d{2}-\w{3}-\d{4})/, "$1");
 
     cleanedText = cleanedText.replace(/\s{2,}/g, " ").trim();
-
     return cleanedText;
   };
 
   return (
     <>
       <CustomNavbar />
-      <Timer />
+          <Timer />
+
       <div className="room_bg">
         <Container className="room-card-bg">
           <Row>
@@ -243,43 +188,38 @@ const HotelRoom = () => {
                 <img src={image_room} alt="room_img" />
               </div>
             </Col>
-
             <Col className="right-column" lg={6} md={12}>
               {loading && <p>Loading hotel rooms...</p>}
-              {hotelRooms.length === 0 && !loading && (
-                <p>No hotel room data available.</p>
-              )}
+              {!loading && hotelRooms.length === 0 && <p>No hotel room data available.</p>}
               <div className="scrollable-content">
                 {hotelRooms.map((room, index) => (
                   <div key={index}>
                     <Card className="hotlecard">
                       <Card.Body className="hotelbody">
-                      <div className="room-info">
-                     
-                        <span >{room.RoomTypeName}</span>
-                        <small>
-                        ₹ {room.Price.RoomPrice.toFixed(0)}</small>
+                        <div className="room-info">
+                          <span>{room.RoomTypeName}</span>
+                          <small>₹ {room.Price.RoomPrice.toFixed(0)}</small>
                         </div>
+
                         <ul className="hotel_a">
                           <li className="amenities">
-                            <span>Amenities:{" "}</span>
+                            <span>Amenities: </span>
                             {room.Amenities.join(", ") || "None"}
                           </li>
                           <li className="amenities">
-                           <span> Smoking Preference{" "}</span>
+                            <span>Smoking Preference: </span>
                             {room.SmokingPreference}
                           </li>
                           <li className="amenities">
-                          <span>  Bed Types:{" "}</span>
+                            <span>Bed Types: </span>
                             {room.BedTypes.length > 0
-                              ? room.BedTypes.map(
-                                  (bed) => bed.BedTypeDescription
-                                ).join(", ")
+                              ? room.BedTypes.map(bed => bed.BedTypeDescription).join(", ")
                               : "None"}
                           </li>
                         </ul>
+
                         <p className="amenities_policy">
-                        <span> Included:</span>  {room.Inclusion.join(", ") || "None"}
+                          <span>Included:</span> {room.Inclusion.join(", ") || "None"}
                         </p>
 
                         <div className="table-responsive">
@@ -294,47 +234,33 @@ const HotelRoom = () => {
                               </tr>
                             </thead>
                             <tbody>
-                              {room.CancellationPolicies &&
-                              room.CancellationPolicies.length > 0 ? (
+                              {room.CancellationPolicies && room.CancellationPolicies.length > 0 ? (
                                 room.CancellationPolicies.map((policy, idx) => (
                                   <tr key={idx}>
                                     <td>
-                                     
-                                        {policy.Charge} {policy.Currency}
-                                     
+                                      {policy.Charge} {policy.Currency}
                                     </td>
                                     <td>{policy.ChargeType}</td>
-                                    <td>
-                                      {new Date(
-                                        policy.FromDate
-                                      ).toLocaleDateString()}
-                                    </td>
-                                    <td>
-                                      {new Date(
-                                        policy.ToDate
-                                      ).toLocaleDateString()}
-                                    </td>
+                                    <td>{new Date(policy.FromDate).toLocaleDateString()}</td>
+                                    <td>{new Date(policy.ToDate).toLocaleDateString()}</td>
                                   </tr>
                                 ))
                               ) : (
                                 <tr>
-                                  <td colSpan="4">
-                                    No cancellation policies available.
-                                  </td>
+                                  <td colSpan="4">No cancellation policies available.</td>
                                 </tr>
                               )}
                             </tbody>
                           </Table>
                         </div>
+
                         <p className="can_policy">
                           {cleanCancellationPolicy(room.CancellationPolicy)}
                         </p>
+
                         <button
                           className="reserve_button"
-                          onClick={(event) => {
-                            setSelectedRoom(room);
-                            roomblockHandler(event, index);
-                          }}
+                          onClick={(event) => roomblockHandler(event, room)}
                         >
                           Reserve
                         </button>
@@ -347,10 +273,139 @@ const HotelRoom = () => {
           </Row>
         </Container>
       </div>
-
       <Footer />
     </>
   );
 };
 
 export default HotelRoom;
+
+
+// return (
+//   <>
+//     <CustomNavbar />
+//     <Timer />
+//     <div className="room_bg">
+//       <Container className="room-card-bg">
+//         <Row>
+//           <Col className="dummy_img" lg={6}>
+//             <div className="room_heading">
+//               <h3>Available Hotel Rooms</h3>
+//             </div>
+//             <div className="room_dummy">
+//               <img src={image_room} alt="room_img" />
+//             </div>
+//           </Col>
+
+//           <Col className="right-column" lg={6} md={12}>
+//             {loading && <p>Loading hotel rooms...</p>}
+//             {hotelRooms.length === 0 && !loading && (
+//               <p>No hotel room data available.</p>
+//             )}
+//             <div className="scrollable-content">
+//               {hotelRooms.map((room, index) => (
+//                 <div key={index}>
+//                   <Card className="hotlecard">
+//                     <Card.Body className="hotelbody">
+//                       <div className="room-info">
+//                         <span >{room.RoomTypeName}</span>
+//                         <small>
+//                           ₹ {room.Price.RoomPrice.toFixed(0)}</small>
+//                       </div>
+
+//                       <ul className="hotel_a">
+//                         <li className="amenities">
+//                           <span>Amenities:{" "}</span>
+//                           {room.Amenities.join(", ") || "None"}
+//                         </li>
+//                         <li className="amenities">
+//                           <span> Smoking Preference{" "}</span>
+//                           {room.SmokingPreference}
+//                         </li>
+//                         <li className="amenities">
+//                           <span>  Bed Types:{" "}</span>
+//                           {room.BedTypes.length > 0
+//                             ? room.BedTypes.map(
+//                               (bed) => bed.BedTypeDescription
+//                             ).join(", ")
+//                             : "None"}
+//                         </li>
+//                       </ul>
+
+//                       <p className="amenities_policy">
+//                         <span> Included:</span>  {room.Inclusion.join(", ") || "None"}
+//                       </p>
+
+//                       <div className="table-responsive">
+//                         <h6>Cancellation Policies</h6>
+//                         <Table striped bordered hover>
+//                           <thead>
+//                             <tr>
+//                               <th>Charge</th>
+//                               <th>Charge Type</th>
+//                               <th>From Date</th>
+//                               <th>To Date</th>
+//                             </tr>
+//                           </thead>
+//                           <tbody>
+//                             {room.CancellationPolicies &&
+//                               room.CancellationPolicies.length > 0 ? (
+//                               room.CancellationPolicies.map((policy, idx) => (
+//                                 <tr key={idx}>
+//                                   <td>
+
+//                                     {policy.Charge} {policy.Currency}
+
+//                                   </td>
+//                                   <td>{policy.ChargeType}</td>
+//                                   <td>
+//                                     {new Date(
+//                                       policy.FromDate
+//                                     ).toLocaleDateString()}
+//                                   </td>
+//                                   <td>
+//                                     {new Date(
+//                                       policy.ToDate
+//                                     ).toLocaleDateString()}
+//                                   </td>
+//                                 </tr>
+//                               ))
+//                             ) : (
+//                               <tr>
+//                                 <td colSpan="4">
+//                                   No cancellation policies available.
+//                                 </td>
+//                               </tr>
+//                             )}
+//                           </tbody>
+//                         </Table>
+//                       </div>
+
+//                       <p className="can_policy">
+//                         {cleanCancellationPolicy(room.CancellationPolicy)}
+//                       </p>
+
+//                       <button
+//                         className="reserve_button"
+//                         onClick={(event) => {
+//                           roomblockHandler(event, room);
+//                         }}
+//                       >
+//                         Reserve
+//                       </button>
+//                     </Card.Body>
+//                   </Card>
+//                 </div>
+//               ))}
+//             </div>
+//           </Col>
+//         </Row>
+//       </Container>
+//     </div>
+//     <Footer />
+//   </>
+// );
+// };
+
+// export default HotelRoom;
+
