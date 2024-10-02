@@ -1,3 +1,130 @@
+/* .seat-layout {
+  display: flex;
+  flex-direction: column;
+}
+.seat-row {
+  display: flex;
+  justify-content: space-around;
+} */
+.seat-row .row-3 {
+  height: 20px; /* Adjust the empty row space as needed */
+}
+
+
+
+
+
+.seatName{
+  margin-left: 4px;
+}
+
+.seatPrice{
+  margin: 0px 5px;
+}
+
+.seatsssdivv{
+  display: flex;
+}
+
+.seatsssdivv h6 {
+  display: inline-block;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: -3px; /* Add some space between the letters */
+  margin-right: 20px; /* Add space between the text and seat layout */
+  color: gray;
+  margin-left: 0px;
+  font-size: 12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+.seat {
+  position: relative; /* This ensures the hover div is positioned relative to this parent */
+  display: inline-block; /* Keep the seat in the inline flow if necessary */
+}
+
+.seatHoverdiv {
+  display: none;
+  background: azure;
+  box-shadow: 2px 2px 1px 3px #36333338;
+  position: absolute; /* Position relative to the seat */
+  top: 0; /* Adjust this to move the hover div vertically */
+  left: 100%; /* Adjust this to move the hover div horizontally */
+  z-index: 10; /* Ensure it appears on top of other elements */
+  font-size: 13px;
+}
+
+.seat:hover .seatHoverdiv {
+  display: block;
+}
+
+
+
+/* Parent container */
+.seat-container__seat {
+  position: relative;
+}
+
+.seat-container__seat-details {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none; /* Hide by default */
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(245, 240, 240, 0.5); /* Optional: Add a background overlay */
+  color: black; /* Optional: Change text color for better visibility */
+  box-shadow: 1px 2px 3px 4px rgb(224, 219, 219);
+}
+
+.seat-container__seat:hover .seat-container__seat-details {
+  display: block; /* Show the seat details on hover */
+}
+
+.seat-container__seat-price-main,
+.seat-container__seat-name {
+  margin: 5px 0;
+  text-align: center;
+}
+
+
+
+
+.seat-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.seat-container__row {
+  display: flex;
+  justify-content: space-around; /* Adjust spacing between seats */
+  margin: 10px 0; /* Space between rows */
+}
+
+.seat-container__seat {
+  cursor: pointer; /* Change cursor for clickable seats */
+  margin: 0 5px; /* Space between seats */
+  /* Add any additional styles like width, height, etc. */
+}
+
+
+
+
+
+
+
+
 .Buslayout-Main {
   width: 100%;
   display: flex;
@@ -28,9 +155,17 @@
   justify-content: space-between;
   flex-direction: row;
   margin-top: 0.1vmax;
-  color: green;
-  font-size: 0.8vmax;
+  color: black;
+  /* color: green; */
+  font-size: 0.9vmax;
   text-transform: uppercase;
+  font-weight: bold;
+}
+.Buslayout-Main .Bus-layout-new .layout-bus span{
+  color: green !important;
+}
+.Buslayout-Main .Bus-layout-new .layout-bus p{
+  margin: 0px;
 }
 .Buslayout-Main .Bus-layout-new .layout-bus .bord-drop-point{
   width: 95%;
@@ -155,35 +290,39 @@
 }
 
 /* Sitting seats: smaller size */
-.sitting-seat {
-  width: 25px; /* Reduced size for sitting seats */
-}
+/* .sitting-seat {
+  width: 25px; 
+} */
 
 .sitting-seat img {
   width: 100%;
-  max-width: 30px; /* Smaller size for sitting seat image */
+  max-width: 23px; /* Smaller size for sitting seat image */
 }
 
 /* Sleeper seats: keep current size */
-.sleeper-seat {
-  width: 40px; /* Keep original size for sleeper seats */
-}
+/* .sleeper-seat {
+  width: 40px; 
+} */
 
 .sleeper-seat img {
   width: 100%;
-  max-width: 40px; /* Keep original size for sleeper seat image */
+  max-width: 35px; /* Keep original size for sleeper seat image */
 }
 
 .seat-name {
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: bold;
   margin-top: 3px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .seat-row {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
+  align-items: center;
+  /* justify-content: center; */
+  /* flex-wrap: wrap; */
+  /* gap: 10px; */
 }
 .error-message {
   color: red;
@@ -191,9 +330,23 @@
   margin-top: 10px;
 }
 
-.selected-seat {
-  background-color: #ccc;
+/* .selected-seat {
+  background-color: green;
+  border: 2px solid darkgreen;
+  padding: 1px 0px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+} */
+/* .selected-seat img {
+  filter: sepia(0.3) hue-rotate(120deg) saturate(30) brightness(1.4);
+  transition: filter 0.3s ease;
+} */
+.selected-seat img {
+  filter: sepia(1) hue-rotate(80deg) saturate(4) brightness(1); /* Darker forest green tone */
+  transition: filter 0.3s ease;
 }
+
 
 
 /* ------------------loader----------------------- */
