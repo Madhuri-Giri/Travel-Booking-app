@@ -95,6 +95,7 @@ const BusLayout = ({busType}) => {
       const seatImg = seat.SeatType === 2 ? BusSeatImgSleeper : BusSeatImg;
       const isSelected = selectedSeats.includes(seat.SeatName); 
 
+
       return (
         <div
           key={seat.SeatIndex}

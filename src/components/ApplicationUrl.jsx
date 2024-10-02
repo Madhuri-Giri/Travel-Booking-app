@@ -12,7 +12,8 @@ const loaderStyle = {
   animation: 'spin 1s linear infinite'
 };
 
-// Add keyframes in inline CSS format
+
+
 const spinKeyframes = `
 @keyframes spin {
   0% { transform: rotate(0deg); }
@@ -32,8 +33,10 @@ styleSheet.insertRule(spinKeyframes, styleSheet.cssRules.length);
     // const [headers, setHeaders] = useState<HeadersInit | null>(null); // State to store headers
   const headersObj = {};
 
+
   const location = useLocation();
   const navigate = useNavigate();
+  console.log('navigate', location)
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -41,8 +44,7 @@ styleSheet.insertRule(spinKeyframes, styleSheet.cssRules.length);
 
     if (token) {
       console.log("Token received:", token);
-      // localStorage.setItem('token', token);
-      // Simulate some delay (e.g., token processing)
+  
       setTimeout(() => {
         setLoading(false);  // Hide the loader once token is processed
         // navigate('/');      // Redirect to home or another page
@@ -61,6 +63,7 @@ styleSheet.insertRule(spinKeyframes, styleSheet.cssRules.length);
     try {
       const response = await fetch(location.href);
       const headers = response.headers;
+      console.log('headers', headers, response)
       const headersObj = {}; // Use standard JavaScript object initialization
       headers.forEach((value, key) => {
         headersObj[key] = value;
@@ -75,6 +78,34 @@ styleSheet.insertRule(spinKeyframes, styleSheet.cssRules.length);
     fetchHeaders();
   }, []);
   
+
+  const url = 'http://localhost:5173/token-receiver-url';
+
+  async function getTokenFromHeader() {
+    try {
+      const response = await fetch(url, {
+        method: 'GET', // or 'POST' depending on how the API works
+        headers: {
+          'Content-Type': 'application/json', // Adjust if needed
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      // Access token from the headers (replace 'Authorization' with the actual header name)
+      const token = response.headers.get('Authorization'); // Adjust to your token header key
+      console.log('Token from headers:', token);
+      
+      return token;
+    } catch (error) {
+      console.error('Error fetching token:', error);
+    }
+  }
+  
+  getTokenFromHeader();
+
 
   return (
     <>
@@ -107,85 +138,4 @@ styleSheet.insertRule(spinKeyframes, styleSheet.cssRules.length);
 
 export default ApplicationUrl;
 
-
-
-// // const ApplicationUrl = () => {
-
-// //   const [loading, setLoading] = useState(true); // State to control loader visibility
-// //   // const [headers, setHeaders] = useState<HeadersInit | null>(null); // State to store headers
-// //   const location = useLocation();
-// //   const navigate = useNavigate();
-
-
-
-// //   // const location = useLocation();
-// //   // const navigate = useNavigate();
-
-// //   // const [loading, setLoading] = useState(true); // State to control loader visibility
-
-// //   // useEffect(() => {
-// //   //   const params = new URLSearchParams(location.search);
-// //   //   const token = params.get('token');
-
-// //   //   if (token) {
-// //   //     console.log("Token received:", token);
-// //   //     // localStorage.setItem('token', token);
-// //   //     // Simulate some delay (e.g., token processing)
-// //   //     setTimeout(() => {
-// //   //       setLoading(false);  // Hide the loader once token is processed
-// //   //       // navigate('/');      // Redirect to home or another page
-// //   //     }, 1000); // 2-second delay to simulate processing
-// //   //   } else {
-// //   //     console.log('No token found in the URL');
-// //   //     setLoading(true); // Hide loader if no token is found
-// //   //   }
-// //   // }, [location, navigate]);
-
-
-// //   useEffect(() => {
-
-
-// //     const fetchHeaders = async () => {
-// //       try {
-// //         const response = await fetch(location.href);
-// //         const headers = response.headers;
-// //         // // const headersObj: HeadersInit = {};
-// //         // headers.forEach((value, key) => {
-// //         //   headersObj[key] = value;
-// //         // });
-// //         // setHeaders(headersObj);
-// //         console.log('headers',headers);
-        
-// //       } catch (error) {
-// //         console.error('Error fetching headers:', error);
-// //       }
-// //     };
-
-// //     fetchHeaders();
-
-
-// //   }, []);
-
-
-
-
-
-
-
-// //   return (
-// //     <div>
-// //       {loading ? (
-// //         <div>
-// //           <h2>Processing Token...</h2>
-// //           {/* Inline loader style */}
-// //           <div style={loaderStyle}></div>
-// //         </div>
-// //       ) : (
-// //         <h2>Redirecting...</h2>
-// //       )}
-// //     </div>
-// //   );
-// // };
-
-// // export default ApplicationUrl;
 
