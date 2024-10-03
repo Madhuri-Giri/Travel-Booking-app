@@ -185,6 +185,30 @@
   background-color: #ccc;
 }
 
+.overlay-content .tppp h5{
+  color: green;
+}
+.overlay-content .tppp h5 span{
+  color: black;
+}
+
+.Seats-layout h6 {
+   font-size: 12px;
+   color: gray;
+}
+@media screen and (max-width: 768px) {
+  .overlay-content .tppp h5{
+    font-size: 13px !important;
+  }
+  .alert-msg {
+    width: 95%;
+    font-size: 12px;
+    color: green;
+}
+.Buslayout-Main .Bus-layout-new .layout-bus .top-main-seat{
+  font-size: 12px !important;
+}
+}
 
 
 /* ------------------loader----------------------- */

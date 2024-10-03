@@ -160,7 +160,7 @@ if (status === 'loading') {
         selectedSeatsData.push(seatObject);
       }
       localStorage.setItem('selectedBusSeatData', JSON.stringify(selectedSeatsData));
-      console.log("selectedSeatsData", selectedSeatsData);
+      // console.log("selectedSeatsData", selectedSeatsData);
     }
     const isSelected = selectedSeats.includes(seatName);
     const price = getLowerBasePrice(seatName) || getUpperBasePrice(seatName) || 0;
@@ -197,7 +197,7 @@ if (status === 'loading') {
         const parsedBusDetails = JSON.parse(storedBusDetails);
         selectedBusResult = parsedBusDetails.selctedBusResult;
 
-        console.log('Selected Bus Result:', selectedBusResult);
+        // console.log('Selected Bus Result:', selectedBusResult);
       } else {
         throw new Error('No bus details found in localStorage');
       }
@@ -225,7 +225,7 @@ if (status === 'loading') {
       }
 
       const data = await response.json();
-      console.log('bord-drop API Response:', data);
+      // console.log('bord-drop API Response:', data);
       navigate('/review-booking');
     } catch (error) {
       console.error('Error adding seat layout:', error.message);

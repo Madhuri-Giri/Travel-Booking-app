@@ -28,7 +28,6 @@ export default function FlightDetails() {
 
     // selected flight data get------
     const { flightSelectedDATA } = location?.state || {};
-    console.log('flightSelectedDATA', flightSelectedDATA);
 
     //   ----------------------------------------------------
     const [totalPrice, setTotalPrice] = useState(0);
@@ -44,10 +43,8 @@ export default function FlightDetails() {
     const formData = location.state?.formData;
 
     const [fareDataDetails, setFareDataDetails] = useState(fareData);
-    console.log("fareDataDetails", fareDataDetails);
 
     const segment = fareDataDetails.Segments[0][0];
-    console.log("segment", segment);
 
     const origin = segment.Origin;
     const destination = segment.Destination;

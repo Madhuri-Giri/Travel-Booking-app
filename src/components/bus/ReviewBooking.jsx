@@ -51,7 +51,7 @@ const ReviewBooking = () => {
 
   const location = useLocation();
   const { selectedBoardingPoint, selectedDroppingPoint, selectedBusSeatData, totalPrice } = location.state || {};
-  console.log('selectedBusSeatData', selectedBusSeatData)
+  // console.log('selectedBusSeatData', selectedBusSeatData)
 
   const boardingPointName = selectedBoardingPoint.name;
 const boardingPointIndex = selectedBoardingPoint.index;
@@ -334,7 +334,7 @@ const droppingPointIndex = selectedDroppingPoint.index;
         description: 'Test Transaction',
         image: 'https://your-logo-url.com/logo.png',
         handler: async function (response) {
-          console.log('Payment successful', response);
+          // console.log('Payment successful', response);
 
           // localStorage.setItem('payment_id', response.razorpay_payment_id
           // );
@@ -492,7 +492,7 @@ const droppingPointIndex = selectedDroppingPoint.index;
       });
 
       const result = await response.json();
-      console.log("Booking Response:", result);
+      // console.log("Booking Response:", result);
 
 
       if (!response.ok) {

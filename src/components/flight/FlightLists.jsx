@@ -101,8 +101,8 @@ export default function FlightLists() {
         }
     }, [location]);
 
-    // console.log("listingData", listingData);
 
+    
     const swiperRef = useRef(null);
     // const { flightSearchData } = flightSearchReducer;
     // const { logoMap } = flightSearchData;
@@ -205,8 +205,8 @@ export default function FlightLists() {
         const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
         const selectedAirlines = Array.from(airlineFilters).map(filter => filter.value);
         setSelected(selectedAirlines);
-        // console.log("selected", selected);
 
+        
         const originalAirlineList = listData?.Results || [];
     };
     useEffect(() => {
@@ -537,9 +537,10 @@ export default function FlightLists() {
     // const offset = currentPage * hotelsPerPage;
     // const currentHotels = dd?.slice(offset, offset + hotelsPerPage);
 
-    // console.log("currentHotels", currentHotels);
-    // console.log("offset", offset);
-    // console.log("pageCount", pageCount);
+   
+    
+
+    
 
     // flight list pagination logics -------------
 
