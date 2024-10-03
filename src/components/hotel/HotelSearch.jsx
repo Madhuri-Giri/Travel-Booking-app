@@ -23,8 +23,8 @@ import Swal from 'sweetalert2';
 
 const HotelSearch = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false); // Add loading state
-  const [startDate, setStartDate] = useState(null);
+  const [loading, setLoading] = useState(false);
+  // const [startDate, setStartDate] = useState(null);
   const dispatch = useDispatch();
   const { hotels,  error } = useSelector((state) => state.hotels || {});
 
@@ -132,15 +132,15 @@ const HotelSearch = () => {
     clearInterval(intervalRef.current);
   };
 
-  const handleNightChange = (event) => {
-    const value = parseInt(event.target.value, 10);
-    if (value >= 1 && value <= 30) {
-      setInputs((prevInputs) => ({
-        ...prevInputs,
-        NoOfNights: value,
-      }));
-    }
-  };
+  // const handleNightChange = (event) => {
+  //   const value = parseInt(event.target.value, 10);
+  //   if (value >= 1 && value <= 30) {
+  //     setInputs((prevInputs) => ({
+  //       ...prevInputs,
+  //       NoOfNights: value,
+  //     }));
+  //   }
+  // };
   useEffect(() => {
     startAutoScroll();
     return () => stopAutoScroll();
@@ -192,7 +192,7 @@ const HotelSearch = () => {
       const response = await axios.get("https://api.ipify.org?format=json");
       setIpAddress(response.data.ip);
     } catch (error) {
-      console.error("Error fetching IP address:", error);
+      // console.error("Error fetching IP address:", error);
     }
   };
 
@@ -315,18 +315,17 @@ const HotelSearch = () => {
     if (response.Results && response.Results.length > 0) {
       const hotels = response.Results;
       const persons = response.NoOfRooms;
-      const GuestNationality = selectedCity.countrycode; 
+      const GuestNationality = selectedCity.countrycode;
+  
       navigate("/hotel-list", { 
         state: { 
           searchResults: hotels,
           persons: persons,
           NoOfRooms: inputs.rooms, 
           GuestNationality: GuestNationality,
-         
         } 
-      }); 
-    }
-    else {
+      });
+    } else {
       // Use SweetAlert for no hotel found
       Swal.fire({
         title: "No Hotels Found",
@@ -337,15 +336,20 @@ const HotelSearch = () => {
       });
     }
   } catch (error) {
+    // Check if backend API provides an Error object with ErrorMessage
+    const errorMessage = error?.response?.data?.Error?.ErrorMessage || "No Hotel found. Please select the correct city.";
+  
     // Use SweetAlert for error handling
     Swal.fire({
       title: "Error!",
-      text: "No Hotel found. Please select correct city.",
+      text: errorMessage,  // Display the backend error message
       icon: "error",
       confirmButtonColor: "#d33",
       confirmButtonText: "OK"
     });
   }
+  
+
   //    else {
   //     // Handle case where no hotels are found using SweetAlert
   //     Swal.fire({

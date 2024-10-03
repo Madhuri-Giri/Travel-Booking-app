@@ -23,7 +23,17 @@ const HotelRoom = () => {
   const [loading, setLoading] = useState(false);
 
   const hotelRooms = location.state?.hotelRooms || [];
-  const { persons, NoOfRooms, GuestNationality, hotelName, resultIndex, hotelCode, srdvType, srdvIndex, traceId } = location.state || {};
+  const {
+    persons,
+    NoOfRooms,
+    GuestNationality,
+    hotelName,
+    resultIndex,
+    hotelCode,
+    srdvType,
+    srdvIndex,
+    traceId,
+  } = location.state || {};
 
   useEffect(() => {
     dispatch(fetchHotelRooms());
@@ -111,23 +121,28 @@ const HotelRoom = () => {
             Currency: policy.Currency || "INR",
             FromDate: policy.FromDate || "Unknown",
             ToDate: policy.ToDate || "Unknown",
-          })) || [{
-            Charge: 0,
-            ChargeType: 0,
-            Currency: "INR",
-            FromDate: "Unknown",
-            ToDate: "Unknown",
-          }],
+          })) || [
+            {
+              Charge: 0,
+              ChargeType: 0,
+              Currency: "INR",
+              FromDate: "Unknown",
+              ToDate: "Unknown",
+            },
+          ],
           CancellationPolicy: room.CancellationPolicy || "No Policy",
           Inclusion: room.Inclusion?.length > 0 ? room.Inclusion : ["None"],
           LastCancellationDate: room.LastCancellationDate || "Unknown",
           BedTypes: room.BedTypes?.map((bedType) => ({
             BedTypeCode: bedType.BedTypeCode || "DEFAULT_CODE",
-            BedTypeDescription: bedType.BedTypeDescription || "Description not available",
-          })) || [{
-            BedTypeCode: "DEFAULT_CODE",
-            BedTypeDescription: "Description not available",
-          }],
+            BedTypeDescription:
+              bedType.BedTypeDescription || "Description not available",
+          })) || [
+            {
+              BedTypeCode: "DEFAULT_CODE",
+              BedTypeDescription: "Description not available",
+            },
+          ],
         },
       ],
       ArrivalTime: new Date().toISOString(),
@@ -135,7 +150,9 @@ const HotelRoom = () => {
     };
 
     try {
-      const response = await dispatch(blockHotelRooms(hotelRoomsDetails)).unwrap();
+      const response = await dispatch(
+        blockHotelRooms(hotelRoomsDetails)
+      ).unwrap();
       toast.success("Room reserved successfully!");
 
       navigate("/hotel-guest", {
@@ -159,8 +176,9 @@ const HotelRoom = () => {
   }
 
   const cleanCancellationPolicy = (text) => {
-    if (!text) return "";
-    let cleanedText = text
+    if (!text) return [];
+    
+    const cleanedText = text
       .replace(/#\^#|#!#|\s+/g, " ")
       .replace(/\|/g, "\n")
       .replace(/(\d{2}-\w{3}-\d{4}), (\d{2}:\d{2}:\d{2})/, "$1, $2")
@@ -168,14 +186,15 @@ const HotelRoom = () => {
       .replace(/(\d+)% of total amount/, "$1% of the total amount")
       .replace(/(\d{2}-\w{3}-\d{4})/, "$1");
 
-    cleanedText = cleanedText.replace(/\s{2,}/g, " ").trim();
-    return cleanedText;
+    const policyItems = cleanedText.split('\n').filter(item => item.trim() !== "");
+
+    return policyItems;
   };
 
   return (
     <>
       <CustomNavbar />
-          <Timer />
+      <Timer />
 
       <div className="room_bg">
         <Container className="room-card-bg">
@@ -190,7 +209,9 @@ const HotelRoom = () => {
             </Col>
             <Col className="right-column" lg={6} md={12}>
               {loading && <p>Loading hotel rooms...</p>}
-              {!loading && hotelRooms.length === 0 && <p>No hotel room data available.</p>}
+              {!loading && hotelRooms.length === 0 && (
+                <p>No hotel room data available.</p>
+              )}
               <div className="scrollable-content">
                 {hotelRooms.map((room, index) => (
                   <div key={index}>
@@ -213,13 +234,16 @@ const HotelRoom = () => {
                           <li className="amenities">
                             <span>Bed Types: </span>
                             {room.BedTypes.length > 0
-                              ? room.BedTypes.map(bed => bed.BedTypeDescription).join(", ")
+                              ? room.BedTypes.map(
+                                  (bed) => bed.BedTypeDescription
+                                ).join(", ")
                               : "None"}
                           </li>
                         </ul>
 
                         <p className="amenities_policy">
-                          <span>Included:</span> {room.Inclusion.join(", ") || "None"}
+                          <span>Included:</span>{" "}
+                          {room.Inclusion.join(", ") || "None"}
                         </p>
 
                         <div className="table-responsive">
@@ -234,29 +258,49 @@ const HotelRoom = () => {
                               </tr>
                             </thead>
                             <tbody>
-                              {room.CancellationPolicies && room.CancellationPolicies.length > 0 ? (
+                              {room.CancellationPolicies &&
+                              room.CancellationPolicies.length > 0 ? (
                                 room.CancellationPolicies.map((policy, idx) => (
                                   <tr key={idx}>
                                     <td>
                                       {policy.Charge} {policy.Currency}
                                     </td>
                                     <td>{policy.ChargeType}</td>
-                                    <td>{new Date(policy.FromDate).toLocaleDateString()}</td>
-                                    <td>{new Date(policy.ToDate).toLocaleDateString()}</td>
+                                    <td>
+                                      {new Date(
+                                        policy.FromDate
+                                      ).toLocaleDateString()}
+                                    </td>
+                                    <td>
+                                      {new Date(
+                                        policy.ToDate
+                                      ).toLocaleDateString()}
+                                    </td>
                                   </tr>
                                 ))
                               ) : (
                                 <tr>
-                                  <td colSpan="4">No cancellation policies available.</td>
+                                  <td colSpan="4">
+                                    No cancellation policies available.
+                                  </td>
                                 </tr>
                               )}
                             </tbody>
                           </Table>
                         </div>
 
-                        <p className="can_policy">
+                        {/* <p className="can_policy">
                           {cleanCancellationPolicy(room.CancellationPolicy)}
-                        </p>
+                        </p> */}
+
+                        <h6>Cancellation Policy</h6>
+                        <ul className="can_policy">
+                          {cleanCancellationPolicy(room.CancellationPolicy).map(
+                            (policy, index) => (
+                              <li key={index}>{policy}</li>
+                            )
+                          )}
+                        </ul>
 
                         <button
                           className="reserve_button"
@@ -279,7 +323,6 @@ const HotelRoom = () => {
 };
 
 export default HotelRoom;
-
 
 // return (
 //   <>
@@ -408,4 +451,3 @@ export default HotelRoom;
 // };
 
 // export default HotelRoom;
-

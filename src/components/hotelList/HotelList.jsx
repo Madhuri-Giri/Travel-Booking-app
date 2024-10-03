@@ -11,7 +11,6 @@ import haversineDistance from "./HaversineDistance";
 import ReactPaginate from 'react-paginate';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
-import { RiTimerLine } from "react-icons/ri";
 import EnterOtp from '../popUp/EnterOtp';
 import Timer from '../timmer/Timer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,7 +23,6 @@ const renderStar = (rating) => {
   const totalStars = 5;
   let stars = [];
   for (let i = 1; i <= totalStars; i++) {
-    // const color = i <= rating ? "#FFD700": "#d3d3d3"; 
     const color = i <= rating ? "#ffe234" : "#d3d3d3";
     stars.push(
       <FontAwesomeIcon key={i} icon={faStar} size="lg" color={color} />
@@ -37,8 +35,6 @@ const HotelList = () => {
   const location = useLocation();
   const { persons,  NoOfRooms,  GuestNationality } = location.state || {};
   const { searchResults } = location.state || {};
-  // const [hotels, setHotels] = useState([]);
-  // const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [sortOption, setSortOption] = useState('name');
   const { position: userPosition, error: geoError } = useGeolocation();
@@ -47,11 +43,10 @@ const HotelList = () => {
   const [startDate, setStartDate] = useState(null);
   const [destination, setDestination] = useState("");
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   // Updated selector to access hotelSearch state
   const { hotels = [], srdvType, resultIndexes, srdvIndexes, hotelCodes, traceId,  
      error = null } = useSelector((state) => state.hotelSearch || {});
-
   console.log('hotels data', hotels);
 
   useEffect(() => {
@@ -59,10 +54,10 @@ const HotelList = () => {
 }, [dispatch]);
 
 useEffect(() => {
-  console.log("persons in hotel list", persons);
-  console.log("room in hotel list", NoOfRooms);
+  // console.log("persons in hotel list", persons);
+  // console.log("room in hotel list", NoOfRooms);
+  // console.log("nationality in hotel list", GuestNationality);
 
-  console.log("nationality in hotel list", GuestNationality);
   document.addEventListener("mousedown", handleClickOutside);
   return () => {
     document.removeEventListener("mousedown", handleClickOutside);
@@ -81,7 +76,7 @@ useEffect(() => {
   
   useEffect(() => {
     const totalPages = Math.ceil(hotels.length / hotelsPerPage);
-    console.log("hotels",hotels);
+    // console.log("hotels",hotels);
     
     setPageCount(totalPages);
   }, [hotels]);
@@ -96,45 +91,52 @@ useEffect(() => {
   
   // ----------------for filter----------------
 
-  const filterHotelsByDestination = (hotels, destination) => {
-    if (!destination) return hotels;
-    return hotels.filter(hotel =>
-      hotel.HotelName.toLowerCase().includes(destination.toLowerCase())
-    );
-  };
+ // At the beginning of your HotelList component
+const [filteredAndSortedHotels, setFilteredAndSortedHotels] = useState([]);
 
-  const filteredHotels = filterHotelsByDestination(hotels, destination);
+// Adding a new useEffect to filter and sort hotels
+useEffect(() => {
+  // Step 1: Separate loaded and unloaded hotels
+  const loadedHotels = hotels.filter(hotel => hotel && hotel.HotelName && hotel.Price && hotel.Price.RoomPrice);
+  const unloadedHotels = hotels.filter(hotel => !(hotel && hotel.HotelName && hotel.Price && hotel.Price.RoomPrice));
 
-  const sortedHotels = [...filteredHotels].sort((a, b) => {
-    switch (sortOption) {
-      case 'name':
-        return a.HotelName.localeCompare(b.HotelName);
-      case 'rating':
-        return b.StarRating - a.StarRating;
-      case 'price-asc':
-        return (a.Price?.OfferedPriceRoundedOff || 0) - (b.Price?.OfferedPriceRoundedOff || 0);
-      case 'price-desc':
-        return (b.Price?.OfferedPriceRoundedOff || 0) - (a.Price?.OfferedPriceRoundedOff || 0);
-      case 'distance':
-        if (userPosition) {
-          return haversineDistance(userPosition, { latitude: parseFloat(a.Latitude), longitude: parseFloat(a.Longitude) }) -
-                 haversineDistance(userPosition, { latitude: parseFloat(b.Latitude), longitude: parseFloat(b.Longitude) });
-        }
-        return 0;
-      default:
-        return 0;
-    }
-  });
+  // Step 2: Apply sorting logic only to the loaded hotels
+  if (sortOption && loadedHotels.length > 0) {
+    loadedHotels.sort((a, b) => {
+      switch (sortOption) {
+        case 'name':
+          return a.HotelName.localeCompare(b.HotelName);
+        case 'highPrice':
+          return b.Price.RoomPrice - a.Price.RoomPrice;
+        case 'lowPrice':
+          return a.Price.RoomPrice - b.Price.RoomPrice;
+        case 'rating':
+          return b.StarRating - a.StarRating;
+        case 'distance':
+          if (userPosition) {
+            const distanceA = haversineDistance(userPosition, { latitude: parseFloat(a.Latitude), longitude: parseFloat(a.Longitude) });
+            const distanceB = haversineDistance(userPosition, { latitude: parseFloat(b.Latitude), longitude: parseFloat(b.Longitude) });
+            return distanceA - distanceB;
+          } else {
+            return 0;
+          }
+        default:
+          return 0;
+      }
+    });
+  }
 
-// Calculate pagination based on sorted and filtered hotels
-const totalFilteredHotels = sortedHotels.length;
-// const pageCount = Math.ceil(totalFilteredHotels / hotelsPerPage);
+  // Step 3: Merge loaded and unloaded hotels
+  const mergedData = [...loadedHotels, ...unloadedHotels];
+  setFilteredAndSortedHotels(mergedData);
+}, [hotels, sortOption, userPosition]);
 
-// Current hotels for the current page
-const currentHotels = sortedHotels.slice(offset, offset + hotelsPerPage);
+// Use filteredAndSortedHotels for rendering
+const currentHotels = filteredAndSortedHotels.slice(offset, offset + hotelsPerPage);
+
 
 const fetchHotelInfo = async (hotel) => {
-  console.log('Fetching hotel info for:', hotel.HotelCode);
+  // console.log('Fetching hotel info for:', hotel.HotelCode);
   
   // setLoading(true);
   // Retrieve hotel details directly from the hotel object passed
@@ -150,7 +152,7 @@ const fetchHotelInfo = async (hotel) => {
     TraceId: traceId,
   };
 
-  console.log('Request Data:', requestData);
+  // console.log('Request Data:', requestData);
 
   try {
     const hotelDetails = await dispatch(fetchHotelDetails(requestData)).unwrap();
@@ -186,12 +188,12 @@ if (loading) {
 // ----------------------------------------------------------------
 const HandelHotelInfo = async (hotel) => {
   const loginId = localStorage.getItem('loginId');
-  console.log('Current loginId:', loginId);
+  // console.log('Current loginId:', loginId);
   
   await useridHandler();
 
   if (!loginId) {
-    console.log('No loginId found after fetching user details');
+    // console.log('No loginId found after fetching user details');
     setShowOtpOverlay(true);
     return;
   }
@@ -226,7 +228,7 @@ const HandelHotelInfo = async (hotel) => {
   
       const data = await response.json();
       
-      console.log('User details:', data);
+      // console.log('User details:', data);
       if (data.result && data.transaction) {
         localStorage.setItem('transactionId', data.transaction.id);
         localStorage.setItem('transactionNum', data.transaction.transaction_num);

@@ -1,6 +1,6 @@
 .bus_bg_img {
     width: 100%;
-    height: 700px; 
+    height: 800px; 
     background-image: url('../../assets/images/bus_bg.avif'); 
     background-size: cover;
     background-position: center;
@@ -58,7 +58,7 @@
 
 @media (max-width: 992px) {
     .bus_bg_img {
-        height: 600px; 
+        height: 800px; 
     }
     
     .bus_payload img {
@@ -72,7 +72,7 @@
 
 @media (max-width: 768px) {
     .bus_bg_img {
-        height: 600px; 
+        height: 800px; 
     }
     
     .bus_payload img {
@@ -86,7 +86,7 @@
 
 @media (max-width: 576px) {
     .bus_bg_img {
-        height: 600px; 
+        height: 800px; 
     }
     
     .bus_payload img {
