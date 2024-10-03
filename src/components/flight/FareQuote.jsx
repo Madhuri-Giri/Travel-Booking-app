@@ -12,7 +12,7 @@ import Footer from '../../pages/footer/Footer';
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
 import { FaArrowRightLong } from 'react-icons/fa6';
 // impor TimerFlight from '../timmer/TimerFlight';
-
+import TimerFlight from '../../components/timmer/TimerFlight'
 
 const FareQuote = () => {
     const navigate = useNavigate();
@@ -117,7 +117,8 @@ const FareQuote = () => {
     return (
         <>
             <CustomNavbar />
-            {/* <TimerFlight/> */}
+            
+            <TimerFlight/>
             {/* timerrr-------------------  */}
             {/* <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>

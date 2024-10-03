@@ -14,7 +14,7 @@ import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
 // import Payloader from '../../pages/loading/Payloader';
 import { RiTimerLine } from "react-icons/ri";
-// import TimerFlight from '../timmer/TimerFlight';
+import TimerFlight from '../../components/timmer/TimerFlight'
 import Loading from '../../pages/loading/Loading';
 import PayloaderFlight from "../../pages/loading/PayloaderFlight";
 import { useSelector } from "react-redux";
@@ -505,8 +505,8 @@ const FlightReview = () => {
   return (
     <>
       <CustomNavbar />
-      {/* <TimerFlight/> */}
-
+      <TimerFlight/>
+      
       <div className="container-fluid review-cont">
         <div className="row">
           <div className="col-md-6">

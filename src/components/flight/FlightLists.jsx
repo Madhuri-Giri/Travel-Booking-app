@@ -30,7 +30,7 @@ import FlightSegments from "./FlightSegments";
 import PriceModal from "./PriceModal";
 import { calculateDuration, extractTime } from "../../Custom Js function/CustomFunction";
 import { LuTimerReset } from "react-icons/lu";
-
+import TimerFlight from '../../components/timmer/TimerFlight'
 
 export default function FlightLists() {
     const [airlineDetails, setAirlineDetails] = useState([]);
@@ -557,6 +557,7 @@ export default function FlightLists() {
                 listingData &&
                 <>
                     <CustomNavbar />
+                    < TimerFlight />
                     {/* <TimerFlight/> */}
                     {/* timerrr-------------------  */}
                     {/* <div className="timer-FlightLists">
