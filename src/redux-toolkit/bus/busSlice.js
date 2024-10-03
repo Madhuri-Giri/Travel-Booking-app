@@ -8,8 +8,8 @@ export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to
   currentDate.setHours(0, 0, 0, 0);
   departureDate.setHours(0, 0, 0, 0);
 
-  console.log('Current Date:', currentDate);
-  console.log('Departure Date:', departureDate);
+  // console.log('Current Date:', currentDate);
+  // console.log('Departure Date:', departureDate);
 
 
   if (departureDate < currentDate) {
@@ -35,7 +35,7 @@ export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to
   });
 
   const data = await response.json();
-  console.log('bus search', data);
+  // console.log('bus search', data);
   return data;
 });
 
