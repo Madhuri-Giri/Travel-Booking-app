@@ -87,7 +87,7 @@ const GuestDetails = () => {
   };
 
   useEffect(() => {
-    console.log("persons in guest details", persons[0].NoOfAdults);
+    // console.log("persons in guest details", persons[0].NoOfAdults);
   }, []);
 
   // Check if the current form is complete
@@ -337,9 +337,9 @@ const GuestDetails = () => {
   } = useSelector((state) => state.hotelSearch || {});
 // ----------------------------------------------------------------------
 const { transactionDetails } = useSelector((state) => state.loginReducer);
-console.log('transactionDetails', transactionDetails);
+// console.log('transactionDetails', transactionDetails);
 const transaction_num = transactionDetails?.transaction_num
-console.log('transaction_num', transaction_num);
+// console.log('transaction_num', transaction_num);
   //  ----------------------------Start book api-----------------------------------
   // Construct the booking payload
 

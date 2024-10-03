@@ -47,7 +47,7 @@ const HotelList = () => {
   // Updated selector to access hotelSearch state
   const { hotels = [], srdvType, resultIndexes, srdvIndexes, hotelCodes, traceId,  
      error = null } = useSelector((state) => state.hotelSearch || {});
-  console.log('hotels data', hotels);
+  // console.log('hotels data', hotels);
 
   useEffect(() => {
     dispatch(searchHotels());
