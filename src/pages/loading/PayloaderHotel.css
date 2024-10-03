@@ -1,6 +1,6 @@
 .hotel_bg_img {
     width: 100%;
-    height: 700px; 
+    height: 800px; 
     background-image: url('../../assets/images/bg_h.png'); 
     background-size: cover;
     background-position: center;
@@ -58,7 +58,7 @@
 
 @media (max-width: 992px) {
     .hotel_bg_img {
-        height: 600px; 
+        height: 800px; 
     }
     
     .hotel_payload img {
@@ -72,7 +72,7 @@
 
 @media (max-width: 768px) {
     .hotel_bg_img {
-        height: 600px; 
+        height: 800px; 
     }
     
     .hotel_payload img {
@@ -86,7 +86,7 @@
 
 @media (max-width: 576px) {
     .hotel_bg_img {
-        height: 600px; 
+        height: 800px; 
     }
     
     .hotel_payload img {

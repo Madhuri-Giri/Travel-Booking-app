@@ -44,7 +44,7 @@ const hotelDetailsSlice = createSlice({
         state.status = 'succeeded';
         state.details = action.payload;
         
-        console.log('Fetched hotel details:', action.payload);
+        // console.log('Fetched hotel details:', action.payload);
       })
       .addCase(fetchHotelDetails.rejected, (state, action) => {
         state.status = 'failed';

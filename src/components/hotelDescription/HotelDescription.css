@@ -16,8 +16,6 @@
     height:50%;
 }
 
-
-
 p.facility {word-spacing: 4px;}
 
 .search_Item {
@@ -305,5 +303,20 @@ background: none;
     .search_Item{
         margin-top: 10px;
         margin-bottom: 0px;
+    }
+    .model_box{
+        width: 100%;
+    }
+      .custom-modal{
+        width: 100%;
+      }
+      .custom-modal .modal-dialog {
+        max-width: 100%; 
+        width: 100%;
+      }
+      
+      .HotelListModal .modal-lg {
+        max-width: 100% !important;
+        height:100%;
     }
 }

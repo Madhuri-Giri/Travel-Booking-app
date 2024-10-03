@@ -35,7 +35,7 @@ const hotelSlice = createSlice({
             })
             .addCase(searchHotels.fulfilled, (state, action) => {
                 state.loading = false;
-                console.log('Search Hotels Response:', action.payload);
+                // console.log('Search Hotels Response:', action.payload);
                 state.hotels = action.payload.Results || []; // Store hotel results
 
                 // Extract information from the results
@@ -47,9 +47,9 @@ const hotelSlice = createSlice({
                 state.srdvIndexes = action.payload.Results.map(result => result.SrdvIndex);
                 state.hotelCodes = action.payload.Results.map(result => result.HotelCode);
 
-                console.log('Result Indexes:', state.resultIndexes);
-                console.log('Srdv Indexes:', state.srdvIndexes);
-                console.log('Hotel Codes:', state.hotelCodes);
+                // console.log('Result Indexes:', state.resultIndexes);
+                // console.log('Srdv Indexes:', state.srdvIndexes);
+                // console.log('Hotel Codes:', state.hotelCodes);
             })
             .addCase(searchHotels.rejected, (state, action) => {
                 state.loading = false;

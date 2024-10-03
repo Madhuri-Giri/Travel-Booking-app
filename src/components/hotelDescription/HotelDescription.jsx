@@ -67,7 +67,7 @@ const HotelDescription = () => {
     setLoading(true);
     const { resultIndex, hotelCode, srdvType, srdvIndex, traceId } = location.state || {};
     if (!resultIndex || !srdvIndex || !hotelCode || !srdvType || !traceId) {
-      console.error("Missing required parameters for fetching hotel room.");
+      // console.error("Missing required parameters for fetching hotel room.");
       return;
     }
 
@@ -75,7 +75,7 @@ const HotelDescription = () => {
     
     try {
       const hotelRooms = await dispatch(fetchHotelRooms(requestData)).unwrap();
-      console.log("Hotel Rooms Response:", hotelRooms);
+      // console.log("Hotel Rooms Response:", hotelRooms);
       if (hotelRooms) {
        
         navigate("/hotel-room", { state: { hotelRooms, persons,  NoOfRooms, GuestNationality, hotelName,  resultIndex,
