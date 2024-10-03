@@ -6,6 +6,7 @@ import BusSeatImg from '../../assets/images/bussittt.png';
 import BusSeatImgSleeper from '../../assets/images/sleepImg.png';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { TbSteeringWheel } from "react-icons/tb";
 
 const BusLayout = ({ busType }) => {
   const [lowerSeatsBus, setLowerSeatsBus] = useState([]);
@@ -23,7 +24,7 @@ const BusLayout = ({ busType }) => {
 
   const navigate = useNavigate();
 
-  console.log('busType', busType)
+  // console.log('busType', busType)
 
   const seatDetails = layout?.Result?.SeatLayout?.SeatLayoutDetails?.Layout?.seatDetails || [];
   const totalAvailableSeats = layout?.Result?.SeatLayout?.SeatLayoutDetails?.AvailableSeats || 0;
@@ -68,7 +69,7 @@ const BusLayout = ({ busType }) => {
 
   useEffect(() => {
     if (seatDetails.length > 0) {
-      console.log('seatDetails', seatDetails);
+      // console.log('seatDetails', seatDetails);
 
       let upperSeats = [];
       let lowerSeats = [];
@@ -93,7 +94,7 @@ const BusLayout = ({ busType }) => {
 
 
   // const renderSeats = (seats) => {
-  //   console.log('seatssss', seats);
+  //   console.log('sss', seats);
 
   //   const totalSeats = seats.length;
 
@@ -154,8 +155,8 @@ const BusLayout = ({ busType }) => {
   // };
 
   const renderSeats = (seats) => {
-    console.log('seatssss', seats);
-    console.log('busType', busType);
+    // console.log('seatssss', seats);
+    // console.log('busType', busType);
   
     // Extract seat configuration from the busType (like (2+1), (2+2), (2+3))
     const seatConfigMatch = busType?.match(/\((\d+)\+(\d+)\)/);
@@ -391,10 +392,10 @@ const BusLayout = ({ busType }) => {
       const boardingIndex = selectedBoardingPointDetail.CityPointIndex;
       const droppingIndex = selectedDroppingPointDetail.CityPointIndex;
 
-      console.log('Selected Boarding Point:', selectedBoardingPoint);
-      console.log('Selected Dropping Point:', selectedDroppingPoint);
-      console.log('Selected Bus Seat Data:', selectedBusSeatData);
-      console.log('Total Price:', totalPrice);
+      // console.log('Selected Boarding Point:', selectedBoardingPoint);
+      // console.log('Selected Dropping Point:', selectedDroppingPoint);
+      // console.log('Selected Bus Seat Data:', selectedBusSeatData);
+      // console.log('Total Price:', totalPrice);
 
       navigate('/review-booking', {
         state: {
@@ -439,7 +440,7 @@ const BusLayout = ({ busType }) => {
         return response.json();
       })
       .then(responseData => {
-        console.log('Boarding Response:', responseData);
+        // console.log('Boarding Response:', responseData);
         setBoardingPoints(responseData.GetBusRouteDetailResult.BoardingPointsDetails);
         setDroppingPoints(responseData.GetBusRouteDetailResult.DroppingPointsDetails);
       })
@@ -469,9 +470,10 @@ const BusLayout = ({ busType }) => {
             {/* ----------------------------------------seat code ---------------------------------------------------------------- */}
             <div className="Seats-layout">
               <small>{busType}</small>
-              <div className="lower-seats seatsssdivv">
+              <div className="lower-seats ">
                 <h6>LOWER</h6>
-                <div>
+                <div className='d-flex'>
+                <TbSteeringWheel className='mt-2'/>
                   {lowerSeatsBus.length > 0 ? (
                     <div className="seat-row">
                       {renderSeats(lowerSeatsBus)}
@@ -482,7 +484,7 @@ const BusLayout = ({ busType }) => {
                 </div>
               </div>
               {upperSeatsBus.length > 0 && (
-                <div className="upper-seats seatsssdivv">
+                <div className="upper-seats ">
                   <h6>UPPER</h6>
                   <div>
                     <div className="seat-row">

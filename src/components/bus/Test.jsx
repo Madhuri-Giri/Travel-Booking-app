@@ -114,10 +114,10 @@ const Test = () => {
 
   const handleProceed = () => {
     if (selectedBoardingPoint && selectedDroppingPoint) {
-      console.log('Selected Boarding Point:', selectedBoardingPoint);
-      console.log('Selected Dropping Point:', selectedDroppingPoint);
-      console.log('Selected Bus Seat Data:', selectedBusSeatData);
-      console.log('Total Price:', totalPrice);
+      // console.log('Selected Boarding Point:', selectedBoardingPoint);
+      // console.log('Selected Dropping Point:', selectedDroppingPoint);
+      // console.log('Selected Bus Seat Data:', selectedBusSeatData);
+      // console.log('Total Price:', totalPrice);
 
       navigate('/review-booking', {
         state: {

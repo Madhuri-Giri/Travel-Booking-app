@@ -24,34 +24,20 @@ const SeatMealBaggageTabs = () => {
     const [seatMealBaggagePriceTotal, setseatMealBaggagePriceTotal] = useState(0);
     // const [timer, setTimer] = useState(600000);
 
-    // console.log('totalPrice', totalPrice);
-    console.log('seatData', seatData);
-    console.log('ssrAPIData', ssrAPIData);
-    // console.log('Baggage', ssrAPIData.Baggage);
-    // console.log('Meal', ssrAPIData.MealDynamic);
-
-    console.log('selectedSeats', selectedSeats);
-    console.log('selectedBaggage', selectedSeats);
-    console.log('selectedMeal', selectedMeal);
+    
+    
 
     // selected flight data get------
     const { fareQuoteAPIData, dataToPass , flightSelectedDATA, confirmedAdults, confirmedChildren, confirmedInfants } = location.state || {};
-    // console.log('flightSelectedDATA', flightSelectedDATA);
-    // console.log('fareQuoteAPIData', fareQuoteAPIData);
-    // console.log('dataToPass', dataToPass);
-    // console.log('confirmedAdults', confirmedAdults);
-    // console.log('confirmedChildren', confirmedChildren);
-    // console.log('confirmedInfants', confirmedInfants);
+    
+    
 
     const FtraceId = dataToPass.TraceId;
     const FresultIndex = dataToPass.ResultIndex;
     const FsrdvType = dataToPass.SrdvType;
     const FsrdvIndex = dataToPass.SrdvIndex;
-    console.log('TraceId---', FtraceId);
-    console.log('ResultIndex---', FresultIndex);
-    console.log('SrdvType---', FsrdvType);
-    console.log('SrdvIndex----', FsrdvIndex);
-
+  
+    
     useEffect(() => {
         const savedFare = flightSelectedDATA?.flight.OfferedFare
         if (savedFare) {
@@ -82,17 +68,11 @@ const SeatMealBaggageTabs = () => {
     const mealPrice = selectedMeal?.Price || 0;
     const baggagePrice = selectedBaggage?.Price || 0;
 
-    // const calculateFinalTotalPrice = () => {
-    //     const totalSeatMealBagPrice = seatPrice + mealPrice + baggagePrice;
-    //     setseatMealBaggagePriceTotal(totalSeatMealBagPrice);
-    //     console.log('totalSeatMealBagPrice', totalSeatMealBagPrice);
-    // };
-    // useEffect(() => {
-    //     calculateFinalTotalPrice();
-    // }, [seatPrice, mealPrice, baggagePrice]);
+  
+    
 
     const finalTotalPrice = seatPrice + mealPrice + baggagePrice;
-    console.log('finalTotalPrice', finalTotalPrice);
+
     // // setseatPriceTotal(finalTotalPrice)
 
     // // Save the final total price to local storage
@@ -172,7 +152,6 @@ const SeatMealBaggageTabs = () => {
             }
 
             const data = await response.json();
-            console.log('Seat map Response', data)
             localStorage.setItem('seatMapData', JSON.stringify(data));
             return data;
         } catch (error) {
@@ -188,9 +167,9 @@ const SeatMealBaggageTabs = () => {
 
     const handleSsrApi = async () => {
         const result = await ssrApiHandler();
-        if (result) {
-            console.log('SSR API Response:', result);
-        }
+        // if (result) {
+
+        // }
     };
 
     const ssrApiHandler = async () => {
@@ -273,10 +252,10 @@ const SeatMealBaggageTabs = () => {
     };
 
     const handleSeatClick = (seat) => {
-        console.log('flightseatselect', seat);
-        const isAlreadySelected = selectedSeats.find(s => s.seatNumber === seat.seatNumber);
-        console.log('isAlreadySelected', isAlreadySelected);
 
+        const isAlreadySelected = selectedSeats.find(s => s.seatNumber === seat.seatNumber);
+
+        
         let updatedSeats;
         if (isAlreadySelected) {
             updatedSeats = selectedSeats.filter(s => s.seatNumber !== seat.seatNumber);
@@ -345,8 +324,8 @@ const SeatMealBaggageTabs = () => {
     // -------------------------------------------------------------------------------------------------------------------------
 
     const [mealData, setMealData] = useState([]);
-    console.log('mealData', mealData);
 
+    
     useEffect(() => {
         const storedData = localStorage.getItem('ssrApiData');
         if (storedData) {
@@ -418,7 +397,7 @@ const SeatMealBaggageTabs = () => {
 
     const renderBaggageTab = () => {
         const baggageData = getSsrApiData();
-        console.log('baggageData', baggageData);
+
         return (
             <div className="baggageTab">
                 <h5>Select Your Baggage Option</h5>
