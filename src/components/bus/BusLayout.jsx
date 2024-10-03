@@ -153,8 +153,6 @@ const BusLayout = ({ busType }) => {
   //   );
   // };
 
-
-
   const renderSeats = (seats) => {
     console.log('seatssss', seats);
     console.log('busType', busType);

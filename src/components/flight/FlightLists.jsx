@@ -24,7 +24,6 @@ import 'swiper/css/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 // import TimerFlight from '../timmer/TimerFlight';
-import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from "react-redux";
 import { getFlightList } from "../../API/action";
 import FlightSegments from "./FlightSegments";
@@ -34,19 +33,9 @@ import { LuTimerReset } from "react-icons/lu";
 
 
 export default function FlightLists() {
-    // State to hold airline details
     const [airlineDetails, setAirlineDetails] = useState([]);
-
-    // Function to update airline details
-    const updateAirlineDetails = (details) => {
-        setAirlineDetails(details);
-    };
-    // console.log('airlineDetails', airlineDetails);
-
-
     const location = useLocation();
     const dispatch = useDispatch();
-
     const [listingData, setListingData] = useState(null);
     const [formDataNew, setFormDataNew] = useState(location?.state?.formData || null);
     const [dataToPass, setDataToPass] = useState(null);
@@ -54,10 +43,11 @@ export default function FlightLists() {
     const [sEGMENTSData, setSEGMENTSData] = useState(null);
     const [isRefundable, setIsRefundable] = useState(null);
     const { isLogin } = useSelector((state) => state.loginReducer);
-    console.log('OfferPriceData', OfferPriceData?.fareValue);
-    console.log('isRefundable', isRefundable);
-    // console.log('ResultIndex', OfferPriceData?.fareValue.ResultIndex);
-    // console.log('SrdvIndex', OfferPriceData?.fareValue.SrdvIndex);
+
+    // Function to update airline details
+    const updateAirlineDetails = (details) => {
+        setAirlineDetails(details);
+    };
 
     // // price modal----
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -81,20 +71,19 @@ export default function FlightLists() {
     };
     // =======stops checkbosxx
 
-    // /======
-
-
-    // useEffect(() => {
-    //     if (dataToPass) {
-    //         console.log("SrdvIndex:", dataToPass.SrdvIndex);
-    //         console.log("ResultIndex:", dataToPass.ResultIndex);
-    //         console.log("TraceId:", dataToPass.TraceId);
-    //         console.log("SrdvType:", dataToPass.SrdvType);
-    //         console.log("IsLCC:", dataToPass.IsLCC);
-    //     } else {
-    //         console.log("dataToPass is null or undefined");
-    //     }
-    // }, [dataToPass]);
+    //    ==========checkdbos data save for price details model=====
+    const [selectedFlightIndex, setselectedFlightIndex] = useState(null);
+    const [selectedFlightResultIndex, setselectedFlightResultIndex] = useState(null);
+    // const [message, setMessage] = useState('');
+    const handleFarePriceSelect = (index) => {
+        if (selectedFlightIndex == index) {
+            openModal()
+        } else {
+            setOfferPriceData(null)
+            alert('Please select a price fare')
+            // setMessage("Please select a price fare");
+        }
+    }
 
     const [showFlightSegments, setShowFlightSegments] = useState(null);  // State to toggle FlightSegments visibility
 
@@ -981,13 +970,13 @@ export default function FlightLists() {
                                                                         <div className="priceradiotbtnnDiv">
                                                                             <Form>
                                                                                 {value?.FareDataMultiple.map((fareValue, fareIndex) => {
-                                                                                    // Determine if the current option should be checked by default
+                                                                                    const offerData = {
+                                                                                        fareValue,
+                                                                                        segments: value.Segments,
+                                                                                        logoUrl,
+                                                                                    };
                                                                                     const isChecked = fareValue.Source === 'Publish';
-                                                                                    // setIsRefundable(fareValue?.IsRefundable)
-                                                                                    const isRefundable = fareValue?.IsRefundable
-                                                                                    console.log('isRefundableeeeee', isRefundable);
-
-                                                                                    // Function to determine the background color based on fareValue.Source
+                                                                                    const isRefundable = fareValue?.IsRefundable;
                                                                                     const getSourceBgColor = (source) => {
                                                                                         switch (source) {
                                                                                             case 'Publish':
@@ -1003,77 +992,46 @@ export default function FlightLists() {
                                                                                             case 'Other':
                                                                                                 return 'gray';
                                                                                             default:
-                                                                                                return 'cornflowerblue'; // Default color for other sources
+                                                                                                return 'cornflowerblue';
                                                                                         }
                                                                                     };
-
                                                                                     return (
-                                                                                        <div
-                                                                                            className="publiceprices"
-                                                                                            key={fareIndex}
-                                                                                        >
-                                                                                            <label>
-                                                                                                <input
-                                                                                                    type="radio"
-                                                                                                    name="flightOption"
-                                                                                                    value={`option${fareIndex + 1}`}
-                                                                                                    // Automatically check "Publish" by default
-                                                                                                    defaultChecked={isChecked}
-                                                                                                    onChange={(event) => {
-                                                                                                        // Save the data only when the radio button is checked
-                                                                                                        if (event.target.checked) {
-                                                                                                            const offerData = {
-                                                                                                                fareValue,
-                                                                                                                segments: value.Segments,
-                                                                                                                logoUrl,
-                                                                                                            };
-                                                                                                            setOfferPriceData(offerData);
-                                                                                                        }
-                                                                                                    }}
-                                                                                                />
-                                                                                                <strong> ₹ {fareValue.OfferedFare}</strong>
-                                                                                                <span style={{ backgroundColor: getSourceBgColor(fareValue.Source) }}>
-                                                                                                    {fareValue.Source}
-                                                                                                </span>
-                                                                                            </label>
-                                                                                        </div>
-
-                                                                                        // <div
-                                                                                        //     className="publiceprices"
-                                                                                        //     key={fareIndex}
-                                                                                        //      // Set the background color
-                                                                                        // >
-                                                                                        //     <label>
-                                                                                        //         <input
-                                                                                        //             type="radio"
-                                                                                        //             name="flightOption"
-                                                                                        //             value={`option${fareIndex + 1}`}
-                                                                                        //             // Automatically check "Publish" by default
-                                                                                        //             defaultChecked={isChecked}
-                                                                                        //             onClick={() => {
-                                                                                        //                 const offerData = {
-                                                                                        //                     fareValue,
-                                                                                        //                     segments: value.Segments,
-                                                                                        //                     logoUrl,
-                                                                                        //                 };
-                                                                                        //                 setOfferPriceData(offerData);
-                                                                                        //             }}
-                                                                                        //         />
-                                                                                        //         <strong> ₹ {fareValue.OfferedFare}</strong> <span style={{ backgroundColor: getSourceBgColor(fareValue.Source) }}>{fareValue.Source}</span>
-                                                                                        //     </label>
-                                                                                        // </div>
+                                                                                        <>
+                                                                                            <div className="publiceprices" key={fareIndex}>
+                                                                                                <label>
+                                                                                                    <div>
+                                                                                                        <span style={{ backgroundColor: getSourceBgColor(fareValue.Source) }}>
+                                                                                                            {fareValue.Source}
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                    <div>
+                                                                                                        <input
+                                                                                                            type="radio"
+                                                                                                            name="flightOption"
+                                                                                                            value={`option${fareIndex + 1}`}
+                                                                                                            // defaultChecked={isChecked}
+                                                                                                            checked={selectedFlightResultIndex == fareValue.ResultIndex}
+                                                                                                            onChange={() => {
+                                                                                                                // const offerData = {
+                                                                                                                //     fareValue,
+                                                                                                                //     segments: value.Segments,
+                                                                                                                //     logoUrl,
+                                                                                                                // };
+                                                                                                                setOfferPriceData(offerData);
+                                                                                                                setselectedFlightIndex(index)
+                                                                                                                setselectedFlightResultIndex(fareValue.ResultIndex)
+                                                                                                            }}
+                                                                                                        />
+                                                                                                        <strong> ₹ {fareValue.OfferedFare}</strong>
+                                                                                                    </div>
+                                                                                                    {/* <p className="isRefundalbe">{isRefundable ? 'Refundable': 'Non-Refundable' }</p> */}
+                                                                                                </label>
+                                                                                            </div>
+                                                                                            
+                                                                                        </>
                                                                                     );
                                                                                 })}
-
-                                                                                {/* <div>
-                                                                                    {!isRefundable ? (
-                                                                                        <p style={{ color: 'green' }}>Refundable</p>
-                                                                                    ) : (
-                                                                                        <p style={{ color: 'red' }}>Non-refundable</p>
-                                                                                    )}
-                                                                                </div> */}
                                                                             </Form>
-
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1090,15 +1048,11 @@ export default function FlightLists() {
                                                                             </button>
                                                                         }
                                                                     </span>
+                                                                    {/* The button to view price details */}
                                                                     <div className="pricefarebtn">
-                                                                        <button onClick={() => openModal()}>View Prices Fare
-                                                                            <MdKeyboardArrowDown />
-
-                                                                        </button>
+                                                                        <button onClick={() => handleFarePriceSelect(index)}>View Prices Fare <MdKeyboardArrowDown /></button>
                                                                     </div>
                                                                 </div>
-
-
                                                                 {/* Conditionally render FlightSegments */}
                                                                 {showFlightSegments == index && (
                                                                     <div className="flight-segment-section">
@@ -1110,6 +1064,7 @@ export default function FlightLists() {
                                                                         />
                                                                     </div>
                                                                 )}
+
 
 
                                                             </div>

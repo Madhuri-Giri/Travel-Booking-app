@@ -25,7 +25,7 @@ export const userLogin = createAsyncThunk(
                 // console.log('login successful:', data);
                 localStorage.setItem('loginId', data.data.id);
                 localStorage.setItem('loginData', JSON.stringify(data.data));
-                toast.success('Logged in successfully!');
+                toast.success('LogIn successfully!');
 
                 // Call the userDetailsHandler after setting the loginId
                 // await userDetailsHandler();
@@ -126,7 +126,7 @@ export const userDetailsHandler = createAsyncThunk(
                 throw new Error(data);
             }
 
-            console.log('Main LOGIN User details:', data);
+            // console.log('Main LOGIN User details:', data);
             // console.log('flight transcNo', data.transaction.transaction_num);
 
             // if (data.result && data.transaction) {
@@ -141,7 +141,7 @@ export const userDetailsHandler = createAsyncThunk(
             return data;
         } catch (error) {
             // console.log("error", error.message);
-            console.error('Error fetching user details:', error.message);
+            // console.error('Error fetching user details:', error.message);
         }
     }
 );
