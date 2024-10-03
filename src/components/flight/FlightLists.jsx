@@ -75,16 +75,29 @@ export default function FlightLists() {
     const [selectedFlightIndex, setselectedFlightIndex] = useState(null);
     const [selectedFlightResultIndex, setselectedFlightResultIndex] = useState(null);
     // const [message, setMessage] = useState('');
+    // const handleFarePriceSelect = (index) => {
+    //     if (selectedFlightIndex == index) {
+    //         openModal()
+    //     } else {
+    //         setOfferPriceData(null)
+    //         alert('Please select a price fare')
+    //         // setMessage("Please select a price fare");
+    //     }
+    // }
     const handleFarePriceSelect = (index) => {
         if (selectedFlightIndex == index) {
             openModal()
         } else {
             setOfferPriceData(null)
-            alert('Please select a price fare')
-            // setMessage("Please select a price fare");
-        }
+             // SweetAlert for message
+        Swal.fire({
+            icon: 'warning',
+            title: 'No Price Fare Selected',
+            text: 'Please select a price fare to continue.',
+            confirmButtonText: 'OK'
+        });
+       }
     }
-
     const [showFlightSegments, setShowFlightSegments] = useState(null);  // State to toggle FlightSegments visibility
 
     // Function to handle "View Details" click
