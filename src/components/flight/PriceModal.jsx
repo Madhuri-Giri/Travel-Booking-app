@@ -134,7 +134,8 @@ const PriceModal = ({ isModalOpen, closeModal, OfferPriceData, listingData }) =>
                 <tr>
                   <td>₹ {OfferPriceData?.fareValue.Fare.BaseFare}</td>
                   <td>₹ {OfferPriceData?.fareValue.Fare.Tax}</td>
-                  <td>₹ {OfferPriceData?.fareValue.Fare.BaseFare + OfferPriceData?.fareValue.Fare.Tax}</td>
+                  <td>₹ {OfferPriceData?.fareValue.Fare.PublishedFare}</td>
+                  {/* <td>₹ {OfferPriceData?.fareValue.Fare.BaseFare + OfferPriceData?.fareValue.Fare.Tax}</td> */}
                 </tr>
                 {/* Add an extra row for the total */}
                 <tr>

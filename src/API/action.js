@@ -36,7 +36,7 @@ export const getFlightList =
 
             // const data = await response.json();
             const data = response.data;
-            console.log('flight search response',data);
+            // console.log('flight search response',data);
             // console.log('errrr',data.ErrorMessage);
             
 
@@ -81,7 +81,7 @@ export const getFlightList =
 
 
             } else {
-                console.log("SrdvIndex or FareDataMultiple not found");
+                // console.log("SrdvIndex or FareDataMultiple not found");
             }
             // localStorage.setItem('Flight-search', JSON.stringify(data));
             const airlineCodes = data.Results.flatMap(result =>
@@ -112,8 +112,8 @@ export const getFlightList =
             // return { ...data, logoMap: logoMap };
 
         } catch (error) {
-            console.log("calledError", error);
-            console.error('Error fetching flight data:', error.message);
+            // console.log("calledError", error);
+            // console.error('Error fetching flight data:', error.message);
             // // alert(`An error occurred: ${error.message}`);
             // alert(`failed: ${error.message}`);
             toast.error(`Error fetching flight data:: ${error.message}`);
@@ -148,8 +148,8 @@ const fetchAirlineLogos = async (airlineCodes) => {
 
         return airlineCodes.map(code => logoMap[code] || null);
     } catch (error) {
-        console.log("error", error);
-        console.error('Error fetching airline logos:', error);
+        // console.log("error", error);
+        // console.error('Error fetching airline logos:', error);
         return airlineCodes.map(() => null);
     }
 };

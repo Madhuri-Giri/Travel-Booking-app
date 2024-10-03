@@ -139,3 +139,17 @@
 .select-btn:hover {
     background-color: #e64a19;
 }
+
+
+
+
+
+@media screen and (max-width: 576px) {
+ 
+    .flight-segment-container {
+        padding: 0px 4px;
+    }
+
+   
+
+}

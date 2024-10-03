@@ -363,30 +363,12 @@ const Home = () => {
     return valid;
   };
 
-
-
   // Search flight handler
   const searchFlightHandler = async () => {
     if (!validateForm()) {
       return;
     }
-
-
-    // =========Using params strat=========
-    // const params = new URLSearchParams({
-    //   formData: JSON.stringify(formData)
-    // }).toString();
-    // navigate(`/flight-list?${params}`)
-    // =========Using params ends=========
-
-
     navigate(`/flight-list`, { state: { formData: formData } })
-
-    // navigate(`/flight-list?${params}`, { state: { data: data, formData: formData } })
-    // Call the function to get flight list if validation passes
-    // dispatch(getFlightList({ setLoading, formData, navigate }));
-    // console.log("formDataformDataformData", formData);
-
   };
   // ------------------------------------------------------------------------------------------------------------
 
