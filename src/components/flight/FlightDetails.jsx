@@ -15,7 +15,7 @@ import Loading from '../../pages/loading/Loading'; // Import the Loading compone
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 // import { RiTimerLine } from "react-icons/ri";
-// import TimerFlight from '../timmer/TimerFlight';
+import TimerFlight from '../../components/timmer/TimerFlight'
 
 
 export default function FlightDetails() {
@@ -895,7 +895,8 @@ export default function FlightDetails() {
     return (
         <>
             <CustomNavbar />
-            {/* <TimerFlight/> */}
+            <TimerFlight/>
+           
 
 
             {/* timerrr-------------------  */}
