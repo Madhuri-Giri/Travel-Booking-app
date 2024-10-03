@@ -23,16 +23,9 @@ const FareQuote = () => {
     const dataToPass = location.state?.dataToPass;
     const fareQuoteAPIData = location.state?.fareQuoteAPIData;
     const segmentss = fareQuoteAPIData.Segments;
-    console.log('fareQuoteAPIData', fareQuoteAPIData.Fare.PublishedFare);
-
     // selected flight data get------
     const { flightSelectedDATA } = location?.state || {};
-    console.log('flightSelectedDATA', flightSelectedDATA);
-
     const publishedFare = fareQuoteAPIData?.Fare.PublishedFare;
-    // const publishedFare = flightSelectedDATA?.flight?.OfferedFare;
-    console.log('publishedFare', publishedFare);
-
 
     // function for date convert into day month date--------------------------------------
     const formatDate = (dateString) => {
@@ -41,9 +34,7 @@ const FareQuote = () => {
     };
 
     const formattedDate = formatDate(formData.Segments[0].PreferredDepartureTime);
-    // console.log("Formatted Date:", formattedDate);
     // function for date convert into day month date--------------------------------------
-
     // func for date -------------------------------
     const convertUTCToIST = (utcTimeString) => {
         const utcDate = new Date(utcTimeString);
@@ -177,10 +168,10 @@ const FareQuote = () => {
                                                     <div className='col-12 fareQuotemain'>
                                                         <h6 className='fareQuotemainh6'>{segmentDetails.Airline.AirlineName} <LuDot size={30} /> {segmentDetails.Airline.AirlineCode} <LuDot size={30} /> {segmentDetails.Airline.FlightNumber} </h6>
                                                         <p className='fareQuotemainp1'>{convertUTCToIST(segmentDetails.DepTime)}</p>
-                                                        <p className='fareQuotemainp2'>{segmentDetails.Destination.CityName} <LuDot size={30} /> <span>{segmentDetails.Destination.AirportName}</span></p>
+                                                        <p className='fareQuotemainp2'>{segmentDetails.Origin.CityName} <LuDot size={30} /> <span>{segmentDetails.Origin.AirportName}</span></p>
                                                         <p className='fareQuotemainp3'>Duration  {convertMinutesToHoursAndMinutes(segmentDetails.Duration)}</p>
                                                         <p className='fareQuotemainp4'>{convertUTCToIST(segmentDetails.ArrTime)}</p>
-                                                        <p className='fareQuotemainp5'>{segmentDetails.Origin.CityName} <LuDot size={30} /> <span>{segmentDetails.Origin.AirportName}</span></p>
+                                                        <p className='fareQuotemainp5'>{segmentDetails.Destination.CityName} <LuDot size={30} /> <span>{segmentDetails.Destination.AirportName}</span></p>
                                                     </div>
                                                 </React.Fragment>
                                             ))}

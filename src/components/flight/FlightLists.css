@@ -1,4 +1,10 @@
-
+.fligthListModal  .tab-content {
+    padding: 0px 5px !important;
+}
+.publiceprices label{
+    display: flex;
+    justify-content: space-between;
+}
 
 .fligtDurationdiv p span svg{
     margin-top: -6px;
@@ -94,9 +100,7 @@
 .flightPriceTabs{
     border-bottom: 1px solid rgba(201, 26, 26, 0.358) ;
 }
-.tab-content {
-    padding: 0px 20px;
-}
+
 .changePlaneDiv {
     padding: 10px 6px;
     border-top: 1px solid rgba(128, 128, 128, 0.397);
@@ -1004,12 +1008,16 @@
 }
 
 @media screen and (max-width: 576px) {
+    .priceradiotbtnn span {
+        font-size: 11px;
+    }
     .fligtDurationdiv {
         text-align: center;
         margin-bottom: 4px;
     }
     .priceradiotbtnn {
-        border-top: 1px solid gray;
+        border-top: 1px solid #c2b6b647;
+        border-bottom: 1px solid #c2b6b647;
 
     }
     .flightsLIstdataDIV {
@@ -1019,6 +1027,15 @@
     }
     .publiceprices{
         text-align: center;
+    }
+    .publiceprices label{
+        border-right: 1px solid rgba(119, 132, 133, 0.377);
+        padding: 5px 2px;
+        font-size: 11px;
+        display: block;
+    }
+    .publiceprices input{
+       height: 10px;
     }
     .priceradiotbtnnDiv form{
         display: inline-flex;
