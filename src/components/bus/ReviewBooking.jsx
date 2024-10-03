@@ -334,7 +334,7 @@ const droppingPointIndex = selectedDroppingPoint.index;
         description: 'Test Transaction',
         image: 'https://your-logo-url.com/logo.png',
         handler: async function (response) {
-          console.log('Payment successful', response);
+          // console.log('Payment successful', response);
 
           // localStorage.setItem('payment_id', response.razorpay_payment_id
           // );

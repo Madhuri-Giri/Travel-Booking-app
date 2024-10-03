@@ -13,8 +13,8 @@ const BoardAndDrop = () => {
   const [selectedDroppingPoint, setSelectedDroppingPoint] = useState('');
 
   useEffect(() => {
-    console.log('Current traceId:', traceId);
-    console.log('Current resultIndex:', selectedBusIndex);
+    // console.log('Current traceId:', traceId);
+    // console.log('Current resultIndex:', selectedBusIndex);
   
     if (traceId && selectedBusIndex) {
       dispatch(addBoardingPoint({ traceId, selectedBusIndex }));
@@ -24,12 +24,12 @@ const BoardAndDrop = () => {
 
   const handleBoardingSelect = (point) => {
     setSelectedBoardingPoint(point.CityPointName);
-    console.log('Selected Boarding Point:', point);
+    // console.log('Selected Boarding Point:', point);
   };
 
   const handleDroppingSelect = (point) => {
     setSelectedDroppingPoint(point.CityPointName);
-    console.log('Selected Dropping Point:', point);
+    // console.log('Selected Dropping Point:', point);
   };
 
   return (

@@ -27,13 +27,13 @@ const FlightReview = () => {
   const [holdAPIDATA, setholdAPIDATA] = useState();
   const [razorPayPAYMENT_Id, setRazorPayPAYMENT_Id] = useState();
   const [razorPayTRANSACTION_Id, setRazorPayTRANSACTION_Id] = useState();
-  console.log('holdAPIDATA', holdAPIDATA);
 
+  
   const { transactionDetails } = useSelector((state) => state.loginReducer);
-  console.log('transactionDetails', transactionDetails);
-  const transaction_num = transactionDetails?.transaction_num
-  console.log('transaction_num', transaction_num);
 
+  const transaction_num = transactionDetails?.transaction_num
+
+  
   const location = useLocation();
   const { fareQuoteAPIData, flightSelectedDATA, confirmedAdults, confirmedChildren, confirmedInfants } = location.state || {};
   const dataToPass = location.state?.dataToPass;
@@ -44,7 +44,7 @@ const FlightReview = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   // Calculate the grand total
   const grandTotal = totalPrice + finalTotalPrice;
-  console.log('grandTotal',grandTotal.toFixed(2));
+
   
   useEffect(() => {
     const savedFare = flightSelectedDATA?.flight.OfferedFare
@@ -95,8 +95,8 @@ const FlightReview = () => {
 
   //-----------------------------Payment apis--------------------------------------------------------------------------------------
   const [flightpaymentAPIResponse, setFlightpaymentAPIResponse] = useState(null);
-  console.log('flightpaymentAPIResponse', flightpaymentAPIResponse);
 
+  
   const flightPayCreate = async () => {
     try {
       const loginId = localStorage.getItem('loginId')
@@ -108,7 +108,7 @@ const FlightReview = () => {
 
       if (response.data.status === 'success') {
         setFlightpaymentAPIResponse(response.data.payment_details);
-        console.log('flight response', response.data);
+
         return response.data;
       } else {
         throw new Error(response.data.message);
@@ -142,7 +142,7 @@ const FlightReview = () => {
         description: 'Test Transaction',
         image: 'https://your-logo-url.com/logo.png',
         handler: async function (response) {
-          console.log('Payment successful', response);
+
           localStorage.setItem('flight_payment_id', response.razorpay_payment_id);
           localStorage.setItem('flight_transaction_id', options.transaction_id);
           setRazorPayPAYMENT_Id(response?.razorpay_payment_id)
@@ -234,8 +234,8 @@ const FlightReview = () => {
       }
 
       const data = await response.json();
-      console.log('Flight Update successful:', data);
 
+      
     } catch (error) {
       console.error('Error updating payment details:', error.message);
       throw error;
@@ -266,35 +266,13 @@ const FlightReview = () => {
   const PublishedFare = fareQuoteAPIData.Fare.PublishedFare;
   const OfferedFare = fareQuoteAPIData.Fare.OfferedFare;
 
-  // console.log('FtraceId', FtraceId);
-  // console.log('FresultIndex', FresultIndex);
-  // console.log('FsrdvType', FsrdvType);
-  // console.log('FsrdvIndex', FsrdvIndex);
-
-  // console.log('baseFareA', parseFloat(baseFare));
-  // console.log('baseFareB', baseFare);
-  // console.log('yqTax', yqTax);
-  // console.log('tax', tax);
-  // console.log('AdditionalTxnFeeOfrd', AdditionalTxnFeeOfrd);
-  // console.log('AdditionalTxnFeePub', AdditionalTxnFeePub);
-  // console.log('AirTransFee', AirTransFee);
-  // console.log('OtherCharges', OtherCharges);
-  // console.log('TransactionFee', TransactionFee);
-  // console.log('Currency', Currency);
-  // console.log('CommissionEarned', CommissionEarned);
-  // console.log('Discount', Discount);
-  // console.log('TdsOnCommission', TdsOnCommission);
-  // console.log('PublishedFare', PublishedFare);
-  // console.log('OfferedFare', OfferedFare);
-  // ------farequotre data for payload of llc and hold--
-
   const bookLccApi = async () => {
     try {
       // const transactionFlightNo = transactionDetails?.transaction_num;
       // const transactionFlightNo = localStorage.getItem('transactionNum');
       // const transaction_id = razorPayTRANSACTION_Id;
       const transaction_id = localStorage.getItem('flight_transaction_id');
-      console.log("transaction_id", transaction_id);
+
       // const adultPassengerDetails = localStorage.getItem('adultPassengerDetails');
       // const parsedAdultPassengerDetails = JSON.parse(adultPassengerDetails);
       const parsedAdultPassengerDetails = confirmedAdults;
@@ -361,8 +339,8 @@ const FlightReview = () => {
         return responseBody;
       }));
 
-      console.log('LLC Responses:', bookingResponses);
 
+      
       localStorage.setItem('flightTikitDetails', JSON.stringify(bookingResponses));
       navigate('/flightNewTicket', {
         state: {
@@ -386,8 +364,8 @@ const FlightReview = () => {
     // const transaction_id = razorPayTRANSACTION_Id;
 
     const storedPassengers = confirmedAdults;
-    console.log("transaction_id", transaction_id)
 
+    
     const passengers = storedPassengers.map(passenger => ({
       Title: passenger.gender === "male" ? "Mr" : "Ms" || null,
       FirstName: passenger.firstName,
@@ -459,7 +437,7 @@ const FlightReview = () => {
       }
 
       const holdData = await response.json();
-      console.log('Hold Response:', holdData);
+
       setholdAPIDATA(holdData)
       // localStorage.setItem('HolApiData', JSON.stringify(holdData));
 
@@ -503,8 +481,8 @@ const FlightReview = () => {
       }
 
       const data = await response.json();
-      console.log('GDS Api:', data);
 
+      
       navigate('/flightNewTicket', {
         state: {
           dataToPass: dataToPass,

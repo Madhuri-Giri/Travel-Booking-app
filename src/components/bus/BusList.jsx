@@ -67,7 +67,7 @@ const BusLists = () => {
     return istTime;
   };
 
-  
+
 
   const toggleLayoutVisibility = (index) => {
     setVisibleLayout((prev) => ({
@@ -127,7 +127,7 @@ const BusLists = () => {
     // await useridHandler();
 
     if (!loginId) {
-      console.log('No loginId found, showing OTP overlay');
+      // console.log('No loginId found, showing OTP overlay');
       setShowOtpOverlay(true);
       return;
     }
@@ -224,7 +224,7 @@ const BusLists = () => {
   return (
     <>
       <CustomNavbar />
-      <TimerBus/>
+      <TimerBus />
       <div className='BusLists'>
         <div className="busList">
           <div className="timer-bus">
@@ -396,22 +396,22 @@ const BusLists = () => {
 
 
                         {visibleLayout === index && ( // Show overlay only for the correct bus
-  <div className="overlay" onClick={() => setVisibleLayout(null)}>
-    <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
-      <div className="tppp">
-        <h5>{from} - {to} <br />
-          <span style={{ fontSize: "0.8vmax", color: "green" }}>({bus.TravelName})</span>
-        </h5>
-        <i onClick={() => setVisibleLayout(null)} className="ri-close-line"></i>
-      </div>
-      <BusLayout 
-        selectedBusIndex={selectedBusIndex} 
-        layoutResponse={layoutResponse} 
-        busType={bus.BusType}  // Pass BusType here
-      />
-    </div>
-  </div>
-)}
+                          <div className="overlay" onClick={() => setVisibleLayout(null)}>
+                            <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
+                              <div className="tppp">
+                                <h5>{from} - {to} <br />
+                                  <span>({bus.TravelName})</span>
+                                </h5>
+                                <i onClick={() => setVisibleLayout(null)} className="ri-close-line"></i>
+                              </div>
+                              <BusLayout
+                                selectedBusIndex={selectedBusIndex}
+                                layoutResponse={layoutResponse}
+                                busType={bus.BusType}  // Pass BusType here
+                              />
+                            </div>
+                          </div>
+                        )}
 
 
 

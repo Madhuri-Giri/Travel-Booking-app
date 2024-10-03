@@ -34,9 +34,9 @@ const BusSearch = () => {
   const fetchIPAddress = async () => {
     try {
       const response = await axios.get('https://api.ipify.org?format=json');
-      console.log('IP Address:', response.data.ip);
+      // console.log('IP Address:', response.data.ip);
     } catch (error) {
-      console.error('Error fetching IP address:', error);
+      // console.error('Error fetching IP address:', error);
     }
   };
 
@@ -146,11 +146,11 @@ const BusSearch = () => {
     }))
       .then((response) => {
         setLoading(false);
-        console.log('responseeeee', response.payload );
+        // console.log('responseeeee', response.payload );
         
         // Check if the result is false and show the SweetAlert if no results are found
         if (response.payload.result === false) {
-          console.log('responseeeee', response.payload );
+          // console.log('responseeeee', response.payload );
           Swal.fire({
             title: "No buses found",
             text: response.payload.message || "Please try again later.",
