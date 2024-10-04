@@ -16,13 +16,10 @@ import Loading from '../../pages/loading/Loading'; // Import the Loading compone
 import Footer from "../../pages/footer/Footer";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import EnterOtp from '../popUp/EnterOtp';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.css';
-import { Navigation } from 'swiper/modules'; // Note the updated import path in newer versions
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 // import TimerFlight from '../timmer/TimerFlight';
 import { useDispatch, useSelector } from "react-redux";
 import { getFlightList } from "../../API/action";
@@ -31,14 +28,13 @@ import PriceModal from "./PriceModal";
 import { calculateDuration, extractTime } from "../../Custom Js function/CustomFunction";
 import { LuTimerReset } from "react-icons/lu";
 import Swal from "sweetalert2";
-
-
 import TimerFlight from '../../components/timmer/TimerFlight'
 
 export default function FlightLists() {
-    const [airlineDetails, setAirlineDetails] = useState([]);
     const location = useLocation();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [airlineDetails, setAirlineDetails] = useState([]);
     const [listingData, setListingData] = useState(null);
     const [formDataNew, setFormDataNew] = useState(location?.state?.formData || null);
     const [dataToPass, setDataToPass] = useState(null);
@@ -46,6 +42,18 @@ export default function FlightLists() {
     const [sEGMENTSData, setSEGMENTSData] = useState(null);
     const [isRefundable, setIsRefundable] = useState(null);
     const { isLogin } = useSelector((state) => state.loginReducer);
+    const [loading, setLoading] = useState(false); // Add loading state
+    const [sortOrder, setSortOrder] = useState(''); // State to manage sorting order
+    const [showOtpOverlay, setShowOtpOverlay] = useState(false);
+    const [selectedFlightIndex, setselectedFlightIndex] = useState(null);
+    const [selectedFlightResultIndex, setselectedFlightResultIndex] = useState(null);
+    const [flightCallenderData, setFlightCallenderData] = useState([]);
+    const [selectedOption, setSelectedOption] = useState(null);
+    const [showFlightSegments, setShowFlightSegments] = useState(null); 
+    const listData = listingData;
+    const formData = formDataNew;
+    const PreferredDepartureTime = formData?.Segments[0].PreferredDepartureTime
+    const PreferredArrivalTime = formData?.Segments[0].PreferredArrivalTime
 
     // Function to update airline details
     const updateAirlineDetails = (details) => {
@@ -65,29 +73,13 @@ export default function FlightLists() {
 
 
     // =======stops checkbosxx
-    // State to track the selected filter
-    const [selectedOption, setSelectedOption] = useState(null);
-
     // Function to handle checkbox change
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
     };
     // =======stops checkbosxx
 
-    //    ==========checkdbos data save for price details model=====
-    const [selectedFlightIndex, setselectedFlightIndex] = useState(null);
-    const [selectedFlightResultIndex, setselectedFlightResultIndex] = useState(null);
-    const [message, setMessage] = useState('');
-    // const [message, setMessage] = useState('');
-    // const handleFarePriceSelect = (index) => {
-    //     if (selectedFlightIndex == index) {
-    //         openModal()
-    //     } else {
-    //         setOfferPriceData(null)
-    //         alert('Please select a price fare')
-    //         // setMessage("Please select a price fare");
-    //     }
-    // }
+    //    ==========radio button data save for price details model=====
     const handleFarePriceSelect = (index) => {
         if (selectedFlightIndex == index) {
             openModal()
@@ -102,7 +94,6 @@ export default function FlightLists() {
         });
        }
     }
-    const [showFlightSegments, setShowFlightSegments] = useState(null);  // State to toggle FlightSegments visibility
 
     // Function to handle "View Details" click
     const handleViewDetails = () => {
@@ -118,12 +109,7 @@ export default function FlightLists() {
         }
     }, [location]);
 
-    // console.log("listingData", listingData);
-
     const swiperRef = useRef(null);
-    // const { flightSearchData } = flightSearchReducer;
-    // const { logoMap } = flightSearchData;
-
     useEffect(() => {
         if (swiperRef.current) {
             swiperRef.current.swiper.navigation.update();
@@ -132,24 +118,10 @@ export default function FlightLists() {
 
 
     const [logos, setLogos] = useState({});
-
     useEffect(() => {
         setLogos(logos || {});
     }, [logos]);
 
-
-    const [loading, setLoading] = useState(false); // Add loading state
-    const [sortOrder, setSortOrder] = useState(''); // State to manage sorting order
-    const [showOtpOverlay, setShowOtpOverlay] = useState(false);
-
-    const navigate = useNavigate();
-
-    const [flightCallenderData, setFlightCallenderData] = useState([]);
-
-    const listData = listingData;
-    const formData = formDataNew;
-    const PreferredDepartureTime = formData?.Segments[0].PreferredDepartureTime
-    const PreferredArrivalTime = formData?.Segments[0].PreferredArrivalTime
 
     // function for date convert into day month date--------------------------------------
     const formatDate = (dateString) => {
@@ -222,8 +194,6 @@ export default function FlightLists() {
         const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
         const selectedAirlines = Array.from(airlineFilters).map(filter => filter.value);
         setSelected(selectedAirlines);
-        // console.log("selected", selected);
-
         const originalAirlineList = listData?.Results || [];
     };
     useEffect(() => {
@@ -466,15 +436,16 @@ export default function FlightLists() {
 
     // }, [dd, selectedAirlines]);
 
+
     useEffect(() => {
         if (!dd || !Array.isArray(dd)) {
             // If dd is undefined or not an array, set filteredFlights to an empty array
             setfilteredFlights([]);
             return; // Exit early to avoid further processing
         }
-
+    
         // Step 1: Filter flights based on selected airlines
-        const filteredFlightsNew = selectedAirlines.length > 0
+        let filteredFlightsNew = selectedAirlines.length > 0
             ? dd.map((flightSegments) =>
                 flightSegments.filter((flight) =>
                     flight.Segments[0].some((option) =>
@@ -483,8 +454,21 @@ export default function FlightLists() {
                 )
             ).filter(segment => segment.length > 0) // Filter out empty segments
             : dd;
-
-        // Step 2: Sort the filtered flights based on sortOrder
+    
+        // Step 2: Apply the stop/non-stop filter logic
+        if (selectedOption === 'stop') {
+            // Filter for flights with stops (length of Segments > 1)
+            filteredFlightsNew = filteredFlightsNew.map(segments =>
+                segments.filter(flight => flight.Segments[0].length > 1)
+            ).filter(segment => segment.length > 0); // Filter out empty segments after filtering for stops
+        } else if (selectedOption === 'non-stop') {
+            // Filter for non-stop flights (length of Segments === 1)
+            filteredFlightsNew = filteredFlightsNew.map(segments =>
+                segments.filter(flight => flight.Segments[0].length === 1)
+            ).filter(segment => segment.length > 0); // Filter out empty segments after filtering for non-stop
+        }
+    
+        // Step 3: Sort the filtered flights based on sortOrder
         const sortedFlights = filteredFlightsNew.map(segments => {
             return segments.sort((a, b) => {
                 if (sortOrder === 'lowToHigh') {
@@ -495,10 +479,47 @@ export default function FlightLists() {
                 return 0; // Default case (no sorting)
             });
         }).filter(segment => segment.length > 0); // Filter out empty segments after sorting
-
-        // Step 3: Set the sorted flights to state
+    
+        // Step 4: Set the sorted flights to state
         setfilteredFlights(sortedFlights);
-    }, [dd, selectedAirlines, sortOrder]); // Include sortOrder in dependencies 
+    }, [dd, selectedAirlines, sortOrder, selectedOption]); // Include selectedOption in dependencies
+    
+
+
+
+    // useEffect(() => {
+    //     if (!dd || !Array.isArray(dd)) {
+    //         // If dd is undefined or not an array, set filteredFlights to an empty array
+    //         setfilteredFlights([]);
+    //         return; // Exit early to avoid further processing
+    //     }
+
+    //     // Step 1: Filter flights based on selected airlines
+    //     const filteredFlightsNew = selectedAirlines.length > 0
+    //         ? dd.map((flightSegments) =>
+    //             flightSegments.filter((flight) =>
+    //                 flight.Segments[0].some((option) =>
+    //                     selectedAirlines.includes(option.Airline.AirlineName)
+    //                 )
+    //             )
+    //         ).filter(segment => segment.length > 0) // Filter out empty segments
+    //         : dd;
+
+    //     // Step 2: Sort the filtered flights based on sortOrder
+    //     const sortedFlights = filteredFlightsNew.map(segments => {
+    //         return segments.sort((a, b) => {
+    //             if (sortOrder === 'lowToHigh') {
+    //                 return a.OfferedFare - b.OfferedFare;
+    //             } else if (sortOrder === 'highToLow') {
+    //                 return b.OfferedFare - a.OfferedFare;
+    //             }
+    //             return 0; // Default case (no sorting)
+    //         });
+    //     }).filter(segment => segment.length > 0); // Filter out empty segments after sorting
+
+    //     // Step 3: Set the sorted flights to state
+    //     setfilteredFlights(sortedFlights);
+    // }, [dd, selectedAirlines, sortOrder]); // Include sortOrder in dependencies 
 
 
 
@@ -518,9 +539,6 @@ export default function FlightLists() {
     //     setfilteredFlights(filteredFlightsNew)
 
     // }, [ dd , selectedAirlines]);
-
-    // console.log("filteredFlights----", filteredFlights);
-
     // const filteredFlights = selectedAirlines.length > 0
     // ? dd.map((flightSegments) =>
     //     flightSegments.filter((flight) =>
@@ -532,35 +550,6 @@ export default function FlightLists() {
     // : dd;
 
     // flight filter logics END------------------------
-
-    // Pagination State
-    // const [currentPage, setCurrentPage] = useState(0);
-    // const hotelsPerPage = 9;
-    // const [pageCount, setPageCount] = useState(0);
-
-    // useEffect(() => {
-    //     if (dd) {
-    //         const totalPages = Math.ceil(dd.length / hotelsPerPage);
-    //         // console.log("dd", dd);
-
-    //         setPageCount(totalPages);
-    //     }
-    // }, [dd]);
-
-    // const handlePageClick = ({ selected }) => {
-    //     setCurrentPage(selected);
-    // };
-
-    // const offset = currentPage * hotelsPerPage;
-    // const currentHotels = dd?.slice(offset, offset + hotelsPerPage);
-
-    // console.log("currentHotels", currentHotels);
-    // console.log("offset", offset);
-    // console.log("pageCount", pageCount);
-
-    // flight list pagination logics -------------
-
-
 
     if (loading) {
         return <Loading />;
