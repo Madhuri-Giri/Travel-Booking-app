@@ -656,7 +656,7 @@ export default function FlightDetails() {
                     <div className="row flighttTabContent">
                         <div className="col-md-2 col-2 flighttTabContentCol1">
                             <img src={flightSelectedDATA?.logoUrl || 'null'} className="img-fluid" />
-                            <p>{airline.AirlineName}</p>
+                            <p className="airlineNAME">{airline.AirlineName}</p>
                         </div>
                         <div className="col-md-4 col-3 flighttTabContentCol2">
                             <div>
@@ -682,7 +682,7 @@ export default function FlightDetails() {
                 </div>;
             case 'baggage':
                 return <div>
-                    <div className="row mt-4 mb-4 baggageTabRow">
+                    <div className="row mb-4 baggageTabRow">
                         <div className="col-12">
                             <table className="table">
                                 <thead>
@@ -1027,8 +1027,8 @@ export default function FlightDetails() {
                                             </div>
 
                                             <div className="col-12 lastBtnssContinue">
-                                                <h5>Fare Breakup <span>₹{totalFare.toFixed(2)}</span></h5>                                                <button
-                                                // <h5>Fare Breakup <span>₹{totalPrice.toFixed(2)}</span></h5>                                                <button
+                                                <h5>Fare Breakup <span>₹{totalFare}</span></h5>                                                <button
+                                                // <h5>Fare Breakup <span>₹{totalFare.toFixed(2)}</span></h5>                                                <button
                                                     onClick={handleButtonClick}
                                                     disabled={isContinueDisabled}
                                                     style={{
@@ -1067,7 +1067,8 @@ export default function FlightDetails() {
                                         </div>
                                         <div className="fligthPriceDetailsBoxDiv2">
                                             <p>Taxes</p>
-                                            <p>₹{tax.toFixed(2)}</p>
+                                            <p>₹{tax}</p>
+                                            {/* <p>₹{tax.toFixed(2)}</p> */}
                                         </div>
                                         <div className="fligthPriceDetailsBoxDiv2">
                                             <p>Sajyatra Discount</p>
@@ -1076,11 +1077,13 @@ export default function FlightDetails() {
                                         <hr></hr>
                                         <div className="fligthPriceDetailsBoxDiv3">
                                             <h6>Total Fare</h6>
-                                            <p>₹{totalFare.toFixed(2)}</p>
+                                            {/* <p>₹{totalFare.toFixed(2)}</p> */}
+                                            <p>₹{totalFare}</p>
                                         </div>
                                         <div className="fligthPriceDetailsBoxDiv7">
                                             <h5>You Pay</h5>
-                                            <p>₹{totalFare.toFixed(2)}</p>
+                                            <p>₹{totalFare}</p>
+                                            {/* <p>₹{totalFare.toFixed(2)}</p> */}
                                         </div>
                                         <div className="fligthPriceDetailsBoxDiv8">
                                             <img src="/src/assets/images/Low-Price-Guarantee-Offer.gif" className="img-fluid" />

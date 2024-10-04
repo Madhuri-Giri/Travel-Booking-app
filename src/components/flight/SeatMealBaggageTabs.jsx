@@ -22,22 +22,13 @@ const SeatMealBaggageTabs = () => {
     const [selectedMeal, setSelectedMeal] = useState(null);
     const [totalPrice, setTotalPrice] = useState(0);
     const [seatMealBaggagePriceTotal, setseatMealBaggagePriceTotal] = useState(0);
-    // const [timer, setTimer] = useState(600000);
-
-    
-    
-
     // selected flight data get------
     const { fareQuoteAPIData, dataToPass , flightSelectedDATA, confirmedAdults, confirmedChildren, confirmedInfants } = location.state || {};
-    
-    
-
     const FtraceId = dataToPass.TraceId;
     const FresultIndex = dataToPass.ResultIndex;
     const FsrdvType = dataToPass.SrdvType;
     const FsrdvIndex = dataToPass.SrdvIndex;
-  
-    
+
     useEffect(() => {
         const savedFare = flightSelectedDATA?.flight.OfferedFare
         if (savedFare) {
@@ -46,17 +37,10 @@ const SeatMealBaggageTabs = () => {
     }, [flightSelectedDATA]);
 
     useEffect(() => {
-        // Clear selections and prices from local storage
-        // localStorage.removeItem('flightSelectedSeats');
-        // localStorage.removeItem('selectedBaggage');
-        // localStorage.removeItem('selectedMeal');
-        // localStorage.removeItem('finalTotalPrice');
-
-        // Reset state
+              // Reset state
         setSelectedSeats([]);
         setSelectedBaggage(null);
         setSelectedMeal(null);
-
         // Optionally, reset total price based on base fare
         const savedFare = flightSelectedDATA?.flight.OfferedFare
         if (savedFare) {
@@ -66,36 +50,13 @@ const SeatMealBaggageTabs = () => {
 
     const seatPrice = selectedSeats.reduce((total, seat) => total + seat.price, 0);
     const mealPrice = selectedMeal?.Price || 0;
-    const baggagePrice = selectedBaggage?.Price || 0;
-
-  
-    
+    const baggagePrice = selectedBaggage?.Price || 0; 
 
     const finalTotalPrice = seatPrice + mealPrice + baggagePrice;
-
-    // // setseatPriceTotal(finalTotalPrice)
-
-    // // Save the final total price to local storage
-    // localStorage.setItem('finalTotalPrice', finalTotalPrice.toFixed(2));
 
     useEffect(() => {
         handleSeatMapApi();
     }, []);
-
-    // useEffect(() => {
-    //     const savedSeats = JSON.parse(localStorage.getItem('flightSelectedSeats')) || [];
-    //     setSelectedSeats(savedSeats);
-    // }, []);
-
-    // useEffect(() => {
-    //     const savedBaggage = JSON.parse(localStorage.getItem('selectedBaggage')) || null;
-    //     setSelectedBaggage(savedBaggage);
-    // }, []);
-
-    //  ------------------------------------
-
-
-
 
     const reviewHandler = () => {
         if (fareDataDetails) {
@@ -160,16 +121,8 @@ const SeatMealBaggageTabs = () => {
         }
     };
 
-    // const getSeatMapDataFromLocalStorage = () => {
-    //     const data = localStorage.getItem('seatMapData');
-    //     return data ? JSON.parse(data) : null;
-    // };
-
     const handleSsrApi = async () => {
         const result = await ssrApiHandler();
-        // if (result) {
-
-        // }
     };
 
     const ssrApiHandler = async () => {
@@ -501,7 +454,8 @@ const SeatMealBaggageTabs = () => {
                             </div>
                             <div>
                                 <div className="meal-last">
-                                    <h5 className='totalPricee'>Total Fare : <span>₹{totalPrice.toFixed(2)}</span></h5>
+                                    <h5 className='totalPricee'>Total Fare : <span>₹{totalPrice}</span></h5>
+                                    {/* <h5 className='totalPricee'>Total Fare : <span>₹{totalPrice.toFixed(2)}</span></h5> */}
                                     <button onClick={reviewHandler}>Continue</button>
                                 </div>
                             </div>
