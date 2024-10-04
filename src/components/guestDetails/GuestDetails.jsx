@@ -148,6 +148,11 @@ const GuestDetails = () => {
     setCheckboxChecked(e.target.checked);
   };
   // ---------------- RozarPay Payment Gateway  Integration start -------------------
+  const { transactionDetails } = useSelector((state) => state.loginReducer);
+  // console.log('transactionDetails', transactionDetails);
+  const transaction_num = transactionDetails?.transaction_num
+  // console.log('transaction_num', transaction_num);
+  // -------------------------------------------------------
   const fetchPaymentDetails = async () => {
     try {
       const loginId = localStorage.getItem("loginId");
@@ -160,7 +165,7 @@ const GuestDetails = () => {
       console.log("transactionNum:", transactionNum);
       console.log("hotel_booking_id:", bookingId);
 
-      if (!loginId || !transactionNum || !bookingId) {
+      if (!loginId || !transaction_num || !bookingId) {
         // Check bookingId instead of hotel_booking_id
         throw new Error(
           "Login ID, Transaction Number, or Hotel Booking ID is missing."
@@ -170,7 +175,7 @@ const GuestDetails = () => {
       const payload = {
         amount: bookingDetails.publishedprice,
         user_id: loginId,
-        transaction_num: transactionNum,
+        transaction_num: transaction_num,
         hotel_booking_id: [bookingId],
       };
 
@@ -336,10 +341,7 @@ const GuestDetails = () => {
     traceId,
   } = useSelector((state) => state.hotelSearch || {});
 // ----------------------------------------------------------------------
-const { transactionDetails } = useSelector((state) => state.loginReducer);
-// console.log('transactionDetails', transactionDetails);
-const transaction_num = transactionDetails?.transaction_num
-// console.log('transaction_num', transaction_num);
+
   //  ----------------------------Start book api-----------------------------------
   // Construct the booking payload
 
@@ -449,7 +451,7 @@ const transaction_num = transactionDetails?.transaction_num
 
         ClientReferenceNo: 0,
         IsVoucherBooking: true,
-        transaction_num: transactionNum,
+        transaction_num: transaction_num,
         transaction_id: transaction_id,
         hotel_booking_id: [bookingId],
 
@@ -781,7 +783,7 @@ const transaction_num = transactionDetails?.transaction_num
                         </div>
                         <div className="room_type">
                           <span>GST </span>
-                          <small> {bookingDetails.igst || "N/A"} %</small>
+                          <small> {bookingDetails.IGSTRate || "N/A"} %</small>
                         </div>
                         <div className="total_room">
                           <span>Total Room</span>

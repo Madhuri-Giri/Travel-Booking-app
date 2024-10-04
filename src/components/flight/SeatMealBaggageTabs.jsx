@@ -9,7 +9,7 @@ import Footer from '../../pages/footer/Footer';
 import "./SeatMealBaggage.css";
 import FlightSeat from "../../assets/images/FlightSeat.png"
 import FlightImg from "../../assets/images/flightImgg.png"
-
+import TimerFlight from '../../components/timmer/TimerFlight'
 const SeatMealBaggageTabs = () => {
     const location = useLocation();
     const { fareDataDetails } = location.state || {};
@@ -387,6 +387,7 @@ const SeatMealBaggageTabs = () => {
     return (
         <>
             <CustomNavbar />
+            <TimerFlight/>
             {/* <div className="timer-FlightLists">
                 <div>
                     <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p>
