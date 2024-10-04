@@ -24,7 +24,7 @@ export const searchBuses = createAsyncThunk('bus/searchBuses', async ({ from, to
     destination_code: toCode,
   };
 
-  console.log('Request Payload:', requestPayload);
+  // console.log('Request Payload:', requestPayload);
 
   const response = await fetch('https://sajyatra.sajpe.in/admin/api/search-bus', {
     method: 'POST',
