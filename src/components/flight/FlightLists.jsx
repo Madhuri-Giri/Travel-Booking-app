@@ -33,6 +33,8 @@ import { LuTimerReset } from "react-icons/lu";
 import Swal from "sweetalert2";
 
 
+import TimerFlight from '../../components/timmer/TimerFlight'
+
 export default function FlightLists() {
     const [airlineDetails, setAirlineDetails] = useState([]);
     const location = useLocation();
@@ -76,6 +78,16 @@ export default function FlightLists() {
     const [selectedFlightIndex, setselectedFlightIndex] = useState(null);
     const [selectedFlightResultIndex, setselectedFlightResultIndex] = useState(null);
     const [message, setMessage] = useState('');
+    // const [message, setMessage] = useState('');
+    // const handleFarePriceSelect = (index) => {
+    //     if (selectedFlightIndex == index) {
+    //         openModal()
+    //     } else {
+    //         setOfferPriceData(null)
+    //         alert('Please select a price fare')
+    //         // setMessage("Please select a price fare");
+    //     }
+    // }
     const handleFarePriceSelect = (index) => {
         if (selectedFlightIndex == index) {
             openModal()
@@ -90,7 +102,6 @@ export default function FlightLists() {
         });
        }
     }
-
     const [showFlightSegments, setShowFlightSegments] = useState(null);  // State to toggle FlightSegments visibility
 
     // Function to handle "View Details" click
@@ -562,6 +573,7 @@ export default function FlightLists() {
                 listingData &&
                 <>
                     <CustomNavbar />
+                    < TimerFlight />
                     {/* <TimerFlight/> */}
                     {/* timerrr-------------------  */}
                     {/* <div className="timer-FlightLists">

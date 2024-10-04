@@ -24,24 +24,25 @@ import Swal from 'sweetalert2';
 
 const BusSearch = () => {
   const [loading, setLoading] = useState(false);
+  const [from, setFromState] = useState(''); // Local state for 'from'
+  const [to, setToState] = useState(''); // Local state for 'to'
+  const [selectedBusDate, setSelectedBusDateState] = useState(''); // Local state for date
   const dateInputRef = useRef(null);
-
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { from, to, fromSuggestions, toSuggestions, selectedBusDate, fromCode, toCode } = useSelector((state) => state.bus);
+  const { fromSuggestions, toSuggestions, fromCode, toCode } = useSelector((state) => state.bus);
 
-  // Function to fetch the IP address
-  const fetchIPAddress = async () => {
-    try {
-      const response = await axios.get('https://api.ipify.org?format=json');
-      // console.log('IP Address:', response.data.ip);
-    } catch (error) {
-      // console.error('Error fetching IP address:', error);
-    }
-  };
-
-  // Fetch the IP address when the component mounts
+  // Fetch IP Address
   useEffect(() => {
+    const fetchIPAddress = async () => {
+      try {
+        const response = await axios.get('https://api.ipify.org?format=json');
+        console.log('IP Address:', response.data.ip);
+      } catch (error) {
+        console.error('Error fetching IP address:', error);
+      }
+    };
     fetchIPAddress();
   }, []);
 
@@ -49,23 +50,10 @@ const BusSearch = () => {
     dateInputRef.current.showPicker();
   };
 
-  // const today = new Date();
-  // today.setHours(0, 0, 0, 0); // Set time to midnight to avoid time issues
-  // const minDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-
   const now = new Date();
-  let minDate;
+  let minDate = now.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
-  // Check if the current time is after 12 AM
-  if (now.getHours() >= 0) {
-    now.setHours(24, 0, 0, 0); // Set the time to midnight (12:00 AM) of the next day
-  } else {
-    now.setHours(0, 0, 0, 0); // If it's before midnight, allow today
-  }
-
-  minDate = now.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-
-  const fetchSuggestions = async (query, setSuggestions, isFromField) => {
+  const fetchSuggestions = async (query, isFromField) => {
     try {
       const response = await fetch(`https://sajyatra.sajpe.in/admin/api/bus_list`, {
         method: 'POST',
@@ -75,8 +63,6 @@ const BusSearch = () => {
         body: JSON.stringify({ query })
       });
       const data = await response.json();
-
-      // console.log('Suggestions Data:', data); 
 
       const filteredSuggestions = data.data.filter(suggestion =>
         suggestion.busodma_destination_name.toLowerCase().includes(query.toLowerCase())
@@ -95,9 +81,9 @@ const BusSearch = () => {
 
   const handleFromChange = (event) => {
     const value = event.target.value;
-    dispatch(setFrom(value));
+    setFromState(value); // Update local state
     if (value.length >= 1) {
-      fetchSuggestions(value, setFromSuggestions, true);
+      fetchSuggestions(value, true);
     } else {
       dispatch(setFromSuggestions([]));
     }
@@ -105,34 +91,22 @@ const BusSearch = () => {
 
   const handleToChange = (event) => {
     const value = event.target.value;
-    dispatch(setTo(value));
+    setToState(value); // Update local state
     if (value.length >= 1) {
-      fetchSuggestions(value, setToSuggestions, false);
+      fetchSuggestions(value, false);
     } else {
       dispatch(setToSuggestions([]));
     }
   };
 
-  const handleFromFocus = () => {
-    fetchSuggestions(from, setFromSuggestions, true);
-  };
-
-  const handleToFocus = () => {
-    fetchSuggestions(to, setToSuggestions, false);
-  };
-
-  const handleFromSelect = (suggestion) => {
-    // console.log('Selected From Suggestion:', suggestion); 
-    dispatch(setFrom(suggestion.busodma_destination_name));
-    dispatch(setFromCode(suggestion.busodma_origin_code));
-    dispatch(setFromSuggestions([]));
-  };
-
-  const handleToSelect = (suggestion) => {
-    // console.log('Selected To Suggestion:', suggestion); 
-    dispatch(setTo(suggestion.busodma_destination_name));
-    dispatch(setToCode(suggestion.busodma_origin_code));
-    dispatch(setToSuggestions([]));
+  const handleDateChange = (e) => {
+    const dateValue = e.target.value;
+    if (dateValue) {
+      const dateObj = new Date(dateValue);
+      if (!isNaN(dateObj)) {
+        setSelectedBusDateState(dateObj); // Update local state
+      }
+    }
   };
 
   const handleSearch = () => {
@@ -140,17 +114,17 @@ const BusSearch = () => {
     dispatch(searchBuses({
       from,
       to,
-      departDate: selectedBusDate ? selectedBusDate.toISOString().split('T')[0] : null,
+      departDate: selectedBusDate instanceof Date && !isNaN(selectedBusDate.getTime())
+        ? selectedBusDate.toISOString().split('T')[0]
+        : null,
       fromCode,
       toCode
     }))
       .then((response) => {
         setLoading(false);
-        // console.log('responseeeee', response.payload );
-        
-        // Check if the result is false and show the SweetAlert if no results are found
+        console.log('response:', response.payload);
+
         if (response.payload.result === false) {
-          // console.log('responseeeee', response.payload );
           Swal.fire({
             title: "No buses found",
             text: response.payload.message || "Please try again later.",
@@ -158,15 +132,12 @@ const BusSearch = () => {
             confirmButtonText: "OK",
           });
         } else {
-          // If buses are found, navigate to the bus list
           navigate('/bus-list');
         }
       })
       .catch((error) => {
         setLoading(false);
         console.error('Error searching buses:', error);
-  
-        // Show an error SweetAlert if the API call fails
         Swal.fire({
           title: "Error",
           text: "There was an error searching buses. Please try again.",
@@ -175,7 +146,6 @@ const BusSearch = () => {
         });
       });
   };
-  
 
   if (loading) {
     return <Loading />;
@@ -188,7 +158,6 @@ const BusSearch = () => {
         <div className="bus-search">
           <div className="B-main">
             <div className="B-main-top">
-              {/* {/ <img src={BusMainImg} alt="" /> /} */}
               <Lottie className='lotti-bus' animationData={busAnim} style={{ marginTop: "-4vmax" }} />
             </div>
             <div className="B-main-btm">
@@ -203,21 +172,22 @@ const BusSearch = () => {
                         placeholder='Starting Point'
                         value={from}
                         onChange={handleFromChange}
-                        onFocus={handleFromFocus}
                       />
                     </div>
-
                     {fromSuggestions.length > 0 && (
                       <div className="suggestions-list-from">
                         {fromSuggestions.map((suggestion) => (
-                          <span key={suggestion.busodma_destination_code} onClick={() => handleFromSelect(suggestion)}>
+                          <span key={suggestion.busodma_destination_code} onClick={() => {
+                            setFromState(suggestion.busodma_destination_name);
+                            dispatch(setFrom(suggestion.busodma_destination_name));
+                            dispatch(setFromCode(suggestion.busodma_origin_code));
+                            dispatch(setFromSuggestions([]));
+                          }}>
                             {suggestion.busodma_destination_name}
                           </span>
                         ))}
                       </div>
                     )}
-
-
                   </div>
                 </div>
                 <div className="one">
@@ -230,13 +200,17 @@ const BusSearch = () => {
                         placeholder='Destination'
                         value={to}
                         onChange={handleToChange}
-                        onFocus={handleToFocus}
                       />
                     </div>
                     {toSuggestions.length > 0 && (
                       <div className="suggestions-list-to">
                         {toSuggestions.map((suggestion, index) => (
-                          <span key={index} onClick={() => handleToSelect(suggestion)}>
+                          <span key={index} onClick={() => {
+                            setToState(suggestion.busodma_destination_name);
+                            dispatch(setTo(suggestion.busodma_destination_name));
+                            dispatch(setToCode(suggestion.busodma_origin_code));
+                            dispatch(setToSuggestions([]));
+                          }}>
                             {suggestion.busodma_destination_name}
                           </span>
                         ))}
@@ -253,8 +227,10 @@ const BusSearch = () => {
                         type="date"
                         ref={dateInputRef}
                         className="date-input"
-                        value={selectedBusDate ? selectedBusDate.toISOString().split('T')[0] : ''}
-                        onChange={(e) => dispatch(setSelectedBusDate(new Date(e.target.value)))}
+                        value={selectedBusDate instanceof Date && !isNaN(selectedBusDate.getTime())
+                          ? selectedBusDate.toISOString().split('T')[0]
+                          : ''}
+                        onChange={handleDateChange}
                         min={minDate}
                       />
                     </div>

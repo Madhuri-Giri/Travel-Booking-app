@@ -51,7 +51,7 @@ const ReviewBooking = () => {
 
   const location = useLocation();
   const { selectedBoardingPoint, selectedDroppingPoint, selectedBusSeatData, totalPrice } = location.state || {};
-  console.log('selectedBusSeatData', selectedBusSeatData)
+  // console.log('selectedBusSeatData', selectedBusSeatData)
 
   const boardingPointName = selectedBoardingPoint.name;
 const boardingPointIndex = selectedBoardingPoint.index;
@@ -492,7 +492,7 @@ const droppingPointIndex = selectedDroppingPoint.index;
       });
 
       const result = await response.json();
-      console.log("Booking Response:", result);
+      // console.log("Booking Response:", result);
 
 
       if (!response.ok) {
