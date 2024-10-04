@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const fetchSeatLayout = createAsyncThunk(
   'seatLayout/fetchSeatLayout',
   async ({ traceId, selectedBusIndex }) => {
-    console.log('Fetching seat layout with:', { traceId, selectedBusIndex });
+    // console.log('Fetching seat layout with:', { traceId, selectedBusIndex });
     
     const response = await fetch('https://sajyatra.sajpe.in/admin/api/add-seat-layout', {
       method: 'POST',
@@ -45,7 +45,7 @@ const seatLayoutSlice = createSlice({
         state.loadingg = true; // Start loading
       })
       .addCase(fetchSeatLayout.fulfilled, (state, action) => {
-        console.log('Fetching seat layout: succeeded', action.payload);
+        // console.log('Fetching seat layout: succeeded', action.payload);
         state.status = 'succeeded';
         state.layout = action.payload;
         state.loadingg = false; // Stop loading

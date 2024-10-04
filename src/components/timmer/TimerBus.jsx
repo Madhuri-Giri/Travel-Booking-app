@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Timer.css';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
-const TIMER_DURATION = 1 * 60 * 1000; // 10 minutes in milliseconds
+const TIMER_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
 
 const TimerBus = () => {
   const [timeRemaining, setTimeRemaining] = useState(TIMER_DURATION);
@@ -18,6 +19,7 @@ const TimerBus = () => {
       // Reset timer if navigating to /bus-search
       localStorage.setItem('timerStartTime', now.toString());
       setTimeRemaining(TIMER_DURATION);
+
     } else if (startTime) {
       const elapsedTime = now - parseInt(startTime, 10);
       const newTimeRemaining = TIMER_DURATION - elapsedTime;
@@ -47,7 +49,8 @@ const TimerBus = () => {
           clearInterval(intervalId);
           navigate('/bus-search');
           localStorage.removeItem('timerStartTime');
-        } else {
+        } 
+        else {
           setTimeRemaining(newTimeRemaining);
           if (newTimeRemaining <= 5000 && newTimeRemaining > 4000) {
             Swal.fire({
@@ -73,7 +76,7 @@ const TimerBus = () => {
 
   return (
     <div className='timer'>
-      <h5 style={{marginTop:"1vmax", fontFamily:"cursive"}}>Remaining Time... {getFormattedTime(timeRemaining)}</h5>
+      <h5>Remaining Time... {getFormattedTime(timeRemaining)}</h5>
     </div>
   );
 };

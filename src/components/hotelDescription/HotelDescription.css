@@ -220,7 +220,7 @@ p.facility {word-spacing: 4px;}
 .hotel_Button {
     background-color: #00b7eb;
     color: white;
-    font-weight: bold;
+    font-weight: 500;
     padding: 10px 15px;
     border: none;
     cursor: pointer;
@@ -251,7 +251,7 @@ background: none;
 .hotel_des_Btn{
     background-color: #00b7eb;
     color: white;
-    font-weight: bold;
+    font-weight: 500;
     padding: 3px 6px;
     border: none;
     cursor: pointer;

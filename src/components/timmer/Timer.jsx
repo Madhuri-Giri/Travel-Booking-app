@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Timer.css';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const TIMER_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
 
@@ -18,6 +19,7 @@ const Timer = () => {
       // Reset timer if navigating to /hotel-search
       localStorage.setItem('timerStartTime', now.toString());
       setTimeRemaining(TIMER_DURATION);
+
     } else if (startTime) {
       const elapsedTime = now - parseInt(startTime, 10);
       const newTimeRemaining = TIMER_DURATION - elapsedTime;
@@ -32,7 +34,7 @@ const Timer = () => {
     } else {
       // Initialize timer if there's no start time in local storage
       localStorage.setItem('timerStartTime', now.toString());
-      setTimeRemaining(TIMER_DURATION);
+     
     }
 
     const intervalId = setInterval(() => {
@@ -47,8 +49,16 @@ const Timer = () => {
           clearInterval(intervalId);
           navigate('/hotel-search');
           localStorage.removeItem('timerStartTime');
-        } else {
+        }  else {
           setTimeRemaining(newTimeRemaining);
+          if (newTimeRemaining <= 5000 && newTimeRemaining > 4000) {
+            Swal.fire({
+              title: 'Your session has expired.',
+              text: 'Please try again.',
+              icon: 'warning',
+              confirmButtonText: 'Okay'
+            });
+          }
         }
       }
     }, 1000);
