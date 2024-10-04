@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 import './Timer.css';
 
-const TIMER_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
+const TIMER_DURATION = 10 * 60 * 1000; // 1 minute in milliseconds
 
 const TimerFlight = () => {
   const [timeRemaining, setTimeRemaining] = useState(TIMER_DURATION);
@@ -17,6 +18,7 @@ const TimerFlight = () => {
     if (isFlightSearchPage) {
       // Reset timer if navigating to /flight-list
       localStorage.setItem('timerStartTime', now.toString());
+      
     } else if (startTime) {
       // Calculate remaining time
       const elapsedTime = now - parseInt(startTime, 10);
@@ -42,12 +44,23 @@ const TimerFlight = () => {
         const elapsedTime = now - parseInt(startTime, 10);
         const newTimeRemaining = TIMER_DURATION - elapsedTime;
 
+        // Check if timer has expired
         if (newTimeRemaining <= 0) {
           clearInterval(intervalId);
-          navigate('/flight-search');
           localStorage.removeItem('timerStartTime');
+          navigate('/flight-search');
         } else {
           setTimeRemaining(newTimeRemaining);
+
+          // Display alert when there are 5 seconds left
+          if (newTimeRemaining <= 5000 && newTimeRemaining > 4000) {
+            Swal.fire({
+              title: 'Your session has expired.',
+              text: 'Please try again.',
+              icon: 'warning',
+              confirmButtonText: 'Okay'
+            });
+          }
         }
       }
     }, 1000);

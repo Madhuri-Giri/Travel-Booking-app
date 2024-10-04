@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Timer.css';
 
-const TIMER_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
+const TIMER_DURATION = 1 * 60 * 1000; // 10 minutes in milliseconds
 
 const TimerBus = () => {
   const [timeRemaining, setTimeRemaining] = useState(TIMER_DURATION);
@@ -32,7 +32,7 @@ const TimerBus = () => {
     } else {
       // Initialize timer if there's no start time in local storage
       localStorage.setItem('timerStartTime', now.toString());
-      setTimeRemaining(TIMER_DURATION);
+     
     }
 
     const intervalId = setInterval(() => {
@@ -49,6 +49,14 @@ const TimerBus = () => {
           localStorage.removeItem('timerStartTime');
         } else {
           setTimeRemaining(newTimeRemaining);
+          if (newTimeRemaining <= 5000 && newTimeRemaining > 4000) {
+            Swal.fire({
+              title: 'Your session has expired.',
+              text: 'Please try again.',
+              icon: 'warning',
+              confirmButtonText: 'Okay'
+            });
+          }
         }
       }
     }, 1000);
