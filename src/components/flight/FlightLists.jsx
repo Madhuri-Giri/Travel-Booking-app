@@ -30,6 +30,7 @@ import FlightSegments from "./FlightSegments";
 import PriceModal from "./PriceModal";
 import { calculateDuration, extractTime } from "../../Custom Js function/CustomFunction";
 import { LuTimerReset } from "react-icons/lu";
+import Swal from "sweetalert2";
 
 
 export default function FlightLists() {
@@ -74,15 +75,20 @@ export default function FlightLists() {
     //    ==========checkdbos data save for price details model=====
     const [selectedFlightIndex, setselectedFlightIndex] = useState(null);
     const [selectedFlightResultIndex, setselectedFlightResultIndex] = useState(null);
-    // const [message, setMessage] = useState('');
+    const [message, setMessage] = useState('');
     const handleFarePriceSelect = (index) => {
         if (selectedFlightIndex == index) {
             openModal()
         } else {
             setOfferPriceData(null)
-            alert('Please select a price fare')
-            // setMessage("Please select a price fare");
-        }
+             // SweetAlert for message
+        Swal.fire({
+            icon: 'warning',
+            title: 'No Price Fare Selected',
+            text: 'Please select a price fare to continue.',
+            confirmButtonText: 'OK'
+        });
+       }
     }
 
     const [showFlightSegments, setShowFlightSegments] = useState(null);  // State to toggle FlightSegments visibility
@@ -101,8 +107,8 @@ export default function FlightLists() {
         }
     }, [location]);
 
+    // console.log("listingData", listingData);
 
-    
     const swiperRef = useRef(null);
     // const { flightSearchData } = flightSearchReducer;
     // const { logoMap } = flightSearchData;
@@ -205,8 +211,8 @@ export default function FlightLists() {
         const airlineFilters = document.querySelectorAll('.airlineFilter:checked');
         const selectedAirlines = Array.from(airlineFilters).map(filter => filter.value);
         setSelected(selectedAirlines);
+        // console.log("selected", selected);
 
-        
         const originalAirlineList = listData?.Results || [];
     };
     useEffect(() => {
@@ -537,10 +543,9 @@ export default function FlightLists() {
     // const offset = currentPage * hotelsPerPage;
     // const currentHotels = dd?.slice(offset, offset + hotelsPerPage);
 
-   
-    
-
-    
+    // console.log("currentHotels", currentHotels);
+    // console.log("offset", offset);
+    // console.log("pageCount", pageCount);
 
     // flight list pagination logics -------------
 
@@ -1053,6 +1058,7 @@ export default function FlightLists() {
                                                                     <div className="pricefarebtn">
                                                                         <button onClick={() => handleFarePriceSelect(index)}>View Prices Fare <MdKeyboardArrowDown /></button>
                                                                     </div>
+                                                                    
                                                                 </div>
                                                                 {/* Conditionally render FlightSegments */}
                                                                 {showFlightSegments == index && (
