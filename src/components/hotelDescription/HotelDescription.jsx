@@ -143,7 +143,7 @@ const HotelDescription = () => {
           }}
           style={{ overflow: "hidden", maxHeight: isExpanded ? "none" : "10em" }}
         />
-        <button className="hotel_Button_re" onClick={handleShowDescriptionModal}>
+        <button className="btn btn-link hotel_Button_re"  style={{ color: '#00b7eb' }}  onClick={handleShowDescriptionModal}>
           {isExpanded ? "Read Less" : "Read More"}
         </button>
          </div>

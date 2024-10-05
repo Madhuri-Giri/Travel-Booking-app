@@ -726,14 +726,14 @@ const transaction_num = transactionDetails?.transaction_num
                           ),
                         }}
                       />
-                      <button
-                        className="btn btn-link"
-                        onClick={() =>
-                          openModal(blockRoomResult.HotelPolicyDetail, "Hotel Policy")
-                        }
-                      >
-                        Read More
-                      </button>
+                     <button
+  className="btn btn-link"
+  style={{ color: '#00b7eb' }} // Set the color here
+  onClick={() => openModal(blockRoomResult.HotelPolicyDetail, "Hotel Policy")}
+>
+  Read More
+</button>
+
                     </div>
                   ) : (
                     <p>No hotel policy details available.</p>
@@ -750,6 +750,7 @@ const transaction_num = transactionDetails?.transaction_num
                       />
                       <button
                         className="btn btn-link"
+                        style={{ color: '#00b7eb' }} // Set the color here
                         onClick={() =>
                           openModal(blockRoomResult.HotelNorms, "Hotel Norms")
                         }
