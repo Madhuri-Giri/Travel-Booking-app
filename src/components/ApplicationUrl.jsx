@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
-// /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { sendPostRequest } from '../API/loginAction';
 
 const loaderStyle = {
   width: '50px',
@@ -17,91 +18,86 @@ const spinKeyframes = `
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}`;
+`;
 
 // Inject the keyframes into the document's stylesheet
 const styleSheet = document.styleSheets[0];
 styleSheet.insertRule(spinKeyframes, styleSheet.cssRules.length);
 
-
-
-// const ApplicationUrl: React.FC = () => {
-  const ApplicationUrl = () => {
-    const [loading, setLoading] = useState(true); // State to control loader visibility
-    const [headers, setHeaders] = useState(null); // State to store headers
-    // const [headers, setHeaders] = useState<HeadersInit | null>(null); // State to store headers
-  const headersObj = {};
-
+const ApplicationUrl = () => {
+  const [loading, setLoading] = useState(true); // State to control loader visibility
+  const [responseMessage, setResponseMessage] = useState(null); // State for API response
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
+    const appname = params.get('app-name');
+    const module = params.get('module');
 
-    if (token) {
-      console.log("Token received:", token);
-      // localStorage.setItem('token', token);
-      // Simulate some delay (e.g., token processing)
+    if (token && appname && module) {
       setTimeout(() => {
-        setLoading(false);  // Hide the loader once token is processed
-        // navigate('/');      // Redirect to home or another page
-      }, 1000); // 2-second delay to simulate processing
-
-      // Fetch headers
-      // fetchHeaders();
+       dispatch(sendPostRequest({ appname, module, token ,navigate ,setLoading})) 
+      }, 500);
     } else {
-      console.log('No token found in the URL');
-      setLoading(true); // Hide loader if no token is found
+      setLoading(true); // Keep loader if parameters are missing
     }
-  }, [location, navigate]);
-  
-  useEffect(() => {
-     const fetchHeaders = async () => {
-    try {
-      const response = await fetch(location.href);
-      const headers = response.headers;
-      const headersObj = {}; // Use standard JavaScript object initialization
-      headers.forEach((value, key) => {
-        headersObj[key] = value;
-      });
-      setHeaders(headersObj);
-      console.log('Headers:', headersObj);
+  }, [location]);
 
-    } catch (error) {
-      console.error('Error fetching headers:', error);
-    }
-  };
-    fetchHeaders();
-  }, []);
-  
+
+  // Function to send POST request with token in headers and app_name, module in body  
+  // const sendPostRequest = async (appname, module, token) => {
+  //   try {
+  //     const response = await fetch('https://sajyatra.sajpe.in/admin/api/auth-check', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': `Bearer ${token}` // Pass token in the Authorization header
+  //       },
+  //       body: JSON.stringify({
+  //         app_name: appname,
+  //         module: module
+  //       })
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
+  //     const data = await response.json();
+
+  //     if (data.result == false) {
+  //       navigate('/signup');
+  //     } else {
+  //       if (data.module == 'bus') {
+  //         navigate('/bus-search');
+  //       }
+  //       if (data.module == 'flight') {
+  //         navigate('/flight-search');
+  //       }
+  //       if (data.module == 'hotel') {
+  //         navigate('/hotel-search');
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Error in POST request:', error);
+  //   }
+  //   finally{
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
-    <>
     <div>
-
-    <h3>Headers Data:</h3>
-    <h3>{JSON.stringify(headers)}</h3>
-
-      {/* {loading ? (
+      {loading && (
         <div>
           <h2>Processing Token...</h2>
           <div style={loaderStyle}></div>
         </div>
-      ) : (
-        <div>
-          <h2>Redirecting...</h2>
-          {headers && (
-            <div>
-              <h3>Request Headers:</h3>
-              <h3>{headers}</h3>
-              <pre>{JSON.stringify(headers, null, 2)}</pre>
-            </div>
-          )}
-        </div>
-      )} */}
+      )
+      }
     </div>
-    </>
   );
 };
 
@@ -109,83 +105,84 @@ export default ApplicationUrl;
 
 
 
-// // const ApplicationUrl = () => {
-
-// //   const [loading, setLoading] = useState(true); // State to control loader visibility
-// //   // const [headers, setHeaders] = useState<HeadersInit | null>(null); // State to store headers
-// //   const location = useLocation();
-// //   const navigate = useNavigate();
-
-
-
-// //   // const location = useLocation();
-// //   // const navigate = useNavigate();
-
-// //   // const [loading, setLoading] = useState(true); // State to control loader visibility
-
-// //   // useEffect(() => {
-// //   //   const params = new URLSearchParams(location.search);
-// //   //   const token = params.get('token');
-
-// //   //   if (token) {
-// //   //     console.log("Token received:", token);
-// //   //     // localStorage.setItem('token', token);
-// //   //     // Simulate some delay (e.g., token processing)
-// //   //     setTimeout(() => {
-// //   //       setLoading(false);  // Hide the loader once token is processed
-// //   //       // navigate('/');      // Redirect to home or another page
-// //   //     }, 1000); // 2-second delay to simulate processing
-// //   //   } else {
-// //   //     console.log('No token found in the URL');
-// //   //     setLoading(true); // Hide loader if no token is found
-// //   //   }
-// //   // }, [location, navigate]);
-
-
-// //   useEffect(() => {
-
-
-// //     const fetchHeaders = async () => {
-// //       try {
-// //         const response = await fetch(location.href);
-// //         const headers = response.headers;
-// //         // // const headersObj: HeadersInit = {};
-// //         // headers.forEach((value, key) => {
-// //         //   headersObj[key] = value;
-// //         // });
-// //         // setHeaders(headersObj);
-// //         console.log('headers',headers);
-        
-// //       } catch (error) {
-// //         console.error('Error fetching headers:', error);
-// //       }
-// //     };
-
-// //     fetchHeaders();
-
-
-// //   }, []);
 
 
 
 
 
 
+// useEffect(() => {
+//   const params = new URLSearchParams(location.search);
+//   const token = params.get('token');
+//   const appName = params.get('app-name');  // Retrieve app-name from URL
+//   const moduleName = params.get('module'); // Retrieve module from URL
 
-// //   return (
-// //     <div>
-// //       {loading ? (
-// //         <div>
-// //           <h2>Processing Token...</h2>
-// //           {/* Inline loader style */}
-// //           <div style={loaderStyle}></div>
-// //         </div>
-// //       ) : (
-// //         <h2>Redirecting...</h2>
-// //       )}
-// //     </div>
-// //   );
-// // };
+//   if (token && appName && moduleName) {
+//     console.log("Token received:", token);
+//     console.log("App Name received:", appName);
+//     console.log("Module Name received:", moduleName);
 
-// // export default ApplicationUrl;
+//     setTimeout(() => {
+//       setLoading(false);  // Hide the loader once the token, app-name, and module are processed
+//     }, 1000); // Simulate some delay
+//   } else {
+//     console.log('Required parameters (token, app-name, module) not found in the URL');
+//     setLoading(true); // Keep the loader if parameters are missing
+//   }
+// }, [location, navigate]);
+
+
+
+// useEffect(() => {
+//   const fetchHeaders = async () => {
+//     try {
+//       const params = new URLSearchParams(location.search);
+//       const token = params.get('token');
+//       const appName = params.get('app-name');
+//       const moduleName = params.get('module');
+
+//       console.log('Token being sent in headers:', token);
+//       console.log('App Name being sent in headers:', appName);
+//       console.log('Module Name being sent in headers:', moduleName);
+
+//       // Pass token, app-name, and module in the request headers
+//       const response = await fetch(location.href, {
+//         method: 'GET',
+//         headers: {
+//           'Authorization': `Bearer ${token}`,
+//           'Content-Type': 'application/json',
+//           'App-Name': appName,
+//           'Module': moduleName
+//         },
+//       });
+
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`);
+//       }
+
+//       const headers = response.headers;
+//       const headersObj = {};
+//       headers.forEach((value, key) => {
+//         headersObj[key] = value;
+//       });
+
+//       setHeaders(headersObj);
+
+//       // Log all headers along with token, app-name, and module
+//       console.log('Headers received with token, app-name, and module:', {
+//         ...headersObj,
+//         token,
+//         'app-name': appName,
+//         module: moduleName
+//       });
+
+//     } catch (error) {
+//       console.error('Error fetching headers:', error);
+//     }
+//   };
+
+//   fetchHeaders();
+// }, [location]);
+
+
 

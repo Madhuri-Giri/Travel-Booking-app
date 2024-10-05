@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { calculateWaitingTime, extractTime } from '../../Custom Js function/CustomFunction';
+import { LuTimerReset } from 'react-icons/lu';
 
 const PriceModal = ({ isModalOpen, closeModal, OfferPriceData, listingData }) => {
   const [activeTab, setActiveTab] = useState('flight');
@@ -57,7 +58,7 @@ const PriceModal = ({ isModalOpen, closeModal, OfferPriceData, listingData }) =>
                 return (
                   <React.Fragment key={index}>
                     <div className="row flightSegmentsData">
-                      <div className="col-md-2 col-2 flighttTabContentCol1">
+                      <div className="col-md-2 col-12 flighttTabContentCol1 flightSegmentsAirlines">
                         <p>
                           <img src={logoUrl} className="img-fluid" alt="" />
                         </p>
@@ -73,7 +74,9 @@ const PriceModal = ({ isModalOpen, closeModal, OfferPriceData, listingData }) =>
                         </div>
                       </div>
                       <div className="col-md-2 col-3 flighttTabContentCol3 fmodalcol3">
-                        <p className="flighttTabContentCol3p1">{convertMinutesToHoursAndMinutes(valueSegments.Duration)}</p>
+                        <p className="flighttTabContentCol3p1">
+                        <span className=""><LuTimerReset /></span>
+                          {convertMinutesToHoursAndMinutes(valueSegments.Duration)}</p>
                         <p className="flighttTabContentCol3p2">cabin class</p>
                       </div>
                       <div className="col-md-4 col-4 flighttTabContentCol4 fmodalcol4">

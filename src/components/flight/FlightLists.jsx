@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import "./FlightLists.css"
 import { Accordion, Form, Modal, ProgressBar } from 'react-bootstrap';
@@ -38,7 +39,6 @@ export default function FlightLists() {
     const [listingData, setListingData] = useState(null);
     const [formDataNew, setFormDataNew] = useState(location?.state?.formData || null);
     const [dataToPass, setDataToPass] = useState(null);
-    const [OfferPriceData, setOfferPriceData] = useState(null);
     const [sEGMENTSData, setSEGMENTSData] = useState(null);
     const [isRefundable, setIsRefundable] = useState(null);
     const { isLogin } = useSelector((state) => state.loginReducer);
@@ -49,7 +49,13 @@ export default function FlightLists() {
     const [selectedFlightResultIndex, setselectedFlightResultIndex] = useState(null);
     const [flightCallenderData, setFlightCallenderData] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
-    const [showFlightSegments, setShowFlightSegments] = useState(null); 
+    const [showFlightSegments, setShowFlightSegments] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState({});
+    const [OfferPriceData, setOfferPriceData] = useState(null);
+    const [OfferPriceDataNew, setOfferPriceDataNew] = useState(null);
+
+
+
     const listData = listingData;
     const formData = formDataNew;
     const PreferredDepartureTime = formData?.Segments[0].PreferredDepartureTime
@@ -62,16 +68,14 @@ export default function FlightLists() {
 
     // // price modal----
     const [isModalOpen, setIsModalOpen] = useState(false);
+
     const openModal = () => {
         setIsModalOpen(true);
-
     };
     const closeModal = () => {
         setIsModalOpen(false);
     };
     // // price modal----
-
-
     // =======stops checkbosxx
     // Function to handle checkbox change
     const handleOptionChange = (event) => {
@@ -80,19 +84,14 @@ export default function FlightLists() {
     // =======stops checkbosxx
 
     //    ==========radio button data save for price details model=====
-    const handleFarePriceSelect = (index) => {
-        if (selectedFlightIndex == index) {
-            openModal()
-        } else {
-            setOfferPriceData(null)
-             // SweetAlert for message
-        Swal.fire({
-            icon: 'warning',
-            title: 'No Price Fare Selected',
-            text: 'Please select a price fare to continue.',
-            confirmButtonText: 'OK'
-        });
-       }
+    const handleFarePriceSelect = (offerDataNew, Segments, logoUrl) => {
+        const offerDataaaModel = {
+            fareValue: offerDataNew,
+            segments: Segments,
+            logoUrl: logoUrl,
+        };
+        setOfferPriceData(offerDataaaModel)
+        openModal();
     }
 
     // Function to handle "View Details" click
@@ -294,15 +293,21 @@ export default function FlightLists() {
         if (!dataToPass.TraceId || !dataToPass.ResultIndex || !dataToPass.SrdvType || !dataToPass.SrdvIndex) {
             console.error('TraceId, ResultIndex, SrdvType, not found');
             setLoading(false);
+
+            // Use SweetAlert2 for missing data notification
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Data',
+                text: 'TraceId, ResultIndex, or SrdvType not found!',
+            });
             return;
         }
+
         const payload = {
-            // SrdvIndex: dataToPass.SrdvIndex,
-            // ResultIndex: dataToPass.ResultIndex,
             SrdvIndex: OfferPriceData?.fareValue.SrdvIndex,
             ResultIndex: OfferPriceData?.fareValue.ResultIndex,
-            TraceId: parseInt(dataToPass.TraceId),
-            SrdvType: dataToPass.SrdvType,
+            TraceId: parseInt(dataToPass?.TraceId),
+            SrdvType: dataToPass?.SrdvType,
         };
 
         try {
@@ -322,33 +327,51 @@ export default function FlightLists() {
 
             if (data.Results && formData) {
                 setLoading(false);
-                // setTimeout(() => {
                 navigate('/flight-Farequote', {
                     state: {
                         fareQuoteAPIData: data.Results,
                         formData: formData,
-                        flightSelectedDATA: flightSelectedDATA, // Pass selected seat data here
-                        dataToPass: dataToPass  // Pass selected seat data here
+                        flightSelectedDATA: flightSelectedDATA,
+                        dataToPass: dataToPass
                     }
                 });
-                // }, 1000);
             } else {
                 setLoading(false);
+
                 if (!data.Results) {
-                    alert('Fare quote data not found! Please try again.');
+                    // Use SweetAlert2 for error notification
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No Fare Quote Data',
+                        text: 'Fare quote data not found! Please try again.',
+                    });
                     console.error('data.Results is undefined');
                 }
+
                 if (!formData) {
-                    alert('Form data is missing! Please try again.');
+                    // Use SweetAlert2 for missing form data notification
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Missing Form Data',
+                        text: 'Form data is missing! Please try again.',
+                    });
                     console.error('formData is undefined');
                 }
             }
         } catch (error) {
             console.error('Error calling the farequote API:', error);
-            alert('failed to fecth Farequote API -', error);
+
+            // Use SweetAlert2 for error notification
+            Swal.fire({
+                icon: 'error',
+                title: 'API Error',
+                text: `Failed to fetch Farequote API: ${error.message}`,
+            });
+
             setLoading(false);
         }
     };
+
 
     const handleSelectSeat = async (flight, logoUrl) => {
         const flightSelectedDATA = {
@@ -421,29 +444,13 @@ export default function FlightLists() {
 
     const [filteredFlights, setfilteredFlights] = useState(null)
 
-    // useEffect(() => {
-    //     const filteredFlightsNew = selectedAirlines.length > 0
-    //         ? dd.map((flightSegments) =>
-    //             flightSegments.filter((flight) =>
-    //                 flight.Segments[0].some((option) =>
-    //                     selectedAirlines.includes(option.Airline.AirlineName)
-    //                 )
-    //             )
-    //         ).filter(segment => segment.length > 0) // Filter out empty segments
-    //         : dd;
-
-    //     setfilteredFlights(filteredFlightsNew)
-
-    // }, [dd, selectedAirlines]);
-
-
     useEffect(() => {
         if (!dd || !Array.isArray(dd)) {
             // If dd is undefined or not an array, set filteredFlights to an empty array
             setfilteredFlights([]);
             return; // Exit early to avoid further processing
         }
-    
+
         // Step 1: Filter flights based on selected airlines
         let filteredFlightsNew = selectedAirlines.length > 0
             ? dd.map((flightSegments) =>
@@ -454,20 +461,20 @@ export default function FlightLists() {
                 )
             ).filter(segment => segment.length > 0) // Filter out empty segments
             : dd;
-    
+
         // Step 2: Apply the stop/non-stop filter logic
-        if (selectedOption === 'stop') {
+        if (selectedOption == 'stop') {
             // Filter for flights with stops (length of Segments > 1)
             filteredFlightsNew = filteredFlightsNew.map(segments =>
                 segments.filter(flight => flight.Segments[0].length > 1)
             ).filter(segment => segment.length > 0); // Filter out empty segments after filtering for stops
-        } else if (selectedOption === 'non-stop') {
+        } else if (selectedOption == 'non-stop') {
             // Filter for non-stop flights (length of Segments === 1)
             filteredFlightsNew = filteredFlightsNew.map(segments =>
-                segments.filter(flight => flight.Segments[0].length === 1)
+                segments.filter(flight => flight.Segments[0].length == 1)
             ).filter(segment => segment.length > 0); // Filter out empty segments after filtering for non-stop
         }
-    
+
         // Step 3: Sort the filtered flights based on sortOrder
         const sortedFlights = filteredFlightsNew.map(segments => {
             return segments.sort((a, b) => {
@@ -479,75 +486,10 @@ export default function FlightLists() {
                 return 0; // Default case (no sorting)
             });
         }).filter(segment => segment.length > 0); // Filter out empty segments after sorting
-    
+
         // Step 4: Set the sorted flights to state
         setfilteredFlights(sortedFlights);
     }, [dd, selectedAirlines, sortOrder, selectedOption]); // Include selectedOption in dependencies
-    
-
-
-
-    // useEffect(() => {
-    //     if (!dd || !Array.isArray(dd)) {
-    //         // If dd is undefined or not an array, set filteredFlights to an empty array
-    //         setfilteredFlights([]);
-    //         return; // Exit early to avoid further processing
-    //     }
-
-    //     // Step 1: Filter flights based on selected airlines
-    //     const filteredFlightsNew = selectedAirlines.length > 0
-    //         ? dd.map((flightSegments) =>
-    //             flightSegments.filter((flight) =>
-    //                 flight.Segments[0].some((option) =>
-    //                     selectedAirlines.includes(option.Airline.AirlineName)
-    //                 )
-    //             )
-    //         ).filter(segment => segment.length > 0) // Filter out empty segments
-    //         : dd;
-
-    //     // Step 2: Sort the filtered flights based on sortOrder
-    //     const sortedFlights = filteredFlightsNew.map(segments => {
-    //         return segments.sort((a, b) => {
-    //             if (sortOrder === 'lowToHigh') {
-    //                 return a.OfferedFare - b.OfferedFare;
-    //             } else if (sortOrder === 'highToLow') {
-    //                 return b.OfferedFare - a.OfferedFare;
-    //             }
-    //             return 0; // Default case (no sorting)
-    //         });
-    //     }).filter(segment => segment.length > 0); // Filter out empty segments after sorting
-
-    //     // Step 3: Set the sorted flights to state
-    //     setfilteredFlights(sortedFlights);
-    // }, [dd, selectedAirlines, sortOrder]); // Include sortOrder in dependencies 
-
-
-
-    // useEffect(() => {
-    //     const filteredFlightsNew = selectedAirlines.length > 0
-    //     ? dd.map((flightSegments) =>
-    //         flightSegments.filter((flight) =>
-    //             flight.Segments[0].length == 1
-    //             // flight.Segments[0].some((option) =>
-    //             //     // flight.Segments[0].length == 1
-
-    //             //     // selectedAirlines.includes(option.Airline.AirlineName)
-    //             // )
-    //         )
-    //     ).filter(segment => segment.length > 0) // Filter out empty segments
-    //     : dd;
-    //     setfilteredFlights(filteredFlightsNew)
-
-    // }, [ dd , selectedAirlines]);
-    // const filteredFlights = selectedAirlines.length > 0
-    // ? dd.map((flightSegments) =>
-    //     flightSegments.filter((flight) =>
-    //         flight.Segments[0].some((option) =>
-    //             selectedAirlines.includes(option.Airline.AirlineName)
-    //         )
-    //     )
-    // ).filter(segment => segment.length > 0) // Filter out empty segments
-    // : dd;
 
     // flight filter logics END------------------------
 
@@ -555,211 +497,85 @@ export default function FlightLists() {
         return <Loading />;
     }
 
-    return (
-        <>
-
-            {
-                listingData &&
-                <>
-                    <CustomNavbar />
-                    < TimerFlight />
-                    {/* <TimerFlight/> */}
-                    {/* timerrr-------------------  */}
-                    {/* <div className="timer-FlightLists">
+    return (<>{
+        listingData && <>
+            <CustomNavbar />
+            < TimerFlight />
+            {/* <TimerFlight/> */}
+            {/* timerrr-------------------  */}
+            {/* <div className="timer-FlightLists">
                 <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
             </div> */}
-                    {/* timerrr-------------------  */}
+            {/* timerrr-------------------  */}
 
-                    <section className='flightlistsec1'>
-                        <div className="container-fluid">
-                            <div className="row flightlistsec1Row">
-                                <div className="col-10 flightlistsec1MainCol">
-                                    <div className="d-flex flightlistsec1col">
-                                        <TiPlane className="mt-1" />
-                                        <p> {formData.Segments[0].Origin} </p>
-                                        <p>-</p>
-                                        <p>{formData.Segments[0].Destination} </p>
-                                    </div>
-                                    <div className="d-flex flightlistsec1col">
-                                        <FaCalendarAlt className="mt-1" />
-                                        <p><span>Departure on</span> {formattedDate}</p>
-                                    </div>
-                                    <div className="d-flex flightlistsec1col">
-                                        <FaUser className="mt-1" />
-                                        <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
-                                    </div>
-                                </div>
-                                <div className="col-2 search-functinality">
-                                    <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
-                                </div>
+            <section className='flightlistsec1'>
+                <div className="container-fluid">
+                    <div className="row flightlistsec1Row">
+                        <div className="col-10 flightlistsec1MainCol">
+                            <div className="d-flex flightlistsec1col">
+                                <TiPlane className="mt-1" />
+                                <p> {formData.Segments[0].Origin} </p>
+                                <p>-</p>
+                                <p>{formData.Segments[0].Destination} </p>
+                            </div>
+                            <div className="d-flex flightlistsec1col">
+                                <FaCalendarAlt className="mt-1" />
+                                <p><span>Departure on</span> {formattedDate}</p>
+                            </div>
+                            <div className="d-flex flightlistsec1col">
+                                <FaUser className="mt-1" />
+                                <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
                             </div>
                         </div>
-                    </section>
+                        <div className="col-2 search-functinality">
+                            <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                    <section className='flightlistsec1Mobile'>
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-2 d-flex flightlistsec1colMobile">
-                                    <div className="filterIcondiv" onClick={toggleSidebar}>
-                                        <FaFilter className="mt-1" />
-                                    </div>
-                                </div>
-                                <div className="col-8 flightlistsec1colMobile">
-                                    <div className="flightlistsec1colMobileOriDes">
-                                        <p>{formData.Segments[0].Origin}</p>
-                                        <FaArrowRightLong />
-                                        <p>{formData.Segments[0].Destination}</p>
-                                    </div>
-                                    <div className="d-flex flightlistsec1colMobileTravlr">
-                                        <p><span></span> {formattedDate}</p>
-                                        <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount}, </span> <span>Economy</span></p>
-                                    </div>
-                                </div>
-                                <div className="col-2 d-flex flightlistsec1colMobile">
-                                    <div className="editIconDiv">
-                                        <MdModeEdit className="mt-1" onClick={navigateSearch} />
-                                    </div>
-                                </div>
+            <section className='flightlistsec1Mobile'>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-2 d-flex flightlistsec1colMobile">
+                            <div className="filterIcondiv" onClick={toggleSidebar}>
+                                <FaFilter className="mt-1" />
                             </div>
                         </div>
-                    </section>
-
-                    {/* Sidebar */}
-                    {isSidebarOpen && (
-                        <div className="filter-sidebar">
-                            <div className="filter-content">
-                                <div className="filterHeder">
-                                    <button className="close-btn" onClick={toggleSidebar}>
-                                        <FaTimes />
-                                    </button>
-                                    <h4>Filter</h4>
-                                </div>
-                                <div className="filterSidebarMain row">
-                                    <div className="col-12 flightlistsec2col1 flightlistsec2col1MobileView">
-                                        <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
-
-                                            <Accordion.Item eventKey="0">
-                                                <Accordion.Header className="flightlistaccordian-header">
-                                                    <span className="header-title">Stops</span>
-                                                </Accordion.Header>
-                                                <Accordion.Body>
-                                                    <div className="checkbox-container row border-box">
-                                                        <div className="col-6">
-                                                            <div className="flightStopsDIV">
-                                                                <label className="square-checkbox">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        value="stop"
-                                                                        checked={selectedOption === 'stop'}
-                                                                        onChange={handleOptionChange}
-                                                                        onClick={() => setSelectedOption('stop')}
-                                                                    />
-                                                                    <br></br>
-                                                                    <span className="checkmark"></span>
-                                                                    Stop
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-6">
-                                                            <div className="flightStopsDIV">
-                                                                <label className="square-checkbox">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        value="non-stop"
-                                                                        checked={selectedOption === 'non-stop'}
-                                                                        onChange={handleOptionChange}
-                                                                        onClick={() => setSelectedOption('non-stop')}
-                                                                    />
-                                                                    <br></br>
-                                                                    <span className="checkmark"></span>
-                                                                    Non-Stop
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </Accordion.Body>
-
-                                            </Accordion.Item>
-
-
-                                            <Accordion.Item eventKey="1">
-                                                <Accordion.Header className="flightlistaccordian-header">
-                                                    <span className="header-title">Price</span>
-                                                </Accordion.Header>
-                                                <Accordion.Body className="flightpriceaccordian">
-                                                    <div className="row">
-                                                        <div className="col-12 flightstopaccordian">
-                                                            <div>
-                                                                <h6>
-                                                                    <FontAwesomeIcon icon={faArrowDown} className="me-2" /> {/* Icon for Low to High */}
-                                                                    Low to High
-                                                                </h6>
-                                                                <span className="custom-checkbox">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        id="checkbox1"
-                                                                        checked={sortOrder === 'lowToHigh'}
-                                                                        onChange={() => handleCheckboxChange('lowToHigh')}
-                                                                    />
-                                                                    <label htmlFor="checkbox1"></label>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-12 flightstopaccordian">
-                                                            <div>
-                                                                <h6>
-                                                                    <FontAwesomeIcon icon={faArrowUp} className="me-2" /> {/* Icon for High to Low */}
-                                                                    High to Low
-                                                                </h6>
-                                                                <span className="custom-checkbox">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        id="checkbox2"
-                                                                        checked={sortOrder === 'highToLow'}
-                                                                        onChange={() => handleCheckboxChange('highToLow')}
-                                                                    />
-                                                                    <label htmlFor="checkbox2"></label>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </Accordion.Body>
-                                            </Accordion.Item>
-                                            <Accordion.Item eventKey="2">
-                                                <Accordion.Header className="flightlistaccordian-header">
-                                                    <span className="header-title">Airlines</span>
-                                                </Accordion.Header>
-                                                <Accordion.Body>
-                                                    <div className=" mobileAirlines">
-                                                        <ul style={{ listStyleType: 'none', padding: 0 }}>
-                                                            {availableAirlines.map((airline) => (
-                                                                <li key={airline} style={{ marginBottom: '10px' }}>
-                                                                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-                                                                        {airline}
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            checked={selectedAirlines.includes(airline)}
-                                                                            onChange={() => handleAirlineSelect(airline)}
-                                                                            style={{ marginLeft: '10px', transform: 'scale(1.3)', cursor: 'pointer' }} // Scaling the checkbox
-                                                                        />
-                                                                    </label>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                    </div>
-                                                </Accordion.Body>
-                                            </Accordion.Item>
-                                        </Accordion>
-                                    </div>
-                                </div>
+                        <div className="col-8 flightlistsec1colMobile">
+                            <div className="flightlistsec1colMobileOriDes">
+                                <p>{formData.Segments[0].Origin}</p>
+                                <FaArrowRightLong />
+                                <p>{formData.Segments[0].Destination}</p>
+                            </div>
+                            <div className="d-flex flightlistsec1colMobileTravlr">
+                                <p><span></span> {formattedDate}</p>
+                                <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount}, </span> <span>Economy</span></p>
                             </div>
                         </div>
-                    )}
+                        <div className="col-2 d-flex flightlistsec1colMobile">
+                            <div className="editIconDiv">
+                                <MdModeEdit className="mt-1" onClick={navigateSearch} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                    <div className="container-fluid flightlistsec2">
-                        <div className="row">
-                            <div className="col-lg-3 flightlistsec2col1 flightlistsec2col1DeskView">
+            {/* Sidebar */}
+            {isSidebarOpen && (
+                <div className="filter-sidebar">
+                    <div className="filter-content">
+                        <div className="filterHeder">
+                            <button className="close-btn" onClick={toggleSidebar}>
+                                <FaTimes />
+                            </button>
+                            <h4>Filter</h4>
+                        </div>
+                        <div className="filterSidebarMain row">
+                            <div className="col-12 flightlistsec2col1 flightlistsec2col1MobileView">
                                 <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
+
                                     <Accordion.Item eventKey="0">
                                         <Accordion.Header className="flightlistaccordian-header">
                                             <span className="header-title">Stops</span>
@@ -807,7 +623,6 @@ export default function FlightLists() {
                                     <Accordion.Item eventKey="1">
                                         <Accordion.Header className="flightlistaccordian-header">
                                             <span className="header-title">Price</span>
-                                            {/* <FontAwesomeIcon icon={faChevronDown} className="header-icon" /> */}
                                         </Accordion.Header>
                                         <Accordion.Body className="flightpriceaccordian">
                                             <div className="row">
@@ -851,10 +666,9 @@ export default function FlightLists() {
                                     <Accordion.Item eventKey="2">
                                         <Accordion.Header className="flightlistaccordian-header">
                                             <span className="header-title">Airlines</span>
-                                            {/* <FontAwesomeIcon icon={faChevronDown} className="header-icon" /> */}
                                         </Accordion.Header>
                                         <Accordion.Body>
-                                            <div className="desktopAirlines">
+                                            <div className=" mobileAirlines">
                                                 <ul style={{ listStyleType: 'none', padding: 0 }}>
                                                     {availableAirlines.map((airline) => (
                                                         <li key={airline} style={{ marginBottom: '10px' }}>
@@ -875,369 +689,356 @@ export default function FlightLists() {
                                     </Accordion.Item>
                                 </Accordion>
                             </div>
-                            <div className="col-lg-8">
-                                <div className="slider-container">
-                                    {isDataLoaded ? (
-                                        <Slider {...settings}>
-                                            {flightCallenderData.map((flight, index) => (
-                                                <div key={flight.FlightId || index} className="flight-slide">
-                                                    <h6>
-                                                        {new Date(flight.DepartureDate).toLocaleDateString('en-US', {
-                                                            weekday: 'short',
-                                                            month: 'short',
-                                                            day: 'numeric',
-                                                        })}
-                                                    </h6>
-                                                    <p>₹{flight.BaseFare}</p>
-                                                </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <div className="container-fluid flightlistsec2">
+                <div className="row">
+                    <div className="col-lg-3 flightlistsec2col1 flightlistsec2col1DeskView">
+                        <Accordion defaultActiveKey={['0', '1', '2', '3']} alwaysOpen>
+                            <Accordion.Item eventKey="0">
+                                <Accordion.Header className="flightlistaccordian-header">
+                                    <span className="header-title">Stops</span>
+                                </Accordion.Header>
+                                <Accordion.Body>
+                                    <div className="checkbox-container row border-box">
+                                        <div className="col-6">
+                                            <div className="flightStopsDIV">
+                                                <label className="square-checkbox">
+                                                    <input
+                                                        type="checkbox"
+                                                        value="stop"
+                                                        checked={selectedOption === 'stop'}
+                                                        onChange={handleOptionChange}
+                                                        onClick={() => setSelectedOption('stop')}
+                                                    />
+                                                    <br></br>
+                                                    <span className="checkmark"></span>
+                                                    Stop
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="flightStopsDIV">
+                                                <label className="square-checkbox">
+                                                    <input
+                                                        type="checkbox"
+                                                        value="non-stop"
+                                                        checked={selectedOption === 'non-stop'}
+                                                        onChange={handleOptionChange}
+                                                        onClick={() => setSelectedOption('non-stop')}
+                                                    />
+                                                    <br></br>
+                                                    <span className="checkmark"></span>
+                                                    Non-Stop
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Accordion.Body>
+
+                            </Accordion.Item>
+
+
+                            <Accordion.Item eventKey="1">
+                                <Accordion.Header className="flightlistaccordian-header">
+                                    <span className="header-title">Price</span>
+                                    {/* <FontAwesomeIcon icon={faChevronDown} className="header-icon" /> */}
+                                </Accordion.Header>
+                                <Accordion.Body className="flightpriceaccordian">
+                                    <div className="row">
+                                        <div className="col-12 flightstopaccordian">
+                                            <div>
+                                                <h6>
+                                                    <FontAwesomeIcon icon={faArrowDown} className="me-2" /> {/* Icon for Low to High */}
+                                                    Low to High
+                                                </h6>
+                                                <span className="custom-checkbox">
+                                                    <input
+                                                        type="checkbox"
+                                                        id="checkbox1"
+                                                        checked={sortOrder === 'lowToHigh'}
+                                                        onChange={() => handleCheckboxChange('lowToHigh')}
+                                                    />
+                                                    <label htmlFor="checkbox1"></label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="col-12 flightstopaccordian">
+                                            <div>
+                                                <h6>
+                                                    <FontAwesomeIcon icon={faArrowUp} className="me-2" /> {/* Icon for High to Low */}
+                                                    High to Low
+                                                </h6>
+                                                <span className="custom-checkbox">
+                                                    <input
+                                                        type="checkbox"
+                                                        id="checkbox2"
+                                                        checked={sortOrder === 'highToLow'}
+                                                        onChange={() => handleCheckboxChange('highToLow')}
+                                                    />
+                                                    <label htmlFor="checkbox2"></label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Accordion.Body>
+                            </Accordion.Item>
+                            <Accordion.Item eventKey="2">
+                                <Accordion.Header className="flightlistaccordian-header">
+                                    <span className="header-title">Airlines</span>
+                                    {/* <FontAwesomeIcon icon={faChevronDown} className="header-icon" /> */}
+                                </Accordion.Header>
+                                <Accordion.Body>
+                                    <div className="desktopAirlines">
+                                        <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                            {availableAirlines.map((airline) => (
+                                                <li key={airline} style={{ marginBottom: '10px' }}>
+                                                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                                                        {airline}
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={selectedAirlines.includes(airline)}
+                                                            onChange={() => handleAirlineSelect(airline)}
+                                                            style={{ marginLeft: '10px', transform: 'scale(1.3)', cursor: 'pointer' }} // Scaling the checkbox
+                                                        />
+                                                    </label>
+                                                </li>
                                             ))}
-                                        </Slider>
-                                    ) : (
-                                        <p>Loading data...</p> // Display loading state or placeholder
-                                    )}
-                                </div>
+                                        </ul>
+                                    </div>
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        </Accordion>
+                    </div>
+                    <div className="col-lg-8">
+                        <div className="slider-container">
+                            {isDataLoaded ? (
+                                <Slider {...settings}>
+                                    {flightCallenderData.map((flight, index) => (
+                                        <div key={flight.FlightId || index} className="flight-slide">
+                                            <h6>
+                                                {new Date(flight.DepartureDate).toLocaleDateString('en-US', {
+                                                    weekday: 'short',
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                })}
+                                            </h6>
+                                            <p>₹{flight.BaseFare}</p>
+                                        </div>
+                                    ))}
+                                </Slider>
+                            ) : (
+                                <p>Loading data...</p> // Display loading state or placeholder
+                            )}
+                        </div>
 
-                                <div className="f-lists">
-                                    {
-                                        filteredFlights?.[0].map((value, index) => {
-                                            const airlineCode = value.Segments[0][0].Airline.AirlineCode
-                                            const logoUrl = logos[airlineCode] || '';
-                                            return (
-                                                <>
-                                                    <div className="flight-content">
-                                                        <div>
-                                                            <div className="row flight-contentRow">
-                                                                <div className="pricebtnsmobil">
-                                                                    <p className="regulrdeal"><span>Regular Deal</span></p>
-                                                                    <div>
-                                                                        <button onClick={() => handleSelectSeat(value, logoUrl)}>SELECT</button>
+                        <div className="f-lists"> {
+                            filteredFlights?.[0].map((value, index) => {
+                                const airlineCode = value.Segments[0][0].Airline.AirlineCode
+                                const logoUrl = logos[airlineCode] || '';
 
-                                                                    </div>                                                                </div>
+                                let offerData = null;
 
-                                                                <div className="listDataMain row">
-                                                                    <div className="flightsLIstdata col-md-8">
-                                                                        <div className="flightsLIstdataDIV">
-                                                                            <div className="flightLOGO">
-                                                                                <img src={logoUrl} className="img-fluid" alt="" />
-                                                                            </div>
-                                                                            <div className="arlineanmescode">
-                                                                                <div>
-                                                                                    <p>{value.Segments[0][0].Airline.AirlineName}</p>
-                                                                                    <span>{value.Segments[0][0].Airline.AirlineCode} - </span>
-                                                                                    {
-                                                                                        value.Segments[0].map((valueSeg, index) => {
-                                                                                            return (
-                                                                                                <span key={index}>
-                                                                                                    {valueSeg.Airline.FlightNumber}
-                                                                                                    {index < value.Segments[0].length - 1 && ' ,'}
-                                                                                                </span>
-                                                                                            );
-                                                                                        })
-                                                                                    }
+                                offerData = value?.FareDataMultiple.reduce((result, next) => {
+                                    return next.OfferedFare < result.OfferedFare ? next : result;
+                                }, { OfferedFare: Infinity });
 
-                                                                                </div>
-                                                                            </div>
+                                return (<><div className="flight-content">
+                                    <div>
+                                        <div className="row flight-contentRow">
+                                            <div className="pricebtnsmobil">
+                                                <p className="regulrdeal"><span>Regular Deal</span></p>
+                                                <div>
+                                                    <button onClick={() => handleSelectSeat(value, logoUrl)}>SELECT</button>
+                                                </div>
+                                            </div>
 
-                                                                        </div>
-                                                                        <div className="flightOrigindiv">
-                                                                            <div>
-                                                                                <p className="me-1">{listingData?.Origin}</p>
-                                                                                <strong><p>{extractTime(value.Segments[0][0].DepTime)}</p></strong>
-
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="fligtDurationdiv">
-                                                                            <div>
-                                                                                <p>
-                                                                                    <span className=""><LuTimerReset /></span>
-                                                                                    {calculateDuration(value.Segments[0][0].DepTime, value.Segments[0][value.Segments[0].length - 1].ArrTime)}
-                                                                                </p>
-                                                                                <div className="line-container">
-                                                                                    <hr className="line-with-dot" />
-                                                                                    <div className="dot"></div>
-                                                                                </div>
-                                                                                {
-                                                                                    value.Segments[0].length > 1 &&
-                                                                                    <p>{value.Segments[0].length - 1} stop</p>
-                                                                                }
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div className="flightfDestinationDiv">
-                                                                            <div>
-                                                                                <p className="me-1">{listingData?.Destination}</p>
-                                                                                <strong>                                                       <p>
-                                                                                    {extractTime(value.Segments[0][value.Segments[0].length - 1].ArrTime)}
-                                                                                </p>
-                                                                                </strong>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="priceradiotbtnn col-md-4">
-                                                                        <div className="priceradiotbtnnDiv">
-                                                                            <Form>
-                                                                                {value?.FareDataMultiple.map((fareValue, fareIndex) => {
-                                                                                    const offerData = {
-                                                                                        fareValue,
-                                                                                        segments: value.Segments,
-                                                                                        logoUrl,
-                                                                                    };
-                                                                                    const isChecked = fareValue.Source === 'Publish';
-                                                                                    const isRefundable = fareValue?.IsRefundable;
-                                                                                    const getSourceBgColor = (source) => {
-                                                                                        switch (source) {
-                                                                                            case 'Publish':
-                                                                                                return 'blue';
-                                                                                            case 'SME':
-                                                                                                return '#2cc72c';
-                                                                                            case 'Flexi':
-                                                                                                return 'darkgreen';
-                                                                                            case 'Tactical':
-                                                                                                return 'lightcoral';
-                                                                                            case 'Corporate':
-                                                                                                return 'cadetblue';
-                                                                                            case 'Other':
-                                                                                                return 'gray';
-                                                                                            default:
-                                                                                                return 'cornflowerblue';
-                                                                                        }
-                                                                                    };
-                                                                                    return (
-                                                                                        <>
-                                                                                            <div className="publiceprices" key={fareIndex}>
-                                                                                                <label>
-                                                                                                    <div>
-                                                                                                        <span style={{ backgroundColor: getSourceBgColor(fareValue.Source) }}>
-                                                                                                            {fareValue.Source}
-                                                                                                        </span>
-                                                                                                    </div>
-                                                                                                    <div>
-                                                                                                        <input
-                                                                                                            type="radio"
-                                                                                                            name="flightOption"
-                                                                                                            value={`option${fareIndex + 1}`}
-                                                                                                            // defaultChecked={isChecked}
-                                                                                                            checked={selectedFlightResultIndex == fareValue.ResultIndex}
-                                                                                                            onChange={() => {
-                                                                                                                // const offerData = {
-                                                                                                                //     fareValue,
-                                                                                                                //     segments: value.Segments,
-                                                                                                                //     logoUrl,
-                                                                                                                // };
-                                                                                                                setOfferPriceData(offerData);
-                                                                                                                setselectedFlightIndex(index)
-                                                                                                                setselectedFlightResultIndex(fareValue.ResultIndex)
-                                                                                                            }}
-                                                                                                        />
-                                                                                                        <strong> ₹ {fareValue.OfferedFare}</strong>
-                                                                                                    </div>
-                                                                                                    {/* <p className="isRefundalbe">{isRefundable ? 'Refundable': 'Non-Refundable' }</p> */}
-                                                                                                </label>
-                                                                                            </div>
-                                                                                            
-                                                                                        </>
-                                                                                    );
-                                                                                })}
-                                                                            </Form>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="Flightbtnsss">
-                                                                    <span>
-                                                                        {showFlightSegments == index ?
-                                                                            < button className="flightListDetailsBUtton" onClick={() => setShowFlightSegments(null)}> Hide Details
-                                                                                <MdKeyboardArrowDown />
-                                                                            </button>
-                                                                            :
-                                                                            <button className="flightListDetailsBUtton" onClick={() => setShowFlightSegments(index)}>  Flight Details
-                                                                                <MdKeyboardArrowDown />
-                                                                            </button>
-                                                                        }
-                                                                    </span>
-                                                                    {/* The button to view price details */}
-                                                                    <div className="pricefarebtn">
-                                                                        <button onClick={() => handleFarePriceSelect(index)}>View Prices Fare <MdKeyboardArrowDown /></button>
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                                {/* Conditionally render FlightSegments */}
-                                                                {showFlightSegments == index && (
-                                                                    <div className="flight-segment-section">
-                                                                        <FlightSegments
-                                                                            logoUrl={logoUrl}
-                                                                            flightSegments={value.Segments}
-                                                                            updateAirlineDetails={updateAirlineDetails}
-
-                                                                        />
-                                                                    </div>
-                                                                )}
-
-
+                                            <div className="listDataMain row">
+                                                <div className="flightsLIstdata col-md-8">
+                                                    <div className="flightsLIstdataDIV">
+                                                        <div className="flightLOGO">
+                                                            <img src={logoUrl} className="img-fluid" alt="" />
+                                                        </div>
+                                                        <div className="arlineanmescode">
+                                                            <div>
+                                                                <p>{value.Segments[0][0].Airline.AirlineName}</p>
+                                                                <span>{value.Segments[0][0].Airline.AirlineCode} - </span>{
+                                                                    value.Segments[0].map((valueSeg, index) => {
+                                                                        return (
+                                                                            <span key={index}>
+                                                                                {valueSeg.Airline.FlightNumber}
+                                                                                {index < value.Segments[0].length - 1 && ' ,'}
+                                                                            </span>
+                                                                        );
+                                                                    })
+                                                                }
 
                                                             </div>
                                                         </div>
 
-                                                    </div >
-                                                </>
-                                            )
-                                        })
-                                    }
+                                                    </div>
+                                                    <div className="flightOrigindiv">
+                                                        <div>
+                                                            <p className="me-1">{listingData?.Origin}</p>
+                                                            <strong><p>{extractTime(value.Segments[0][0].DepTime)}</p></strong>
 
+                                                        </div>
+                                                    </div>
+                                                    <div className="fligtDurationdiv">
+                                                        <div>
+                                                            <p>
+                                                                <span className=""><LuTimerReset /></span>
+                                                                {calculateDuration(value.Segments[0][0].DepTime, value.Segments[0][value.Segments[0].length - 1].ArrTime)}
+                                                            </p>
+                                                            <div className="line-container">
+                                                                <hr className="line-with-dot" />
+                                                                <div className="dot"></div>
+                                                            </div>
+                                                            {
+                                                                value.Segments[0].length > 1 &&
+                                                                <p>{value.Segments[0].length - 1} stop</p>
+                                                            }
+                                                        </div>
+                                                    </div>
 
-                                    {/* <div className="flight-content">
-                                        {filteredFlights && filteredFlights.length > 0 ? (
-                                            currentHotels.map((hotel, indexHotel) => (
-                                                filteredFlights.map((flightSegments, index) => {
-                                                    // Sort the flight segments based on the selected sort order
-                                                    const sortedFlights = sortFlights([...flightSegments]);
-                                                    return sortedFlights.map((flight, segmentIndex) => {
-                                                        return flight?.Segments?.[0].map((option, optionIndex) => {
-                                                            const airlineCode = option.Airline.AirlineCode;
-                                                            const logoUrl = logos[airlineCode] || ''; 
-                                                            return (
-                                                                <div key={`${index}-${segmentIndex}-${optionIndex}`}>
-                                                                    <div className="row">
-                                                                        <div className="pricebtnsmobil">
-                                                                            <p>₹{flight?.OfferedFare || "Unknown Airline"}</p>
-                                                                            <button onClick={() => handleSelectSeat(flight, logoUrl)}>SELECT</button>
-                                                                        </div>
-                                                                        <p className="regulrdeal"><span>Regular Deal</span></p>
-                                                                        <p className="f-listAirlinesNameMOB">{option.Airline.AirlineName}</p><br />
+                                                    <div className="flightfDestinationDiv">
+                                                        <div>
+                                                            <p className="me-1">{listingData?.Destination}</p>
+                                                            <strong>                                                       <p>
+                                                                {extractTime(value.Segments[0][value.Segments[0].length - 1].ArrTime)}
+                                                            </p>
+                                                            </strong>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="priceradiotbtnn col-md-4">
+                                                    <div className="priceradiotbtnnDiv">
+                                                        <Form>{
+                                                            value?.FareDataMultiple.map((fareValue, fareIndex) => {
+                                                                const currentRadioChecked = selectedProduct.index == index ? selectedProduct.fareValue : offerData;
 
-                                                                        <div className="col-2 col-sm-3 f-listCol1">
-                                                                            <div className="f-listAirlines">
-                                                                                <img src={logoUrl} className="img-fluid" alt={`${option.Airline.AirlineName} Logo`} />
-                                                                                <p className="f-listAirlinesNameWEb">{option.Airline.AirlineName}</p><br />
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div className="col-sm-6 col-10 f-listCol2">
-                                                                            <div className="flistname">
-                                                                                <p className="flistnamep1">{option.Origin.CityCode}</p>
-                                                                                <div>
-                                                                                    <p className="flistnamep2">{convertUTCToIST(option.DepTime)}</p>
-                                                                                    <p className="flistnamep4">{option.Origin.CityName}</p>
-                                                                                </div>
-                                                                                <p className="flistnamep3">{convertMinutesToHoursAndMinutes(option.Duration)}</p>
-                                                                                <div>
-                                                                                    <p className="flistnamep2">{convertUTCToIST(option.ArrTime)}</p>
-                                                                                    <p className="flistnamep4">{option.Destination.CityName}</p>
-                                                                                </div>
-                                                                                <p className="flistnamep5">{option.Destination.CityCode}</p>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div className="col-md-3 pricebtns f-listCol3">
-                                                                            <div><p>₹{flight?.OfferedFare}</p></div>
+                                                                const fareValueData = {
+                                                                    fareValue,
+                                                                    segments: value.Segments,
+                                                                    logoUrl,
+                                                                }
+                                                                const isRefundable = fareValue?.IsRefundable;
+                                                                const getSourceBgColor = (source) => {
+                                                                    switch (source) {
+                                                                        case 'Publish':
+                                                                            return 'blue';
+                                                                        case 'SME':
+                                                                            return '#2cc72c';
+                                                                        case 'Flexi':
+                                                                            return 'darkgreen';
+                                                                        case 'Tactical':
+                                                                            return 'lightcoral';
+                                                                        case 'Corporate':
+                                                                            return 'cadetblue';
+                                                                        case 'Other':
+                                                                            return 'gray';
+                                                                        default:
+                                                                            return 'cornflowerblue';
+                                                                    }
+                                                                };
+                                                                return (<>
+                                                                    <div className="publiceprices" key={fareIndex}>
+                                                                        <label>
                                                                             <div>
-                                                                                <button onClick={() => handleSelectSeat(flight, logoUrl)}>SELECT</button>
+                                                                                <span style={{ backgroundColor: getSourceBgColor(fareValue.Source) }}>
+                                                                                    {fareValue.Source}
+                                                                                </span>
                                                                             </div>
-                                                                        </div>
+                                                                            <div>
+                                                                                <input
+                                                                                    type="radio"
+                                                                                    name="flightOption"
+                                                                                    value={`option${fareIndex + 1}`}
+                                                                                    onChange={() => {
+                                                                                        setSelectedProduct({ index, fareValue }); // Update selectedProduct state
+                                                                                        setOfferPriceDataNew('someValue'); // Update anotherState (you can set it to anything you want)
+                                                                                    }}
+
+                                                                                    // onChange={() => setSelectedProduct({ index, fareValue })}
+                                                                                    defaultChecked={fareValue.OfferedFare == offerData.OfferedFare}
+                                                                                />
+                                                                                <strong> ₹ {fareValue.OfferedFare}</strong>
+                                                                            </div>
+                                                                            {/* <p className="isRefundalbe">{isRefundable ? 'Refundable': 'Non-Refundable' }</p> */}
+                                                                        </label>
                                                                     </div>
-                                                                </div>
-                                                            );
-                                                        });
-                                                    });
-                                                })
-                                            ))
-                                        ) : (
-                                            <p>No flights available.</p>
-                                        )}
 
-                                    </div> */}
-                                </div>
+                                                                </>
+                                                                );
+                                                            })}
+                                                        </Form>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                {/* <div className="paginationContainer">
-                                    <ReactPaginate
-                                        previousLabel={'previous'}
-                                        nextLabel={'next'}
-                                        breakLabel={'...'}
-                                        pageCount={pageCount}
-                                        marginPagesDisplayed={2}
-                                        pageRangeDisplayed={5}
-                                        onPageChange={handlePageClick}
-                                        containerClassName={'pagination'}
-                                        activeClassName={'active'}
-                                        pageClassName={'page-item'}
-                                        pageLinkClassName={'page-link'}
-                                        previousClassName={'page-item'}
-                                        previousLinkClassName={'page-link'}
-                                        nextClassName={'page-item'}
-                                        nextLinkClassName={'page-link'}
-                                        breakClassName={'page-item'}
-                                        breakLinkClassName={'page-link'}
-                                    />
-                                </div> */}
+                                            <div className="Flightbtnsss">
+                                                <span>{showFlightSegments == index ?
+                                                    < button className="flightListDetailsBUtton" onClick={() => setShowFlightSegments(null)}> Hide Details
+                                                        <MdKeyboardArrowDown />
+                                                    </button>
+                                                    :
+                                                    <button className="flightListDetailsBUtton" onClick={() => setShowFlightSegments(index)}>  Flight Details
+                                                        <MdKeyboardArrowDown />
+                                                    </button>
+                                                }
+                                                </span>
+                                                {/* The button to view price details */}
+                                                <div className="pricefarebtn">
+                                                    <button onClick={() => {
+                                                        // Use selected product if available, otherwise use the minimum priced product
+                                                        const productToView = selectedProduct.index == index ? selectedProduct.fareValue : offerData;
+                                                        handleFarePriceSelect(productToView, value.Segments,
+                                                            logoUrl);
+                                                    }}
+                                                    > View Prices Fare <MdKeyboardArrowDown />
+                                                    </button>
+                                                </div>
 
+                                            </div>
+                                            {/* Conditionally render FlightSegments */}
+                                            {showFlightSegments == index && (
+                                                <div className="flight-segment-section">
+                                                    <FlightSegments
+                                                        logoUrl={logoUrl}
+                                                        flightSegments={value.Segments}
+                                                        updateAirlineDetails={updateAirlineDetails} />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
 
-                            </div>
+                                </div >
+                                </>
+                                )
+                            })
+                        }
+
                         </div>
-                        <EnterOtp showModal={showOtpOverlay} onClose={() => setShowOtpOverlay(false)} />
-
                     </div>
-                    <Footer />
-
-                    <PriceModal
-                        closeModal={closeModal}
-                        isModalOpen={isModalOpen}
-                        OfferPriceData={OfferPriceData}
-                        listingData={listingData}
-                    />
-
-
-                    {/* <Modal
-                        show={isModalOpen}
-                        onHide={() => closeModal()}
-                        size="md"
-                        centered
-                        className="small-popup-modal"
-                        backdrop="static"
-                    >
-                        <Modal.Header closeButton>
-                            <Modal.Title>Login to Your Account</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <div className='Login_container'>
-                                <div className="login">
-                                   
-                                    <p>model opennnn</p>
-                                </div>
-                            </div>
-                        </Modal.Body>
-                    </Modal> */}
-
-
-
-                    {/* <Modal
-                        isOpen={isModalOpen}
-                        onRequestClose={() => closeModal()}
-                        contentLabel="Price Modal"
-                        style={{
-                            overlay: {
-                                backgroundColor: 'rgba(0, 0, 0, 0.5)'
-                            },
-                            content: {
-                                top: '50%',
-                                left: '50%',
-                                right: 'auto',
-                                bottom: 'auto',
-                                marginRight: '-50%',
-                                transform: 'translate(-50%, -50%)',
-                                padding: '20px',
-                                width: '400px'
-                            }
-                        }}
-                    >
-                        <h2>Price Modal</h2>
-                        <p>Here are the price details...</p>
-                        <button onClick={() => closeModal()}>Close</button>
-                    </Modal> */}
-
-                </>
-
+                </div>
+                <EnterOtp showModal={showOtpOverlay} onClose={() => setShowOtpOverlay(false)} />
+            </div>
+            <Footer />
+            {isModalOpen &&
+                <PriceModal
+                    closeModal={closeModal}
+                    isModalOpen={isModalOpen}
+                    OfferPriceData={OfferPriceData}
+                    listingData={listingData}
+                />
             }
         </>
+
+    }
+    </>
 
     )
 }
