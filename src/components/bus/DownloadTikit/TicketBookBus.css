@@ -32,6 +32,7 @@
  align-items: flex-start;
  justify-content: space-between;
  flex-direction: column;
+ gap: 0.5vmax;
 }
 .bus-cancel .cancel .policy-item small{
   font-weight: 600;
@@ -40,7 +41,7 @@
 .bus-cancel .cancel .policy-item span{
  color:#656565 ;
  font-weight: lighter;
- font-size: 1vmax;
+ font-size: 0.8vmax;
   } 
 
 .last-line{

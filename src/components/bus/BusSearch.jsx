@@ -111,12 +111,14 @@ const BusSearch = () => {
 
   const handleSearch = () => {
     setLoading(true);
+    const formattedDate = selectedBusDate instanceof Date && !isNaN(selectedBusDate.getTime())
+        ? selectedBusDate.toISOString().split('T')[0]
+        : null;
+
     dispatch(searchBuses({
       from,
       to,
-      departDate: selectedBusDate instanceof Date && !isNaN(selectedBusDate.getTime())
-        ? selectedBusDate.toISOString().split('T')[0]
-        : null,
+      departDate: formattedDate,
       fromCode,
       toCode
     }))
@@ -132,7 +134,8 @@ const BusSearch = () => {
             confirmButtonText: "OK",
           });
         } else {
-          navigate('/bus-list');
+          // Navigate with date in state
+          navigate('/bus-list', { state: { selectedBusDate: formattedDate } });
         }
       })
       .catch((error) => {
@@ -145,7 +148,8 @@ const BusSearch = () => {
           confirmButtonText: "OK",
         });
       });
-  };
+};
+
 
   if (loading) {
     return <Loading />;
