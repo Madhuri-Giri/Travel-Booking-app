@@ -163,10 +163,12 @@ export const sendPostRequest = createAsyncThunk(
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            console.log('dataaaaaaaa',data);
-            if(response.ok){
-                localStorage.setItem('loginId', data.data.id);
-                localStorage.setItem('loginData', JSON.stringify(data.data));
+            if (response.result == true) {
+                console.log('dataaaaaaaa',data);
+                if(response.ok){
+                    localStorage.setItem('loginId', data.data.id);
+                    localStorage.setItem('loginData', JSON.stringify(data.data));
+                }
             }
             if (data.result == false) {
                 navigate('/signup');
