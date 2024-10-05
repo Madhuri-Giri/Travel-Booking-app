@@ -54,8 +54,6 @@ export default function FlightLists() {
     const [OfferPriceData, setOfferPriceData] = useState(null);
     const [OfferPriceDataNew, setOfferPriceDataNew] = useState(null);
 
-
-
     const listData = listingData;
     const formData = formDataNew;
     const PreferredDepartureTime = formData?.Segments[0].PreferredDepartureTime
@@ -84,15 +82,31 @@ export default function FlightLists() {
     // =======stops checkbosxx
 
     //    ==========radio button data save for price details model=====
-    const handleFarePriceSelect = (offerDataNew, Segments, logoUrl) => {
+    const handleFarePriceSelect = (offerDataNew, segments, logoUrl) => {
         const offerDataaaModel = {
-            fareValue: offerDataNew,
-            segments: Segments,
+            ...offerDataNew,
+            segments: segments,
             logoUrl: logoUrl,
         };
+
         setOfferPriceData(offerDataaaModel)
         openModal();
-    }
+    };
+
+    // State to track the selected product for each element
+    const [selectedProductsNew, setSelectedProductsNew] = useState([]);
+
+    const handleRadioChange = (fareValue, index, segments, logoUrl) => {
+        const offerDataaaModel = {
+            fareValue: fareValue,
+            segments: segments,
+            logoUrl: logoUrl,
+        };
+
+        const updatedSelectedProducts = [...selectedProductsNew];
+        updatedSelectedProducts[index] = offerDataaaModel;
+        setSelectedProductsNew(updatedSelectedProducts);
+    };
 
     // Function to handle "View Details" click
     const handleViewDetails = () => {
@@ -288,24 +302,24 @@ export default function FlightLists() {
 
 
     // ------------------------------------------------fare-Quote-api-----------------------------------------
-    const fareQuoteHandler = async (flightSelectedDATA) => {
+    const fareQuoteHandler = async (flightSelectedDATA, productToView) => {
         setLoading(true);
-        if (!dataToPass.TraceId || !dataToPass.ResultIndex || !dataToPass.SrdvType || !dataToPass.SrdvIndex) {
-            console.error('TraceId, ResultIndex, SrdvType, not found');
-            setLoading(false);
+        // if (!dataToPass.TraceId || !dataToPass.ResultIndex || !dataToPass.SrdvType || !dataToPass.SrdvIndex) {
+        //     console.error('TraceId, ResultIndex, SrdvType, not found');
+        //     setLoading(false);
 
-            // Use SweetAlert2 for missing data notification
-            Swal.fire({
-                icon: 'error',
-                title: 'Missing Data',
-                text: 'TraceId, ResultIndex, or SrdvType not found!',
-            });
-            return;
-        }
+        //     // Use SweetAlert2 for missing data notification
+        //     Swal.fire({
+        //         icon: 'error',
+        //         title: 'Missing Data',
+        //         text: 'TraceId, ResultIndex, or SrdvType not found!',
+        //     });
+        //     return;
+        // }
 
         const payload = {
-            SrdvIndex: OfferPriceData?.fareValue.SrdvIndex,
-            ResultIndex: OfferPriceData?.fareValue.ResultIndex,
+            SrdvIndex: productToView?.SrdvIndex,
+            ResultIndex: productToView?.ResultIndex,
             TraceId: parseInt(dataToPass?.TraceId),
             SrdvType: dataToPass?.SrdvType,
         };
@@ -373,7 +387,7 @@ export default function FlightLists() {
     };
 
 
-    const handleSelectSeat = async (flight, logoUrl) => {
+    const handleSelectSeat = async (flight, logoUrl, productToView) => {
         const flightSelectedDATA = {
             flight: flight,
             logoUrl: logoUrl
@@ -382,11 +396,10 @@ export default function FlightLists() {
             setShowOtpOverlay(true);
             return;
         }
-        await fareQuoteHandler(flightSelectedDATA);  // Pass flightSelectedDATA
+        await fareQuoteHandler(flightSelectedDATA, productToView);  // Pass flightSelectedDATA
     };
 
     // -------------------------------------------------fare-Quote-api----------------------------------------
-
 
 
     // -----------------mobile view filter side bar------------------------ 
@@ -852,7 +865,13 @@ export default function FlightLists() {
                                             <div className="pricebtnsmobil">
                                                 <p className="regulrdeal"><span>Regular Deal</span></p>
                                                 <div>
-                                                    <button onClick={() => handleSelectSeat(value, logoUrl)}>SELECT</button>
+                                                    {/* <button onClick={() => handleSelectSeat(value, logoUrl)}>SELECT</button> */}
+                                                    <button onClick={() => {
+                                                        const productToView = selectedProductsNew[index]?.fareValue || offerData;
+                                                        handleSelectSeat(value, logoUrl, productToView)
+                                                    }
+                                                    }
+                                                    >SELECT</button>
                                                 </div>
                                             </div>
 
@@ -958,7 +977,8 @@ export default function FlightLists() {
                                                                                     name="flightOption"
                                                                                     value={`option${fareIndex + 1}`}
                                                                                     onChange={() => {
-                                                                                        setSelectedProduct({ index, fareValue }); // Update selectedProduct state
+                                                                                        // setSelectedProduct({ index, fareValue }); // Update selectedProduct state
+                                                                                        handleRadioChange(fareValue, index, value.Segments, logoUrl)
                                                                                         setOfferPriceDataNew('someValue'); // Update anotherState (you can set it to anything you want)
                                                                                     }}
 
@@ -994,12 +1014,19 @@ export default function FlightLists() {
                                                 <div className="pricefarebtn">
                                                     <button onClick={() => {
                                                         // Use selected product if available, otherwise use the minimum priced product
+                                                        const productToView = selectedProductsNew[index] || offerData;
+                                                        handleFarePriceSelect(productToView, value.Segments, logoUrl);
+                                                    }}
+                                                    > View Prices Fare <MdKeyboardArrowDown />
+                                                    </button>
+                                                    {/* <button onClick={() => {
+                                                        // Use selected product if available, otherwise use the minimum priced product
                                                         const productToView = selectedProduct.index == index ? selectedProduct.fareValue : offerData;
                                                         handleFarePriceSelect(productToView, value.Segments,
                                                             logoUrl);
                                                     }}
                                                     > View Prices Fare <MdKeyboardArrowDown />
-                                                    </button>
+                                                    </button> */}
                                                 </div>
 
                                             </div>
