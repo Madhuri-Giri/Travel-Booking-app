@@ -61,7 +61,12 @@ const GuestDetails = () => {
   const [isFormComplete, setIsFormComplete] = useState(false);
   const [guestsRemaining, setGuestsRemaining] = useState(persons[0].NoOfAdults); // Initially all guests need forms
   const [payLoading, setPayLoading] = useState(false);
+
   const { blockRoomResult, bookingStatus } = location.state || {};
+  const roomData = blockRoomResult.HotelRoomsDetails?.[0]||{};
+  // console.log('room data',roomData );
+
+  // console.log('block', blockRoomResult);
   const bookingDetails = bookingStatus?.[0] || {};
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false)
@@ -148,11 +153,6 @@ const GuestDetails = () => {
     setCheckboxChecked(e.target.checked);
   };
   // ---------------- RozarPay Payment Gateway  Integration start -------------------
-  const { transactionDetails } = useSelector((state) => state.loginReducer);
-  // console.log('transactionDetails', transactionDetails);
-  const transaction_num = transactionDetails?.transaction_num
-  // console.log('transaction_num', transaction_num);
-  // -------------------------------------------------------
   const fetchPaymentDetails = async () => {
     try {
       const loginId = localStorage.getItem("loginId");
@@ -165,7 +165,7 @@ const GuestDetails = () => {
       console.log("transactionNum:", transactionNum);
       console.log("hotel_booking_id:", bookingId);
 
-      if (!loginId || !transaction_num || !bookingId) {
+      if (!loginId || !transaction_num|| !bookingId) {
         // Check bookingId instead of hotel_booking_id
         throw new Error(
           "Login ID, Transaction Number, or Hotel Booking ID is missing."
@@ -173,7 +173,7 @@ const GuestDetails = () => {
       }
 
       const payload = {
-        amount: bookingDetails.publishedprice,
+        amount: roomData?.Price?.PublishedPrice,
         user_id: loginId,
         transaction_num: transaction_num,
         hotel_booking_id: [bookingId],
@@ -341,7 +341,10 @@ const GuestDetails = () => {
     traceId,
   } = useSelector((state) => state.hotelSearch || {});
 // ----------------------------------------------------------------------
-
+const { transactionDetails } = useSelector((state) => state.loginReducer);
+// console.log('transactionDetails', transactionDetails);
+const transaction_num = transactionDetails?.transaction_num
+// console.log('transaction_num', transaction_num);
   //  ----------------------------Start book api-----------------------------------
   // Construct the booking payload
 
@@ -723,14 +726,14 @@ const GuestDetails = () => {
                           ),
                         }}
                       />
-                      <button
-                        className="btn btn-link"
-                        onClick={() =>
-                          openModal(blockRoomResult.HotelPolicyDetail, "Hotel Policy")
-                        }
-                      >
-                        Read More
-                      </button>
+                     <button
+  className="btn btn-link"
+  style={{ color: '#00b7eb' }} // Set the color here
+  onClick={() => openModal(blockRoomResult.HotelPolicyDetail, "Hotel Policy")}
+>
+  Read More
+</button>
+
                     </div>
                   ) : (
                     <p>No hotel policy details available.</p>
@@ -747,6 +750,7 @@ const GuestDetails = () => {
                       />
                       <button
                         className="btn btn-link"
+                        style={{ color: '#00b7eb' }} // Set the color here
                         onClick={() =>
                           openModal(blockRoomResult.HotelNorms, "Hotel Norms")
                         }
@@ -783,7 +787,7 @@ const GuestDetails = () => {
                         </div>
                         <div className="room_type">
                           <span>GST </span>
-                          <small> {bookingDetails.IGSTRate || "N/A"} %</small>
+                          <small> {roomData?.Price?.GST?.IGSTRate || "N/A"} %</small>
                         </div>
                         <div className="total_room">
                           <span>Total Room</span>
@@ -791,7 +795,7 @@ const GuestDetails = () => {
                         </div>
                         <div className="final_price">
                           <span>Total Payment</span>
-                          <small>₹{bookingDetails.publishedprice}</small>
+                          <small>₹{roomData?.Price?.PublishedPrice}</small>
                         </div>
                       </div>
                     </div>

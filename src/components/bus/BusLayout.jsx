@@ -535,7 +535,7 @@ const BusLayout = ({ busType }) => {
 
             <div className="seat-Price">
               <div className="price-seats">
-                <h6>Total Price: </h6>
+                <h6 style={{fontSize:"1vmax"}}>Total Price: </h6>
                 <h5>₹{Math.round(totalPrice - (totalPrice * 0.18))}</h5>              </div>
 
 

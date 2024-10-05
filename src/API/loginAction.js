@@ -164,7 +164,6 @@ export const sendPostRequest = createAsyncThunk(
             }
             const data = await response.json();
             if (response.result == true) {
-                console.log('dataaaaaaaa',data);
                 if(response.ok){
                     localStorage.setItem('loginId', data.data.id);
                     localStorage.setItem('loginData', JSON.stringify(data.data));

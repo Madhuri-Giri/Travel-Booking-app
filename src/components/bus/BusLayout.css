@@ -208,7 +208,15 @@
 .Buslayout-Main .Bus-layout-new .layout-bus .top-main-seat{
   font-size: 12px !important;
 }
+
 }
 
 
 /* ------------------loader----------------------- */
+
+
+@media (max-width:600px) {
+  .Buslayout-Main .Bus-layout-new .layout-bus .seat-Price   .price-seats h6{
+    font-size: 1.5vmax !important;
+  }
+}

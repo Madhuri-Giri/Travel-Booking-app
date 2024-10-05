@@ -359,7 +359,6 @@ export default function FlightLists() {
                         title: 'No Fare Quote Data',
                         text: 'Fare quote data not found! Please try again.',
                     });
-                    console.error('data.Results is undefined');
                 }
 
                 if (!formData) {
@@ -369,7 +368,6 @@ export default function FlightLists() {
                         title: 'Missing Form Data',
                         text: 'Form data is missing! Please try again.',
                     });
-                    console.error('formData is undefined');
                 }
             }
         } catch (error) {

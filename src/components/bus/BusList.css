@@ -171,6 +171,19 @@
          align-items: center;
          justify-content: space-evenly;
          flex-direction: row;
+         
+}
+.BusLists .busList .B-lists-Top .text .date_dep{
+        display: flex;
+        flex-direction: row;
+        width: 50%;
+
+        justify-content: space-evenly;
+        align-items: center;
+}
+.BusLists .busList .B-lists-Top .text .destination .date_class{
+        color: white;
+        margin-top: 0.2vmax;
 }
 .BusLists .busList .B-lists-Top .text .destination h6{
          display: flex;
@@ -581,6 +594,14 @@ margin-top: 1vmax;
 
 
 @media (max-width:600px) {
+        .BusLists .busList .B-lists-Top .text  .date_class{
+        
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: space-between;
+
+        }
         .overlay-content {
                 border-radius: 0px;
                 max-width: 100%;
@@ -633,7 +654,14 @@ margin-top: 1vmax;
         display: flex;
         width: 100%;
       }
-     
+.BusLists .busList .B-lists-Top .text .destination{
+        width: 50%;
+        
+}
+.BusLists .busList .B-lists-Top .text .date_class{
+        width: 50%;
+        
+}
       .BusLists .busList .B-lists-Top .text .destination h6{
                padding: 0.4vmax;
           margin-top: 2vmax;
@@ -1052,7 +1080,12 @@ font-weight: 700;
        font-size: 2vmax;
        font-weight: lighter;
   }
-
+  .BusLists .busList .B-lists-Top .text .date_dep{
+       
+        width: 100%;
+font-size: 1.5vmax;
+justify-content: space-between;
+}
 /* --------------------------------------------------------------------------------- */
 
 

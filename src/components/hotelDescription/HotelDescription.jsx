@@ -38,7 +38,6 @@ const HotelDescription = () => {
   const [showFullFacilities, setShowFullFacilities] = useState(false);
   const maxFacilities = 5; 
 
- 
   const facilitiesArray = Array.isArray(hotelDetails.HotelFacilities)
     ? hotelDetails.HotelFacilities
     : hotelDetails.HotelFacilities.split(","); 
@@ -99,7 +98,6 @@ const HotelDescription = () => {
       return <Loading />;
     }
  
-
   return (
     <>
       <CustomNavbar />
@@ -145,24 +143,10 @@ const HotelDescription = () => {
           }}
           style={{ overflow: "hidden", maxHeight: isExpanded ? "none" : "10em" }}
         />
-        <button className="hotel_Button_re" onClick={handleShowDescriptionModal}>
+        <button className="btn btn-link hotel_Button_re"  style={{ color: '#00b7eb' }}  onClick={handleShowDescriptionModal}>
           {isExpanded ? "Read Less" : "Read More"}
         </button>
-       
-  </div>
-  {/* <h5>Facilities:</h5>
-      <div className="Features_hotel">
-        <ul>
-          {displayedFacilities.map((facility, index) => (
-            <li key={index}>{facility}</li>
-          ))}
-        </ul>
-        {facilitiesArray.length > maxFacilities && (
-          <Button onClick={handleToggleFacilities}>
-            {showFullFacilities ? "Read Less" : "Read More"}
-          </Button>
-        )}
-      </div> */}
+         </div>
                    
                   <div className="PriceButton">
                     <button onClick={fetchHotelRoom} className="hotel_Button">Book Now</button>
@@ -192,13 +176,13 @@ const HotelDescription = () => {
           </Modal>
 
           {/* Modal for displaying description */}
-          <Modal show={showDescriptionModal} onHide={handleCloseDescriptionModal} size="lg"   className="HotelListModal"
+          <Modal show={showDescriptionModal} onHide={handleCloseDescriptionModal} size="lg" className="HotelListModal"
       backdrop="static">
             <Modal.Header closeButton />
             <Modal.Body>
               <h6>Description</h6>
             <p dangerouslySetInnerHTML={{ __html: hotelDetails.Description }} />
-             <h6> Facilities</h6>
+             <h6>Facilities</h6>
             <ul> <li>{hotelDetails.HotelFacilities || "Facilities Not Available"}</li></ul>
             </Modal.Body> 
             <Modal.Footer>
