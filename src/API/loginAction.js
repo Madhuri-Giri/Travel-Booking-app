@@ -27,10 +27,6 @@ export const userLogin = createAsyncThunk(
                 localStorage.setItem('loginData', JSON.stringify(data.data));
                 toast.success('LogIn successfully!');
 
-                // Call the userDetailsHandler after setting the loginId
-                // await userDetailsHandler();
-
-                // const redirectTo = state?.from ? state.from : '/flight-search';
                 if (isNavigate == false) {
                     //do not navigate
                 } else {
@@ -58,7 +54,7 @@ export const userLogin = createAsyncThunk(
 // Logout
 export const userLogout = createAsyncThunk(
     "auth/logout",
-    async ({ navigate }, { rejectWithValue ,dispatch}) => {
+    async ({ navigate }, { rejectWithValue, dispatch }) => {
         const loginData = JSON.parse(localStorage.getItem('loginData'));
         const token = loginData?.token;
 
@@ -142,6 +138,54 @@ export const userDetailsHandler = createAsyncThunk(
         } catch (error) {
             // console.log("error", error.message);
             // console.error('Error fetching user details:', error.message);
+        }
+    }
+);
+
+
+//auth-check api 
+export const sendPostRequest = createAsyncThunk(
+    "auth/sendPostRequest",
+    async ({ appname, module, token ,navigate ,setLoading}, { rejectWithValue, dispatch  }) => {
+        try {
+            const response = await fetch('https://sajyatra.sajpe.in/admin/api/auth-check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // Pass token in the Authorization header
+                },
+                body: JSON.stringify({
+                    app_name: appname,
+                    module: module
+                })
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log('dataaaaaaaa',data);
+            if(response.ok){
+                localStorage.setItem('loginId', data.data.id);
+                localStorage.setItem('loginData', JSON.stringify(data.data));
+            }
+            if (data.result == false) {
+                navigate('/signup');
+            } else {
+                if (data.module == 'bus') {
+                    navigate('/bus-search');
+                }else if (data.module == 'flight') {
+                    navigate('/flight-search');
+                }else if (data.module == 'hotel') {
+                    navigate('/hotel-search');
+                }else{
+                    navigate('/signup');
+                }
+            }
+        } catch (error) {
+            console.error('Error in POST request:', error);
+        }
+        finally {
+            setLoading(false);
         }
     }
 );

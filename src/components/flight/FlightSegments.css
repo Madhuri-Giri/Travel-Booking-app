@@ -5,12 +5,13 @@
 
 
 
-.flightSegmentsData{
+.flightSegmentsData {
     display: flex;
     justify-content: space-between;
 }
-.flightSegmentsData p{
-   margin: 0px;
+
+.flightSegmentsData p {
+    margin: 0px;
 }
 
 .flight-segment-container {
@@ -145,11 +146,53 @@
 
 
 @media screen and (max-width: 576px) {
- 
+    .flighttTabContentCol3{
+        padding: 0px;
+        text-align: center;
+    }
+    .flighttTabContentCol2{
+        padding: 0px;
+        padding-left: 7px;
+    }
+    .flighttTabContentCol4{
+        padding: 0px;
+        padding-right: 7px;
+    }
+    .flight-segment-container {
+        gap: 5px !important;
+    }
+    .flighttTabContentCol3p2 {
+        font-size: 11px;
+        color: gray;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .flightSegmentsAirlines {
+        display: flex;
+        margin-bottom: 8px;
+        justify-content: start;
+        font-weight: 600;
+        color: #746c6c;
+        align-items: center;
+    }
+
+    .flightSegmentsAirlines img {
+        height: 30px;
+        border-radius: 11px;
+        margin-top: 0px !important;
+        margin-right: 5px !important;
+    }
+
+    .flightSegmentsAirlines p {
+        margin-top: -4px;
+    }
+
+
     .flight-segment-container {
         padding: 0px 4px;
     }
 
-   
+
 
 }
