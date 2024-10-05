@@ -10,6 +10,7 @@ import Footer from '../../pages/footer/Footer';
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import EnterOtp from '../popUp/EnterOtp';
 import TimerBus from '../timmer/TimerBus';
+import { useLocation } from 'react-router-dom';
 
 // import Loading from '../../pages/loading/Loading';
 
@@ -25,7 +26,7 @@ const BusLists = () => {
   const dateMidRef = useRef(null);
   const navigate = useNavigate();
   const [layoutResponse, setLayoutResponse] = useState(null);
-  const { from, to, selectedBusDate, searchResults, status, error } = useSelector((state) => state.bus);
+  const { from, to, searchResults, status, error } = useSelector((state) => state.bus);
 
   const traceId = useSelector((state) => state.bus.traceId);
   const resultIndex = useSelector((state) => state.bus.resultIndex);
@@ -42,7 +43,11 @@ const BusLists = () => {
 
   // ------------------------------------------------------------------------------------------------ -------
 
+  const location = useLocation();
+  const { selectedBusDate } = location.state || {};
 
+  // Ab aap selectedBusDate ko use kar sakte hain
+  console.log('Selected Bus Date:', selectedBusDate);
   // --------------------------------------------------------------------------------------------------------
 
   const navigateSearch = () => {
@@ -236,11 +241,14 @@ const BusLists = () => {
               <div className="back">
                 <i onClick={backHandle} className="ri-arrow-left-s-line"></i>
               </div>
+  `     <div className='date_dep'>
+              <div className='date_class' style={{color:"#fff", fontWeight: "bold"}}>Date : {selectedBusDate}</div>
               <h5>
                 <div className="destination">
                   <h6>{from} - {to}</h6>
                 </div>
               </h5>
+              </div>
 
               <div className="search-functinality">
                 <button onClick={responsiveFilter} className='filter-bus'><i className="ri-equalizer-line"></i> Filter</button>

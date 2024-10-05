@@ -16,7 +16,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import html2canvas from 'html2canvas'; // Import html2canvas
 import { useNavigate } from 'react-router-dom';
 import sajLogo from "../../../assets/images/main logo.png"
-
+import { useLocation } from 'react-router-dom';
 
 const generatePasscode = () => {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
@@ -25,8 +25,10 @@ const generatePasscode = () => {
 const TicketBookBus = () => {
   const passcode = generatePasscode();
   const navigate = useNavigate()
-  const [buspaymentStatusResState, setBuspaymentStatusResState] = useState(null);
+  const location = useLocation();
 
+  const { buspaymentStatus } = location.state || {};
+  console.log('Bus payment status:', buspaymentStatus);
 
   // ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -79,20 +81,7 @@ const TicketBookBus = () => {
   // ------------------------------------------------------------------------------------------------------------------------------------
 
 
-  const from = useSelector((state) => state.bus.from);
-  const to = useSelector((state) => state.bus.to);
-
-  useEffect(() => {
-    const storedData = localStorage.getItem("buspaymentStatusRes");
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      setBuspaymentStatusResState(parsedData.data);
-      console.log('Bus payment status response from localStorage:', parsedData.data);
-    } else {
-      console.error('No buspaymentStatusRes data found in localStorage');
-    }
-  }, []);
-
+ 
   const downloadTicket = () => {
     const ticketElement = document.querySelector('.busticktbox');
     if (!ticketElement) {
@@ -138,19 +127,16 @@ const TicketBookBus = () => {
     });
   };
 
-  if (!buspaymentStatusResState) {
-    return <p>  Loading...</p>;
-  }
+
 
   return (
     <>
       <CustomNavbar />
-
-      <div className="Bus-Tikit">
-        <div className="lottie container">
-          {buspaymentStatusResState.seatstatus.map((busDetail, busIndex) => (
-            buspaymentStatusResState.status.map((dd, ddIndex) => (
-              <div key={`busticketROW-${busIndex}-${ddIndex}`} className="row busticketROW">
+      {buspaymentStatus ? (
+        <div className="Bus-Tikit">
+          <div className="lottie container">
+            {buspaymentStatus.data.seatstatus.map((busDetail, busIndex) => (
+              <div key={busIndex} className="row busticketROW">
                 <div className="col-lg-3 buslottieCOL">
                   <Lottie className="buslott" animationData={busAnim} />
                 </div>
@@ -160,121 +146,44 @@ const TicketBookBus = () => {
                       <h5>Your Bus Ticket</h5>
                       <img style={{ position: "absolute", right: '0%', paddingTop: "0.4vmax", paddingBottom: "0.6vmax", paddingRight: "1vmax" }} width={90} src={sajLogo} alt="" />
                     </div>
-                    <div className="last-line">
-                      <small><i className="ri-phone-fill"></i> Company No:-</small>
-                      {/* <small><i className="ri-phone-fill"></i> Help Line No:-</small> */}
-                    </div>
 
-                    <div className="top">
-                    </div>
                     <div className="row buspssngerdetails">
                       <div className="col-12">
                         <div className="row">
-                          <div className='fromtoMOB'>
-                            <div>
-                              <strong>{from}</strong>
-                              <p>{formatTime(dd.departure_time)}</p>
+                          {buspaymentStatus.data.passengers.map((passenger, index) => (
+                            <div key={index} className="col-md-4 col-6">
+                              <p><strong>Name -: </strong><span>{passenger.name}</span></p>
+                              <p><strong>Age -: </strong><span>{passenger.age}</span></p>
+                              <p><strong>Gender -: </strong><span>{passenger.gender === "1" ? "Female" : "Male"}</span></p>
+                              <p><strong>Address -: </strong><span>{passenger.address}</span></p>
+                              <p><strong>Number -: </strong><span>{passenger.number}</span></p>
+                              <p><strong>Date -: </strong><span>{formatDate(busDetail.created_at)}</span></p>
                             </div>
-                            <div>
-                              <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
-                            </div>
-                            <div>
-                              <strong>{to}</strong>
-                              <p>{formatTime(dd.city_point_time)}</p>
-                            </div>
-                          </div>
+                          ))}
                           <div className="col-md-4 col-6">
-                            <p>
-                              <strong>Name -: </strong>
-                              <span>{dd.name}</span>
-                            </p>
-                            <p>
-                              <strong>Age -: </strong>
-                              <span>{dd.age}</span>
-                            </p>
-                            <p>
-                              <strong>Gender -: </strong>
-                              <span>{dd.gender}</span>
-                            </p>
-                            <p>
-                              <strong>Address -: </strong>
-                              <span>{dd.address}</span>
-                            </p>
-                            <p>
-                              <strong>Number -: </strong>
-                              <span>{dd.number}</span>
-                            </p>
-                            <p>
-                              <strong>Date -: </strong>
-                              <span>{formatDate(busDetail.created_at)}</span>
-                            </p>
-                            <div className='fromtoWEB'>
-                              <div>
-                                <strong>{from}</strong>
-                                <p>{formatTime(dd.departure_time)}</p>
-                              </div>
-                              <div>
-                                <FaArrowRightLong style={{ marginRight: '16', marginLeft: '16' }} />
-                              </div>
-                              <div>
-                                <strong>{to}</strong>
-                                <p>{formatTime(dd.city_point_time)}</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-md-4 col-6">
-                            <p>
-                              <strong>Bus Id -: </strong>
-                              <span>{buspaymentStatusResState.passengers.bus_id}</span>
-                            </p>
-                            <p>
-                              <strong>Ticket No -: </strong>
-                              <span>{buspaymentStatusResState.passengers.ticket_no}</span>
-                            </p>
-                            <p>
-                              <strong>User ID -: </strong>
-                              <span>{buspaymentStatusResState.passengers.transaction_num}</span>
-                            </p>
+  <p><strong>Bus Id -: </strong><span>{buspaymentStatus.data.status.bus_id}</span></p>
+  <p><strong>Ticket No -: </strong><span>{buspaymentStatus.data.status.ticket_no}</span></p>
+  <p><strong>User ID -: </strong><span>{buspaymentStatus.data.status.transaction_num}</span></p>
+  <p><strong>Boarding Point -: </strong><span>{buspaymentStatus.data.passengers[0].city_point_name}</span></p>
+  <p><strong>Dropping Point -: </strong><span>{buspaymentStatus.data.passengers[0].drop_city_point_name}</span></p>
+</div>
 
-                            <p>
-                              <strong>Boarding Point -: </strong>
-                              <span>{dd.city_point_name}</span>
-                            </p>
-                            <p>
-                              <strong>Dropping Point -: </strong>
-                              <span>{dd.drop_city_point_name}</span>
-                            </p>
-                          </div>
                           <div className="col-md-4 ticktbordr">
-                            <p>
-                              <strong>Travel Name -: </strong>
-                              <span>{dd.travel_name}</span>
-                            </p>
-                            <p>
-                              <strong>Seat No -: </strong>
-                              <span>{busDetail.seat_name}</span>
-                            </p>
-                            <p className='busbookconfrm'>
-                              <strong>Booking -: </strong>
-                              <span>{buspaymentStatusResState.passengers.bus_status}</span>
-                            </p>
-                            <p className='psngeramount'>
-                              <strong>Amount -: </strong>
-                              <span>₹{busDetail.base_price}</span>
-                            </p>
+                            <p><strong>Travel Name -: </strong><span>{buspaymentStatus.data.passengers[0].travel_name}</span></p>
+                            <p><strong>Seat No -: </strong><span>{busDetail.seat_name}</span></p>
+                            <p className='busbookconfrm'><strong>Booking -: </strong><span>{buspaymentStatus.data.status.bus_status}</span></p>
+                            <p className='psngeramount'><strong>Amount -: </strong><span>₹{busDetail.base_price}</span></p>
                             <Barcode className="buspasscode" value={passcode} format="CODE128" />
                           </div>
-
-
                         </div>
                       </div>
                     </div>
 
                     <div className="bus-cancel">
-                    <h6>CANCELLATION POLICY</h6>
+                      <h6>CANCELLATION POLICY</h6>
                       <div className="cancel">
-                      {buspaymentStatusResState.cancelpolicy.length > 0 ? (
-                          buspaymentStatusResState.cancelpolicy.map((policy, index) => (
+                        {buspaymentStatus.data.cancelpolicy.length > 0 ? (
+                          buspaymentStatus.data.cancelpolicy.map((policy, index) => (
                             <div key={index} className="policy-item">
                               <span><small>From:</small> {formatTime(policy.from_date)}</span>
                               <span><small>To:</small> {formatTime(policy.to_date)}</span>
@@ -295,16 +204,15 @@ const TicketBookBus = () => {
                       </button>
                       <button className='buscncl' style={{ backgroundColor: 'red' }} onClick={handleCancelTicket}>Cancel Ticket</button>
                     </div>
-
-
                   </div>
                 </div>
               </div>
-            ))
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-
+      ) : (
+        <p>No booking information available.</p>
+      )}
       <Footer />
     </>
   );
