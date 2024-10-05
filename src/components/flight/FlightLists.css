@@ -1008,6 +1008,17 @@
 }
 
 @media screen and (max-width: 576px) {
+    .fmodalcol2{
+        padding: 0px !important;
+        padding-left: 9px !important;
+    }
+    .fmodalcol3{
+        padding: 0px !important;
+        margin: auto !important;
+    }
+    .fmodalcol4{
+        padding: 0px !important;
+    }
     .priceradiotbtnn span {
         font-size: 11px;
     }
@@ -1074,7 +1085,7 @@
     }
 
     .flight-content .row {
-        padding: 6px 0px;
+        padding: 6px 1px;
     }
 
     .f-lists img {

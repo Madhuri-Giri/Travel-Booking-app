@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import "./FlightSegments.css";
 import { MdOutlineFlightTakeoff } from "react-icons/md";
 import { FaLongArrowAltRight } from "react-icons/fa";
+import { LuTimerReset } from "react-icons/lu";
 
 export default function FlightSegments(props) {
     const flightSegments = props?.flightSegments;
@@ -55,14 +56,14 @@ export default function FlightSegments(props) {
                             return (
                                 <React.Fragment key={index}>
                                     <div className="row flightSegmentsData">
-                                        <div className="col-md-2 col-2 flighttTabContentCol1">
-                                            <p>
+                                        <div className="col-md-2 col-12 flighttTabContentCol1 flightSegmentsAirlines">
+                                            {/* <p> */}
                                                 <img src={logoUrl} className="img-fluid" alt="" />
-                                            </p>
+                                            {/* </p> */}
                                             <p>{valueSegments.Airline.AirlineName}</p>
                                             <p>{valueSegments.Airline.AirlineCode} - {valueSegments.Airline.FlightNumber}</p>
                                         </div>
-                                        <div className="col-md-4 col-3 flighttTabContentCol2">
+                                        <div className="col-md-4 col-4 flighttTabContentCol2">
                                             <div>
                                                 <p className="flighttTabContentCol2p1">{valueSegments.Origin.CityName} ({valueSegments.Origin.CityCode})</p>
                                                 <h5>{convertUTCToIST(valueSegments.DepTime)}</h5>
@@ -71,7 +72,10 @@ export default function FlightSegments(props) {
                                             </div>
                                         </div>
                                         <div className="col-md-2 col-3 flighttTabContentCol3">
-                                            <p className="flighttTabContentCol3p1">{convertMinutesToHoursAndMinutes(valueSegments.Duration)}</p>
+                                            <p className="flighttTabContentCol3p1">
+                                            <span className=""><LuTimerReset /></span>
+                                            {convertMinutesToHoursAndMinutes(valueSegments.Duration)}</p>
+                                            <p className="flighttTabContentCol3p2">{valueSegments.CabinClassName}</p>
                                             <p className="flighttTabContentCol3p2">cabin class</p>
                                         </div>
                                         <div className="col-md-4 col-4 flighttTabContentCol4">
