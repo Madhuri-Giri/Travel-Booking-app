@@ -170,7 +170,7 @@ export const sendPostRequest = createAsyncThunk(
                 }
             }
             if (data.result == false) {
-                navigate('/signup');
+                // navigate('/signup');
             } else {
                 if (data.module == 'bus') {
                     navigate('/bus-search');
