@@ -219,10 +219,10 @@ const BusLists = () => {
           </div>
           <div className="B-lists-Top">
             <div className="text">
-              {/* <div className="back">
+              <div className="back">
                 <i onClick={backHandle} className="ri-arrow-left-s-line"></i>
               </div>
-              `{" "} */}
+              
               <div className="date_dep">
                 <div
                   className="date_class"
