@@ -631,6 +631,7 @@ justify-content: space-between;
       }
       .BusLists .busList .B-lists-Top{
                 width: 100%;
+                
                 justify-content: center;
                 background: #00b7eb;
       }
@@ -664,9 +665,10 @@ justify-content: space-between;
 }
       .BusLists .busList .B-lists-Top .text .destination h6{
                padding: 0.4vmax;
-          margin-top: 2vmax;
-          font-size: 2vmax;
-          font-weight: lighter;
+          /* margin-top: 1vmax; */
+          font-size: 1.7vmax;
+          font-weight: bold;
+          margin-left: 4.4vmax;
       }
      
       .BusLists .busList .B-lists-Top .text span{
@@ -674,8 +676,9 @@ justify-content: space-between;
       
       }
       .BusLists .search-functinality button{
-               padding: 1.2vmax 5vmax;
-               font-weight: 600;
+               padding: 0.5vmax 1.4vmax;
+               font-weight: 100;
+                font-size: 12px;
       }
       .filter-bus{
         display: initial;
@@ -1159,9 +1162,10 @@ justify-content: space-between;
       
       }
       .BusLists .search-functinality button{
-               padding: 1.2vmax 2vmax;
-               font-weight: 600;
+               /* padding: 1.2vmax 2vmax; */
+               font-weight: 100;
       }
+
       .filter-bus{
         display: initial;
       }
