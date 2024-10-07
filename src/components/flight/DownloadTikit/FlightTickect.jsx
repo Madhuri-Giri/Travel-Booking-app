@@ -303,7 +303,7 @@ const FlightTickect = () => {
                         <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0]?.first_name} {passenger_details[0]?.last_name} </strong> </td>
                         <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0]?.address}</strong> </td>
                         <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0]?.contact_no}</strong> </td>
-                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0]?.city}</strong> </td>
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0].city}</strong> </td>
                       </tr>
                     </tbody>
                   </table>
