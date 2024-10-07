@@ -82,7 +82,7 @@ const App = () => {
     <div>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/token-receiver-url' element={<ApplicationUrl />} />
+          <Route path='/validate-token' element={<ApplicationUrl />} />
           <Route path='/flight-search' element={<FlightSearch />} />
           <Route path='/flight-list' element={<FlightLists />} />
           <Route path='/flight-segments' element={<FlightSegments />} />
