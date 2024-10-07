@@ -254,7 +254,7 @@ const FlightTickect = () => {
                 <div className='flightticketboxHED'>
                   <h6>{formatDate(booking_details?.dep_time)}</h6>
                   <h6>{`${booking_details?.city_name} TO ${booking_details?.destination_city_name}`}</h6>
-                  <p>{calculateDuration(booking_details.dep_time, booking_details.arr_time)}</p>
+                  <p>{calculateDuration(booking_details?.dep_time, booking_details?.arr_time)}</p>
 
                 </div>
                 <div className="flightticketboxTravelDetails">
@@ -271,19 +271,19 @@ const FlightTickect = () => {
                   <div className="ffbox2">
                     <h4>{booking_details?.origin}</h4>
                     <p className='ffbox2P1'>{booking_details?.city_name}</p>
-                    <p className='ffbox2Time'>{new Date(booking_details.arr_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(booking_details.arr_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p>
+                    <p className='ffbox2Time'>{new Date(booking_details?.arr_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(booking_details?.arr_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p>
                     <p>{booking_details?.origin_airport}</p>
                   </div>
                   <div className="ffbox3">
                     <FaArrowRightLong />
-                    <p>{calculateDuration(booking_details.dep_time, booking_details.arr_time)}</p>
+                    <p>{calculateDuration(booking_details?.dep_time, booking_details?.arr_time)}</p>
                     <p className='ffbox3TImeborder'></p>
                     <p>Economy</p>
                   </div>
                   <div className="ffbox4">
                     <h4>{booking_details?.destination}</h4>
                     <p className='ffbox4P1'>{booking_details?.destination_city_name}</p>
-                    <p className='ffbox2Time'>{formatTime(booking_details.dep_time)}</p>
+                    <p className='ffbox2Time'>{formatTime(booking_details?.dep_time)}</p>
                     {/* <p className='ffbox2Time'>{new Date(booking_details.dep_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}, {new Date(booking_details.dep_time).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</p> */}
                     <p>{booking_details?.destination_airport}</p>
                   </div>
@@ -300,10 +300,10 @@ const FlightTickect = () => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0].first_name} {passenger_details[0].last_name} </strong> </td>
-                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0].address}</strong> </td>
-                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0].contact_no}</strong> </td>
-                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0].city}</strong> </td>
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0]?.first_name} {passenger_details[0]?.last_name} </strong> </td>
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0]?.address}</strong> </td>
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0]?.contact_no}</strong> </td>
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}> <strong>{passenger_details[0]?.city}</strong> </td>
                       </tr>
                     </tbody>
                   </table>
@@ -324,8 +324,8 @@ const FlightTickect = () => {
                           <strong>{booking_details?.pnr}</strong>
                         </td>
                         <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_details?.ticket_no}</td>
-                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_details.seat || 'Seat null'}</td>
-                        <td className='ticketamount' style={{ border: '1px solid #ddd', padding: '8px' }}> {booking_details.base_fare || 'Amount null'} Rs.</td>
+                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{booking_details?.seat || 'Seat null'}</td>
+                        <td className='ticketamount' style={{ border: '1px solid #ddd', padding: '8px' }}> {booking_details?.base_fare || 'Amount null'} Rs.</td>
 
                       </tr>
                     </tbody>
@@ -350,7 +350,7 @@ const FlightTickect = () => {
                       <h2>Items not allowed in the aircraft</h2>
                     </div>
                     <div className="items-grid row">
-                      {items.map((item) => (
+                      {items?.map((item) => (
                         <div className="item col-md-2 col-4" key={item.id}>
                           <div className="icon-container">
                             <FontAwesomeIcon icon={item.icon} className="main-icon" />
@@ -377,7 +377,7 @@ const FlightTickect = () => {
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, aperiam veniam quisquam vel doloribus iure pariatur, sunt est temporibus rem
                       </li>
                       <li>
-                        <strong>You have Paid : {booking_details.base_fare || 'Amount null'} Rs.</strong>
+                        <strong>You have Paid : {booking_details?.base_fare || 'Amount null'} Rs.</strong>
                       </li>
 
                     </ul>

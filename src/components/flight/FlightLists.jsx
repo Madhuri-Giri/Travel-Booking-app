@@ -53,6 +53,8 @@ export default function FlightLists() {
     const [selectedProduct, setSelectedProduct] = useState({});
     const [OfferPriceData, setOfferPriceData] = useState(null);
     const [OfferPriceDataNew, setOfferPriceDataNew] = useState(null);
+    console.log('OfferPriceData',OfferPriceData);
+    
 
     const listData = listingData;
     const formData = formDataNew;
@@ -83,6 +85,9 @@ export default function FlightLists() {
 
     //    ==========radio button data save for price details model=====
     const handleFarePriceSelect = (offerDataNew, segments, logoUrl) => {
+        // console.log('offerDataNew 123',offerDataNew);
+        // console.log('segments 123',segments);
+        // console.log('logoUrl 123',logoUrl);   
         const offerDataaaModel = {
             ...offerDataNew,
             segments: segments,
@@ -935,7 +940,7 @@ export default function FlightLists() {
                                                     <div className="priceradiotbtnnDiv">
                                                         <Form>{
                                                             value?.FareDataMultiple.map((fareValue, fareIndex) => {
-                                                                const currentRadioChecked = selectedProduct.index == index ? selectedProduct.fareValue : offerData;
+                                                                // const currentRadioChecked = selectedProduct.index == index ? selectedProduct.fareValue : offerData;
 
                                                                 const fareValueData = {
                                                                     fareValue,

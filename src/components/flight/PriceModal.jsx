@@ -7,11 +7,12 @@ import { LuTimerReset } from 'react-icons/lu';
 
 const PriceModal = ({ isModalOpen, closeModal, OfferPriceData, listingData }) => {
   const [activeTab, setActiveTab] = useState('flight');
-  // console.log('OfferPriceData', OfferPriceData);
+  console.log('OfferPriceDataaaaa', OfferPriceData);
 
-  const logoUrl = OfferPriceData?.logoUrl
+  // Use fareValue if available, otherwise fall back to OfferPriceData directly.
+  const fareDetails = OfferPriceData.fareValue || OfferPriceData;
+  const logoUrl = OfferPriceData?.logoUrl;
   const waitingTime = calculateWaitingTime("15:45", "20:55");
-
 
   // function for date convert into day month date--------------------------------------
   const formatDate = (dateString) => {
@@ -20,13 +21,15 @@ const PriceModal = ({ isModalOpen, closeModal, OfferPriceData, listingData }) =>
       return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', weekday: 'short' }).format(date);
     }
   };
-  // func for duration convert hpur minute---------------------
+
+  // func for duration convert hour minute---------------------
   const convertMinutesToHoursAndMinutes = (minutes) => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
     return `${hours}h ${remainingMinutes}m`;
   };
-  // func for duration convert hpur minute---------------------
+
+  // func for converting UTC to IST---------------------
   const convertUTCToIST = (utcTimeString) => {
     const utcDate = new Date(utcTimeString);
     const istTime = new Intl.DateTimeFormat('en-IN', {
@@ -38,90 +41,72 @@ const PriceModal = ({ isModalOpen, closeModal, OfferPriceData, listingData }) =>
     return istTime;
   };
 
-
   const renderTabContent = () => {
     switch (activeTab) {
       case 'flight':
-        return <div>
-          <section className="flight-pricemodal-container">
-            {
-              OfferPriceData?.segments[0].map((valueSegments, index) => {
-                // Get the last segment if it exists
-                // const startDepTime = OfferPriceData?.segments[0][0].DepTime;
-                // const lastSegmentIndex = OfferPriceData?.segments[0].length - 1; // Get the index of the last segment
-                // const lastArrTime = OfferPriceData?.segments[0][lastSegmentIndex]?.DepTime; // Access DepTime from the last segment
-                // console.log('startIndex', extractTime(startDepTime));
-                // console.log('lastIndex', extractTime(lastArrTime));
-                // console.log('startIndex', convertUTCToIST(startDepTime));
-                // console.log('lastIndex', convertUTCToIST(lastArrTime));
-
-                return (
-                  <React.Fragment key={index}>
-                    <div className="row flightSegmentsData">
-                      <div className="col-md-2 col-12 flighttTabContentCol1 flightSegmentsAirlines">
-                        <p>
-                          <img src={logoUrl} className="img-fluid" alt="" />
-                        </p>
-                        <p>{valueSegments.Airline.AirlineName}</p>
-                        <p>{valueSegments.Airline.AirlineCode} - {valueSegments.Airline.FlightNumber}</p>
-                      </div>
-                      <div className="col-md-4 col-3 flighttTabContentCol2 fmodalcol2">
-                        <div>
-                          <p className="flighttTabContentCol2p1">{valueSegments.Origin.CityName} ({valueSegments.Origin.CityCode})</p>
-                          <h5>{convertUTCToIST(valueSegments.DepTime)}</h5>
-                          <p className="flighttTabContentCol2p2">{formatDate(valueSegments.DepTime)}</p>
-                          <p className="flighttTabContentCol2p3">{valueSegments.Origin.AirportName}</p>
+        return (
+          <div>
+            <section className="flight-pricemodal-container">
+              {
+                // Use segments from either fareValue or OfferPriceData directly
+                OfferPriceData?.segments[0].map((valueSegments, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      <div className="row flightSegmentsData">
+                        <div className="col-md-2 col-12 flighttTabContentCol1 flightSegmentsAirlines">
+                          <p>
+                            <img src={logoUrl} className="img-fluid" alt="" />
+                          </p>
+                          <p>{valueSegments.Airline.AirlineName}</p>
+                          <p>{valueSegments.Airline.AirlineCode} - {valueSegments.Airline.FlightNumber}</p>
+                        </div>
+                        <div className="col-md-4 col-3 flighttTabContentCol2 fmodalcol2">
+                          <div>
+                            <p className="flighttTabContentCol2p1">
+                              {valueSegments.Origin.CityName} ({valueSegments.Origin.CityCode})
+                            </p>
+                            <h5>{convertUTCToIST(valueSegments.DepTime)}</h5>
+                            <p className="flighttTabContentCol2p2">{formatDate(valueSegments.DepTime)}</p>
+                            <p className="flighttTabContentCol2p3">{valueSegments.Origin.AirportName}</p>
+                          </div>
+                        </div>
+                        <div className="col-md-2 col-3 flighttTabContentCol3 fmodalcol3">
+                          <p className="flighttTabContentCol3p1">
+                            <span className=""><LuTimerReset /></span>
+                            {convertMinutesToHoursAndMinutes(valueSegments.Duration)}
+                          </p>
+                          <p className="flighttTabContentCol3p2">cabin class</p>
+                        </div>
+                        <div className="col-md-4 col-4 flighttTabContentCol4 fmodalcol4">
+                          <div>
+                            <p className="flighttTabContentCol2p1">
+                              {valueSegments.Destination.CityName} ({valueSegments.Destination.CityCode})
+                            </p>
+                            <h5>{convertUTCToIST(valueSegments.ArrTime)}</h5>
+                            <p className="flighttTabContentCol2p2">{formatDate(valueSegments.ArrTime)}</p>
+                            <p className="flighttTabContentCol2p3">{valueSegments.Destination.AirportName}</p>
+                          </div>
                         </div>
                       </div>
-                      <div className="col-md-2 col-3 flighttTabContentCol3 fmodalcol3">
-                        <p className="flighttTabContentCol3p1">
-                        <span className=""><LuTimerReset /></span>
-                          {convertMinutesToHoursAndMinutes(valueSegments.Duration)}</p>
-                        <p className="flighttTabContentCol3p2">cabin class</p>
-                      </div>
-                      <div className="col-md-4 col-4 flighttTabContentCol4 fmodalcol4">
-                        <div>
-                          <p className="flighttTabContentCol2p1">{valueSegments.Destination.CityName} ({valueSegments.Destination.CityCode})</p>
-                          <h5>{convertUTCToIST(valueSegments.ArrTime)}</h5>
-                          <p className="flighttTabContentCol2p2">{formatDate(valueSegments.ArrTime)}</p>
-                          <p className="flighttTabContentCol2p3">{valueSegments.Destination.AirportName}</p>
-                        </div>
-                      </div>
-                    </div>
 
-                    {/* Conditionally render the "change Plane" message with dynamic city */}
-                    {index < OfferPriceData?.segments[0].length - 1 && (
-                      <>
+                      {/* Conditionally render the "change Plane" message with dynamic city */}
+                      {index < OfferPriceData?.segments[0].length - 1 && (
                         <div className="changePlaneDivMOdel">
-                          <p>Change Plane in
-                            {/* <FaLongArrowAltRight /> */}
+                          <p>
+                            Change Plane in
                             <span className="ms-1">
                               {valueSegments.Destination.CityName} ({valueSegments.Destination.CityCode})
                             </span>
-                            {/* <span>
-                              {
-                                // Calculate waiting time by passing the first departure time and the next segment's arrival time
-                                calculateWaitingTime(
-                                  convertUTCToIST(startDepTime),  // Convert startDepTime to IST
-                                  convertUTCToIST(lastArrTime)     // Convert lastArrTime to IST
-                                )
-                              }
-                            </span> */}
                           </p>
-                          {/* <p>timeee</p> */}
                         </div>
-                      </>
-                    )}
-
-                  </React.Fragment>
-                );
-              })
-            }
-          </section>
-
-
-
-        </div>;
+                      )}
+                    </React.Fragment>
+                  );
+                })
+              }
+            </section>
+          </div>
+        );
       case 'fare':
         return (
           <div>
@@ -129,32 +114,27 @@ const PriceModal = ({ isModalOpen, closeModal, OfferPriceData, listingData }) =>
               <thead>
                 <tr>
                   <th>Base Fare</th>
-                  <th>Head Tax</th>
+                  <th>Tax</th>
                   <th>Total Fare</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>₹ {OfferPriceData?.fareValue.Fare.BaseFare}</td>
-                  <td>₹ {OfferPriceData?.fareValue.Fare.Tax}</td>
-                  <td>₹ {OfferPriceData?.fareValue.Fare.PublishedFare}</td>
-                  {/* <td>₹ {OfferPriceData?.fareValue.Fare.BaseFare + OfferPriceData?.fareValue.Fare.Tax}</td> */}
+                  <td>₹ {fareDetails.Fare.BaseFare}</td>
+                  <td>₹ {fareDetails.Fare.Tax}</td>
+                  <td>₹ {fareDetails.Fare.PublishedFare}</td>
                 </tr>
-                {/* Add an extra row for the total */}
                 <tr>
-                  <td colSpan="2" style={{ textAlign: 'left' }}>
-                    <strong>Total</strong></td>
-                  <td><strong>₹ {OfferPriceData?.fareValue.Fare.BaseFare + OfferPriceData?.fareValue.Fare.Tax}</strong></td>
+                  <td colSpan="2" style={{ textAlign: 'left' }}><strong>Total</strong></td>
+                  <td><strong>₹ {fareDetails.Fare.PublishedFare}</strong></td>
                 </tr>
               </tbody>
             </table>
           </div>
         );
-
-
       case 'baggage':
-        return <div>
-          <>
+        return (
+          <div>
             <div className="row flightBaggagee">
               <div className="col-12">
                 <table className="table">
@@ -166,35 +146,27 @@ const PriceModal = ({ isModalOpen, closeModal, OfferPriceData, listingData }) =>
                     </tr>
                   </thead>
                   {
-                    OfferPriceData?.fareValue.FareSegments.map((valueSegments, index) => {
-                      return (
-                        <>
-                          <tbody>
-                            <tr>
-                              <td>{valueSegments.AirlineCode} {valueSegments.FlightNumber} </td>
-                              <td>{valueSegments.Baggage}</td>
-                              <td>{valueSegments.CabinBaggage}</td>
-                            </tr>
-                          </tbody>
-                        </>
-                      )
-                    })
+                    fareDetails.FareSegments.map((valueSegments, index) => (
+                      <tbody key={index}>
+                        <tr>
+                          <td>{valueSegments.AirlineCode} {valueSegments.FlightNumber}</td>
+                          <td>{valueSegments.Baggage}</td>
+                          <td>{valueSegments.CabinBaggage}</td>
+                        </tr>
+                      </tbody>
+                    ))
                   }
                 </table>
               </div>
             </div>
-          </>
-
-
-
-        </div>;
+          </div>
+        );
       default:
         return null;
     }
   };
 
   return (
-
     <Modal
       show={isModalOpen}
       onHide={() => closeModal()}
@@ -204,10 +176,9 @@ const PriceModal = ({ isModalOpen, closeModal, OfferPriceData, listingData }) =>
       backdrop="static"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Fligth and Fare Details</Modal.Title>
+        <Modal.Title>Flight and Fare Details</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-
         <div className="tabs flightPriceTabs">
           <button onClick={() => setActiveTab('flight')} className={activeTab === 'flight' ? 'active' : ''}>
             Flight Details
@@ -222,7 +193,6 @@ const PriceModal = ({ isModalOpen, closeModal, OfferPriceData, listingData }) =>
         <div className="tab-content">
           {renderTabContent()}
         </div>
-
       </Modal.Body>
     </Modal>
   );

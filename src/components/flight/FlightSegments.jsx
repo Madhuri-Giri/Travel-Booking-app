@@ -75,7 +75,7 @@ export default function FlightSegments(props) {
                                             <p className="flighttTabContentCol3p1">
                                             <span className=""><LuTimerReset /></span>
                                             {convertMinutesToHoursAndMinutes(valueSegments.Duration)}</p>
-                                            <p className="flighttTabContentCol3p2">{valueSegments.CabinClassName}</p>
+                                            {/* <p className="flighttTabContentCol3p2">{valueSegments.CabinClassName}</p> */}
                                             <p className="flighttTabContentCol3p2">cabin class</p>
                                         </div>
                                         <div className="col-md-4 col-4 flighttTabContentCol4">
