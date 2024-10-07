@@ -355,6 +355,7 @@ const transaction_num = transactionDetails?.transaction_num
     console.log("processing", isProcessing);
 
     console.log("selected", selectedRoom);
+    
     if (isProcessing || selectedRoom.length > 0) {
       console.log("selected");
       return;
