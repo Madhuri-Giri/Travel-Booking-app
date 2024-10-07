@@ -243,11 +243,11 @@ const BusLists = () => {
               </div>
   `     <div className='date_dep'>
               <div className='date_class' style={{color:"#fff", fontWeight: "bold"}}>Date : {selectedBusDate}</div>
-              <h5>
+              {/* <h5> */}
                 <div className="destination">
                   <h6>{from} - {to}</h6>
                 </div>
-              </h5>
+              {/* </h5> */}
               </div>
 
               <div className="search-functinality">

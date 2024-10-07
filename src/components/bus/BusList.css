@@ -1149,7 +1149,7 @@ justify-content: space-between;
       }
      
       .BusLists .busList .B-lists-Top .text .destination h6{
-               padding: 0.4vmax;
+               /* padding: 0.4vmax; */
           margin-top: 2vmax;
           font-size: 3vmax
       }
