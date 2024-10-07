@@ -137,7 +137,7 @@ const PriceModal = ({ isModalOpen, closeModal, OfferPriceData, listingData }) =>
           <div>
             <div className="row flightBaggagee">
               <div className="col-12">
-                <table className="table">
+                <table className="table flightmodalbaggagetable">
                   <thead>
                     <tr>
                       <th scope="col">Airline</th>
