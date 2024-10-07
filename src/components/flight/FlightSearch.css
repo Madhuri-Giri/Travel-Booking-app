@@ -36,7 +36,6 @@
 .flightDateDiv input {
     width: 100%;
     border: none !important;
-    /* border-radius: 4px; */
     font-size: 16px;
     position: relative;
     line-height: 30px;
@@ -124,12 +123,6 @@
     margin: 0 6px;
 }
 
-
-
-
-
-
-
 .flight-input-label {
     position: absolute;
     top: -12px;
@@ -175,20 +168,13 @@
     font-size: 14px;
     font-weight: 600;
     list-style: none;
-    cursor: pointer;
-    /* margin-bottom: 0.2vmax;
-    font-weight: 500;
-     padding: 0.2vmax;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    padding-left: 1vmax; */ 
+    cursor: pointer; 
 }
 .flight-suggestions-listFrom li span,
 .flight-suggestions-listTo li span{
     font-weight: bold;
 }
-/* .suggestions-list-from li {
-   
-} */
+
 
 .flight-suggestions-listTo {
     width: 100%;
@@ -224,7 +210,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    /* background-color: rgba(0, 0, 0, 0.3);  */
     z-index: -1;
 }
 
@@ -251,7 +236,6 @@
 .flightmainBooking {
     background-color: white;
     border-radius: 15px;
-    /* height: 350px; */
     padding: 14px 10px;
 }
 
@@ -265,7 +249,6 @@
 
 .travellerdropdowncol2 label {
     font-size: 15px;
-    /* color: #00b7eb; */
     color: black;
 }
 
@@ -317,21 +300,10 @@
     margin-top: 3px !important;
 }
 
-/* .flightDateDiv{
-    border: none !important;
-    padding: 9px 2px !important;
-    width: 100% !important;
-    border: 1px solid gray !important;
-} */
 .flightDateDiv .react-datepicker__input-container input:focus {
     border: none !important;
     outline: none !important;
 }
-
-/* .flightDateDiv .react-datepicker {
-    margin-left: 35px !important;
-} */
-
 
 .home-flight-search {
     display: flex;
@@ -381,7 +353,6 @@
 }
 
 .onewayreturnhidebtn {
-    /* margin-top: 38px; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -630,7 +601,6 @@
 
 .googleplaybtn svg {
     font-size: 25px;
-    /* margin-top: 1px; */
     margin-right: 5px;
 }
 
@@ -958,10 +928,6 @@
         font-size: 13px;
         background-color: #f8f9fa;
     }
-
-    /* .flightDateDiv .react-datepicker {
-        margin-left: 100px !important;
-    } */
 
     .exictingOffers h5 {
         margin-bottom: 0px;

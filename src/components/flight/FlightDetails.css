@@ -37,7 +37,6 @@
 }
 
 .fdetailspriceBox h5 {
-    /* font-size: 16px; */
     font-weight: bold;
     color: #155724;
 }
@@ -126,12 +125,7 @@
     color: white;
     font-weight: bold;
     border: 2px solid #80808040;
-    /* Add border for active tab */
 }
-
-/* .tab-content {
-    margin-top: 20px;
-} */
 
 .flighttTabContent {
     padding: 10px 5px;
@@ -428,9 +422,6 @@
 
 .formConfbtn {
     margin-bottom: 10px;
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: flex-start; */
 }
 
 .formdettlsMobile {
@@ -527,11 +518,6 @@
     border-radius: 6px;
 }
 
-/* .seatsTabssColImg img{
-    height: 250px;
-} */
-
-
 .seatsTabss h5 {
     text-align: center;
     font-weight: bold;
@@ -540,7 +526,6 @@
 
 .seatsTabssRow {
     background-color: #87ceeb36;
-    /* padding: 15px 0px; */
 }
 
 .seat-selection button {

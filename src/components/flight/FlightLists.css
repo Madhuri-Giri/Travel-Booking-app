@@ -54,7 +54,6 @@
     margin: 0px;
     padding: 0px 0px;
     color: red;
-    /* color: rgb(149, 101, 196); */
     font-weight: bold;
     font-size: 13px;
 }
@@ -95,7 +94,6 @@
     color: white;
     font-weight: bold;
     border: none !important;
-    /* border: 2px solid #80808040; */
 }
 .flightPriceTabs{
     border-bottom: 1px solid rgba(201, 26, 26, 0.358) ;
@@ -135,8 +133,6 @@
 
 .fligthListModal .modal-lg {
     max-width: 60% !important;
-    /* max-height: 80% !important; */
-    /* Adjust this value as needed */
 }
 
 .flightBaggagee .col-12 {
@@ -152,7 +148,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* margin-bottom: 20px; */
 }
 
 .fligtDurationdiv .line-container {
@@ -168,7 +163,6 @@
     width: 100%;
     height: 2px;
     background-color: #333;
-    /* Line color */
     border: none;
     position: relative;
 }
@@ -282,9 +276,7 @@
     align-items: center;
     padding: 10px;
     background-color: #f8f9fa;
-    /* Background color for header */
     border: 1px solid #dee2e6;
-    /* Border color for header */
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
@@ -294,9 +286,7 @@
 
 .flightlistaccordian-header:hover {
     background-color: #e9ecef;
-    /* Hover background color */
     border-color: #ced4da;
-    /* Hover border color */
 }
 
 .header-title {
@@ -310,7 +300,6 @@
 
 .accordion-button:not(.collapsed) .header-icon {
     transform: rotate(180deg);
-    /* Rotate icon when expanded */
 }
 
 
@@ -321,8 +310,6 @@
 /* styles.css */
 .mobileAirlines {
     display: block !important;
-    /* Ensure it's visible */
-    /* Remove any potential display: none or visibility: hidden rules */
 }
 
 .flight-custom-checkbox {
@@ -352,15 +339,12 @@
     font-weight: 600;
     font-size: 13px;
     color: green;
-    /* color: #00b7eb; */
     margin: 0px;
 }
 
 /* Slick arrow customization */
 .slider-container .slick-prev,
 .slick-next {
-    /* background-color: #ddd;  */
-    /* border-radius: 50%; */
     width: 40px;
     height: 40px;
     display: flex;
@@ -379,13 +363,6 @@
     font-size: 30px;
 }
 
-
-
-
-
-
-
-
 .filter-sidebar {
     position: fixed;
     top: 0;
@@ -393,10 +370,8 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    /* Transparent background */
     display: flex;
     justify-content: flex-start;
-    /* Align content to the left */
     z-index: 1000;
     transition: transform 0.3s ease;
 }
@@ -405,7 +380,6 @@
     width: 75%;
     height: 100%;
     background-color: white;
-    /* padding: 20px; */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
     position: relative;
 }
@@ -429,7 +403,6 @@
 .flightlistsec1MainCol {
     display: flex;
     padding: 10px 40px;
-    /* justify-content: space-around; */
 }
 
 .flightlistsec1Row {
@@ -465,7 +438,6 @@
     font-weight: bold;
     border-top: 1px solid #00e10070;
     transition: box-shadow 0.3s ease-in-out;
-    /* Smooth transition for the shadow */
 }
 
 .timer-FlightLists.scrolled {
@@ -516,7 +488,6 @@
     margin-left: 0.7vmax;
     transition: 0.5s;
     width: 150px !important;
-    /* Adjust based on your requirement */
 }
 
 .d-one p {
@@ -552,7 +523,6 @@
 .flightlistsec1Mobile {
     background-color: #00b7eb;
     padding-top: 7px;
-    /* padding-bottom: 11px; */
     color: white;
     display: none;
 }
@@ -573,10 +543,8 @@
 }
 
 .flightlistsec1colMobileTravlr {
-    /* text-align: center; */
     display: flex;
     justify-content: center;
-    /* margin-top: 5px; */
 }
 
 .flightlistsec1colMobileTravlr p {
@@ -591,8 +559,6 @@
 .filterIcondiv,
 .editIconDiv {
     display: flex;
-    /* justify-content: center; */
-    /* align-items: center; */
 }
 
 .filterIcondiv svg,
@@ -826,7 +792,6 @@
 .fare-quote-boxRow {
     display: flex !important;
     justify-content: center !important;
-    /* text-align: center; */
 }
 
 .fareQuoteHed {
@@ -867,7 +832,6 @@
 }
 
 .fareQuotemainh6 {
-    /* text-align: center; */
     margin: 0px;
     color: #00b7eb;
 }
@@ -928,6 +892,79 @@
 }
 
 /* slider csssss */
+
+
+
+
+.flightstopaccordian div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flightstopaccordian {
+    margin-bottom: 15px !important;
+}
+
+.flightpriceaccordian .custom-checkbox {
+    display: inline-block;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.flightpriceaccordian .custom-checkbox input[type="checkbox"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.custom-checkbox label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    cursor: pointer;
+}
+
+.custom-checkbox input[type="checkbox"]:checked+label {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.flightpriceaccordian .custom-checkbox input[type="checkbox"]:checked+label::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+
+.slick-slide {
+    transform: none !important;
+}
+
+.flight-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.slick-slide {
+    display: inline-block;
+}
 
 
 
@@ -1062,7 +1099,6 @@
     }
     .fligthListModal .modal-lg {
         max-width: unset !important;
-        /* max-height: 80% !important; */
     }
     .flight-slide h6 {
         font-size: 10px;
@@ -1143,81 +1179,3 @@
     }
 }
 
-
-
-
-
-
-
-
-
-
-.flightstopaccordian div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.flightstopaccordian {
-    margin-bottom: 15px !important;
-}
-
-.flightpriceaccordian .custom-checkbox {
-    display: inline-block;
-    position: relative;
-    width: 20px;
-    height: 20px;
-    border-radius: 3px;
-}
-
-.flightpriceaccordian .custom-checkbox input[type="checkbox"] {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.custom-checkbox label {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #f0f0f0;
-    border: 2px solid #ccc;
-    cursor: pointer;
-}
-
-.custom-checkbox input[type="checkbox"]:checked+label {
-    background-color: #007bff;
-    border-color: #007bff;
-}
-
-.flightpriceaccordian .custom-checkbox input[type="checkbox"]:checked+label::after {
-    content: "";
-    position: absolute;
-    left: 4px;
-    top: 2px;
-    width: 6px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
-
-
-.slick-slide {
-    transform: none !important;
-}
-
-.flight-slide {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-.slick-slide {
-    display: inline-block;
-}

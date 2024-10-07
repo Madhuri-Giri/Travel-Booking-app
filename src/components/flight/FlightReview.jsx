@@ -12,7 +12,6 @@ import { PiTrolleySuitcaseFill } from "react-icons/pi";
 import { json, useLocation, useNavigate } from 'react-router-dom';
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
 import Footer from "../../pages/footer/Footer";
-// import Payloader from '../../pages/loading/Payloader';
 import { RiTimerLine } from "react-icons/ri";
 import TimerFlight from '../../components/timmer/TimerFlight'
 import Loading from '../../pages/loading/Loading';
@@ -251,12 +250,8 @@ const FlightReview = () => {
 
   const bookLccApi = async () => {
     try {
-      // const transactionFlightNo = transactionDetails?.transaction_num;
-      // const transactionFlightNo = localStorage.getItem('transactionNum');
-      // const transaction_id = razorPayTRANSACTION_Id;
+     
       const transaction_id = localStorage.getItem('flight_transaction_id');
-      // const adultPassengerDetails = localStorage.getItem('adultPassengerDetails');
-      // const parsedAdultPassengerDetails = JSON.parse(adultPassengerDetails);
       const parsedAdultPassengerDetails = confirmedAdults;
 
       const bookingResponses = await Promise.all(parsedAdultPassengerDetails.map(async (passenger) => {
@@ -340,7 +335,6 @@ const FlightReview = () => {
 
   const bookHoldApi = async () => {
     const transaction_id = localStorage.getItem('flight_transaction_id');
-    // const transaction_id = razorPayTRANSACTION_Id;
     const storedPassengers = confirmedAdults;
     const passengers = storedPassengers.map(passenger => ({
       Title: passenger.gender === "male" ? "Mr" : "Ms" || null,

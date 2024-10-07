@@ -14,7 +14,6 @@ import Footer from "../../pages/footer/Footer";
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-// import { RiTimerLine } from "react-icons/ri";
 import TimerFlight from '../../components/timmer/TimerFlight'
 
 
@@ -851,43 +850,6 @@ export default function FlightDetails() {
     // else seat meal is not selected only traveller form selected then goto review page-------------------------------
 
 
-
-    // for timerss----------------------------------
-    //     const [timer, setTimer] = useState(0);
-    //   useEffect(() => {
-    //     const updateTimer = () => {
-    //       const endTime = localStorage.getItem('F-timerEndTime');
-    //       const now = Date.now();
-
-    //       if (endTime) {
-    //         const remainingTime = endTime - now;
-
-    //         if (remainingTime <= 0) {
-    //           localStorage.removeItem('F-timerEndTime');
-    //           navigate('/flight-search');
-    //         } else {
-    //           setTimer(remainingTime);
-    //         }
-    //       } else {
-    //         navigate('/flight-search');
-    //       }
-    //     };
-
-    //     updateTimer();
-
-    //     const interval = setInterval(updateTimer, 1000); 
-
-    //     return () => clearInterval(interval);
-    //   }, [navigate]);
-    //   const formatTimers = (milliseconds) => {
-    //     const totalSeconds = Math.floor(milliseconds / 1000);
-    //     const minutes = Math.floor(totalSeconds / 60);
-    //     const seconds = totalSeconds % 60;
-    //     return `${minutes} min ${seconds} sec left`;
-    //   };
-
-    // for timerss----------------------------------
-
     if (loading) {
         return <Loading />;
     }
@@ -895,16 +857,7 @@ export default function FlightDetails() {
     return (
         <>
             <CustomNavbar />
-            <TimerFlight/>
-           
-
-
-            {/* timerrr-------------------  */}
-            {/* <div className="timer-FlightLists">
-                <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
-            </div> */}
-            {/* timerrr-------------------  */}
-
+            <TimerFlight />
             <section className='flightlistsec1'>
                 <div className="container-fluid">
                     <div className="row flightlistsec1Row">
@@ -924,9 +877,7 @@ export default function FlightDetails() {
                                 <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
                             </div>
                         </div>
-                        {/* <div className="col-2 search-functinality">
-                            <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
-                        </div> */}
+
                     </div>
                 </div>
             </section>
@@ -1007,9 +958,6 @@ export default function FlightDetails() {
                                                     </>
                                                 )}
                                             </div>
-                                            {/* {error && 
-                                            <div className="text-danger mt-2" aria-live="assertive">{error}</div>
-                                            } */}
 
                                             {/* code for tabs seat meals--------- */}
                                             <div className="row seatMealBaggageTabRow">
@@ -1028,7 +976,6 @@ export default function FlightDetails() {
 
                                             <div className="col-12 lastBtnssContinue">
                                                 <h5>Fare Breakup <span>₹{totalFare}</span></h5>                                                <button
-                                                // <h5>Fare Breakup <span>₹{totalFare.toFixed(2)}</span></h5>                                                <button
                                                     onClick={handleButtonClick}
                                                     disabled={isContinueDisabled}
                                                     style={{
@@ -1068,7 +1015,6 @@ export default function FlightDetails() {
                                         <div className="fligthPriceDetailsBoxDiv2">
                                             <p>Taxes</p>
                                             <p>₹{tax}</p>
-                                            {/* <p>₹{tax.toFixed(2)}</p> */}
                                         </div>
                                         <div className="fligthPriceDetailsBoxDiv2">
                                             <p>Sajyatra Discount</p>
@@ -1077,13 +1023,11 @@ export default function FlightDetails() {
                                         <hr></hr>
                                         <div className="fligthPriceDetailsBoxDiv3">
                                             <h6>Total Fare</h6>
-                                            {/* <p>₹{totalFare.toFixed(2)}</p> */}
                                             <p>₹{totalFare}</p>
                                         </div>
                                         <div className="fligthPriceDetailsBoxDiv7">
                                             <h5>You Pay</h5>
                                             <p>₹{totalFare}</p>
-                                            {/* <p>₹{totalFare.toFixed(2)}</p> */}
                                         </div>
                                         <div className="fligthPriceDetailsBoxDiv8">
                                             <img src="/src/assets/images/Low-Price-Guarantee-Offer.gif" className="img-fluid" />

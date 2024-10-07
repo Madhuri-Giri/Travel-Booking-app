@@ -6,12 +6,10 @@ import { FaCalendarAlt, FaUser } from 'react-icons/fa';
 import "./FlightLists.css";
 import React from 'react';
 import { LuDot } from "react-icons/lu";
-// import { RiTimerLine } from "react-icons/ri";
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
 import { FaArrowRightLong } from 'react-icons/fa6';
-// impor TimerFlight from '../timmer/TimerFlight';
 import TimerFlight from '../../components/timmer/TimerFlight'
 
 const FareQuote = () => {
@@ -76,40 +74,6 @@ const FareQuote = () => {
         }, 1000);
     }
 
-    // for timerss----------------------------------
-    // const [timer, setTimer] = useState(0);
-
-    // useEffect(() => {
-    //   const updateTimer = () => {
-    //     const endTime = localStorage.getItem('F-timerEndTime');
-    //     const now = Date.now();
-    //     if (endTime) {
-    //       const remainingTime = endTime - now;
-    //       if (remainingTime <= 0) {
-    //         localStorage.removeItem('F-timerEndTime');
-    //         navigate('/flight-search');
-    //       } else {
-    //         setTimer(remainingTime);
-    //       }
-    //     } else {
-    //       navigate('/flight-search');
-    //     }
-    //   };
-    //   updateTimer();
-
-    //   const interval = setInterval(updateTimer, 1000); 
-
-    //   return () => clearInterval(interval);
-    // }, [navigate]);
-
-    // const formatTimers = (milliseconds) => {
-    //   const totalSeconds = Math.floor(milliseconds / 1000);
-    //   const minutes = Math.floor(totalSeconds / 60);
-    //   const seconds = totalSeconds % 60;
-    //   return `${minutes} min ${seconds} sec left`;
-    // };
-    // for timerss----------------------------------
-
     if (loading) {
         return <Loading />;
     }
@@ -119,12 +83,6 @@ const FareQuote = () => {
             <CustomNavbar />
             
             <TimerFlight/>
-            {/* timerrr-------------------  */}
-            {/* <div className="timer-FlightLists">
-                <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
-            </div> */}
-            {/* timerrr-------------------  */}
-
             <section className='flightlistsec1'>
                 <div className="container-fluid">
                     <div className="row flightlistsec1Row">
@@ -144,9 +102,7 @@ const FareQuote = () => {
                                 <p><span>Traveller {formData.AdultCount + formData.ChildCount + formData.InfantCount} , </span> <span>Economy</span></p>
                             </div>
                         </div>
-                        {/* <div className="col-2 search-functinality">
-                            <button onClick={navigateSearch}><i className="ri-pencil-fill"></i>Modify</button>
-                        </div> */}
+                      
                     </div>
                 </div>
             </section>

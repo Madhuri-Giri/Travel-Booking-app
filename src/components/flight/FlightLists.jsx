@@ -12,7 +12,6 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { FaFilter } from "react-icons/fa";
 import { MdKeyboardArrowDown, MdModeEdit } from "react-icons/md";
-// import { RiTimerLine } from "react-icons/ri";
 import Loading from '../../pages/loading/Loading'; // Import the Loading component
 import Footer from "../../pages/footer/Footer";
 import CustomNavbar from "../../pages/navbar/CustomNavbar";
@@ -21,7 +20,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
-// import TimerFlight from '../timmer/TimerFlight';
 import { useDispatch, useSelector } from "react-redux";
 import { getFlightList } from "../../API/action";
 import FlightSegments from "./FlightSegments";
@@ -85,9 +83,6 @@ export default function FlightLists() {
 
     //    ==========radio button data save for price details model=====
     const handleFarePriceSelect = (offerDataNew, segments, logoUrl) => {
-        // console.log('offerDataNew 123',offerDataNew);
-        // console.log('segments 123',segments);
-        // console.log('logoUrl 123',logoUrl);   
         const offerDataaaModel = {
             ...offerDataNew,
             segments: segments,
@@ -309,19 +304,6 @@ export default function FlightLists() {
     // ------------------------------------------------fare-Quote-api-----------------------------------------
     const fareQuoteHandler = async (flightSelectedDATA, productToView) => {
         setLoading(true);
-        // if (!dataToPass.TraceId || !dataToPass.ResultIndex || !dataToPass.SrdvType || !dataToPass.SrdvIndex) {
-        //     console.error('TraceId, ResultIndex, SrdvType, not found');
-        //     setLoading(false);
-
-        //     // Use SweetAlert2 for missing data notification
-        //     Swal.fire({
-        //         icon: 'error',
-        //         title: 'Missing Data',
-        //         text: 'TraceId, ResultIndex, or SrdvType not found!',
-        //     });
-        //     return;
-        // }
-
         const payload = {
             SrdvIndex: productToView?.SrdvIndex,
             ResultIndex: productToView?.ResultIndex,
@@ -517,13 +499,6 @@ export default function FlightLists() {
         listingData && <>
             <CustomNavbar />
             < TimerFlight />
-            {/* <TimerFlight/> */}
-            {/* timerrr-------------------  */}
-            {/* <div className="timer-FlightLists">
-                <div> <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p> </div>
-            </div> */}
-            {/* timerrr-------------------  */}
-
             <section className='flightlistsec1'>
                 <div className="container-fluid">
                     <div className="row flightlistsec1Row">
@@ -761,7 +736,6 @@ export default function FlightLists() {
                             <Accordion.Item eventKey="1">
                                 <Accordion.Header className="flightlistaccordian-header">
                                     <span className="header-title">Price</span>
-                                    {/* <FontAwesomeIcon icon={faChevronDown} className="header-icon" /> */}
                                 </Accordion.Header>
                                 <Accordion.Body className="flightpriceaccordian">
                                     <div className="row">
@@ -805,7 +779,6 @@ export default function FlightLists() {
                             <Accordion.Item eventKey="2">
                                 <Accordion.Header className="flightlistaccordian-header">
                                     <span className="header-title">Airlines</span>
-                                    {/* <FontAwesomeIcon icon={faChevronDown} className="header-icon" /> */}
                                 </Accordion.Header>
                                 <Accordion.Body>
                                     <div className="desktopAirlines">
@@ -868,7 +841,6 @@ export default function FlightLists() {
                                             <div className="pricebtnsmobil">
                                                 <p className="regulrdeal"><span>Regular Deal</span></p>
                                                 <div>
-                                                    {/* <button onClick={() => handleSelectSeat(value, logoUrl)}>SELECT</button> */}
                                                     <button onClick={() => {
                                                         const productToView = selectedProductsNew[index]?.fareValue || offerData;
                                                         handleSelectSeat(value, logoUrl, productToView)
@@ -940,7 +912,6 @@ export default function FlightLists() {
                                                     <div className="priceradiotbtnnDiv">
                                                         <Form>{
                                                             value?.FareDataMultiple.map((fareValue, fareIndex) => {
-                                                                // const currentRadioChecked = selectedProduct.index == index ? selectedProduct.fareValue : offerData;
 
                                                                 const fareValueData = {
                                                                     fareValue,
@@ -980,17 +951,14 @@ export default function FlightLists() {
                                                                                     name="flightOption"
                                                                                     value={`option${fareIndex + 1}`}
                                                                                     onChange={() => {
-                                                                                        // setSelectedProduct({ index, fareValue }); // Update selectedProduct state
                                                                                         handleRadioChange(fareValue, index, value.Segments, logoUrl)
                                                                                         setOfferPriceDataNew('someValue'); // Update anotherState (you can set it to anything you want)
                                                                                     }}
 
-                                                                                    // onChange={() => setSelectedProduct({ index, fareValue })}
                                                                                     defaultChecked={fareValue.OfferedFare == offerData.OfferedFare}
                                                                                 />
                                                                                 <strong> ₹ {fareValue.OfferedFare}</strong>
                                                                             </div>
-                                                                            {/* <p className="isRefundalbe">{isRefundable ? 'Refundable': 'Non-Refundable' }</p> */}
                                                                         </label>
                                                                     </div>
 
@@ -1022,14 +990,7 @@ export default function FlightLists() {
                                                     }}
                                                     > View Prices Fare <MdKeyboardArrowDown />
                                                     </button>
-                                                    {/* <button onClick={() => {
-                                                        // Use selected product if available, otherwise use the minimum priced product
-                                                        const productToView = selectedProduct.index == index ? selectedProduct.fareValue : offerData;
-                                                        handleFarePriceSelect(productToView, value.Segments,
-                                                            logoUrl);
-                                                    }}
-                                                    > View Prices Fare <MdKeyboardArrowDown />
-                                                    </button> */}
+                                                  
                                                 </div>
 
                                             </div>

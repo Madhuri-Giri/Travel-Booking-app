@@ -233,10 +233,6 @@ const FlightSearch = () => {
 
   // func for select flight class----------------------------------------------
   const [selectedflightClass, setSelectedflightClass] = useState('Economy');
-  // const handleflightClassChange = (event) => {
-  //   setSelectedflightClass(event.target.value);
-  //   setFormData((prev) => ({ ...prev, FlightCabinClass: event.target.value }))
-  // };
 
   const handleflightClassChange = (event) => {
     const newFlightClass = event.target.value;

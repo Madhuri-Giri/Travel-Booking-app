@@ -83,50 +83,6 @@
     padding-top: 20px !important;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .Bus-Tikit {
     width: 100%;
     display: flex;
@@ -156,17 +112,6 @@
     color: #fff;
 }
 
-/* .Bus-Tikit  .lottie{
-    width: 70%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3vmax;
-    margin: 1vmax;
-    background: #fff;
-    border: none;
-    box-shadow: 2px 2px 5px 2px rgba(229, 220, 220, 0.68);
-} */
 .Bus-Tikit .lottie .anim {
     width: 50%;
 }
@@ -258,7 +203,6 @@
     border-radius: 5px;
     background-color: #00b7eb;
     color: #fff;
-    /* font-weight: 600; */
     width: 95%;
 }
 
@@ -385,12 +329,6 @@
 
 }
 
-
-
-
-
-
-
 .buspssngerdetails span {
     font-size: 15px;
     color: gray;
@@ -434,11 +372,7 @@
     color: red;
 }
 
-
-
-
 .busticktbox {
-    /* background-color: #c6cfd15e; */
     box-shadow: 2px 2px 2px 2px gray;
     border-radius: 20px;
     padding-bottom: 10px;
@@ -482,9 +416,6 @@
 }
 
 .Bus-Tikit .lottie {
-    /* display: flex; */
-    /* align-items: center; */
-    /* justify-content: center; */
     padding: 3vmax;
     margin: 1vmax;
     background: #fff;
@@ -502,7 +433,6 @@
 .busticktbox {
     position: relative;
     background-color: #f8f9fa;
-    /* Adjust this to your desired background color */
     border-radius: 10px;
     box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.1);
     border: 1px solid #99dbd72b;
@@ -514,24 +444,19 @@
     position: absolute;
     top: 50%;
     width: 45px;
-    /* Adjust the width to make the half-circle bigger or smaller */
     height: 100px;
-    /* Adjust the height to match your container's height */
     background-color: #fff;
-    /* Same as the background color of the parent container */
     border-radius: 50%;
     transform: translateY(-50%);
 }
 
 .busticktbox::before {
     left: -20px;
-    /* Half of the width of the pseudo-element */
     border-right: none;
 }
 
 .busticktbox::after {
     right: -20px;
-    /* Half of the width of the pseudo-element */
     border-left: none;
 }
 

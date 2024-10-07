@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import "./FlightDetails.css";
 import { useLocation, useNavigate } from 'react-router-dom';
-// import { RiTimerLine } from "react-icons/ri";
 import CustomNavbar from '../../pages/navbar/CustomNavbar';
 import Footer from '../../pages/footer/Footer';
 import "./SeatMealBaggage.css";
@@ -163,17 +162,6 @@ const SeatMealBaggageTabs = () => {
 
     const getSsrApiData = () => {
         const ssrApiData = ssrAPIData;
-        // // const ssrApiData = localStorage.getItem('ssrApiData');
-        // console.log('ssrApiData',ssrApiData);
-        // if (ssrApiData) {
-        //     const parsedData = JSON.parse(ssrApiData);
-        //     console.log('parsedData',parsedData);
-        //     if (parsedData.Baggage && parsedData.Baggage[0]) {
-        //         return parsedData.Baggage[0]; // Assuming the first element is what you want
-        //     }
-        //     console.log('aaaaaa',parsedData.Baggage[0]);  
-        // }
-        // console.log('No SSR API data found in localStorage');
         return [];
     };
 
@@ -216,12 +204,9 @@ const SeatMealBaggageTabs = () => {
             updatedSeats = [...selectedSeats, seat];
         }
         setSelectedSeats(updatedSeats);
-        // localStorage.setItem('flightSelectedSeats', JSON.stringify(updatedSeats));
-        // console.log('ll', localStorage.setItem('flightSelectedSeats', JSON.stringify(updatedSeats)));
     };
 
     useEffect(() => {
-        // localStorage.removeItem('flightSelectedSeats');
         setSelectedSeats([]);
     }, []);
 
@@ -341,10 +326,8 @@ const SeatMealBaggageTabs = () => {
         // Toggle the baggage selection
         if (selectedBaggage?.Weight === baggage.Weight) {
             setSelectedBaggage(null);
-            // localStorage.removeItem('selectedBaggage');
         } else {
             setSelectedBaggage(baggage); // Select the clicked baggage
-            // localStorage.setItem('selectedBaggage', JSON.stringify(baggage));
         }
     };
 
@@ -388,12 +371,6 @@ const SeatMealBaggageTabs = () => {
         <>
             <CustomNavbar />
             <TimerFlight/>
-            {/* <div className="timer-FlightLists">
-                <div>
-                    <p><RiTimerLine /> Redirecting in {formatTimers(timer)}...</p>
-                </div>
-            </div> */}
-
             <div className="container-fluid selectSeatMealCont">
                 <div className='container'>
                     <div className="row selectSeatMealContROW">
@@ -456,21 +433,12 @@ const SeatMealBaggageTabs = () => {
                             <div>
                                 <div className="meal-last">
                                     <h5 className='totalPricee'>Total Fare : <span>₹{totalPrice}</span></h5>
-                                    {/* <h5 className='totalPricee'>Total Fare : <span>₹{totalPrice.toFixed(2)}</span></h5> */}
                                     <button onClick={reviewHandler}>Continue</button>
                                 </div>
                             </div>
                         </div>
-
-                        {/* --------------------------------------------------- */}
-
-
                     </div>
-
-
                 </div>
-
-
             </div>
             <Footer />
         </>
